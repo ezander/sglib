@@ -1,0 +1,17 @@
+function srcdir=sg_path( action )
+
+srcdir="@abs_srcdir@";
+if nargin<1
+  return;
+end
+
+
+switch action
+  case 'get'
+    return;
+  case 'set'
+    addpath( [srcdir '/munit' ] );
+    addpath( [srcdir '/experimental' ] );
+    addpath( [srcdir '/util' ] );
+    addpath( [srcdir '/simplefem' ] );
+end
