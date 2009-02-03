@@ -65,54 +65,56 @@ check_unsupported_options( options, mfilename );
 % for large number of random variable, i.e. about 100 or more, the matlab stack
 % was exhausted by the recursive algorithm).
 
+
+% Note: algorithm has been changed to start from m=0
 % Start with one random variable. Create a cell array like this
 %   {[0],[1],[2],...,[p]}
 % Since we have only one random variable (m=1), in each cell i there is
 % just one monomial of homogeneous order q=i-1
-I_mp=cell(1,p+1);
+I_kp=cell(1,p+1);
 for q=0:p
     if use_sparse
-        I_mp{q+1}=sparse(1,1,q);
+        %I_kp{q+1}=sparse(1,1,q);
+        I_kp{q+1}=sparse(q==0,0);
     else
-        I_mp{q+1}=q;
+        %I_kp{q+1}=q;
+        I_kp{q+1}=zeros(q==0,0);
     end
 end
 
 % Now iterate over the number of random variables.
-mm=m;
-for m=2:mm
+for k=1:m
     % Backup the old multiindex set for later use.
-    I_m1p=I_mp;
+    I_k1p=I_kp;
     
     % Get number of nonzero elements and number for multiindex set I_mp
     % nonzero and count are arrays that contain the respective values
     % indexed by order of the homogeneous indices (or polynomials). Then
     % use this information to allocate (sparse) arrays of the right size.
-    [count,nonzero]=multiindex_stats(m,p);
-    I_mp=cell(1,p+1);
+    [count,nonzero]=multiindex_stats(k,p);
+    I_kp=cell(1,p+1);
     for q=0:p
         if use_sparse
-            I_mp{q+1}=spalloc(count(q+1),m,nonzero(q+1));
+            I_kp{q+1}=spalloc(count(q+1),k,nonzero(q+1));
         else
-            I_mp{q+1}=zeros(count(q+1),m);
+            I_kp{q+1}=zeros(count(q+1),k);
         end
     end
 
     for q=0:p
         % Copy indices from m-1 random vars in the new multiindex field to
         % the right position
-        I_mp{q+1}( :, 1:end-1 ) = catmat(I_m1p{(q+1):-1:1});
-        % Now fill the right most column such that I_mp{q+1} still has
+        I_kp{q+1}( :, 1:end-1 ) = catmat(I_k1p{(q+1):-1:1});
+        % Now fill the right most column such that I_kp{q+1} still has
         % homogeneous order q
-        I_mp{q+1}(:,end)=q-sum(I_mp{q+1},2);
+        I_kp{q+1}(:,end)=q-sum(I_kp{q+1},2);
     end
 end
 
 if combine
-    I_mp=catmat(I_mp{:});
+    I_kp=catmat(I_kp{:});
 end
-
-
+I_mp=I_kp;
 
 
 function [count,nonzero]=multiindex_stats(m,p)

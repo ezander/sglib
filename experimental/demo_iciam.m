@@ -359,7 +359,7 @@ else
     [f_alpha, I_f]=expand_field_pce_sg( h_f, cov_f, [], x, M, p_f, m_gam_f, options_expand_f );
     f_alpha(:,1)=0.3*f_alpha(:,1); % set mean to zero
     
-    [mu_f,f_i_alpha,v_f]=pce_to_kl( f_alpha, I_f, M, m_f );
+    [mu_f,f_i_alpha,v_f]=pce_to_kl( f_alpha, I_f, m_f, M );
 
     % expansion of the right hand side field (f)
     p_k=4;
@@ -372,7 +372,7 @@ else
     [k_alpha, I_k]=expand_field_pce_sg( h_k, cov_k, [], x, M, p_k, m_gam_k, options_expand_k );
     k_alpha(:,1)=1+k_alpha(:,1); % shift mean
     k_alpha(:,2:end)=0.5*k_alpha(:,2:end); % scale variance
-    [mu_k,k_i_alpha,v_k]=pce_to_kl( k_alpha, I_k, M, m_k );
+    [mu_k,k_i_alpha,v_k]=pce_to_kl( k_alpha, I_k, m_k, M );
 
 
     % In the expansion of the random fields f and k we have assumed that the

@@ -43,6 +43,9 @@ assert_equals( size(unique(ind,'rows'),1), 28, 'sp_unique' )
 ind=multiindex(200,1,[],'use_sparse',true);
 assert_equals( size(ind), [201, 200], 'large_nrv' )
 
+ind=multiindex( 0, 7 );
+assert_equals( prod(size(ind)), 0, 'mzero_size' )
+
 
 % Test for MULTIINDEX_FACTORIAL
 assert_set_function( 'multiindex_factorial' );

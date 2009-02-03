@@ -37,23 +37,6 @@ function ind=multiindex_find( I_r, alpha )
 
 m=size(I_r,1);
 %ind=sum(abs(I_r-repmat(alpha,m,1)),2)==0;
-ind=all(I_r==repmat(alpha,m,1),2);
+%ind=all(I_r==repmat(alpha,m,1),2);
+[dummy,ind]=ismember(alpha,I_r,'rows');
 
-% % Some ideas about Goedelization I had. This may work better when there
-% % are more than one multiindex to search for. But this is currently not
-% % needed. Sometimes it's incredible through which pains you have to go to
-% % something reasonably fast in matlab...
-% n=size(I_r,2);
-% lp=log(prime_list(n));
-% goedel_I=round(exp(I_r*lp'));
-% goedel_alpha=round(exp(alpha*lp'));
-% ind=(goedel_I==goedel_alpha);
-% 
-% function p=prime_list(n)
-% l=n;
-% p=primes(l);
-% while length(p)<n
-%     l=2*l;
-%     p=primes(l);
-% end
-% p=p(1:n);
