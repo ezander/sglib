@@ -26,7 +26,6 @@ cov_f={@gaussian_covariance,{lc_f,1}}; %#ok
 cov_gam={@gaussian_covariance,{lc_f,1}};
 options_expand_f.transform.correct_var=true;
 
-
 disp( 'expanding field, this may take a while ...' );
 tic
 [f_alpha, I_f]=expand_field_pce_sg( h_f, cov_f, cov_gam, pos, M, p_f, m_gam_f, options_expand_f );
