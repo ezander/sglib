@@ -1,20 +1,18 @@
-function ok=check_range( x, lo, hi, varname, mfilename )
-% CHECK_RANGE Check whether input argument is scalar and in range.
-%   OK=CHECK_RANGE( X, LO, HI, VARNAME, MFILENAME ) checks whether input
-%   parameter X is scalar and if it is, whether it is in the range [LO,HI]
-%   (inclusive bounds). VARNAME and MFILENAME are strings used for printing
-%   sensible error messages. 
+function ok=check_boolean( cond, message, mfilename )
+% CHECK_BOOLEAN Check whether condition is true on input.
+%   OK=CHECK_BOOLEAN( COND, MESSAGE, MFILENAME ) checks whether the given condition 
+%   is true. If not an error message is printed and the program is aborted.
 %
 %   Note: pass mfilename literally for the last argument (i.e. pass the
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
 % Example
-%   function my_function( num )
+%   function my_function( str )
 %
-%     check_range( num, 1, 5, 'num', mfilename );
+%     check_boolean( strcmp(str,str(end:-1:1)), 'str must be a palindrome', mfilename );
 %
-% See also CHECK_CONDITION, CHECK_UNSUPPORTED_OPTIONS
+% See also CHECK_RANGE, CHECK_UNSUPPORTED_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -30,14 +28,11 @@ function ok=check_range( x, lo, hi, varname, mfilename )
 
 
 if ~exist('mfilename','var') || isempty(mfilename)
-	mfilename='global';
+    mfilename='global';
 end
 
-if ~isscalar(x)
-    s=strtrim(evalc('disp({x})'));
-    error([mfilename ':range'], '%s: input argument "%s" is not scalar: %s', mfilename, varname, s )
-elseif x<lo || x>hi
-    error([mfilename ':range'], '%s: input argument "%s" not in range [%g,%g]: %g', mfilename, varname, lo, hi, x )
+if ~cond
+    error([mfilename ':boolean'], sprintf( '%s: %s', mfilename, message ) );
 end
     
     

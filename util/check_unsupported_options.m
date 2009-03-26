@@ -41,6 +41,9 @@ function ok=check_unsupported_options( options, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if ~exist('mfilename','var') || isempty(mfilename)
+    mfilename='global';
+end
 
 supported_fields=[];
 if isfield( options, 'fields__' )
@@ -53,7 +56,7 @@ ok=isempty(fieldnames(options));
 if ~ok
     fields=fieldnames(options);
     for i=1:length(fields)
-        warning([mfilename ':options'], 'unsupported options passed to "%s": %s', ...
+        warning([mfilename ':options'], '%s: unsupported options deteced: %s', ...
             mfilename, fields{i} );
     end
     
