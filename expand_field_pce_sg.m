@@ -28,14 +28,23 @@ function [r_j_alpha, I_r, C_r]=expand_field_pce_sg( rho_stdnor_func, cov_r_func,
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-check_condition( isfunction(rho_stdnor_func), 'rho_stdnor_func must be a function type', mfilename );
-check_condition( isfunction(cov_r_func), 'cov_r_func must be a function type', mfilename );
-check_condition( isempty(cov_gam_func) || isfunction(cov_gam_func), 'cov_gam_stdnor_func must be a function type or empty', mfilename );
+check_condition( rho_stdnor_func, 'isfunction', false, 'rho_stdnor_func', mfilename );
+check_condition( cov_r_func, 'isfunction', false, 'cov_r_func', mfilename );
+check_condition( cov_gam_func, 'isfunction', true, 'cov_gam_func', mfilename );
 check_range( size(pos,2), 1, 3, 'sizeof(pos,2)', mfilename );
-check_condition( size(M_N,1)==size(M_N,2), 'M_N must be a square matrix', mfilename );
-check_condition( size(M_N,1)==size(pos,1), 'M_N and pos don''t match', mfilename );
+check_condition( M_N, 'square', true, 'M_N', mfilename );
+check_condition( {M_N, pos}, 'match', true, {'M_N', 'pos'}, mfilename );
 check_range( p, 1, 10, 'p', mfilename );
 check_range( m_gam, 1, 1000, 'm_gam', mfilename );
+
+% check_condition( isfunction(rho_stdnor_func), 'rho_stdnor_func must be a function type', mfilename );
+% check_condition( isfunction(cov_r_func), 'cov_r_func must be a function type', mfilename );
+% check_condition( isempty(cov_gam_func) || isfunction(cov_gam_func), 'cov_gam_stdnor_func must be a function type or empty', mfilename );
+% check_range( size(pos,2), 1, 3, 'sizeof(pos,2)', mfilename );
+% check_condition( size(M_N,1)==size(M_N,2), 'M_N must be a square matrix', mfilename );
+% check_condition( size(M_N,1)==size(pos,1), 'M_N and pos don''t match', mfilename );
+% check_range( p, 1, 10, 'p', mfilename );
+% check_range( m_gam, 1, 1000, 'm_gam', mfilename );
 
 options=varargin2options( varargin{:} );
 [transform_options,options]=get_option( options, 'transform', {} );

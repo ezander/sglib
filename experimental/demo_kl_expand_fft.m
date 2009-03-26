@@ -6,6 +6,8 @@ n=30;
 x=linspace(0,1,n)';
 els=[1:n-1; 2:n]';
 M=mass_matrix( els, x );
+
+size(M)
 %% Create covariance matrix 
 cov_u={@gaussian_covariance, {0.1}};
 

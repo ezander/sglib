@@ -1,5 +1,8 @@
 function [newels,newpos]=refine_mesh( els, pos, method )
 
+warning( 'refine_mesh does not work correctly for nonconvex meshes!' );
+% TODO: fix for nonconvex meshes
+
 if nargin<3
     method='edgebased';
 end
@@ -21,6 +24,7 @@ addpos=1/2*(pos(edges(:,1),:) + pos(edges(:,2),:));
 newpos=[pos; addpos];
 newels=delaunay( newpos(:,1), newpos(:,2) );
 
+% function [newels,newpos]=refine_edgebased2( els, pos )
 % newpreels=[oldels max(els(:))+oldmesh.faces.edges];
 % 
 % newcoords=[oldcoords; addcoords];

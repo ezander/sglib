@@ -17,8 +17,8 @@ options.createThumbnail=true;
 
 read_now=true;
 %publish_demo( 'demo_distributions', read_now, options );
-%publish_demo( 'demo_kl_expand', read_now, options );
-publish_demo( 'presentation_oberseminar', read_now, options );
+publish_demo( 'demo_kl_expand_fft', read_now, options );
+%publish_demo( 'presentation_oberseminar', read_now, options );
 
 function publish_demo( file, read_now, options )
 publish( file, options );
