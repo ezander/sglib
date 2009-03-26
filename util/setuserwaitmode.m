@@ -56,19 +56,19 @@ if nargin==0 || strcmp( mode, 'getmode' )
 end
 
 switch mode
-    case 'keyboard'
+    case {1, 'keyboard'}
         save_mode=1;
         if nargin<2
             save_msg='Press any key to continue...';
         end
-    case 'mouse'
+    case {2, 'mouse'}
         save_mode=2;
         if nargin<2
             save_msg='Press any key or click mouse to continue...';
         end
-    case 'continue'
+    case {3, 'continue'}
         save_mode=3;
-    case 'function'
+    case {4, 'function'}
         save_mode=4;
         if nargin<3
             error( 'userwaitmode:nofunc', 'function mode specified in setuserwaitmode but no function passed as parameter' );

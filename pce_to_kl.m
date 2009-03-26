@@ -17,6 +17,8 @@ function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I
 %  u(x,omega)=Sum_alpha u_alpha(x) H_alpha(xi(omega))
 % and want to transform it into 
 %  u(x,omega)=mu_u(x) + Sum_u f_
+if ~exist('M_N','var'); M_N=[]; end
+if ~exist('M_Phi','var'); M_Phi=[]; end
 
 check_condition( {M_N, r_j_alpha}, 'match', true, {'M_N', 'r_j_alpha'}, mfilename );
 check_range( m_r, 1, inf, 'm_r', mfilename );

@@ -1,4 +1,4 @@
-%% DEMO_KL_EXPAND Demonstrate usage of the Karhunen-Loeve expansion functions
+%%% DEMO_KL_EXPAND Demonstrate usage of the Karhunen-Loeve expansion functions
 
 init_demos
 
@@ -69,7 +69,7 @@ v_u=kl_expand( C_u, M, m_u );
 [mu_u,u_i_alpha]=project_pce_on_kl( u_alpha, I_u, v_u );
 
 %% Get KL of PCE expansion directly by SVD
-[mu_u2,u_i_alpha2,v_u2]=pce_to_kl( u_alpha, I_u, M, m_u ); %#ok
+[mu_u2,u_i_alpha2,v_u2]=pce_to_kl( u_alpha, I_u, m_u, M ); %#ok
 
 %% Show that both are results are basically the same
 % The correlation coefficient between each two functions should be one or
@@ -103,7 +103,7 @@ norm(C_u_pce2-C_u)
 %%
 v_u=kl_expand( C_u_pce, M, m_u );
 [mu_u,u_i_alpha]=project_pce_on_kl( u_alpha, I_u, v_u );
-[mu_u2,u_i_alpha2,v_u2]=pce_to_kl( u_alpha, I_u, M, m_u );
+[mu_u2,u_i_alpha2,v_u2]=pce_to_kl( u_alpha, I_u, m_u, M );
 cc=cross_correlation( v_u, v_u2, M );
 fprintf( 'cross correlation=%f\n', cc );
 
