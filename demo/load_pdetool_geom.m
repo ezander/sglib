@@ -39,3 +39,7 @@ end
 % extract element and position information in a format suitable for sglib
 els=t(1:3,:)';
 pos=p';
+
+pos=pos/max(max(pos)-min(pos))*2;
+pos=pos-repmat( (max(pos)+min(pos))/2, size(pos,1), 1 );
+
