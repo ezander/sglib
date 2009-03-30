@@ -1,0 +1,80 @@
+function plot_field_contour( els, pos, u, varargin )
+% PLOT_FIELD_CONTOUR Plots a field given on a triangular mesh.
+%   PLOT_FIELD_CONTOUR( ELS, POS, U, VARARGIN ) plots the field given in U on the
+%   nodes given in POS performing interpolation on the triangles given in
+%   ELS. Certain formatting options can be specified in the remaining
+%   arguments:
+%
+%
+% Example
+%
+% See also 
+
+%   Elmar Zander
+%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   $Id$ 
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+check_boolean( size(els,2)==3, 'elements must be triangles (size(els,2)==3)', mfilename );
+check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
+check_boolean( size(pos,1)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,1))', mfilename );
+
+
+options=varargin2options( varargin{:} );
+%[wait,options]=get_option( options, 'wait', false );
+check_unsupported_options( options, mfilename );
+
+X=pos(:,1);
+
+zmin=min(u);
+zmax=max(u);
+zran=zmax-zmin;
+nlev=10;
+zlev=linspace( zmin+zran/(2*nlev+2), zmax-zran/(2*nlev+2),nlev);
+X=pos(:,1);
+Y=pos(:,2);
+
+for i=1:nlev
+    lt=u<zlev(i);
+    gt=u>zlev(i);
+    %u(els)<zlev(i)
+    for j=1:3
+        alpha(:,j)=(zlev(i)-u(els(:,j)))./(u(els(:,mod(j,3)+1))-u(els(:,j)));
+    end
+    K=abs(alpha)<1 & alpha>0;
+    ind=sum(K,2)==2;
+    %Z1=u(els(ind,[1,2,3,1]));
+    %Z2=Z1(:,1:3)+alpha(ind,:).*(Z1(:,2:4)-Z1(:,1:3));
+    X1=X(els(ind,[1,2,3,1]));
+    X2=X1(:,1:3)+alpha(ind,:).*(X1(:,2:4)-X1(:,1:3));
+    Y1=Y(els(ind,[1,2,3,1]));
+    Y2=Y1(:,1:3)+alpha(ind,:).*(Y1(:,2:4)-Y1(:,1:3));
+    [c,r]=find(K(ind,:)');
+    c1=c(1:2:end);
+    r1=r(1:2:end);
+    c2=c(2:2:end);
+    r2=r(2:2:end);
+    np=size(X2,1);
+    
+    PP=nan*ones(np*3,3);
+    PP(1:3:end,1)=X2(r1+(c1-1)*np);
+    PP(2:3:end,1)=X2(r2+(c2-1)*np);
+    PP(1:3:end,2)=Y2(r1+(c1-1)*np);
+    PP(2:3:end,2)=Y2(r2+(c2-1)*np);
+    PP(1:3:end,3)=zmin;%zlev(i);
+    PP(2:3:end,3)=zmin;%zlev(i);
+    line( PP(:,1), PP(:,2), PP(:,3), 'color', 'k');
+     %'Parent',ax,...
+     %       'color',contc,'Erasemode','normal');
+    
+end
+
+

@@ -11,8 +11,12 @@ function plot_field( els, pos, u, varargin )
 %        right (degrees, not radians!)
 %      show_mesh: (default: true) whether the mesh should be plotted
 %      show_surf: (default: true) whether the surface should be plotted
-%      shading: (default: interp) the shading mode for the surface
-%      lighting: (default: flat) the lighting mode for the surface
+%      shading: (default: 'interp') the shading mode for the surface, other
+%        modes are 'flat' and 'faceted' (keese)
+%      lighting: (default: 'flat') the lighting mode for the surface
+%      colormap: (default: 'jet') the colormap mode for the surface,
+%      default ranges from blue over green, yellow to res (keese uses
+%        'cool', ranging from turquoise to magenta)
 %      draw_now: (default: true) draws immediately, can be set to false to
 %        speed things up, if many plots have to be made
 %      wait: (default: false) wait for the user to press a button or click
@@ -46,13 +50,18 @@ options=varargin2options( varargin{:} );
 [show_surf,options]=get_option( options, 'show_surf', true );
 [shading_mode,options]=get_option( options, 'shading', 'interp' );
 [lighting_mode,options]=get_option( options, 'lighting', 'flat' );
+[map,options]=get_option( options, 'colormap', 'jet' );
 [draw_now,options]=get_option( options, 'draw_now', true );
 [wait,options]=get_option( options, 'wait', false );
 check_unsupported_options( options, mfilename );
 
 
 if ismatlab()
+    ut=sum(u(els),2)/3;
+    un=pdeprtni(pos',els',ut');
+
     if show_mesh
+        %trimesh( els, pos(:,1), pos(:,2), u );
         trimesh( els, pos(:,1), pos(:,2), u );
         if show_surf
             hold on
@@ -70,6 +79,7 @@ if ismatlab()
     ylim([min(pos(:,2)) max(pos(:,2))]);
     shading( shading_mode );
     lighting( lighting_mode );
+    colormap( map );
     if draw_now || wait
         drawnow;
     end
