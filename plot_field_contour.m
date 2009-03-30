@@ -29,7 +29,7 @@ check_boolean( size(pos,1)==size(u,1), 'number of points must equal number of va
 
 
 options=varargin2options( varargin{:} );
-%[wait,options]=get_option( options, 'wait', false );
+[zpos,options]=get_option( options, 'zpos', 'min' );
 check_unsupported_options( options, mfilename );
 
 X=pos(:,1);
@@ -69,8 +69,18 @@ for i=1:nlev
     PP(2:3:end,1)=X2(r2+(c2-1)*np);
     PP(1:3:end,2)=Y2(r1+(c1-1)*np);
     PP(2:3:end,2)=Y2(r2+(c2-1)*np);
-    PP(1:3:end,3)=zmin;%zlev(i);
-    PP(2:3:end,3)=zmin;%zlev(i);
+    if ischar(zpos)
+        switch zpos
+            case 'min'
+                Z=zmin;
+            case 'z'
+                Z=zlev(i);
+        end
+    else
+        Z=zpos;
+    end
+    PP(1:3:end,3)=Z;
+    PP(2:3:end,3)=Z;
     line( PP(:,1), PP(:,2), PP(:,3), 'color', 'k');
      %'Parent',ax,...
      %       'color',contc,'Erasemode','normal');

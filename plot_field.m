@@ -15,6 +15,7 @@ function plot_field( els, pos, u, varargin )
 %        modes are 'flat' and 'faceted' (keese)
 %      lighting: (default: 'flat') the lighting mode for the surface
 %      colormap: (default: 'jet') the colormap mode for the surface,
+%      axis: (default: 'square') the axis command ('equal')
 %      default ranges from blue over green, yellow to res (keese uses
 %        'cool', ranging from turquoise to magenta)
 %      draw_now: (default: true) draws immediately, can be set to false to
@@ -24,7 +25,7 @@ function plot_field( els, pos, u, varargin )
 %
 % Example
 %
-% See also VIEW, SHADING, LIGHTING, USERWAIT, SETUSERWAITMODE
+% See also VIEW, SHADING, LIGHTING, COLORMAP, AXIS, USERWAIT, SETUSERWAITMODE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -51,6 +52,7 @@ options=varargin2options( varargin{:} );
 [shading_mode,options]=get_option( options, 'shading', 'interp' );
 [lighting_mode,options]=get_option( options, 'lighting', 'flat' );
 [map,options]=get_option( options, 'colormap', 'jet' );
+[axis_mode,options]=get_option( options, 'axis', 'square' );
 [draw_now,options]=get_option( options, 'draw_now', true );
 [wait,options]=get_option( options, 'wait', false );
 check_unsupported_options( options, mfilename );
@@ -74,7 +76,7 @@ if ismatlab()
         end
     end
     view(view_mode);
-    axis( 'equal' );
+    axis( axis_mode );
     xlim([min(pos(:,1)) max(pos(:,1))]);
     ylim([min(pos(:,2)) max(pos(:,2))]);
     shading( shading_mode );
