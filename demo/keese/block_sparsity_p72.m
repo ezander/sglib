@@ -12,6 +12,7 @@ disp( 'sparsity plot (lexicographic ordering, A. Keese)' );
 sp_plots( true, false);
 userwait;
 
+if false
 disp( 'sparsity plot (degree ordering)' );
 sp_plots( false, false);
 userwait;
@@ -19,7 +20,7 @@ userwait;
 disp( 'sparsity plot (reduced bandwidth ordering)' );
 sp_plots( false, true);
 userwait;
-
+end
 
 
 
