@@ -18,7 +18,10 @@ for j=1:m
     if mean(v_f(:,j))<0; v_f(:,j)=-v_f(:,j); end
 end
 
-set( gcf, 'Position', [0, 0, 900, 900], 'Renderer', 'zbuffer' );
+set( gcf, 'Renderer', 'zbuffer' );
+if ~strcmp( get( gcf, 'WindowStyle' ), 'docked' )
+    set( gcf, 'Position', [0, 0, 900, 900])
+end
 
 for i=1:4
     subplot(2,2,i);

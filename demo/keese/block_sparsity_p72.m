@@ -7,19 +7,20 @@ function demo_sparsity_plots( varargin )
 init_demos
 clf
 
+setuserwaitmode( 'continue' );
 
 disp( 'sparsity plot (lexicographic ordering, A. Keese)' );
 sp_plots( true, false);
 userwait;
 
 if false
-disp( 'sparsity plot (degree ordering)' );
-sp_plots( false, false);
-userwait;
+    disp( 'sparsity plot (degree ordering)' );
+    sp_plots( false, false);
+    userwait;
 
-disp( 'sparsity plot (reduced bandwidth ordering)' );
-sp_plots( false, true);
-userwait;
+    disp( 'sparsity plot (reduced bandwidth ordering)' );
+    sp_plots( false, true);
+    userwait;
 end
 
 
@@ -48,11 +49,12 @@ for n=1:4
     if do_sorting
         J=sortrows(J,m:-1:1);
     end
+    
     M2=size(J,1);
     S=zeros(M);
     for i=1:M
         for j=1:i
-            S(i,j)=sum( hermite_triple_fast( I(i,:), I(j,:), J(:,:) ) );
+            S(i,j)=any( hermite_triple_fast( I(i,:), I(j,:), J(:,:) ) );
             S(j,i)=S(i,j);
         end
     end
@@ -71,4 +73,3 @@ for n=1:4
     [i,j]=find(sparse(S));
     fprintf( 'bandwidth: %d\n', 1+max(abs(i-j)) );
 end
-
