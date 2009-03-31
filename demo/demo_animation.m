@@ -14,7 +14,7 @@ end
 %[p_f, m_gam_f, m_f, lc_f, h_f, cov_f, cov_gam, els, pos, f_alpha, I_f, mu_f, f_i_alpha, v_f]=
 kl_model_version=[];
 [m_gam_f, els, pos, mu_f, v_f, f_i_alpha, I_f]=...
-    load_kl_model( 'rf_kl_2d-1', kl_model_version, [], {'m_gam_r', 'els', 'pos', 'mu_r_j', 'r_i_j', 'rho_i_alpha', 'I_r'} );
+    load_kl_model( 'rf_kl_2d-1', kl_model_version, [], {'m_gam_r', 'els', 'pos', 'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
 
 
 xi1=randn(1,m_gam_f);

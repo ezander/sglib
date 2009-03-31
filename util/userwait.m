@@ -1,6 +1,8 @@
 function userwait()
 % USERWAIT Wait for the user to press a button or klick the mouse.
-%   Waits for the 
+%   Waits for the user to press a button or click the mouse (whatever was
+%   specified in SETUSERWAITMODE). If the current script is published (see
+%   PUBLISH) the function returns immediately.
 %
 % Example:
 %   setuserwaitmode( 'keyboard', 'Press any key to continues...' );
@@ -9,7 +11,7 @@ function userwait()
 %   % now continue computing ...
 %   
 %
-% See also SETUSERWAITMODE
+% See also SETUSERWAITMODE, PUBLISH
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -23,6 +25,11 @@ function userwait()
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if feature('hotlinks')==0
+    % We're probably in publish mode, so exit immediately. (The feature
+    % function is undocumented, so this is a bit of guesswork).
+    return
+end
 
 [mode,msg,func]=setuserwaitmode( 'getmode' );
 

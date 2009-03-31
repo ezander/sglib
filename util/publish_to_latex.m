@@ -32,6 +32,6 @@ setuserwaitmode(mode,msg,func);
 system( sprintf( 'cd tex && latex %s && dvips %s && ps2pdf %s.ps && cp %s.ps %s.pdf ..', file, file, file, file, file ) );
 
 % show the file
-if read_now
+if nargin>=2 && read_now
     system( sprintf( 'gv %s.pdf &', file ) );
 end

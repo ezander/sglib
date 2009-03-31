@@ -1,5 +1,4 @@
-function demo_covariance_functions
-% DEMO_COVARIANCE_FUNCTIONS This demo shows the different covariance functions available.
+%%% DEMO_COVARIANCE_FUNCTIONS This demo shows the different covariance functions available.
 
 init_demos
 
