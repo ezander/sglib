@@ -112,7 +112,7 @@ switch solve_method
     case 99 % statements saved for later use
 end
 
-itermsg(itermethod,tol,maxit,flag,iter,relres);
+solver_message(itermethod,tol,maxit,flag,iter,relres);
 
 if isvector(u_alpha)
     u_alpha=reshape( u_alpha, size(f_beta) );   

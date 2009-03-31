@@ -1,6 +1,6 @@
 function srcdir=sg_path( action )
 
-srcdir="@abs_srcdir@";
+srcdir='@abs_srcdir@';
 if nargin<1
   return;
 end

@@ -36,6 +36,7 @@ addpath( p );
 addpath( [p '/munit'] );
 addpath( [p '/util'] );
 addpath( [p '/simplefem'] );
+addpath( [p '/plot'] );
 
 if isoctave()
     addpath( [p '/octcompat'] );
