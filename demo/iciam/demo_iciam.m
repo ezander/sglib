@@ -1,6 +1,6 @@
-function demo_iciam
+%function demo_iciam
 
-init_demos
+%init_demos
 clf
 clear
 
@@ -31,8 +31,8 @@ f_beta=stochastic_pce_rhs( f_alpha, I_f, I_u );
 
 % solve
 fprintf('\n\n==================================================================================================\n');
+%solve_method=6;
 solve_method=7;
-solve_method=6;
 tol=1e-4; maxit=50;
 u_alpha0=K_ab_mat\f_beta(:);
 u_alpha0=u_alpha0+K_ab_mat\(f_beta(:)-K_ab_mat*u_alpha0);
@@ -129,9 +129,7 @@ show_in_out_samples( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, n );
 %return
 
 % Show covariances
-show_covariances( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
-show_corr_coeffs( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
-show_covariances2( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u );
+show_covariances2( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
 %waitforbuttonpress;
 
 %%
