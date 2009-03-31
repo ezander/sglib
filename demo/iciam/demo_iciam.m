@@ -125,11 +125,10 @@ fprintf( 'error:    %g\n', normest(u_alpha-u_alpha0)/normest(u_alpha0))
 
 % Show sample realizations and 
 show_in_out_samples( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, n );
-%waitforbuttonpress;
+userwait;
 %return
 
 % Show covariances
 show_covariances2( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
-%waitforbuttonpress;
+userwait;
 
-%%
