@@ -1,6 +1,7 @@
 %function demo_iciam
 
-%init_demos
+addpath '../'
+init_demos
 clf
 clear
 
@@ -21,8 +22,8 @@ operators();
 
 
 K_ab_mat=cell2mat(K_ab);
-%show_sparsity_pattern( K_ab_mat, n );
-%waitforbuttonpress;
+show_sparsity_pattern( K_ab_mat, n );
+userwait;
 
 f_beta=stochastic_pce_rhs( f_alpha, I_f, I_u );
 
@@ -33,6 +34,7 @@ f_beta=stochastic_pce_rhs( f_alpha, I_f, I_u );
 fprintf('\n\n==================================================================================================\n');
 %solve_method=6;
 solve_method=7;
+solve_method=1;
 tol=1e-4; maxit=50;
 u_alpha0=K_ab_mat\f_beta(:);
 u_alpha0=u_alpha0+K_ab_mat\(f_beta(:)-K_ab_mat*u_alpha0);
@@ -57,7 +59,8 @@ switch solve_method
         shape=size(f_beta);
         %Minv_func=@(x)(apply_flat(Minv,x,shape));
         Minv_func=@(x)(apply_flat(Minv_op,x,shape));
-        A_func=@(x)(apply_flat(K_mu_delta,x,shape));
+        %A_func=@(x)(apply_flat(K_mu_delta,x,shape));
+        A_func={@apply_flat,{K_mu_delta,shape},{1,3}};
         [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxit, Minv_func );
         itermethod='pcg(funcs,mu_delta)';
     case 5
@@ -124,7 +127,7 @@ fprintf( 'error:    %g\n', normest(u_alpha-u_alpha0)/normest(u_alpha0))
 %return
 
 % Show sample realizations and 
-show_in_out_samples( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, n );
+show_in_out_samples( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, 30 );
 userwait;
 %return
 
