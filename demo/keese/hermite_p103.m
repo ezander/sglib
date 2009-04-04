@@ -23,6 +23,8 @@ for i=1:4
 
     Z=hermite_val_multi( 1, pce_ind(i,:), [X(:), Y(:)]);
     Z=reshape( Z, size(X) );
+    colormap('jet');
+    shading('faceted');
     surf( X, Y, Z );
     title(sprintf('H_{(%d,%d)}(\\theta_1,\\theta_2)',pce_ind(i,1), pce_ind(i,2)));
 end

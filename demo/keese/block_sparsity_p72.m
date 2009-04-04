@@ -11,9 +11,10 @@ setuserwaitmode( 'continue' );
 
 disp( 'sparsity plot (lexicographic ordering, A. Keese)' );
 sp_plots( true, false);
-userwait;
 
 if false
+userwait;
+
     disp( 'sparsity plot (degree ordering)' );
     sp_plots( false, false);
     userwait;
