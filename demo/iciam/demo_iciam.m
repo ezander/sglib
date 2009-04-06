@@ -36,6 +36,15 @@ fprintf('\n\n===================================================================
 solve_method=7;
 solve_method=1;
 tol=1e-4; maxit=50;
+
+m=size(f_beta,2);
+[P_B,P_I]=boundary_projectors( [1,n], n );
+g_beta=0*f_beta;
+[K_ab_mat_x,f_beta_vec]=...
+    apply_essential_boundary_conditions( K_ab_mat, f_beta(:), g_beta(:), P_B, P_I, m, .7 );
+K_ab_mat=K_ab_mat_x;
+f_beta=reshape( f_beta_vec, size(f_beta));
+
 u_alpha0=K_ab_mat\f_beta(:);
 u_alpha0=u_alpha0+K_ab_mat\(f_beta(:)-K_ab_mat*u_alpha0);
 u_alpha0=reshape( u_alpha0, size(f_beta) );

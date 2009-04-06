@@ -9,7 +9,7 @@ stiffness_func={@stiffness_matrix, {els, x}, {1,2}};
 
 rf_filename='operator_kl_smd.mat';
 reinit=false;
-reinit=true;
+%reinit=true;
 if ~reinit && exist( rf_filename, 'file' ) 
     load( rf_filename )
 else
