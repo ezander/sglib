@@ -33,4 +33,6 @@ else
   disp( 'testsuite: using m-files only ' );
 end
 
-assert_run_testsuite( 'ssfem', pwd );
+subdirs={ 'plot', 'simplefem', 'util' };
+assert_run_testsuite( 'ssfem', pwd, 'subdirs', subdirs );
+

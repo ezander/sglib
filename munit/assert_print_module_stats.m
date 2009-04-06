@@ -24,16 +24,18 @@ function assert_print_module_stats
 
 
 [stats,options]=assert();
+output_func=options.output_func;
+
 msg=sprintf( 'Module "%s": %d of %d assertions failed.', ...
     options.module_name, stats.assertion_failed_module, ...
     stats.assertion_total_module );
-disp( msg );
+output_func( msg );
 if stats.assertion_failed_poss_module>0
     msg=sprintf( '%d (fuzzy) assertions possibly failed', ...
         stats.assertion_failed_poss_module );
     if stats.assertion_failed_module>0
-        disp( [msg ', too.'] );
+        output_func( [msg ', too.'] );
     else
-        disp( [msg '.'] );
+        output_func( [msg '.'] );
     end
 end

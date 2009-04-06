@@ -1,3 +1,4 @@
+if false
 n=5;
 H1=hermite(n,true);
 H1=H1(:,end:-1:1)
@@ -18,3 +19,4 @@ H2*hh*H2'
 H3*hh*H3'
 norm(H1-H2)
 norm(H1-H3)
+end

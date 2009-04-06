@@ -1,13 +1,19 @@
-function assert_run_testsuite( module_name, curr_dir )
+function assert_run_testsuite( module_name, curr_dir, varargin )
 % ASSERT_RUN_TESTSUITE Runs all tests in one directory.
 %   ASSERT_RUN_TESTSUITE( MODULE_NAME, CURR_DIR ) runs all tests (contained
 %   in M-files matching "test_*.m") in the directory specified by CURR_DIR
 %   under the module name MODULE_NAME.
+%   Options:
+%       'subdir': 'auto' runs assert_run_testsuite recursively in all
+%                 subdirectories. 
+%                 passing a cell array of relative pathnames runs
+%                 assert_run_testsuite only in the given subdirs
+%                 default is empty cell array ({})
 %
 % Example
 %   assert_reset_options();
 %   assert_set_debug( true );
-%   assert_run_testsuite( 'mymod', pwd );
+%   assert_run_testsuite( 'mymod', pwd, 'subdirs', {'submod1', 'submod2'} );
 %
 % See also ASSERT, ASSERT_SET_MODULE, ASSERT_SET_DEBUG,
 %   ASSERT_RESET_OPTIONS
@@ -24,35 +30,60 @@ function assert_run_testsuite( module_name, curr_dir )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[subdirs,options]=get_option( options, 'subdirs', {} );
+check_unsupported_options( options, mfilename );
 
-notice=sprintf( '  Testing module: %s  ', module_name );
-disp( repmat('-', 1, length(notice) ) );
-disp( notice );
-disp( repmat('-', 1, length(notice) ) );
 
-assert_set_module( module_name );
+[stats,options]=assert();
+output_func=options.output_func;
 
-pattern=sprintf( '%s/test_*.m', curr_dir);
-files=dir( pattern );
-
-for i=1:length(files)
-    test_cmd=files(i).name(1:end-2);
-    slash_pos=find(test_cmd=='/');
-    if ~isempty(slash_pos)
-      test_cmd=test_cmd( slash_pos(end)+1:end );
-    end
-
-    if strcmp( test_cmd, 'test_suite' )
-        warning( 'assert_run_testsuite:test_suite', 'not running test "test_suite", better rename in "testsuite"' );
-    else
-        clr=safe_eval( test_cmd );
-        if clr
-            warning( ['Test function has cleared caller''s workspace (' test_cmd ').'] );
+% get subdirs
+if ischar( subdirs ) 
+    if strcmp('subdirs', 'auto' )
+        subdirs={};
+        files=dir(pwd);
+        for i=1:length(files)
+            file=files(i);
+            if file.isdir && file.name(1)~='.';
+                subdirs={subdirs{:}, file.name };
+            end
         end
     end
 end
 
+% print banner
+notice=sprintf( '  Testing module: %s  ', module_name );
+output_func( repmat('-', 1, length(notice) ) );
+output_func( notice );
+output_func( repmat('-', 1, length(notice) ) );
+
+assert_set_module( module_name );
+for subdir={'.', subdirs{:} }
+    pattern=sprintf( '%s/%s/test_*.m', curr_dir, subdir{1} );
+    files=dir( pattern );
+
+    for i=1:length(files)
+        test_cmd=files(i).name(1:end-2);
+        output_func( sprintf('Running: %s/%s', subdir{1}, test_cmd ) );
+        
+        slash_pos=find(test_cmd=='/');
+        if ~isempty(slash_pos)
+          test_cmd=test_cmd( slash_pos(end)+1:end );
+        end
+
+        if strcmp( test_cmd, 'test_suite' )
+            warning( 'assert_run_testsuite:test_suite', 'not running test "test_suite", better rename in "testsuite"' );
+        else
+            clr=safe_eval( test_cmd );
+            if clr
+                warning( 'assert:clear', ['Test function has cleared caller''s workspace (' test_cmd ').'] );
+            end
+        end
+    end
+end
 assert_print_module_stats();
+
 
 function clr=safe_eval( test_cmd )
 % SAFE_EVAL Evaluate command safely catching errors and detecting attempts to clear the callers workspace.
@@ -65,10 +96,11 @@ function clr=safe_eval( test_cmd )
 %TODO: find a good solution for this (i.e. call safely without nessesarily
 %aborting the testsuite and give good error output)
 
+assert_run_testsuite_test_var=1; %#ok
 eval( test_cmd );
-try
-    %eval( test_cmd );
-catch
-    warning( ['Problem evaluating test command (' lasterr ').'] );
-end
-clr=~exist('test_cmd');
+% try
+%     eval( test_cmd );
+% catch
+%     warning( 'assert:eval', ['Problem evaluating test command (' lasterr ').'] );
+% end
+clr=~exist('assert_run_testsuite_test_var', 'var');
