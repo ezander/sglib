@@ -23,12 +23,13 @@ operators();
 
 K_ab_mat=cell2mat(K_ab);
 
-
-g_alpha=0*f_alpha;
-[P_B,P_I]=boundary_projectors( [1,n], n );
-[K_ab_mat_s,f_alpha_s]=apply_boundary_conditions( K_ab_mat, f_alpha(:), g_alpha(:), P_B, P_I, size(I_u,1), 'spatial_pos', 2 );
-K_ab_mat=K_ab_mat_s;
-f_alpha=reshape(f_alpha_s, f_alpha )
+if 0
+    g_alpha=0*f_alpha;
+    [P_B,P_I]=boundary_projectors( [1,n], n );
+    [K_ab_mat_s,f_alpha_s]=apply_boundary_conditions( K_ab_mat, f_alpha(:), g_alpha(:), P_B, P_I, size(I_u,1), 'spatial_pos', 2 );
+    K_ab_mat=K_ab_mat_s;
+    f_alpha=reshape(f_alpha_s, f_alpha )
+end
 
 show_sparsity_pattern( K_ab_mat, n );
 userwait;
@@ -41,15 +42,15 @@ f_beta=stochastic_pce_rhs( f_alpha, I_f, I_u );
 % solve
 fprintf('\n\n==================================================================================================\n');
 %solve_method=6;
-solve_method=7;
 solve_method=1;
+solve_method=7;
 tol=1e-4; maxit=50;
 
 m=size(f_beta,2);
 [P_B,P_I]=boundary_projectors( [1,n], n );
 g_beta=0*f_beta;
 [K_ab_mat_x,f_beta_vec]=...
-    apply_essential_boundary_conditions( K_ab_mat, f_beta(:), g_beta(:), P_B, P_I, m, .7 );
+    apply_boundary_conditions( K_ab_mat, f_beta(:), g_beta(:), P_B, P_I, m, 'scaling', .7 );
 K_ab_mat=K_ab_mat_x;
 f_beta=reshape( f_beta_vec, size(f_beta));
 

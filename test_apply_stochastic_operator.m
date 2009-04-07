@@ -23,6 +23,8 @@ assert_set_function( 'apply_stochastic_operator' );
 for i=1:2
     for j=1:2
         A{i,j}=rand(3,3);
+        B{i,j}=zeros(2);
+        B{i,j}(i,j)=1;
     end
     x{i,1}=rand(3,1);
     y{i,1}=zeros(3,1);
@@ -38,3 +40,7 @@ assert_equals( cell2mat(y), cell2mat(A)*cell2mat(x), 'prelim' );
 
 
 apply_stochastic_operator( A, cell2mat(x') )
+KC={A{1}, B{1}, A(2:end), B(2:end)}';
+apply_stochastic_operator( KC, cell2mat(x') )
+
+
