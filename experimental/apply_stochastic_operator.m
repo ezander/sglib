@@ -3,7 +3,7 @@ function f=apply_stochastic_operator( K, u )
 if isnumeric(K)
     % assume K is just a huge matrix (i.e. the fully assembled Kronecker
     % product matrix); then we just apply K to u by matrix vector mult
-    if size(u,2)==1
+    if ndims(u)==1
         % u is simply a column vector
         f=K*u;
     else
