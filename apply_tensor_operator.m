@@ -120,7 +120,18 @@ function B=apply_block_mat( A, X )
 B=A*X;error('not yet implemented');%#ok
 
 function B=apply_tensor_tensor( A, X )
-B=A*X;error('not yet implemented');%#ok
+check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
+check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
+M1=size(A{1,1},1);
+N1=size(A{1,1},2);
+M2=size(A{1,2},1);
+N2=size(A{1,2},2);
+B={zeros(M1,0),zeros(M2,0)};
+R=size(A,1);
+for i=1:R
+    B={[B{1}, A{i,1}*X{1}], [B{2}, A{i,2}*X{2}] };
+end
+
 
 function B=apply_tensor_mat( A, X )
 check_condition( {A{1,1},X}, 'match', false, {'A{1,1}','X'}, mfilename );
