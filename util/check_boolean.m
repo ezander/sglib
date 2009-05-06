@@ -12,7 +12,7 @@ function ok=check_boolean( cond, message, mfilename )
 %
 %     check_boolean( strcmp(str,str(end:-1:1)), 'str must be a palindrome', mfilename );
 %
-% See also CHECK_RANGE, CHECK_UNSUPPORTED_OPTIONS
+% See also CHECK_RANGE, CHECK_CONDITION, CHECK_UNSUPPORTED_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

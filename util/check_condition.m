@@ -1,16 +1,51 @@
-function ok=check_condition( x, varcond, emptyok, varname, mfilename )
-% CHECK_CONDITION Check whether specified condition holds for input parameter.
-%   OK=CHECK_CONDITION( COND, MESSAGE, MFILENAME ) checks whether the given condition 
-%   is true. If not an error message is printed and the program is aborted.
+function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
+% CHECK_CONDITION Check whether specified condition holds for input parameter(s).
+%   OK=CHECK_CONDITION( X, VARCOND, EMPTYOK, VARNAME, MFILENAME ) checks
+%   whether the given condition is true. If not an error message is printed
+%   and the program is aborted. Depending on VARCOND (which specifies which
+%   condition to check), X can contain 1 or 2 values of expressions or
+%   variables (in the second case a cell array must be passed), and VARNAME
+%   must contain the names equivalently (i.e. a cell array if two names are
+%   passed). Possibilities for VARCOND are:
+%     'vector', 'isvector': is X a vector?
+%     'scalar', 'isscalar': is X a scalar?
+%     'square', 'issquare': is X a square matrix?
+%     'function', 'isfunction': is X a function?
+%     'match': can X{1} be (matrix-) multiplied with X{2}?
+%     'class', 'isa': is X{1} of type X{2}?
+%   If EMPTYOK is true, the variable may also be empty to pass the test.
 %
 %   Note: pass mfilename literally for the last argument (i.e. pass the
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
 % Example
-%   function my_function( str )
+%     x=[1;2;3];
+%     A=[1, 2; 3, 4]; B=eye(2);
+%     options.warnonly=true;
+%     %pass
+%     check_condition( x, 'vector', false, 'x', mfilename, options );
+%     check_condition( [], 'vector', true, '?', mfilename, options );
+%     check_condition( 1, 'scalar', true, '1', mfilename, options );
+%     check_condition( A, 'square', true, 'A', mfilename, options );
+%     check_condition( @check_condition, 'function', false, '@cf', mfilename, options );
+%     check_condition( {A,B}, 'match', false, {'A','B'}, mfilename, options );
+%     check_condition( {A,[]}, 'match', true, {'A','?'}, mfilename, options );
+%     check_condition( {x,'double'}, 'match', false, x, mfilename, options );
 %
-%     check_condition( strcmp(str,str(end:-1:1)), 'str must be a palindrome', mfilename );
+%     %fail
+%     check_condition( A, 'vector', true, 'A', mfilename, options );
+%     check_condition( [], 'vector', false, '?', mfilename, options );
+%     check_condition( A, 'scalar', true, 'A', mfilename, options );
+%     check_condition( x, 'square', true, 'x', mfilename, options );
+%     check_condition( 1, 'function', false, '1', mfilename, options );
+%     check_condition( {A,x}, 'match', false, {'A','x'}, mfilename, options );
+%     check_condition( {A,[]}, 'match', false, {'A','?'}, mfilename, options );
+%     check_condition( {x,'cell'}, 'isa', false, 'x', mfilename, options );
+%
+
+
+
 %
 % See also CHECK_RANGE, CHECK_UNSUPPORTED_OPTIONS
 
@@ -25,6 +60,11 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename )
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
+
+options=varargin2options( varargin{:} );
+[warnonly,options]=get_option( options, 'warnonly', false );
+check_unsupported_options( options, mfilename );
+
 
 if ~exist('mfilename','var') || isempty(mfilename)
     mfilename='global';
@@ -89,5 +129,18 @@ end
 
 
 if ~ok
-    error([mfilename ':condition'], sprintf( '%s: %s', mfilename, message ) );
+    if ~warnonly
+        %error([mfilename ':condition'], sprintf( '%s: %s', mfilename, message ) );
+        
+        %stack=struct2cell( dbstack('-completenames') );
+        %caller=stack(2);
+        
+        fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
+        cmd=repmat( 'dbup;', 1, 1 );
+        fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
+        fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
+        keyboard;
+    else
+        warning([mfilename ':condition'], sprintf( '%s: %s', mfilename, message ) );
+    end
 end
