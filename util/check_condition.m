@@ -110,7 +110,11 @@ switch varcond
     case 'match'
         empty=isempty(x{1})||isempty(x{2});
         ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty|| size(x{1},2)==size(x{2},1));
+        if ~empty
+            sz1=apply_linear_operator( x{1} );
+            sz2=apply_linear_operator( x{2} );
+            ok=ok&&(sz1(2)==sz2(1));
+        end
         if ~ok
             s1=strtrim(evalc('disp({x{1}})'));
             s2=strtrim(evalc('disp({x{2}})'));

@@ -55,21 +55,17 @@ options=varargin2options( varargin{:} );
 [vectype,options]=get_option( options, 'vectype', 'auto' );
 check_unsupported_options( options, mfilename );
 
+%TODO: automatic detection is not quite satisfactory. 
 if strcmp( optype, 'auto' )
     if isnumeric(A)
         optype='kron';
-        %NM=size(A,1);
     elseif iscell(A) && size(A,2)==2
         K=size(A,1);
         if K==2
             warning( 'apply_tensor_operator:auto', 'size of K is 2x2, assuming tensor operator' );
         end
-        %N=apply_linear_operator( A{1,1} ); N=N(1);
-        %M=apply_linear_operator( A{1,2} ); M=M(1);
         optype='tensor';
     elseif iscell(A) && size(A,1)==size(L,2)
-        %N=apply_linear_operator( A{1,1} ); N=N(1);
-        %M=size( A, 1 );
         optype='block';
     else
         error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type' );
@@ -110,22 +106,22 @@ end
 %%
 function B=apply_kron_vect( A, X )
 check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
-B=A*X;
+B=apply_linear_operator( A, X );
 
 
-function B=apply_block_vect( A, X )
-B=A*X;error('not yet implemented');%#ok
+function B=apply_block_vect( A, X ) %#ok
+error('not yet implemented');%#ok
 
-function B=apply_block_mat( A, X )
-B=A*X;error('not yet implemented');%#ok
+function B=apply_block_mat( A, X ) %#ok
+error('not yet implemented');%#ok
 
 function B=apply_tensor_tensor( A, X )
 check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
 check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
 M1=size(A{1,1},1);
-N1=size(A{1,1},2);
+N1=size(A{1,1},2); %#ok
 M2=size(A{1,2},1);
-N2=size(A{1,2},2);
+N2=size(A{1,2},2); %#ok
 B={zeros(M1,0),zeros(M2,0)};
 R=size(A,1);
 for i=1:R
