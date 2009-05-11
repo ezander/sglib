@@ -27,7 +27,9 @@ f=(1:n)';
 g=((n:-1:1).*(n:-1:1))';
 
 
-% test whether the stuff works on a simple fem problem
+% 1. test whether the stuff works on a simple fem problem
+% here we combine the operator for the inner and boundary nodes into one
+% operator
 [P_B,P_I]=boundary_projectors( bnd, n );
 I_B=P_B'*P_B;
 I_I=P_I'*P_I;
@@ -39,3 +41,21 @@ u=Ks\fs;
 
 assert_equals( P_B*u, P_B*g, 'u_g_B' );
 assert_equals( P_I*K*u, P_I*f, 'Ku_f_I' );
+
+
+
+% 2. test whether the stuff works on a simple fem problem
+% here we project into the inner nodes, solve for them and assemble back
+% the complete solution
+[P_B,P_I]=boundary_projectors( bnd, n );
+
+Ki=P_I*K*P_I';
+gb=P_B*g;
+fi=P_I*(f-K*P_B'*gb);
+ui=Ki\fi;
+u=P_I'*ui+P_B'*gb;
+
+assert_equals( P_B*u, P_B*g, 'u_gb' );
+assert_equals( P_I*K*u, P_I*f, 'Ku_fi' );
+
+
