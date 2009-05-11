@@ -1,56 +1,27 @@
-function [data,version,recomp]=load_or_recompute( ndata, compute_func, params, filename, version )
-% FUNCALL Call a function with given parameters (extending feval).
-%   VARARGOUT=FUNCALL( FUNC, VARARGIN ) calls the functions FUNC with the
-%   arguments given in VARARGIN and returning all output arguments in
-%   VARARGOUT.
-%
-%   If FUNC is an anonymous function, inline function or function handle
-%   the function is evaluated just normally (see FEVAL). If FUNC is a cell
-%   array the handling is special: the first element of FUNC is considered
-%   the function handle (or equivalent); the second element is a nested
-%   cell array containing additional parameters; if a third element is
-%   given, it is again a nested cell array specifying the positions of the
-%   additional parameters, otherwise they are assumed to come at the end of
-%   the parameter list.
+function varargout=cached_funcall( func, params, ndata, filename, version )
+% CACHED_FUNCALL Store and retrieve the results of a function call from a file.
+%   [DATA,VERSION,RECOMP]=CACHED_FUNCALL( FUNC, PARAMS, NDATA, FILENAME,
+%   VERSION ) first checks whether FILENAME exists. If yes, the file is
+%   loaded and it is checked, whether the PARAMS used to create the DATA in
+%   the file are the same as those which were passed in this call (compared
+%   with ISEQUALWITHEQUALNANS). Then the VERSION field is compared, where
+%   the DATA in the file is considered valid, if the match is exact. The
+%   version should be increased, if there was a change in FUNC and the
+%   computed DATA may be different even for the same PARAMS. If DATA is
+%   considered valid, it is returned directly from the file, if not, it is
+%   (re)computed by calling FUNC with PARAMS. NDATA is the number of return
+%   values, which must be specified, since there is no way to get this
+%   information in matlab, and furthermore, one function can have a
+%   different number of output arguments, and even a different behaviour
+%   depending on that number. 
 % 
-% Note 1: the reason for this extension is that there is no efficient and
-%   portable way to specify partially parameterized functions in matlab and
-%   octave.
-%
-% Note 2: It's not possible to call FUNCALL without output argument and
-%   terminating semicolon to have its output automatically displayed like
-%   normal in matlab/octave. The reason is that in this the number of
-%   output arguments is set to 0 by matlab/octave, causing FUNCALL to call
-%   the function with the number of output args set to zero. Setting this
-%   artificially to 1 would cause problems with functions that have indeed
-%   no output arguments. Distinguishing these cases on the other hand would
-%   require context information that is not available. Thus, the only
-%   remedy is to write 'disp(funcall(...))', if the output should be
-%   displayed (this sets nargout to 1, as it should be).
-%   Update: there is no error message anymore, but still there is no output
-%   in this case due to those difficulties.
-%
-% Example:
-%   % calling the power function
-%   funcall( {@power,{3}},2 )==8
-%   funcall( {@(y,x)(power(x,y)),{3}},2 )==9
-%   funcall( {@power,{3},{2}},2 )==8
-%   funcall( {@power,{3},{1}},2 )==9
-%
-%   %call ode45 with (@times,[1,2],1) 
-%   % a) positions 1 and 3 for @times and 1 are specified
-%   funcall( {@ode45,{@times,1},{1,3}}, [1,2] )
-%   % b) position for 1 is unspecified, so moves to the end of the
-%   %    parameter list
-%   funcall( {@ode45,{1}}, @times, [2,3] )
-%
-%   % calling an arbitrary function
-%   disp( funcall( @func, a, b ) ) % calls func(a,b)
-%   disp( funcall( {@func, {c,d}}, a, b ) ) % calls func(a,b,c,d)
-%   disp( funcall( {@func, {c,d}, {1,4}}, a, b ) ) % calls func(c,a,b,d)
-%
-% 
-% See also FEVAL, ISFUNCTION
+% See also FUNCALL, NARGOUT, ISEQUALWITHEQUALNANS
+
+% TODO: An option that indicates whether file_version>version is ok
+% TODO: An option to specify a function that outputs when recomputation is
+% perfomed
+% TODO: An option to specify output of timings for the recomputation
+
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -72,30 +43,34 @@ end
 
 
 % load saved structure from file if possible
-if exist( filename, 'file' ) 
+%if exist( filename, 'file' ) 
+%
+try
     s=load( filename );
-    valid=true;
-    
-    valid=valid && isfield(s,'version');
-    valid=valid && isequal(s.version,version);
-    valid=valid && isfield(s,'params');
-    valid=valid && isequalwithequalnans(s.params,params);
-    valid=valid && isfield(s,'data');
-    if valid
-        recomp=false;
-        data=s.data;
-        version=s.version;
-        return;
-    end
+catch
+    s=struct();
+end
+
+valid=true;
+valid=valid && isfield(s,'version');
+valid=valid && isequal(s.version,version);
+valid=valid && isfield(s,'params');
+valid=valid && isequalwithequalnans(s.params,params);
+valid=valid && isfield(s,'data');
+if valid
+    varargout=s.data;
+    return;
 end
 
 % no file or saved file didn't match (wrong version, diff parameters, ...),
 % then recompute
-recomp=true;
 data=cell(ndata,1);
 [data{:}]=funcall( func, params{:} );
+varargout=data;
 if ismatlab()
+    % in matlab version 7 use this (doesn't work with 6)
 	save( filename, '-V6', 'data', 'params', 'version' );
 else
+    % in octave use this
 	save( '-mat', filename, 'data', 'params', 'version' );
 end
