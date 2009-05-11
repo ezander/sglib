@@ -37,6 +37,13 @@ assert_equals( apply_linear_operator( func ), [3,2], 'func_size' );
 assert_equals( apply_linear_operator( func, [] ), [3,2], 'func_size' );
 assert_equals( apply_linear_operator( func, x ), y, 'func' );
 
+
+func={ @apply_linear_operator, {M}, {1} };
+assert_equals( apply_linear_operator( func ), [3,2], 'rec_size' );
+assert_equals( apply_linear_operator( func, [] ), [3,2], 'rec_size' );
+assert_equals( apply_linear_operator( func, x ), y, 'rec' );
+
+
 function y=doit( M, x )
 if isempty(x)
     y=size(M);

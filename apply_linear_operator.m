@@ -1,4 +1,4 @@
-function b=apply_linear_operator( A, x )
+function [b,n]=apply_linear_operator( A, x )
 % APPLY_LINEAR_OPERATOR Apply a linear operator or matrix to a vector.
 %   B=APPLY_LINEAR_OPERATOR( A, X ) applies the linear operator A to the
 %   vector X. If A is a matrix, then just A*X is returned, otherwise if A
@@ -9,7 +9,9 @@ function b=apply_linear_operator( A, x )
 %   Thus, any linear operator function has to be implemented such that if
 %   the second argument is empty, the size of the operator is returned.
 %   (This is for calling code to make memory allocations and the like
-%   without knowing details about the linear operator otherwise).
+%   without knowing details about the linear operator otherwise). Depending
+%   on the number of output arguments, either a size array is returned, or
+%   the individual dimensions are returned as different output arguments.
 %
 % Example
 %     M=[1, 2; 3, 4; 5, 10];
@@ -56,3 +58,8 @@ elseif isfunction(A)
 else
     error( 'apply_linear_operator:type', 'linear operator is neither a matrix nor a function' );
 end
+
+if sizeonly && nargout==2
+    n=b(2); b=b(1);
+end
+

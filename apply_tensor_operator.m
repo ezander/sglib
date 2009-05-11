@@ -12,11 +12,10 @@ function B=apply_tensor_operator( A, X, varargin )
 %      vect:     X is an N1N2 vector
 %      mat:      X is an N1*N2 matrix
 %      tensor:   X is a Kx2 cell array of vectors of size N and M
-%   Usually it is not necessary to specify the format explicitly via the
-%   options 'optype' and 'vectype'. Only, if for the operator K=2 or M=2 or
-%   for the vector M=1 can lead to ambibuities. A warning is then printed
-%   on the console.
-%   The following combinations are possible:
+%   Note: the block format has to be specified explicitly, since it cannot
+%   be unambiguously differentiated from the tensor format.
+% 
+%   The following combinations of formats are possible:
 %      kron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
 %
 %   NOT POSSIBLE is 'kron/mat' because it allows different interpretations
@@ -55,35 +54,26 @@ options=varargin2options( varargin{:} );
 [vectype,options]=get_option( options, 'vectype', 'auto' );
 check_unsupported_options( options, mfilename );
 
-%TODO: automatic detection is not quite satisfactory. 
 if strcmp( optype, 'auto' )
     if isnumeric(A)
         optype='kron';
-    elseif iscell(A) && size(A,2)==2
-        K=size(A,1);
-        if K==2
-            warning( 'apply_tensor_operator:auto', 'size of K is 2x2, assuming tensor operator' );
-        end
+    elseif iscell(A)
         optype='tensor';
-    elseif iscell(A) && size(A,1)==size(L,2)
-        optype='block';
     else
-        error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type' );
+        error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
     end
 end
 
 
 if strcmp( vectype, 'auto' )
-    if isnumeric(X)
-        if isvector(X)
-            vectype='vect';
-        else
-            vectype='mat';
-        end
+    if isnumeric(X) && isvector(X)
+        vectype='vect';
+    elseif isnumeric(X) && ~isvector(X)
+        vectype='mat';
     elseif iscell(X) 
         vectype='tensor';
     else
-        error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type' );
+        error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
     end
 end
 
@@ -100,36 +90,46 @@ switch [optype, '/', vectype]
     case 'tensor/mat'
         B=apply_tensor_mat( A, X );
     otherwise
-        error( 'unsupported tensor operator/vector combination' );
+        error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
         
-%%
+
 function B=apply_kron_vect( A, X )
 check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
 B=apply_linear_operator( A, X );
 
 
-function B=apply_block_vect( A, X ) %#ok
-error('not yet implemented');%#ok
+function B=apply_block_vect( A, X )
+% TODO: doesn't yet work with general linear operators
+[M1,N1]=size(A);
+[M2,N2]=size(A{1,1});
+B=cell2mat(A)*X;
 
-function B=apply_block_mat( A, X ) %#ok
-error('not yet implemented');%#ok
+function B=apply_block_mat( A, X )
+% TODO: doesn't yet work with general linear operators
+[M1,N1]=size(A);
+[M2,N2]=size(A{1,1});
+B=reshape(cell2mat(A)*X(:),[M2,M1]);
 
 function B=apply_tensor_tensor( A, X )
+% TODO: doesn't yet work with higher order tensors
+% TODO: no reduction yet
 check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
 check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
-M1=size(A{1,1},1);
-N1=size(A{1,1},2); %#ok
-M2=size(A{1,2},1);
-N2=size(A{1,2},2); %#ok
+[M1,N1]=apply_linear_operator(A{1,1});
+[M2,N2]=apply_linear_operator(A{1,2});
 B={zeros(M1,0),zeros(M2,0)};
 R=size(A,1);
 for i=1:R
-    B={[B{1}, A{i,1}*X{1}], [B{2}, A{i,2}*X{2}] };
+    B1n=apply_linear_operator(A{i,1},X{1});
+    B2n=apply_linear_operator(A{i,2},X{2});
+    B={[B{1}, B1n], [B{2}, B2n] };
 end
 
 
 function B=apply_tensor_mat( A, X )
+% TODO: doesn't yet work with higher order tensors
+% TODO: no reduction yet
 check_condition( {A{1,1},X}, 'match', false, {'A{1,1}','X'}, mfilename );
 check_condition( {A{1,2},X'}, 'match', false, {'A{1,2}','X'''}, mfilename );
 
