@@ -73,6 +73,9 @@ assert_equals( apply_tensor_operator( A, X ), B, 'tensor/tensor' );
 assert_equals( apply_tensor_operator( Alin, X ), B, 'lin_op_tensor/tensor' );
 
 
+assert_equals( apply_tensor_operator( Alin, X, 'reduce', @tensor ), B, 'lin_op_tensor/tensor' );
+
+
 return
 
 
