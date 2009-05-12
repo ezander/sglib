@@ -5,8 +5,6 @@ options=varargin2options( varargin{:} );
 [spatial_pos,options]=get_option( options, 'spatial_pos', 1 );
 check_unsupported_options( options, mfilename );
 
-
-n=size(K,1);
 I=speye(m);
 
 

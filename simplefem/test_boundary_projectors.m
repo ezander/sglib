@@ -1,4 +1,22 @@
 function test_boundary_projectors
+% TEST_BOUNDARY_PROJECTORS Test the boundary_projectors function.
+%
+% Example 
+%    test_boundary_projectors
+%
+% See also BOUNDARY_PROJECTORS, TESTSUITE
+
+%   Elmar Zander
+%   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
+%   $Id$ 
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
 assert_set_function( 'boundary_projectors' );
 [P_B,P_I]=boundary_projectors( [1,3,5], 8 );

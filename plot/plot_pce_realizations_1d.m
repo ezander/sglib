@@ -2,6 +2,7 @@ function plot_pce_realizations_1d( x, u_alpha, I_u, varargin )
 
 options=varargin2options( varargin{:} );
 [n,options]=get_option( options, 'realizations', 20 );
+[xi,options]=get_option( options, 'xi', [] );
 [stat,options]=get_option( options, 'show_stat', 3 );
 [map,options]=get_option( options, 'colormap', 'hot' );
 check_unsupported_options( options, mfilename );
@@ -18,9 +19,18 @@ if stat>=0
         hold on;
     end
 end
-for i=1:n
-    plot(x,pce_field_realization(x,u_alpha,I_u),'-', 'Color', [0.5,0.5,0.5]);
-end
-hold off
 
-%%
+if isempty(xi)
+    for i=1:n
+        pce_field_realization(x,u_alpha,I_u,[],'plot_options',{'-', 'Color', [0.5,0.5,0.5]} );
+        hold on;
+    end
+else
+    for i=1:size(xi,1)
+        pce_field_realization(x,u_alpha,I_u,xi(i,:),'plot_options',{'-', 'Color', [0.5,0.5,0.5]} );
+        hold on;
+    end
+end
+hold off;
+
+

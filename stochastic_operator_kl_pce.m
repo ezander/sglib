@@ -1,4 +1,10 @@
-function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, variant )
+function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, variant, varargin )
+
+options=varargin2options( varargin{:} );
+[silent,options]=get_option( options, 'silent', false );
+[show_timings,options]=get_option( options, 'show_timings', true );
+check_unsupported_options( options, mfilename );
+
 
 if nargin<8 || isempty( variant )
     variant=1;

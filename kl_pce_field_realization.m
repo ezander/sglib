@@ -1,4 +1,4 @@
-function [u_x,xi]=kl_pce_field_realization( x, mu_u, v_u, u_i_alpha, I_alpha, xi )
+function [u_x,xi]=kl_pce_field_realization( x, mu_u, v_u, u_i_alpha, I_alpha, xi, varargin )
 % KL_PCE_FIELD_REALIZATION Compute a realization of a random field given by a
 % KL and PCE.
 %   [U_X,XI]=KL_PCE_FIELD_REALIZATION( X, MU_U, V_U, U_I_ALPHA, I_U, XI )
@@ -25,10 +25,13 @@ function [u_x,xi]=kl_pce_field_realization( x, mu_u, v_u, u_i_alpha, I_alpha, xi
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[plot_options,options]=get_option( options, 'plot_options', {} );
+check_unsupported_options( options, mfilename );
 
 m=size(I_alpha,2);
 
-if nargin<6
+if nargin<6 || isempty(xi)
     xi=randn(1,m);
 end
 
@@ -39,5 +42,5 @@ xi_i=hermite_val_multi( u_i_alpha, I_alpha, xi );
 u_x=repmat(mu_u,1,size(xi_i,1)) + v_u*xi_i';
 
 if nargout<1
-    plot( x, u_x );
+    plot( x, u_x, plot_options{:} );
 end

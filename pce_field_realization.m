@@ -1,4 +1,4 @@
-function [u_x,xi]=pce_field_realization( x, u_alpha, I_alpha, xi )
+function [u_x,xi]=pce_field_realization( x, u_alpha, I_alpha, xi, varargin )
 % PCE_FIELD_REALIZATION Compute a realization of a random field given by a
 % PCE alone.
 %   [U_X,XI]=PCE_FIELD_REALIZATION( X, U_ALPHA, I_ALPHA, XI ) computes a realization
@@ -23,15 +23,18 @@ function [u_x,xi]=pce_field_realization( x, u_alpha, I_alpha, xi )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[plot_options,options]=get_option( options, 'plot_options', {} );
+check_unsupported_options( options, mfilename );
 
 m=size(I_alpha,2);
 
-if nargin<4
+if nargin<4 || isempty(xi)
     xi=randn(1,m);
 end
 
 u_x=hermite_val_multi( u_alpha, I_alpha, xi )';
 
 if nargout<1
-    plot( x, u_x );
+    plot( x, u_x, plot_options{:} );
 end

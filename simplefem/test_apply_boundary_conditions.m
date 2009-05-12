@@ -1,4 +1,22 @@
-function test_boundary_projectors
+function test_apply_boundary_conditions
+% TEST_APPLY_BOUNDARY_CONDITIONS Test the apply_boundary_conditionsfunction.
+%
+% Example 
+%    test_apply_boundary_conditions
+%
+% See also APPLY_BOUNDARY_CONDITIONS, TESTSUITE
+
+%   Elmar Zander
+%   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
+%   $Id: test_stiffness.m 37 2009-04-06 10:02:24Z ezander $ 
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
 assert_set_function( 'apply_boundary_conditions' );
 
