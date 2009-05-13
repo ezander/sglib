@@ -3,9 +3,13 @@ function K=load_kl_operator( name, version, mu_r_j, r_i_j, rho_i_alpha, I_r, I_u
 options=varargin2options( varargin{:} );
 [silent,options]=get_option( options, 'silent', false );
 [show_timings,options]=get_option( options, 'show_timings', true );
+[use_waitbar,options]=get_option( options, 'use_waitbar', true );
 check_unsupported_options( options, mfilename );
 
-compute_operator_kl( {silent, show_timings} );
+opt.silent=silent;
+opt.show_timings=show_timings;
+opt.use_waitbar=use_waitbar;
+compute_operator_kl( opt );
 
 op_filename=[name '.mat'];
 K=cached_funcall(...
@@ -17,13 +21,12 @@ K=cached_funcall(...
 
 
 function K=compute_operator_kl( mu_r_j, r_i_j, rho_i_alpha, I_r, I_u, stiffness_func, type )
-persistent silent show_timings
-if nargin==1 && iscell(mu_r_j)
-    silent=mu_r_j{1};
-    show_timings=mu_r_j{2};
+persistent opt
+if nargin==1 && isstruct(mu_r_j)
+    opt=mu_r_j;
 else
-    if ~silent; fprintf( 'recomputing kl-operator: %s', type ); end
+    if ~silent; fprintf( 'recomputing kl-operator: %s\n', type ); end
     if show_timings; tic; end
-    K=stochastic_operator_kl_pce( mu_r_j, r_i_j, rho_i_alpha, I_r, I_u, stiffness_func, type );
+    K=stochastic_operator_kl_pce( mu_r_j, r_i_j, rho_i_alpha, I_r, I_u, stiffness_func, type, opt );
     if show_timings; toc; end
 end

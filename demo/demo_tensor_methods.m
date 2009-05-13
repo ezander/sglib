@@ -13,7 +13,7 @@ kl_model_version=1;
 
 %% load the kl variables of the conductivity k
 [mu_k_j,k_j_i,kappa_i_alpha,I_k]=load_kl_model( [basename '_k'], kl_model_version, [], {'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
-k_add_mu=0.1; mu_scale_sigma=1;
+k_add_mu=0.2; mu_scale_sigma=1;
 kappa_i_alpha(:,1)=k_add_mu+kappa_i_alpha(:,1); % shift mean
 kappa_i_alpha(:,2:end)=mu_scale_sigma*kappa_i_alpha(:,2:end); % scale variance
 subplot(1,2,1); plot(pos,k_j_i); title('KL eigenfunctions');
@@ -58,7 +58,7 @@ M_Phi=[];
 %g_func=@(x)(x(:,1));
 subsel.type='()';
 subsel.subs={':',1};
-g_func={ @subsref, {subsel}, {2} }
+g_func={ @subsref, {subsel}, {2} };
 
 mu_g_j=zeros(size(mu_f_j,1),size( funcall( g_func, pos(1,:)),2));
 mu_g_j(bnd,:)=funcall( g_func, pos(bnd,:));
