@@ -16,12 +16,13 @@ function h=hermite( n, all_polys )
 %
 %  H=HERMITE(N,TRUE) returns all Hermite polynomials up to degree N.
 %
-% Example
-%   h3=hermite( 3 );
-%   h4=hermite( 4 );
-%   p7=conv(h3,h4);
-%   x=linspace(-1,1); y=polyval(p7,x);
-%   plot(x,y);
+% Example (<a href="matlab:run_example hermite">run</a>)
+%   h1=hermite( 1 ); format_poly( h1 );
+%   h2=hermite( 2 ); format_poly( h2 );
+%   h3=hermite( 3 ); format_poly( h3 );
+%   h4=hermite( 4 ); format_poly( h4 );
+%   x=linspace(-1,1);
+%   plot(x,polyval(h1,x),x,polyval(h2,x),x,polyval(h3,x),x,polyval(h4,x));
 % 
 % See also HERMITE_VAL, FORMAT_POLY
 

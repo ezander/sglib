@@ -4,7 +4,7 @@ function y=normal_pdf( x, mu, sigma )
 %   all values in X, which may be a vector. MU and SIGMA can be specified 
 %   optionally.
 %
-% Example
+% Example (<a href="matlab:run_example normal_pdf">run</a>)
 %   x=linspace(-1,5);
 %   f=normal_pdf(x,2,.5);
 %   F=normal_cdf(x,2,.5);

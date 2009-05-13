@@ -1,7 +1,7 @@
 function test_gauss_legendre
 % TEST_GAUSS_LEGENDRE Test the Gauss-Legendere quadrature methods.
 %
-% Example 
+% Example (<a href="matlab:run_example test_gauss_legendre">run</a>) 
 %    test_gauss_legendre
 %
 % See also TESTSUITE

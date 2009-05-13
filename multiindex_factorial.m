@@ -5,7 +5,7 @@ function fact=multiindex_factorial( pci )
 %   multiple rows the factorial of each row is calculated, i.e. fact(i) is
 %   the multiindex-factorial of pci(i,:).
 %
-% Example
+% Example (<a href="matlab:run_example multiindex_factorial">run</a>)
 %   % Generate the polynomial chaos for 2 random variables up to
 %   % polynomial order 4 
 %   A=multiindex(2,4); 

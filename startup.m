@@ -8,7 +8,7 @@ function startup
 %   instance, this file has to be executed manually (or should be invoked
 %   from .octaverc)
 %
-% Example
+% Example (<a href="matlab:run_example startup">run</a>)
 %   startup
 %
 % See also 

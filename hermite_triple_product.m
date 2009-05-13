@@ -5,7 +5,7 @@ function c=hermite_triple_product(i,j,k)
 %   and the expectation <.> is over a Gaussian measure i.e.
 %   <f(X)>=int_-infty^infty f(x) exp(-x^2/2)/sqrt(2*pi) dx
 %
-% Example
+% Example (<a href="matlab:run_example hermite_triple_product">run</a>)
 %   c1=hermite_triple_product(2,3,1);
 %   c2=hermite_triple_product(3,1,4);
 %   c3=hermite_triple_product([2 3],[3 1],[1 4]);

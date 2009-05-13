@@ -10,7 +10,7 @@ function options=varargin2options( varargin )
 %   OPTIONS=VARARGIN2OPTIONS( OPTS ) returns the options structure as it 
 %   was passed to this function.
 %
-% Example
+% Example (<a href="matlab:run_example varargin2options">run</a>)
 %   % declare your own function to take varargs as options
 %   function my_function( arg1, arg2, varargin )
 %     options=varargin2options( varargin{:} );

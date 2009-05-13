@@ -23,7 +23,7 @@ function plot_field( els, pos, u, varargin )
 %      wait: (default: false) wait for the user to press a button or click
 %        the mouse using the current "userwaitmode"
 %
-% Example
+% Example (<a href="matlab:run_example plot_field">run</a>)
 %
 % See also VIEW, SHADING, LIGHTING, COLORMAP, AXIS, USERWAIT, SETUSERWAITMODE
 

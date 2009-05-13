@@ -10,7 +10,7 @@ function x=inv_reg_beta( y, a, b )
 %   has singularities at zero and one. If Y is very close to one of those
 %   singularities the algorithm might not converge or does so very slowly.
 %
-% Example
+% Example (<a href="matlab:run_example inv_reg_beta">run</a>)
 %   y=linspace(0,1);
 %   x=inv_reg_beta( y, 4, 2 );
 %   plot(x,y);

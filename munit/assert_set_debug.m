@@ -4,7 +4,7 @@ function assert_set_debug( bool_val )
 %   and off if BOOL_VAL is true or false respectively. If debugging is on
 %   ASSERT will call 'keyboard' to allow the user investigate the error.
 %
-% Example
+% Example (<a href="matlab:run_example assert_set_debug">run</a>)
 %   % turn debugging on
 %   assert_set_debug( true );
 %

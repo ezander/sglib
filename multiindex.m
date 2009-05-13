@@ -8,7 +8,7 @@ function I_mp=multiindex(m,p,combine,varargin)
 %   into one large (sparse) array I_MP. Otherwise I_MP is a cell array
 %   where I_MP{q+1} represents the multiindices with degree q.
 %
-% Example
+% Example (<a href="matlab:run_example multiindex">run</a>)
 %   % To generate the polynomial chaos for 2 random variables up to
 %   % polynomial order 4 
 %   I=multiindex(2,4);

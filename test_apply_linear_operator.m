@@ -1,7 +1,7 @@
 function test_apply_linear_operator
 % TEST_APPLY_LINEAR_OPERATOR Test the APPLY_LINEAR_OPERATOR function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_apply_linear_operator">run</a>) 
 %    test_apply_linear_operator
 %
 % See also TESTSUITE

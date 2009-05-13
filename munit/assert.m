@@ -29,7 +29,7 @@ function [ret_stats,ret_options]=assert( condition, message, assert_id, varargin
 %   via some customized functions like ASSERT_EQUALS, ASSERT_SET_FUNCTION
 %   and the like.
 %
-% Example
+% Example (<a href="matlab:run_example assert">run</a>)
 %    % Set current function name
 %    options.function_name='xyz';
 %    assert( [], [], [], options );

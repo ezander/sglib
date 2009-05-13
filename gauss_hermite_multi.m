@@ -9,7 +9,7 @@ function int=gauss_hermite_multi( func, n, p )
 % Note: 
 %   func has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
 %
-% Example
+% Example (<a href="matlab:run_example gauss_hermite_multi">run</a>)
 %   int=gauss_hermite_multi( @(x)(x'*x), 2, 4 ); % => 1
 %
 % See also GAUSS_HERMITE_RULE, GAUSS_HERMITE_MULTI

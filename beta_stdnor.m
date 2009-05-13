@@ -8,7 +8,7 @@ function y=beta_stdnor( x, a, b )
 %   it is pretty slow. May be some interpolation algorithm shall be used 
 %   and the time consuming evaluation of I_z^-1 only done on some points.
 %
-% Example
+% Example (<a href="matlab:run_example beta_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=beta_stdnor(x,2,4); % SLOW!

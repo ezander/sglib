@@ -16,7 +16,7 @@ function h=hermite( n, all_polys )
 %
 %  H=HERMITE(N,TRUE) returns all Hermite polynomials up to degree N.
 %
-% Example
+% Example (<a href="matlab:run_example hermite">run</a>)
 %   h3=hermite( 3 );
 %   h4=hermite( 4 );
 %   p7=conv(h3,h4);

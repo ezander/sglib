@@ -21,7 +21,7 @@ function C_gam=transform_covariance_pce( C_u, pcc_u, varargin )
 %   the KL is truncated before. This options specifies the maximum negative
 %   tolerance.
 %
-% Example
+% Example (<a href="matlab:run_example transform_covariance_pce">run</a>)
 %
 % See also OPTIONS
 

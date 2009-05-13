@@ -1,7 +1,7 @@
 function test_funcall
 % TEST_FUNCALL Test the FUNCALL function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_funcall">run</a>) 
 %    test_funcall
 %
 % See also TESTSUITE, FUNCALL

@@ -4,7 +4,7 @@ function testsuite( debug )
 %   DEBUG (i.e. true or false). If DEBUG is not specified the current
 %   setting is retained.
 %
-% Example
+% Example (<a href="matlab:run_example testsuite">run</a>)
 %   testsuite( true );
 %
 % See also 

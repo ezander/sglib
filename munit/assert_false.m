@@ -5,7 +5,7 @@ function assert_false( bool_val, message, assert_id, options )
 %   assertion. A message telling the user what went wrong can be passed in
 %   MESSAGE. For a description of OPTIONS see ASSERT.
 %
-% Example
+% Example (<a href="matlab:run_example assert_false">run</a>)
 %   assert_false( x<0, 'x may not be negative', 'non_negative' );
 %
 % See also ASSERT, ASSERT_TRUE, ASSERT_EQUALS

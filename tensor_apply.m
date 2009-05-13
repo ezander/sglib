@@ -7,7 +7,7 @@ function U=tensor_apply( A, T )
 %   a function must accept an array of vectors to work with (if your
 %   function doesn't you'll have to write a wrapper for this).
 %
-% Example
+% Example (<a href="matlab:run_example tensor_apply">run</a>)
 %   T={rand(8,3), rand(10,3)}
 %   A={rand(8,8), rand(10,10)}
 %   B={@(x)(A{1}*x), @(x)(A{2}*x)}

@@ -5,7 +5,7 @@ function assert_true( bool_val, message, assert_id, options  )
 %   A message telling the user what went wrong can be passed in MESSAGE.
 %   For a description of OPTIONS see ASSERT.
 %
-% Example
+% Example (<a href="matlab:run_example assert_true">run</a>)
 %   assert_true( x>0, 'x must be a positive number' );
 %
 % See also ASSERT, ASSERT_FALSE, ASSERT_EQUALS

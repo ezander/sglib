@@ -7,7 +7,7 @@ function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d_mc( f, p )
 %    inferred by sorting the samples.
 %    For more info on the returned value see PCE_EXPAND_1D.
 %
-% Example
+% Example (<a href="matlab:run_example pce_expand_1d_mc">run</a>)
 %    N=10000;
 %    h=@(x)(exp(3+0.5*x));
 %    nor=randn(N,1);

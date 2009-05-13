@@ -3,7 +3,7 @@ function [mean,var,skew,kurt]=exponential_moments(lambda)
 %   [VAR,MEAN,SKEW,KURT]=EXPONENTIAL_MOMENTS( LAMBDA ) computes the moments of the
 %   exponential distribution.
 %
-% Example
+% Example (<a href="matlab:run_example exponential_moments">run</a>)
 %   [mean,var]=exponential_moments( 1.3 );
 %
 % See also EXPONENTIAL_CDF, EXPONENTIAL_PDF

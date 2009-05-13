@@ -1,7 +1,7 @@
 function test_pce_multiply
 % TEST_PCE_MULTIPLY Test the PCE_MULTIPLY function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_pce_multiply">run</a>) 
 %    test_pce_multiply
 %
 % See also TESTSUITE

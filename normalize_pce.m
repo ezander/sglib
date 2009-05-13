@@ -16,7 +16,7 @@ function pcc_normed=normalize_pce( pcc_unnormed, pci, reverse )
 %   unnormalized Hermite polynomials. This has advantages in some areas but
 %   disadvantages in others. In the future this might be changed. 
 %
-% Example
+% Example (<a href="matlab:run_example normalize_pce">run</a>)
 %   [pcc,pci]=pce_expand_1d( @(x)(lognorm_stdnor(x,0,1)), 4 );
 %   pccn=normalize_pce( pcc, pci );
 %   [mean1,var1]=pce_moments( pcc, pci );

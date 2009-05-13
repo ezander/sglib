@@ -28,7 +28,7 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %       Schmidt algorithm with selective reorthogonalization, SIAM J. Sci. 
 %       Comput., Vol. 25, No. 2, pp. 417–441
 %                            
-% Example
+% Example (<a href="matlab:run_example gram_schmidt">run</a>)
 %   n=100; m=200; k=40;
 %   A=rand(n,k);
 %   M=rand(n,n); M=M'*M; 

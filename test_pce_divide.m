@@ -1,7 +1,7 @@
 function test_pce_divide
 % TEST_PCE_DIVIDE Test the PCE_DIVIDE function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_pce_divide">run</a>) 
 %    test_pce_divide
 %
 % See also TESTSUITE

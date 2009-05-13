@@ -3,7 +3,7 @@ function y=exponential_pdf( x, lambda )
 %   Y=EXPONENTIAL_PDF( X, LAMBDA ) computes the pdf for the exponential distribution for 
 %   all values in X, which may be a vector. 
 %
-% Example
+% Example (<a href="matlab:run_example exponential_pdf">run</a>)
 %   x=linspace(-0.2,3);
 %   f=exponential_pdf(x,1.3);
 %   F=exponential_cdf(x,1.3);

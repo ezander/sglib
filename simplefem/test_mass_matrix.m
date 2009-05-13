@@ -1,7 +1,7 @@
 function test_mass_matrix
 % TEST_MASS_MATRIX Test the mass_matrix function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_mass_matrix">run</a>) 
 %    test_mass_matrix
 %
 % See also TESTSUITE

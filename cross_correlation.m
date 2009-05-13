@@ -7,7 +7,7 @@ function R=cross_correlation( a, b, M )
 %   If the function is called as R=CROSS_CORRELATION( A, B, M ) the scalar
 %   product used as basis for the calculation is taken to be <x,y>=x'My.
 %
-% Example
+% Example (<a href="matlab:run_example cross_correlation">run</a>)
 %   disp(cross_correlation( [[1;0;0] [1;1;1]], [ [0;2;0] [3;0;0]]));
 %   disp('same as');
 %   disp([0 1; 1/sqrt(3) 1/sqrt(3)])

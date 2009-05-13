@@ -5,7 +5,7 @@ function d=tensor_scalar_product( T1, T2, M1, M2 )
 %   T2, M1, M2 ) the scalar product is taken with respect to the "mass"
 %   matrices or Gramians M1 and M2.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_scalar_product">run</a>)
 %
 % See also TENSOR_NORM
 

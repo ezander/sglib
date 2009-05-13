@@ -6,7 +6,7 @@ function assert_set_option( varargin )
 %   ASSERT_SET_OPTION( OPTION1, VALUE1, ...  ) sets the options specified
 %   in the options strings and corresponding values. 
 %
-% Example
+% Example (<a href="matlab:run_example assert_set_option">run</a>)
 %   % Set the absolute tolerance generally to 0.0001
 %   assert_set_options( 'abstol', 1e-4 );
 %

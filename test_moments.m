@@ -1,7 +1,7 @@
 function test_moments
 % TEST_MOMENTS Test the moment computing functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_moments">run</a>) 
 %    test_moments
 %
 % See also TESTSUITE

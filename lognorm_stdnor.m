@@ -3,7 +3,7 @@ function y=lognorm_stdnor( x, mu, sigma )
 %   Y=LOGNORM_STDNOR( X, MU, SIGMA ) transforms standard normal (i.e. N(0,1))
 %   distributed random numbers into lognormal distributed random numbers.
 %
-% Example
+% Example (<a href="matlab:run_example lognorm_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=lognormal_stdnor(x,1,0.5); 

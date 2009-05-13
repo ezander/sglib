@@ -14,7 +14,7 @@ function U=tensor_solve( A, T, mode, options )
 %   also pcg or gmres on the system.
 %   TODO: document modes better
 %
-% Example
+% Example (<a href="matlab:run_example tensor_solve">run</a>)
 %   % still to come
 %
 % See also TENSOR_APPLY

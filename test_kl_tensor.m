@@ -1,7 +1,7 @@
 function test_kl_tensor
 % TEST_KL_TENSOR Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_kl_tensor">run</a>) 
 %    test_kl_tensor
 %
 % See also TESTSUITE

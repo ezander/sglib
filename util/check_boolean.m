@@ -7,7 +7,7 @@ function ok=check_boolean( cond, message, mfilename )
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
-% Example
+% Example (<a href="matlab:run_example check_boolean">run</a>)
 %   function my_function( str )
 %
 %     check_boolean( strcmp(str,str(end:-1:1)), 'str must be a palindrome', mfilename );

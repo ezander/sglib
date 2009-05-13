@@ -1,7 +1,7 @@
 function test_distributions
 % TEST_DISTRIBUTIONS Test the distribution functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_distributions">run</a>) 
 %    test_distributions
 %
 % See also TESTSUITE

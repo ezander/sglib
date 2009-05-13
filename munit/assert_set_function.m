@@ -5,7 +5,7 @@ function assert_set_function( fun_name )
 %   function name is determined via the stack contents, removing any
 %   "test_" prefix from the function name.
 %
-% Example
+% Example (<a href="matlab:run_example assert_set_function">run</a>)
 %   % maybe in some function 'test_all_ssfem_methods'
 %   assert_set_function( 'kl_expand' );
 %

@@ -1,7 +1,7 @@
 function test_inv_reg_beta
 % TEST_INV_REG_BETA Test the inverse regularized beta function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_inv_reg_beta">run</a>) 
 %    test_inv_reg_beta
 %
 % See also TESTSUITE

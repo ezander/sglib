@@ -1,7 +1,7 @@
 function test_pce_expand_1d
 % TEST_PCE_EXPAND_1D Test the univariate PCE expansion 
 %
-% Example 
+% Example (<a href="matlab:run_example test_pce_expand_1d">run</a>) 
 %    test_pce_expand_1d
 %
 % See also TESTSUITE

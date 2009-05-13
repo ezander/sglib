@@ -1,7 +1,7 @@
 function test_apply_boundary_conditions
 % TEST_APPLY_BOUNDARY_CONDITIONS Test the apply_boundary_conditionsfunction.
 %
-% Example 
+% Example (<a href="matlab:run_example test_apply_boundary_conditions">run</a>) 
 %    test_apply_boundary_conditions
 %
 % See also APPLY_BOUNDARY_CONDITIONS, TESTSUITE

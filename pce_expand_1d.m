@@ -25,7 +25,7 @@ function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d( func, p )
 %   expansions, and to let you easily feed in results from this function
 %   into functions that take multivariate PCEs.
 %
-% Example
+% Example (<a href="matlab:run_example pce_expand_1d">run</a>)
 %   [pcc,pci,poc]=pce_expand_1d( @exp, 4 );
 %   x=linspace(-1,1); y=hermite_val(pcc,x);
 %   plot(x,y);

@@ -1,7 +1,7 @@
 function test_pce_functions
 % TEST_PCE_FUNCTIONS Test the PCE_FUNCTION function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_pce_functions">run</a>) 
 %    test_pce_functions
 %
 % See also TESTSUITE

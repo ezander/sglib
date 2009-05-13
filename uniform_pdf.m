@@ -4,7 +4,7 @@ function y=uniform_pdf( x, a, b )
 %   all values in X, which may be a vector. A and B can be specified 
 %   optionally, otherwise they default to 0 and 1.
 %
-% Example
+% Example (<a href="matlab:run_example uniform_pdf">run</a>)
 %   x=linspace(0,6,1000);
 %   f=uniform_pdf(x,2,4);
 %   F=uniform_cdf(x,2,4);

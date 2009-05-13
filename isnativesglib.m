@@ -5,7 +5,7 @@ function bool=isnativesglib
 %   implementation always returns 0. 
 %
 %
-% Example
+% Example (<a href="matlab:run_example isnativesglib">run</a>)
 %   if isnativesglib
 %     sprintf( 'native sglib is being used' );
 %   end

@@ -3,7 +3,7 @@ function y=beta_pdf( x, a, b )
 %   Y=BETA_PDF( X, A, B ) computes the pdf for the beta distribution for 
 %   all values in X, which may be a vector. 
 %
-% Example
+% Example (<a href="matlab:run_example beta_pdf">run</a>)
 %   x=linspace(-0.2,1.2);
 %   f=beta_pdf(x,2,3);
 %   F=beta_cdf(x,2,3);

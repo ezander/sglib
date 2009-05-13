@@ -1,7 +1,7 @@
 function test_kl_expand
 % TEST_KL_EXPAND Test the KL_EXPAND function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_kl_expand">run</a>) 
 %    test_kl_expand
 %
 % See also TESTSUITE

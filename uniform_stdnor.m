@@ -4,7 +4,7 @@ function y=uniform_stdnor( x, a, b )
 %   distributed random numbers into uniform distributed random numbers. A
 %   and B default to 0 and 1 respectively.
 %
-% Example
+% Example (<a href="matlab:run_example uniform_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=uniform_stdnor(x,2,4); 

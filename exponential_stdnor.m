@@ -3,7 +3,7 @@ function y=exponential_stdnor( x, lambda )
 %   Y=exponential_STDNOR( X, LAMBDA ) transforms standard normal (i.e. N(0,1))
 %   distributed random numbers into exponential EXP(LAMBDA) distributed random numbers.
 %
-% Example
+% Example (<a href="matlab:run_example exponential_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=exponential_stdnor(x,1.3); 

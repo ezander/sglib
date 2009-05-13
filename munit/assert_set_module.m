@@ -5,7 +5,7 @@ function assert_set_module( mod_name )
 %   syntactic entity, but rather for some programmer-defined grouping of
 %   functions.
 %
-% Example
+% Example (<a href="matlab:run_example assert_set_module">run</a>)
 %   assert_set_module( 'ssfem' );
 %
 % See also ASSERT, ASSERT_SET_FUNCTION

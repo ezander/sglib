@@ -4,7 +4,7 @@ function y=lognorm_cdf( x, mu, sigma )
 %   all values in X, which may be a vector. MU and SIGMA can be specified 
 %   optionally.
 %
-% Example
+% Example (<a href="matlab:run_example lognorm_cdf">run</a>)
 %   x=linspace(0,30);
 %   f=lognorm_pdf(x,2,.5);
 %   F=lognorm_cdf(x,2,.5);

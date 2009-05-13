@@ -4,7 +4,7 @@ function y=hermite_val_multi( pce_coeff, pce_ind, x )
 %   multidimensionl Hermite polynomial given by the coefficients in
 %   PCE_COEFF at the positions given in X. PCE_IND(i,j) 
 %
-% Example
+% Example (<a href="matlab:run_example hermite_val_multi">run</a>)
 %   [pcc,pci]=pce_expand_1d( @exp, 4 );
 %   x=linspace(0,10)';
 %   y=hermite_val_multi( pcc, pci, x );

@@ -1,7 +1,7 @@
 function plot_boundary( els, pos, varargin )
 %
 %
-% Example
+% Example (<a href="matlab:run_example plot_boundary">run</a>)
 %
 % See also 
 

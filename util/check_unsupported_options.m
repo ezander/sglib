@@ -17,7 +17,7 @@ function ok=check_unsupported_options( options, mfilename )
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
-% Example
+% Example (<a href="matlab:run_example check_unsupported_options">run</a>)
 %   % declare your own function to take varargs as options
 %   function my_function( arg1, arg2, varargin )
 %

@@ -1,7 +1,7 @@
 function test_pce_to_kl
 % TEST_PCE_TO_KL Test pce_to_kl function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_pce_to_kl">run</a>) 
 %    test_pce_to_kl
 %
 % See also TESTSUITE

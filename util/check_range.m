@@ -9,7 +9,7 @@ function ok=check_range( x, lo, hi, varname, mfilename )
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
-% Example
+% Example (<a href="matlab:run_example check_range">run</a>)
 %   function my_function( num )
 %
 %     check_range( num, 1, 5, 'num', mfilename );

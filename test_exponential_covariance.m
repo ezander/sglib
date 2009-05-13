@@ -1,7 +1,7 @@
 function test_exponential_covariance
 % TEST_EXPONENTIAL_COVARIANCE Test exponential_covariance functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_exponential_covariance">run</a>) 
 %    test_exponential_covariance
 %
 % See also TESTSUITE

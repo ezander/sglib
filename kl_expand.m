@@ -19,7 +19,7 @@ function [f,sqrt_lambda]=kl_expand( C, M, m, varargin )
 %   exactly variance 1 in each point, turn this on; otherwise you can leave
 %   it of.
 %
-% Example
+% Example (<a href="matlab:run_example kl_expand">run</a>)
 %   n=10;
 %   x=linspace(0,1,n)';
 %   els=[1:n-1; 2:n]';

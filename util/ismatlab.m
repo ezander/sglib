@@ -7,7 +7,7 @@ function bool=ismatlab()
 %   builtin command, which is only implemented in Octave as yet. Not 
 %   foolproof, but probably good enough. 
 % 
-% Example
+% Example (<a href="matlab:run_example ismatlab">run</a>)
 %   if ismatlab()
 %     % perform matlab specific code;
 %   end

@@ -1,7 +1,7 @@
 function test_normalize_pce
 % TEST_NORMALIZE_PCE Test the normalize_pce function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_normalize_pce">run</a>) 
 %    test_normalize_pce
 %
 % See also TESTSUITE

@@ -1,7 +1,7 @@
 function test_hermite_val
 % TEST_HERMITE_VAL Test the HERMITE_VAL function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_hermite_val">run</a>) 
 %    test_hermite_val
 %
 % See also TESTSUITE

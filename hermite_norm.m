@@ -5,7 +5,7 @@ function norm=hermite_norm( pci )
 %  has to be a row vector; multiindices can be stacked. The returned vector
 %  is a column vector then.
 %
-% Example
+% Example (<a href="matlab:run_example hermite_norm">run</a>)
 %  % get some multivariate PC expansion somewhere into I_u
 %  % where the the coefficients are in u_alpha, then with the 
 %  % following you get the coefficients in terms of the normed

@@ -1,7 +1,7 @@
 function test_cross_correlation
 % TEST_CROSS_CORRELATION Test the CROSS_CORRELATION function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_cross_correlation">run</a>) 
 %    test_cross_correlations
 %
 % See also TESTSUITE

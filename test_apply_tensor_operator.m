@@ -1,7 +1,7 @@
 function test_apply_tensor_operator
 % TEST_APPLY_TENSOR_OPERATOR Test the APPLY_TENSOR_OPERATOR function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_apply_tensor_operator">run</a>) 
 %    test_apply_tensor_operator
 %
 % See also TESTSUITE

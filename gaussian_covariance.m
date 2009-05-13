@@ -8,7 +8,7 @@ function c=gaussian_covariance( x1, x2, l, sigma, smooth )
 %   vector containing the coordinates of point x_i. If L or SIGMA are not
 %   given they are both assumed to be 1.
 %
-% Example
+% Example (<a href="matlab:run_example gaussian_covariance">run</a>)
 %   x1=rand(10,2);
 %   x2=rand(10,2);
 %   c=gaussian_covariance( x1, x2, 0.2, 1 );

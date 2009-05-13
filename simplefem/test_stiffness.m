@@ -1,7 +1,7 @@
 function test_stiffness
 % TEST_STIFFNESS Test the stiffness_matrix function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_stiffness">run</a>) 
 %    test_stiffness
 %
 % See also TESTSUITE

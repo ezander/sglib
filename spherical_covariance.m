@@ -7,7 +7,7 @@ function c=spherical_covariance( x1, x2, l, sigma, smooth )
 %   point and the second index to the dimension, i.e. X1(i,:) is a row
 %   vector containing the coordinates of point x_i. 
 %
-% Example
+% Example (<a href="matlab:run_example spherical_covariance">run</a>)
 %   x1=rand(10,2);
 %   x2=rand(10,2);
 %   c=spherical_covariance( x1, x2, 0.2, 1 );

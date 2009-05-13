@@ -1,7 +1,7 @@
 function test_utils
 % TEST_UTILS Test utils related functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_utils">run</a>) 
 %    test_utils
 %
 % See also TESTSUITE

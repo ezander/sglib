@@ -10,7 +10,7 @@ function B=row_col_mult( A, x )
 %   the fastest method in Matlab, so it got implemented as an extra
 %   function, which furthermore improves the readability of some codes.
 %
-% Example
+% Example (<a href="matlab:run_example row_col_mult">run</a>)
 %   A=[1 2; 3 4];
 %   row_col_mult(A,[1, 2]) % column-wise mult; prints [1 4; 3 8]
 %   row_col_mult(A,[1; 2]) % row-wise mult; prints [1 2; 6 8]

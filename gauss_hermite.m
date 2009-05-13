@@ -9,7 +9,7 @@ function int=gauss_hermite( func, p )
 % Note: 
 %   F has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
 %
-% Example
+% Example (<a href="matlab:run_example gauss_hermite">run</a>)
 %   int=gauss_hermite( @(x)(ones(size(x))), 4 ); % => 1
 %   int=gauss_hermite( @(x)(x.*x), 4 ); % => 1
 %   int=gauss_hermite( @exp, 3 );

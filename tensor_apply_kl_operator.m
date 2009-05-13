@@ -1,7 +1,7 @@
 function U=tensor_apply_kl_operator( A, T, k, eps, M1, M2, inverse_order )
 % TENSOR_APPLY_KL_OPERATOR Apply a KL operator to a sparse tensor product.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_apply_kl_operator">run</a>)
 %
 % See also TENSOR_APPLY
 

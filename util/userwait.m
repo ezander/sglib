@@ -4,7 +4,7 @@ function userwait()
 %   specified in SETUSERWAITMODE). If the current script is published (see
 %   PUBLISH) the function returns immediately.
 %
-% Example
+% Example (<a href="matlab:run_example userwait">run</a>)
 %   setuserwaitmode( 'keyboard', 'Press any key to continues...' );
 %   % compute something, display results
 %   userwait

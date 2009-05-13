@@ -2,7 +2,7 @@ function [pce_coeff,pce_herm_ind]=pce_expand_2d( f, p )
 % PCE_EXPAND_2D Calculate the PCE expansion in two stochastics dimensions.
 %   
 %
-% Example
+% Example (<a href="matlab:run_example pce_expand_2d">run</a>)
 %   [pce_coeff,pce_h_ind]=pce_expand_2d( @(x,y)(exp(x+y)), 4 );
 %
 % See also PCE_EXPAND_1D

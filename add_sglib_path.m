@@ -8,7 +8,7 @@ function basepath=add_sglib_path( octave, experimental, restore )
 %   its default.
 %   
 %
-% Example
+% Example (<a href="matlab:run_example add_sglib_path">run</a>)
 %   % set default paths and return base path
 %   p=add_sglib_path
 %   % set default plus experimental path (but no octave)

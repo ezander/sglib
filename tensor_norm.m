@@ -18,7 +18,7 @@ function d=tensor_norm( T, meth, M1, M2 )
 %     'inner': computes the norm as the square root of the scalare product
 %       of T with itself.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_norm">run</a>)
 %   T={rand(8,2), rand(10,2)};
 %   fprintf('Note that orth gives a wrong result since the columns are not orthogonal \n');
 %   for meth={'orth', 'svd', 'full', 'inner'}; 

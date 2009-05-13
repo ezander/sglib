@@ -3,7 +3,7 @@ function [y,w] = tensor_mesh(y1d,w1d)
 %   Y = TENSOR_MESH(Y1D,W1D) creates a tensor product rule from n 1D rules
 %   contained in the cell arrays Y1D and W1D.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_mesh">run</a>)
 %   [y1,w1] = gauss_hermite_rule(5);
 %   [y2,w2] = gauss_hermite_rule(4);
 %   [y,w] = tensor_mesh({y1,y2},{w1,w2});

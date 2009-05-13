@@ -8,7 +8,7 @@ function c=hermite_triple_fast(i,j,k)
 %   The cache has to be set up by a call to hermite_triple_fast with one
 %   argument only HERMITE_TRIPLE_FAST(MAX). 
 %
-% Example
+% Example (<a href="matlab:run_example hermite_triple_fast">run</a>)
 %   c1=hermite_triple_fast(2,3,1);
 %   c2=hermite_triple_fast(3,1,4);
 %   c3=hermite_triple_fast([2 3],[3 1],[1 4]);

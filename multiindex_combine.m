@@ -27,7 +27,7 @@ function varargout=multiindex_combine( I_j, p )
 %   remapping other expansion (making them larger by the way), making
 %   things even more difficult and thus introducing more sources of error. 
 % 
-% Example
+% Example (<a href="matlab:run_example multiindex_combine">run</a>)
 %   I_f=multiindex(2,3,[],'use_sparse', true)
 %   I_k=multiindex(3,2,[],'use_sparse', true)
 %   I_g=multiindex(2,2,[],'use_sparse', true)

@@ -14,7 +14,7 @@ function y=zinn_harvey_connected_stdnor( x, eps, high_connected )
 %   output is standard normal, but has a singularity at 0 and is thus not
 %   in L2.
 %
-% Example
+% Example (<a href="matlab:run_example zinn_harvey_connected_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=zinn_harvey_connected_stdnor(x,0.001,false);

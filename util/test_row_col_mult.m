@@ -1,7 +1,7 @@
 function test_row_col_mult
 % TEST_ROW_COL_MULT Test row_col_mult function.
 %
-% Example 
+% Example (<a href="matlab:run_example test_row_col_mult">run</a>) 
 %    test_row_col_mult
 %
 % See also TESTSUITE

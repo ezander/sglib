@@ -4,7 +4,7 @@ function init_demos( experimental )
 %   Currently only adds paths to the normal matlab search path. Maybe later
 %   we could also look for an optional user options file and read that in.
 %
-% Example
+% Example (<a href="matlab:run_example init_demos">run</a>)
 %   init_demos
 %
 % See also 

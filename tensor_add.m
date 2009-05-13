@@ -10,7 +10,7 @@ function T=tensor_add( T1, T2, alpha )
 % Note 2: This method does not perform reduction of the new tensor. You
 %   have to call TENSOR_REDUCE manually to achieve this.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
 %   T2={rand(8,3), rand(10,3)}
 %   Z=tensor_add(T1,T2,3)

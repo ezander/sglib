@@ -15,7 +15,7 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 %   of them in fact being equal. CRIT is the critical value associated with
 %   the value of ALPHA and the sample size.
 %
-% Example
+% Example (<a href="matlab:run_example ks_test">run</a>)
 %    % test the quality of matlabs gaussian random numbers
 %    n=10000;
 %    norm_cdf=@(x)(1/2*(1+erf(x/sqrt(2))));

@@ -33,7 +33,7 @@ function B=apply_tensor_operator( A, X, varargin )
 %   That means you have to 'transpose' the Kronecker product so that it
 %   matches a stacked dyadic product.
 %
-% Example
+% Example (<a href="matlab:run_example apply_tensor_operator">run</a>)
 %
 % See also APPLY_LINEAR_OPERATOR, ISFUNCTION
 

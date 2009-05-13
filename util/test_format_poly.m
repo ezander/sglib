@@ -1,7 +1,7 @@
 function test_format_poly
 % TEST_FORMAT_POLY Test the FORMAT_POLY functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_format_poly">run</a>) 
 %    test_format_poly
 %
 % See also TESTSUITE

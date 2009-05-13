@@ -13,7 +13,7 @@ function [b,n]=apply_linear_operator( A, x )
 %   on the number of output arguments, either a size array is returned, or
 %   the individual dimensions are returned as different output arguments.
 %
-% Example
+% Example (<a href="matlab:run_example apply_linear_operator">run</a>)
 %     M=[1, 2; 3, 4; 5, 10];
 %     x=[1; 5];
 % 

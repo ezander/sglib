@@ -1,7 +1,7 @@
 function test_multiindex
 % TEST_MULTIINDEX Test multi-index related functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_multiindex">run</a>) 
 %    test_multiindex
 %
 % See also TESTSUITE

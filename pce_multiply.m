@@ -13,7 +13,7 @@ function [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y, I_Z )
 %   multiplied in one step (like scalar times vector, or vectors
 %   elementwise).
 %
-% Example
+% Example (<a href="matlab:run_example pce_multiply">run</a>)
 %   N=10; m=3; p_X=2; p_Y=4;
 %   I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1)); 
 %   I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 

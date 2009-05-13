@@ -4,7 +4,7 @@ function order=multiindex_order( pci )
 %   in PCI. PCI has to be a row vector. If there are multiple rows the
 %   order of each row is calculated, i.e. fact(i) is the order of pci(i,:).
 %
-% Example
+% Example (<a href="matlab:run_example multiindex_order">run</a>)
 %   % Generate the polynomial chaos for 2 random variables up to
 %   % polynomial order 4 
 %   A=multiindex(2,4); 

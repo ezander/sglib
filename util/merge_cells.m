@@ -5,7 +5,7 @@ function cells=merge_cells( cells1, pos1, cells2 )
 %   the elements of CELLS1 are placed at the positions in POS1 and the
 %   elements of CELLS2 are filled in from left to right.
 %
-% Example
+% Example (<a href="matlab:run_example merge_cells">run</a>)
 %   merge_cells( {'a','b'}, {2,4}, {'c','d','e'} );
 %   % returns {'c', 'a', 'd', 'b', 'e' }
 %

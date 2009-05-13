@@ -6,7 +6,7 @@ function y=normal_stdnor( x, mu, sigma )
 %   This is of course trivial, but make the interface for the normal
 %   distribution the same as for the other distributions.
 %
-% Example
+% Example (<a href="matlab:run_example normal_stdnor">run</a>)
 %   N=10000;
 %   x=randn(N,1);
 %   y=normal_stdnor(x,1,0.5); 

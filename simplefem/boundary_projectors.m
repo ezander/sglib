@@ -8,7 +8,7 @@ function [P_B,P_I]=boundary_projectors( bnd, n )
 %   P_I*X on the space spanned only by the inner nodes. If the matrix M
 %   acts on the whole space, P_I*M*P_I' acts only on the inner nodes.
 %
-% Example
+% Example (<a href="matlab:run_example boundary_projectors">run</a>)
 %   % get K,f,g from some FEM code
 %   % n contains the total number of nodes, and bnd the indices of the
 %   % boundary nodes

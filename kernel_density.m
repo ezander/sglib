@@ -20,7 +20,7 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 %   vector. If XL is a matrix each XN(i,:) is treated as an independent
 %   sample vector i.e. sample vectors are column vectors.
 %   
-% Example
+% Example (<a href="matlab:run_example kernel_density">run</a>)
 %   xn=randn(1,10000);
 %   [x,p]=kernel_density( xn, 100, 0.2 );
 %   plot( x, p, x, exp(-x.^2/2)/sqrt(2*pi) ); % should match approx.

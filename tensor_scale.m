@@ -2,7 +2,7 @@ function U=tensor_scale( T, alpha )
 % TENSOR_SCALE Scale a sparse tensor product by a scalar.
 %   U=TENSOR_SCALE( T, ALPHA ) returns mathematically ALPHA*T.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_scale">run</a>)
 %   T={rand(8,2), rand(10,2)}
 %   U=tensor_scale(T,3)
 %

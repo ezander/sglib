@@ -1,7 +1,7 @@
 function test_apply_stochastic_operator
 
 % TEST_APPLY_STOCHASTIC_OPERATOR Test apply_stochastic_operator function.
-% Example 
+% Example (<a href="matlab:run_example test_apply_stochastic_operator">run</a>) 
 %    test_apply_stochastic_operator
 % See also TESTSUITE
 

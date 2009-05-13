@@ -6,7 +6,7 @@ function edit_mfile( filename )
 %   not in the current directory (which the internal EDIT command doesn't,
 %   it issues an error in this case, very annoyingly...).
 %
-% Example
+% Example (<a href="matlab:run_example edit_mfile">run</a>)
 %   edit_mfile private/my_priv_func
 %
 % See also EDIT

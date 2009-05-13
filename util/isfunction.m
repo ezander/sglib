@@ -3,7 +3,7 @@ function bool=isfunction( var )
 %   BOOL=ISFUNCTION( VAR ) returns true if VAR can be passed as a first
 %   argument to FUNCALL.
 % 
-% Example
+% Example (<a href="matlab:run_example isfunction">run</a>)
 %   if isfunction( func )
 %     funcall( func, a, b );
 %   end

@@ -13,7 +13,7 @@ function ind=multiindex_find( I_r, alpha )
 %   if the tensor was truncated in a "KL-compatible" way, the result should
 %   be the same.
 %
-% Example
+% Example (<a href="matlab:run_example multiindex_find">run</a>)
 %   I=multiindex(5,3);
 %   alpha=[0 1 0 0 2]; disp(alpha);
 %   ind=multiindex_find( I, alpha );

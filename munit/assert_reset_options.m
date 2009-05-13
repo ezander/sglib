@@ -6,7 +6,7 @@ function options=assert_reset_options
 %   OPTIONS=ASSERT_RESET_OPTIONS() returns the default options that would 
 %   be set by ASSERT_RESET_OPTIONS() without actually setting them.
 %
-% Example
+% Example (<a href="matlab:run_example assert_reset_options">run</a>)
 %   % Set options to some non standard values
 %   assert_set_option( 'reltol', 1e-8 );
 %   % Reset all options

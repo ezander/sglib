@@ -10,7 +10,7 @@ function [mean,var,skew,kurt]=pce_moments( pcc, pci ) %#ok: kurt never assigned
 %   Caveat: currently only MEAN, VAR and SKEW are calculated. KURT has
 %   to be implemented yet.
 %
-% Example
+% Example (<a href="matlab:run_example pce_moments">run</a>)
 %   [pcc,pci]=pce_expand_1d( @exp, 12 );
 %   [mean,var,skew]=pce_moments( pcc );
 %   [mean,var,skew]=pce_moments( pcc, pci );

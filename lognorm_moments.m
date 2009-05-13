@@ -7,7 +7,7 @@ function [mean,var,skew,kurt]=lognorm_moments(mu,sigma)
 %   http://en.wikipedia.org/wiki/Log-normal_distribution
 %   http://mathworld.wolfram.com/LogNormalDistribution.html
 %
-% Example
+% Example (<a href="matlab:run_example lognorm_moments">run</a>)
 %   [mean,var]=lognorm_moments(mu,sigma);
 %
 % See also LOGNORM_CDF, LOGNORM_PDF

@@ -4,7 +4,7 @@ function [x,w]=gauss_hermite_rule( p )
 %   of order 2*p. X contains the quadrature points and W contains the 
 %   weights of the quadrature rule.
 %
-% Example
+% Example (<a href="matlab:run_example gauss_hermite_rule">run</a>)
 %   [x,w]=gauss_hermite_rule( 4 );
 
 %   Elmar Zander

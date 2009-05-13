@@ -1,7 +1,7 @@
 function test_gauss_hermite
 % TEST_GAUSS_HERMITE Test the Gauss-Hermite quadrature rules.
 %
-% Example 
+% Example (<a href="matlab:run_example test_gauss_hermite">run</a>)
 %    test_gauss_hermite
 %
 % See also TESTSUITE

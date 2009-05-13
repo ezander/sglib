@@ -19,7 +19,7 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %   return value of the buildin function 'mfilename' which tells you the
 %   name of the current script, and is thus exactly what you want.)
 %
-% Example
+% Example (<a href="matlab:run_example check_condition">run</a>)
 %     x=[1;2;3];
 %     A=[1, 2; 3, 4]; B=eye(2);
 %     options.warnonly=true;

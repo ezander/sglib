@@ -4,7 +4,7 @@ function [mean,var,skew,kurt]=normal_moments(mu,sigma)
 %   normal distribution. This is of course pretty trivial but for
 %   completenesses sake...
 %
-% Example
+% Example (<a href="matlab:run_example normal_moments">run</a>)
 %   [mean,var]=normal_moments(mu,sigma);
 %
 % See also NORMAL_CDF, NORMAL_PDF

@@ -12,7 +12,7 @@ function [val,options]=get_option( options, field, default )
 %   will be used as default (this field must exist, no check is made for
 %   existence).
 %
-% Example
+% Example (<a href="matlab:run_example get_option">run</a>)
 %   function retval=my_function( arg1, arg2, arg3, varargin );
 %     options = varargin2options( varargin );
 %     option1 = get_option( options1, 'option1', 1234 );

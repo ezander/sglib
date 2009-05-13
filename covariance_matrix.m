@@ -10,7 +10,7 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   VECTORIZED (default: true) specifies whether the covariance functions
 %   is vectorized with respect to the position arguments.
 % 
-% Example
+% Example (<a href="matlab:run_example covariance_matrix">run</a>)
 %   x=linspace(0,1,10)';
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 %

@@ -4,7 +4,7 @@ function ok=isversion( minversion, maxversion )
 %   version (VERSION) is greater or equal MINVERSION and less but not equal
 %   to MAXVERSION.
 %
-% Example
+% Example (<a href="matlab:run_example isversion">run</a>)
 %   if isversion( '6.0', '7.0' ) 
 %       % do version 6.x stuff
 %   else

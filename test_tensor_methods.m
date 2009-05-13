@@ -1,7 +1,7 @@
 function test_tensor_methods
 % TEST_TENSOR_METHODS Test the TENSOR functions.
 %
-% Example 
+% Example (<a href="matlab:run_example test_tensor_methods">run</a>) 
 %    test_tensor_methods
 %
 % See also TESTSUITE

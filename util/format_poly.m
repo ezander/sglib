@@ -7,7 +7,7 @@ function s=format_poly( p, varargin )
 %     twoline - use twoline output for exponents instead of caret "^" (default: false)
 %     symbol - use specified symbol (default: "x")
 %
-% Example
+% Example (<a href="matlab:run_example format_poly">run</a>)
 %   format_poly( [-1 2 3] );
 %   % displays:
 %   %   -x^2+2x+3

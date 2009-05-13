@@ -3,7 +3,7 @@ function assert_print_module_stats
 %   ASSERT_PRINT_MODULE_STATS print the statistics of the current module on
 %   the console.
 %
-% Example
+% Example (<a href="matlab:run_example assert_print_module_stats">run</a>)
 %   assert_set_module( 'mymod' );
 %   assert_equals( myfunc, 3, 'some_test' );
 %   assert_print_module_stats();

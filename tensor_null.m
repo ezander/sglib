@@ -4,7 +4,7 @@ function Z=tensor_null( T )
 %   dimensions as the tensor T. In more detail: suppose T consists of an
 %   N*K and an M*K matrix then Z will consist of an N*0 and an M*0 matrix.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_null">run</a>)
 %   T={rand(8,3), rand(10,3)}
 %   Z=tensor_null(T)
 %   norm( Z{1}*Z{2}', 'fro' ) % should be zero

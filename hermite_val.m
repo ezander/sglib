@@ -3,7 +3,7 @@ function y=hermite_val( pce_coeff, x )
 %   Y=HERMITE_VAL( PCE_COEFF, X ) evaluates the Hermite polynomial given
 %   by the coefficients in PCE_COEFF at the positions given in X. 
 %
-% Example
+% Example (<a href="matlab:run_example hermite_val">run</a>)
 %   pcc=pce_expand_1d( @exp, 4 );
 %   x=linspace(0,10);
 %   y=hermite_val( pcc, x );

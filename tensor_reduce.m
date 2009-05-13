@@ -1,7 +1,7 @@
 function [T_r,T_c,norm_r,norm_c,norm_f]=tensor_reduce( T, k0, eps, M1, M2 )
 % TENSOR_REDUCE Computes a reduced rank tensor product.
 %
-% Example
+% Example (<a href="matlab:run_example tensor_reduce">run</a>)
 %   % still to come
 %
 % See also TENSOR_ADD

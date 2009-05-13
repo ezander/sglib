@@ -6,7 +6,7 @@ function plot_field_contour( els, pos, u, varargin )
 %   arguments:
 %
 %
-% Example
+% Example (<a href="matlab:run_example plot_field_contour">run</a>)
 %
 % See also 
 
