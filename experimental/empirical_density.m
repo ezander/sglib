@@ -1,7 +1,7 @@
 function [x,p]=empirical_density(xl,n1,n,varargin)
 % EMPIRICAL_DENSITY Probability density estimation for given data (experimental).
 %
-% Example:
+% Example
 %   xn=randn(10000,1);
 %   [x,p]=empirical_density( xn, 20, 100 );
 %   plot( x, p, x, exp(-x.^2/2)/sqrt(2*pi) ); % should match approx.

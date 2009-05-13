@@ -4,7 +4,7 @@ function userwait()
 %   specified in SETUSERWAITMODE). If the current script is published (see
 %   PUBLISH) the function returns immediately.
 %
-% Example:
+% Example
 %   setuserwaitmode( 'keyboard', 'Press any key to continues...' );
 %   % compute something, display results
 %   userwait

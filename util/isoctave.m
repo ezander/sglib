@@ -3,7 +3,7 @@ function bool=isoctave()
 %   BOOL=ISOCTAVE() returns true if the current running interpreter/engine
 %   is Octave.
 %
-% Example:
+% Example
 %   if isoctave()
 %     % perform octave specific code;
 %   end

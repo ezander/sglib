@@ -18,16 +18,6 @@ opt.silent=silent;
 opt.show_timings=show_timings;
 opt.use_waitbar=use_waitbar;
 
-
-xxx=10;
-for i=1:xxx
-    erase_print( 'assemble: %d/%d', i, xxx );
-    for j=1:100000;k=sin(j*j);end;
-end
-erase_print();
-return
-
-
 switch form
     case { 'alpha_beta' }
         K=assemble_alpha_beta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );

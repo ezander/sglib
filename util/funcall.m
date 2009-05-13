@@ -30,7 +30,7 @@ function varargout=funcall( func, varargin )
 %   Update: there is no error message anymore, but still there is no output
 %   in this case due to those difficulties.
 %
-% Example:
+% Example
 %   % calling the power function
 %   funcall( {@power,{3}},2 )==8
 %   funcall( {@(y,x)(power(x,y)),{3}},2 )==9

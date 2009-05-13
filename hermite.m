@@ -8,7 +8,7 @@ function h=hermite( n, all_polys )
 %     $$H_{n+1}(x) = x H_n - n H_{n-1}$$
 %  with H_0=1 and H_1=x. The returned polynomial uses the standard matlab
 %  representation of polynomials where the first element corresponds to the 
-%  highest power of x and the last element to the constant. Example: 
+%  highest power of x and the last element to the constant. E.g.
 %  hermite(4) returns [1,0,-6,0,3] which means x^4-6*x^2+3. Polynomials of
 %  this kind can be easily manipulated and evaluated in Matlab using the
 %  functions polyint (integration), polyder (derivatives), conv
@@ -23,7 +23,7 @@ function h=hermite( n, all_polys )
 %   x=linspace(-1,1); y=polyval(p7,x);
 %   plot(x,y);
 % 
-% See also HERMITE_VAL
+% See also HERMITE_VAL, FORMAT_POLY
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

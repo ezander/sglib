@@ -10,7 +10,7 @@ function [mode,msg,func]=setuserwaitmode( mode, msg, func )
 %   graphics to a file with some automatically incremented counter. The
 %   parameter MSG is in this case irrelevant.
 %
-% Example:
+% Example
 %   % set USERWAIT to wait for the keyboard
 %   setuserwaitmode( 'keyboard' )
 %   % set USERWAIT to wait for the mouse and display a message
