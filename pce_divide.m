@@ -13,7 +13,7 @@ for j=1:size(I_b,1)
     beta=I_b(j,:);
     for k=1:size(I_x,1);
         gamma=I_x(k,:);
-        K(j,k)=a_alpha*hermite_triple_fast(beta,gamma,I_a);
+        K(j,k)=a_alpha*squeeze(hermite_triple_fast(beta,gamma,I_a));
     end
 end
 x_gamma=(K\B)';

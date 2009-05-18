@@ -39,7 +39,7 @@ userwait;
 
 
 %% load and create the operators 
-kl_operator_version=4;
+kl_operator_version=6;
 stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
 K_mu_delta=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' );
 K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta' );

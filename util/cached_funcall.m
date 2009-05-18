@@ -1,4 +1,4 @@
-function varargout=cached_funcall( func, params, ndata, filename, version )
+function varargout=cached_funcall( func, params, ndata, filename, version, varargin )
 % CACHED_FUNCALL Store and retrieve the results of a function call from a file.
 %   [DATA,VERSION,RECOMP]=CACHED_FUNCALL( FUNC, PARAMS, NDATA, FILENAME,
 %   VERSION ) first checks whether FILENAME exists. If yes, the file is
@@ -35,12 +35,16 @@ function varargout=cached_funcall( func, params, ndata, filename, version )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+options=varargin2options( varargin{:} );
+[silent,options]=get_option( options, 'silent', false );
+[show_timings,options]=get_option( options, 'show_timings', true );
+[message,options]=get_option( options, 'message', [] );
+[extra_params,options]=get_option( options, 'extra_params', {} );
+check_unsupported_options( options, mfilename );
 
 if nargin<5
     version=1;
 end
-
 
 % load saved structure from file if possible
 %if exist( filename, 'file' ) 
@@ -65,7 +69,19 @@ end
 % no file or saved file didn't match (wrong version, diff parameters, ...),
 % then recompute
 data=cell(ndata,1);
-[data{:}]=funcall( func, params{:} );
+
+if ~silent && ~isempty(message)
+    fprintf( [message '\n'] ); 
+end
+if show_timings
+    t1=cputime;
+end
+[data{:}]=funcall( func, params{:}, extra_params{:} ); % Here's the action!
+if show_timings
+    t2=cputime;
+    fprintf( '(%d s) \n', t2-t1 ); 
+end
+
 varargout=data;
 if ismatlab()
     % in matlab version 7 use this (doesn't work with 6)

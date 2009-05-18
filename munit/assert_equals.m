@@ -45,7 +45,7 @@ end
 % then check whether they have the same size
 % but only if it's not of class string (then there can be a more meaningful
 % message to the user)
-if any( size(actual)~=size(expected) ) && ~ischar(actual)
+if ndims(actual)~=ndims(expected) || (any( size(actual)~=size(expected) ) && ~ischar(actual))
     size_actual=print_vector( '%d', size(actual) ); 
     size_expected=print_vector('%d', size(expected) ); 
     assert( false, sprintf( 'size doesn''t match: %s~=%s', size_actual, ...

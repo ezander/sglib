@@ -77,7 +77,7 @@ for j=1:size(I_X,1)
         beta=I_Y(k,:);
         %c=hermite_triple_product( alpha, beta, gamma )/multiindex_factorial( gamma );
         if 1
-            c=hermite_triple_fast( alpha, beta, I_Z )./multiindex_factorial( I_Z );
+            c=squeeze(hermite_triple_fast( alpha, beta, I_Z ))./multiindex_factorial( I_Z );
             i=find(c~=0);
             Z_gamma(:,i)=Z_gamma(:,i)+(X_alpha(:,j).*Y_beta(:,k))*c(i)';
         else

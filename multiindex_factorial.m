@@ -8,9 +8,10 @@ function fact=multiindex_factorial( pci )
 % Example (<a href="matlab:run_example multiindex_factorial">run</a>)
 %   % Generate the polynomial chaos for 2 random variables up to
 %   % polynomial order 4 
-%   A=multiindex(2,4); 
+%   I=multiindex(2,4); 
 %   % Show the factorials of the generated polynomial chaoses
-%   multiindex_factorial(pci); 
+%   f=multiindex_factorial(I);
+%   disp([I,f]);
 %
 % See also MULTIINDEX, MULTIINDEX_ORDER
 

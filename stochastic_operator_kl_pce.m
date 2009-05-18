@@ -31,20 +31,40 @@ switch form
 end
 
 
-function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
-K_mu=funcall( stiffness_func, mu_k );
+function K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
 m_k=size(v_k_i,2);
 K_i=cell(m_k,1);
 Delta_i=cell(m_k,1);
-m_iota_k=size(k_i_iota,2);
+Delta=stochastic_pce_matrix( k_i_iota, I_k, I_u );
 for i=1:m_k
-    erase_print( 'assemble: %d/%d', i, m_k );
     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
-    Delta_i{i}=stochastic_pce_matrix( k_i_iota(i,:), I_k, I_u );
+    Delta_i{i}=Delta(:,:,i);
 end
-erase_print();
-Delta_mu=stochastic_pce_matrix( [1,zeros(1,m_iota_k-1)], I_k, I_u );
-K_mu_delta={K_mu; Delta_mu; K_i; Delta_i };
+K_mu_delta={K_i{:};Delta_i{:}}';
+
+function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
+v_k_i=[mu_k, v_k_i];
+m_iota_k=size(k_i_iota,2);
+k_i_iota=[k_i_iota; [1,zeros(1,m_iota_k-1)]];
+K_mu_delta2=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );
+%K_mu_delta={; Delta_mu; K_i; Delta_i };
+
+
+
+% function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
+% K_mu=funcall( stiffness_func, mu_k );
+% m_k=size(v_k_i,2);
+% K_i=cell(m_k,1);
+% Delta_i=cell(m_k,1);
+% m_iota_k=size(k_i_iota,2);
+% for i=1:m_k
+%     erase_print( 'assemble: %d/%d', i, m_k );
+%     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
+%     Delta_i{i}=stochastic_pce_matrix( k_i_iota(i,:), I_k, I_u );
+% end
+% erase_print();
+% Delta_mu=stochastic_pce_matrix( [1,zeros(1,m_iota_k-1)], I_k, I_u );
+% K_mu_delta={K_mu; Delta_mu; K_i; Delta_i };
 
 function K_mu_iota=assemble_mu_iota( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
 K_mu=funcall( stiffness_func, mu_k );
@@ -80,6 +100,5 @@ for alpha=1:m_alpha_u
         end
         K_ab{beta,alpha}=K_ab{alpha,beta};
     end
-    fprintf( repmat(sprintf('\b'), length(s), 1) );
 end
 erase_print();

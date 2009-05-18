@@ -31,7 +31,9 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %     check_condition( @check_condition, 'function', false, '@cf', mfilename, options );
 %     check_condition( {A,B}, 'match', false, {'A','B'}, mfilename, options );
 %     check_condition( {A,[]}, 'match', true, {'A','?'}, mfilename, options );
-%     check_condition( {x,'double'}, 'match', false, x, mfilename, options );
+%     check_condition( {x,'double'}, 'isa', false, x, mfilename, options );
+%     disp( 'No warning should have appeared until now. But now they come...');
+%     disp( 'Press enter to continue' ); pause;
 %
 %     %fail
 %     check_condition( A, 'vector', true, 'A', mfilename, options );
