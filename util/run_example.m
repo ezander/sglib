@@ -43,7 +43,8 @@ x1=regexp( s, '\n *[sS]ee also' );
 if ~isempty(x1)
     s=s(1:x1(1)-1);
 end
-eval( s );
+%evalin( 'base', s );
+evalin( 'caller', s );
 
 if nargout==1
     cmds=s;

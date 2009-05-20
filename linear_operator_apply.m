@@ -1,31 +1,25 @@
-function [b,n]=apply_linear_operator( A, x )
+function y=linear_operator_apply( A, x )
 % APPLY_LINEAR_OPERATOR Apply a linear operator or matrix to a vector.
 %   B=APPLY_LINEAR_OPERATOR( A, X ) applies the linear operator A to the
 %   vector X. If A is a matrix, then just A*X is returned, otherwise if A
-%   is a function then, FUNCALL( A, X ) is returned. The functionality is
+%   is a cell array then, FUNCALL( A{2}, X ) is returned. The functionality is
 %   rather trivial but makes it easier to handle both "types" of linear
 %   operator in solver codes. 
-%   If the argument X is not supplied or empty the size of A is returned.
-%   Thus, any linear operator function has to be implemented such that if
-%   the second argument is empty, the size of the operator is returned.
-%   (This is for calling code to make memory allocations and the like
-%   without knowing details about the linear operator otherwise). Depending
-%   on the number of output arguments, either a size array is returned, or
-%   the individual dimensions are returned as different output arguments.
 %
-% Example (<a href="matlab:run_example apply_linear_operator">run</a>)
+% Example (<a href="matlab:run_example linear_operator_apply">run</a>)
 %     M=[1, 2; 3, 4; 5, 10];
-%     x=[1; 5];
-% 
-%     y1=apply_linear_operator( M, x );
-% 
-%     % This doesn't fulfill the requirement for empty X, just for
-%     % demonstration
-%     func={ @times, {M}, {1} };
-%     y2=apply_linear_operator( M, x );
-%     disp([y1,y2,y1-y2])
+%     linop={ size(M), {@mtimes, {M}, {1} } };
+%     linop2={ { @size, {M}, {1} }, {@mtimes, {M}, {1} } };
+%     [m,n]=linear_operator_size( linop2 );
 %
-% See also ISFUNCTION
+%     x=ones(n,1);
+%     y=zeros(m,0);
+%     y=[y,linear_operator_apply( M, x )]; 
+%     y=[y,linear_operator_apply( linop, x )];
+%     y=[y,linear_operator_apply( linop2, x )]; 
+%     disp(y);
+%
+% See also LINEAR_OPERATOR, LINEAR_OPERATOR_SIZE, ISFUNCTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -40,26 +34,13 @@ function [b,n]=apply_linear_operator( A, x )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if nargin<2
-    x=[];
-end
-sizeonly=isempty( x );
-
 if isnumeric(A)
-    % assume A is a matrix 
-    if sizeonly
-        b=size(A);
-    else
-        b=A*x;
-    end
-elseif isfunction(A)
-    % A is an operator (size query must be handled by A)
-    b=funcall( A, x );
+    % A is a matrix 
+    y=A*x;
+elseif iscell(A) && isfunction(A{2})
+    % A is an operator and secondelement contains function returning the
+    % application of the linear operator
+    y=funcall( A{2}, x );
 else
-    error( 'apply_linear_operator:type', 'linear operator is neither a matrix nor a function' );
+    error( 'linear_operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end
-
-if sizeonly && nargout==2
-    n=b(2); b=b(1);
-end
-
