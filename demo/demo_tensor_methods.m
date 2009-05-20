@@ -41,14 +41,10 @@ userwait;
 %% load and create the operators 
 kl_operator_version=6;
 stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
-K_mu_delta=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' );
+K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' );
 K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta' );
 % create matrix and tensor operators
-K={ K_mu_delta{1}, K_mu_delta{3}{:}; K_mu_delta{2},K_mu_delta{4}{:} };
 Kmat=cell2mat(K_ab);
-
-
-
 
 trunc_k=20;
 trunc_eps=1e-7;
@@ -70,7 +66,7 @@ G=kl_to_tensor( mu_g_j, zeros(size(mu_g_j,1),0), zeros(0,size(I_u,1)) );
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
-[Ks,fs]=apply_boundary_conditions( K, f, g, P_B, P_I, m, varargin )
+[Ks,fs]=apply_boundary_conditions( K, F, G, P_B, P_I )
 
 
 H=tensor_apply_kl_operator( K_mu_delta, G, trunc_k, trunc_eps, M_N, M_Phi, true );

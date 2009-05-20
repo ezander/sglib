@@ -31,7 +31,7 @@ g=((n:-1:1).*(n:-1:1))';
 [P_B,P_I]=boundary_projectors( bnd, n );
 
 
-[Ks,fs]=apply_boundary_conditions( K, f, g, P_B, P_I, 1, 'scaling', .7 );
+[Ks,fs]=apply_boundary_conditions( K, f, g, P_B, P_I, 'scaling', .7 );
 u=Ks\fs;
 
 assert_equals( P_B*u, P_B*g, 'u_g_B' );
