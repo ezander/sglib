@@ -1,8 +1,8 @@
-function test_apply_tensor_operator
+function test_tensor_operator_apply
 % TEST_APPLY_TENSOR_OPERATOR Test the APPLY_TENSOR_OPERATOR function.
 %
-% Example (<a href="matlab:run_example test_apply_tensor_operator">run</a>) 
-%    test_apply_tensor_operator
+% Example (<a href="matlab:run_example test_tensor_operator_apply">run</a>) 
+%    test_tensor_operator_apply
 %
 % See also TESTSUITE
 
@@ -19,7 +19,7 @@ function test_apply_tensor_operator
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'apply_tensor_operator' );
+assert_set_function( 'tensor_operator_apply' );
 
 
 % there is not much point in bigger matrices here, just check that basic
@@ -27,7 +27,7 @@ assert_set_function( 'apply_tensor_operator' );
 M=[1, 2, 4; 3, 4, 6; 5, 10, 20];
 x=[1; 5; 4];
 y=M*x;
-assert_equals( apply_tensor_operator( M, x ), y, 'kron/vect' );
+assert_equals( tensor_operator_apply( M, x ), y, 'kron/vect' );
 
 %
 %irnd=@(x,y)(round(10*rand(x,y)))
@@ -48,8 +48,8 @@ B={zeros(M1,0), zeros(M2,0)};
 
 for i=1:R
     A(i,1:2)={rand(M1,N1), rand(M2,N2) };
-    Alin{i,1}={@apply_linear_operator,{A{i,1}}, {1} };
-    Alin{i,2}={@apply_linear_operator,{A{i,2}}, {1} };
+    Alin{i,1}=linear_operator(A{i,1});
+    Alin{i,2}=linear_operator(A{i,2});
     
     Ak=Ak+kron( A{i,2}, A{i,1} );
     for j=1:M2
@@ -64,28 +64,12 @@ Bmat=B{1}*B{2}';
 
 
 assert_equals( Ak, cell2mat(Ab), 'internal/AkAb' );
-assert_equals( apply_tensor_operator( Ak, Xmat(:) ), Bmat(:), 'kron/vect' );
-assert_equals( apply_tensor_operator( Ab, Xmat(:), 'optype', 'block' ), Bmat(:), 'block/vect' );
-%assert_equals( apply_tensor_operator( Ab, X, 'optype', 'block' ), Bmat, 'block/tensor' );
-assert_equals( apply_tensor_operator( Ab, Xmat, 'optype', 'block' ), Bmat, 'block/mat' );
-assert_equals( apply_tensor_operator( A, Xmat ), Bmat, 'tensor/mat' );
-assert_equals( apply_tensor_operator( A, X ), B, 'tensor/tensor' );
-assert_equals( apply_tensor_operator( Alin, X ), B, 'lin_op_tensor/tensor' );
+assert_equals( tensor_operator_apply( Ak, Xmat(:) ), Bmat(:), 'kron/vect' );
+assert_equals( tensor_operator_apply( Ab, Xmat(:), 'optype', 'block' ), Bmat(:), 'block/vect' );
+%assert_equals( tensor_operator_apply( Ab, X, 'optype', 'block' ), Bmat, 'block/tensor' );
+assert_equals( tensor_operator_apply( Ab, Xmat, 'optype', 'block' ), Bmat, 'block/mat' );
+assert_equals( tensor_operator_apply( A, Xmat ), Bmat, 'tensor/mat' );
+assert_equals( tensor_operator_apply( A, X ), B, 'tensor/tensor' );
+assert_equals( tensor_operator_apply( Alin, X ), B, 'lin_op_tensor/tensor' );
 
-
-%assert_equals( apply_tensor_operator( Alin, X, 'reduce', @tensor ), B, 'lin_op_tensor/tensor' );
-
-
-return
-
-
-
-
-
-A=[ 1 2; 3 5];
-B=[ 1 2 1; 3 2 1; 5 0 10];
-C={ A(1,1)*B, A(1,2)*B;  A(2,1)*B, A(2,2)*B;  }
-norm(kron(A,B)-cell2mat(C))
-
-1;
 

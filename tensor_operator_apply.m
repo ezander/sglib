@@ -1,4 +1,4 @@
-function B=apply_tensor_operator( A, X, varargin )
+function B=tensor_operator_apply( A, X, varargin )
 % APPLY_TENSOR_OPERATOR Apply a tensor operator to a tensor.
 %   B=APPLY_TENSOR_OPERATOR( A, X, VARARGIN ) applies the tensor operator A
 %   to the tensor X. Different format for A and X are supported, and can be
@@ -96,19 +96,19 @@ end
 
 function B=apply_kron_vect( A, X )
 check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
-B=apply_linear_operator( A, X );
+B=linear_operator_apply( A, X );
 
 
 function B=apply_block_vect( A, X )
 % TODO: doesn't yet work with general linear operators
-[M1,N1]=size(A);
-[M2,N2]=size(A{1,1});
+[M1,N1]=size(A); %#ok
+[M2,N2]=size(A{1,1});  %#ok
 B=cell2mat(A)*X;
 
 function B=apply_block_mat( A, X )
 % TODO: doesn't yet work with general linear operators
-[M1,N1]=size(A);
-[M2,N2]=size(A{1,1});
+[M1,N1]=size(A);  %#ok
+[M2,N2]=size(A{1,1});  %#ok
 B=reshape(cell2mat(A)*X(:),[M2,M1]);
 
 function B=apply_tensor_tensor( A, X )
@@ -116,13 +116,13 @@ function B=apply_tensor_tensor( A, X )
 % TODO: no reduction yet
 check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
 check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
-[M1,N1]=apply_linear_operator(A{1,1});
-[M2,N2]=apply_linear_operator(A{1,2});
+[M1,N1]=linear_operator_size(A{1,1}); %#ok
+[M2,N2]=linear_operator_size(A{1,2}); %#ok
 B={zeros(M1,0),zeros(M2,0)};
 R=size(A,1);
 for i=1:R
-    B1n=apply_linear_operator(A{i,1},X{1});
-    B2n=apply_linear_operator(A{i,2},X{2});
+    B1n=linear_operator_apply(A{i,1},X{1});
+    B2n=linear_operator_apply(A{i,2},X{2});
     B={[B{1}, B1n], [B{2}, B2n] };
 end
 
@@ -135,6 +135,7 @@ check_condition( {A{1,2},X'}, 'match', false, {'A{1,2}','X'''}, mfilename );
 
 K=size(A,1);
 for i=1:K
-    Y=A{i,1}*X*A{i,2}';
-    if i==1; B=Y; else B=B+Y; end;
+    Y=linear_operator_apply(A{i,1},X)';
+    Z=linear_operator_apply(A{i,2},Y)';
+    if i==1; B=Z; else B=B+Z; end;
 end

@@ -113,8 +113,8 @@ switch varcond
         empty=isempty(x{1})||isempty(x{2});
         ok=ok&&(emptyok||~empty);
         if ~empty
-            sz1=apply_linear_operator( x{1} );
-            sz2=apply_linear_operator( x{2} );
+            sz1=linear_operator_size( x{1} );
+            sz2=linear_operator_size( x{2} );
             ok=ok&&(sz1(2)==sz2(1));
         end
         if ~ok

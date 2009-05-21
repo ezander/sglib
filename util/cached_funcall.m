@@ -36,8 +36,8 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-[silent,options]=get_option( options, 'silent', false );
-[show_timings,options]=get_option( options, 'show_timings', true );
+[silent,options]=get_option( options, 'silent', true );
+[show_timings,options]=get_option( options, 'show_timings', false );
 [message,options]=get_option( options, 'message', [] );
 [extra_params,options]=get_option( options, 'extra_params', {} );
 check_unsupported_options( options, mfilename );
