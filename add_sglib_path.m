@@ -37,7 +37,7 @@ if nargin>=3 && ~isempty(restore) && restore
 end
 
 p = mfilename('fullpath');
-m=max(find(p=='/'));
+m=find(p=='/',1,'last');
 p=p(1:m-1);
 addpath( p );
 addpath( [p '/munit'] );

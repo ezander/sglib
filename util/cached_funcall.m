@@ -79,7 +79,7 @@ end
 [data{:}]=funcall( func, params{:}, extra_params{:} ); % Here's the action!
 if show_timings
     t2=cputime;
-    fprintf( '(%d s) \n', t2-t1 ); 
+    fprintf( '(%g s) \n', t2-t1 ); 
 end
 
 varargout=data;

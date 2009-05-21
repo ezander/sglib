@@ -7,7 +7,7 @@ options=varargin2options( varargin{:} );
 check_unsupported_options( options, mfilename );
 
 if isempty(x0)~=isempty(u0)
-    warning( 'x0 and u0 should be specified both (not only one of them, that''s risky)' );
+    warning( 'pce_function:spec', 'x0 and u0 should be specified both (not only one of them, that''s risky)' );
 end
 
 switch func_name

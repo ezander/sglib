@@ -35,8 +35,8 @@ function ind=multiindex_find( I_r, alpha )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-m=size(I_r,1);
+%m=size(I_r,1);
 %ind=sum(abs(I_r-repmat(alpha,m,1)),2)==0;
 %ind=all(I_r==repmat(alpha,m,1),2);
-[dummy,ind]=ismember(alpha,I_r,'rows');
+[dummy,ind]=ismember(alpha,I_r,'rows'); %#ok
 

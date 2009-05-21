@@ -1,4 +1,4 @@
-function A=linear_operator( M, varargin )
+function A=linear_operator( M )
 % LINEAR_OPERATOR Creates  a linear operator structure from a matrix.
 %   A linear operator is a cell array containing information about its
 %   size, application to a vector and inversion of a vector. The first

@@ -37,7 +37,7 @@ elseif iscell(A) && length(A)>=3 && isfunction(A{3})
 elseif iscell(A) && isfunction(A{2})
     % A is an operator and secondelement contains function returning the
     % application
-    [x,flag,relres,iter,resvec] = cgs(@funcall_reverse,y,[],[],[],[],[],A{2});
+    x = cgs(@funcall_reverse,y,[],[],[],[],[],A{2});
 else
     error( 'linear_operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end

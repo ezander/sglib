@@ -1,18 +1,11 @@
-function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, variant, varargin )
+function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
 
 options=varargin2options( varargin{:} );
-[silent,options]=get_option( options, 'silent', false );
-[show_timings,options]=get_option( options, 'show_timings', true );
-[use_waitbar,options]=get_option( options, 'use_waitbar', true );
+[silent,options]=get_option( options, 'silent', true );
+[show_timings,options]=get_option( options, 'show_timings', false );
+[use_waitbar,options]=get_option( options, 'use_waitbar', false );
 check_unsupported_options( options, mfilename );
 
-
-if nargin<8 || isempty( variant )
-    variant=1;
-end
-if nargin<7 || isempty( form )
-    form='mu_delta';
-end
 
 opt.silent=silent;
 opt.show_timings=show_timings;
@@ -70,10 +63,14 @@ K_mu=funcall( stiffness_func, mu_k );
 m_k=size(v_k_i,2);
 K_i=cell(m_k,1);
 for i=1:m_k
-    erase_print( 'assemble: %d/%d', i, m_k );
+    if ~opt.silent
+        erase_print( 'assemble: %d/%d', i, m_k );
+    end
     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
 end
-erase_print();
+if ~opt.silent
+    erase_print();
+end
 K_mu_iota={K_mu; K_i; k_i_iota; I_u; I_k };
 
 
@@ -89,7 +86,9 @@ hermite_triple_fast( max([I_u(:);I_k(:)] ) );
 m_alpha_u=size(I_u,1);
 K_ab=cell(m_alpha_u,m_alpha_u);
 for alpha=1:m_alpha_u
-    erase_print( '%d/%d %d/%d', alpha*(alpha+1)/2, m_alpha_u*(m_alpha_u+1)/2, alpha, m_alpha_u );
+    if ~opt.silent
+        erase_print( '%d/%d %d/%d', alpha*(alpha+1)/2, m_alpha_u*(m_alpha_u+1)/2, alpha, m_alpha_u );
+    end
     for beta=1:alpha
         N=size(K_i{i},1);
         h_i=k_i_iota*squeeze(hermite_triple_fast(I_u(alpha,:),I_u(beta,:),I_k(:,:)));
@@ -104,8 +103,9 @@ for alpha=1:m_alpha_u
         K_ab{beta,alpha}=K_ab{alpha,beta};
     end
 end
-erase_print();
-
+if ~opt.silent
+    erase_print();
+end
 % a1 B1 + a2 B2 + ... => C
 % r terms a NxN => NxN
 % NxrN * rNxN => NxN

@@ -39,10 +39,12 @@ userwait;
 
 
 %% load and create the operators 
-kl_operator_version=6;
+kl_operator_version=9;
 stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
-K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' );
-K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta' );
+opt.silent=false;
+opt.show_timings=true;
+K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
+K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
 % create matrix and tensor operators
 Kmat=cell2mat(K_ab);
 
@@ -59,13 +61,11 @@ g_func={ @subsref, {subsel}, {2} };
 mu_g_j=zeros(size(mu_f_j,1),size( funcall( g_func, pos(1,:)),2));
 mu_g_j(bnd,:)=funcall( g_func, pos(bnd,:));
 G=kl_to_tensor( mu_g_j, zeros(size(mu_g_j,1),0), zeros(0,size(I_u,1)) );
-[P_B,P_I]=boundary_projectors( bnd, size(mu_g_j,1) );
-
-
 
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
+[P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
 [Ks,fs]=apply_boundary_conditions( K, F, G, P_B, P_I )
 
 

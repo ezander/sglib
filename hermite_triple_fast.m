@@ -52,9 +52,9 @@ if nargin==1
                 % the sum i+j+k has to be even and that i,j and k have to
                 % fulfill the triangle inequality (not that this optimization
                 % would matter in any way...)
+                % Note: for gPC the step size should be 1, not 2
                 for k=i-j:2:j
                     hijk=hermite_triple_product(i,j,k);
-                    if hijk==0; warning('there''es something wrong here'); end
                     triples(i+1,j+1,k+1)=hijk;
                     triples(i+1,k+1,j+1)=hijk;
                     triples(j+1,i+1,k+1)=hijk;
