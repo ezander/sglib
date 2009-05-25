@@ -7,7 +7,7 @@ clear
 
 %% We use the pde toolbox to generate the geometry and the mass matrix
 %% (gramian)
-[pos,els,M]=load_pdetoolbox_geom( 'cardioid', 1, true )
+[pos,els,M]=load_pdetool_geom( 'cardioid', 1, true )
 
 
 % expansion of the right hand side field (f)

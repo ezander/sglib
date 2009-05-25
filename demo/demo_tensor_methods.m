@@ -50,8 +50,11 @@ Kmat=cell2mat(K_ab);
 
 trunc_k=20;
 trunc_eps=1e-7;
-M_N=[];
-M_Phi=[];
+G_N=[];
+G_Phi=[];
+
+N=size(pos,1);
+M=size(I_u,1);
 
 %g_func=@(x)(x(:,1));
 subsel.type='()';
@@ -62,16 +65,24 @@ mu_g_j=zeros(size(mu_f_j,1),size( funcall( g_func, pos(1,:)),2));
 mu_g_j(bnd,:)=funcall( g_func, pos(bnd,:));
 G=kl_to_tensor( mu_g_j, zeros(size(mu_g_j,1),0), zeros(0,size(I_u,1)) );
 
+[P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
+I_I=P_I'*P_I;
+I_B=P_B'*P_B;
+
+G2=tensor_apply( {I_B, speye(M)}, G )
+H=tensor_operator_apply( K, G2 );
+
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
-[P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
+F2=tensor_add( F, H, -1 );
+
 [Ks,fs]=apply_boundary_conditions( K, F, G, P_B, P_I )
 
 
-H=tensor_apply_kl_operator( K_mu_delta, G, trunc_k, trunc_eps, M_N, M_Phi, true );
-F2=tensor_reduce( tensor_add( F, H ), trunc_k, trunc_eps );
-F2
+%H=tensor_operator_apply( K, F );
+%F2=tensor_reduce( tensor_add( F, H ), trunc_k, trunc_eps );
+%F2
 
 
 

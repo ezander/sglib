@@ -106,36 +106,35 @@ ni=size(i,1);
 nj=size(j,1);
 nk=size(k,1);
 nd=size(i,2);
-stride1=max_ind+1;
-stride2=stride1^2;
+strides=cumprod(size(triples));
 I=permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
 J=permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
 K=permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
 I=reshape( I, nd, [] );
 J=reshape( J, nd, [] );
 K=reshape( K, nd, [] );
-ind=1+I+stride1*J+stride2*K;
-%ind=I+J+K;
+ind=1+I+strides(1)*J+strides(2)*K;
 c=prod(triples(ind),1);
 c=reshape( c, [ni nj nk]);
 
 if 0
-    % and this is the implementation I like most, but somehow it's 30 to 40
-    % percent slower than the other one
+    % This is the implementation I like most, because it's the most
+    % symmetric one and doesn't need any reshaping. However, it's 30 to 40
+    % percent slower than the current one (above).
     ni=size(i,1);
     nj=size(j,1);
     nk=size(k,1);
     I=repmat( permute(i,[1 3 4 2] ), [1 nj nk 1] );
     J=repmat( permute(j,[3 1 4 2] ), [ni 1 nk 1] );
     K=repmat( permute(k,[3 4 1 2] ), [ni nj 1 1] );
-    stride1=max_ind+1;
-    stride2=stride1^2;
-    ind=1+I+stride1*J+stride2*K;
+    strides=cumprod(size(triples));
+    ind=1+I+strides(1)*J+strides(2)*K;
     c=prod(triples(ind),4);
 end
 
 
-if 0
+if 0 % old version (does not work on more than one vector argument)
+    
     % Note: multiindices are row vectors => size(i,2)
     if size(i,1)>1 || size(j,1)>1
         error([ 'hermite_triple_product: not yet implemented for ' ...

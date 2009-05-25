@@ -27,8 +27,9 @@ else
     for i=1:size(K,1)
         Ks{i,1}=I_I*K{i,1}*I_I+s*I_B;
     end
-    
-    error('not yet implemented');
+    if nargout>1
+        error('not yet implemented');
+    end
 end
 
 

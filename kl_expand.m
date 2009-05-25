@@ -1,12 +1,12 @@
-function [f,sqrt_lambda]=kl_expand( C, M, m, varargin )
+function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 % KL_EXPAND Perform Karhunen-Loeve expansion.
-%   [F,SQRT_LAMBDA]=KL_EXPAND( C, M, M, OPTIONS ) performs the
+%   [F,SQRT_LAMBDA]=KL_EXPAND( C, G, M, OPTIONS ) performs the
 %   Karhunen-Loeve expansion on the input arguments. C is the pointwise
 %   covariance matrix (if you have the covariance functions first stuff it
-%   into COVARIANCE_MATRIX to generate the matrix). M is the mass matrix,
-%   if unspecified (i.e. []) the identity matrix is used. M can also be a
+%   into COVARIANCE_MATRIX to generate the matrix). G is the spatial Gramian matrix,
+%   if unspecified (i.e. []) the identity matrix is used. G can also be a
 %   function that computes a matrix-vector product instead of an explicit
-%   matrix represenation. M (lower) is the number of KL terms to be
+%   matrix represenation. M is the number of KL terms to be
 %   returned.
 %   F and SQRT_LAMBDA contain the eigenfunctions and eigenvalues of the KL
 %   eigenproblem respectively. If only one output argument (i.e. F) is used,
@@ -25,8 +25,8 @@ function [f,sqrt_lambda]=kl_expand( C, M, m, varargin )
 %   els=[1:n-1; 2:n]';
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 %   options.correct_var=true;
-%   M=mass_matrix( els, x );
-%   f=kl_expand( C, M, 3, options );
+%   G=mass_matrix( els, x );
+%   f=kl_expand( C, G, 3, options );
 %   [mu,sig2]=pce_moments( [zeros(size(f,1),1), f], multiindex(3,1))
 %
 % See also COVARIANCE_MATRIX, OPTIONS
@@ -45,7 +45,7 @@ function [f,sqrt_lambda]=kl_expand( C, M, m, varargin )
 
 
 %TODO: make kl_expand adhere to naming conventions
-%TODO: dont actually compute MCM, use a function
+%TODO: dont actually compute GCG, use a function
 %TODO: accept function instead of explicit mass matrix
 
 options=varargin2options( varargin{:} );
@@ -60,29 +60,31 @@ if m>size(C,1)
 end
 
 % calculate discrete covariance matrix W
-if ~isempty(M)
-    W=M*C*M;
+if ~isempty(G)
+    W=G*C*G;
 else
     W=C;
 end
 
 % symmetrise W (often slightly unsymmetric causing eigs to complain)
-W=0.5*(W+W');
+if issymmetric( C ) && ~issymmetric( G ) && ~issymmetric( W )
+    W=0.5*(W+W');
+end
 
 % calculate eigenvalues and -vectors of generalized eigenvalue problem
 eigs_options.disp=0;
-if isempty(M)
+if isempty(G)
     [V,D]=eigs( W, m, 'lm', eigs_options );
 else
-    [V,D]=eigs( W, M, m, 'lm', eigs_options );
+    [V,D]=eigs( W, G, m, 'lm', eigs_options );
 end
 
 % retrieve the lambdas
 sqrt_lambda=reshape( sqrt(diag(D)), 1, [] );
 % retrieve the f's (f_i should correspond to f(:,i))
 f=V;
-if ~isempty(M) && isoctave()
-    f=row_col_mult( f, 1./sqrt(diag(f'*M*f)') );
+if ~isempty(G) && isoctave()
+    f=row_col_mult( f, 1./sqrt(diag(f'*G*f)') );
 end
 
 % correct the variance of output field to match that of the covariance
@@ -101,3 +103,8 @@ end
 if  nargout<2
     f=row_col_mult( f, sqrt_lambda );
 end
+
+function bool=issymmetric( A )
+B=A';
+bool=all(B(:)==A(:));
+

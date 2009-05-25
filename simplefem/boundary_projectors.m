@@ -22,9 +22,8 @@ function [P_B,P_I]=boundary_projectors( bnd, n )
 %   u=Ks\fs;                  % now solve with mod operator
 %
 %   % methode 2
+%   fi=P_I*(f-K*I_B*gb);     % modified RHS for inner nodes
 %   Ki=P_I*K*P_I';            % operator for inner nodes
-%   gb=P_B*g;                 % g just on the bnd nodes
-%   fi=P_I*(f-K*P_B'*gb);     % modified RHS for inner nodes
 %   ui=Ki\fi;                 % solve only on inner nodes
 %   u=P_I'*ui+P_B'*gb;        % assemble inner and bnd node values
 %

@@ -29,28 +29,41 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-vectorized=get_option( options, 'vectorized', true );
+[vectorized,options]=get_option( options, 'vectorized', true );
+[max_dist,options]=get_option( options, 'max_dist', inf );
 check_unsupported_options( options, mfilename );
 
 n=size(pos,1);
-C=zeros(n,n);
+if isinf(max_dist)
+    C=zeros(n,n);
+else
+    C=sparse(n,n);
+end
 
 if ~vectorized
     % maybe this will be needed later for non-vectorized covariance
     % functions, but it's awfully slow
     for i=1:n
-        C(i,i)=funcall( covar_func, pos(i,:), pos(i,:), varargin{:} );
+        C(i,i)=funcall( covar_func, pos(i,:), pos(i,:) );
         for j=(i+1):n
-            C(i,j)=funcall( covar_func, pos(i,:), pos(j,:), varargin{:} );
+            C(i,j)=funcall( covar_func, pos(i,:), pos(j,:) );
             C(j,i)=C(i,j);
         end
     end
 else
     % TODO: maybe this should be vectorized even further
     for i=1:n
-        C(i:end,i)=funcall( covar_func, repmat(pos(i,:),n-i+1,1), ...
-			   pos(i:end,:), varargin{:} );
-        C(i,i:end)=C(i:end,i)';
+        if isinf(max_dist)
+            C(i:end,i)=funcall( covar_func, repmat(pos(i,:),n-i+1,1), ...
+                pos(i:end,:) );
+            C(i,i:end)=C(i:end,i)';
+        else
+            d=sum(abs(repmat(pos(i,:),n-i+1,1)-pos(i:end,:)),2);
+            ind=i-1+find(d<max_dist);
+            C(ind,i)=funcall( covar_func, repmat(pos(i,:),length(ind),1), ...
+                pos(ind,:) );
+            C(i,ind)=C(ind,i)';
+        end
     end
 end
 

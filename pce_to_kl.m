@@ -1,4 +1,4 @@
-function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I_r, m_r, M_N, M_Phi, varargin )
+function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I_r, m_r, G_N, G_Phi, varargin )
 % PCE_TO_KL Reduce a pure PCE field into a KL-PCE field.
 
 %TODO: overhaul the comments
@@ -17,14 +17,14 @@ function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I
 %  u(x,omega)=Sum_alpha u_alpha(x) H_alpha(xi(omega))
 % and want to transform it into 
 %  u(x,omega)=mu_u(x) + Sum_u f_
-if ~exist('M_N','var'); M_N=[]; end
-if ~exist('M_Phi','var'); M_Phi=[]; end
+if ~exist('G_N','var'); G_N=[]; end
+if ~exist('G_Phi','var'); G_Phi=[]; end
 
-check_condition( {M_N, r_j_alpha}, 'match', true, {'M_N', 'r_j_alpha'}, mfilename );
+check_condition( {G_N, r_j_alpha}, 'match', true, {'G_N', 'r_j_alpha'}, mfilename );
 check_range( m_r, 1, inf, 'm_r', mfilename );
 check_condition( {r_j_alpha, I_r}, 'match', false, {'r_j_alpha', 'I_r'}, mfilename );
-check_condition( M_N, 'square', true, 'M_N', mfilename );
-check_condition( M_Phi, 'square', true, 'M_Phi', mfilename );
+check_condition( G_N, 'square', true, 'G_N', mfilename );
+check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
 
 
 options=varargin2options( varargin{:} );
@@ -45,8 +45,8 @@ r_j_alpha(:,1)=0;
 % polynomials to normalized (orthonormal) Hermite polynomials
 pcc_normed=normalize_pce( r_j_alpha, I_r );
 
-if ~isempty(M_N)
-    L_N=chol(M_N);
+if ~isempty(G_N)
+    L_N=chol(G_N);
     % this is really strange, but multiplication with a full matrix seems
     % to be many, many times faster (about x15) than with a sparse matrix
     % pcc_normed=L_N*pcc_normed; % very slow
@@ -56,7 +56,7 @@ end
 
 [U,S,V,relerr]=truncated_svd_internal( pcc_normed, m_r, sparse_svd, tol, maxit );
 
-if ~isempty(M_N)
+if ~isempty(G_N)
     U=L_N\U;
 end
 

@@ -25,9 +25,19 @@ x=linspace(0,1,n)';
 
 % First some test whether the normal generation of the 1-dimensional
 % covariance matrix is correct (2- and 3-dimensional still missing)
-C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
-C_u_ex=toeplitz(4*exp(-x.^2/0.09));
+L=.3;
+sig=2;
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+C_u_ex=toeplitz(sig^2*exp(-x.^2/L^2));
 assert_equals( C_u, C_u_ex, 'cov_matrix' );
+
+Lmax=.02;
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}}, 'max_dist', Lmax );
+cmin=sig^2*exp(-Lmax^2/L^2);
+C_u_ex( C_u_ex<cmin ) = 0;
+assert_equals( C_u, C_u_ex, 'cov_matrix_lmax' );
+assert_true( issparse(C_u), 'cov_matrix_lmax_sparse' );
+
 
 n=20;
 x=linspace(0,1,n)';
