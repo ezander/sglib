@@ -20,15 +20,14 @@ function test_distributions
 
 
 
-assert_set_function( 'distributions' );
-
 %% Normal distribution
-assert_set_function('distributions/normal');
 mu=1; sig=2;
+assert_set_function('normal_cdf');
 assert_equals( normal_cdf(-inf,mu,sig), 0, 'cdf_minf' );
 assert_equals( normal_cdf(inf,mu,sig), 1, 'cdf_inf' );
 assert_equals( normal_cdf(mu,mu,sig), 1/2, 'cdf_median' );
 
+assert_set_function('normal_pdf');
 assert_equals( normal_pdf(-inf,mu,sig), 0, 'pdf_minf' );
 assert_equals( normal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 
@@ -38,13 +37,14 @@ F2=pdf_integrate( normal_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Lognormal distribution
-assert_set_function('distributions/lognorm');
 mu=2; sig=0.5;
+assert_set_function('lognorm_cdf');
 assert_equals( lognorm_cdf(-inf,mu,sig), 0, 'cdf_minf' );
 assert_equals( lognorm_cdf(-1e8,mu,sig), 0, 'cdf_negative' );
 assert_equals( lognorm_cdf(inf,mu,sig), 1, 'cdf_inf' );
 assert_equals( lognorm_cdf(exp(mu),mu,sig), 1/2, 'cdf_median' );
 
+assert_set_function('lognorm_pdf');
 assert_equals( lognorm_pdf(-inf,mu,sig), 0, 'pdf_minf' );
 assert_equals( lognorm_pdf(-1e8,mu,sig), 0, 'pdf_negative' );
 assert_equals( lognorm_pdf(inf,mu,sig), 0, 'pdf_inf' );
@@ -55,13 +55,14 @@ F2=pdf_integrate( lognorm_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Exponential distribution
-assert_set_function('distributions/exponential');
 alpha=1.5;
+assert_set_function('exponential_cdf');
 assert_equals( exponential_cdf(-inf,alpha), 0, 'cdf_minf' );
 assert_equals( exponential_cdf(-1e10,alpha), 0, 'cdf_negative' );
 assert_equals( exponential_cdf(inf,alpha), 1, 'cdf_inf' );
 assert_equals( exponential_cdf(log(2)/alpha,alpha), 1/2, 'cdf_median' );
 
+assert_set_function('exponential_pdf');
 assert_equals( exponential_pdf(-inf,alpha), 0, 'pdf_minf' );
 assert_equals( exponential_pdf(-1e10,alpha), 0, 'pdf_negative' );
 assert_equals( exponential_pdf(inf,alpha), 0, 'pdf_inf' );
@@ -72,8 +73,8 @@ F2=pdf_integrate( exponential_pdf( x2, alpha ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Beta distribution
-assert_set_function('distributions/beta');
 a=2; b=3;
+assert_set_function('beta_cdf');
 assert_equals( beta_cdf(-inf,a,b), 0, 'cdf_minf' );
 assert_equals( beta_cdf(-1e8,a,b), 0, 'cdf_zero' );
 assert_equals( beta_cdf(1+1e8,a,b), 1, 'cdf_zero' );
@@ -82,6 +83,7 @@ assert_equals( beta_cdf(1/2,a,a), 1/2, 'cdf_median' );
 assert_equals( beta_cdf(1/2,b,b), 1/2, 'cdf_median' );
 assert_equals( beta_cdf(1/2,1/b,1/b), 1/2, 'cdf_median' );
 
+assert_set_function('beta_pdf');
 assert_equals( beta_pdf(-inf,a,b), 0, 'pdf_minf' );
 assert_equals( beta_pdf(-1e8,a,b), 0, 'pdf_zero' );
 assert_equals( beta_pdf(0,a,b), 0, 'pdf_zero' );

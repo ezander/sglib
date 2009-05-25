@@ -70,6 +70,7 @@ if isempty(stats)
     stats.assertion_failed_poss_function=0;
     stats.assertion_total_module=0;
     stats.assertion_total_function=0;
+    stats.tested_functions={};
 end
 
 % initialize options if called for the first time
@@ -111,6 +112,7 @@ if isempty(condition)
         stats.assertion_failed_poss_function=0;
         stats.assertion_total_function=0;
         curr_options=rmfield( curr_options, 'function_name' );
+        stats.tested_functions={stats.tested_functions{:}, options.function_name};
     end
     
     [curr_options, options]=transfer_option( curr_options, options, 'debug' );

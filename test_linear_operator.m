@@ -27,23 +27,27 @@ M=[1, 2; 3, 4; 5, 10];
 x=[1; 5];
 y=M*x;
 s=size(M);
-linop1=linear_operator( M );
-linop2={ size(M), {@mtimes, {M}, {1} } };
-linop3={ linop2{:}, {@mldivide, {M}, {1} } };
+linop1={ size(M), {@mtimes, {M}, {1} } };
+linop2={ linop1{:}, {@mldivide, {M}, {1} } };
 
 assert_set_function( 'linear_operator_size' );
 
 assert_equals( linear_operator_size( M ), s, 'M_size' );
 assert_equals( linear_operator_size( linop1 ), s, 'lo1_size' );
 assert_equals( linear_operator_size( linop2 ), s, 'lo2_size' );
-assert_equals( linear_operator_size( linop3 ), s, 'lo3_size' );
 
-assert_set_function( 'linear_operator_size' );
+assert_set_function( 'linear_operator_apply' );
 
 assert_equals( linear_operator_apply( M, x ), y, 'M_apply' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'lo1_apply' );
 assert_equals( linear_operator_apply( linop2, x ), y, 'lo2_apply' );
-assert_equals( linear_operator_apply( linop3, x ), y, 'lo3_apply' );
+
+assert_set_function( 'linear_operator' );
+
+linop1=linear_operator( M );
+assert_equals( linear_operator_size( linop1 ), s, 'lo1_size' );
+assert_equals( linear_operator_apply( linop1, x ), y, 'lo1_apply' );
+
 
 assert_set_function( 'linear_operator_solve' );
 
