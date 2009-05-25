@@ -78,6 +78,6 @@ assert_equals( linear_operator_apply( linop2, x ), y, 'loc2_apply' );
 assert_equals( linear_operator_solve( linop1, y ), x, 'loc1_solve' );
 assert_equals( linear_operator_solve( linop2, y ), x, 'loc2_solve', 'abstol', 1e-4 );
 % the result doesn't match the input (x) in this case but it shows that the
-% result is indeed computed step by step (which is inaacurate since the
+% result is indeed computed step by step (which is inaccurate since the
 % matrices are 4x3 and 3x4 and the second step has to be solved in a least squares fashion)
 assert_equals( linear_operator_solve( linop3, y ), M1\(M2\y), 'loc3_solve' );
