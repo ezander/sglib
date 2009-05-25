@@ -1,4 +1,5 @@
-function [T_r,T_c,norm_r,norm_c,norm_f]=tensor_reduce( T, k0, eps, M1, M2 )
+%function [T_r,T_c,norm_r,norm_c,norm_f]=tensor_reduce( T, k0, eps, M1, M2 )
+function [T_r]=tensor_reduce( T, varargin )
 % TENSOR_REDUCE Computes a reduced rank tensor product.
 %
 % Example (<a href="matlab:run_example tensor_reduce">run</a>)
@@ -18,22 +19,20 @@ function [T_r,T_c,norm_r,norm_c,norm_f]=tensor_reduce( T, k0, eps, M1, M2 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[M1,options]=get_options( options, 'M1', [] );
+[M2,options]=get_options( options, 'M2', [] );
+[Sp,options]=get_options( options, 'Sp', 2 );
+[k_max,options]=get_options( options, 'k_max', inf );
+[eps,options]=get_options( options, 'eps', 1e-4 );
+[relcutoff,options]=get_options( options, 'relcutoff', true );
+check_unsupported_options( options, mfilename );
 
-if nargin<=3
-    M1=[]; M2=[];
-end
+% relcutoff ||Sigma-Sigma_k||<=tol
 
-if isempty(M1)~=isempty(M2)
-    error( 'tensor_reduce:gramians', 'both gramians must be given or both must be empty' );
-end
 
-if isempty(M1)
-    [Q1,R1]=qr(T{1},0);
-    [Q2,R2]=qr(T{2},0);
-else
-    [Q1,R1]=gram_schmidt(T{1},M1,false,1);
-    [Q2,R2]=gram_schmidt(T{2},M2,false,1);
-end
+[Q1,R1]=qr_internal(T{1},M1);
+[Q2,R2]=qr_internal(T{2},M2);
 
 [U,S,V]=svd(R1*R2',0);
 s=diag(S);
@@ -55,4 +54,12 @@ if nargout>1
     V_c=V(:,k_r+1:k_c);
     T_c={Q1*U_c*S_c,Q2*V_c};
     norm_c=norm(s(k_r+1:k_c),2);
+end
+
+
+function [Q,R]=qr_internal( A, M )
+if isempty(M)
+    [Q,R]=qr(A,0);
+else
+    [Q,R]=gram_schmidt(A,M,false,1);
 end

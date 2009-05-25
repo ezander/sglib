@@ -75,8 +75,8 @@ H=tensor_operator_apply( K, G2 );
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
-F2=tensor_add( F, H, -1 );
 
+F2=tensor_add( F, H, -1 );
 [Ks,fs]=apply_boundary_conditions( K, F, G, P_B, P_I )
 
 
