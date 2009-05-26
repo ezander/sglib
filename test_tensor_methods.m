@@ -77,6 +77,28 @@ assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
 % implicitly test through tensor_norm 
 % TODO: test tensor_scalar_product explicitly
 
+assert_set_function( 'tensor_scalar_product' );
+
+T1={rand(8,4), rand(10,4) };
+T2={rand(8,3), rand(10,3) };
+M1=rand(8); M1=M1*M1';
+M2=rand(10); M2=M2*M2';
+t1=reshape(T1{1}*T1{2}',[],1);
+t2=reshape(T2{1}*T2{2}',[],1);
+s=tensor_scalar_product(T1,T2);
+assert_equals( s, t1'*t2, 'inner' );
+s=tensor_scalar_product(T1,T2,'M1',M1);
+assert_equals( s, t1'*tkron(M1,eye(size(M2)))*t2, 'inner_M1' );
+s=tensor_scalar_product(T1,T2,'M2',M2);
+assert_equals( s, t1'*tkron(eye(size(M1)),M2)*t2, 'inner_M2' );
+s=tensor_scalar_product(T1,T2,'M1',M1,'M2',M2);
+assert_equals( s, t1'*tkron(M1,M2)*t2, 'inner_M1_M2' );
+
+%assert_equals( tensor_norm( T, 'svd', M1, M2 ), normT, 'svd' );
+%assert_equals( tensor_norm( T, 'full', M1, M2 ), normT, 'full' );
+%assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
+
+
 
 
 % testing function TENSOR_APPLY

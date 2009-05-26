@@ -27,13 +27,13 @@ assert_set_function( 'tensor_operator_apply' );
 M=[1, 2, 4; 3, 4, 6; 5, 10, 20];
 x=[1; 5; 4];
 y=M*x;
-assert_equals( tensor_operator_apply( M, x ), y, 'kron/vect' );
+assert_equals( tensor_operator_apply( M, x ), y, 'tkron/vect' );
 
 %
 %irnd=@(x,y)(round(10*rand(x,y)))
 %A=irnd(2,5); B=irnd(4,3); x=irnd(5,1); y=irnd(3,1); 
-%kron(A,B)*kron(x,y)==kron(A*x,B*y)
-%kron(B,A)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
+%tkron(A,B)*tkron(x,y)==tkron(A*x,B*y)
+%tkron(A,B)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
 
 R=3; RX=3;
 M1=3; N1=4;
@@ -51,7 +51,7 @@ for i=1:R
     Alin{i,1}=linear_operator(A{i,1});
     Alin{i,2}=linear_operator(A{i,2});
     
-    Ak=Ak+kron( A{i,2}, A{i,1} );
+    Ak=Ak+tkron( A{i,1}, A{i,2} );
     for j=1:M2
         for k=1:N2
             if isempty(Ab{j,k}); Ab{j,k}=zeros(M1,N1); end
@@ -64,7 +64,7 @@ Bmat=B{1}*B{2}';
 
 
 assert_equals( Ak, cell2mat(Ab), 'internal/AkAb' );
-assert_equals( tensor_operator_apply( Ak, Xmat(:) ), Bmat(:), 'kron/vect' );
+assert_equals( tensor_operator_apply( Ak, Xmat(:) ), Bmat(:), 'tkron/vect' );
 assert_equals( tensor_operator_apply( Ab, Xmat(:), 'optype', 'block' ), Bmat(:), 'block/vect' );
 %assert_equals( tensor_operator_apply( Ab, X, 'optype', 'block' ), Bmat, 'block/tensor' );
 assert_equals( tensor_operator_apply( Ab, Xmat, 'optype', 'block' ), Bmat, 'block/mat' );

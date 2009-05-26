@@ -18,7 +18,7 @@ check_unsupported_options( options, mfilename );
 
 if strcmp( optype, 'auto' )
     if isnumeric(A)
-        optype='kron';
+        optype='tkron';
     elseif iscell(A)
         optype='tensor';
     else
@@ -28,7 +28,7 @@ end
 
 
 switch optype
-    case 'kron'
+    case 'tkron'
         S=size(A);
     case 'block'
         [M1,N1]=size(A);

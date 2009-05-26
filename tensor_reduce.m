@@ -1,5 +1,5 @@
 %function [T_r,T_c,norm_r,norm_c,norm_f]=tensor_reduce( T, k0, eps, M1, M2 )
-function [T_r]=tensor_reduce( T, varargin )
+function [T_k,sig]=tensor_reduce( T, varargin )
 % TENSOR_REDUCE Computes a reduced rank tensor product.
 %
 % Example (<a href="matlab:run_example tensor_reduce">run</a>)
@@ -20,30 +20,34 @@ function [T_r]=tensor_reduce( T, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-[M1,options]=get_options( options, 'M1', [] );
-[M2,options]=get_options( options, 'M2', [] );
-[Sp,options]=get_options( options, 'Sp', 2 );
-[k_max,options]=get_options( options, 'k_max', inf );
-[eps,options]=get_options( options, 'eps', 1e-4 );
-[relcutoff,options]=get_options( options, 'relcutoff', true );
+[M1,options]=get_option( options, 'M1', [] );
+[M2,options]=get_option( options, 'M2', [] );
+[Sp,options]=get_option( options, 'Sp', 2 );
+[k_max,options]=get_option( options, 'k_max', inf );
+[eps,options]=get_option( options, 'eps', 1e-4 );
+[relcutoff,options]=get_option( options, 'relcutoff', true );
 check_unsupported_options( options, mfilename );
 
 % relcutoff ||Sigma-Sigma_k||<=tol
 
+if iscell(T)
+    [Q1,R1]=qr_internal(T{1},M1);
+    [Q2,R2]=qr_internal(T{2},M2);
+    [U,S,V]=svd(R1*R2',0);
+else
+    [U,S,V]=svd(T,0);
+end
 
-[Q1,R1]=qr_internal(T{1},M1);
-[Q2,R2]=qr_internal(T{2},M2);
-
-[U,S,V]=svd(R1*R2',0);
-s=diag(S);
-schatten_p=norm(s,Sp);
+sig=diag(S);
+schatten_p=norm(sig,Sp);
 if relcutoff
     eps=eps*schatten_p;
 end
 
+k0=length(sig);
 k=1;
-while k<=min(k_max,length(s))
-    schatten_p_trunc=norm(s(k+1,end),Sp);
+while k<=min(k_max,k0)
+    schatten_p_trunc=norm(sig(k+1,end),Sp);
     if schatten_p_trunc<eps; break; end
     k=k+1;
 end

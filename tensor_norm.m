@@ -83,7 +83,7 @@ switch lower(meth)
             d=sqrt(trace( M1*T{1}*T{2}'*M2*T{2}*T{1}' ));
         end
     case 'inner'
-        sp=max( tensor_scalar_product(T,T,M1,M2), 0 );
+        sp=max( tensor_scalar_product(T,T,'M1', M1, 'M2', M2), 0 );
         d=sqrt( sp );
 end
 

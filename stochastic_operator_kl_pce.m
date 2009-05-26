@@ -98,6 +98,11 @@ for alpha=1:m_alpha_u
                 K_ab{alpha,beta}=K_ab{alpha,beta}+h_i(i)*K_i{i};
             end
         else
+            % a1 B1 + a2 B2 + ... => C
+            % r terms a NxN => NxN
+            % NxrN * rNxN => NxN
+            % [a1*I a2*I ...]*[B1; B2; ...]=a1*B1+a2*B2+...
+            % kron( [a1*I a2*I ...]*[B1; B2; ...]=a1*B1+a2*B2+...
             K_ab{alpha,beta}=kron( h_i', speye(N))*cell2mat(K_i);
         end
         K_ab{beta,alpha}=K_ab{alpha,beta};
@@ -106,11 +111,6 @@ end
 if ~opt.silent
     erase_print();
 end
-% a1 B1 + a2 B2 + ... => C
-% r terms a NxN => NxN
-% NxrN * rNxN => NxN
-% [a1*I a2*I ...]*[B1; B2; ...]=a1*B1+a2*B2+...
-% kron( [a1*I a2*I ...]*[B1; B2; ...]=a1*B1+a2*B2+...
 
 
 function K_ab=assemble_alpha_beta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )

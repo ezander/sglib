@@ -61,17 +61,17 @@ switch solve_method
         u_alpha=K_ab_mat\f_beta(:);
         itermethod='direct solver'; iter=1; relres=0; flag=0;
     case 2 % pcg with matrices
-        M=kron( spdiags(multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)), K_ab_mat(1:n,1:n) );
+        M=tkron( K_ab_mat(1:n,1:n), spdiags(multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)) );
         [u_alpha,flag,relres,iter]=pcg( K_ab_mat, f_beta(:), tol, maxit, M );
         itermethod='pcg(mat)';
     case 3 % use pcg on flat system
-        Minv=kron( spdiags(1./multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)), inv(K_ab{1,1}) );
+        Minv=tkron( inv(K_ab{1,1}), spdiags(1./multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)) );
         A_func=@(x)(K_ab_mat*x);
         Minv_func=@(x)(Minv*x);
         [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxit, Minv_func );
         itermethod='pcg(funcs,flat)';
     case 4 % 
-        %Minv=kron( inv(sparse(K_mu_delta{2})), inv(K_mu_delta{1}) );
+        %Minv=tkron( inv(K_mu_delta{1}), inv(sparse(K_mu_delta{2})) );
         Minv_op={ inv(K_mu_delta{1}); inv(sparse(K_mu_delta{2})); {}; {} };
         shape=size(f_beta);
         %Minv_func=@(x)(apply_flat(Minv,x,shape));

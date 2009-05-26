@@ -1,11 +1,11 @@
-function B=tensor_operator_apply( A, X, varargin )
+function Y=tensor_operator_apply( A, X, varargin )
 % APPLY_TENSOR_OPERATOR Apply a tensor operator to a tensor.
-%   B=APPLY_TENSOR_OPERATOR( A, X, VARARGIN ) applies the tensor operator A
+%   Y=APPLY_TENSOR_OPERATOR( A, X, VARARGIN ) applies the tensor operator A
 %   to the tensor X. Different format for A and X are supported, and can be
 %   specified via additional options or automatically detected. The
 %   following formats are currently possible for the operator A:
-%      kron:     A is just a huge M1M2xN1N2 matrix 
-%                i.e. A=kron(M1xN1,M2xN2))
+%      tkron:    A is just a huge M1M2xN1N2 matrix 
+%                i.e. A=tkron(M1xN1,M2xN2))
 %      block:    A is an M1xN1 cell array of M2xN2 matrices/linear operators
 %      tensor:   A is an Kx2 cell array of M1xN1 and M2xN2 matrices
 %   The following vector formats are supported:
@@ -16,8 +16,10 @@ function B=tensor_operator_apply( A, X, varargin )
 %   be unambiguously differentiated from the tensor format.
 % 
 %   The following combinations of formats are possible:
-%      kron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
+%      tkron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
 %
+%   TODO: the following is pointless, when the user is required to use 
+%   TKRON instread of KRON
 %   NOT POSSIBLE is 'kron/mat' because it allows different interpretations
 %   (i.e. should the matrix itself or its transpose be vectorised?) and
 %   thus the user should decide that before calling this function. The
@@ -56,7 +58,7 @@ check_unsupported_options( options, mfilename );
 
 if strcmp( optype, 'auto' )
     if isnumeric(A)
-        optype='kron';
+        optype='tkron';
     elseif iscell(A)
         optype='tensor';
     else
@@ -79,55 +81,55 @@ end
 
 
 switch [optype, '/', vectype]
-    case 'kron/vect'
-        B=apply_kron_vect( A, X );
+    case 'tkron/vect'
+        Y=apply_tkron_vect( A, X );
     case 'block/vect'
-        B=apply_block_vect( A, X );
+        Y=apply_block_vect( A, X );
     case 'block/mat'
-        B=apply_block_mat( A, X );
+        Y=apply_block_mat( A, X );
     case 'tensor/tensor'
-        B=apply_tensor_tensor( A, X );
+        Y=apply_tensor_tensor( A, X );
     case 'tensor/mat'
-        B=apply_tensor_mat( A, X );
+        Y=apply_tensor_mat( A, X );
     otherwise
         error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
         
 
-function B=apply_kron_vect( A, X )
+function Y=apply_tkron_vect( A, X )
 check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
-B=linear_operator_apply( A, X );
+Y=linear_operator_apply( A, X );
 
 
-function B=apply_block_vect( A, X )
+function Y=apply_block_vect( A, X )
 % TODO: doesn't yet work with general linear operators
 [M1,N1]=size(A); %#ok
 [M2,N2]=size(A{1,1});  %#ok
-B=cell2mat(A)*X;
+Y=cell2mat(A)*X;
 
-function B=apply_block_mat( A, X )
+function Y=apply_block_mat( A, X )
 % TODO: doesn't yet work with general linear operators
 [M1,N1]=size(A);  %#ok
 [M2,N2]=size(A{1,1});  %#ok
-B=reshape(cell2mat(A)*X(:),[M2,M1]);
+Y=reshape(cell2mat(A)*X(:),[M2,M1]);
 
-function B=apply_tensor_tensor( A, X )
+function Y=apply_tensor_tensor( A, X )
 % TODO: doesn't yet work with higher order tensors
 % TODO: no reduction yet
 check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
 check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
 [M1,N1]=linear_operator_size(A{1,1}); %#ok
 [M2,N2]=linear_operator_size(A{1,2}); %#ok
-B={zeros(M1,0),zeros(M2,0)};
+Y={zeros(M1,0),zeros(M2,0)};
 R=size(A,1);
 for i=1:R
-    B1n=linear_operator_apply(A{i,1},X{1});
-    B2n=linear_operator_apply(A{i,2},X{2});
-    B={[B{1}, B1n], [B{2}, B2n] };
+    Y1n=linear_operator_apply(A{i,1},X{1});
+    Y2n=linear_operator_apply(A{i,2},X{2});
+    Y={[Y{1}, Y1n], [Y{2}, Y2n] };
 end
 
 
-function B=apply_tensor_mat( A, X )
+function Y=apply_tensor_mat( A, X )
 % TODO: doesn't yet work with higher order tensors
 % TODO: no reduction yet
 check_condition( {A{1,1},X}, 'match', false, {'A{1,1}','X'}, mfilename );
@@ -137,5 +139,5 @@ K=size(A,1);
 for i=1:K
     Y=linear_operator_apply(A{i,1},X)';
     Z=linear_operator_apply(A{i,2},Y)';
-    if i==1; B=Z; else B=B+Z; end;
+    if i==1; Y=Z; else Y=Y+Z; end;
 end
