@@ -36,25 +36,23 @@ check_unsupported_options( options, mfilename );
 
 [U,S,V]=svd(R1*R2',0);
 s=diag(S);
-norm_f=norm(s,2);
-min_s=min(eps,norm_f*eps);
-k_r=min(k0,sum(s>=min_s));
-
-U_r=U(:,1:k_r);
-S_r=S(1:k_r,1:k_r);
-V_r=V(:,1:k_r);
-T_r={Q1*U_r*S_r,Q2*V_r};
-norm_r=norm(s(1:k_r),2);
-
-if nargout>1
-    min_s2=min(eps^2,norm_r*eps^2); %or max(s)*eps instead of norm? option?
-    k_c=min(k_r+k0,sum(s>=min_s2)); % or 2*k0 instead of k_r+k0
-    U_c=U(:,k_r+1:k_c);
-    S_c=S(k_r+1:k_c,k_r+1:k_c);
-    V_c=V(:,k_r+1:k_c);
-    T_c={Q1*U_c*S_c,Q2*V_c};
-    norm_c=norm(s(k_r+1:k_c),2);
+schatten_p=norm(s,Sp);
+if relcutoff
+    eps=eps*schatten_p;
 end
+
+k=1;
+while k<=min(k_max,length(s))
+    schatten_p_trunc=norm(s(k+1,end),Sp);
+    if schatten_p_trunc<eps; break; end
+    k=k+1;
+end
+
+U_k=U(:,1:k);
+S_k=S(1:k,1:k);
+V_k=V(:,1:k);
+T_k={Q1*U_k*S_k,Q2*V_k};
+%norm_r=norm(s(1:k_r),2);
 
 
 function [Q,R]=qr_internal( A, M )
@@ -63,3 +61,5 @@ if isempty(M)
 else
     [Q,R]=gram_schmidt(A,M,false,1);
 end
+
+
