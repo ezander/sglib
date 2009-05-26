@@ -40,7 +40,9 @@ Delta = [
 assert_equals( stochastic_pce_matrix( k_iota, I_k, I_u ), Delta, 'prime' );
 
 
-if 1
+if 0
+    % this section is for testing speed only
+    % don't include in normal test runs
     hermite_triple_fast(10);
     I_k=multiindex(4,4);
     I_f=multiindex(2,3);

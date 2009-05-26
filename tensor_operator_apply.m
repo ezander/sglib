@@ -137,7 +137,7 @@ check_condition( {A{1,2},X'}, 'match', false, {'A{1,2}','X'''}, mfilename );
 
 K=size(A,1);
 for i=1:K
-    Y=linear_operator_apply(A{i,1},X)';
-    Z=linear_operator_apply(A{i,2},Y)';
-    if i==1; Y=Z; else Y=Y+Z; end;
+    U=linear_operator_apply(A{i,1},X)';
+    V=linear_operator_apply(A{i,2},U)';
+    if i==1; Y=V; else Y=Y+V; end;
 end

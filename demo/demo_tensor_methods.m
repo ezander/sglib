@@ -68,16 +68,24 @@ G=kl_to_tensor( mu_g_j, zeros(size(mu_g_j,1),0), zeros(0,size(I_u,1)) );
 [P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
 I_I=P_I'*P_I;
 I_B=P_B'*P_B;
+I_S=speye(M);
 
-G2=tensor_apply( {I_B, speye(M)}, G )
-H=tensor_operator_apply( K, G2 );
+Gb=tensor_apply( {I_B, I_S}, G )
+H=tensor_operator_apply( K, Gb );
 
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
 
 F2=tensor_add( F, H, -1 );
-[Ks,fs]=apply_boundary_conditions( K, F, G, P_B, P_I )
+%Ki=apply_boundary_conditions( K, F, G, P_B, P_I )
+Fi=tensor_apply( {I_I, I_S}, F2 );
+
+Ki=K;
+for i=1:size(K,1)
+    Ki{i,1}=linear_operator_compose(P_I,linear_operator_compose(K{i,1},P_I'));
+end
+
 
 
 %H=tensor_operator_apply( K, F );

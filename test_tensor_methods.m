@@ -99,8 +99,6 @@ assert_equals( s, t1'*tkron(M1,M2)*t2, 'inner_M1_M2' );
 %assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
 
 
-
-
 % testing function TENSOR_APPLY
 assert_set_function( 'tensor_apply' );
 

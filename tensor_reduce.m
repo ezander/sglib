@@ -65,5 +65,3 @@ if isempty(M)
 else
     [Q,R]=gram_schmidt(A,M,false,1);
 end
-
-
