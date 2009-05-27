@@ -1,18 +1,19 @@
-function demo_sparsity_plots( varargin )
-% DEMO_SPARSITY_PLOTS Generates the sparsity plots from A. Keese's diss.
-% DEMO_SPARSITY_PLOTS( OPTIONS ) Generates the sparsity plots from 
-%   A. Keese's diss.(fig 41. on page 72). 
+function block_sparsity_p72
+% BLOCK_SPARSITY_P72 Generates the sparsity plots from A. Keese's diss.
+% BLOCK_SPARSITY_P72 Generates the sparsity plots from 
+%   A. Keese's diss. (fig 41. on page 72). 
 
 
-init_demos
+%init_demos
 clf
 
-setuserwaitmode( 'continue' );
+%setuserwaitmode( 'continue' );
+setuserwaitmode( 'mouse' );
 
 disp( 'sparsity plot (lexicographic ordering, A. Keese)' );
 sp_plots( true, false);
 
-if false
+if true
 userwait;
 
     disp( 'sparsity plot (degree ordering)' );

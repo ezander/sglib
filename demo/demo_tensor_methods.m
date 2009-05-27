@@ -70,7 +70,7 @@ I_I=P_I'*P_I;
 I_B=P_B'*P_B;
 I_S=speye(M);
 
-Gb=tensor_apply( {I_B, I_S}, G )
+Gb=tensor_apply( {I_B, I_S}, G );
 H=tensor_operator_apply( K, Gb );
 
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
@@ -85,6 +85,10 @@ Ki=K;
 for i=1:size(K,1)
     Ki{i,1}=linear_operator_compose(P_I,linear_operator_compose(K{i,1},P_I'));
 end
+
+%Ki;
+%Kmat=0*
+
 
 
 

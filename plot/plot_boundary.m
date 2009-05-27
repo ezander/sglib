@@ -29,7 +29,7 @@ check_unsupported_options( options, mfilename );
 
 e=[els(:,1), els(:,2); els(:,1), els(:,3); els(:,2), els(:,3)];
 e=sort(e,2);
-e = sortrows(e);
+e=sortrows(e);
 
 asnext=all(e(1:end-1,:)==e(2:end,:),2);
 bndind=~([0;asnext]|[asnext;0]);

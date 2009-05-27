@@ -1,12 +1,18 @@
 function I_mp=multiindex(m,p,combine,varargin)
 % MULTIINDEX Generate a table of multiindices (block-scheme).
-%   I_MP=MULTIINDEX(M,P,COMBINE) generate a table of multiindices using 
+%   I_MP=MULTIINDEX(M,P,COMBINE,OPTIONS) generate a table of multiindices using 
 %   the standard block scheme i.e. generating all multi-indices up to
 %   degree P in all M (random) variables. (Limitation to certain
 %   limiters/norms will be added later). If combine is not specified or
 %   evaluates to true then the homogeneous multiindices will be combined 
 %   into one large (sparse) array I_MP. Otherwise I_MP is a cell array
 %   where I_MP{q+1} represents the multiindices with degree q.
+%
+% Options:
+%   use_sparse (false): returns the result as a sparse array
+%   lex_ordering (false): returns the result in lexicographical ordering
+%     (like e.g. A. Keese) instead of ordering by degree first (this
+%     option is obviously ignored if combine is false)
 %
 % Example (<a href="matlab:run_example multiindex">run</a>)
 %   % To generate the polynomial chaos for 2 random variables up to
@@ -45,6 +51,7 @@ end
 
 options=varargin2options( varargin{:} );
 [use_sparse,options]=get_option( options, 'use_sparse', false );
+[lex_ordering,options]=get_option( options, 'lex_ordering', false );
 check_unsupported_options( options, mfilename );
 
 % The (old) idea of the algorithm is the following:
@@ -112,7 +119,11 @@ for k=1:m
 end
 
 if combine
-    I_kp=catmat(I_kp{:});
+    I_kp=cell2mat( I_kp(:) );
+    if lex_ordering
+        I_kp=sortrows(I_kp,k:-1:1);
+    end
+%    I_kp=catmat(I_kp{:});
 end
 I_mp=I_kp;
 

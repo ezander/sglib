@@ -102,20 +102,36 @@ end
 % this is currently the fastest implementation
 % (compared with: not first transposing (10%), first permuting (20%),
 % keeping tensor format (30-40%))
+
 ni=size(i,1);
 nj=size(j,1);
 nk=size(k,1);
 nd=size(i,2);
 strides=cumprod(size(triples));
-I=permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
-J=permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
-K=permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
-I=reshape( I, nd, [] );
-J=reshape( J, nd, [] );
-K=reshape( K, nd, [] );
-ind=1+I+strides(1)*J+strides(2)*K;
+ind=1+permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
+ind=ind+strides(1)*permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
+ind=ind+strides(2)*permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
+ind=reshape( ind, nd, [] );
 c=prod(triples(ind),1);
 c=reshape( c, [ni nj nk]);
+
+
+if 0
+    ni=size(i,1);
+    nj=size(j,1);
+    nk=size(k,1);
+    nd=size(i,2);
+    strides=cumprod(size(triples));
+    I=permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
+    J=permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
+    K=permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
+    I=reshape( I, nd, [] );
+    J=reshape( J, nd, [] );
+    K=reshape( K, nd, [] );
+    ind=1+I+strides(1)*J+strides(2)*K;
+    c=prod(triples(ind),1);
+    c=reshape( c, [ni nj nk]);
+end
 
 if 0
     % This is the implementation I like most, because it's the most

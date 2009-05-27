@@ -43,7 +43,13 @@ switch mode
         % diplayed much too late.
         % TODO: find a workaround if possible
         if length(msg); disp(msg); end
-        waitforbuttonpress
+        try
+            waitforbuttonpress
+        catch
+            % do nothing, we just don't to have an error message displayed
+            % or matlab jump into the debugger, just because the user
+            % closed the window
+        end
     case 3
         % do nothing
     case 4
