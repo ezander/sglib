@@ -49,6 +49,10 @@ switch mode
             % do nothing, we just don't to have an error message displayed
             % or matlab jump into the debugger, just because the user
             % closed the window
+            fprintf( '\nThe figure window was closed unexpectedly.\n' )
+            fprintf( 'Do you want to abort this script? ' );
+            fprintf( '<a href="matlab:dbup;dbquit">abort</a>  <a href="matlab:dbcont">continue</a>\n' );
+            keyboard;
         end
     case 3
         % do nothing

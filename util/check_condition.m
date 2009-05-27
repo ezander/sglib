@@ -130,16 +130,18 @@ switch varcond
             message=sprintf( '%s must be %sof type %s: %s', varname, emptystr, x{2}, class(x{1}) );
         end
     otherwise
-        error([mfilename ':condition'], sprintf( '%s: unknown condition to check: %s', mfilename, varcond ) );
+        error([mfilename ':condition'], '%s: unknown condition to check: %s', mfilename, varcond );
 end
 
 
 if ~ok
     if ~warnonly
-        %error([mfilename ':condition'], sprintf( '%s: %s', mfilename, message ) );
-        
-        %stack=struct2cell( dbstack('-completenames') );
-        %caller=stack(2);
+        stack=dbstack('-completenames');
+        errstr.message=sprintf( '%s: %s', mfilename, message );
+        errstr.id=[mfilename ':condition'];
+        errstr.stack=stack(2:end);
+        rethrow( errstr );
+        %error([mfilename ':condition'], '%s: %s', mfilename, message );
         
         fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
         cmd=repmat( 'dbup;', 1, 1 );
@@ -147,6 +149,6 @@ if ~ok
         fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
         keyboard;
     else
-        warning([mfilename ':condition'], sprintf( '%s: %s', mfilename, message ) );
+        warning([mfilename ':condition'], '%s: %s', mfilename, message );
     end
 end

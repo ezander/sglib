@@ -1,4 +1,4 @@
-function varargout=multiindex_combine( I_j, p )
+function varargout=multiindex_combine( I_j, p, varargin )
 % MULTIINDEX_COMBINE Combine multiindices from different sources.
 %   VARARGOUT=MULTIINDEX_COMBINE( I_J, P ) combines the multiindices in the
 %   cell array I_J so that they can be used as multiindices for random
@@ -48,6 +48,15 @@ function varargout=multiindex_combine( I_j, p )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[use_sparse,options]=get_option( options, 'use_sparse', 'auto' );
+[lex_ordering,options]=get_option( options, 'lex_ordering', false );
+check_unsupported_options( options, mfilename );
+
+if ischar(use_sparse) && strcmp( use_sparse, 'auto' ) 
+    use_sparse=all( cellfun( @issparse, I_j) );
+end
+
 
 % determine the combined number of random vars
 m=numel(I_j);
@@ -94,7 +103,7 @@ if nargin>=2
             p=full(p); % necessary if I_j is sparse
         end
     end
-    varargout{m+1}=multiindex( n_vars, p, [], 'use_sparse', issparse(I_j{i}) );
+    varargout{m+1}=multiindex( n_vars, p, [], 'use_sparse', use_sparse, 'lex_ordering', lex_ordering );
 end
         
         
