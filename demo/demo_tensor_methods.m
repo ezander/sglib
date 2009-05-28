@@ -46,55 +46,34 @@ opt.show_timings=true;
 K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
 K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
 % create matrix and tensor operators
-Kmat=cell2mat(K_ab);
+K_mat=cell2mat(K_ab);
 
-trunc_k=20;
-trunc_eps=1e-7;
-G_N=[];
-G_Phi=[];
+%trunc_k=20;
+%trunc_eps=1e-7;
+%G_N=[];
+%G_Phi=[];
 
 N=size(pos,1);
 M=size(I_u,1);
 
-%g_func=@(x)(x(:,1));
-subsel.type='()';
-subsel.subs={':',1};
-g_func={ @subsref, {subsel}, {2} };
+% this defines the function g(x)=x_1
+select=@(x,n)(x(:,n));
+g_func={ select, {1}, {2} };
 
-mu_g_j=zeros(size(mu_f_j,1),size( funcall( g_func, pos(1,:)),2));
-mu_g_j(bnd,:)=funcall( g_func, pos(bnd,:));
-G=kl_to_tensor( mu_g_j, zeros(size(mu_g_j,1),0), zeros(0,size(I_u,1)) );
-
-[P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
-I_I=P_I'*P_I;
-I_B=P_B'*P_B;
-I_S=speye(M);
-
-Gb=tensor_apply( {I_B, I_S}, G );
-H=tensor_operator_apply( K, Gb );
+mu_g_j=funcall( g_func, pos);
+G=kl_to_tensor( mu_g_j, zeros(N,0), zeros(0,M) );
 
 phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
-
-F2=tensor_add( F, H, -1 );
-%Ki=apply_boundary_conditions( K, F, G, P_B, P_I )
-Fi=tensor_apply( {I_I, I_S}, F2 );
-
-Ki=K;
-for i=1:size(K,1)
-    Ki{i,1}=linear_operator_compose(P_I,linear_operator_compose(K{i,1},P_I'));
-end
-
-%Ki;
-%Kmat=0*
+[P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
+[Ki,Fi]=apply_boundary_conditions( K, F, G, P_B, P_I );
 
 
+f_mat=F{1}*F{2}';
+f_vec=f_mat(:);
+g_mat=G{1}*G{2}';
+g_vec=g_mat(:);
 
-
-%H=tensor_operator_apply( K, F );
-%F2=tensor_reduce( tensor_add( F, H ), trunc_k, trunc_eps );
-%F2
-
-
+[M_mat_i,f_vec_i]=apply_boundary_conditions( K_mat, f_vec, g_vec, P_B, P_I );
 

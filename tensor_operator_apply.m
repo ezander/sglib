@@ -83,6 +83,8 @@ end
 switch [optype, '/', vectype]
     case 'tkron/vect'
         Y=apply_tkron_vect( A, X );
+    case 'tkron/mat'
+        Y=apply_tkron_mat( A, X );
     case 'block/vect'
         Y=apply_block_vect( A, X );
     case 'block/mat'
@@ -91,6 +93,8 @@ switch [optype, '/', vectype]
         Y=apply_tensor_tensor( A, X );
     case 'tensor/mat'
         Y=apply_tensor_mat( A, X );
+    case 'tensor/vect'
+        Y=apply_tensor_vect( A, X );
     otherwise
         error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
@@ -99,6 +103,12 @@ end
 function Y=apply_tkron_vect( A, X )
 check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
 Y=linear_operator_apply( A, X );
+
+function Y=apply_tkron_mat( A, X )
+Y=linear_operator_apply( A, X(:) );
+% TODO: doesn't (and cannot without some additional information) work with
+% non square operators A, some sensible error detection needed
+Y=reshape(Y,size(X));
 
 
 function Y=apply_block_vect( A, X )
@@ -141,3 +151,11 @@ for i=1:K
     V=linear_operator_apply(A{i,2},U)';
     if i==1; Y=V; else Y=Y+V; end;
 end
+
+
+function Y=apply_tensor_vect( A, X )
+[M1,N1]=linear_operator_size(A{1,1});
+[M2,N2]=linear_operator_size(A{1,2});
+X=reshape( X, [N1, N2] );
+Y=apply_tensor_mat( A, X );
+Y=reshape( Y, [M1*M2,1] );
