@@ -32,9 +32,13 @@ function T=tensor_add( T1, T2, alpha )
 
 
 if nargin<3
-    T={ [T1{1},T2{1}], [T1{2},T2{2}] };
-else
+    alpha=1;
+end
+
+if iscell(T1) && iscell(T2)
     % Important: apply alpha only to one argument! This guy is a tensor not
     % a cartesian product.
     T={ [T1{1},alpha*T2{1}], [T1{2},T2{2}] };
+else
+    T=T1+alpha*T2;
 end

@@ -37,6 +37,24 @@ subplot(2,2,1); plot_pce_realizations_1d( pos, f_j_alpha, I_f, 'xi', xi ); title
 subplot(2,2,2); plot_pce_realizations_1d( pos, f_j_beta, I_u, 'xi', xi ); title('pce*H^2 mean/var/samples');
 userwait;
 
+phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
+F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
+f_mat=F{1}*F{2}';
+f_vec=f_mat(:);
+
+N=size(pos,1);
+M=size(I_u,1);
+
+%% define boundary conditions g
+% this defines the function g(x)=x_1
+select=@(x,n)(x(:,n));
+g_func={ select, {1}, {2} };
+
+mu_g_j=funcall( g_func, pos);
+G=kl_to_tensor( mu_g_j, zeros(N,0), zeros(0,M) );
+g_mat=G{1}*G{2}';
+g_vec=g_mat(:);
+
 
 %% load and create the operators 
 kl_operator_version=9;
@@ -53,27 +71,16 @@ K_mat=cell2mat(K_ab);
 %G_N=[];
 %G_Phi=[];
 
-N=size(pos,1);
-M=size(I_u,1);
 
-% this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
-g_func={ select, {1}, {2} };
 
-mu_g_j=funcall( g_func, pos);
-G=kl_to_tensor( mu_g_j, zeros(N,0), zeros(0,M) );
-
-phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
-F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 
 [P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
+
 [Ki,Fi]=apply_boundary_conditions( K, F, G, P_B, P_I );
+[K_mat_i,f_vec_i]=apply_boundary_conditions( K_mat, f_vec, g_vec, P_B, P_I );
+[Ki,f_vec_i2]=apply_boundary_conditions( K, f_vec, g_vec, P_B, P_I );
+[Ki,f_mat]=apply_boundary_conditions( K, f_mat, g_mat, P_B, P_I );
 
-
-f_mat=F{1}*F{2}';
-f_vec=f_mat(:);
-g_mat=G{1}*G{2}';
-g_vec=g_mat(:);
-
-[M_mat_i,f_vec_i]=apply_boundary_conditions( K_mat, f_vec, g_vec, P_B, P_I );
-
+norm(f_vec_i-f_vec_i2)
+norm(f_vec_i-f_mat(:))
+norm(Fi{1}*Fi{2}'-f_mat)
