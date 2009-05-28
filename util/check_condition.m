@@ -64,10 +64,19 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-[warnonly,options]=get_option( options, 'warnonly', false );
+[warnonly,options]=get_option( options, 'warnonly', [] );
+[mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );
 
+if ~isempty(warnonly) && warnonly
+    mode='warning';
+end
+if ~any( strmatch( mode, {'error','warning', 'debug'}, 'exact' ) )    
+	warning([mfilename ':condition'], 'unknown mode argument: %s', mode );
+    mode='debug';
+end
 
+            
 if ~exist('mfilename','var') || isempty(mfilename)
     mfilename='global';
 end
@@ -135,20 +144,24 @@ end
 
 
 if ~ok
-    if ~warnonly
-        stack=dbstack('-completenames');
-        errstr.message=sprintf( '%s: %s', mfilename, message );
-        errstr.id=[mfilename ':condition'];
-        errstr.stack=stack(2:end);
-        rethrow( errstr );
-        %error([mfilename ':condition'], '%s: %s', mfilename, message );
-        
-        fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
-        cmd=repmat( 'dbup;', 1, 1 );
-        fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
-        fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
-        keyboard;
-    else
-        warning([mfilename ':condition'], '%s: %s', mfilename, message );
+    switch mode
+        case 'error'
+            stack=dbstack('-completenames');
+            err_struct.message=sprintf( '%s: %s', mfilename, message );
+            err_struct.id=[mfilename ':condition'];
+            err_struct.stack=stack(2:end);
+            % using 'rethrow' instead of 'error' suppresses incorrect
+            % reports of error position in 'check_condition' (the 'error'
+            % function disregards the stack for display of the error
+            % position)
+            rethrow( err_struct );
+        case 'warning'
+            warning([mfilename ':condition'], '%s: %s', mfilename, message );
+        case 'debug'
+            fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
+            cmd=repmat( 'dbup;', 1, 1 );
+            fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
+            fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
+            keyboard;
     end
 end

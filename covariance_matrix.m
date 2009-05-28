@@ -7,8 +7,9 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   PARAMETERIZED_FUNCTIONS)
 %
 % Options:
-%   VECTORIZED (default: true) specifies whether the covariance functions
-%   is vectorized with respect to the position arguments.
+%   vectorized: {true}, false
+%     Specifies whether the covariance functions is vectorized with respect 
+%     to the position arguments.
 % 
 % Example (<a href="matlab:run_example covariance_matrix">run</a>)
 %   x=linspace(0,1,10)';

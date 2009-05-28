@@ -3,12 +3,12 @@ function assert_run_testsuite( module_name, curr_dir, varargin )
 %   ASSERT_RUN_TESTSUITE( MODULE_NAME, CURR_DIR ) runs all tests (contained
 %   in M-files matching "test_*.m") in the directory specified by CURR_DIR
 %   under the module name MODULE_NAME.
-%   Options:
-%       'subdir': 'auto' runs assert_run_testsuite recursively in all
-%                 subdirectories. 
-%                 passing a cell array of relative pathnames runs
-%                 assert_run_testsuite only in the given subdirs
-%                 default is empty cell array ({})
+%
+% Options:
+%   subdir: {auto}
+%     Runs ASSERT_RUN_TESTSUITE recursively in all subdirectories. Passing
+%     a cell array of relative pathnames runs ASSERT_RUN_TESTSUITE only in
+%     the given subdirs. Default is empty cell array ({}).
 %
 % Example
 %   assert_reset_options();

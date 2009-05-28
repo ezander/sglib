@@ -39,7 +39,7 @@ if isempty(x1);
 end
 s=s(x2(1)+1:end);
 
-x1=regexp( s, '\n *[sS]ee also' );
+x1=regexp( s, '\n *(See also|Run)' );
 if ~isempty(x1)
     s=s(1:x1(1)-1);
 end

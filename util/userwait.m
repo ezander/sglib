@@ -51,7 +51,7 @@ switch mode
             % closed the window
             fprintf( '\nThe figure window was closed unexpectedly.\n' )
             fprintf( 'Do you want to abort this script? ' );
-            fprintf( '<a href="matlab:dbup;dbquit">abort</a>  <a href="matlab:dbcont">continue</a>\n' );
+            fprintf( '<a href="matlab:evalc(''dbup'');dbquit">abort</a>  <a href="matlab:dbcont">continue</a>\n' );
             keyboard;
         end
     case 3

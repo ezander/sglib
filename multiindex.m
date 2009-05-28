@@ -9,10 +9,12 @@ function I_mp=multiindex(m,p,combine,varargin)
 %   where I_MP{q+1} represents the multiindices with degree q.
 %
 % Options:
-%   use_sparse (false): returns the result as a sparse array
-%   lex_ordering (false): returns the result in lexicographical ordering
-%     (like e.g. A. Keese) instead of ordering by degree first (this
-%     option is obviously ignored if combine is false)
+%   use_sparse: true, {false}
+%     Return the result as a sparse array.
+%   lex_ordering: true, {false}
+%     Returns the result in lexicographical ordering (like e.g. A. Keese) instead 
+%     of ordering by degree first (this option is obviously ignored if COMBINE is 
+%     false)
 %
 % Example (<a href="matlab:run_example multiindex">run</a>)
 %   % To generate the polynomial chaos for 2 random variables up to

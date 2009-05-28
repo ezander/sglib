@@ -8,18 +8,21 @@ function C_gam=transform_covariance_pce( C_u, pcc_u, varargin )
 %   of the random field. If the PCE is non-stationary an array of
 %   coefficients has to be passed to this function where PCC_U(:,i) contains
 %   the PCE coefficients at point x_i.
-%   C_gam=TRANSFORM_COVARIANCE_PCE( C_U, PCC_U, OPTIONS ) runs the
-%   functions with the specified options:
-%   CORRECT_VAR (default false): if C_U is normalized it is corrected
-%   before the transformation is done (i.e. C_U is scaled with the variance
-%   which will be computed from PCC_U). Works only for stationary fields.
-%   COMP_II_CHECK (default true): does a check for type II incompatibility
-%   after the transformation (i.e. negative covariance matrix of the
-%   "Gaussian" process). KL on such a process will fail.
-%   COMP_II_RELTOL (default 1e-4): Usually there will be small negative
-%   eigenvalues for large covariance matrices, which will be no problem if
-%   the KL is truncated before. This options specifies the maximum negative
-%   tolerance.
+%
+% Options:
+%   correct_var: true, {false}
+%     If C_U is normalized it is corrected before the transformation is
+%     done (i.e. C_U is scaled with the variance which will be computed
+%     from PCC_U). Works only for stationary fields.
+%   comp_ii_check: {true}, false
+%     does a check for type II incompatibility after the transformation
+%     (i.e. negative covariance matrix of the "Gaussian" process). KL on
+%     such a process will fail.
+%   comp_ii_reltol: {1e-4}
+%     Usually there will be small negative eigenvalues for large
+%     covariance matrices, which will be no problem if the KL is
+%     truncated before. This options specifies the maximum negative
+%     tolerance.
 %
 % Example (<a href="matlab:run_example transform_covariance_pce">run</a>)
 %

@@ -1,7 +1,7 @@
 function varargout=cached_funcall( func, params, ndata, filename, version, varargin )
 % CACHED_FUNCALL Store and retrieve the results of a function call from a file.
 %   [DATA,VERSION,RECOMP]=CACHED_FUNCALL( FUNC, PARAMS, NDATA, FILENAME,
-%   VERSION ) first checks whether FILENAME exists. If yes, the file is
+%   VERSION, VARARGIN ) first checks whether FILENAME exists. If yes, the file is
 %   loaded and it is checked, whether the PARAMS used to create the DATA in
 %   the file are the same as those which were passed in this call (compared
 %   with ISEQUALWITHEQUALNANS). Then the VERSION field is compared, where
@@ -14,14 +14,40 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   information in matlab, and furthermore, one function can have a
 %   different number of output arguments, and even a different behaviour
 %   depending on that number. 
-% 
+%
+% Options:
+%   silent: {true}, false
+%     Show messages if recomputing.
+%   show_timings: true, {false}
+%     Show timings for computation.
+%   message: {'Recomputing: %s( %s )'}
+%     Message to display when recomputing and silent is false. The
+%     parameters are replaced by the function name and the stringified
+%     parameters.
+%   extra_params: {{}}
+%     Parameters whose values should not affect recomputation because they do 
+%     not affect the result of the computation e.g. control parameters for 
+%     progress display.
+%
+% Example (<a href="matlab:run_example cached_funcall">run</a>)
+%     filename=[tempname, '.mat']; 
+%     ver=1;
+%     options={'silent', false};
+%     % should compute new values only once
+%     x=cached_funcall( @rand, {1,2}, 1, filename, ver, options ); disp(x);
+%     x=cached_funcall( @rand, {1,2}, 1, filename, ver, options ); disp(x);
+%     x=cached_funcall( @rand, {1,2}, 1, filename, ver, options ); disp(x);
+%     % arguments changed => recompute, then reuse values
+%     x=cached_funcall( @rand, {1,3}, 1, filename, ver, options ); disp(x);
+%     x=cached_funcall( @rand, {1,3}, 1, filename, ver, options ); disp(x);
+%     % version changed => recompute
+%     ver=2;
+%     x=cached_funcall( @rand, {1,3}, 1, filename, ver, options ); disp(x);
+%     x=cached_funcall( @rand, {1,3}, 1, filename, ver, options ); disp(x);
+%     % remove temp file
+%     evalc( sprintf( 'delete %s.mat', filename ) );
+%
 % See also FUNCALL, NARGOUT, ISEQUALWITHEQUALNANS
-
-% TODO: An option that indicates whether file_version>version is ok
-% TODO: An option to specify a function that outputs when recomputation is
-% perfomed
-% TODO: An option to specify output of timings for the recomputation
-
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -38,13 +64,9 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 options=varargin2options( varargin{:} );
 [silent,options]=get_option( options, 'silent', true );
 [show_timings,options]=get_option( options, 'show_timings', false );
-[message,options]=get_option( options, 'message', [] );
+[message,options]=get_option( options, 'message', 'Recomputing: %s( %s )' );
 [extra_params,options]=get_option( options, 'extra_params', {} );
 check_unsupported_options( options, mfilename );
-
-if nargin<5
-    version=1;
-end
 
 % load saved structure from file if possible
 %if exist( filename, 'file' ) 
@@ -71,7 +93,10 @@ end
 data=cell(ndata,1);
 
 if ~silent && ~isempty(message)
-    fprintf( [message '\n'] ); 
+    str_func=char(func);
+    str_params=strtrim(evalc('disp({params{:},extra_params{:}})'));
+    str=sprintf( message, str_func, str_params );
+    fprintf( [str '\n'] ); 
 end
 if show_timings
     t1=cputime;

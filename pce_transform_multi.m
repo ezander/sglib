@@ -10,10 +10,11 @@ function [u_alpha,I_u]=pce_transform_multi( g, u_i, varargin )
 %   U_ALPHA(:,i) is the multivariate PC expansion at point i in as many
 %   independent Gaussian RVs as there are KL eigenfunctions. I_U contains
 %   on return the indices of the multivariate Hermite polynomials.
+%
 % Options:
-%   If FAST is specified an experimental, vectorized code is run which does
-%   some "unnecessary" logarithms and exponentials but is faster in Matlab
-%   due to heavy factorization.
+%   fast: {true}, false
+%     Specifies that a vectorized code is run, which does some "unnecessary" 
+%     logarithms and exponentials, but is much faster in Matlab.
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

@@ -6,13 +6,16 @@ function spy2(A, varargin)
 %   resized.
 %
 % Options:
-%   face_color ('b'): The color of the faces of the rectangle. For possible
-%   values see here <a href="matlab:doc ColorSpec">ColorSpec</a>
-%   edge_color ('none'): The color of the edges of the rectangle. Use 'none' if
-%     no  edges should be drawn.
-%   display ('nz'): Display the statistics below the axis. 'nz' or 'nnz' means
-%     number of nonzero element (matlab default). 'dens' or 'density' means
-%     nnz divided by matrix size. 'none' means none with high probability.
+%   face_color: {'b'}
+%     The color of the faces of the rectangle. For possible values see here
+%     <a href="matlab:doc ColorSpec">ColorSpec</a>
+%   edge_color: {'none'}
+%     The color of the edges of the rectangle. Use 'none' if no  edges
+%     should be drawn.
+%   display:  {'nnz'}, 'density', 'none'
+%     Display the statistics below the axis. 'nz' or 'nnz' means number of
+%     nonzero element (matlab default). 'dens' or 'density' means nnz
+%     divided by matrix size. 'none' means none with high probability.
 % 
 % Example (<a href="matlab:run_example spy2">run</a>)
 %     clf;
@@ -24,7 +27,6 @@ function spy2(A, varargin)
 %     subplot(2,2,4); spy2(A,'face_color','g','edge_color','k');
 % 
 % See also SPY, PATCH
-
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -39,7 +41,7 @@ function spy2(A, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-[display,options]=get_option( options, 'display', 'nz' );
+[display,options]=get_option( options, 'display', 'nnz' );
 [face_color,options]=get_option( options, 'face_color', 'b' );
 [edge_color,options]=get_option( options, 'edge_color', 'none' );
 check_unsupported_options( options, mfilename );
@@ -67,10 +69,10 @@ box( 'on' );
 
 % print statistics in xlabel
 switch display
-    case {'nz', 'nnz'} % number of nonzero elements
+    case 'nnz'
         xlabel( sprintf( 'nz = %d', nnz(A) ) );
-    case {'dens', 'density' } % density
-        xlabel( sprintf( 'dens = %.3g', nnz(A)/prod(size(A)) ) );
+    case 'density'
+        xlabel( sprintf( 'dens = %.3g', nnz(A)/numel(A) ) );
     case 'none'
         % do nothing
     otherwise

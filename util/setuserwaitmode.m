@@ -78,7 +78,7 @@ switch mode
 end
 
 if nargin>=2
-    save_msg=msg
+    save_msg=msg;
 end
 
 if nargin>=3

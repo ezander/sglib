@@ -69,6 +69,6 @@ d=a+b+1; e=b*c+2;
 function [d,e]=test_it_v3( a, b, c )
 d=a+b+1; e=b*c+3;
 
-function [d,e]=test_it_no_call( a, b, c )
+function [d,e]=test_it_no_call( a, b, c ) %#ok
 d=nan; e=nan;
 

@@ -1,11 +1,16 @@
 function s=format_poly( p, varargin )
-%FORMAT_POLY Format a polynomial for output.
-%  S=FORMAT_POLY(P) converts the polynomial P into formatted string output.
-%  If no output arguments are specfied the polynomial is printed
-%  immediately. The following options are recognized:
-%     tight - suppress blanks around "+" and "-" (default: true) 
-%     twoline - use twoline output for exponents instead of caret "^" (default: false)
-%     symbol - use specified symbol (default: "x")
+% FORMAT_POLY Format a polynomial for output.
+%   S=FORMAT_POLY(P,VARARGIN) converts the polynomial P into formatted
+%   string output. If no output arguments are specfied the polynomial is
+%   printed immediately. 
+%
+% Options:
+%   tight: {true}, false
+%     Suppress blanks around "+" and "-".
+%   twoline: true, {false}
+%     Use twoline output for exponents instead of caret.
+%   symbol: {'x'}
+%     Use specified symbol as variable name.
 %
 % Example (<a href="matlab:run_example format_poly">run</a>)
 %   format_poly( [-1 2 3] );

@@ -11,10 +11,12 @@ function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 %   F and SQRT_LAMBDA contain the eigenfunctions and eigenvalues of the KL
 %   eigenproblem respectively. If only one output argument (i.e. F) is used,
 %   then the f_i are multiplied by sqrt_lambda_i before).
+%
 %   Options:
-%   CORRECT_VAR (default: FALSE) With this option set to true you can apply
-%   a correction to the eigenfunctions such that they match the variance
-%   specified by diag(C) in each point exactly. This affects the accuracy
+%     correct_var: true, {false} 
+%       With this option set to true you can apply a correction to the
+%       eigenfunctions such that they match the variance specified by
+%       diag(C) in each point exactly. This affects the accuracy
 %   of some algorithms, but generally not the convergence. If you need e.g.
 %   exactly variance 1 in each point, turn this on; otherwise you can leave
 %   it of.

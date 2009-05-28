@@ -21,7 +21,7 @@ function test_format_poly
 
 assert_set_function( 'format_poly' );
 
-assert_equals( format_poly( [1] ), '1', 'const 1' ); % # ok [1]
+assert_equals( format_poly( [1] ), '1', 'const 1' ); %#ok [1]
 assert_equals( format_poly( [0 0 0 0] ), '0', 'zero' );
 assert_equals( format_poly( [1 0 3 0 5 0] ), 'x^5+3x^3+5x', 'poly' );
 assert_equals( format_poly( [0 1 0 3 0 5], 'symbol', 'z' ), 'z^4+3z^2+5', 'polyz' );

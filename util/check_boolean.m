@@ -32,8 +32,6 @@ if ~exist('mfilename','var') || isempty(mfilename)
 end
 
 if ~cond
-    error([mfilename ':boolean'], sprintf( '%s: %s', mfilename, message ) );
+    error([mfilename ':boolean'], '%s: %s', mfilename, message );
 end
-    
-    
-
+ok=cond;

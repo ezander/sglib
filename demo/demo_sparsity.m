@@ -3,18 +3,17 @@ function demo_sparsity
 init_demos
 clf
 
-check_condition( [], 'vector', false, '?', mfilename );
-setuserwaitmode( 'mouse' );
-
 clf;
-subplot(2,1,1); sp_plots( 0, 0, 4, 2, 4, true );
-subplot(2,1,2); sp_plots( 0, 0, 4, 2, 4, false );
+subplot(1,2,1); sp_plots( 0, 0, 4, 2, 4, false ); title( 'degree ordering' );
+subplot(1,2,2); sp_plots( 0, 0, 4, 2, 4, true ); title( 'lexicographical ordering' );
+subtitle( 'Ordering comparison' );
 userwait;
 
 clf;
-subplot(2,2,1); sp_plots( 0, 0, 4, 2, 4, true );
-subplot(2,2,2); sp_plots( 1, 1, 4, 2, 4, true );
-subplot(2,2,3); sp_plots( 2, 2, 4, 2, 4, true );
+subplot(2,2,1); sp_plots( 0, 0, 4, 2, 4, false );
+subplot(2,2,2); sp_plots( 1, 1, 4, 2, 4, false );
+subplot(2,2,3); sp_plots( 2, 2, 4, 2, 4, false );
+subtitle( 'RHS expansion comparison' );
 userwait;
 
 clf;
@@ -22,6 +21,7 @@ subplot(2,2,1); sp_plots( 0, 0, 4, 1, 4, false );
 subplot(2,2,2); sp_plots( 0, 0, 4, 2, 4, false );
 subplot(2,2,3); sp_plots( 0, 0, 4, 4, 4, false );
 subplot(2,2,4); sp_plots( 0, 0, 4, 5, 4, false );
+subtitle( 'Operator expansion comparison' );
 userwait;
 
 
