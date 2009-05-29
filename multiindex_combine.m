@@ -99,7 +99,7 @@ end
 if nargin>=2
     if p==-1
         for i=1:m
-            p=max(p,max(I_j{i}(:)));
+            p=max(p,max(sum(I_j{i},2)));
             p=full(p); % necessary if I_j is sparse
         end
     end
