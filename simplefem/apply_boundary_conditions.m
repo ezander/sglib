@@ -18,8 +18,9 @@ if true
     g=tensor_operator_apply( K, g );
     gi=tensor_operator_apply( {P_I, I_S}, g );
     if iscell(f)
-        fi=tensor_add( fi, gi, -1, 'reduce', {} );
-        fi=tensor_reduce( fi );
+        %fi=tensor_add( fi, gi, -1, 'reduce', {} );
+        fi=tensor_add( fi, gi, -1 );
+        %fi=tensor_reduce( fi );
     else
         fi=fi-gi;
     end

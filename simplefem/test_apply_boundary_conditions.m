@@ -31,9 +31,9 @@ g=((n:-1:1).*(n:-1:1))';
 [P_B,P_I]=boundary_projectors( bnd, n );
 
 
-[Ks,fs]=apply_boundary_conditions( K, f, g, P_B, P_I, 'scaling', .7 );
-u=Ks\fs;
+[Ki,fi]=apply_boundary_conditions( K, f, g, P_B, P_I );
+ui=Ki\fi;
+u=P_I'*ui+P_B'*P_B*g;
 
 assert_equals( P_B*u, P_B*g, 'u_g_B' );
 assert_equals( P_I*K*u, P_I*f, 'Ku_f_I' );
-

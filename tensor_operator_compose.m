@@ -1,7 +1,7 @@
-function A=tensor_operator_compose( A2, A1 )
+function C=tensor_operator_compose( A, B )
 % TENSOR_OPERATOR_COMPOSE Return the composition of two tensor operators.
-%   A=TENSOR_OPERATOR_COMPOSE( A2, A1 ) returns the composition A of the
-%   tensor operators A1 and A2 such that A(X)=A2(A1(X))). If one of the
+%   C=TENSOR_OPERATOR_COMPOSE( A, B ) returns the composition C of the
+%   tensor operators A and B such that C(X)=A(B(X))). If one of the
 %   operators is purely numeric (i.e. a matrix), then the result will also
 %   be a matrix, i.e. the other operator, if not already a matrix, will be
 %   taken as its transposed Kronecker product. 
@@ -43,22 +43,22 @@ function A=tensor_operator_compose( A2, A1 )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if isnumeric(A1) && isnumeric(A2)
-    A=linear_operator_compose( A1, A2 );
-elseif isnumeric(A1)
-    A=linear_operator_compose( A1, tkron(A2) );
-elseif isnumeric(A2)
-    A=linear_operator_compose( tkron(A1), A2 );
+if isnumeric(A) && isnumeric(B)
+    C=linear_operator_compose( A, B );
+elseif isnumeric(A)
+    C=linear_operator_compose( A, tkron(B) );
+elseif isnumeric(B)
+    C=linear_operator_compose( tkron(A), B );
 else
-    k1=size(A1,1);
-    k2=size(A2,1);
-    r=size(A1,2); % should be 2 currently
-    A=cell(k1*k2,r);
-    for i1=1:k1
-        for i2=1:k2
-            i=i2+(i1-1)*k2;
+    ka=size(A,1);
+    kb=size(B,1);
+    r=size(A,2); % should be 2 currently
+    C=cell(ka*kb,r);
+    for ia=1:ka
+        for ib=1:kb
+            i=ib+(ia-1)*kb;
             for j=1:r
-                A{i,j}=linear_operator_compose( A1{i1,j}, A2{i2,j} );
+                C{i,j}=linear_operator_compose( A{ia,j}, B{ib,j} );
             end
         end
     end

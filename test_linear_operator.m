@@ -66,23 +66,23 @@ assert_equals( linear_operator_solve( linop3, y ), x, 'lo3_solve' );
 % test the operator composition (not directly by all that follows)
 assert_set_function( 'linear_operator_compose' );
 
-M1=[1, 2 4; 3, 4 7; 5, 10, 2; 6, 6, 5];
-M2=[4 3 2 5; 2 6 4 8; 1 1 2 5];
+A=[4 3 2 5; 2 6 4 8; 1 1 2 5];
+B=[1, 2 4; 3, 4 7; 5, 10, 2; 6, 6, 5];
 x=[1; 5; 2];
-y=M2*M1*x;
-s=size(M2*M1);
-linop1=linear_operator_compose( M2, M1 );
-linop2=linear_operator_compose( linear_operator(M2), linear_operator(M1), 'step_solve', false );
-linop3=linear_operator_compose( linear_operator(M2), linear_operator(M1) );
+y=A*B*x;
+s=size(A*B);
+linop1=linear_operator_compose( A, B );
+linop2=linear_operator_compose( linear_operator(A), linear_operator(B), 'step_solve', false );
+linop3=linear_operator_compose( linear_operator(A), linear_operator(B) );
 
 assert_equals( linear_operator_size( linop1 ), s, 'loc1_size' );
 assert_equals( linear_operator_size( linop2 ), s, 'loc2_size' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'loc1_apply' );
 assert_equals( linear_operator_apply( linop2, x ), y, 'loc2_apply' );
-assert_equals( linear_operator_apply( M2, linear_operator_apply( M1, x ) ), y, 'loc1_apply2' );
+assert_equals( linear_operator_apply( A, linear_operator_apply( B, x ) ), y, 'loc1_apply2' );
 assert_equals( linear_operator_solve( linop1, y ), x, 'loc1_solve' );
 assert_equals( linear_operator_solve( linop2, y ), x, 'loc2_solve', 'abstol', 1e-4 );
 % the result doesn't match the input (x) in this case but it shows that the
 % result is indeed computed step by step (which is inaccurate since the
 % matrices are 4x3 and 3x4 and the second step has to be solved in a least squares fashion)
-assert_equals( linear_operator_solve( linop3, y ), M1\(M2\y), 'loc3_solve' );
+assert_equals( linear_operator_solve( linop3, y ), B\(A\y), 'loc3_solve' );

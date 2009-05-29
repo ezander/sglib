@@ -1,7 +1,7 @@
-function M=linear_operator_compose( M2, M1, varargin )
+function C=linear_operator_compose( A, B, varargin )
 % LINEAR_OPERATOR_COMPOSE Return the composition of two linear operators.
-%   M=LINEAR_OPERATOR_COMPOSE( M2, M1 ) returns the composition M of the
-%   linear operators M1 and M2 such that M(X)=M2(M1(X))). 
+%   C=LINEAR_OPERATOR_COMPOSE( A, B ) returns the composition C of the
+%   linear operators A and B such that C(X)=A(B(X))). 
 %
 % Example (<a href="matlab:run_example linear_operator_compose">run</a>)
 %
@@ -24,23 +24,23 @@ options=varargin2options( varargin{:} );
 check_unsupported_options( options, mfilename );
 
 
-if isnumeric(M1) && isnumeric(M2)
-    % M1 and M2 are matrices
-    M=M2*M1;
+if isnumeric(A) && isnumeric(B)
+    % A and B are matrices
+    C=A*B;
 else
-    s1=linear_operator_size(M1);
-    s2=linear_operator_size(M2);
+    sa=linear_operator_size(A);
+    sb=linear_operator_size(B);
     if step_solve
-        M={[s2(1), s1(2)], {@comp_apply, {M1,M2}, {1,2}}, {@comp_solve, {M1,M2}, {1,2}} };
+        C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}}, {@comp_solve, {A,B}, {1,2}} };
     else
-        M={[s2(1), s1(2)], {@comp_apply, {M1,M2}, {1,2}} };
+        C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}} };
     end
 end
 
-function z=comp_apply( M1, M2, x )
-y=linear_operator_apply( M1, x );
-z=linear_operator_apply( M2, y );
+function z=comp_apply( A, B, x )
+y=linear_operator_apply( B, x );
+z=linear_operator_apply( A, y );
 
-function x=comp_solve( M1, M2, z )
-y=linear_operator_solve( M2, z );
-x=linear_operator_solve( M1, y );
+function x=comp_solve( A, B, z )
+y=linear_operator_solve( A, z );
+x=linear_operator_solve( B, y );
