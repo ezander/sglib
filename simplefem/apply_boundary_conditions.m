@@ -4,6 +4,28 @@ options=varargin2options( varargin{:} );
 %[s,options]=get_option( options, 'scaling', 1 );
 check_unsupported_options( options, mfilename );
 
+if false
+    m=tensor_operator_size(K)/size(P_B,2);
+    I_S=speye(m);
+    
+    % Ki=P_IS*K*P_IS';
+    Ki=tensor_operator_compose( {P_I, I_S}, K );
+    Ki=tensor_operator_compose( Ki, {P_I', I_S} );
+    
+    % fi=P_IS*(f-K*P_BS'*P_BS*g);
+    fi=tensor_operator_apply( {P_I, I_S}, f );
+    g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
+    g=tensor_operator_apply( K, g );
+    gi=tensor_operator_apply( {P_I, I_S}, g );
+    if iscell(f)
+        fi=tensor_add( fi, gi, -1, 'reduce', {} );
+        fi=tensor_reduce( fi );
+    else
+        fi=fi-gi;
+    end
+    
+end
+
 
 if isnumeric(K)
     m=size(K,1)/size(P_B,2);

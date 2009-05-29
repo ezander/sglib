@@ -4,7 +4,13 @@ function K=tkron( A, B )
 %   arguments. The reason for this is that in this order it better matches
 %   other variants of tensor products and conversion is simplified. It is
 %   recommended that only TKRON be used with SGLIB.
+%
+%   TKRON(A) where A is a cell array assumes that A is a tensor product
+%   operator and A is of size Rx2, i.e. A={ A_11, A_12; ...; A_R1, A_R2},
+%   returns the sum of the transposed Kronecker products of A{i,1} and
+%   A{i,2} for i=1:R.
 % 
+% Rational
 %   Suppose an elementary tensor T is given by {X,Y}, where X an N vector
 %   and Y an M vector, and the matrix representation of T is M=X*Y', then
 %   M(:)==tkron(X,Y). Then, suppose A is an NxN matrix and B is an MxM
@@ -51,7 +57,11 @@ function K=tkron( A, B )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-% Yes, I know that this function does pretty little, however, its purpose
-% is not having to remember the correct ordering for the Kronecker product
-% all the time
-K=kron(B,A);
+if nargin<2 && iscell( A ) 
+    K=kron( A{1,2}, A{1,1} );
+    for i=2:size(A,1)
+        K=kron( A{i,2}, A{i,1} );
+    end
+else
+    K=kron(B,A);
+end
