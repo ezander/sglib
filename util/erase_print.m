@@ -10,8 +10,7 @@ function erase_print( varargin )
 %   Note: any direct output (via DISP, FPRINTF etc.) will interfere with
 %   the mechanism in ERASE_PRINT and produce garbled output. 
 % 
-% Run: (<a href="matlab:run_example erase_print">run</a>)
-% Example:
+% Example: (<a href="matlab:run_example erase_print">run</a>)
 %     N=10;
 %     for i=1:N
 %         erase_print( 'Assemble: %d/%d', i, N );
@@ -22,8 +21,6 @@ function erase_print( varargin )
 %     erase_print();
 % 
 % See also SPRINTF, FPRINTF
-% bla
-
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

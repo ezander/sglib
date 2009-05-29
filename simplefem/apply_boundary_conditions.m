@@ -4,7 +4,7 @@ options=varargin2options( varargin{:} );
 %[s,options]=get_option( options, 'scaling', 1 );
 check_unsupported_options( options, mfilename );
 
-if false
+if true
     m=tensor_operator_size(K)/size(P_B,2);
     I_S=speye(m);
     
@@ -23,7 +23,8 @@ if false
     else
         fi=fi-gi;
     end
-    
+    return
+
 end
 
 

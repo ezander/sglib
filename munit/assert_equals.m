@@ -140,7 +140,7 @@ function assert_equals_cell( actual, expected, assert_id, curr_options, options 
 
 for i=1:size(actual,1)
     for j=1:size(actual,2)
-        assert_equals( actual{i,j}, expected{i,j}, assert_id, curr_options, options );
+        assert_equals( actual{i,j}, expected{i,j}, sprintf('%s{%d,%d}', assert_id, i, j), curr_options, options );
         curr_options.no_step=true;
     end
 end

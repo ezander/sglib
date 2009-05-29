@@ -60,7 +60,7 @@ function K=tkron( A, B )
 if nargin<2 && iscell( A ) 
     K=kron( A{1,2}, A{1,1} );
     for i=2:size(A,1)
-        K=kron( A{i,2}, A{i,1} );
+        K=K+kron( A{i,2}, A{i,1} );
     end
 else
     K=kron(B,A);

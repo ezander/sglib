@@ -79,6 +79,7 @@ assert_equals( linear_operator_size( linop1 ), s, 'loc1_size' );
 assert_equals( linear_operator_size( linop2 ), s, 'loc2_size' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'loc1_apply' );
 assert_equals( linear_operator_apply( linop2, x ), y, 'loc2_apply' );
+assert_equals( linear_operator_apply( M2, linear_operator_apply( M1, x ) ), y, 'loc1_apply2' );
 assert_equals( linear_operator_solve( linop1, y ), x, 'loc1_solve' );
 assert_equals( linear_operator_solve( linop2, y ), x, 'loc2_solve', 'abstol', 1e-4 );
 % the result doesn't match the input (x) in this case but it shows that the

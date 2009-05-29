@@ -56,7 +56,7 @@ else
     A=cell(k1*k2,r);
     for i1=1:k1
         for i2=1:k2
-            i=i1+(i2-1)*k1;
+            i=i2+(i1-1)*k2;
             for j=1:r
                 A{i,j}=linear_operator_compose( A1{i1,j}, A2{i2,j} );
             end
