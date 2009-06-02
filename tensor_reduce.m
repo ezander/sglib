@@ -21,7 +21,7 @@ function [T_k,sigma,k]=tensor_reduce( T, varargin )
 options=varargin2options( varargin{:} );
 [M1,options]=get_option( options, 'M1', [] );
 [M2,options]=get_option( options, 'M2', [] );
-[Sp,options]=get_option( options, 'Sp', 2 );
+[p,options]=get_option( options, 'p', 2 );
 [k_max,options]=get_option( options, 'k_max', inf );
 [eps,options]=get_option( options, 'eps', 0 );
 [relcutoff,options]=get_option( options, 'relcutoff', true );
@@ -37,36 +37,13 @@ else
 end
 
 sigma=diag(S);
-schatten_p=norm(sigma,Sp);
-if relcutoff
-    eps=eps*schatten_p;
-end
-
-
-if false
-    k0=length(sigma);
-    if isfinite(Sp)
-        csp=cumsum(sigma^Sp);
-        k=sum(sigma>eps^Sp);
-    else
-        k=sum(sigma>eps);
-    end
-    k=1;
-    k=min(k,k_max);
-else
-    k0=length(sigma);
-    k=1;
-    while k<=min(k_max,k0)
-        if k==k0; break; end
-        schatten_p_trunc=norm(sigma(k+1,end),Sp);
-        if schatten_p_trunc<eps; break; end
-        k=k+1;
-    end
-end
+k=schattenp_truncate( sigma, eps, relcutoff, p );
+k=min(k,k_max);
 
 U_k=U(:,1:k);
 S_k=S(1:k,1:k);
 V_k=V(:,1:k);
+
 if iscell(T)
     T_k={Q1*U_k*S_k,Q2*V_k};
 else
@@ -79,4 +56,15 @@ if isempty(M)
     [Q,R]=qr(A,0);
 else
     [Q,R]=gram_schmidt(A,M,false,1);
+end
+
+function k=schattenp_truncate( sigma, eps, rel, p )
+
+if isfinite(p)
+    csp=cumsum(sigma.^p);
+    if rel; eps=eps*csp(end); end
+    k=find(csp(end)-csp<=eps^p,1,'first');
+else
+    if rel; eps=eps*sigma(end); end
+    k=sum(sigma>=eps);
 end
