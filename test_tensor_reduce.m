@@ -48,6 +48,7 @@ assert_equals( true, abs(schatten_norm(tensor_add(T,U,-1),2))>eps, 'reduce_0', '
 
 
 if exist( 'schattenp_truncate' ) %#ok
+    % copy this function inline to test it
     assert_set_function( 'schattenp_truncate' );
 
     s=[5,4,3,2,1];
@@ -78,3 +79,4 @@ if iscell(A)
 end
 s=svd(A);
 n=norm(s,p);
+
