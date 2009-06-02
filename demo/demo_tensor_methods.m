@@ -87,9 +87,6 @@ norm( f_vec_i-tensor_operator_apply( K_mat_i, u_vec_i ) );
 
 
 
-%%
-function y=funcall_reverse( x, func )
-y=funcall( func, x );
 
 
 
