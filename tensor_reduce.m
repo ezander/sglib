@@ -42,19 +42,36 @@ if relcutoff
     eps=eps*schatten_p;
 end
 
-k0=length(sigma);
-k=1;
-while k<=min(k_max,k0)
-    if k==k0; break; end
-    schatten_p_trunc=norm(sigma(k+1,end),Sp);
-    if schatten_p_trunc<eps; break; end
-    k=k+1;
+
+if false
+    k0=length(sigma);
+    if isfinite(Sp)
+        csp=cumsum(sigma^Sp);
+        k=sum(sigma>eps^Sp);
+    else
+        k=sum(sigma>eps);
+    end
+    k=1;
+    k=min(k,k_max);
+else
+    k0=length(sigma);
+    k=1;
+    while k<=min(k_max,k0)
+        if k==k0; break; end
+        schatten_p_trunc=norm(sigma(k+1,end),Sp);
+        if schatten_p_trunc<eps; break; end
+        k=k+1;
+    end
 end
 
 U_k=U(:,1:k);
 S_k=S(1:k,1:k);
 V_k=V(:,1:k);
-T_k={Q1*U_k*S_k,Q2*V_k};
+if iscell(T)
+    T_k={Q1*U_k*S_k,Q2*V_k};
+else
+    T_k=U_k*S_k*V_k'
+end
 
 
 function [Q,R]=qr_internal( A, M )

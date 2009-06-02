@@ -1,46 +1,41 @@
-function [x,flag,relres,iter]=solve_linear_stat_tensor( A_tp, F_tp, varargin )
+function [x,flag,relres,iter]=tensor_operator_solve_jacobi( A, F, varargin )
 % SOLVE_LINEAR_STAT_TENSOR Solves a linear system in tensor product form using stationary methods.
 
 %% init section
 options=varargin2options( varargin{:} );
-[method_str,options]=get_option( options, 'method', 'jacobi' );
-[omega,options]=get_option( options, 'overrelax', 1 ); %#ok
+[M,options]=get_option( options, 'M', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-7 );
 [reltol,options]=get_option( options, 'reltol', 1e-7 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
 
-[trunc_k,options]=get_option( options, 'trunc_k', 20 );
-[trunc_eps,options]=get_option( options, 'trunc_eps', 1e-4 );
-[relax,options]=get_option( options, 'relax', 1.0 );
+[reduce_options,options]=get_option( options, 'reduce_options', {''} );
+
+%[omega,options]=get_option( options, 'overrelax', 1 ); %#ok
+%[relax,options]=get_option( options, 'relax', 1.0 );
+reduce_options={};
+
+%[trunc_k,options]=get_option( options, 'trunc_k', 20 );
+%[trunc_eps,options]=get_option( options, 'trunc_eps', 1e-4 );
 
 %algorithm=get_option( options, 'algorithm', 'standard' ); %#ok
 [algorithm,options]=get_option( options, 'algorithm', 1 ); %#ok
 check_unsupported_options( options, mfilename );
 
-switch method_str
-    case {'jacobi', 'jac', 'jor'}
-        method=1; %#ok
-    case {'gauss-seidel', 'gs', 'sor'}
-        method=2; %#ok
-        error( 'solve_mat_decomp_tensor:impl', 'not yet implemented' );
-    otherwise
-        error( 'solve_mat_decomp_tensor:args', 'Unknown method (%s)', method_str );
-end
 
+%if isempty(M)
+%    M=A(1,:);
+%end
 
 
 %% solver section
-A_0={ A_tp{1}, A_tp{2} };
-A_i={A_tp{3}{:};A_tp{4}{:}}';
+A_0=A(1,:);
+A_i=A(2:end,:);
 norm_A0=tensor_operator_normest( A_0 ); % need to relate the truncation epsilons depending on when truncation is performed
 
-F=F_tp;
 X_r=tensor_null(F); 
 
-%check_spectral_radius( A_0, A_i )
 
-
-R=compute_residual( A_0, A_i, X_r, F, trunc_k, trunc_eps );
+R=compute_residual( A_0, A_i, X_r, F, reduce_options );
 norm_R0=tensor_norm( R );
 norm_R=norm_R0;
 

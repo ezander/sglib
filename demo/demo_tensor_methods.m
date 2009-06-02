@@ -82,6 +82,9 @@ u_vec_i=K_mat_i\f_vec_i;
 norm( f_vec_i-tensor_operator_apply( Ki, u_vec_i ) );
 norm( f_vec_i-tensor_operator_apply( K_mat_i, u_vec_i ) );
 
+[x,flag,relres,iter]=tensor_operator_solve_jacobi( K, F );
+
+
 %u_vec_i2=pcg(@funcall_reverse,f_vec_i,[],[],[],[],[],{@tensor_operator_apply,{K_mat_i},{1}});
 %u_vec_i3=pcg(K_mat_i,f_vec_i,[],[],[],[],[]);
 
