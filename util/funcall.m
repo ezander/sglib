@@ -69,20 +69,17 @@ function varargout=funcall( func, varargin )
 
 if iscell( func )
     if length(func)<2
-        func{2}={};
-    end
-    if ~iscell(func{2}) 
-        error( 'element 2 of function cell array has to be a cell array' );
-    end
-    if length(func)>2
-        if ~iscell(func{3})
-            error( 'element 3 of function cell array has to be a cell array' );
-        end
-        args=merge_cells( func{2}, func{3}, varargin );
-        [varargout{1:nargout}]=funcall( func{1}, args{:} );
+        args=varargin;
+    elseif ~iscell(func{2})
+        error( 'element 2 of function cell array has to be a cell array of parameters' );
+    elseif length(func)<3
+        args=cat( 2, varargin, func{2});
+    elseif ~iscell(func{3})
+        error( 'element 3 of function cell array has to be a cell array of parameter positions' );
     else
-        [varargout{1:nargout}]=funcall( func{1}, varargin{:}, func{2}{:} );
+        args=merge_cells( func{2}, func{3}, varargin );
     end
+    [varargout{1:nargout}]=funcall( func{1}, args{:} );
 elseif ischar( func )
     [varargout{1:nargout}]=feval( func, varargin{:} );
 else

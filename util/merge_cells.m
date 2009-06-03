@@ -6,7 +6,7 @@ function cells=merge_cells( cells1, pos1, cells2 )
 %   elements of CELLS2 are filled in from left to right.
 %
 % Example (<a href="matlab:run_example merge_cells">run</a>)
-%   merge_cells( {'a','b'}, {2,4}, {'c','d','e'} );
+%   merge_cells( {'a','b'}, {2,4}, {'c','d','e'} )
 %   % returns {'c', 'a', 'd', 'b', 'e' }
 %
 % See also CELL
@@ -25,20 +25,11 @@ function cells=merge_cells( cells1, pos1, cells2 )
 
 
 n=length(cells1)+length(cells2);
+
+pos1=cell2mat(pos1);
+inds2=true(1,n);
+inds2(pos1)=false;
+
 cells=cell( 1,n );
-
-inds1=zeros(1,n);
-if length(pos1)>1
-    pos1=horzcat(pos1{:});
-elseif length(pos1)==1
-    pos1=pos1{1};
-else
-    pos1=[];
-end
-inds1(pos1)=1;
-inds1=logical(inds1);
-inds2=~inds1;
-
 cells(pos1)=cells1;
 cells(inds2)=cells2;
-
