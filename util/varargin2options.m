@@ -46,12 +46,16 @@ if isempty(varargin)
     options=struct();
 elseif isstruct( varargin{1} )
     options=varargin{1};
-elseif iscell( varargin{1} )
-    options=varargin2options( varargin{1}{:} );
 else
+    if iscell( varargin{1} )
+        c=varargin{1};
+    else
+        c=varargin;
+    end
     try
-        options=cell2struct( varargin(2:2:end), varargin(1:2:end), 2 );
+        options=cell2struct( c(2:2:end), c(1:2:end), 2 );
     catch
+        % most probable cause: number of preceding arguments wrong
         error( 'varargin2options:options', 'wrong option specification: %s', evalc( 'disp(varargin);' ) );
     end
 end

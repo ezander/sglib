@@ -101,7 +101,12 @@ end
         
 
 function Y=apply_tkron_vect( A, X )
-check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
+%[s1,s2]=linear_operator_size( A );
+%[s1,s2]=size( A );
+s2=size(X,1);
+if s2~=size(X,1) 
+    check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
+end
 Y=linear_operator_apply( A, X );
 
 function Y=apply_tkron_mat( A, X )

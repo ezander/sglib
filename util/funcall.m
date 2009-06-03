@@ -17,18 +17,18 @@ function varargout=funcall( func, varargin )
 %   portable way to specify partially parameterized functions in matlab and
 %   octave.
 %
-% Note 2: It's not possible to call FUNCALL without output argument and
-%   terminating semicolon to have its output automatically displayed like
-%   normal in matlab/octave. The reason is that in this the number of
-%   output arguments is set to 0 by matlab/octave, causing FUNCALL to call
-%   the function with the number of output args set to zero. Setting this
-%   artificially to 1 would cause problems with functions that have indeed
-%   no output arguments. Distinguishing these cases on the other hand would
-%   require context information that is not available. Thus, the only
-%   remedy is to write 'disp(funcall(...))', if the output should be
-%   displayed (this sets nargout to 1, as it should be).
-%   Update: there is no error message anymore, but still there is no output
-%   in this case due to those difficulties.
+% Note 2: Nesting: FUNCALL functions can be arbitrary nested. If func is a
+%   function callable by FUNCALL, taking some parameters X and Y, then
+%   {func,{3}} is again callable by FUNCALL (now a function of one parameter
+%   X, since Y is already bound to 3.
+%
+% Note 3: The reason that parameters go to the end of the argument list by
+%   default is that the function that gets the 'function handle' usually
+%   supplies the 'essential' arguments which usually come first and the
+%   'parametric' arguments and options are supplied by the caller and come last. 
+%
+% Note 4: For those who care: this function uses 'nargout bumping' as
+%   described in <a href="http://blogs.mathworks.com/loren/2009/04/14/convenient-nargout-behavior/">Convenient nargout Behavior</a>
 %
 % Example (<a href="matlab:run_example funcall">run</a>)
 %   % calling the power function
@@ -36,21 +36,23 @@ function varargout=funcall( func, varargin )
 %   funcall( {@(y,x)(power(x,y)),{3}},2 )==9
 %   funcall( {@power,{3},{2}},2 )==8
 %   funcall( {@power,{3},{1}},2 )==9
-%
+%   
 %   %call ode45 with (@times,[1,2],1) 
 %   % a) positions 1 and 3 for @times and 1 are specified
-%   funcall( {@ode45,{@times,1},{1,3}}, [1,2] )
+%   [t,y]=funcall( {@ode45,{@times,1},{1,3}}, [1,2] ); 
+%   plot(t,y); hold on;
 %   % b) position for 1 is unspecified, so moves to the end of the
 %   %    parameter list
-%   funcall( {@ode45,{1}}, @times, [2,3] )
-%
+%   [t,y]=funcall( {@ode45,{1.5}}, @times, [1,2] ); 
+%   plot(t,y); hold off;
+%   
 %   % calling an arbitrary function
-%   disp( funcall( @func, a, b ) ) % calls func(a,b)
-%   disp( funcall( {@func, {c,d}}, a, b ) ) % calls func(a,b,c,d)
-%   disp( funcall( {@func, {c,d}, {1,4}}, a, b ) ) % calls func(c,a,b,d)
+%   disp( funcall( @mtimes, 3, 4 ) ) % calls mtimes(3,4)
+%   size( funcall( {@rand, {10,20}}, 30, 40 ) ) % calls rand(30,40,10,20)
+%   size( funcall( {@rand, {10,20}, {1,4}}, 30, 40 ) ) % calls rand(10,30,40,20)
 %
 % 
-% See also FEVAL, ISFUNCTION
+% See also CELL, ISFUNCTION, VARARGIN, VARARGOUT, NARGIN, NARGOUT, FEVAL
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -65,8 +67,6 @@ function varargout=funcall( func, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-varargout=cell(nargout,1);
-
 if iscell( func )
     if length(func)<2
         func{2}={};
@@ -79,20 +79,12 @@ if iscell( func )
             error( 'element 3 of function cell array has to be a cell array' );
         end
         args=merge_cells( func{2}, func{3}, varargin );
-        [varargout{:}]=funcall( func{1}, args{:} );
+        [varargout{1:nargout}]=funcall( func{1}, args{:} );
     else
-        [varargout{:}]=funcall( func{1}, varargin{:}, func{2}{:} );
+        [varargout{1:nargout}]=funcall( func{1}, varargin{:}, func{2}{:} );
     end
 elseif ischar( func )
-    if nargout==0
-        feval( func, varargin{:} );
-    else
-        [varargout{:}]=feval( func, varargin{:} );
-    end
+    [varargout{1:nargout}]=feval( func, varargin{:} );
 else
-    if nargout==0
-        func( varargin{:} );
-    else
-        [varargout{:}]=func( varargin{:} );
-    end
+    [varargout{1:nargout}]=func( varargin{:} );
 end

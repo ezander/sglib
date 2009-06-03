@@ -21,8 +21,8 @@ function test_funcall
 
 assert_set_function( 'funcall' );
 
+% test parameter placement
 res=[5,12];
-
 func=@test_it;
 [d,e]=funcall( func, 2, 3, 4 );
 assert_equals( [d,e], res, 'direct' );
@@ -47,9 +47,35 @@ func={@test_it, {4}};
 [d,e]=funcall( func, 2, 3 );
 assert_equals( [d,e], res, 'param_last' );
 
+% test no output arg behaviour
+s=evalc( 'funcall( @sin, 3 )' );
+assert_true( any( strfind( s, '0.14112' ) ), 'must output sin(3)', 'no_argout_sin' );
 
+s=evalc( 'funcall( @noargout, 3 )' );
+assert_true( any( strfind( s, 'noargout' ) ), 'noargoutout should see nargout==0', 'no_argout_0' );
+x=funcall( @noargout, 3 );
+assert_equals( x, 4, 'no_argout_1' );
+
+% test behaviour with different function specs
+% string 1
+assert_equals( funcall( 'sin', 3 ), sin(3), 'string' );
+assert_equals( funcall( {'sin'}, 3 ), sin(3), 'cell_string' );
+assert_equals( funcall( {'sin', {3}} ), sin(3), 'cell_string2' );
+assert_equals( funcall( {{'sin'}}, 3 ), sin(3), 'nest1' );
+assert_equals( funcall( {{{'sin'}}}, 3 ), sin(3), 'nest2' );
+
+assert_equals( funcall( {{{@sin}}}, 3 ), sin(3), 'nest4' );
+times4={@times,{4}};
+equal12={times4,{3}};
+assert_equals( funcall( {equal12} ), 12, 'nest4' );
 
 
 function [d,e]=test_it( a, b, c )
 d=a+b; e=b*c;
 
+function varargout=noargout(x)
+if nargout==0
+    disp('noargout');
+else
+    [varargout{1:nargout}]=x+1;
+end

@@ -82,11 +82,13 @@ u_vec_i=K_mat_i\f_vec_i;
 norm( f_vec_i-tensor_operator_apply( Ki, u_vec_i ) );
 norm( f_vec_i-tensor_operator_apply( K_mat_i, u_vec_i ) );
 
-[x,flag,relres,iter]=tensor_operator_solve_jacobi( K, F );
+%Ui=tensor_operator_solve_jacobi( Ki, Fi, 'M', Ki(1,:) );
 
 
-%u_vec_i2=pcg(@funcall_reverse,f_vec_i,[],[],[],[],[],{@tensor_operator_apply,{K_mat_i},{1}});
-%u_vec_i3=pcg(K_mat_i,f_vec_i,[],[],[],[],[]);
+
+Mi=tkron( Ki{1,:} );
+tic; u_vec_i3=pcg(K_mat_i,f_vec_i,[],[],Mi,[],[]); toc;
+tic; u_vec_i2=pcg(@funcall_funfun,f_vec_i,[],[],Mi,[],[],{@tensor_operator_apply,{K_mat_i},{1}}); toc;
 
 
 

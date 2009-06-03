@@ -19,7 +19,7 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   silent: {true}, false
 %     Show messages if recomputing.
 %   show_timings: true, {false}
-%     Show timings for computation.
+%     Show timings for computation. See also <a href="http://blogs.mathworks.com/loren/2009/01/06/nested-timing/">Nested Timing</a>.
 %   message: {'Recomputing: %s( %s )'}
 %     Message to display when recomputing and silent is false. The
 %     parameters are replaced by the function name and the stringified
@@ -68,6 +68,10 @@ options=varargin2options( varargin{:} );
 [extra_params,options]=get_option( options, 'extra_params', {} );
 check_unsupported_options( options, mfilename );
 
+% Setting the following to true shouldn't be necessary, since TIC with
+% return value was introduced.
+use_cputime=false; 
+
 % load saved structure from file if possible
 %if exist( filename, 'file' ) 
 %
@@ -99,12 +103,21 @@ if ~silent && ~isempty(message)
     fprintf( [str '\n'] ); 
 end
 if show_timings
-    t1=cputime;
+    if use_cputime
+        t1=cputime;
+    else
+        th=tic;
+    end
 end
 [data{:}]=funcall( func, params{:}, extra_params{:} ); % Here's the action!
 if show_timings
-    t2=cputime;
-    fprintf( '(%g s) \n', t2-t1 ); 
+    if use_cputime
+        t2=cputime;
+        t=t2-t1;
+    else
+        t=toc(th);
+    end
+    fprintf( '(%g s) \n', t ); 
 end
 
 varargout=data;
