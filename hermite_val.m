@@ -34,15 +34,6 @@ if size(pce_coeff,1)>1
     pce_coeff=pce_coeff';
 end
 
-if 0
-    % old algorithm
-    p=[];
-    for i=1:length(pce_coeff)
-        h=hermite(i-1);
-        p=[0 p]+pce_coeff(i)*h;
-    end
-end
-
 % get all hermite polynomials as matrix and pre-multiply with coefficient
 % matrix to get the coefficients of the polynomials
 h=hermite(length(pce_coeff)-1,true);
@@ -50,3 +41,11 @@ p=pce_coeff*h;
 
 % now evaluate
 y=polyval(p,x);
+
+%use_old_and_slow_algorithm
+%     p=[];
+%     for i=1:length(pce_coeff)
+%         h=hermite(i-1);
+%         p=[0 p]+pce_coeff(i)*h;
+%     end
+

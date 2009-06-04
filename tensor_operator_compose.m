@@ -12,9 +12,9 @@ function C=tensor_operator_compose( A, B )
 % Example (<a href="matlab:run_example tensor_operator_compose">run</a>)
 %    A1={ [1 2; 3 4], [3 5 1; 6 4 2; 2 3 7 ] };
 %    A2={ [1 1; 2 2], [1 1 1; 2 2 2; 3 3 3 ] };
-%    A1M=tkron( A1 );
-%    A2M=tkron( A2 );
-%    x={[1;2], [6;3;2]}; xv=tkron(x);
+%    A1M=revkron( A1 );
+%    A2M=revkron( A2 );
+%    x={[1;2], [6;3;2]}; xv=revkron(x);
 %    % in tensor format
 %    A=tensor_operator_compose( A1, A2 )
 %    y1=tensor_operator_apply( A, x );
@@ -24,9 +24,9 @@ function C=tensor_operator_compose( A, B )
 %    yv1=tensor_operator_apply( AM, xv );
 %    yv2=tensor_operator_apply( A2, tensor_operator_apply( A1M, xv ) );
 %    % should give all the same
-%    [tkron(y1), tkron(y2), yv1, yv2, AM*xv, A2M*(A1M*xv)]
+%    [revkron(y1), revkron(y2), yv1, yv2, AM*xv, A2M*(A1M*xv)]
 %    % should be zero 
-%    norm( AM-tkron(A))
+%    norm( AM-revkron(A))
 %
 % See also LINEAR_OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
 
@@ -46,9 +46,9 @@ function C=tensor_operator_compose( A, B )
 if isnumeric(A) && isnumeric(B)
     C=linear_operator_compose( A, B );
 elseif isnumeric(A)
-    C=linear_operator_compose( A, tkron(B) );
+    C=linear_operator_compose( A, revkron(B) );
 elseif isnumeric(B)
-    C=linear_operator_compose( tkron(A), B );
+    C=linear_operator_compose( revkron(A), B );
 else
     ka=size(A,1);
     kb=size(B,1);

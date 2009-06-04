@@ -4,8 +4,8 @@ function Y=tensor_operator_apply( A, X, varargin )
 %   to the tensor X. Different format for A and X are supported, and can be
 %   specified via additional options or automatically detected. The
 %   following formats are currently possible for the operator A:
-%      tkron:    A is just a huge M1M2xN1N2 matrix 
-%                i.e. A=tkron(M1xN1,M2xN2))
+%      revkron:    A is just a huge M1M2xN1N2 matrix 
+%                i.e. A=revkron(M1xN1,M2xN2))
 %      block:    A is an M1xN1 cell array of M2xN2 matrices/linear operators
 %      tensor:   A is an Kx2 cell array of M1xN1 and M2xN2 matrices
 %   The following vector formats are supported:
@@ -16,10 +16,10 @@ function Y=tensor_operator_apply( A, X, varargin )
 %   be unambiguously differentiated from the tensor format.
 % 
 %   The following combinations of formats are possible:
-%      tkron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
+%      revkron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
 %
 %   TODO: the following is pointless, when the user is required to use 
-%   TKRON instread of KRON
+%   REVKRON instread of KRON
 %   NOT POSSIBLE is 'kron/mat' because it allows different interpretations
 %   (i.e. should the matrix itself or its transpose be vectorised?) and
 %   thus the user should decide that before calling this function. The
@@ -58,7 +58,7 @@ check_unsupported_options( options, mfilename );
 
 if strcmp( optype, 'auto' )
     if isnumeric(A)
-        optype='tkron';
+        optype='revkron';
     elseif iscell(A)
         optype='tensor';
     else
@@ -81,10 +81,10 @@ end
 
 
 switch [optype, '/', vectype]
-    case 'tkron/vect'
-        Y=apply_tkron_vect( A, X );
-    case 'tkron/mat'
-        Y=apply_tkron_mat( A, X );
+    case 'revkron/vect'
+        Y=apply_revkron_vect( A, X );
+    case 'revkron/mat'
+        Y=apply_revkron_mat( A, X );
     case 'block/vect'
         Y=apply_block_vect( A, X );
     case 'block/mat'
@@ -100,7 +100,7 @@ switch [optype, '/', vectype]
 end
         
 
-function Y=apply_tkron_vect( A, X )
+function Y=apply_revkron_vect( A, X )
 %[s1,s2]=linear_operator_size( A );
 %[s1,s2]=size( A );
 s2=size(X,1);
@@ -109,7 +109,7 @@ if s2~=size(X,1)
 end
 Y=linear_operator_apply( A, X );
 
-function Y=apply_tkron_mat( A, X )
+function Y=apply_revkron_mat( A, X )
 Y=linear_operator_apply( A, X(:) );
 % TODO: doesn't (and cannot without some additional information) work with
 % non square operators A, some sensible error detection needed

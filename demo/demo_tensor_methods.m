@@ -88,7 +88,7 @@ norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec ) );
 %Ui=tensor_operator_solve_jacobi( Ki, Fi, 'M', Ki(1,:) );
 
 
-Mi=tkron( Ki{1,:} );
+Mi=revkron( Ki{1,:} );
 tic; ui_vec2=pcg(Ki_mat,fi_vec,[],[],Mi,[],[]); toc;
 tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); toc;
 tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;

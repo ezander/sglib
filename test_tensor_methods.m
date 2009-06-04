@@ -88,11 +88,11 @@ t2=reshape(T2{1}*T2{2}',[],1);
 s=tensor_scalar_product(T1,T2);
 assert_equals( s, t1'*t2, 'inner' );
 s=tensor_scalar_product(T1,T2,'M1',M1);
-assert_equals( s, t1'*tkron(M1,eye(size(M2)))*t2, 'inner_M1' );
+assert_equals( s, t1'*revkron(M1,eye(size(M2)))*t2, 'inner_M1' );
 s=tensor_scalar_product(T1,T2,'M2',M2);
-assert_equals( s, t1'*tkron(eye(size(M1)),M2)*t2, 'inner_M2' );
+assert_equals( s, t1'*revkron(eye(size(M1)),M2)*t2, 'inner_M2' );
 s=tensor_scalar_product(T1,T2,'M1',M1,'M2',M2);
-assert_equals( s, t1'*tkron(M1,M2)*t2, 'inner_M1_M2' );
+assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2' );
 
 %assert_equals( tensor_norm( T, 'svd', M1, M2 ), normT, 'svd' );
 %assert_equals( tensor_norm( T, 'full', M1, M2 ), normT, 'full' );

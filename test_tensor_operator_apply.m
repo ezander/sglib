@@ -27,7 +27,7 @@ assert_set_function( 'tensor_operator_apply' );
 M=[1, 2, 4; 3, 4, 6; 5, 10, 20];
 x=[1; 5; 4];
 y=M*x;
-assert_equals( tensor_operator_apply( M, x ), y, 'tkron/vect' );
+assert_equals( tensor_operator_apply( M, x ), y, 'revkron/vect' );
 
 % here tensor operators (non-square and square) and vectors are computed in
 % different formats and results are checked against each other
@@ -56,7 +56,7 @@ for testnum=1:2
         Alin{i,1}=linear_operator(A{i,1});
         Alin{i,2}=linear_operator(A{i,2});
 
-        Ak=Ak+tkron( A{i,1}, A{i,2} );
+        Ak=Ak+revkron( A{i,1}, A{i,2} );
         for j=1:M2
             for k=1:N2
                 if isempty(Ab{j,k}); Ab{j,k}=zeros(M1,N1); end
@@ -71,9 +71,9 @@ for testnum=1:2
 
     %assert_equals( Ak, cell2mat(Ab), 'internal/AkAb' );
 
-    assert_equals( tensor_operator_apply( Ak, Xvec ), Bvec, 'tkron/vect' );
+    assert_equals( tensor_operator_apply( Ak, Xvec ), Bvec, 'revkron/vect' );
     if testnum==2
-        assert_equals( tensor_operator_apply( Ak, Xmat ), Bmat, 'tkron/mat' );
+        assert_equals( tensor_operator_apply( Ak, Xmat ), Bmat, 'revkron/mat' );
     end
     
     assert_equals( tensor_operator_apply( Ab, Xvec, 'optype', 'block' ), Bvec, 'block/vect' );

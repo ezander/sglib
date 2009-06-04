@@ -44,35 +44,33 @@ if size(pce_ind,1)~=p
     error( 'pce coeff and pce index vector don''t match' );
 end
 
-if 0
-    % original implementation
-    pce_coeff=pce_coeff'; % transposed pce_coeff
-    n=size(x,1);
-    N=size(pce_coeff,2);
-    y=zeros(n,N);
-    for k=1:p
-        dy=ones(n,1);
-        for i=1:d
-            h=hermite(pce_ind(k,i));
-            dy=dy.*polyval(h,x(:,i));
-        end
-        y=y+dy*pce_coeff(k,:);
-    end
-else
-    % about 50 times faster (in cases)
-    m=max(pce_ind(:));
-    h=hermite(m, true);
-    hx=zeros( [size(x) m+1] );
-    for i=0:m
-        hx(:,:,i+1)=polyval( h(i+1,:), x );
-    end
-    hx2=reshape( hx, size(hx,1), [] );
-    
-    n=size(x,1);
-    N=size(pce_coeff,1);
-    y=zeros(n,N);
-    for k=1:p
-        dy=prod( hx2( :, d*pce_ind(k,:)+(1:d) ), 2 );
-        y=y+dy*pce_coeff(:,k)';
-    end
+% about 50 times faster (in cases) than naive implementation (see below)
+m=max(pce_ind(:));
+h=hermite(m, true);
+hx=zeros( [size(x) m+1] );
+for i=0:m
+    hx(:,:,i+1)=polyval( h(i+1,:), x );
 end
+hx2=reshape( hx, size(hx,1), [] );
+
+n=size(x,1);
+N=size(pce_coeff,1);
+y=zeros(n,N);
+for k=1:p
+    dy=prod( hx2( :, d*pce_ind(k,:)+(1:d) ), 2 );
+    y=y+dy*pce_coeff(:,k)';
+end
+
+% % original implementation
+% pce_coeff=pce_coeff'; % transposed pce_coeff
+% n=size(x,1);
+% N=size(pce_coeff,2);
+% y=zeros(n,N);
+% for k=1:p
+%     dy=ones(n,1);
+%     for i=1:d
+%         h=hermite(pce_ind(k,i));
+%         dy=dy.*polyval(h,x(:,i));
+%     end
+%     y=y+dy*pce_coeff(k,:);
+% end

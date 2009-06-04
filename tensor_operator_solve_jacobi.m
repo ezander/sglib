@@ -173,19 +173,19 @@ function check_spectral_radius( A_0, A_i )
 %omega=3/(2*(lambda+1))
 %rho=estimate_method_spectral_radius( F, A_0, A_i, 0.03, trunc_k, trunc_eps, norm_A0 )
 
-K_0=tkron(A_0{1},A_0{2});
-K_0inv=tkron(inv(A_0{1}),inv(A_0{2}));
-K_s=tkron(A_i{1,1},A_i{1,2});
+K_0=revkron(A_0{1},A_0{2});
+K_0inv=revkron(inv(A_0{1}),inv(A_0{2}));
+K_s=revkron(A_i{1,1},A_i{1,2});
 for i=2:size(A_i,1)
-    K_s=K_s+tkron(A_i{i,1},A_i{i,2});
+    K_s=K_s+revkron(A_i{i,1},A_i{i,2});
 end
 
 n1=2; n2=20;
-K_0=tkron(A_0{1}(n1:n2,n1:n2),A_0{2});
-K_0inv=tkron(inv(A_0{1}(n1:n2,n1:n2)),inv(A_0{2}));
-K_s=tkron(A_i{1,1}(n1:n2,n1:n2),A_i{1,2});
+K_0=revkron(A_0{1}(n1:n2,n1:n2),A_0{2});
+K_0inv=revkron(inv(A_0{1}(n1:n2,n1:n2)),inv(A_0{2}));
+K_s=revkron(A_i{1,1}(n1:n2,n1:n2),A_i{1,2});
 for i=2:size(A_i,1)
-    K_s=K_s+tkron(A_i{i,1}(n1:n2,n1:n2),A_i{i,2});
+    K_s=K_s+revkron(A_i{i,1}(n1:n2,n1:n2),A_i{i,2});
 end
 
 K=K_0+K_s;

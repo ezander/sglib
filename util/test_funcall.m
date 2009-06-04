@@ -49,7 +49,7 @@ assert_equals( [d,e], res, 'param_last' );
 
 % test no output arg behaviour
 s=evalc( 'funcall( @sin, 3 )' );
-assert_true( any( strfind( s, '0.14112' ) ), 'must output sin(3)', 'no_argout_sin' );
+assert_true( any( strfind( s, '0.14' ) ), 'must output sin(3)', 'no_argout_sin' );
 
 s=evalc( 'funcall( @noargout, 3 )' );
 assert_true( any( strfind( s, 'noargout' ) ), 'noargoutout should see nargout==0', 'no_argout_0' );

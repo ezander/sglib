@@ -78,7 +78,7 @@ end
 
 function [Q,R]=gs( A, mod, reorth )
 % GS Perform the normal Gram-Schmidt process.
-Q=zeros(size(A,1),0);
+Q=zeros(size(A));
 for i=1:size(A,2)
     a=A(:,i);
     for k=1:(reorth+1)
@@ -91,14 +91,14 @@ for i=1:size(A,2)
         end
     end
     a=a/sqrt(a'*a);
-    Q=[Q a];
+    Q(:,i)=a;
 end
 R=Q'*A;
 
 
 function [Q,R]=cgs( A, B, mod, reorth )
 % GS Perform the conjugate Gram-Schmidt process.
-Q=zeros(size(A,1),0);
+Q=zeros(size(A));
 for i=1:size(A,2)
     a=A(:,i);
     for k=1:(reorth+1)
@@ -111,6 +111,6 @@ for i=1:size(A,2)
         end
     end
     a=a/sqrt(a'*B*a);
-    Q=[Q a];
+    Q(:,i)=a;
 end
 R=Q'*B*A;
