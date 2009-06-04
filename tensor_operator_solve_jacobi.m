@@ -1,41 +1,31 @@
-function [x,flag,relres,iter]=tensor_operator_solve_jacobi( A, F, varargin )
+function [X,flag,relres,iter]=tensor_operator_solve_jacobi( A, F, varargin )
 % SOLVE_LINEAR_STAT_TENSOR Solves a linear system in tensor product form using stationary methods.
 
-%% init section
+% init section
 options=varargin2options( varargin{:} );
 [M,options]=get_option( options, 'M', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-7 );
 [reltol,options]=get_option( options, 'reltol', 1e-7 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-
 [reduce_options,options]=get_option( options, 'reduce_options', {''} );
+check_unsupported_options( options, mfilename );
 
 %[omega,options]=get_option( options, 'overrelax', 1 ); %#ok
 %[relax,options]=get_option( options, 'relax', 1.0 );
-reduce_options={};
-
 %[trunc_k,options]=get_option( options, 'trunc_k', 20 );
 %[trunc_eps,options]=get_option( options, 'trunc_eps', 1e-4 );
-
-%algorithm=get_option( options, 'algorithm', 'standard' ); %#ok
-[algorithm,options]=get_option( options, 'algorithm', 1 ); %#ok
-check_unsupported_options( options, mfilename );
+%[algorithm,options]=get_option( options, 'algorithm', 1 ); %#ok
 
 
-%if isempty(M)
-%    M=A(1,:);
-%end
+% solver section
+A0=A(1,:);
+AR=A(2:end,:);
+norm_A0=tensor_operator_normest( AR ); % need to relate the truncation epsilons depending on when truncation is performed
+
+X=tensor_null(F); 
 
 
-%% solver section
-A_0=A(1,:);
-A_i=A(2:end,:);
-norm_A0=tensor_operator_normest( A_0 ); % need to relate the truncation epsilons depending on when truncation is performed
-
-X_r=tensor_null(F); 
-
-
-R=compute_residual( A_0, A_i, X_r, F, reduce_options );
+R=compute_residual( A0, AR, X, F, reduce_options );
 norm_R0=tensor_norm( R );
 norm_R=norm_R0;
 
@@ -44,25 +34,23 @@ iter=0;
 tol=max( norm_R0*reltol, abstol );
 tol=max( tol, max( norm_R0*trunc_eps, trunc_eps ) );
 
-fprintf( 'Start: %g\n', norm_R0 );
-
+% fprintf( 'Start: %g\n', norm_R0 );
 while norm_R>tol
 
     if algorithm==1
-        Y_r=jacobi_step_alg1( X_r, A_0, A_i, F, trunc_k, trunc_eps, norm_A0 );
+        Y=jacobi_step_alg1( X, A0, AR, F, reduce_options );
     else
-        Y_r=jacobi_step_alg2( X_r, A_0, A_i, F, trunc_k, trunc_eps );
+        Y=jacobi_step_alg2( X, A0, AR, F, reduce_options );
     end
-        
 
     while true
         if relax<1.0
-            Z_r=relax_update( X_r, Y_r, relax, trunc_k, trunc_eps, norm_A0 );
+            Z=relax_update( X, Y, relax, reduce_options );
         else
-            Z_r=Y_r;
+            Z=Y;
         end
 
-        R=compute_residual( A_0, A_i, Z_r, F, trunc_k, trunc_eps );
+        R=compute_residual( A0, AR, Z, F, reduce_options );
         norm_R_new=tensor_norm( R );
         if norm_R_new>norm_R
             relax=relax/2;
@@ -78,10 +66,11 @@ while norm_R>tol
         break;
     end
     
-    X_r=Z_r;
+    X=Z;
     norm_R=norm_R_new;
     
-    fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, size(X_r{1},2), relax );
+    %fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, size(X_r{1},2), relax );
+    fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, -1, relax );
 
     iter=iter+1;
     if iter>maxiter
@@ -91,113 +80,40 @@ while norm_R>tol
 end
 %final_res=norm_R;
 relres=norm_R/norm_R0;
-x=X_r;
 
-%%
-function R=compute_residual( A_0, A_i, X, F, trunc_k, trunc_eps )
-R_r=F;
-R_c=tensor_null(R_r);
-R_r=tensor_add( R_r, tensor_apply( A_0, X ), -1 );
-[R_r,R_c]=tensor_reduce_carry( R_r, R_c, trunc_k, trunc_eps );
-for i=1:size(A_i,1)
-    R_r=tensor_add( R_r, tensor_apply( A_i(i,:), X ), -1 );
-    [R_r,R_c]=tensor_reduce_carry( R_r, R_c, trunc_k, trunc_eps );
-end
-R=R_r;
 
-function Y_r=jacobi_step_alg1( X_r, A_0, A_i, F, trunc_k, trunc_eps, norm_A0 )
-Y_r=tensor_solve( A_0, F );
-Y_c=tensor_null( Y_r );
-for i=1:size(A_i,1)
-    S_i=tensor_apply( A_i(i,:), X_r );
-    S_i=tensor_solve( A_0, S_i );
-    Y_r=tensor_add( Y_r, S_i, -1 );
-    [Y_r,Y_c]=tensor_reduce_carry( Y_r, Y_c, trunc_k, trunc_eps/norm_A0 );
+
+function R=compute_residual( A0, AR, X, F, reduce_opts )
+R=F;
+R=tensor_add( R, tensor_apply( A0, X ), -1 );
+R=tensor_reduce( R, reduce_opts );
+for i=1:size(AR,1)
+    R=tensor_add( R, tensor_apply( AR(i,:), X ), -1 );
+    R=tensor_reduce( R, reduce_opts );
 end
 
-function Y_r=jacobi_step_alg2( X_r, A_0, A_i, F, trunc_k, trunc_eps )
-Y_r=F;
-Y_c=tensor_null( Y_r );
-for i=1:size(A_i,1)
-    S_i=tensor_apply( A_i(i,:), X_r );
-    Y_r=tensor_add( Y_r, S_i, -1 );
-    [Y_r,Y_c]=tensor_reduce_carry( Y_r, Y_c, trunc_k, trunc_eps );
-end
-Y_r=tensor_solve( A_0, Y_r );
 
-function Z_r=relax_update( X_r, Y_r, relax, trunc_k, trunc_eps, norm_A0 )
-Z_r=tensor_null( Y_r );
-Z_r=tensor_add( Z_r, Y_r, relax );
-Z_r=tensor_add( Z_r, X_r, 1.0-relax );
-Z_r=tensor_reduce( Z_r, trunc_k, trunc_eps/norm_A0 );
-
-
-%%
-
-function [T_r,T_c]=tensor_reduce_carry( T_r, T_c, k0, eps )
-[T_r,T_c]=tensor_reduce( tensor_add( T_r, T_c ), k0, eps );
-
-
-function d=tensor_operator_normest( A_0 )
-d=normest(A_0{1})*normest(A_0{2});
-
-function d=tensor_operator_condest( A_0 ) %#ok
-d=condest(A_0{1})*condest(A_0{2});
-
-function rho=estimate_method_spectral_radius( X_0, Phi, relax, trunc_k, trunc_eps, norm_A0 ) %#ok
-k=5; eps=0.01;
-X=tensor_reduce( X_0, k, eps );
-X=tensor_scale( X, 1/tensor_norm( X ) );
-
-for iter=1:100
-    Y_r=Phi( X );
-    
-    if relax~=1.0
-        Z_r=relax_update( X, Y_r, relax, trunc_k, trunc_eps, norm_A0 );
-    else
-        Z_r=Y_r;
-    end
-   
-    rho=tensor_norm(Z_r);
-    lambda=tensor_scalar_product(Z_r,X);
-    fprintf( 'PM-Iter: %d -> %g %g\n', iter, rho, lambda );
-    X=tensor_scale( Z_r, 1/rho );
+function Y=jacobi_step_alg1( X, A0, AR, F, reduce_opts )
+Y=tensor_solve( A0, F );
+for i=1:size(AR,1)
+    S=tensor_apply( AR(i,:), X );
+    S=tensor_solve( A0, S );
+    Y=tensor_add( Y, S, -1 );
+    Y=tensor_reduce( Y, reduce_opts );
 end
 
-function check_spectral_radius( A_0, A_i )
-%estimation whether the algorithm will converge and some 'optimal'
-%relaxation parameter omega (doesn't really work)
-%Phi=@(X_r)(jacobi_step_alg1( X_r, A_0, A_i, tensor_null(F), trunc_k, trunc_eps, norm_A0 ));
-%lambda=estimate_method_spectral_radius( F, Phi, 1.0, trunc_k, trunc_eps, norm_A0 );
-%lambda=estimate_method_spectral_radius( F, Phi, 0.3, trunc_k, trunc_eps, norm_A0 );
-%omega=3/(2*(lambda+1))
-%rho=estimate_method_spectral_radius( F, A_0, A_i, 0.03, trunc_k, trunc_eps, norm_A0 )
 
-K_0=revkron(A_0{1},A_0{2});
-K_0inv=revkron(inv(A_0{1}),inv(A_0{2}));
-K_s=revkron(A_i{1,1},A_i{1,2});
-for i=2:size(A_i,1)
-    K_s=K_s+revkron(A_i{i,1},A_i{i,2});
+function Y=jacobi_step_alg2( X, A0, AR, F, reduce_opts )
+Y=F;
+for i=1:size(AR,1)
+    S=tensor_apply( AR(i,:), X );
+    Y=tensor_add( Y, S, -1 );
+    Y=tensor_reduce( Y, reduce_opts );
 end
+Y=tensor_solve( A0, Y );
 
-n1=2; n2=20;
-K_0=revkron(A_0{1}(n1:n2,n1:n2),A_0{2});
-K_0inv=revkron(inv(A_0{1}(n1:n2,n1:n2)),inv(A_0{2}));
-K_s=revkron(A_i{1,1}(n1:n2,n1:n2),A_i{1,2});
-for i=2:size(A_i,1)
-    K_s=K_s+revkron(A_i{i,1}(n1:n2,n1:n2),A_i{i,2});
-end
 
-K=K_0+K_s;
-Id=speye(size(K));
-M=Id-K_0inv*K;
-eigs(M,10,'LM',struct('disp',0))
-omega=1.6;
-M_om=Id-omega*K_0inv*K;
-eigs(M_om,10,'LM',struct('disp',0))
-
-omega=0.002;
-omega=1e-4;
-M_om=Id-omega*K;
-eigs(M_om,10,'LM',struct('disp',0))
-
+function Z=relax_update( X, Y, relax, reduce_opts )
+Z=tensor_add( Y, Y, relax-1 );
+Z=tensor_add( Z, X, 1-relax );
+Z=tensor_reduce( Z, reduce_opts  );
