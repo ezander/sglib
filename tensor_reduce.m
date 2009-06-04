@@ -47,7 +47,7 @@ V_k=V(:,1:k);
 if iscell(T)
     T_k={Q1*U_k*S_k,Q2*V_k};
 else
-    T_k=U_k*S_k*V_k'
+    T_k=U_k*S_k*V_k';
 end
 
 

@@ -24,10 +24,10 @@ assert_equals( row_col_mult([1 2; 3 4], [1, 2]), [1 4; 3 8], 'row_mult' );
 assert_equals( row_col_mult([1 2; 3 4], [1; 2]), [1 2; 6 8], 'col_mult' );
 assert_false( issparse( row_col_mult([1 2; 3 4], [1, 2])), [], 'full' );
 assert_false( issparse( row_col_mult([1 2; 3 4], [1; 2])), [], 'full' );
-assert_false( issparse( row_col_mult([1 2 3 4], [1])), [], 'full' );
-assert_false( issparse( row_col_mult([1; 2; 3; 4], [1])), [], 'full' );
+assert_false( issparse( row_col_mult([1 2 3 4], 1)), [], 'full' );
+assert_false( issparse( row_col_mult([1; 2; 3; 4], 1)), [], 'full' );
 
 assert_equals( row_col_mult(sparse([1 2; 3 4]), [1, 2]), [1 4; 3 8], 'row_mult_sp' );
 assert_equals( row_col_mult(sparse([1 2; 3 4]), [1; 2]), [1 2; 6 8], 'col_mult_sp' );
 assert_true( issparse( row_col_mult(sparse([1 2; 3 4]), [1; 2])), [], 'sparse' );
-assert_true( issparse( row_col_mult(sparse([1 2; 3 4]), [1])), [], 'sparse' );
+assert_true( issparse( row_col_mult(sparse([1 2; 3 4]), 1)), [], 'sparse' );

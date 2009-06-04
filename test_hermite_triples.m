@@ -18,30 +18,6 @@ function test_hermite_triples
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if 0
-    i=[1 2; 2 3]
-    j=[2 3; 3 3; 2 5]
-    k=[3 3; 3 4; 3 5; 4 7]
-    %[I,J,K]=meshgrid( i(:,2), j(:,2), k(:,2) )
-    %[I,J,K]=meshgrid( i, j, k )
-    ni=size(i,1);
-    nj=size(j,1);
-    nk=size(k,1);
-    I=permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
-    J=permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
-    K=permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
-    nd=size(i,2);
-    I=reshape( I, nd, [] );
-    J=reshape( J, nd, [] );
-    K=reshape( K, nd, [] );
-    stride1=6;
-    stride2=36;
-    ind=1+I+stride1*J+stride2*K;
-    c=prod(triples(ind),1);
-    reshape( c, [ni nj nk])
-    return
-end
-
 
 % Test the hermite_triple_product function
 assert_set_function( 'hermite_triple_product' );

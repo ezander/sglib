@@ -32,4 +32,4 @@ function startup
 % end
 % run_first=false;
 
-add_sglib_path( false, true )
+add_sglib_path( false, false, true )

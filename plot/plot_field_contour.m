@@ -32,8 +32,6 @@ options=varargin2options( varargin{:} );
 [zpos,options]=get_option( options, 'zpos', 'min' );
 check_unsupported_options( options, mfilename );
 
-X=pos(:,1);
-
 zmin=min(u);
 zmax=max(u);
 zran=zmax-zmin;
@@ -43,8 +41,8 @@ X=pos(:,1);
 Y=pos(:,2);
 
 for i=1:nlev
-    lt=u<zlev(i);
-    gt=u>zlev(i);
+    %lt=u<zlev(i);
+    %gt=u>zlev(i);
     %u(els)<zlev(i)
     for j=1:3
         alpha(:,j)=(zlev(i)-u(els(:,j)))./(u(els(:,mod(j,3)+1))-u(els(:,j)));

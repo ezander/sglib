@@ -3,7 +3,7 @@ if iscell(ui)
     M=size(ui{2},1);
 else
     Ni=size(P_I,1);
-    NiM=prod(size(ui));
+    NiM=numel(ui);
     M=NiM/Ni;
 end
 if M>1; I_S=speye(M); else I_S=1; end

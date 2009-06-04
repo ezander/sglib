@@ -52,7 +52,7 @@ rho_i_alpha_ex=[zeros(7,1), rand(7,60)];
 
 R_ex=kl_to_tensor( mu_r_j_ex, r_j_i_ex, rho_i_alpha_ex );
 [mu_r_j, r_j_i, rho_i_alpha]=tensor_to_kl( R_ex );
-R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha );
+%R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha );
 
 assert_equals( mu_r_j, mu_r_j_ex, 'R2' );
 assert_equals( mu_r_j, mu_r_j_ex, 'mu2' );

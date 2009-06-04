@@ -1,6 +1,6 @@
 function [newels,newpos]=refine_mesh( els, pos, method )
 
-warning( 'refine_mesh does not work correctly for nonconvex meshes!' );
+warning( 'refine_mesh:NotConvex', 'refine_mesh does not work correctly for nonconvex meshes!' );
 % TODO: fix for nonconvex meshes
 
 if nargin<3

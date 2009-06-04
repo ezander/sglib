@@ -43,9 +43,8 @@ end
 %toc
 
 if 0
-    [x_gamma_ex; x_gamma]'
-    format short
-    (x_gamma_ex-x_gamma)'./x_gamma_ex'*100
+    disp( [x_gamma_ex; x_gamma]' );
+    disp( (x_gamma_ex-x_gamma)'./x_gamma_ex'*100 );
 end
 
 assert_equals( x_gamma(1:5), x_gamma_ex(1:5), 'pce_coeff', 'reltol', 0.1.^[7,5,4,4,2] );

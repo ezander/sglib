@@ -5,23 +5,32 @@ function plot_field( els, pos, u, varargin )
 %   ELS. Certain formatting options can be specified in the remaining
 %   arguments:
 %
-%      view: (default: 2, straight from top) set the view position, check
-%        the matlab view command for settings, good is also for eg. [30,15]
-%        for a view angle of 15 degrees from above and 30 degrees from the
-%        right (degrees, not radians!)
-%      show_mesh: (default: true) whether the mesh should be plotted
-%      show_surf: (default: true) whether the surface should be plotted
-%      shading: (default: 'interp') the shading mode for the surface, other
-%        modes are 'flat' and 'faceted' (keese)
-%      lighting: (default: 'flat') the lighting mode for the surface
-%      colormap: (default: 'jet') the colormap mode for the surface,
-%      axis: (default: 'square') the axis command ('equal')
-%      default ranges from blue over green, yellow to res (keese uses
-%        'cool', ranging from turquoise to magenta)
-%      draw_now: (default: true) draws immediately, can be set to false to
-%        speed things up, if many plots have to be made
-%      wait: (default: false) wait for the user to press a button or click
-%        the mouse using the current "userwaitmode"
+% Options:
+%    view: {2="straight from top"}
+%      Set the view position, check the matlab VIEW command for settings,
+%      good is also for eg. [30,15] for a view angle of 15 degrees from
+%      above and 30 degrees from the right (note: degrees, not radians!)
+%    show_mesh: {true}, false
+%      Determines whether the mesh should be plotted.
+%    show_surf: {true}, false
+%      Determines whether the surface should be plotted.
+%    shading: {'interp'}, 'flat', 'faceted'
+%      Sets the shading mode for the surface, other modes are 'flat' and
+%      'faceted' (keese)
+%    lighting: {'flat'}, 'gouraud', 'phong', 'none'
+%      Sets the lighting mode for the surface.
+%    colormap: {'jet'}, 'cool', 'grey', ...
+%      Sets the colormap mode for the surface. The default ranges from
+%      blue over green, yellow to res (Keese uses 'cool', ranging from
+%      turquoise to magenta).
+%    axis: {'square'}, 'equal', ...
+%      Set the axis.
+%    draw_now: {true}, false
+%      Draws immediately, can be set to false to speed things up, if many
+%      plots have to be made.
+%    Wait: true, {false}
+%      Wait for the user to press a button or click the mouse using the
+%      current "userwaitmode".
 %
 % Example (<a href="matlab:run_example plot_field">run</a>)
 %
@@ -59,9 +68,6 @@ check_unsupported_options( options, mfilename );
 
 
 if ismatlab()
-    ut=sum(u(els),2)/3;
-    un=pdeprtni(pos',els',ut');
-
     if show_mesh
         %trimesh( els, pos(:,1), pos(:,2), u );
         trimesh( els, pos(:,1), pos(:,2), u );

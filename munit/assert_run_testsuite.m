@@ -35,7 +35,7 @@ options=varargin2options( varargin{:} );
 check_unsupported_options( options, mfilename );
 
 
-[stats,options]=assert();
+[stats,options]=assert(); %#ok
 output_func=options.output_func;
 
 % get subdirs

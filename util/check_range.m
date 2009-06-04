@@ -39,6 +39,3 @@ if ~isscalar(x)
 elseif x<lo || x>hi
     error([mfilename ':range'], '%s: input argument "%s" not in range [%g,%g]: %g', mfilename, varname, lo, hi, x )
 end
-    
-    
-

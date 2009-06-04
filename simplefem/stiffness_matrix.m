@@ -41,48 +41,6 @@ for t=1:T
 end
 
 
-if 0
-    % I think there's probably nothing to do here. Boundary conditions just
-    % shouldn't be handled here. There should rather be some document on
-    % how to do this properly and what to do with codes that included
-    % boundary conditions in the stiffness matrix. 
-    % The idea is that in a stochastic code you should never iterate on
-    % matrices that still have equations for the boundary conditions,
-    % because in stoch. setting that can make the operator as a whole
-    % indefinite (even if it doesn't in the deterministic case). Thus the
-    % stochastic code should only iterate on the inner nodes and omit that
-    % artificial iteration stuff on the boundary nodes. The boundary stuff
-    % should all go on the RHS and the iteration only proceed on the inner
-    % nodes. Then positivity and symmetry of the operator is guaranteed.
-    
-    % Sketch of some sample code:
-    %  say we have some wrapper for the superfem (tm) finite element
-    %  analysis program and call their routine to multiply some vector x
-    %  with the stiffness matrix by superfem_stiffness_apply( k, x ) and we
-    %  know the boundary nodes are in bndidx. Then suppose we have the
-    %  boundary conditions in g. Then we do 
-    %     xg = superfem_stiffness_apply( k, g )
-    %  In the solver we use something like that
-    %     xn = superfem_stiffness_apply( k, x-xg )
-    %  and use for our purposes of iteration only x(allidx\bndidx).
-    %  Something like this at least, have to work it out in detail.
-    
-    % Old stuff: This was and ugly hack for imposing Dirichlet boundary
-    % conditions, should be cleaned up somehow (but its really not trivial
-    % to get the boundary conditons right in a stochastic setting)
-    switch d
-        case 1
-            ind=find(pos==min(pos) | pos==max(pos));
-            K(ind,:)=0;
-            K(:,ind)=0;
-            K(ind,ind)=eye(length(ind));
-        case 2
-            warning('BC''s for 2d not implemented yet');
-        case 3
-            warning('BC''s for 3d not implemented yet');
-    end
-end
-
 function KT=elementStiffness( positions, k, xi, w )
 n_dof=size( positions, 2 )+1;
 d=size(xi,2);

@@ -41,6 +41,8 @@ m=find(p=='/',1,'last');
 p=p(1:m-1);
 addpath( p );
 addpath( [p '/munit'] );
+addpath( [p '/doc'] );
+addpath( [p '/plot'] );
 addpath( [p '/util'] );
 addpath( [p '/simplefem'] );
 
