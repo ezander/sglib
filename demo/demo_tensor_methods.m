@@ -66,43 +66,33 @@ K_mat=cell2mat(K_ab);
 %% apply boundary conditions
 [P_B,P_I]=boundary_projectors( bnd, size(pos,1) );
 
-[Ki,Fi]=apply_boundary_conditions( K, F, G, P_B, P_I );
-[K_mat_i,f_vec_i]=apply_boundary_conditions( K_mat, f_vec, g_vec, P_B, P_I );
-[Ki,f_vec_i2]=apply_boundary_conditions( K, f_vec, g_vec, P_B, P_I );
-[Ki,f_mat]=apply_boundary_conditions( K, f_mat, g_mat, P_B, P_I );
+Ki=apply_boundary_conditions_operator( K, P_B, P_I );
+Ki_mat=apply_boundary_conditions_operator( K_mat, P_B, P_I );
+
+Fi=apply_boundary_conditions_rhs( K, F, G, P_B, P_I );
+fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_B, P_I );
+fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_B, P_I );
+fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_B, P_I );
 
 % 
-norm(f_vec_i-f_vec_i2)
-norm(f_vec_i-f_mat(:))
-norm(Fi{1}*Fi{2}'-f_mat)
+norm(fi_vec-fi_vec2)
+norm(fi_vec-fi_mat(:))
+norm(Fi{1}*Fi{2}'-fi_mat)
 
 
 %% solve the system 
-u_vec_i=K_mat_i\f_vec_i;
-norm( f_vec_i-tensor_operator_apply( Ki, u_vec_i ) );
-norm( f_vec_i-tensor_operator_apply( K_mat_i, u_vec_i ) );
+ui_vec=Ki_mat\fi_vec;
+norm( fi_vec-tensor_operator_apply( Ki, ui_vec ) );
+norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec ) );
 
 %Ui=tensor_operator_solve_jacobi( Ki, Fi, 'M', Ki(1,:) );
 
 
-if false;
 Mi=tkron( Ki{1,:} );
-tic; u_vec_i3=pcg(K_mat_i,f_vec_i,[],[],Mi,[],[]); toc;
-tic; u_vec_i2=pcg(@funcall_funfun,f_vec_i,[],[],Mi,[],[],{@tensor_operator_apply,{K_mat_i},{1}}); toc;
-tic; u_vec_i4=pcg(@(x)(K_mat_i*x),f_vec_i,[],[],Mi,[],[]); toc;
-end
-
-
-
-Nc=50;
-k_fh=@(x)(K_mat_i*x);
-tic; for i=1:Nc; dummy1=K_mat_i*f_vec_i; end; toc
-tic; for i=1:Nc; dummy2=funcall( {@tensor_operator_apply,{K_mat_i},{1}}, f_vec_i ); end; toc
-tic; for i=1:Nc; dummy3=k_fh( f_vec_i ); end; toc
-tic; for i=1:Nc; dummy4=funcall( {@mtimes,{K_mat_i},{1}}, f_vec_i ); end; toc
-
-
-
+tic; ui_vec2=pcg(Ki_mat,fi_vec,[],[],Mi,[],[]); toc;
+tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); toc;
+tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;
+tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi,[],[]); toc;
 
 
 
