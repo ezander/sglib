@@ -13,17 +13,12 @@ for n=3:20
     A = gallery('tridiag',n,-1,2,-1);
     F=rand(size(A,1),1);
     X1=A\F;
-    X2=jacobi(A,F);
+    %X2=jacobi(A,F);
     X2=jacobi_tens(A,F);
     D=diag(diag(A));
     fprintf( '%d:  %g   %g   %g\n', n, norm(X2-X1)/norm(X1), diagdom(A), max(abs(eig(D\(A-D))))^200 );
 end
 
-function d=diagdom( A )
-d=diag(A);
-A=A-diag(d);
-d=full(d-sum(abs(A),2));
-d=all(d(:)>=0);
 
 
 
@@ -36,12 +31,24 @@ end
 Xc=zeros(size(F));
 Rc=F;
 for i=1:200
-    DX=tensor_solve( M, Rc );
-    Xc=Xc+DX;
-    %Rc=Rc-A*DX;
-    Rc=F-A*Xc;
+    %DX=M\Rc;
+    DX=tensor_solve_elementary( M, Rc );
+    % X=X+DX
+    Xc=tensor_add( Xc, DX );
+    % R=F-A*X;
+    Rc=tensor_add( F, tensor_operator_apply( A, Xc ), -1 );
 end
 X=Xc;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -62,3 +69,8 @@ end
 X=Xc;
 
 
+function d=diagdom( A )
+d=diag(A);
+A=A-diag(d);
+d=full(d-sum(abs(A),2));
+d=all(d(:)>=0);

@@ -15,9 +15,10 @@ function [val,options]=get_option( options, field, default )
 % Example (<a href="matlab:run_example get_option">run</a>)
 %   function retval=my_function( arg1, arg2, arg3, varargin );
 %     options = varargin2options( varargin );
-%     option1 = get_option( options1, 'option1', 1234 );
+%     [option1,options] = get_option( options1, 'option1', 1234 );
+%     check_unsupported_options( options, mfilename );
 %
-% See also VARARGIN2OPTIONS
+% See also VARARGIN2OPTIONS, CHECK_UNSUPPORTED_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -32,10 +33,10 @@ function [val,options]=get_option( options, field, default )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if ~isstruct(options) 
+
+if ~isstruct(options)
     error( 'First argument to get_option must be a struct (maybe you interchanged options and field?)' );
-end
-if ~ischar(field) 
+elseif ~ischar(field)
     error( 'Second argument to get_option must be a string (maybe you interchanged options and field?)' );
 end
 
@@ -43,20 +44,12 @@ if isfield( options, field )
     val=options.(field);
     if nargout>1
         options=rmfield(options,field);
+        options.fields__={options.fields__{:}, field};
     end
 else
     if isstruct(default)
         val=default.(field);
     else
         val=default;
-    end
-end
-
-
-if nargout>1
-    if isfield(options,'fields__')
-        options.fields__=[options.fields__ ', ' field ];
-    else
-        options.fields__=field;
     end
 end

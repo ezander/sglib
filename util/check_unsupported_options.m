@@ -41,28 +41,31 @@ function ok=check_unsupported_options( options, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('mfilename','var') || isempty(mfilename)
-    mfilename='global';
+%if ~exist('mfilename','var') || isempty(mfilename)
+%    mfilename='global';
+%end
+
+fields=fieldnames( options );
+if isempty(fields) || (length(fields)==1 && strcmp( fields{1}, 'fields__') )
+    ok=true;
+    return;
 end
 
-supported_fields=[];
+ok=false;
 if isfield( options, 'fields__' )
     supported_fields=options.fields__;
     options=rmfield( options, 'fields__' );
+else
+    supported_fields=[];
 end
 
-ok=isempty(fieldnames(options));
+fields=fieldnames(options);
+for i=1:length(fields)
+    warning([mfilename ':options'], '%s: unsupported options detected: %s', ...
+        mfilename, fields{i} );
+end
 
-if ~ok
-    fields=fieldnames(options);
-    for i=1:length(fields)
-        warning([mfilename ':options'], '%s: unsupported options deteced: %s', ...
-            mfilename, fields{i} );
-    end
-    
-    if ~isempty( supported_fields )
-        fprintf( 'Valid fields for "%s" are: %s \n', mfilename, supported_fields );
-    end
-
+if ~isempty( supported_fields )
+    fprintf( 'Valid fields for "%s" are: %s \n', mfilename, supported_fields );
 end
 

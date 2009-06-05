@@ -120,6 +120,7 @@ if isempty(condition)
     [curr_options, options]=transfer_option( curr_options, options, 'reltol' );
     [curr_options, options]=transfer_option( curr_options, options, 'output_func' );
     [curr_options, options]=transfer_option( curr_options, options, 'max_assertion_disp' );
+    [curr_options, options]=transfer_option( curr_options, options, 'fields__' );
 
     if ~isempty(fieldnames(curr_options))
         warning( 'assert:options', 'can''t set permanently or option unknown: %s', evalc( 'disp(curr_options);' ) );
