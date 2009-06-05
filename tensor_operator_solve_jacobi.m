@@ -1,4 +1,28 @@
-function [X,flag,relres,iter]=tensor_operator_solve_jacobi( A, F, varargin )
+function X=tensor_operator_solve_jacobi( A, F, varargin )
+
+options=varargin2options( varargin{:} );
+[abstol,options]=get_option( options, 'abstol', 1e-7 );
+[reltol,options]=get_option( options, 'reltol', 1e-7 );
+[maxiter,options]=get_option( options, 'maxiter', 100 );
+[reduce_options,options]=get_option( options, 'reduce_options', {''} );
+check_unsupported_options( options, mfilename );
+
+A0=A(1,:);
+AR=A(2:end,:);
+
+% Solve A*X=F
+% "Jacobi"
+% Decompose (A0+AR)*X=F
+% Rewrite A0*X=F-AR*X
+% Solve X(n+1)=A0\(F-AR*X(n))
+% "Prec Richardson"
+% Decompose M*X+(A-M)*X=F
+% Rewrite M*X=
+% Solve X(n+1)=M\(F-(A-M)*X(n))
+% Rewrite X(n+1)=X(n)+M\(F-A*X)
+
+
+function [X,flag,relres,iter]=old_tensor_operator_solve_jacobi( A, F, varargin )
 % SOLVE_LINEAR_STAT_TENSOR Solves a linear system in tensor product form using stationary methods.
 
 % init section

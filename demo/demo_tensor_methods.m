@@ -95,6 +95,7 @@ tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{
 tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi,[],[]); toc;
 
 
+[U,flag,relres,iter]=tensor_operator_solve_jacobi( K, F, 'M', Mi )
 
 
 %trunc_k=20;
