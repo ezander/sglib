@@ -1,14 +1,21 @@
-function [y,w] = tensor_mesh(y1d,w1d)
+function [y,w] = grid_tensor_mesh(y1d,w1d)
 % TENSOR_MESH Create N-dimensional tensor-product from 1D meshes and weights.
 %   Y = TENSOR_MESH(Y1D,W1D) creates a tensor product rule from n 1D rules
 %   contained in the cell arrays Y1D and W1D.
 %
-% Example (<a href="matlab:run_example tensor_mesh">run</a>)
-%   [y1,w1] = gauss_hermite_rule(5);
-%   [y2,w2] = gauss_hermite_rule(4);
-%   [y,w] = tensor_mesh({y1,y2},{w1,w2});
+% Example (<a href="matlab:run_example grid_tensor_mesh">run</a>)
+%   [y1,w1] = gauss_hermite_rule(10);
+%   [y2,w2] = gauss_hermite_rule(12);
+%   [y,w] = grid_tensor_mesh({y1,y2},{w1,w2})
+%   subplot(2,2,1)
+%   plot(y(1,:),y(2,:),'*k')
+%   n=[length(w1),length(w2)];
+%   subplot(2,2,2)
+%   stem3(y(1,:),y(2,:),w,'fill')
+%   subplot(2,2,3)
+%   surf(reshape(y(1,:),n),reshape(y(2,:),n),reshape(w,n))
 %
-% See also
+% See also GRID_SMOLYAK
 
 %   Andreas Keese
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

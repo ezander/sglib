@@ -1,4 +1,4 @@
-function [y,w]=smolyak_rule( N, stages, oned_rule_func )
+function [y,w]=grid_smolyak_rule( N, stages, oned_rule_func )
 % SMOLYAK_RULE Return nodes weights for Smolyak quadrature.
 %   [Y,W] = SMOLYAK_RULE( N, STAGES, ONED_RULE_FUNC ) returns nodes Y(:,I)
 %   and weights W(I) for Smolyak quadrature. N is the dimension of the
@@ -10,6 +10,11 @@ function [y,w]=smolyak_rule( N, stages, oned_rule_func )
 %   Instead of supplying a function handle you can also directly supply the
 %   function with the one dimensional quadrature points and weights for all
 %   stages SMOLYAK_RULE( N, stages, [], Y1D, W1D ).
+%
+% Example (<a href="matlab:run_example grid_smolyak">run</a>)
+%   [y,w]=grid_smolyak( 2, 3, @gauss_hermite_rule )
+%   subplot 111
+%   plot(y(1,:),y(2,:),'*k')
 %
 % See also
 
@@ -23,16 +28,12 @@ n1d = zeros( N, stages );
 % For each dimension n obtain all quadrature formulas
 % Q^{(n)}_1 \ldots Q^{(n)}_order
 
-if ~isempty(oned_rule_func)
-    y1d = cell( N, stages );
-    w1d = cell( N, stages );
-end
+y1d = cell( N, stages );
+w1d = cell( N, stages );
 
 for n = 1:N
     for j = 1 : stages
-        if ~isempty(oned_rule_func)
-            [y1d{n,j},w1d{n,j}] = funcall( oned_rule_func, j );
-        end
+        [y1d{n,j},w1d{n,j}] = funcall( oned_rule_func, j );
         n1d(n,j) = length(y1d{n,j});
     end
 end
@@ -60,7 +61,7 @@ for i = 1 : size(multi_list,1)
         tmp_y1d{i} = y1d{i,stage};
         tmp_w1d{i} = w1d{i,stage};
     end
-    [tmp_y,tmp_w]=tensor_mesh(tmp_y1d,tmp_w1d);
+    [tmp_y,tmp_w]=grid_tensor_mesh(tmp_y1d,tmp_w1d);
 
     factor=(-1)^(N+stages-1-alpha_sum) * ...
         nchoosek(N-1,alpha_sum-stages);
