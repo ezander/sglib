@@ -1,0 +1,17 @@
+The following incompatiblities of Octave (version 2.?) cause problems
+in sglib (and therefore need special treatment or replacements)
+
+* 'cat' does not work with only one array, instead of just returning
+  the array as is
+
+* that array anonymous function (e.g. @(x)(A*x)) functions use the
+  'wrong" scope, namely that of the called function and not that of
+  the caller
+
+* some indexing behaviour doesn't make sense (what is the shape of
+  A(B) in terms of the shapes of A and B)
+
+* betainc does not catch out of range errors
+
+
+
