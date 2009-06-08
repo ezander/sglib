@@ -21,12 +21,12 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 %   sample vector i.e. sample vectors are column vectors.
 %   
 % Example (<a href="matlab:run_example kernel_density">run</a>)
-%   xn=randn(1,10000);
+%   xn=randn(10000,1);
 %   [x,p]=kernel_density( xn, 100, 0.2 );
 %   plot( x, p, x, exp(-x.^2/2)/sqrt(2*pi) ); % should match approx.
 %   %pause
 %   % or 
-%   xn2=[randn(1,10000); 2*rand(1,10000)];
+%   xn2=[randn(10000,1), 2*rand(10000,1)];
 %   kernel_density( xn2, 30, 0.1, '-*' );
 %   legend( 'normal dist.', 'uniform dist.' );
 %
@@ -45,28 +45,31 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+if nargin<2 || isempty(n)
+    n=100;
+end
+if nargin<3; 
+    sig=[]; 
+end;
+
+
 if ~isvector(xl)
-    if size(xl,1)>100
-        warning('kernel_density:many_cols', 'Very large amount of columns specified; maybe you want to transpose the vector?');
+    if size(xl,2)>100
+        warning('kernel_density:many_rows', 'Very large amount of rows specified; maybe you want to transpose the vector?');
     end
-    for i=1:size(xl,1)
-        if i==1
-            [x,p]=kernel_density( xl(i,:), n, sig, varargin{:} );
-        else
-            [xn,pn]=kernel_density( xl(i,:), n, sig, varargin{:} );
-            xn; %#ok: xn unused
-            p=[p pn];
-        end
+    x=zeros(n,0);
+    p=zeros(n,0);
+    for i=1:size(xl,2)
+        [xn,pn]=kernel_density( xl(:,i), n, sig, varargin{:} );
+        x=[x xn];
+        p=[p pn];
     end
 else
     xl=xl(:);
     x1=min(xl);
     x2=max(xl);
-    if nargin<3 || isempty(sig)
+    if isempty(sig)
         sig=(x2-x1)/sqrt(size(xl,1));
-    end
-    if nargin<2 || isempty(n)
-        n=100;
     end
 
     x1=x1-2*sig;
@@ -74,20 +77,15 @@ else
 
     x=repmat(x1,n,1)+(0:n-1)'*(x2-x1)/(n-1);
     p=zeros(n,size(xl,2));
-    if 0
-        for i=1:size(xl,1)
-            p=p+exp(-(repmat(xl(i,:),n,1)-x).^2/sig^2);
-        end
-    else
-        for i=1:n
-            p(i,:)=sum( exp( -(xl-x(i,:)).^2/sig^2 ), 1);
-        end
+    for i=1:n
+        p(i,:)=sum( exp( -(xl-x(i,:)).^2/sig^2 ), 1);
     end
 
     p=p/(size(xl,1)*sqrt(pi)*sig);
 end
     
 if nargout==0
-    plot(x,p,varargin{:});
+    plot_args=varargin;
+   plot(x,p,plot_args{:});
 end
 
