@@ -1,7 +1,0 @@
-cat should work with only one array
-@ functions should look at local scope
-indexing behaviour doesn't make sense
-betainc should catch out of range error
-
-
-
