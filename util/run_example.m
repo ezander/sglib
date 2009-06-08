@@ -1,4 +1,4 @@
-function cmds=run_example( cmd )
+function cmds=run_example( cmd, show )
 % RUN_EXAMPLE Runs the example for a command.
 %   If the help output for CMD contains an example section, running
 %   RUN_EXAMPLE( CMD ) will extract this section and run it in the current
@@ -30,6 +30,12 @@ function cmds=run_example( cmd )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin>=2
+    show=true;
+else
+    show=false;
+end
+
 s=help(cmd);
 
 [x1,x2]=regexp( s, '\n *Example.*?\n' );
@@ -44,7 +50,12 @@ if ~isempty(x1)
     s=s(1:x1(1)-1);
 end
 %evalin( 'base', s );
-evalin( 'caller', s );
+if ~show
+    evalin( 'caller', s );
+else
+    fprintf( 'Sorry, the example code cannot be run directly (probably some function decls inside).\n' );
+    fprintf( 'Maybe you should copy and paste it into an m-file of your own.\n\n' );
+end
 
 if nargout==1
     cmds=s;
