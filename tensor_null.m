@@ -25,4 +25,8 @@ function Z=tensor_null( T )
 
 
 %Z={T{1}(:,[]),T{2}(:,[])}; 
-Z={zeros(size(T{1},1),0),zeros(size(T{2},1),0)};
+if isnumeric(T)
+    Z=zeros(size(T));
+else
+    Z={zeros(size(T{1},1),0),zeros(size(T{2},1),0)};
+end

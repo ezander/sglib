@@ -24,12 +24,13 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 %   xn=randn(1,10000);
 %   [x,p]=kernel_density( xn, 100, 0.2 );
 %   plot( x, p, x, exp(-x.^2/2)/sqrt(2*pi) ); % should match approx.
-%   pause
+%   %pause
 %   % or 
-%   xn2=[randn(1,10000); rand(1,10000)];
-%   kernel_density( xn2, 100, 0.2, 'r' );
+%   xn2=[randn(1,10000); 2*rand(1,10000)];
+%   kernel_density( xn2, 30, 0.1, '-*' );
+%   legend( 'normal dist.', 'uniform dist.' );
 %
-% See also HIST, PLOT
+% See also HIST, PLOT, EMPIRICAL_DENSITY
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
