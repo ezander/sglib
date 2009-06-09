@@ -1,5 +1,17 @@
 function [T_k,sigma,k]=tensor_reduce( T, varargin )
 % TENSOR_REDUCE Computes a reduced rank tensor product.
+%   [T_K,SIGMA,K]=TENSOR_REDUCE( T, OPTIONS ) reduces the tensor T to a
+%   rank K approximation T_K. SIGMA contains the singular values of T, and
+%   K the rank of the approximation that was determined by choice of
+%   parameters.
+%
+% Options:
+%   M1: []
+%   M2: []
+%   p: 2
+%   k_max: inf
+%   eps: 0
+%   relcutoff: true
 %
 % Example (<a href="matlab:run_example tensor_reduce">run</a>)
 %   % still to come

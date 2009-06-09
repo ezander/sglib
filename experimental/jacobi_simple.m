@@ -38,6 +38,7 @@ if false
     X2=solver(A2,F2,M2);
 else
     X2=solver(A,F,M);
+    disp(size(X2{1}));
 %    X2
     X2=X2{1}*X2{2}';
     X2=X2(:);
@@ -50,13 +51,14 @@ A=A2;
 function X=pcg_tens( A, F, M )
 null_vector=@tensor_null;
 add=@tensor_add;
-reduce=@tensor_reduce;
 prec_solve=@tensor_operator_solve_elementary;
 apply_operator=@tensor_operator_apply;
 if isnumeric(F)
+    reduce=@tensor_reduce;
     inner_prod=@(a,b)(a'*b);
     vec_norm=@norm;
 else
+    reduce=@tensor_reduce;
     inner_prod=@tensor_scalar_product;
     vec_norm=@tensor_norm;
 end
@@ -67,6 +69,7 @@ Rc=add( F, apply_operator( A, Xc ), -1);
 Zc=prec_solve( M, Rc );
 Pc=Zc;
 k=0;
+opts={ 'eps', 1e-7, 'k_max', 2 };
 while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
     Xn=add(Xc,Pc,alpha);
@@ -77,12 +80,15 @@ while true
     Pn=add(Zn,Pc,beta);
     
     k=k+1;
-    Xc=Xn;
-    Pc=Pn;
-    Rc=Rn;
-    Zc=Zn;
+    Xc=reduce( Xn, opts );
+    Pc=reduce( Pn, opts );
+    Rc=reduce( Rn, opts );
+    Zc=reduce( Zn, opts );
+    if mod(k,100)==0
+        keyboard
+    end
 end
-X=Xn;
+X=reduce( Xn, opts );
 
 %%
 function X=pcg( A, F, M )
@@ -103,7 +109,7 @@ while true
     Pn=Zn+beta*Pc;
     
     k=k+1;
-    Xc=Xn;
+    Xc=tensor_reduceXn;
     Pc=Pn;
     Rc=Rn;
     Zc=Zn;
