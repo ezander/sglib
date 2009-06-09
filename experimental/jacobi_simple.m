@@ -17,10 +17,10 @@ for n=3:2:10
 end
 
 
-
+%%
 function [A,X1,X2]=solve_compare2( n, m ) 
 A{1,1} = gallery('tridiag',n,-1,2,-1);
-A{2,1} = 0*0.1*gallery('tridiag',n,-1,3,-1);
+A{2,1} = 0.1*gallery('tridiag',n,-1,3,-1);
 A{1,2}=gallery('randcorr',m);
 A{2,2}=gallery('randcorr',m);
 
@@ -31,11 +31,13 @@ A2=revkron(A);
 F2=revkron(F);
 M2=revkron(M);
 
-
+solver=@jacobi_tens;
+solver=@pcg_tens;
 if false
-    X2=jacobi_tens(A2,F2,M2);
+    %M2=eye(size(M2));
+    X2=solver(A2,F2,M2);
 else
-    X2=jacobi_tens(A,F,M);
+    X2=solver(A,F,M);
 %    X2
     X2=X2{1}*X2{2}';
     X2=X2(:);
@@ -44,6 +46,74 @@ end
 X1=A2\F2;
 A=A2;
 
+%%
+function X=pcg_tens( A, F, M )
+null_vector=@tensor_null;
+add=@tensor_add;
+reduce=@tensor_reduce;
+prec_solve=@tensor_operator_solve_elementary;
+apply_operator=@tensor_operator_apply;
+if isnumeric(F)
+    inner_prod=@(a,b)(a'*b);
+    vec_norm=@norm;
+else
+    inner_prod=@tensor_scalar_product;
+    vec_norm=@tensor_norm;
+end
+
+Xc=null_vector(F);
+
+Rc=add( F, apply_operator( A, Xc ), -1);
+Zc=prec_solve( M, Rc );
+Pc=Zc;
+k=0;
+while true
+    alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
+    Xn=add(Xc,Pc,alpha);
+    Rn=add(Rc,apply_operator(A,Pc),-alpha);
+    if vec_norm(Rn)<0.0001; break; end
+    Zn=prec_solve(M,Rn);
+    beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
+    Pn=add(Zn,Pc,beta);
+    
+    k=k+1;
+    Xc=Xn;
+    Pc=Pn;
+    Rc=Rn;
+    Zc=Zn;
+end
+X=Xn;
+
+%%
+function X=pcg( A, F, M )
+
+Xc=0*F;
+
+Rc=F-A*Xc;
+Zc=M\Rc;
+Pc=Zc;
+k=0;
+while true
+    alpha=(Rc'*Zc)/(Pc'*A*Pc);
+    Xn=Xc+alpha*Pc;
+    Rn=Rc-alpha*A*Pc;
+    if norm(Rn)<0.001; break; end
+    Zn=M\Rn;
+    beta=(Rn'*Zn)/(Rc'*Zc);
+    Pn=Zn+beta*Pc;
+    
+    k=k+1;
+    Xc=Xn;
+    Pc=Pn;
+    Rc=Rn;
+    Zc=Zn;
+end
+X=Xn;
+
+
+
+
+%%
 function X=jacobi_tens( A, F, M )
 
 null_vector=@tensor_null;
@@ -64,8 +134,6 @@ for i=1:20
     % R=F-A*X;
     Rc=add( F, apply_operator( A, Xc ), -1 );
     Rc=reduce( Rc );
-    
-    
 end
 X=Xc;
 
