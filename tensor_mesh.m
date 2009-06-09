@@ -45,8 +45,8 @@ for k=1:d
     % except for i==k exactly n1(i) times given an array of size
     % n1(1)*...*n1(d). This gets flattened out by a further call to
     % reshape.
-    sk=ones(size(n1)); sk(k)=n1(k);
-    rk=n1; rk(k)=1;
+    sk=[ones(size(n1)), 1]; sk(k)=n1(k);
+    rk=[n1, 1]; rk(k)=1;
     xd(k,:)=reshape( repmat( reshape( x1{k}, sk ), rk ), [1, nd] );
     wd=wd.*reshape( repmat( reshape( w1{k}, sk ), rk ), [1, nd] );
 end
@@ -66,3 +66,5 @@ end
 % [xd,wd] = tensor_mesh(x1,w1);
 % assert_equals( xd, xde, 'points' );
 % assert_equals( wd, wde, 'weights' );
+% % plust test for 1d
+% % test for singleton dimensions
