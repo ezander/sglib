@@ -1,5 +1,5 @@
 function edit_mfile( filename )
-% EDIT_MFILE Edit a new or existing m-file in the editor.
+%EDIT_MFILE Edit a new or existing m-file in the editor with path.
 %   EDIT_MFILE( FILENAME ) opens the m-file named by FILENAME in the Matlab
 %   internal editor. If FILENAME doesn't end in '.m' it is appended. This
 %   function also opens the editor for not-yet-existing files if they are

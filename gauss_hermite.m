@@ -28,12 +28,6 @@ function int=gauss_hermite( func, p )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-if nargin==0
-    func=@exp;
-    p=4;
-end
-
 [x,w]=gauss_hermite_rule(p);
 
 int=sum(w.*funcall(func,x));
