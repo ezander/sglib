@@ -8,6 +8,9 @@ function subtitle( str, varargin )
 %   position:  {0.97}
 %     relative vertical position for the display of the title. 1.0 is
 %     topmost, 0.0 bottommost, the default is hopefully a good compromise.
+%   interpreter:  tex, {latex}, none
+%     If set to tex or latex the title text is interpreted according to
+%     tex/latex rules.
 % 
 % Example (<a href="matlab:run_example subtitle">run</a>)
 %     x=linspace(0,2*pi);
@@ -32,6 +35,7 @@ function subtitle( str, varargin )
 
 options=varargin2options( varargin{:} );
 [position,options]=get_option( options, 'position', 0.97 );
+[interpreter,options]=get_option( options, 'interpreter', 'latex' );
 check_unsupported_options( options, mfilename );
 
 ha=findall( gcf, 'Tag', 'SubTitle' );
@@ -40,4 +44,4 @@ if ~isempty(ha)
 end
 axes('Position', [0, 0, 1, position], 'Xlim',[0, 1],'Ylim',[0, 1],'Box','off','Visible','off','Units', 'normalized', 'clipping', 'off', 'Tag', 'SubTitle');
 
-text( 0.5, 1, str ,'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', 'Interpreter', 'latex' );
+text( 0.5, 1, str ,'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', 'Interpreter', interpreter );
