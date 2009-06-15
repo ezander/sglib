@@ -6,7 +6,6 @@ m_userwaitmodes = {'keyboard','mouse','continue'};
 setters={};
 setters={ setters{:}, {'list', 'userwaitmode', m_userwaitmodes, 'mouse' } };
 setters={ setters{:}, {'list', 'shading', m_shading_types, 'faceted' } };
-setters={ setters{:}, {'list', 'userwaitmode', m_userwaitmodes, 'mouse' } };
 
 settings.userwaitmode=m_userwaitmodes{ setuserwaitmode('getmode') };
 settings.shading='none';
