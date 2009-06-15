@@ -47,8 +47,14 @@ end
 X1=A2\F2;
 A=A2;
 
+%% default
+function set_default( strvar, strdefault )
+
+
 %%
-function X=pcg_tens( A, F, M )
+function [X,flag,relres,iter]=pcg_tens( A, F, tol, maxit, M )
+
+
 null_vector=@tensor_null;
 add=@tensor_add;
 prec_solve=@tensor_operator_solve_elementary;
