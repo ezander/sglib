@@ -1,25 +1,59 @@
-function X=tensor_operator_solve_jacobi( A, F, varargin )
+function [X,flag,relres,iter,resvec]=tensor_operator_solve_richardson( A, F, varargin )
 
 options=varargin2options( varargin{:} );
-[abstol,options]=get_option( options, 'abstol', 1e-7 );
-[reltol,options]=get_option( options, 'reltol', 1e-7 );
+[M,options]=get_option( options, 'M', [] );
+[abstol,options]=get_option( options, 'abstol', 1e-5 );
+[reltol,options]=get_option( options, 'reltol', 1e-5 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[reduce_options,options]=get_option( options, 'reduce_options', {''} );
+[reduce_options,options]=get_option( options, 'reduce_options', {} );
 check_unsupported_options( options, mfilename );
 
-A0=A(1,:);
-AR=A(2:end,:);
+%A0=A(1,:);
+%AR=A(2:end,:);
 
-% Solve A*X=F
-% "Jacobi"
-% Decompose (A0+AR)*X=F
-% Rewrite A0*X=F-AR*X
-% Solve X(n+1)=A0\(F-AR*X(n))
-% "Prec Richardson"
-% Decompose M*X+(A-M)*X=F
-% Rewrite M*X=
-% Solve X(n+1)=M\(F-(A-M)*X(n))
-% Rewrite X(n+1)=X(n)+M\(F-A*X)
+null_vector=@tensor_null;
+add=@tensor_add;
+reduce=@tensor_reduce;
+prec_solve=@tensor_operator_solve_elementary;
+apply_operator=@tensor_operator_apply;
+
+flag=0;
+iter=0;
+
+X=null_vector(F);
+R=F;
+for i=1:20
+    % Solve for update:
+    %  DX=M\R;
+    DX=prec_solve( M, R );
+    
+    % Apply update and reduce:
+    %   X=X+DX
+    X=add( X, DX );
+    X=reduce( X, reduce_options );
+    
+    % Compute residual and reduce:
+    %   R=F-A*X;
+    R=add( F, apply_operator( A, X ), -1 );
+    [R,sigma]=reduce( R, reduce_options );
+    
+    % TODO: compare residual and update, maybe the truncation is always
+    % just reverting the previous update, then bail out
+    
+    % increment and check iteration count
+    iter=iter+1;
+    if iter>maxiter
+        flag=1;
+        break;
+    end
+end
+
+relres=-1;
+resvec=[];
+
+
+
+
 
 
 function [X,flag,relres,iter]=old_tensor_operator_solve_jacobi( A, F, varargin )

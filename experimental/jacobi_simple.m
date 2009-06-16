@@ -126,30 +126,6 @@ X=Xn;
 
 
 %%
-function X=jacobi_tens( A, F, M )
-
-null_vector=@tensor_null;
-add=@tensor_add;
-reduce=@tensor_reduce;
-prec_solve=@tensor_operator_solve_elementary;
-apply_operator=@tensor_operator_apply;
-
-
-Xc=null_vector(F);
-Rc=F;
-for i=1:20
-    %DX=M\Rc;
-    DX=prec_solve( M, Rc );
-    % X=X+DX
-    Xc=add( Xc, DX );
-    Xc=reduce( Xc );
-    % R=F-A*X;
-    Rc=add( F, apply_operator( A, Xc ), -1 );
-    Rc=reduce( Rc );
-end
-X=Xc;
-
-
 
 
 

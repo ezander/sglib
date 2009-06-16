@@ -26,10 +26,23 @@ function startup
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% better do the real startup in a file with a special name so the user can
+% run it individually
+% sglib_startup
+
 % persistent run_first
 % if ~isempty(run_first)
 %     return
 % end
 % run_first=false;
 
+%load_settings( 'sglib' );
+settings.show_greeting=true;
+
+if settings.show_greeting 
+    disp( 'sglib 0.1' );
+    disp( 'Type sglib_help to get help. Type sglib_settings for changing the settings.' )
+end
+
+% should depend on settings
 add_sglib_path( false, false, true )

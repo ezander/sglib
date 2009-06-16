@@ -68,11 +68,11 @@ end
 
 
 function cancel_button_callback(h, eventdata, control) %#ok
-close( control.h_mainfig );
+delete( control.h_mainfig );
 
 function ok_button_callback(h, eventdata, control) %#ok
 store_values( control );
-close( control.h_mainfig );
+delete( control.h_mainfig );
 
 
 function h=create_popupmenu( x, y, w, strings, current, default, control )
