@@ -73,7 +73,6 @@ Fi=apply_boundary_conditions_rhs( K, F, G, P_B, P_I );
 fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_B, P_I );
 fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_B, P_I );
 fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_B, P_I );
-
 % 
 norm(fi_vec-fi_vec2)
 norm(fi_vec-fi_mat(:))
@@ -94,7 +93,11 @@ tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{
 tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;
 tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi,[],[]); toc;
 
+norm(u_vec_i2-u_vec_i3 )
+norm(u_vec_i2-u_vec_i4 )
+norm(u_vec_i2-u_vec_i5 )
 
+% u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_B, P_I );
 [U,flag,relres,iter]=tensor_operator_solve_jacobi( K, F, 'M', Mi )
 
 
