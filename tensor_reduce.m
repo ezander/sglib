@@ -6,8 +6,8 @@ function [T_k,sigma,k]=tensor_reduce( T, varargin )
 %   parameters.
 %
 % Options:
-%   M1: []
-%   M2: []
+%   G1: []
+%   G2: []
 %   p: 2
 %   k_max: inf
 %   eps: 0
@@ -31,8 +31,8 @@ function [T_k,sigma,k]=tensor_reduce( T, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin{:} );
-[M1,options]=get_option( options, 'M1', [] );
-[M2,options]=get_option( options, 'M2', [] );
+[G1,options]=get_option( options, 'G1', [] );
+[G2,options]=get_option( options, 'G2', [] );
 [p,options]=get_option( options, 'p', 2 );
 [k_max,options]=get_option( options, 'k_max', inf );
 [eps,options]=get_option( options, 'eps', 0 );
@@ -41,8 +41,8 @@ check_unsupported_options( options, mfilename );
 
 
 if iscell(T)
-    [Q1,R1]=qr_internal(T{1},M1);
-    [Q2,R2]=qr_internal(T{2},M2);
+    [Q1,R1]=qr_internal(T{1},G1);
+    [Q2,R2]=qr_internal(T{2},G2);
     [U,S,V]=svd(R1*R2',0);
 else
     [U,S,V]=svd(T,0);
@@ -63,11 +63,11 @@ else
 end
 
 
-function [Q,R]=qr_internal( A, M )
-if isempty(M)
+function [Q,R]=qr_internal( A, G )
+if isempty(G)
     [Q,R]=qr(A,0);
 else
-    [Q,R]=gram_schmidt(A,M,false,1);
+    [Q,R]=gram_schmidt(A,G,false,1);
 end
 
 function k=schattenp_truncate( sigma, eps, rel, p )

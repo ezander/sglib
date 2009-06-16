@@ -26,6 +26,8 @@ function ok=check_boolean( cond, message, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+% TODO: other check functions should use this function with a depth
+% argument, and code from check_condition should move here
 
 if ~exist('mfilename','var') || isempty(mfilename)
     mfilename='global';

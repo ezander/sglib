@@ -12,6 +12,7 @@ function old_state=dock( handle, state )
 % 
 % Example (<a href="matlab:run_example dock">run</a>)
 %   % calling the power function
+%   figure;
 %   x=linspace(0,2*pi);
 %   plot( x, sin(x) );
 %   dock();

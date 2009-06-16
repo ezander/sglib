@@ -45,14 +45,10 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %     check_condition( {A,[]}, 'match', false, {'A','?'}, mfilename, options );
 %     check_condition( {x,'cell'}, 'isa', false, 'x', mfilename, options );
 %
-
-
-
-%
 % See also CHECK_RANGE, CHECK_UNSUPPORTED_OPTIONS
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007, 2009, Institute of Scientific Computing, TU Braunschweig.
 %   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -62,6 +58,10 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+% TODO: this is really ugly and should go into separate files (maybe
+% retaining this file for compatibility)
 
 options=varargin2options( varargin{:} );
 [warnonly,options]=get_option( options, 'warnonly', [] );

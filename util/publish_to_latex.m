@@ -1,4 +1,32 @@
 function publish_to_latex( file, read_now, varargin )
+% PUBLISH_TO_LATEX Uses the matlab publishing with options set up for Latex.
+%   PUBLISH_TO_LATEX( FILE, READ_NOW, OPTIONS ) publishes FILE with all
+%   options set up for Latex. Further it set the wait mode to 'continue'
+%   and resets it later to its previous state. Then, it calls the Latex
+%   toolchain (latex->dvips->ps2pdf) to produce PDF output. Finally, if
+%   READ_NOW is true, it invokes a viewer on the produced PDF file.
+%
+% Options:
+%   Please see source code for options. Most of them are just passed along
+%   to PUBLISH.
+%
+% Example (<a href="matlab:run_example publish_to_latex">run</a>)
+%   publish_to_latex( 'odedemo', true );
+%
+% See also PUBLISH, USERWAIT, SETUSERWAITMODE
+
+%   Elmar Zander
+%   Copyright 2007, 2009, Institute of Scientific Computing, TU Braunschweig.
+%   $Id$ 
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 % parse options
 options=varargin2options( varargin{:} );

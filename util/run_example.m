@@ -30,9 +30,7 @@ function cmds=run_example( cmd, show )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin>=2
-    show=true;
-else
+if nargin<2
     show=false;
 end
 

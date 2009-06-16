@@ -12,7 +12,7 @@ function undock( handle )
 %   plot( x, sin(x) );
 %   dock();
 %   disp( 'Press enter to undock' );
-%   pause;
+%   userwait;
 %   undock;
 %   
 % See also DOCK
