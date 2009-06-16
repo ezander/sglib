@@ -1,4 +1,4 @@
-function [X,flag,relres,iter,resvec]=tensor_operator_solve_richardson( A, F, varargin )
+function [X,flag,relres,iter,info]=tensor_operator_solve_richardson( A, F, varargin )
 
 options=varargin2options( varargin{:} );
 [M,options]=get_option( options, 'M', [] );
@@ -130,6 +130,7 @@ while norm_R>tol
     %fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, size(X_r{1},2), relax );
     fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, -1, relax );
 
+    % increment and check iteration counter
     iter=iter+1;
     if iter>maxiter
         flag=1;
