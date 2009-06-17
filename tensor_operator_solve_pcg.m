@@ -1,4 +1,4 @@
-function [X,flag,relres,iter,info]=pcg_tens( A, F, varargin )
+function [X,flag,relres,iter,info]=tensor_operator_solve_pcg( A, F, varargin )
 
 options=varargin2options( varargin{:} );
 [M,options]=get_option( options, 'M', [] );
@@ -30,11 +30,14 @@ Xc=null_vector(F);
 Rc=add( F, apply_operator( A, Xc ), -1);
 Zc=prec_solve( M, Rc );
 Pc=Zc;
+
+initres=vec_norm( Rc );
+
 while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
     Xn=add(Xc,Pc,alpha);
     Rn=add(Rc,apply_operator(A,Pc),-alpha);
-    if vec_norm(Rn)<0.00001; break; end
+    if vec_norm(Rn)<0.0001; break; end
     Zn=prec_solve(M,Rn);
     beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
     Pn=add(Zn,Pc,beta);
@@ -59,6 +62,6 @@ while true
 end
 X=truncate( Xn, truncate_options );
 
-relres=-1;
+relres=vec_norm( Rc )/initres;
 info=struct();
 

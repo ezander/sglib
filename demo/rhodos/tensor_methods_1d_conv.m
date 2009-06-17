@@ -1,10 +1,8 @@
 %function demo_tensor_methods
 
-init_demos
-
 clf; clear
 dock;
-basename='rf_kl_1d_sfem21';
+basename='rf_kl_1d_sfem21XXX';
 
 %% load the geomatry
 % 1D currently, so nothing to plot here
