@@ -1,3 +1,3 @@
-function tp=tp_reduce( tp, m )
+function tp=tp_truncate( tp, m )
 
 tp=truncated_svd( tp, m );

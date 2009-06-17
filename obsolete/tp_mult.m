@@ -14,5 +14,5 @@ else
 end
 
 if nargin>=2
-    tp=tp_reduce( tp, m );
+    tp=tp_truncate( tp, m );
 end

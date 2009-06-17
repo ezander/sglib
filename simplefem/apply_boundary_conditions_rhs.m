@@ -10,9 +10,9 @@ g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
 g=tensor_operator_apply( K, g );
 gi=tensor_operator_apply( {P_I, I_S}, g );
 if iscell(f)
-    %fi=tensor_add( fi, gi, -1, 'reduce', {} );
+    %fi=tensor_add( fi, gi, -1, 'truncate', {} );
     fi=tensor_add( fi, gi, -1 );
-    %fi=tensor_reduce( fi );
+    %fi=tensor_truncate( fi );
 else
     fi=fi-gi;
 end

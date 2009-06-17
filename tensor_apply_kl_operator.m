@@ -30,7 +30,7 @@ if nargin<5
 end
 
 if isempty(M1)~=isempty(M2)
-    error( 'tensor_reduce:gramians', 'both gramians must be given or both must be empty' );
+    error( 'tensor_truncate:gramians', 'both gramians must be given or both must be empty' );
 end
     
 
@@ -46,10 +46,10 @@ end
 
 for i=ind
     dU=tensor_apply( {A{3}{i}, A{4}{i}}, T );
-    U=tensor_reduce( tensor_add( U, U_det ), k, eps );
+    U=tensor_truncate( tensor_add( U, U_det ), k, eps );
 end
 
 
 if inverse_order
-    U=tensor_reduce( tensor_add( U, U_det ), k, eps );
+    U=tensor_truncate( tensor_add( U, U_det ), k, eps );
 end

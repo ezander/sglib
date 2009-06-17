@@ -17,9 +17,9 @@ else
 end
     
 if iscell(u)
-    %u=tensor_add( u, g, 1, 'reduce', {} );
+    %u=tensor_add( u, g, 1, 'truncate', {} );
     u=tensor_add( u, g );
-    u=tensor_reduce( u );
+    u=tensor_truncate( u );
 else
     u=u+g;
 end

@@ -5,7 +5,7 @@ options=varargin2options( varargin{:} );
 [abstol,options]=get_option( options, 'abstol', 1e-5 );
 [reltol,options]=get_option( options, 'reltol', 1e-5 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[reduce_options,options]=get_option( options, 'reduce_options', {} );
+[truncate_options,options]=get_option( options, 'truncate_options', {} );
 check_unsupported_options( options, mfilename );
 
 
@@ -14,11 +14,11 @@ add=@tensor_add;
 prec_solve=@tensor_operator_solve_elementary;
 apply_operator=@tensor_operator_apply;
 if isnumeric(F)
-    reduce=@tensor_reduce;
+    truncate=@tensor_truncate;
     inner_prod=@(a,b)(a'*b);
     vec_norm=@norm;
 else
-    reduce=@tensor_reduce;
+    truncate=@tensor_truncate;
     inner_prod=@tensor_scalar_product;
     vec_norm=@tensor_norm;
 end
@@ -40,10 +40,10 @@ while true
     Pn=add(Zn,Pc,beta);
     
     % truncate all iteration variables
-    Xc=reduce( Xn, reduce_options );
-    Pc=reduce( Pn, reduce_options );
-    Rc=reduce( Rn, reduce_options );
-    Zc=reduce( Zn, reduce_options );
+    Xc=truncate( Xn, truncate_options );
+    Pc=truncate( Pn, truncate_options );
+    Rc=truncate( Rn, truncate_options );
+    Zc=truncate( Zn, truncate_options );
 
     % increment and check iteration counter
     iter=iter+1;
@@ -57,7 +57,7 @@ while true
         keyboard
     end
 end
-X=reduce( Xn, reduce_options );
+X=truncate( Xn, truncate_options );
 
 relres=-1;
 info=struct();

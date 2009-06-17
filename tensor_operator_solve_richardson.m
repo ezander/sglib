@@ -5,7 +5,7 @@ options=varargin2options( varargin{:} );
 [abstol,options]=get_option( options, 'abstol', 1e-5 );
 [reltol,options]=get_option( options, 'reltol', 1e-5 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[reduce_options,options]=get_option( options, 'reduce_options', {} );
+[truncate_options,options]=get_option( options, 'truncate_options', {} );
 check_unsupported_options( options, mfilename );
 
 %A0=A(1,:);
@@ -13,7 +13,7 @@ check_unsupported_options( options, mfilename );
 
 null_vector=@tensor_null;
 add=@tensor_add;
-reduce=@tensor_reduce;
+truncate=@tensor_truncate;
 prec_solve=@tensor_operator_solve_elementary;
 apply_operator=@tensor_operator_apply;
 
@@ -27,15 +27,15 @@ for i=1:20
     %  DX=M\R;
     DX=prec_solve( M, R );
     
-    % Apply update and reduce:
+    % Apply update and truncate:
     %   X=X+DX
     X=add( X, DX );
-    X=reduce( X, reduce_options );
+    X=truncate( X, truncate_options );
     
-    % Compute residual and reduce:
+    % Compute residual and truncate:
     %   R=F-A*X;
     R=add( F, apply_operator( A, X ), -1 );
-    [R,sigma]=reduce( R, reduce_options );
+    [R,sigma]=truncate( R, truncate_options );
     
     % TODO: compare residual and update, maybe the truncation is always
     % just reverting the previous update, then bail out
@@ -64,7 +64,7 @@ options=varargin2options( varargin{:} );
 [abstol,options]=get_option( options, 'abstol', 1e-7 );
 [reltol,options]=get_option( options, 'reltol', 1e-7 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[reduce_options,options]=get_option( options, 'reduce_options', {''} );
+[truncate_options,options]=get_option( options, 'truncate_options', {''} );
 check_unsupported_options( options, mfilename );
 
 %[omega,options]=get_option( options, 'overrelax', 1 ); %#ok
@@ -82,7 +82,7 @@ norm_A0=tensor_operator_normest( AR ); % need to relate the truncation epsilons 
 X=tensor_null(F); 
 
 
-R=compute_residual( A0, AR, X, F, reduce_options );
+R=compute_residual( A0, AR, X, F, truncate_options );
 norm_R0=tensor_norm( R );
 norm_R=norm_R0;
 
@@ -95,19 +95,19 @@ tol=max( tol, max( norm_R0*trunc_eps, trunc_eps ) );
 while norm_R>tol
 
     if algorithm==1
-        Y=jacobi_step_alg1( X, A0, AR, F, reduce_options );
+        Y=jacobi_step_alg1( X, A0, AR, F, truncate_options );
     else
-        Y=jacobi_step_alg2( X, A0, AR, F, reduce_options );
+        Y=jacobi_step_alg2( X, A0, AR, F, truncate_options );
     end
 
     while true
         if relax<1.0
-            Z=relax_update( X, Y, relax, reduce_options );
+            Z=relax_update( X, Y, relax, truncate_options );
         else
             Z=Y;
         end
 
-        R=compute_residual( A0, AR, Z, F, reduce_options );
+        R=compute_residual( A0, AR, Z, F, truncate_options );
         norm_R_new=tensor_norm( R );
         if norm_R_new>norm_R
             relax=relax/2;
@@ -141,37 +141,37 @@ relres=norm_R/norm_R0;
 
 
 
-function R=compute_residual( A0, AR, X, F, reduce_opts )
+function R=compute_residual( A0, AR, X, F, truncate_opts )
 R=F;
 R=tensor_add( R, tensor_apply( A0, X ), -1 );
-R=tensor_reduce( R, reduce_opts );
+R=tensor_truncate( R, truncate_opts );
 for i=1:size(AR,1)
     R=tensor_add( R, tensor_apply( AR(i,:), X ), -1 );
-    R=tensor_reduce( R, reduce_opts );
+    R=tensor_truncate( R, truncate_opts );
 end
 
 
-function Y=jacobi_step_alg1( X, A0, AR, F, reduce_opts )
+function Y=jacobi_step_alg1( X, A0, AR, F, truncate_opts )
 Y=tensor_solve( A0, F );
 for i=1:size(AR,1)
     S=tensor_apply( AR(i,:), X );
     S=tensor_solve( A0, S );
     Y=tensor_add( Y, S, -1 );
-    Y=tensor_reduce( Y, reduce_opts );
+    Y=tensor_truncate( Y, truncate_opts );
 end
 
 
-function Y=jacobi_step_alg2( X, A0, AR, F, reduce_opts )
+function Y=jacobi_step_alg2( X, A0, AR, F, truncate_opts )
 Y=F;
 for i=1:size(AR,1)
     S=tensor_apply( AR(i,:), X );
     Y=tensor_add( Y, S, -1 );
-    Y=tensor_reduce( Y, reduce_opts );
+    Y=tensor_truncate( Y, truncate_opts );
 end
 Y=tensor_solve( A0, Y );
 
 
-function Z=relax_update( X, Y, relax, reduce_opts )
+function Z=relax_update( X, Y, relax, truncate_opts )
 Z=tensor_add( Y, Y, relax-1 );
 Z=tensor_add( Z, X, 1-relax );
-Z=tensor_reduce( Z, reduce_opts  );
+Z=tensor_truncate( Z, truncate_opts  );

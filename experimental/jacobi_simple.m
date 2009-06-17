@@ -60,11 +60,11 @@ add=@tensor_add;
 prec_solve=@tensor_operator_solve_elementary;
 apply_operator=@tensor_operator_apply;
 if isnumeric(F)
-    reduce=@tensor_reduce;
+    truncate=@tensor_truncate;
     inner_prod=@(a,b)(a'*b);
     vec_norm=@norm;
 else
-    reduce=@tensor_reduce;
+    truncate=@tensor_truncate;
     inner_prod=@tensor_scalar_product;
     vec_norm=@tensor_norm;
 end
@@ -86,15 +86,15 @@ while true
     Pn=add(Zn,Pc,beta);
     
     k=k+1;
-    Xc=reduce( Xn, opts );
-    Pc=reduce( Pn, opts );
-    Rc=reduce( Rn, opts );
-    Zc=reduce( Zn, opts );
+    Xc=truncate( Xn, opts );
+    Pc=truncate( Pn, opts );
+    Rc=truncate( Rn, opts );
+    Zc=truncate( Zn, opts );
     if mod(k,100)==0
         keyboard
     end
 end
-X=reduce( Xn, opts );
+X=truncate( Xn, opts );
 
 %%
 function X=pcg( A, F, M )
@@ -115,7 +115,7 @@ while true
     Pn=Zn+beta*Pc;
     
     k=k+1;
-    Xc=tensor_reduceXn;
+    Xc=tensor_truncate(Xn);
     Pc=Pn;
     Rc=Rn;
     Zc=Zn;

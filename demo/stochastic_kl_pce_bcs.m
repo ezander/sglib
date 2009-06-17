@@ -19,7 +19,7 @@ trunc_eps=1e-7;
 
 x=apply_stochastic_kl_operator( K_mu_delta, {g_j_i, gam_bnd_alpha'}, trunc_k, trunc_eps );
 x=tensor_add( x, {f_j_i, phi_i_beta'} );
-x=tensor_reduce( x, trunc_k, trunc_eps );
+x=tensor_truncate( x, trunc_k, trunc_eps );
 
 
 f_j_i=[f_j_i x{1}];
@@ -34,6 +34,6 @@ Y=tensor_apply( A_0, X );
 for i=1:size(A_i,1)
     S_i=tensor_apply( A_i(i,:), X );
     Y=tensor_add( Y, S_i, -1 );
-    Y=tensor_reduce( Y, trunc_k, trunc_eps );
+    Y=tensor_truncate( Y, trunc_k, trunc_eps );
 end
 

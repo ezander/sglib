@@ -34,7 +34,7 @@
 % Karhunen-Loeve expansion
 %   kl_expand                        - Perform Karhunen-Loeve expansion.
 %   kl_pce_field_realization         - Compute a realization of a random field given by a
-%   pce_to_kl                        - Reduce a pure PCE field into a KL-PCE field.
+%   pce_to_kl                        - Truncate a pure PCE field into a KL-PCE field.
 %   project_pce_on_kl                - Project a spatially PC expanded field into a KL-PCE field.
 
 % Random field expansion
@@ -107,7 +107,7 @@
 %   tensor_apply_kl_operator         - Apply a KL operator to a sparse tensor product.
 %   tensor_norm                      - Compute the norm of a sparse tensor.
 %   tensor_null                      - Create a sparse null tensor with correct dimensions.
-%   tensor_reduce                    - Computes a reduced rank tensor product.
+%   tensor_truncate                    - Computes a truncated rank tensor product.
 %   tensor_scalar_product            - Compute the scalar product of two sparse tensors.
 %   tensor_scale                     - Scale a sparse tensor product by a scalar.
 %   tensor_to_kl                     - Unpack a KL expansion from a tensor product.
@@ -162,7 +162,7 @@
 %   test_tensor_methods              - Test the TENSOR functions.
 %   test_tensor_operator_apply       - Test the TENSOR_OPERATOR_APPLY function.
 %   test_tensor_operator_compose     - Test the TENSOR_OPERATOR_COMPOSE function.
-%   test_tensor_reduce               - Test the TENSOR_REDUCE function.
+%   test_tensor_truncate               - Test the TENSOR_TRUNCATE function.
 %   test_tkron                       - TEST_REVKRON Test the REVKRON and function.
 
 

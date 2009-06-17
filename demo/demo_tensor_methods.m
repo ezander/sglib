@@ -38,7 +38,7 @@ gamma_i_alpha=zeros(0,size(I_g,1));
 
 %% combine the multiindices
 [I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, -1 );
-M=size(I_u,1);
+M=size(I_u,1); %#ok
 
 
 %% create the right hand side
@@ -75,44 +75,60 @@ fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_B, P_I );
 fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_B, P_I );
 fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_B, P_I );
 % 
-norm(fi_vec-fi_vec2)
-norm(fi_vec-fi_mat(:))
-norm(Fi{1}*Fi{2}'-fi_mat)
+all_same=(norm(fi_vec-fi_vec2)+norm(fi_vec-fi_mat(:))+norm(Fi{1}*Fi{2}'-fi_mat)==0);
+underline('apply_boundary_conditions');
+fprintf( 'all_same: %g\n', all_same );
 
 
-%% solve the system 
+%% solve the system via direct solver for comparison
 ui_vec=Ki_mat\fi_vec;
-norm( fi_vec-tensor_operator_apply( Ki, ui_vec ) );
-norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec ) );
 
-%Ui=tensor_operator_solve_jacobi( Ki, Fi, 'M', Ki(1,:) );
+underline( 'Residual of direct solver:' );
+fprintf( '(matrix op) %g \n', norm( fi_vec-tensor_operator_apply( Ki, ui_vec ) ) );
+fprintf( '(tensor op) %g \n', norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec ) ) );
 
 
+
+%% Solve system with Matlab's pcg (must use normal vectors for rep)
+% the preconditioner
 Mi=Ki(1,:);
 Mi_mat=revkron( Mi );
-tic; ui_vec2=pcg(Ki_mat,fi_vec,[],[],Mi_mat,[],[]); toc;
-tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); toc;
-tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;
-tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi_mat,[],[]); toc;
+% solve
+tic; [ui_vec2(:,1),flag]=pcg(Ki_mat,fi_vec,[],[],Mi_mat,[],[]); t(1)=toc;
+tic; [ui_vec2(:,2),flag]=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); t(2)=toc;
+tic; [ui_vec2(:,3),flag]=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki},{1}}); t(3)=toc;
+tic; [ui_vec2(:,4),flag]=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi_mat,[],[]); ta(4)=toc;
 
-norm(ui_vec-ui_vec2 )
-norm(ui_vec-ui_vec3 )
-norm(ui_vec-ui_vec4 )
-norm(ui_vec-ui_vec5 )
+underline( 'PCG accuracy: ' );
+for i=1:4
+    fprintf( '  %g', norm(ui_vec-ui_vec2(:,i) ) )
+end
+fprintf( '\n' );
 
+%% Now apply the world-famous tensor product solver
 % u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_B, P_I );
 %[Ui,flag,relres,iter]=tensor_operator_solve_richardson( Ki, Fi, 'M', Mi );
+
+underline( 'Tensor product PCG: ' );
+
 [Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi );
-ui_vec6=reshape(Ui{1}*Ui{2}',[],1);
-norm(ui_vec-ui_vec6 )
+ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+truncate='none';
+fprintf( 'truncate: %s:: flag: %d, iter: %d, relerr: %g k: %d\n', truncate, flag, iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
 
-[Ui2,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reduce_options', {'eps',1e-6, 'relcutoff', true} );
-ui_vec7=reshape(Ui2{1}*Ui2{2}',[],1);
-norm(ui_vec-ui_vec7 )
+[Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',1e-2, 'relcutoff', true} );
+ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+truncate='eps 10^-2';
+fprintf( 'truncate: %s:: flag: %d, iter: %d, relerr: %g k: %d\n', truncate, flag, iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
+
+[Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',1e-4, 'relcutoff', true} );
+ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+truncate='eps 10^-4';
+fprintf( 'truncate: %s:: flag: %d, iter: %d, relerr: %g k: %d\n', truncate, flag, iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
+
+[Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',1e-6, 'relcutoff', true} );
+ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+truncate='eps 10^-6';
+fprintf( 'truncate: %s:: flag: %d, iter: %d, relerr: %g k: %d\n', truncate, flag, iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
 
 
-
-%trunc_k=20;
-%trunc_eps=1e-7;
-%G_N=[];
-%G_Phi=[];

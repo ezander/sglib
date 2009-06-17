@@ -103,10 +103,10 @@ function R=compute_residual( A_0, A_i, X, F, trunc_k, trunc_eps )
 R_r=F;
 R_c=tensor_null(R_r);
 R_r=tensor_add( R_r, tensor_apply( A_0, X ), -1 );
-[R_r,R_c]=tensor_reduce_carry( R_r, R_c, trunc_k, trunc_eps );
+[R_r,R_c]=tensor_truncate_carry( R_r, R_c, trunc_k, trunc_eps );
 for i=1:size(A_i,1)
     R_r=tensor_add( R_r, tensor_apply( A_i(i,:), X ), -1 );
-    [R_r,R_c]=tensor_reduce_carry( R_r, R_c, trunc_k, trunc_eps );
+    [R_r,R_c]=tensor_truncate_carry( R_r, R_c, trunc_k, trunc_eps );
 end
 R=R_r;
 
@@ -117,7 +117,7 @@ for i=1:size(A_i,1)
     S_i=tensor_apply( A_i(i,:), X_r );
     S_i=tensor_solve( A_0, S_i );
     Y_r=tensor_add( Y_r, S_i, -1 );
-    [Y_r,Y_c]=tensor_reduce_carry( Y_r, Y_c, trunc_k, trunc_eps/norm_A0 );
+    [Y_r,Y_c]=tensor_truncate_carry( Y_r, Y_c, trunc_k, trunc_eps/norm_A0 );
 end
 
 function Y_r=jacobi_step_alg2( X_r, A_0, A_i, F, trunc_k, trunc_eps )
@@ -126,7 +126,7 @@ Y_c=tensor_null( Y_r );
 for i=1:size(A_i,1)
     S_i=tensor_apply( A_i(i,:), X_r );
     Y_r=tensor_add( Y_r, S_i, -1 );
-    [Y_r,Y_c]=tensor_reduce_carry( Y_r, Y_c, trunc_k, trunc_eps );
+    [Y_r,Y_c]=tensor_truncate_carry( Y_r, Y_c, trunc_k, trunc_eps );
 end
 Y_r=tensor_solve( A_0, Y_r );
 
@@ -134,13 +134,13 @@ function Z_r=relax_update( X_r, Y_r, relax, trunc_k, trunc_eps, norm_A0 )
 Z_r=tensor_null( Y_r );
 Z_r=tensor_add( Z_r, Y_r, relax );
 Z_r=tensor_add( Z_r, X_r, 1.0-relax );
-Z_r=tensor_reduce( Z_r, trunc_k, trunc_eps/norm_A0 );
+Z_r=tensor_truncate( Z_r, trunc_k, trunc_eps/norm_A0 );
 
 
 %%
 
-function [T_r,T_c]=tensor_reduce_carry( T_r, T_c, k0, eps )
-[T_r,T_c]=tensor_reduce( tensor_add( T_r, T_c ), k0, eps );
+function [T_r,T_c]=tensor_truncate_carry( T_r, T_c, k0, eps )
+[T_r,T_c]=tensor_truncate( tensor_add( T_r, T_c ), k0, eps );
 
 
 function d=tensor_operator_normest( A_0 )
@@ -151,7 +151,7 @@ d=condest(A_0{1})*condest(A_0{2});
 
 function rho=estimate_method_spectral_radius( X_0, Phi, relax, trunc_k, trunc_eps, norm_A0 ) %#ok
 k=5; eps=0.01;
-X=tensor_reduce( X_0, k, eps );
+X=tensor_truncate( X_0, k, eps );
 X=tensor_scale( X, 1/tensor_norm( X ) );
 
 for iter=1:100
