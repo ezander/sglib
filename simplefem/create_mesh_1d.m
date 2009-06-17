@@ -4,12 +4,12 @@ function [els,pos,bnd]=create_mesh_1d( n, x0, x1 )
 % 
 % Example (<a href="matlab:run_example create_mesh_1d">run</a>)
 %   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%   save_format( 'compact', 'long' );
+%   save_format( 'compact', 'short g' );
 %   els
 %   pos
 %   bnd
 %   restore_format();
-%   figure; dock; func=@cos;
+%   clf; dock; func=@cos;
 %   plot( pos, func(pos), 'b-x', pos(bnd), func(pos(bnd)), 'rx' );
 %
 % See also 

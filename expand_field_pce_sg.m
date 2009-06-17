@@ -40,7 +40,7 @@ check_range( m_gam, 1, 1000, 'm_gam', mfilename );
 
 % get options
 options=varargin2options( varargin{:} );
-[transform_options,options]=get_option( options, 'transform', {} );
+[transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 check_unsupported_options( options, mfilename );
 
 % Step 1: calculate the rho_k(pos) numerically 
@@ -51,7 +51,7 @@ C_r=covariance_matrix( pos, cov_r_func );
 if ~isempty( cov_gam_func )
     C_gam=covariance_matrix( pos, cov_gam_func );
 else
-    C_gam=transform_covariance_pce( C_r, rho_k, transform_options );
+    C_gam=transform_covariance_pce( C_r, rho_k, transform_options{:} );
 end
 
 % Step 3: Calculate lamda_i and r_i (i.e. do KL expansion)

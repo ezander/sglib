@@ -12,7 +12,9 @@ setters={ setters{:}, {'list', 'solver_show_message', m_solver_showmessage, 'err
 
 % should load from file if exists, otherwise set defaults
 settings=getappdata( 0, 'sglib' );
-settings=load( 'sglib.settings', '-mat' );
+try
+    settings=load( 'sglib.settings', '-mat' );
+end
 settings.userwaitmode=m_userwaitmodes{ setuserwaitmode('getmode') };
 
 settings_dialog( setters, settings, 'title', 'SGLib settings', 'set_callback', @do_set );

@@ -66,11 +66,20 @@ options=varargin2options( varargin{:} );
 [show_timings,options]=get_option( options, 'show_timings', false );
 [message,options]=get_option( options, 'message', 'Recomputing: %s( %s )' );
 [extra_params,options]=get_option( options, 'extra_params', {} );
+[path,options]=get_option( options, 'path', '.cache' );
 check_unsupported_options( options, mfilename );
 
 % Setting the following to true shouldn't be necessary, since TIC with
 % return value was introduced.
 use_cputime=false; 
+
+% 
+if ~isempty( path )
+    if ~exist( path, 'dir' )
+        mkdir( path );
+    end
+    filename=[path '/' filename];
+end
 
 % load saved structure from file if possible
 %if exist( filename, 'file' ) 

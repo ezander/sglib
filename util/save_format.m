@@ -13,8 +13,8 @@ function format_info=save_format( varargin )
 %   underline( 'Setting default format (short, loose)' );
 %   save_format( '' );
 %   1.1
-%   underline( 'Setting compact, long format' );
-%   save_format( 'compact', 'long' );
+%   underline( 'Setting compact, short g format' );
+%   save_format( 'compact', 'short g' );
 %   1.1
 %   underline( 'Now restoring default format' );
 %   restore_format();
@@ -49,5 +49,11 @@ else
 end
 
 for new_format=varargin
-    format( new_format{:} );
+    % strread parses a space delimited string into a cell array, then we
+    % pass the cell array as list to format. This makes it possible to pass
+    % stuff like 'short g' as parameter to format (one of those matlab
+    % insanities where both string parts have to be passed as separate
+    % parameters, while constituting just one particular format.)
+    c=strread( new_format{:}, '%s' );
+    format( c{:} );
 end
