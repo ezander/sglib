@@ -2,7 +2,7 @@ function settings=settings_dialog( setters, settings, varargin )
 
 options=varargin2options( varargin );
 [control.title,options]=get_option( options, 'title', 'Settings' );
-[control.spacing,options]=get_option( options, 'spacing', 1.4 );
+[control.spacing,options]=get_option( options, 'spacing', 1.8 );
 [control.width,options]=get_option( options, 'width', 100 );
 [control.indent,options]=get_option( options, 'indent', 3 );
 [control.set_callback,options]=get_option( options, 'set_callback', [] );
@@ -36,7 +36,11 @@ ypos=i;
 switch setter_info{1}
     case 'list'
         [name, option_list, default]=setter_info{2:4};
-        value=settings.(name);
+        if isfield( settings, name )
+            value=settings.(name);
+        else
+            value=default;
+        end
         create_text( 1, ypos,  30, name, control );
         h=create_popupmenu( 25, ypos, 30, option_list, value, default, control );
         control.handles.(name)=h;

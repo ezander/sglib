@@ -3,6 +3,7 @@ function demo_tensor_methods
 init_demos
 
 clf; clear
+dock;
 basename='rf_kl_1d_sfem21';
 setuserwaitmode( 'continue' );
 
@@ -87,18 +88,28 @@ norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec ) );
 %Ui=tensor_operator_solve_jacobi( Ki, Fi, 'M', Ki(1,:) );
 
 
-Mi=revkron( Ki{1,:} );
-tic; ui_vec2=pcg(Ki_mat,fi_vec,[],[],Mi,[],[]); toc;
-tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); toc;
-tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;
-tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi,[],[]); toc;
+Mi=Ki(1,:);
+Mi_mat=revkron( Mi );
+tic; ui_vec2=pcg(Ki_mat,fi_vec,[],[],Mi_mat,[],[]); toc;
+tic; ui_vec3=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); toc;
+tic; ui_vec4=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki},{1}}); toc;
+tic; ui_vec5=pcg(@(x)(Ki_mat*x),fi_vec,[],[],Mi_mat,[],[]); toc;
 
-norm(u_vec_i2-u_vec_i3 )
-norm(u_vec_i2-u_vec_i4 )
-norm(u_vec_i2-u_vec_i5 )
+norm(ui_vec-ui_vec2 )
+norm(ui_vec-ui_vec3 )
+norm(ui_vec-ui_vec4 )
+norm(ui_vec-ui_vec5 )
 
 % u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_B, P_I );
-[U,flag,relres,iter]=tensor_operator_solve_jacobi( K, F, 'M', Mi )
+%[Ui,flag,relres,iter]=tensor_operator_solve_richardson( Ki, Fi, 'M', Mi );
+[Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi );
+ui_vec6=reshape(Ui{1}*Ui{2}',[],1);
+norm(ui_vec-ui_vec6 )
+
+[Ui2,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reduce_options', {'eps',1e-6, 'relcutoff', true} );
+ui_vec7=reshape(Ui2{1}*Ui2{2}',[],1);
+norm(ui_vec-ui_vec7 )
+
 
 
 %trunc_k=20;

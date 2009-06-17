@@ -49,8 +49,7 @@ for i=1:20
 end
 
 relres=-1;
-resvec=[];
-
+info=struct();
 
 
 
