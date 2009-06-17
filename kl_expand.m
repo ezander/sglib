@@ -74,12 +74,16 @@ if issymmetric( C ) && ~issymmetric( G ) && ~issymmetric( W )
 end
 
 % calculate eigenvalues and -vectors of generalized eigenvalue problem
+
+rand_state = rand('state');
+rand('state', 0);
 eigs_options.disp=0;
 if isempty(G)
     [V,D]=eigs( W, m, 'lm', eigs_options );
 else
     [V,D]=eigs( W, G, m, 'lm', eigs_options );
 end
+rand('state',rand_state);
 
 % retrieve the lambdas
 sqrt_lambda=reshape( sqrt(diag(D)), 1, [] );

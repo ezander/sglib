@@ -1,9 +1,7 @@
 %function demo_tensor_methods
 
 clf; dock; clear; 
-% problem due to random stuff in eigenvector calculation (in eigs, we
-% should set the initial vector ourself, otherwise caching does not work)
-rand('state',0); 
+props={'Interpreter', 'latex', 'FontSize', 16, };
 
 
 %% load the geomatry
@@ -26,10 +24,10 @@ cov_k={@gaussian_covariance,{lc_k,1}};
 % plot field
 clf;
 plot(pos,k_j_i); 
-title('KL eigenfunctions');
+title('KL eigenfunctions of $\kappa$', props{:});
 print( 'rf_k_kl_eig.eps', '-depsc' );
 plot_kl_pce_realizations_1d( pos, mu_k_j, k_j_i, kappa_i_alpha, I_k, 'realizations', 50 ); 
-title('mean/var/samples');
+title('mean/var/samples of $\kappa$', props{:} );
 print( 'rf_k_kl_real.eps', '-depsc' );
 userwait;
 
@@ -47,10 +45,10 @@ cov_f={@gaussian_covariance,{lc_f,1}};
 % plot field
 clf;
 plot(pos,f_j_i); 
-title('KL eigenfunctions');
+title('KL eigenfunctions of $f$', props{:});
 print( 'rf_f_kl_eig.eps', '-depsc' );
 plot_kl_pce_realizations_1d( pos, mu_f_j, f_j_i, phi_i_alpha, I_f, 'realizations', 50 ); 
-title('mean/var/samples');
+title('mean/var/samples of $f$', props{:});
 print( 'rf_f_kl_real.eps', '-depsc' );
 userwait;
 
@@ -130,6 +128,7 @@ fprintf( 'all_same: %g\n', all_same );
 %% solve the system via direct solver for comparison
 ui_vec=Ki_mat\fi_vec;
 
+%%
 % the preconditioner
 Mi=Ki(1,:);
 Mi_mat=revkron( Mi );
@@ -167,8 +166,20 @@ for tolexp=1:8
     res(tolexp,6)=iter;
 end
 
+U=apply_boundary_conditions_solution( Ui, G, P_B, P_I )
+[mu_u_j, u_j_i, uu_i_alpha]=tensor_to_kl( U );
 
-props={'Interpreter', 'latex', 'FontSize', 16, };
+clf;
+plot(pos,u_j_i); 
+title('KL eigenfunctions of $u$', props{:});
+print( 'rf_u_kl_eig.eps', '-depsc' );
+plot_kl_pce_realizations_1d( pos, mu_u_j, u_j_i, uu_i_alpha, I_u, 'realizations', 50 ); 
+title('mean/var/samples of $u$', props{:});
+print( 'rf_u_kl_real.eps', '-depsc' );
+userwait;
+
+
+
 clf;
 n=2:8; 
 plot( n, log(res(n,2)), '-x', n, log(res(n,3)), '-x' );

@@ -2,6 +2,7 @@ function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I
 % PCE_TO_KL Reduce a pure PCE field into a KL-PCE field.
 
 %TODO: overhaul the comments
+%TODO: really: just use the truncation from tensor_truncate
 
 % ... do an SVD
 % directly on the PCE coefficients. If the PCE coefficients are given for

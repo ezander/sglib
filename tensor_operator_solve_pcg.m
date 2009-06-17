@@ -37,7 +37,7 @@ while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
     Xn=add(Xc,Pc,alpha);
     Rn=add(Rc,apply_operator(A,Pc),-alpha);
-    if vec_norm(Rn)<0.0001; break; end
+    if vec_norm(Rn)<0.00001; break; end
     Zn=prec_solve(M,Rn);
     beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
     Pn=add(Zn,Pc,beta);
