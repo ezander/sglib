@@ -73,8 +73,10 @@ if issymmetric( C ) && ~issymmetric( G ) && ~issymmetric( W )
     W=0.5*(W+W');
 end
 
-% calculate eigenvalues and -vectors of generalized eigenvalue problem
-
+% Calculate eigenvalues and -vectors of generalized eigenvalue problem
+% Since EIGS uses RAND for the starting vector, results are every time
+% different, which makes a problem for cached function calls. Thus the
+% state of RAND is 
 rand_state = rand('state');
 rand('state', 0);
 eigs_options.disp=0;

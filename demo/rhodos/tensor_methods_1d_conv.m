@@ -166,7 +166,7 @@ for tolexp=1:8
     res(tolexp,6)=iter;
 end
 
-U=apply_boundary_conditions_solution( Ui, G, P_B, P_I )
+U=apply_boundary_conditions_solution( Ui, G, P_B, P_I );
 [mu_u_j, u_j_i, uu_i_alpha]=tensor_to_kl( U );
 
 clf;

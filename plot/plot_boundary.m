@@ -21,21 +21,16 @@ function plot_boundary( els, pos, varargin )
 check_boolean( size(els,2)==3, 'elements must be triangles (size(els,2)==3)', mfilename );
 check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
 
-
 options=varargin2options( varargin{:} );
 [zpos,options]=get_option( options, 'zpos', 0 );
 [color,options]=get_option( options, 'color', 'k' );
 check_unsupported_options( options, mfilename );
 
-e=[els(:,1), els(:,2); els(:,1), els(:,3); els(:,2), els(:,3)];
-e=sort(e,2);
-e=sortrows(e);
-
-asnext=all(e(1:end-1,:)==e(2:end,:),2);
-bndind=~([0;asnext]|[asnext;0]);
-bnd=e(bndind,:);
+bnd=find_boundary( els );
 n=size(bnd,1);
+
 X=[pos(bnd(:,1),1)'; pos(bnd(:,2),1)'; nan*ones(n,1)'];
 Y=[pos(bnd(:,1),2)'; pos(bnd(:,2),2)'; nan*ones(n,1)'];
 Z=zpos*ones(size(X));
 line(X,Y,Z,'color',color);
+
