@@ -5,14 +5,14 @@
 %   hermite_triple_product           - Compute expectation of triple products of Hermite polynomials.
 %   hermite_triple_fast              - Cached computation of the expectation of triple products of Hermite polynomials.
 %   hermite_norm                     - Compute the norm of multivariate Hermite polynomials.
-
+%
 % Multiindices
 %   multiindex                       - Generate a table of multiindices (block-scheme).
 %   multiindex_factorial             - Compute the factorial of a multiindex.
 %   multiindex_order                 - Compute the order of a multiindex.
 %   multiindex_combine               - Combine multiindices from different sources.
 %   multiindex_find                  - Find a multiindex in a list of indices.
-
+%
 % Polynomials chaos expansion
 %   pce_expand_1d                    - Calculate the PCE expansion in one stochastics dimension.
 %   pce_expand_1d_mc                 - Calculate the PCE expansion in one stochastics dimension (MC).
@@ -23,20 +23,20 @@
 %   pce_transform_multi              - Transform from local univariate to global
 %   pce_cdf                          - 
 %   pce_pdf                          - 
-
+%
 % Experimental PCE routines
 %   pce_divide                       - 
 %   pce_function                     - 
 %   pce_function_polyexp             - 
 %   pce_multiply                     - Multiply two PC expanded random variables.
 %   pce_sqrt                         - 
-
+%
 % Karhunen-Loeve expansion
 %   kl_expand                        - Perform Karhunen-Loeve expansion.
 %   kl_pce_field_realization         - Compute a realization of a random field given by a
 %   pce_to_kl                        - Truncate a pure PCE field into a KL-PCE field.
 %   project_pce_on_kl                - Project a spatially PC expanded field into a KL-PCE field.
-
+%
 % Random field expansion
 %   expand_field_pce_sg              - Compute the PC expansion of a random field according to a paper of Sakamoto and Ghanem.
 
@@ -46,9 +46,9 @@
 %   spherical_covariance             - Compute the spherical covariance function.
 %   covariance_matrix                - Calculate point covariance matrix.
 %   transform_covariance_pce         - Transforms covariance of underlying Gaussian
-
+%
 % Solvers
-
+%
 % Distributions
 %   beta_cdf                         - Cumulative distribution function of the beta distribution.
 %   beta_pdf                         - Probability distribution function of the beta distribution.
@@ -70,7 +70,7 @@
 %   uniform_moments                  - Compute moments of the uniform distribution.
 %   uniform_pdf                      - Probability distribution function of the uniform distribution.
 %   uniform_stdnor                   - Transforms standard normal random numbers into uniform distributed ones.
-
+%
 % Statistics
 %   data_moments                     - Compute moments of given data.
 %   inv_reg_beta                     - Compute the inverse regularized beta function.
@@ -78,7 +78,7 @@
 %   empirical_density                - Probability density estimation for given data.
 %   ks_test                          - Perform the Kolmogorov-Smirnov test on the samples distribution.
 %   randn_sorted                     - Generate sorted, normally distributed numbers from the inverse CDF.
-
+%
 % Integration rules
 %   gauss_hermite                    - Numerically integrate with Gauss-Hermite quadrature rule.
 %   gauss_hermite_multi              - Perform multidimensional Gauss-Hermite quadrature.
@@ -88,19 +88,19 @@
 %   full_tensor_grid                 - Return nodes and weights for full tensor product grid.
 %   smolyak_grid                     - Return nodes weights for Smolyak quadrature.
 %   tensor_mesh                      - Create D-dimensional tensor-product from 1D meshes and weights.
-
+%
 % Miscellaneous numerical routines
 %   cross_correlation                - Compute cross correlation coefficient between functions.
 %   gram_schmidt                     - Perform Gram-Schmidt orthogonalization.
 %   revkron                          - Reversed Kronecker tensor product.
 %   solver_message                   - 
-
+%
 % Stochastic Galerkin method
 %   stochastic_operator_kl_pce       - 
 %   stochastic_operator_pce          - 
 %   stochastic_pce_rhs               - 
 %   stochastic_pce_matrix            - Compute the matrix that represents multiplication in the Hermite algebra.
-
+%
 % Tensor routines
 %   tensor_add                       - Add two sparse tensor products.
 %   tensor_apply                     - Apply a tensor operator to a sparse tensor products.
@@ -112,7 +112,7 @@
 %   tensor_scale                     - Scale a sparse tensor product by a scalar.
 %   tensor_to_kl                     - Unpack a KL expansion from a tensor product.
 %   kl_to_tensor                     - Pack a KL expansion into tensor product format.
-
+%
 % Tensor and linear operator routines
 %   linear_operator                  - Creates  a linear operator structure from a matrix.
 %   linear_operator_apply            - APPLY_LINEAR_OPERATOR Apply a linear operator or matrix to a vector.
@@ -124,13 +124,12 @@
 %   tensor_operator_size             - Elmar Zander
 %   tensor_operator_solve_elementary - Solves an equation with an elementary tensor operator.
 %   tensor_operator_solve_jacobi     - 
-
-
+%
 % Miscellaneous system routines
 %   startup                          - Set parameters/paths for the programs to run correctly.
 %   add_sglib_path                   - Set paths for sglib.
 %   isnativesglib                    - Return whether native sglib functions are used.
-
+%
 % Test and demo functions/scripts
 %   testsuite                        - Run all unit tests in this directory.
 %   test_pce_expand_1d               - Test the univariate PCE expansion 
@@ -164,81 +163,6 @@
 %   test_tensor_operator_compose     - Test the TENSOR_OPERATOR_COMPOSE function.
 %   test_tensor_truncate               - Test the TENSOR_TRUNCATE function.
 %   test_tkron                       - TEST_REVKRON Test the REVKRON and function.
-
-
-
-
-
-
-
-
-
-
-% Common variable names
-%   It was aspired to use consistent variable names for recurring concepts.
-%   The following names usually have the same meaning in all of the code:
-%     pcc                        = Coefficients of PC expansion
-%                                  >> pcc( index, point )
-%     pci                        = Indices of Hermite polynomials of PC
-%                                  expansion
-%     n                          = Spatial number of nodes/dofs
-%     m                          = Number of independent gaussian rvs
-%                                  i.e. number of terms in KL expansion
-%     p                          = Degree of PCE expansion
-% Naming conventions
-%     * always include the name of the basic variable in the name where
-%     this expansion or whatever is referring to, i.e. if a variable u is
-%     expanded somehow the coefficients should be named after u e.g.
-%     u_alpha etc. 
-%     * the indices of the expansion invoked on the variable are put behind
-%     the base name in order of the expansion
-%     * Examples:
-
-
-
-
-%                   coefficients of the kl eigenfunction
-%     * How to name coefficients, eigenfunctions, random vars etc.
-
-
-% Data structures
-%   Hermite polynomials: 
-%   Polynomials are usually expressed as column vectors in Matlab, i.e. a
-%   polynomial p(x)=3x^2+5x-2 is represented as p=[3, 5, -2] (in this
-%   order, highest index first). The coefficients for Hermite polynomials
-%   in this package are represented a bit differently in that the lowest
-%   index comes first (which, in my eyes, makes more sense from a
-%   programmers point of view), i.e. if some PCE expansion of a random
-%   variable returns something like p(x)=2 H_0(x) + 3 H_1(x) -4 H_2(x),
-%   then the coefficients are stored as p=[2, 3, -4] (mark the order and
-%   the semicolons). 
-%   Matlab usually doesn't care whether you pass a row or a column vector
-%   as a representation of a polynomial. Since we have to use arrays of
-%   polynomial coefficients quite often, we have to make a difference. Thus
-%   p=[2;3;-4] would mean 3 polynomial representations in Hermite
-%   polynomials namely p1=2 H_0(x), p2=3 H_0(x) and p3=-4 H_0(x). Thus if
-%   pcc represents the coefficients of a polynomials chaos expansion then
-%   pcc(i,j) represents the coefficient of H_{j-1} in polynomial i. That
-%   means:
-%      p_i(x) = pcc(1,i) H_0(x) + pcc(2,i) H_1(x) + pcc(3,i) H_2(x) + ...
-%   
-%
-%   Multivariate Hermite polynomials:  
-%   For multivariate Hermite polynomials things get a bit more difficult
-%   since the index of the polynomial can no longer be determined by the
-%   order of the coefficient. Only for the very first coefficient we adopt
-%   the convention that this should always refer to the constant
-%   polynomial (i.e. H_0(xi1)*H_0(xi2)*H_0(xi3)*...). For all others we
-%   have to remember which order the Hermite polynomials have for each of
-%   the coefficients. The coefficients are ususally kept in an array by the
-%   name of pci (polynomial chaos indices). 
-%  
-%   Coordinates:
-%   In a coordinate array x the first index determines the point and the
-%   seoncd index the dimension, i.e. x(i,2) is the y coordinate of point
-%   x_i.
-
-
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

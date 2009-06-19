@@ -5,7 +5,7 @@
 %   plot_pce_realizations_1d - 
 %   spy2                     - Replacement for the SPY function.
 %   spy_tensor               - 
-
+%
 % Support functions
 %   logscale                 - 
 %   subtitle                 - Create a title over multiple subplots.

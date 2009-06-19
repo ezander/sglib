@@ -6,18 +6,18 @@ function basepath=sglib_addpath( octave, experimental, restore )
 %   (default: FALSE) is true the path to experimental directory is added.
 %   If RESTORE (default: FALSE) is specified, the path is first reset to
 %   its default.
-%   
+%   This function is usually run rom the startup script SGLIB_STARTUP.
 %
-% Example (<a href="matlab:run_example add_sglib_path">run</a>)
+% Example (<a href="matlab:run_example sglib_addpath">run</a>)
 %   % set default paths and return base path
-%   p=add_sglib_path
+%   p=sglib_addpath
 %   % set default plus experimental path (but no octave)
-%   add_sglib_path( false, true )
+%   sglib_addpath( false, true )
 %   % set default plus octave path (but no experimental) resetting the path
 %   % first
-%   add_sglib_path( true, false, true )
+%   sglib_addpath( true, false, true )
 %
-% See also STARTUP
+% See also SGLIB_STARTUP, ADDPATH, STARTUP
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

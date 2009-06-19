@@ -4,13 +4,13 @@
 %   mass_matrix                        - Assemble the mass matrix.
 %   stiffness_matrix                   - Assemble stiffness matrix for linear tri/tet elements.
 %   gauss_legendre_triangle_rule       - Get Gauss points and weights for quadrature over canonical triangle.
-
+%
 % Boundary conditions
 %   boundary_projectors                - Projection matrices on the set of inner and boundary nodes.
 %   apply_boundary_conditions_operator - 
 %   apply_boundary_conditions_rhs      - 
 %   apply_boundary_conditions_solution - 
-
+%
 % Test functions
 %   test_apply_boundary_conditions     - Test the apply_boundary_conditionsfunction.
 %   test_boundary_projectors           - Test the boundary_projectors function.
