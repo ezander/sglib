@@ -1,3 +1,15 @@
+% SGLIB MAIN
+% ==========
+%
+% This directory contains the essential methods for working with stochastic
+% Galerkin methods i.e. dealing with stochastic distributions, orthogonal
+% polynomials, random field creation, stochastic expansion methods etc.
+% Helper functions can be found in the UTIL subdirectory, a unit testing
+% framework in MUNIT, plotting functions in PLOT and some methods for
+% simple fem computations in SIMPLEFEM (only meant for testing, not for
+% real fem computations, where some decent fem software should be called
+% from here).
+%
 % Hermite polynomials
 %   hermite                               - Return the n-th Hermite polynomial.
 %   hermite_val                           - Evaluate expansion in Hermite polynomials.
@@ -114,17 +126,18 @@
 %   kl_to_tensor                          - Pack a KL expansion into tensor product format.
 %
 % Application of boundary conditions to tensors and tensor operators 
+%   boundary_projectors                   - Projection matrices on the set of inner and boundary nodes.
 %   apply_boundary_conditions_operator    - 
 %   apply_boundary_conditions_rhs         - 
 %   apply_boundary_conditions_solution    - 
 %
 % Tensor and linear operator routines
 %   linear_operator                       - Creates  a linear operator structure from a matrix.
-%   linear_operator_apply                 - APPLY_LINEAR_OPERATOR Apply a linear operator or matrix to a vector.
+%   linear_operator_apply                 - Apply a linear operator or matrix to a vector.
 %   linear_operator_compose               - Return the composition of two linear operators.
 %   linear_operator_size                  - Return the size of a linear operator.
-%   linear_operator_solve                 - Example (<a href="matlab:run_example linear_operator_solve">run</a>)
-%   tensor_operator_apply                 - APPLY_TENSOR_OPERATOR Apply a tensor operator to a tensor.
+%   linear_operator_solve                 - Solve a linear equation for a general linear operator.
+%   tensor_operator_apply                 - Apply a tensor operator to a tensor.
 %   tensor_operator_compose               - Return the composition of two tensor operators.
 %   tensor_operator_size                  - Elmar Zander
 %   tensor_operator_solve_elementary      - Solves an equation with an elementary tensor operator.
@@ -134,14 +147,18 @@
 %   tensor_operator_solve_richardson      - 
 %
 % Miscellaneous system routines
-%   sglib_addpath                         - ADD_SGLIB_PATH Set paths for sglib.
-%   sglib_check_setup                     - SGLIB_CHECK_STARTUP Checks whether SGLIB was setup correctly.
+%   sglib_addpath                         - Set paths for sglib.
+%   sglib_check_setup                     - Checks whether SGLIB was setup correctly.
 %   sglib_help                            - Show SGLIB help overview.
 %   sglib_settings                        - before running the setup should have been performed at least partly
-%   sglib_startup                         - STARTUP Called automatically by Matlab at startup.
+%   sglib_startup                         - Called automatically by Matlab at startup.
 %   startup                               - Called automatically by Matlab at startup.
 %   isnativesglib                         - Return whether native sglib functions are used.
 %
+
+
+% PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
+% UP THE CONTENTS DISPLAY.
 % Test and demo functions/scripts
 %   testsuite                             - Run all unit tests in this directory.
 %   test_pce_expand_1d                    - Test the univariate PCE expansion 
@@ -178,6 +195,9 @@
 %   test_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
 %   test_tensor_operator_solve_richardson - 
 
+
+
+
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
 %   $Id$ 
@@ -189,4 +209,3 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-

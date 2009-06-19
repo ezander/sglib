@@ -112,20 +112,12 @@ assert_equals( UA{1}*UA{2}', UB{1}*UB{2}' );
 assert_equals( UA{1}*UA{2}', UC{1}*UC{2}' );
 
 % testing function TENSOR_APPLY
-assert_set_function( 'tensor_solve' );
+assert_set_function( 'tensor_operator_solve_elementary' );
 A={M1+eye(size(M1)), M2+eye(size(M2))};
-Ainv={inv(A{1}), inv(A{2})};
-
-U1=tensor_solve(A,T);
-U2=tensor_solve({A{1},Ainv{2}},T,{'','inv'});
-U3=tensor_solve({Ainv{1},Ainv{2}},T,{'inv','inv'});
-U4=tensor_solve({@(x)(Ainv{1}*x),A{2}},T,{'inv',''});
-U5=tensor_solve({@(x)(A{1}*x),A{2}},T,{'pcg',''});
-Uex=tensor_apply(Ainv,T);
+Uex=tensor_apply({inv(A{1}),inv(A{2})},T);
+U1=tensor_operator_solve_elementary(A,T);
+U2=tensor_operator_solve_elementary({linear_operator(A{1}),linear_operator(A{2})},T);
 assert_equals( U1{1}*U1{2}', Uex{1}*Uex{2}' );
 assert_equals( U2{1}*U2{2}', Uex{1}*Uex{2}' );
-assert_equals( U3{1}*U3{2}', Uex{1}*Uex{2}' );
-assert_equals( U4{1}*U4{2}', Uex{1}*Uex{2}' );
-assert_equals( U5{1}*U5{2}', Uex{1}*Uex{2}', [], 'abstol', 1e-6 );
 
 

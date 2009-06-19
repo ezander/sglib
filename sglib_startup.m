@@ -5,10 +5,13 @@
 %   else without interfering with any other startup script that might be on
 %   the path.
 %
-% Example (<a href="matlab:run_example startup">run</a>)
-%   startup
+% Note: This mfile is intentionally a script and no function, so it can be
+%   run via RUN. E.g. run('../sglib_startup');
 %
-% See also 
+% Example (<a href="matlab:run_example sglib_startup">run</a>)
+%   sglib_startup
+%
+% See also STARTUP, RUN, SGLIB_ADDPATH 
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -29,10 +32,19 @@ run_first=isappdata( 0, 'sglib' );
 appdata=struct();
 
 % get the sglib home path
+basepath = mfilename('fullpath');
+m=find(basepath=='/',1,'last');
+basepath=basepath(1:m-1);
+addpath( basepath );
+
+% 
 isoctave=false;
 inc_experimental=false;
-appdata.basepath=sglib_addpath( isoctave, inc_experimental, true );
-appdata.settings_file=[appdata.basepath '/sglib.settings' ];
+sglib_addpath( basepath, true, inc_experimental, isoctave );
+
+% put stuff in appdata
+appdata.basepath=basepath;
+appdata.settings_file=[basepath '/sglib.settings' ];
 setappdata( 0, 'sglib', appdata );
 
 % do some init stuff depending on matlab/octave version 

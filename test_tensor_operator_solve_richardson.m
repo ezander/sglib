@@ -14,9 +14,9 @@ Xvec1=reshape( X{1}*X{2}', [], 1 );
 Mm2=diag(diag(Am));
 [Xvec3,flag,info]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm2 );
 
-norm( XvecEx-Xvec1 )
-norm( XvecEx-Xvec2 )
-norm( XvecEx-Xvec3 )
+% norm( XvecEx-Xvec1 )
+% norm( XvecEx-Xvec2 )
+% norm( XvecEx-Xvec3 )
 
 
 

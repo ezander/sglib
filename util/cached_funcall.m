@@ -73,8 +73,8 @@ check_unsupported_options( options, mfilename );
 % return value was introduced.
 use_cputime=false; 
 
-% 
-if ~isempty( path )
+% if path is given and filename is not absolute => create path
+if ~isempty( path ) && filename(1)~='/'
     if ~exist( path, 'dir' )
         mkdir( path );
     end

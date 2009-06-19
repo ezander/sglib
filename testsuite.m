@@ -1,11 +1,10 @@
-function testsuite( debug )
+function testsuite
 % TESTSUITE Run all unit tests in this directory.
-%   TESTSUITE( DEBUG ) runs all tests in this dir with debug settings to
-%   DEBUG (i.e. true or false). If DEBUG is not specified the current
-%   setting is retained.
+%   TESTSUITE runs all tests in this directory.
 %
 % Example (<a href="matlab:run_example testsuite">run</a>)
-%   testsuite( true );
+%   assert_set_debug( debug )
+%   testsuite
 %
 % See also 
 
@@ -23,9 +22,6 @@ function testsuite( debug )
 
 
 assert_reset_options();
-if nargin>0
-    assert_set_debug( debug );
-end
 
 if isnativesglib
   disp( 'testsuite: using native sglib' );
@@ -33,6 +29,5 @@ else
   disp( 'testsuite: using m-files only ' );
 end
 
-subdirs={ 'plot', 'simplefem', 'util' };
-assert_run_testsuite( 'ssfem', pwd, 'subdirs', subdirs );
-
+subdirs={ 'munit', 'util', 'plot', 'simplefem' };
+assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs );

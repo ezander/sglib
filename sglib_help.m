@@ -20,15 +20,16 @@ function sglib_help
 
 path=pwd;
 underline('Help topics');
-helplink( path, 'General information on SGLib', 'doc' );
-helplink( path, 'Main SGLib functions', '.' );
-helplink( path, 'Utility function', 'util' );
-helplink( path, 'Plotting support function', 'plot' );
+helplink( path, 'General information on SGLIB', 'doc' );
+helplink( path, 'Main SGLIB functions', '.' );
+helplink( path, 'Utility functions', 'util' );
+helplink( path, 'Plotting support functions', 'plot' );
 helplink( path, 'Unit testing', 'munit' );
 helplink( path, 'Some simple FEM routines', 'simplefem' );
-helplink( path, 'Some simple FEM Demonstration scripts', 'demo' );
+helplink( path, 'Demonstration scripts', 'demo' );
 
 
 function helplink( path, descr, dir )
 file=[path '/' dir '/Contents.m'];
-fprintf( '%s: <a href="matlab:help %s">Contents</a>\n', descr, file );
+% fprintf( '%s: <a href="matlab:help %s">Contents</a>\n', descr, file );
+fprintf( ' * <a href="matlab:help %s">%s</a>\n', file, descr );

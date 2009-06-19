@@ -17,6 +17,7 @@ m_userwaitmodes = {'keyboard','mouse','continue'};
 setters={};
 setters={ setters{:}, {'list', 'userwaitmode', setuserwaitmode('getmode'), m_userwaitmodes  } };
 setters={ setters{:}, {'bool', 'show_greeting', true } };
+setters={ setters{:}, {'bool', 'munit_jump_debugger', true } };
 
 if exist( 'we_dont_need_that_stuff_yet', 'var' )
     setters={ setters{:}, {'list', 'shading', 'faceted', m_shading_types } };
@@ -55,6 +56,7 @@ end
 
 function do_set( settings )
 setuserwaitmode( settings.userwaitmode );
+assert_set_debug( settings.munit_jump_debugger );
 
 appdata=getappdata( 0, 'sglib' );
 appdata.settings=settings;
