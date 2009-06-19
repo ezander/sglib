@@ -1,5 +1,5 @@
 function sglib_check_setup
-% SGLIB_CHECK_STARTUP Checks whether SGLIB was setup correctly.
+% SGLIB_CHECK_SETUP Checks whether SGLIB was setup correctly.
 %   SGLIB_CHECK_SETUP checks for the existence of APPDATA for 'sglib',
 %   indicating correct initialization of SGLIB.
 %

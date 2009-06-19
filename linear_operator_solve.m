@@ -1,16 +1,21 @@
 function x=linear_operator_solve( A, y )
+% LINEAR_OPERATOR_SOLVE Solve a linear equation for a general linear operator.
+%   X=LINEAR_OPERATOR_SOLVE( A, Y ) solves the system of equations A*X=Y.
+%   If the linear operator A is a concrete matrix the matlab \ operator is
+%   used. If A is a general linear operator and the solve field is present
+%   in the cell array (see LINEAR_OPERATOR), then this is used for solving.
+%   If no solve field is present CGS is used with the apply field of the
+%   linear operator A.
 %
 % Example (<a href="matlab:run_example linear_operator_solve">run</a>)
-%     M=[1, 2, 3; 3, 4, 6; 5, 10, 14];
-%     linop={ size(M), {@mtimes, {M}, {1} } };
-%     linop_inv={ linop{:}, {@mldivide, {M}, {1} } };
-%     [m,n]=linear_operator_size( linop );
-%
-%     x=ones(n,1);
-%     y=linear_operator_apply( linop, x ); 
-%     x1=linear_operator_solve( linop_inv, y );
-%     x2=linear_operator_solve( linop, y );
-%     disp([y,x,x1,x2]);
+%     M=gallery( 'wathen', 3, 3 );
+%     L=linear_operator( M );
+%     y=ones(size(M,1),1);
+%     x1=M\y;
+%     x2=linear_operator_solve( M, y); % uses 
+%     x3=linear_operator_solve( L, y); % uses L{3}
+%     x4=linear_operator_solve( L(1:2), y); % uses cgs with L{2}
+%     fprintf( '%g %g %g\n', norm(x1-x2), norm(x1-x3), norm(x1-x4) );
 %
 % See also LINEAR_OPERATOR, LINEAR_OPERATOR_SIZE, ISFUNCTION
 

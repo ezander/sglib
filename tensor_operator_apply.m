@@ -1,6 +1,6 @@
 function Y=tensor_operator_apply( A, X, varargin )
-% APPLY_TENSOR_OPERATOR Apply a tensor operator to a tensor.
-%   Y=APPLY_TENSOR_OPERATOR( A, X, VARARGIN ) applies the tensor operator A
+% TENSOR_OPERATOR_APPLY Apply a tensor operator to a tensor.
+%   Y=TENSOR_OPERATOR_APPLY( A, X, VARARGIN ) applies the tensor operator A
 %   to the tensor X. Different format for A and X are supported, and can be
 %   specified via additional options or automatically detected. The
 %   following formats are currently possible for the operator A:
@@ -18,26 +18,13 @@ function Y=tensor_operator_apply( A, X, varargin )
 %   The following combinations of formats are possible:
 %      revkron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
 %
-%   TODO: the following is pointless, when the user is required to use 
-%   REVKRON instread of KRON
-%   NOT POSSIBLE is 'kron/mat' because it allows different interpretations
-%   (i.e. should the matrix itself or its transpose be vectorised?) and
-%   thus the user should decide that before calling this function. The
-%   reasion is that the Kronecker product groups multiples of the second
-%   matrices and not of the first. Example
-%       irnd=@(x,y)(round(10*rand(x,y)))
-%       A=irnd(2,5); B=irnd(4,3); x=irnd(5,1); y=irnd(3,1); 
-%       kron(A,B)*kron(x,y)==kron(A*x,B*y)
-%   but
-%       kron(B,A)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
-%   and not
-%       kron(A,B)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
-%   That means you have to 'transpose' the Kronecker product so that it
-%   matches a stacked dyadic product.
+% Note: Never use the normal Kronecker product for the tensor operator (in
+%   case you want to have an explicit matrix representation). Use the
+%   reversed Kronecker product (REVKRON) instead.
 %
 % Example (<a href="matlab:run_example apply_tensor_operator">run</a>)
 %
-% See also APPLY_LINEAR_OPERATOR, ISFUNCTION
+% See also REVKRON, APPLY_LINEAR_OPERATOR, ISFUNCTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

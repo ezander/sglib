@@ -1,6 +1,6 @@
-function basepath=sglib_addpath( octave, experimental, restore )
-% ADD_SGLIB_PATH Set paths for sglib.
-%   ADD_SGLIB_PATH( OCTAVE, EXPERIMENTAL ) adds paths for sglib to the
+function basepath=sglib_addpath( basepath, restore, add_experimental_path, add_octave_path )
+% SGLIB_ADDPATH Set paths for sglib.
+%   SGLIB_ADDPATH( BASEPATH, RESTORE, EXPERIMENTAL, OCTAVE ) adds paths for sglib to the
 %   normal search path. If OCTAVE (default: FALSE) is true the path to the
 %   octave compatibility directory (octcompat) is added. If EXERIMENTAL
 %   (default: FALSE) is true the path to experimental directory is added.
@@ -12,10 +12,10 @@ function basepath=sglib_addpath( octave, experimental, restore )
 %   % set default paths and return base path
 %   p=sglib_addpath
 %   % set default plus experimental path (but no octave)
-%   sglib_addpath( false, true )
+%   sglib_addpath( [], true, true, false )
 %   % set default plus octave path (but no experimental) resetting the path
 %   % first
-%   sglib_addpath( true, false, true )
+%   sglib_addpath( [], true, false, true )
 %
 % See also SGLIB_STARTUP, ADDPATH, STARTUP
 
@@ -31,29 +31,47 @@ function basepath=sglib_addpath( octave, experimental, restore )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+% set default arguments
+if nargin<2 || isempty(restore)
+    restore=true;
+end
+if nargin<3 || isempty(add_experimental_path)
+    add_experimental_path=false;
+end
+if nargin<4 || isempty(add_octave_path)
+    add_octave_path=false;
+end
 
-if nargin>=3 && ~isempty(restore) && restore
+% determine basepath if not given
+if nargin<1 || isempty(basepath)
+    basepath = mfilename('fullpath');
+    m=find(basepath=='/',1,'last');
+    basepath=basepath(1:m-1);
+end
+
+% set standard paths
+if restore
     restoredefaultpath;
 end
 
-p = mfilename('fullpath');
-m=find(p=='/',1,'last');
-p=p(1:m-1);
-addpath( p );
-addpath( [p '/munit'] );
-addpath( [p '/doc'] );
-addpath( [p '/plot'] );
-addpath( [p '/util'] );
-addpath( [p '/simplefem'] );
+addpath( basepath );
+addpath( [basepath '/munit'] );
+addpath( [basepath '/doc'] );
+addpath( [basepath '/plot'] );
+addpath( [basepath '/util'] );
+addpath( [basepath '/simplefem'] );
 
-if nargin>=1 && ~isempty(octave) && octave
-    addpath( [p '/octcompat'] );
+if add_octave_path
+    addpath( [basepath '/octcompat'] );
 end
 
-if nargin>=2 && ~isempty(experimental) && experimental
-    addpath( [p '/experimental'] );
+if add_experimental_path
+    addpath( [basepath '/experimental'] );
 end
 
-if nargout>0
-    basepath=p;
+rehash;
+
+% suppress output argument if unwanted
+if nargout==0
+    clear basepath;
 end

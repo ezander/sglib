@@ -1,6 +1,6 @@
 function y=linear_operator_apply( A, x )
-% APPLY_LINEAR_OPERATOR Apply a linear operator or matrix to a vector.
-%   B=APPLY_LINEAR_OPERATOR( A, X ) applies the linear operator A to the
+% LINEAR_OPERATOR_APPLY Apply a linear operator or matrix to a vector.
+%   B=LINEAR_OPERATOR_APPLY ( A, X ) applies the linear operator A to the
 %   vector X. If A is a matrix, then just A*X is returned, otherwise if A
 %   is a cell array then, FUNCALL( A{2}, X ) is returned. The functionality is
 %   rather trivial but makes it easier to handle both "types" of linear

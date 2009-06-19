@@ -1,5 +1,4 @@
-function startup
-% STARTUP Called automatically by Matlab at startup.
+% SGLIB_STARTUP Called automatically by Matlab at startup.
 %   STARTUP gets automatically called by Matlab if it was started from THIS
 %   directory (i.e. the sglib home directory). STARTUP just delegates the
 %   work SGLIB_STARTUP, so that SGLIB_STARTUP can be called from anywhere
