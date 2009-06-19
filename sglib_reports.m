@@ -1,8 +1,16 @@
-function sglib_reports
+function sglib_reports( type )
 dirs={'.', 'util', 'plot', 'munit', 'simplefem', 'demo', 'doc' };
-%mlint_reports( dirs );
-%contents_reports( dirs );
-help_reports( dirs );
+
+switch type
+    case 'mlint'
+        mlint_reports( dirs );
+    case 'contents'
+        contents_reports( dirs );
+    case 'help'
+        help_reports( dirs );
+    otherwise
+        error( 'unknown report type %s', type );
+end
 
 
 function help_reports( dirs )
