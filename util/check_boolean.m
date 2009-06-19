@@ -1,4 +1,4 @@
-function ok=check_boolean( cond, message, mfilename )
+function ok=check_boolean( ok, message, mfilename, varargin )
 % CHECK_BOOLEAN Check whether condition is true on input.
 %   OK=CHECK_BOOLEAN( COND, MESSAGE, MFILENAME ) checks whether the given condition 
 %   is true. If not an error message is printed and the program is aborted.
@@ -26,14 +26,42 @@ function ok=check_boolean( cond, message, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-% TODO: other check functions should use this function with a depth
-% argument, and code from check_condition should move here
-
-if ~exist('mfilename','var') || isempty(mfilename)
-    mfilename='global';
+% save some time by returning immediately if ok is true
+if ok
+    return
 end
 
-if ~cond
-    error([mfilename ':boolean'], '%s: %s', mfilename, message );
+options=varargin2options( varargin{:} );
+[mode,options]=get_option( options, 'mode', 'debug' );
+[depth,options]=get_option( options, 'depth', '1' );
+check_unsupported_options( options, mfilename );
+
+switch mode
+    case 'error'
+        stack=dbstack('-completenames');
+        err_struct.message=sprintf( '%s: %s', mfilename, message );
+        err_struct.id=[mfilename ':condition'];
+        err_struct.stack=stack((1+depth):end);
+        % using 'rethrow' instead of 'error' suppresses incorrect
+        % reports of error position in 'check_condition' (the 'error'
+        % function disregards the stack for display of the error
+        % position)
+        rethrow( err_struct );
+    case 'warning'
+        %warning([mfilename ':condition'], '%s: %s', mfilename, message );
+        fprintf('Warning: %s: %s\n', mfilename, message );
+        stack=dbstack('-completenames');
+        for i=(1+depth):length(stack)
+            fprintf( '  In <a href="matlab: edit %s">%s at line %d</a>\n', stack(i).file, stack(i).name, stack(i).line );
+        end
+    case 'debug'
+        fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
+        cmd=repmat( 'dbup;', 1, depth );
+        fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
+        fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
+        keyboard;
 end
-ok=cond;
+
+if nargout==0
+    clear ok;
+end

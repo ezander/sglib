@@ -53,4 +53,4 @@ else
         error( 'varargin2options:options', 'wrong option specification: %s', evalc( 'disp(varargin);' ) );
     end
 end
-options.fields__={};
+options.supported_fields__={};

@@ -19,13 +19,15 @@ function ok=check_unsupported_options( options, mfilename )
 %
 % Example (<a href="matlab:run_example check_unsupported_options">run</a>)
 %   % declare your own function to take varargs as options
-%   function my_function( arg1, arg2, varargin )
-%
-%     options=varargin2options( varargin{:} );
-%     [opt1,options]=get_option( options, 'opt1', default1 );
-%     [opt2,options]=get_option( options, 'opt2', default2 );
-%     [opt3,options]=get_option( options, 'opt3', default3 );
-%     check_unsupported_options( options, mfilename );
+%   %   function my_function( arg1, arg2, varargin )
+%   % for demonstration we use args and set it arbitratily
+%     args={'opt1', 'val1', 'usopt1', 'foo', 'usopt2', 'bar' };
+%     options=varargin2options( args );
+%     mfile='my_function';
+%     [opt1,options]=get_option( options, 'opt1', 'default1' );
+%     [opt2,options]=get_option( options, 'opt2', 'default2' );
+%     [opt3,options]=get_option( options, 'opt3', 'default3' );
+%     check_unsupported_options( options, mfile );
 %
 % See also VARARGIN2OPTIONS, GET_OPTION
 
@@ -41,31 +43,33 @@ function ok=check_unsupported_options( options, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-%if ~exist('mfilename','var') || isempty(mfilename)
-%    mfilename='global';
-%end
-
 fields=fieldnames( options );
-if isempty(fields) || (length(fields)==1 && strcmp( fields{1}, 'fields__') )
-    ok=true;
+if isempty(fields) || (length(fields)==1 && strcmp( fields{1}, 'supported_fields__') )
+    if nargout>0; ok=true; end
     return;
 end
 
 ok=false;
-if isfield( options, 'fields__' )
-    supported_fields=options.fields__;
-    options=rmfield( options, 'fields__' );
+if isfield( options, 'supported_fields__' )
+    supported_fields=options.supported_fields__;
+    options=rmfield( options, 'supported_fields__' );
 else
     supported_fields=[];
 end
 
 fields=fieldnames(options);
 for i=1:length(fields)
-    warning([mfilename ':options'], '%s: unsupported options detected: %s', ...
-        mfilename, fields{i} );
+    mode='warning';
+    message=sprintf( 'unsupported option detected: %s', fields{i} );
+    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
 end
 
 if ~isempty( supported_fields )
-    fprintf( 'Valid fields for "%s" are: %s \n', mfilename, supported_fields );
+    fields=sprintf( ', %s', supported_fields{:} );
+    fprintf( 'Valid options for "%s" are: %s \n', mfilename, fields(3:end) );
+end
+
+if nargout==0
+    clear ok;
 end
 

@@ -35,7 +35,7 @@ ypos=i;
 
 switch setter_info{1}
     case 'list'
-        [name, option_list, default]=setter_info{2:4};
+        [name, default, option_list]=setter_info{2:4};
         if isfield( settings, name )
             value=settings.(name);
         else
@@ -43,6 +43,16 @@ switch setter_info{1}
         end
         create_text( 1, ypos,  30, name, control );
         h=create_popupmenu( 25, ypos, 30, option_list, value, default, control );
+        control.handles.(name)=h;
+    case 'bool'
+        [name, default]=setter_info{2:3};
+        if isfield( settings, name )
+            value=settings.(name);
+        else
+            value=default;
+        end
+        create_text( 1, ypos,  30, name, control );
+        h=create_popupmenu( 25, ypos, 30, {'true', 'false'}, 2-value, 2-default, control );
         control.handles.(name)=h;
     otherwise 
         error( 'not supported' );
@@ -57,9 +67,13 @@ for setter=setters
     setter_info=setter{1};
     switch setter_info{1}
         case 'list'
-            [name, option_list]=setter_info{2:3};
+            [name, option_list]=setter_info{[2,4]}; 
             value=get( control.handles.(name), 'Value' );
             settings.(name)=option_list{ value };
+        case 'bool'
+            [name]=setter_info{2}; 
+            value=get( control.handles.(name), 'Value' );
+            settings.(name)=value==1;
         otherwise
             error( 'not supported' );
     end
@@ -80,7 +94,9 @@ delete( control.h_mainfig );
 
 
 function h=create_popupmenu( x, y, w, strings, current, default, control )
-value=[strmatch( current, strings, 'exact'), strmatch( default, strings, 'exact'), 1];
+if ischar(current); current=strmatch( current, strings, 'exact'); end
+if ischar(default); default=strmatch( default, strings, 'exact'); end
+value=[current, default, 1];
 h = uicontrol( 'Parent', control.h_mainfig, 'Units','characters', 'HandleVisibility','callback', ...
     'Style','popupmenu', ...
     'String', strings, ...

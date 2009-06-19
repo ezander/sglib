@@ -40,16 +40,22 @@ elseif ~ischar(field)
     error( 'Second argument to get_option must be a string (maybe you interchanged options and field?)' );
 end
 
+% set field or use default
 if isfield( options, field )
     val=options.(field);
-    if nargout>1
-        options=rmfield(options,field);
-        options.fields__={options.fields__{:}, field};
-    end
 else
     if isstruct(default)
         val=default.(field);
     else
         val=default;
     end
+end
+
+% if second output argument present, store field in supported field list
+% and remove the current field if it was present
+if nargout>1
+    if isfield( options, field )
+        options=rmfield(options,field);
+    end
+    options.supported_fields__={options.supported_fields__{:}, field};
 end

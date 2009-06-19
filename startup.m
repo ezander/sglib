@@ -1,12 +1,10 @@
 function startup
-% STARTUP Set parameters/paths for the programs to run correctly.
-%   Currently only adds paths to the normal search path. Maybe later
-%   we could also look for an optional user options file and read that in.
-%
-% Note: In matlab this file should be executed automatically (at least,
-%   when matlab was started in this directory). Otherwise, in octave for
-%   instance, this file has to be executed manually (or should be invoked
-%   from .octaverc)
+% STARTUP Called automatically by Matlab at startup.
+%   STARTUP gets automatically called by Matlab if it was started from THIS
+%   directory (i.e. the sglib home directory). STARTUP just delegates the
+%   work SGLIB_STARTUP, so that SGLIB_STARTUP can be called from anywhere
+%   else without interfering with any other startup script that might be on
+%   the path.
 %
 % Example (<a href="matlab:run_example startup">run</a>)
 %   startup
@@ -26,23 +24,8 @@ function startup
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-% better do the real startup in a file with a special name so the user can
-% run it individually
-% sglib_startup
+% We do the real startup in a file with a special name (SGLIB_STARTUP) so
+% the user can run it individually without any startup on the path
+% interfering with this one
+sglib_startup;
 
-% persistent run_first
-% if ~isempty(run_first)
-%     return
-% end
-% run_first=false;
-
-%load_settings( 'sglib' );
-settings.show_greeting=true;
-
-if settings.show_greeting 
-    disp( 'sglib 0.1' );
-    disp( 'Type sglib_help to get help. Type sglib_settings for changing the settings.' )
-end
-
-% should depend on settings
-add_sglib_path( false, false, true )

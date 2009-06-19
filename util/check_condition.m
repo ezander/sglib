@@ -22,7 +22,7 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 % Example (<a href="matlab:run_example check_condition">run</a>)
 %     x=[1;2;3];
 %     A=[1, 2; 3, 4]; B=eye(2);
-%     options.warnonly=true;
+%     options=struct( 'mode', 'warning' );
 %     %pass
 %     check_condition( x, 'vector', false, 'x', mfilename, options );
 %     check_condition( [], 'vector', true, '?', mfilename, options );
@@ -64,22 +64,14 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 % retaining this file for compatibility)
 
 options=varargin2options( varargin{:} );
-[warnonly,options]=get_option( options, 'warnonly', [] );
 [mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );
 
-if ~isempty(warnonly) && warnonly
-    mode='warning';
-end
 if ~any( strmatch( mode, {'error','warning', 'debug'}, 'exact' ) )    
 	warning([mfilename ':condition'], 'unknown mode argument: %s', mode );
     mode='debug';
 end
-
-            
-if ~exist('mfilename','var') || isempty(mfilename)
-    mfilename='global';
-end
+           
 
 if emptyok
     emptystr='empty or ';
@@ -87,6 +79,7 @@ else
     emptystr='';
 end
 
+message=''; % hinder matlab from issuing a stupid error message
 ok=true;
 switch varcond
     case {'vector', 'isvector'}
@@ -142,26 +135,10 @@ switch varcond
         error([mfilename ':condition'], '%s: unknown condition to check: %s', mfilename, varcond );
 end
 
-
 if ~ok
-    switch mode
-        case 'error'
-            stack=dbstack('-completenames');
-            err_struct.message=sprintf( '%s: %s', mfilename, message );
-            err_struct.id=[mfilename ':condition'];
-            err_struct.stack=stack(2:end);
-            % using 'rethrow' instead of 'error' suppresses incorrect
-            % reports of error position in 'check_condition' (the 'error'
-            % function disregards the stack for display of the error
-            % position)
-            rethrow( err_struct );
-        case 'warning'
-            warning([mfilename ':condition'], '%s: %s', mfilename, message );
-        case 'debug'
-            fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
-            cmd=repmat( 'dbup;', 1, 1 );
-            fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
-            fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
-            keyboard;
-    end
+    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
+end
+
+if nargout==0
+    clear ok;
 end

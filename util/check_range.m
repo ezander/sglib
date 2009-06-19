@@ -1,4 +1,4 @@
-function ok=check_range( x, lo, hi, varname, mfilename )
+function ok=check_range( x, lo, hi, varname, mfilename, varargin )
 % CHECK_RANGE Check whether input argument is scalar and in range.
 %   OK=CHECK_RANGE( X, LO, HI, VARNAME, MFILENAME ) checks whether input
 %   parameter X is scalar and if it is, whether it is in the range [LO,HI]
@@ -10,9 +10,14 @@ function ok=check_range( x, lo, hi, varname, mfilename )
 %   name of the current script, and is thus exactly what you want.)
 %
 % Example (<a href="matlab:run_example check_range">run</a>)
-%   function my_function( num )
-%
-%     check_range( num, 1, 5, 'num', mfilename );
+%   % function my_function( num )
+%     mfile='my_function';
+%     num=3;
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
+%     num=7;
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
+%     num=[1 3];
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
 %
 % See also CHECK_CONDITION, CHECK_UNSUPPORTED_OPTIONS
 
@@ -28,14 +33,28 @@ function ok=check_range( x, lo, hi, varname, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin{:} );
+[mode,options]=get_option( options, 'mode', 'debug' );
+check_unsupported_options( options, mfilename );
 
 if ~exist('mfilename','var') || isempty(mfilename)
 	mfilename='global';
 end
 
+ok=true;
 if ~isscalar(x)
+    ok=false;
     s=strtrim(evalc('disp({x})'));
-    error([mfilename ':range'], '%s: input argument "%s" is not scalar: %s', mfilename, varname, s )
+    message=sprintf( 'input argument "%s" is not scalar: %s', varname, s );
 elseif x<lo || x>hi
-    error([mfilename ':range'], '%s: input argument "%s" not in range [%g,%g]: %g', mfilename, varname, lo, hi, x )
+    ok=false;
+    message=sprintf( 'input argument "%s" not in range [%g,%g]: %g', varname, lo, hi, x );
+end
+
+if ~ok
+    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
+end
+
+if nargout==0
+    clear ok;
 end

@@ -1,4 +1,4 @@
-function basepath=add_sglib_path( octave, experimental, restore )
+function basepath=sglib_addpath( octave, experimental, restore )
 % ADD_SGLIB_PATH Set paths for sglib.
 %   ADD_SGLIB_PATH( OCTAVE, EXPERIMENTAL ) adds paths for sglib to the
 %   normal search path. If OCTAVE (default: FALSE) is true the path to the
