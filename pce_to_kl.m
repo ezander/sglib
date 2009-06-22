@@ -1,4 +1,4 @@
-function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I_r, m_r, G_N, G_Phi, varargin )
+function [mu_r_i,r_i_k,rho_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, m_r, G_N, G_Phi, varargin )
 % PCE_TO_KL Reduce a pure PCE field into a KL-PCE field.
 
 %TODO: overhaul the comments
@@ -21,9 +21,9 @@ function [mu_r_j,rho_i_alpha,r_j_i,relerr,sqrt_lambda_i]=pce_to_kl( r_j_alpha, I
 if ~exist('G_N','var'); G_N=[]; end
 if ~exist('G_Phi','var'); G_Phi=[]; end
 
-check_condition( {G_N, r_j_alpha}, 'match', true, {'G_N', 'r_j_alpha'}, mfilename );
+check_condition( {G_N, r_i_alpha}, 'match', true, {'G_N', 'r_i_alpha'}, mfilename );
 check_range( m_r, 1, inf, 'm_r', mfilename );
-check_condition( {r_j_alpha, I_r}, 'match', false, {'r_j_alpha', 'I_r'}, mfilename );
+check_condition( {r_i_alpha, I_r}, 'match', false, {'r_i_alpha', 'I_r'}, mfilename );
 check_condition( G_N, 'square', true, 'G_N', mfilename );
 check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
 
@@ -38,13 +38,13 @@ check_unsupported_options( options, mfilename );
 
 % Extract the mean of the KL expansion (that's simply the coefficient in
 % the PCE corresponding to the multiindex [0,0,0,...] )
-mu_r_j=r_j_alpha(:,1);
-r_j_alpha(:,1)=0;
+mu_r_i=r_i_alpha(:,1);
+r_i_alpha(:,1)=0;
 
 
 % Transform the PCE coefficients from unnormalized (orthogonal) Hermite
 % polynomials to normalized (orthonormal) Hermite polynomials
-pcc_normed=normalize_pce( r_j_alpha, I_r );
+pcc_normed=normalize_pce( r_i_alpha, I_r );
 
 if ~isempty(G_N)
     L_N=chol(G_N);
@@ -62,13 +62,13 @@ if ~isempty(G_N)
 end
 
 % Transform PCE coefficients back to unnormalized Hermite polynomials 
-rho_i_alpha=normalize_pce( V', I_r, true );
+rho_k_alpha=normalize_pce( V', I_r, true );
 
 if nargout<5
-    r_j_i=U*S;
+    r_i_k=U*S;
 else
-    r_j_i=U;
-    sqrt_lambda_i=diag(S);
+    r_i_k=U;
+    sigma_k=diag(S);
 end
 
 
