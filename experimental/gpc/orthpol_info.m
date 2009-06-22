@@ -1,10 +1,12 @@
 function s=orthpol_info( name, m, variant, params, varargin )
 options=varargin2options( varargin{:} );
-[shift,options]=get_option( options, 'shift', [] );
-[scale,options]=get_option( options, 'scale', [] );
-[support,options]=get_option( options, 'support', [] );
-[norm,options]=get_option( options, 'norm', [] );
+[support,options]=get_option( options, 'support', [] ); % change the support of the polynomial to
+[normalize,options]=get_option( options, 'normalize', false ); % normalize even if not generally normed
+[shift,options]=get_option( options, 'shift', [] ); % shift by (is that useful?)
+[scale,options]=get_option( options, 'scale', [] ); % scale by (is that useful?)
 check_unsupported_options( options, mfilename );
+% natural, normalized, monic
+
 
 n=(0:m)';
 one=ones(m+1,1);

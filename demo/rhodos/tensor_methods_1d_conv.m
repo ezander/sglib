@@ -19,14 +19,14 @@ lc_k=0.3;
 stdnor_k={@beta_stdnor,{4,2}};
 cov_k={@gaussian_covariance,{lc_k,1}};
 % create field
-[k_j_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-[mu_k_j,kappa_i_alpha,k_j_i]=pce_to_kl( k_j_alpha, I_k, l_k, G_N );
+[k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
+[mu_k_i,kappa_k_alpha,k_i_k]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
 % plot field
 clf;
-plot(pos,k_j_i); 
+plot(pos,k_i_k); 
 title('KL eigenfunctions of $\kappa$', props{:});
 print( 'rf_k_kl_eig.eps', '-depsc' );
-plot_kl_pce_realizations_1d( pos, mu_k_j, k_j_i, kappa_i_alpha, I_k, 'realizations', 50 ); 
+plot_kl_pce_realizations_1d( pos, mu_k_i, k_i_k, kappa_k_alpha, I_k, 'realizations', 50 ); 
 title('mean/var/samples of $\kappa$', props{:} );
 print( 'rf_k_kl_real.eps', '-depsc' );
 userwait;

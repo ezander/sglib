@@ -20,6 +20,8 @@ function test_apply_boundary_conditions
 
 assert_set_function( 'apply_boundary_conditions' );
 
+
+
 n=7;
 K=spdiags( ones(n,1)*[-1,2,-1], [-1,0,1], n, n );
 K(1,1)=1;

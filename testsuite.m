@@ -21,8 +21,6 @@ function testsuite
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_reset_options();
-
 if isnativesglib
   disp( 'testsuite: using native sglib' );
 else
@@ -30,4 +28,5 @@ else
 end
 
 subdirs={ 'munit', 'util', 'plot', 'simplefem' };
-assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs );
+prefix='test_';
+assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );

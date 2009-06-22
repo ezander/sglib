@@ -32,8 +32,12 @@ function assert_run_testsuite( module_name, curr_dir, varargin )
 
 options=varargin2options( varargin{:} );
 [subdirs,options]=get_option( options, 'subdirs', {} );
+[prefix,options]=get_option( options, 'prefix', 'ut_' );
 check_unsupported_options( options, mfilename );
 
+% TODO: function should run really recursively, maybe looking for all
+% subdirs that include testsuite, or were explicitly specified.
+% the otherwise passing the prefix along
 
 [stats,options]=assert(); %#ok
 output_func=options.output_func;
@@ -60,7 +64,7 @@ output_func( repmat('-', 1, length(notice) ) );
 
 assert_set_module( module_name );
 for subdir={'.', subdirs{:} }
-    pattern=sprintf( '%s/%s/test_*.m', curr_dir, subdir{1} );
+    pattern=sprintf( '%s/%s/%s*.m', curr_dir, subdir{1}, prefix );
     files=dir( pattern );
 
     for i=1:length(files)
