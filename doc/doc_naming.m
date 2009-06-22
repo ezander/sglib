@@ -85,6 +85,23 @@
 %
 % See also: DOC_FUNCTION_HANDLE
 
+% Other naming schemes
+% ====================
+%  * Specific names
+%     d dimension R^d (mostly spatial)
+%     r dimension R^r (rather general)
+%     n number of points in one spatial dimension (N=n^d)
+%  * General schemes
+%     X_func function handle for function which does 'X'
+%     Xi inner points corresponding to var X, e.g. fi, Ki, ui, ..
+%     Xb boundary points corresponding to var X, e.g. gb, ..
+%  * Geometry
+%     els : elements of the geometry, list of nodes, els(i,:) contains the
+%           node numbers of the points bounding element i
+%     pos : position of nodes, pos(i,:) gives the coordinates of node i
+%
+%  names for matrices (A,M), tensors (T,U,A,X,Y), linear operators (L), 
+
 
 
 % THIS STUFF IS OLD AND JUST IMPORTANT. NEEDS SOME OVERHAUL.

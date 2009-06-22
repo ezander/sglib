@@ -56,11 +56,11 @@ userwait;
 % this defines the function g(x)=x_1
 select=@(x,n)(x(:,n));
 g_func={ select, {1}, {2} };
-mu_g_j=funcall( g_func, pos);
-% "null" kl expansion of g
+% dummy pce (just the mean)
+g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
-g_j_i=zeros(N,0);
-gamma_i_alpha=zeros(0,size(I_g,1));
+% "null" kl expansion of g
+[mu_g_i,g_i_k,gamma_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
 
 
 %% combine the multiindices
@@ -95,7 +95,7 @@ op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 % create tensor operators
 K=cached_funcall(...
     @stochastic_operator_kl_pce,...
-    { mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' }, ...
+    { mu_k_i, k_i_k, kappa_k_alpha, I_k, I_u, stiffness_func, 'mu_delta' }, ...
     1,... % just one output argument
     op_filename, ...
     kl_operator_version, ...
@@ -113,7 +113,7 @@ K_mat=revkron(K);
 [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
-Ki_mat=apply_boundary_conditions_operator( K_mat, P_I, P_B );
+Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
 
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
 fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
@@ -167,13 +167,13 @@ for tolexp=1:8
 end
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-[mu_u_j, u_j_i, uu_i_alpha]=tensor_to_kl( U );
+[mu_u_i, u_i_k, u_k_alpha]=tensor_to_kl( U );
 
 clf;
-plot(pos,u_j_i); 
+plot(pos,u_i_k); 
 title('KL eigenfunctions of $u$', props{:});
 print( 'rf_u_kl_eig.eps', '-depsc' );
-plot_kl_pce_realizations_1d( pos, mu_u_j, u_j_i, uu_i_alpha, I_u, 'realizations', 50 ); 
+plot_kl_pce_realizations_1d( pos, mu_u_i, u_i_k, u_k_alpha, I_u, 'realizations', 50 );
 title('mean/var/samples of $u$', props{:});
 print( 'rf_u_kl_real.eps', '-depsc' );
 userwait;

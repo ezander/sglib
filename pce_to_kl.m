@@ -22,7 +22,7 @@ if ~exist('G_N','var'); G_N=[]; end
 if ~exist('G_Phi','var'); G_Phi=[]; end
 
 check_condition( {G_N, r_i_alpha}, 'match', true, {'G_N', 'r_i_alpha'}, mfilename );
-check_range( m_r, 1, inf, 'm_r', mfilename );
+check_range( m_r, 0, inf, 'm_r', mfilename );
 check_condition( {r_i_alpha, I_r}, 'match', false, {'r_i_alpha', 'I_r'}, mfilename );
 check_condition( G_N, 'square', true, 'G_N', mfilename );
 check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
@@ -87,7 +87,12 @@ if sparse_svd
     relerr=0;
 else
     [U,S,V]=svd( A, 'econ' );
-    relerr=norm(diag(S(k+1:end,k+1:end)))/norm(diag(S));
+    normS=norm(diag(S));
+    if normS==0; 
+        relerr=0;
+    else
+        relerr=norm(diag(S(k+1:end,k+1:end)))/norm(diag(S));
+    end
     U=U(:,1:k);
     S=S(1:k,1:k);
     V=V(:,1:k);

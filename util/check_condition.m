@@ -112,7 +112,11 @@ switch varcond
             message=sprintf( '%s must be %sa function type', varname, emptystr );
         end
     case 'match'
-        empty=isempty(x{1})||isempty(x{2});
+        % we interpret empty here a bit differently, namely that ALL
+        % dimensions are 0 (that what you get from []). A Nx0 matrix is
+        % also reported as empty by matlab (which makes sense), but still
+        % can be checked for compatibility).
+        empty=max(size(x{1}))==0||max(size(x{2}))==0;
         ok=ok&&(emptyok||~empty);
         if ~empty
             sz1=linear_operator_size( x{1} );
