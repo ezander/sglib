@@ -28,13 +28,13 @@ bnd=[1,n];
 f=(1:n)';
 g=((n:-1:1).*(n:-1:1))';
 
-[P_B,P_I]=boundary_projectors( bnd, n );
+[P_I,P_B]=boundary_projectors( bnd, n );
 
 
-Ki=apply_boundary_conditions_operator( K, P_B, P_I );
-fi=apply_boundary_conditions_rhs( K, f, g, P_B, P_I );
+Ki=apply_boundary_conditions_operator( K, P_I );
+fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B );
 ui=Ki\fi;
-u=apply_boundary_conditions_solution( ui, g, P_B, P_I );
+u=apply_boundary_conditions_solution( ui, g, P_I, P_B );
 
 u2=P_I'*ui+P_B'*P_B*g;
 

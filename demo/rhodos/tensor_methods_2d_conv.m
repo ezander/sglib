@@ -110,15 +110,15 @@ K_mat=revkron(K);
 
 
 %% apply boundary conditions
-[P_B,P_I]=boundary_projectors( bnd, N );
+[P_I,P_B]=boundary_projectors( bnd, N );
 
-Ki=apply_boundary_conditions_operator( K, P_B, P_I );
-Ki_mat=apply_boundary_conditions_operator( K_mat, P_B, P_I );
+Ki=apply_boundary_conditions_operator( K, P_I );
+Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
 
-Fi=apply_boundary_conditions_rhs( K, F, G, P_B, P_I );
-fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_B, P_I );
-fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_B, P_I );
-fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_B, P_I );
+Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
+fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
+fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_I, P_B );
+fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_I, P_B );
 % 
 all_same=(norm(fi_vec-fi_vec2)+norm(fi_vec-fi_mat(:))+norm(Fi{1}*Fi{2}'-fi_mat)==0);
 underline('apply_boundary_conditions');
@@ -134,7 +134,7 @@ Mi=Ki(1,:);
 Mi_mat=revkron( Mi );
 
 %% Now apply the world-famous tensor product solver
-% u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_B, P_I );
+% u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_I, P_B );
 %[Ui,flag,relres,iter]=tensor_operator_solve_richardson( Ki, Fi, 'M', Mi );
 
 underline( 'Tensor product PCG: ' );
@@ -166,7 +166,7 @@ for tolexp=1:8
     res(tolexp,6)=iter;
 end
 
-U=apply_boundary_conditions_solution( Ui, G, P_B, P_I );
+U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 [mu_u_j, u_j_i, uu_i_alpha]=tensor_to_kl( U );
 
 clf;

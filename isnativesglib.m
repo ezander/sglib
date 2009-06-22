@@ -4,6 +4,11 @@ function bool=isnativesglib
 %   are the first on the search path. Obviously, this (non-native)
 %   implementation always returns 0. 
 %
+% Note: is function is currently not really used. It was (and is) intended
+%   to be able to differentiate between an implementation that uses
+%   external code (MEX files for matlab, or OCT files for octave), and code
+%   the uses only script files.
+%
 %
 % Example (<a href="matlab:run_example isnativesglib">run</a>)
 %   if isnativesglib

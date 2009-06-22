@@ -1,5 +1,7 @@
 %function demo_iciam
 
+disp( 'warning doesn't work any more' );
+
 addpath '../'
 init_demos
 clf

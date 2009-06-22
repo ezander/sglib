@@ -1,18 +1,19 @@
-function [P_B,P_I]=boundary_projectors( bnd, n )
+function [P_I,P_B]=boundary_projectors( bnd, n )
 % BOUNDARY_PROJECTORS Projection matrices on the set of inner and boundary nodes.
-%   [P_B,P_I]=BOUNDARY_PROJECTORS( BND, N ) return the projection matrices
-%   P_B and P_I which projects from N nodes onto the boundary nodes given
-%   in the index array BND. E.g. for a linear FEM problem with 20 nodes, N
-%   would be 20, and BND would be [1,20] if the elements are in the usual
-%   order. A vector X defined on the whole ansatz space can be projected by
-%   P_I*X on the space spanned only by the inner nodes. If the matrix M
-%   acts on the whole space, P_I*M*P_I' acts only on the inner nodes.
+%   [P_I,P_B]=BOUNDARY_PROJECTORS( BND, N ) return the projection matrices
+%   P_I and P_B which projects from N nodes onto the internal nodes N\bnd
+%   and boundary nodes given in the index array BND. E.g. for a linear FEM
+%   problem with 20 nodes, N would be 20, and BND would be [1,20] if the
+%   elements are in the usual order. A vector X defined on the whole ansatz
+%   space can be projected by P_I*X on the space spanned only by the inner
+%   nodes. If the matrix M acts on the whole space, P_I*M*P_I' acts only on
+%   the inner nodes.
 %
 % Example (<a href="matlab:run_example boundary_projectors">run</a>)
 %   % get K,f,g from some FEM code
 %   % n contains the total number of nodes, and bnd the indices of the
 %   % boundary nodes
-%   [P_B,P_I]=boundary_projectors( bnd, n );
+%   [P_I,P_B]=boundary_projectors( bnd, n );
 %
 %   % method 1
 %   I_B=P_B'*P_B;
