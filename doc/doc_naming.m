@@ -83,24 +83,92 @@
 %   functions, integration, geometry, tensor products, function handles and
 %   so on. TODO: describe the other naming schemes!
 %
-% See also: DOC_FUNCTION_HANDLE
-
-% Other naming schemes
+% Some specific names
 % ====================
 %  * Specific names
-%     d dimension R^d (mostly spatial)
-%     r dimension R^r (rather general)
-%     n number of points in one spatial dimension (N=n^d)
+%     d : dimension R^d (mostly spatial)
+%     r : dimension R^r (rather general)
+%     r : can also be a general unspecified random field
+%     n : number of points in one spatial dimension (N=n^d)
 %  * General schemes
-%     X_func function handle for function which does 'X'
-%     Xi inner points corresponding to var X, e.g. fi, Ki, ui, ..
-%     Xb boundary points corresponding to var X, e.g. gb, ..
+%     X_func : function handle for function which does 'X'
+%     Xi     : inner points corresponding to var X, e.g. fi, Ki, ui, ..
+%     Xb     : boundary points corresponding to var X, e.g. gb, ..
 %  * Geometry
 %     els : elements of the geometry, list of nodes, els(i,:) contains the
 %           node numbers of the points bounding element i
 %     pos : position of nodes, pos(i,:) gives the coordinates of node i
+%     bnd : points on the boundary
+%  * FEM stuff
+%     K  : stiffness matrix
+%     Ki : K reduced to the inner nodes
+%     M  : mass matrix (can have arbitrary mass distribution)
+%     G  : spatial Gramian, equal to mass matrix with constant mass density
+%          one (sometimes G_N to distinguish from the stochastic Gramian)
 %
 %  names for matrices (A,M), tensors (T,U,A,X,Y), linear operators (L), 
+%
+%
+% Structs and the like
+% ====================
+% There are certain sets of variables the come along in groups very often.
+% E.g. for the geometry the elements and points, for the Kl the mean, the
+% KL eigenfunctions and the KL random variables, for the PCE the
+% coefficients and the index set, and so on. While it would be possible to
+% put them into structs to make this grouping clear and lessen the need to
+% pass lots of variables around, the author refrains from doing so. The
+% reason are the following:
+%   * When arguments are passed explicitly in and out it is absolutely
+%     clear which of the arguments are actually used or produced. In
+%     structs this is not clear (I've seen cases where it would take
+%     man-years to figure out what is actually done in a function). 
+%   * Grouping in structs is rather inflexible. Sometimes you want to have
+%     a little different grouping, e.g. a function needs parameter 1 from
+%     struct A and parameter 2 from struct B, then you can either put both
+%     parameters into a new struct, which is ugly and somehow contrary to
+%     grouping the variable that way in the first place, or you put both
+%     structs into some agglomerate struct. The second struct is especially
+%     annoying for users who don't want to use your whole framework, but
+%     only single functions out of it, since they are forced to set up the
+%     whole structs and figure out (usually by reading the source), which
+%     structure fields are indeed used.
+%   * If the associated parameters in in and out argument lists are always
+%     side by side and in the same order they can be stored in cell arrays
+%     and the sequenced with {:} into the argument list. E.g. the elements
+%     and points for the geometry always appear in this order. So you can
+%     write e.g.
+%       [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
+%       geom={els,pos};
+%       K=stiffness_matrix( geom{:}, ones(size(pos)) );
+%     You can even place the cell array in the output argument lists:
+%       [geom{1:3}]=create_mesh_1d( 5, 0, 2 );
+%       K=stiffness_matrix( geom{1:2}, ones(size(pos)) );
+%     But as you can see, you are free to include information about
+%     boundary nodes into your struct or not.
+%     You can to the same with the KL e.g. and the PCE: Instead of writing
+%       % snip
+%       [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
+%       [mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
+%     you can write
+%       [pce_f{1:2}]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
+%       [kl_f{1:3}]=pce_to_kl( pce_f{:}, l_f, G_N );
+%     and later:
+%       plot_kl_pce_realizations_1d( pos, kl_f{:}, pce_f{2}, 'realizations', 50 ); 
+%     Here you see one problem: you have to reference the second field of
+%     the pce cell array which contains the multiindex array since the
+%     function needs to know that. You could, of course, put that into the
+%     Kl cell array or pce_to_kl could have returned it. However, there is
+%     a problem with matlab in doing so: there are no pointers or reference
+%     variables, each cell array has its own copy. Ok, it's copy on write,
+%     so as long as you don't modify it they share the same memory, but if
+%     you modify it (take e.g. multiindex_combine) you need to remember to
+%     update both cell arrays. (BTW, no, objects make this even worse,
+%     don't use them ...).
+%     However, SGLIB leaves that open to you how you want to do it.
+%   
+%
+% See also: DOC_FUNCTION_HANDLE
+
 
 
 
