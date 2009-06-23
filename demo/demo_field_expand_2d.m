@@ -7,7 +7,7 @@ clear
 
 %% We use the pde toolbox to generate the geometry and the mass matrix
 %% (gramian)
-[pos,els,M]=load_pdetool_geom( 'cardioid', 1, true )
+[els,pos,G_N]=load_pdetool_geom( 'cardioid', 1, true )
 
 
 % expansion of the right hand side field (f)
@@ -27,11 +27,11 @@ options_expand_f.transform.correct_var=true;
 %% now expanding field in ...
 disp( 'expanding field, this may take a while ...' );
 tic
-[f_alpha, I_f]=expand_field_pce_sg( h_f, cov_f, cov_gam, pos, M, p_f, m_gam_f, options_expand_f );
+[f_alpha, I_f]=expand_field_pce_sg( h_f, cov_f, cov_gam, pos, G_N, p_f, m_gam_f, options_expand_f );
 toc
 disp( 'performing kl expansion, this may take a while, too ...' );
 tic
-[mu_f,f_i_alpha,v_f,relerr]=pce_to_kl( f_alpha, I_f, m_f, M, [] );
+[mu_f,f_i_alpha,v_f,relerr]=pce_to_kl( f_alpha, I_f, m_f, G_N, [] );
 toc
 fprintf( 'relative error computing KL: %g\n', relerr );
 

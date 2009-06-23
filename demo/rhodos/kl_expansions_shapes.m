@@ -1,7 +1,7 @@
 %%% DEMO_FIELD_EXPAND_2D Show the expansion of a 2D random field.
 
 %% Init stuff
-clf; undock; clear;
+clf; clear;
 %close
 
 % expansion of the right hand side field (f)
@@ -16,8 +16,8 @@ geom_num=2;
 
 clf;
 set( gcf, 'Renderer', 'painters' );
-[pos,els,G_N]=load_pdetool_geom( geometries{geom_num}, 2, true );
-v_f=kl_expand( covariance_matrix( pos, cov_func ), G_N, l_f, options );
+[els,pos,G_N]=load_pdetool_geom( geometries{geom_num}, 2, true );
+f_i_k=kl_expand( covariance_matrix( pos, cov_func, 'max_dist', 4*lc_f ), G_N, l_f, options );
 print( sprintf( 'shape_%s.eps', geometries{geom_num} ),'-depsc2' );
 
 %% KL of the cardioid

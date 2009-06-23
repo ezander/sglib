@@ -61,5 +61,5 @@ system( sprintf( 'cd tex && latex %s && dvips %s && ps2pdf %s.ps && cp %s.ps %s.
 
 % show the file
 if nargin>=2 && read_now
-    system( sprintf( 'gv %s.pdf &', file ) );
+    open( file );
 end

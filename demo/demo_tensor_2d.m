@@ -3,7 +3,7 @@ init_demos
 clear
 
 %% load and show mesh
-[pos,els,G,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
+[els,pos,G,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
 pdemesh( ptdata{:} )
 
 

@@ -12,8 +12,8 @@ lc=0.5;
 cov_func={@gaussian_covariance,{lc,1}};
 
 % LShaped domain
-[pos,els,M]=load_pdetool_geom( 'lshape', 1, false );
-v_f=kl_expand( covariance_matrix( pos, cov_func ), M, m, 'correct_var', true );
+[els,pos,G_N]=load_pdetool_geom( 'lshape', 1, false );
+v_f=kl_expand( covariance_matrix( pos, cov_func ), G_N, m, 'correct_var', true );
 for j=1:m
     if mean(v_f(:,j))<0; v_f(:,j)=-v_f(:,j); end
 end

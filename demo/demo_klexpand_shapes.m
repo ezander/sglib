@@ -11,18 +11,18 @@ lc_f=0.5; %#ok
 cov_func={@gaussian_covariance,{lc_f,1}}; %#ok
 options.correct_var=true;
 
-%[pos,els,M]=load_pdetool_geom( 'circle', 2, true );
-%[pos,els,M]=load_pdetool_geom( 'scatter', 2, true );
+%[els,pos,G_N]=load_pdetool_geom( 'circle', 2, true );
+%[els,pos,G_N]=load_pdetool_geom( 'scatter', 2, true );
 
 %% The cardioid
 %% (gramian)
 
-[pos,els,M]=load_pdetool_geom( 'circle', 1, true );
-[pos,els,M]=load_pdetool_geom( 'scatter', 1, true );
-[pos,els,M]=load_pdetool_geom( 'cardioid', 1, true );
-[pos,els,M]=load_pdetool_geom( 'circle_segment', 1, true );
-[pos,els,M]=load_pdetool_geom( 'crack', 1, true );
-v_f=kl_expand( covariance_matrix( pos, cov_func ), M, m, options );
+[els,pos,G_N]=load_pdetool_geom( 'circle', 1, true );
+[els,pos,G_N]=load_pdetool_geom( 'scatter', 1, true );
+[els,pos,G_N]=load_pdetool_geom( 'cardioid', 1, true );
+[els,pos,G_N]=load_pdetool_geom( 'circle_segment', 1, true );
+[els,pos,G_N]=load_pdetool_geom( 'crack', 1, true );
+v_f=kl_expand( covariance_matrix( pos, cov_func ), G_N, m, options );
 
 %% KL of the cardioid
     
