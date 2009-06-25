@@ -128,6 +128,9 @@ end
 
 %% solve the system via direct solver for comparison
 ui_vec=Ki_mat\fi_vec;
+ui_mat=reshape( ui_vec, [], M );
+[U_,S_,V_]=svd(ui_mat);
+Ui={U_*S_,V_};
 
 %%
 % the preconditioner

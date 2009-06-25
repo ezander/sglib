@@ -12,10 +12,12 @@ for tolexp=1:8
         tol=10^-tolexp;
         truncate=sprintf('eps 10^-%d', tolexp);
     end
-    [Ui,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
-    ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
-    relerr=norm(ui_vec-ui_vec3 )/norm(ui_vec);
-    k=size(Ui{1},2);
+    [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
+    ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
+    relerr=norm(ui_vec-ui_vec2 )/norm(ui_vec);
+    relerr2=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);
+    relerr-relerr2
+    k=size(Ui2{1},2);
     if tol>0
         R=relerr/tol;
     else
