@@ -62,10 +62,10 @@ iteration_plot( val, tol,  'Residual norm', '||r_\epsilon||' );
 %%
 val={}; for i=1:8; val={val{:}, logscale(res(i).info.res_relnorm)}; end
 tol={res.tol};
-iteration_plot( val, tol,  'Relative residual norm', '||r_\epsilon||/||r_0||' );
+iteration_plot( val, tol,  'Relative residual norm', '||r_\epsilon||/||r_0||', -1 );
 
 %%
 val={}; for i=1:8; val={val{:}, logscale(res(i).info.sol_relerr)}; end
 tol={res.tol};
-iteration_plot( val, tol,  'Relative error norm XXX', '||u_\epsilon-u||/||u||' );
+iteration_plot( val, tol,  'Relative error norm', '||u_\epsilon-u||/||u||', -1 );
 

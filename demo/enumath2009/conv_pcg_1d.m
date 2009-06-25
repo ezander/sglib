@@ -12,7 +12,7 @@ for tolexp=1:8
         tol=10^-tolexp;
         truncate=sprintf('eps 10^-%d', tolexp);
     end
-    [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', 1e-4, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
+    [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', 1e-3, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
     ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
     %relerr=norm(ui_vec-ui_vec2 )/norm(ui_vec);
     relerr=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);

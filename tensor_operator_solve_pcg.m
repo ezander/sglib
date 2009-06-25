@@ -36,8 +36,8 @@ Pc=Zc;
 initres=vec_norm( Rc );
 
 do_stats=true;
-info.res_norm=[];
-info.res_relnorm=[];
+info.res_norm=[initres];
+info.res_relnorm=[1];
 info.res_accuracy=[];
 info.res_relacc=[];
 info.update_ratio=[];
