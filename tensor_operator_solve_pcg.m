@@ -64,6 +64,10 @@ while true
         DX=add( Xn, Xc, -1 );
         ur=inner_prod( DX, DY )/inner_prod( DY, DY );
 
+        TRn=add( F, apply_operator( A, Xn ), -1 );
+        normres=vec_norm( TRn );
+        relres=normres/initres;
+        
         DRn=add( Rn, add( F, apply_operator( A, Xn ), -1 ), -1 );
         ra=vec_norm( DRn );
         

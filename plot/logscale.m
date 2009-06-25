@@ -12,6 +12,9 @@ function y=logscale( x, varargin )
 %     the result is equal to log(cutoff).
 %   base : 10
 %     Basis for the logarithm. Computation is y=log(x)/log(base);
+%   relscale : true, {false}
+%     Scale everything relative to the maximum; thus every plot begins at
+%     zero and goes to the negative value -log(cutoff).
 % 
 % Example (<a href="matlab:run_example logscale">run</a>)
 %   % semilog plot with base 1000 cutoff at 1000^-4
@@ -37,6 +40,7 @@ function y=logscale( x, varargin )
 options=varargin2options( varargin{:} );
 [cutoff,options]=get_option( options, 'cutoff', 1e-18 );
 [base,options]=get_option( options, 'base', 10 );
+[relscale,options]=get_option( options, 'relscale', false );
 check_unsupported_options( options, mfilename );
 
 x=abs(x);
@@ -45,6 +49,10 @@ if max(x)==0
     return
 end
 
-y=abs(x/max(x));
+if relscale
+    y=abs(x/max(x));
+else
+    y=abs(x);
+end
 y(y<cutoff)=cutoff;
 y=log(y)/log(base); 

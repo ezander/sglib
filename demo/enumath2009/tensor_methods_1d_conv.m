@@ -48,50 +48,24 @@ title( 'Iterations' );
 xlabel( 'log(\epsilon)' );
 ylabel( 'n' );
 
+%%
+val={}; for i=1:8; val={val{:}, res(i).info.update_ratio}; end
+tol={res.tol};
+iteration_plot( val, tol,  'Update ratio', '\tau' );
+ylim([-0.1,1.1]);
 
-clf
-hold on;
-for i=1:8
-    plot( res(i).info.update_ratio, 'x-' );
-    title( 'Update Ratios' );
-    xlabel( 'i' );
-    ylabel( '\tau' );
-end
-hold off;
+%%
+val={}; for i=1:8; val={val{:}, logscale(res(i).info.res_norm)}; end
+tol={res.tol};
+iteration_plot( val, tol,  'Residual norm', '||r_\epsilon||' );
 
+%%
+val={}; for i=1:8; val={val{:}, logscale(res(i).info.res_relnorm)}; end
+tol={res.tol};
+iteration_plot( val, tol,  'Relative residual norm', '||r_\epsilon||/||r_0||' );
 
-clf
-hold on;
-cols=get(gca,'ColorOrder');
-for i=1:8
-    plot( 0.2*i+logscale(res(i).info.res_norm), 'x-', 'Color', cols(mod(i,size(cols,1))+1,:) );
-    title( 'Res. norm' );
-    xlabel( 'i' );
-    ylabel( '\tau' );
-end
-hold off;
-
-clf
-hold on;
-cols=get(gca,'ColorOrder');
-for i=1:8
-    plot( 0.2*i+logscale(res(i).info.res_relnorm), 'x-', 'Color', cols(mod(i,size(cols,1))+1,:) );
-    title( 'Relative res. norm' );
-    xlabel( 'i' );
-    ylabel( '\tau' );
-end
-hold off;
-
-
-clf
-hold on;
-cols=get(gca,'ColorOrder');
-for i=1:8
-    plot( 0.2*i+logscale(res(i).info.sol_relerr), 'x-', 'Color', cols(mod(i,size(cols,1))+1,:) );
-    title( 'Relative error norm' );
-    xlabel( 'i' );
-    ylabel( '\tau' );
-end
-hold off;
-
+%%
+val={}; for i=1:8; val={val{:}, logscale(res(i).info.sol_relerr)}; end
+tol={res.tol};
+iteration_plot( val, tol,  'Relative error norm XXX', '||u_\epsilon-u||/||u||' );
 
