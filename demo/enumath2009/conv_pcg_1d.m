@@ -4,15 +4,19 @@
 
 underline( 'Tensor product PCG: ' );
 
-for tolexp=1:8
-    if tolexp==8
+exponents=2:1:13;
+reltol=1e-3;
+
+for i=1:length(exponents)
+    tolexp=exponents(i);
+    if tolexp==14
         tol=0;
         truncate='eps 0';
     else
         tol=10^-tolexp;
         truncate=sprintf('eps 10^-%d', tolexp);
     end
-    [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', 1e-3, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
+    [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
     ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
     %relerr=norm(ui_vec-ui_vec2 )/norm(ui_vec);
     relerr=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);
@@ -25,14 +29,14 @@ for tolexp=1:8
     end
     fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d, R: %g\n', truncate, flag, relres, iter, relerr, k, R );
     
-    res(tolexp).tolexp=tolexp;
-    res(tolexp).tol=tol;
-    res(tolexp).relerr=relerr;
-    res(tolexp).R=R;
-    res(tolexp).k=k;
-    res(tolexp).iter=iter;
-    res(tolexp).info=info;
-    res(tolexp).flag=flag;
+    res(i).tolexp=tolexp;
+    res(i).tol=tol;
+    res(i).relerr=relerr;
+    res(i).R=R;
+    res(i).k=k;
+    res(i).iter=iter;
+    res(i).info=info;
+    res(i).flag=flag;
 end
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );

@@ -36,13 +36,19 @@ Pc=Zc;
 initres=vec_norm( Rc );
 
 do_stats=true;
-info.res_norm=[initres];
-info.res_relnorm=[1];
-info.res_accuracy=[];
-info.res_relacc=[];
-info.update_ratio=[];
-info.sol_err=[];
-info.sol_relerr=[];
+if do_stats
+    info.res_norm=[initres];
+    info.res_relnorm=[1];
+    info.res_accuracy=[];
+    info.res_relacc=[];
+    info.update_ratio=[];
+    info.sol_err=[];
+    info.sol_relerr=[];
+    if ~isempty( X_true )
+        info.sol_err=[vec_norm( X_true )];
+        info.sol_relerr=[1];
+    end
+end
 
 while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
@@ -87,7 +93,9 @@ while true
     end
     
     if normres<abstol || relres<reltol; break; end
-    if ur<.1
+    
+    urc=iter-50;
+    if ur<.1 && urc>10
         warning( 'a:b', 'update ratio too small ...' );
         flag=-1;
         break;
