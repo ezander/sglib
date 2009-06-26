@@ -47,6 +47,9 @@ if do_stats
     if ~isempty( X_true )
         info.sol_err=[vec_norm( X_true )];
         info.sol_relerr=[1];
+        X_true_eps=truncate( X_true );
+        info.soleps_err=[vec_norm( X_true_eps )];
+        info.soleps_relerr=[1];
     end
 end
 
@@ -88,6 +91,11 @@ while true
             solrelerr=solerr/vec_norm( X_true );
             info.sol_err=[info.sol_err, solerr];
             info.sol_relerr=[info.sol_relerr, solrelerr];
+            
+            solepserr=vec_norm( add( Xn, X_true_eps, -1 ) );
+            solepsrelerr=solerr/vec_norm( X_true_eps );
+            info.soleps_err=[info.soleps_err, solepserr];
+            info.soleps_relerr=[info.soleps_relerr, solepsrelerr];
         end
         
     end
