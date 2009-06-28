@@ -5,7 +5,7 @@
 underline( 'Tensor product PCG: ' );
 
 exponents=2:1:13;
-reltol=1e-3;
+reltol=1e-4;
 
 for i=1:length(exponents)
     tolexp=exponents(i);

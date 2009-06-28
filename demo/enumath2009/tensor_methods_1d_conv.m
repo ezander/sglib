@@ -123,8 +123,19 @@ userwait;
 val={}; for i=n; val={val{:}, logscale(res(i).info.sol_relerr)}; end
 tol={res.tol};
 iteration_plot( val, tol,  'Relative error norm', '||u_\epsilon-u||/||u||', -.3 );
-save_eps( basename, 'rel_error' );
+save_eps( basename, 'rel_error_per_iter' );
 userwait;
+
+%% Relative error to truncated solution over truncation
+val={}; for i=n; val={val{:}, res(i).info.soleps_relerr(end)}; end
+tol={res.tol};
+plot( logscale(cell2mat(tol)), logscale(cell2mat(val)), 'x-', logscale(cell2mat(tol)), logscale(cell2mat(tol)), 'x-' );
+xlabel('log_{10}(\epsilon)'); 
+ylabel('log_{10}(E)');
+ylim([-8,0]);
+save_eps( basename, 'rel_error_by_tol' );
+userwait;
+
 
 
 
