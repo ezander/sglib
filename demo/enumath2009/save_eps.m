@@ -10,5 +10,6 @@ if ~exist('eps','dir')
 end
 
 filename=sprintf( './%s/%s_%s.eps', dir, basename, topic );
+title('');
 print( filename, '-depsc2' );
 disp(filename);

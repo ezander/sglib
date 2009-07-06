@@ -16,14 +16,14 @@ basename=sprintf(basename, params{:});
 
 %% KL eigenfunctions
 plot(pos,u_i_k); 
-title('KL eigenfunctions of u');
 save_eps( basename, 'kl_eigenfuncs' );
+title('KL eigenfunctions of u');
 userwait;
 
 %% Solution and realizations
 plot_kl_pce_realizations_1d( pos, mu_u_i, u_i_k, u_k_alpha, I_u, 'realizations', 50 );
-title('mean/var/samples of $u$');
 save_eps( basename, 'solution' );
+title('Mean, variance and samples of u');
 userwait;
 
 %% Error and truncation
@@ -40,12 +40,12 @@ userwait;
 
 %% Numerical rank 
 tol=cell2mat({res(n).tol});
-k=cell2mat({res(n).k});
-plot( logscale(tol), k, 'x-' ); 
-title( 'Numerical rank' );
+r=cell2mat({res(n).k});
+plot( logscale(tol), r, 'x-' ); 
 xlabel( 'log_{10}(\epsilon)');
-ylabel( 'k' );
+ylabel( 'r' );
 save_eps( basename, 'num_rank' );
+title( 'Numerical rank' );
 userwait;
 
 %% Number of iterations
@@ -53,16 +53,17 @@ tol=cell2mat({res(n).tol});
 iter=cell2mat({res(n).iter});
 plot( logscale(tol,'base',10), iter, 'x-' ); 
 ylim([0,max(iter)]);
-title( 'Iterations' );
 xlabel( 'log_{10}(\epsilon)' );
-ylabel( 'n' );
+ylabel( '#iterations' );
 save_eps( basename, 'num_iter' );
+title( 'Iterations' );
 userwait;
 
 %% Update ratio 2D
 val={}; for i=n; val={val{:}, res(i).info.update_ratio}; end
 tol={res.tol};
-iteration_plot( val, tol,  'Update ratio', '\tau', [], 0.002 );
+%iteration_plot( val, tol,  'Update ratio', '\tau', [], 0.002 );
+iteration_plot( val, tol,  '', '\upsilon', [], 0.002 );
 ylim([-0.1,1.1]);
 save_eps( basename, 'update_ratio_2d' );
 userwait;
@@ -72,7 +73,8 @@ userwait;
 delta=0.2;
 val={}; for i=n; val={val{:}, max(min(res(i).info.update_ratio,1+delta),-delta)}; end
 tol={res.tol};
-iteration_plot3( val, tol,  'Update ratio', '\tau' );
+%iteration_plot3( val, tol,  'Update ratio', '\upsilon' );
+iteration_plot3( val, tol,  '', '\upsilon' );
 save_eps( basename, 'update_ratio_3d' );
 userwait;
 
@@ -80,7 +82,8 @@ userwait;
 i=1;
 val={res(i).info.update_ratio};
 tol={res(i).tol};
-iteration_plot( val, tol,  'Update ratio', '\tau' );
+%iteration_plot( val, tol,  'Update ratio', '\upsilon' );
+iteration_plot( val, tol,  '', '\upsilon' );
 ylim([-0.1,1.1]);
 save_eps( basename, 'update_ratio_E1' );
 userwait;
