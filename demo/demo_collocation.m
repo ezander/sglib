@@ -5,8 +5,8 @@ m_cl=2;
 p_coll=7;
 p=p_coll;
 rule=@gauss_hermite_rule;
-grid=@smolyak_grid;
 grid=@full_tensor_grid;
+grid=@smolyak_grid;
 compute_cl=@dummy_function1;
 N_mc=20000;
 
