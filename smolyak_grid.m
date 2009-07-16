@@ -23,7 +23,7 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %     pause( 2 )
 %   end
 %
-% See also
+% See also FULL_TENSOR_GRID
 
 %   Andreas Keese, Elmar Zander
 %   Copyright 2006, 2009, Institute of Scientific Computing, TU Braunschweig.
