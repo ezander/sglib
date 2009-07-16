@@ -18,7 +18,15 @@ function sglib_help
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-path=pwd;
+
+% before running the setup should have been performed at least partly
+sglib_check_setup;
+
+% get sglib base path from appdata
+appdata=getappdata( 0, 'sglib' );
+path=appdata.basepath;
+
+
 underline('Help topics');
 helplink( path, 'General information on SGLIB', 'doc' );
 helplink( path, 'Main SGLIB functions', '.' );
