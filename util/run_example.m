@@ -12,7 +12,7 @@ function cmds=run_example( cmd, show )
 %   displayed as link, and invoke the example (Note: remove the blank in 
 %   </ a>).
 % 
-% Example (<a href="matlab:run_example run_example">run</a>)
+% Example 1 (<a href="matlab:run_example run_example">run</a>)
 %     disp( 'running the example section of erase_print:' );
 %     run_example erase_print
 % 
@@ -47,9 +47,10 @@ x1=regexp( s, '\n *(See also|Run)' );
 if ~isempty(x1)
     s=s(1:x1(1)-1);
 end
-%evalin( 'base', s );
 if ~show
-    evalin( 'caller', s );
+    %eval( s );
+    %evalin( 'caller', s );
+    evalin( 'base', s );
 else
     fprintf( 'Sorry, the example code cannot be run directly (probably some function decls inside).\n' );
     fprintf( 'Maybe you should copy and paste it into an m-file of your own.\n\n' );
