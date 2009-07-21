@@ -30,3 +30,12 @@ end
 subdirs={ 'munit', 'util', 'plot', 'simplefem' };
 prefix='test_';
 assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );
+return
+
+% 
+testsuite_name='testsuite.m';
+recursive=true;
+subdirs='all';
+prefix='ut_';
+
+assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );
