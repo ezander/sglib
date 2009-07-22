@@ -22,6 +22,6 @@ function startup
 
 
 % Adjust the following line as needed
-sglib_path='sglib'
+sglib_path='sglib';
 run( [sglib_path '/sglib_startup'] );
 
