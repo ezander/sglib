@@ -36,9 +36,9 @@ basepath=fileparts( mfilename('fullpath') );
 addpath( basepath );
 
 % 
-isoctave=false;
+is_octave=exist('octave_config_info', 'builtin');
 inc_experimental=false;
-sglib_addpath( basepath, true, inc_experimental, isoctave );
+sglib_addpath( basepath, true, inc_experimental, is_octave );
 
 % put stuff in appdata
 appdata.basepath=basepath;

@@ -42,6 +42,11 @@ elseif iscell(A) && length(A)>=3 && isfunction(A{3})
 elseif iscell(A) && isfunction(A{2})
     % A is an operator and secondelement contains function returning the
     % application
+    % TODO: which solver (first used cgs, but octave doesn't have that,
+    % so took pcg, however pcg is only for s.p.d. Hmm... what shall we do?)
+    % Probably this shouldn't be done at, but rather the user has to
+    % specify it him/herself... so, first back to cgs
+    % [x,flags] = pcg(@funcall_reverse,y,[],[],[],[],[],A{2});
     [x,flags] = cgs(@funcall_reverse,y,[],[],[],[],[],A{2});
     if flags
         % TODO: modify itermsg to work here
