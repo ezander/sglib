@@ -23,9 +23,7 @@ function sglib_help
 sglib_check_setup;
 
 % get sglib base path from appdata
-appdata=getappdata( 0, 'sglib' );
-path=appdata.basepath;
-
+path=sglib_get_appdata( 'basepath' );
 
 underline('Help topics');
 helplink( path, 'General information on SGLIB', 'doc' );

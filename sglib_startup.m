@@ -32,9 +32,7 @@ run_first=isappdata( 0, 'sglib' );
 appdata=struct();
 
 % get the sglib home path
-basepath = mfilename('fullpath');
-m=find(basepath=='/',1,'last');
-basepath=basepath(1:m-1);
+basepath=fileparts( mfilename('fullpath') );
 addpath( basepath );
 
 % 
@@ -45,7 +43,7 @@ sglib_addpath( basepath, true, inc_experimental, isoctave );
 % put stuff in appdata
 appdata.basepath=basepath;
 appdata.settings_file=[basepath '/sglib.settings' ];
-setappdata( 0, 'sglib', appdata );
+sglib_set_appdata( appdata );
 
 % do some init stuff depending on matlab/octave version 
 if isoctave
@@ -62,7 +60,3 @@ if appdata.settings.show_greeting
     fprintf( 'Type SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
     fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n\n' );
 end
-
-% should depend on settings
-% store app data
-setappdata( 0, 'sglib', appdata );

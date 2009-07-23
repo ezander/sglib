@@ -44,9 +44,7 @@ end
 
 % determine basepath if not given
 if nargin<1 || isempty(basepath)
-    basepath = mfilename('fullpath');
-    m=find(basepath=='/',1,'last');
-    basepath=basepath(1:m-1);
+    basepath=fileparts( mfilename('fullpath') );
 end
 
 % set standard paths

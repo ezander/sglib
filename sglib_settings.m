@@ -25,30 +25,30 @@ if exist( 'we_dont_need_that_stuff_yet', 'var' )
 end
 
 % do action
-appdata=getappdata( 0, 'sglib' );
+settings=sglib_get_appdata('settings', struct() );
 switch action
     case 'load'
         try
-            appdata.settings=load( appdata.settings_file, '-mat' );
+            settings=load( appdata.settings_file, '-mat' );
         catch
-            appdata.settings=struct();
+            settings=struct();
         end
         % for loop setting all defaults on non existent fields
         for i=1:length(setters)
             setter=setters{i};
-            if ~isfield( appdata.settings, setter{2} )
-                appdata.settings.(setter{2})=setter{3};
+            if ~isfield( settings, setter{2} )
+                settings.(setter{2})=setter{3};
             end
         end
     case 'dialog'
-        appdata.settings=settings_dialog( setters, appdata.settings, 'title', 'SGLib settings', 'set_callback', @do_set );
+        settings=settings_dialog( setters, settings, 'title', 'SGLib settings', 'set_callback', @do_set );
     case 'save'
         save( appdata.settings_file, '-struct', appdata.settings, '-mat' );
 end
 
 % set output var if requested
-if nargout>0
-    settings=appdata.settings;
+if nargout==0
+    clear settings;
 end
 % 
 
@@ -58,7 +58,6 @@ function do_set( settings )
 setuserwaitmode( settings.userwaitmode );
 assert_set_debug( settings.munit_jump_debugger );
 
-appdata=getappdata( 0, 'sglib' );
-appdata.settings=settings;
-save( appdata.settings_file, '-struct', 'settings', '-mat' );
-setappdata( 0, 'sglib', appdata );
+settings_file=sglib_get_appdata( 'settings_file' );
+save( settings_file, '-struct', 'settings', '-mat' );
+sglib_set_appdata( settings, 'settings' );
