@@ -1,22 +1,18 @@
 function test_tensor_operator_solve_richardson
 
 [A,Am,M, Mm, F,Fvec]=setup( 5, 3, 3, 2 );
-
 XvecEx=Am\Fvec;
+tol=1e-7;
+pcg_opts={ 'eps', 1e-7, 'k_max', 2 };
+assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
-opts={ 'eps', 1e-7, 'k_max', 2 };
-
-%[X,flag,info]=tensor_operator_solve_richardson( A, F, 'M', M );
 [X,flag,info]=tensor_operator_solve_pcg( A, F, 'M', M );
 Xvec1=reshape( X{1}*X{2}', [], 1 );
+assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts  );
+
+
 [Xvec2,flag,info]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm );
-
-Mm2=diag(diag(Am));
-[Xvec3,flag,info]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm2 );
-
-% norm( XvecEx-Xvec1 )
-% norm( XvecEx-Xvec2 )
-% norm( XvecEx-Xvec3 )
+assert_equals( Xvec2, XvecEx, 'pcg_mat', assert_opts );
 
 
 
