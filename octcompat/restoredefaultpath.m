@@ -1,0 +1,2 @@
+function restoredefaultpath
+path(pathdef);
