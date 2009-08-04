@@ -27,7 +27,7 @@ else
   disp( 'testsuite: using m-files only ' );
 end
 
-subdirs={ 'munit', 'util', 'plot', 'simplefem' };
+subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
 prefix='test_';
 assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );
 return

@@ -57,6 +57,7 @@ addpath( [basepath '/munit'] );
 addpath( [basepath '/doc'] );
 addpath( [basepath '/plot'] );
 addpath( [basepath '/util'] );
+addpath( [basepath '/tensor'] );
 addpath( [basepath '/simplefem'] );
 
 if add_octave_path
