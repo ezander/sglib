@@ -14,6 +14,9 @@ function int=gauss_hermite_multi( func, n, p )
 %
 % See also GAUSS_HERMITE_RULE, GAUSS_HERMITE_MULTI
 
+% TODO: this function seems to be nonsense and should be supplanted by some
+% tensor integration methods
+
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
 %   $Id$ 

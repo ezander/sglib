@@ -5,9 +5,9 @@ m_cl=2;
 p_coll=7;
 p=p_coll;
 rule=@gauss_hermite_rule;
-grid=@full_tensor_grid;
 grid=@smolyak_grid;
-compute_cl=@dummy_function1;
+grid=@full_tensor_grid;
+compute_cl=@dummy_function2;
 N_mc=20000;
 
 % create grid and show it
