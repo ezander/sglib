@@ -21,16 +21,11 @@ function testsuite
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% TODO: implement proper recursive behaviour of testsuite
+
 subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
-prefix='test_';
+%recursive=true;
 dir=get_mfile_path;
+prefix='unittest_';
 assert_run_testsuite( 'sglib', dir, 'subdirs', subdirs, 'prefix', prefix );
-return
 
-% 
-testsuite_name='testsuite.m';
-recursive=true;
-subdirs='all';
-prefix='ut_';
-
-assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );
