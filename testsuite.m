@@ -21,15 +21,10 @@ function testsuite
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if isnativesglib
-  disp( 'testsuite: using native sglib' );
-else
-  disp( 'testsuite: using m-files only ' );
-end
-
 subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
 prefix='test_';
-assert_run_testsuite( 'sglib', pwd, 'subdirs', subdirs, 'prefix', prefix );
+dir=get_mfile_path;
+assert_run_testsuite( 'sglib', dir, 'subdirs', subdirs, 'prefix', prefix );
 return
 
 % 
