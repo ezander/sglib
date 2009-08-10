@@ -1,0 +1,61 @@
+http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#_note-0
+
+
+
+n = 0
+sum = 0
+sum_sqr = 0
+
+foreach x in data:
+  n = n + 1
+  sum = sum + x
+  sum_sqr = sum_sqr + x*x
+end for
+
+mean = sum/n
+variance = (sum_sqr - sum*mean)/(n - 1)
+
+
+
+
+
+
+n = 0
+sum1 = 0
+foreach x in data:
+  n = n + 1
+  sum1 = sum1 + x
+end for
+mean = sum1/n
+
+sum2 = 0
+foreach x in data:
+  sum2 = sum2 + (x - mean)^2
+end for
+variance = sum2/(n - 1)
+
+
+
+
+
+
+
+
+n = 0
+mean = 0
+S = 0
+
+foreach x in data:
+  n = n + 1
+  delta = x - mean
+  mean = mean + delta/n
+  S = S + delta*(x - mean)      // This expression uses the new value of mean
+end for
+
+variance = S/(n - 1)
+
+
+
+
+10^8 + (4, 7, 13, 16)
+

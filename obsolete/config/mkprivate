@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# This little script simply links all the m-files from the 
+# subdirs (like munit, util, etc.) into the 'private' directory
+# so that they are found automatically without bothering with
+# the paths (which is a bit different between matlab and octave)
+
+# specify subdirs
+SUBDIRS="munit util simplefem"
+
+# check that private subdir exists
+if [ ! -d 'private' ]; then
+    echo "Could not find directory 'private'. Aborting..."; 
+    exit 1
+fi
+
+
+# now link all files
+for dir in $SUBDIRS; do
+  echo "Processing dir: $dir"
+  files="$dir/*.m"
+  if (echo $files | grep -q '*' ); then
+    echo "No files in dir $dir or $dir does not exist."
+  else
+    for j in $dir/*.m; do
+      # Note the ../ seems somehow wrong since we are executing this script
+      # not from the private dir, but at least the GNU ln wants to have the 
+      # destination path relative to the target path and not relative to 
+      # the current dir (so this behaves differently from cp)
+      ln -sf ../$j private/
+    done
+  fi
+done

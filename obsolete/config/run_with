@@ -1,0 +1,97 @@
+#!/bin/sh
+# run_with.  Generated from run_with.in by configure.
+
+# Info: 
+# Invocation:
+# ===========
+# You can run this script under different names to invoke either octave 
+# or matlab with or without native files on the path.
+#
+# Running different versions:
+# ===========================
+# You can set a specific version of the octave/matlab command
+# interpreter by setting the OCTAVE and MATLAB environment variable
+# with e.g.
+#   export OCTAVE=octave-2.1.72
+# This may be helpful if you have different versions of the programs
+# installed and you want to test your code with either one. If you
+# want to go back to the default setting, just use 
+#   unset OCTAVE
+# To check that indeed the right version is called you can use
+#   ./run_with_octave "version"
+
+# Setting flags:
+# ==============
+# You can set flags for octave/matlab by setting the OCTAVE_FLAGS and 
+# MATLAB_FLAGS environment variables. This overrides the default values,
+# so if you want to just add some flags, you will have to copy the default
+# values from this file (yes, I know, this is not nice and will be augmented
+# in the future so that you have both options: adding or overriding default
+# options.
+
+
+if test -n "$1"; then
+    cmd=$(basename "$1" ".m")
+else
+    cmd="testsuite"
+fi
+
+case "$(basename $0)" in
+    "run_with_octave")
+	sglib="false"
+	interp="octave"
+	;;
+    "run_with_octave_sglib")
+	sglib="true"
+	interp="octave"
+	;;
+    "run_with_matlab")
+	sglib="false"
+	interp="matlab"
+	;;
+    "run_with_matlab_sglib")
+	sglib="true"
+	interp="matlab"
+	;;
+    *)
+	echo "Couldn't figure out under which name I was started ($0)"
+	;;
+esac
+
+
+srcdir="/home/ezander/projects/stochastics/sglib/trunk/scripts"
+mpath="$srcdir:$srcdir/util:$srcdir/munit:$srcdir/simplefem"
+
+if test -z "$OCTAVE"; then
+    OCTAVE=octave
+fi
+if test -z "$OCTAVE_FLAGS"; then
+    OCTAVE_FLAGS="-q"
+fi
+if test -z "$MATLAB"; then
+    MATLAB=matlab
+fi
+if test -z "$MATLAB_FLAGS"; then
+    MATLAB_FLAGS="-nojvm -nodesktop -nosplash -r"
+fi
+
+case "$interp" in
+    "octave" )
+	mpath="$srcdir/octcompat:$mpath"
+	if test "$sglib" == "true"; then
+	    #TODO: this should depend on whether we have a debug
+	    # or a release build, but since VPATH builds don't 
+	    # anyway as yet, we can still postpone that for a while.
+	    # (and btw, it's not really that important...)
+	    sglibpath="$srcdir/../src/octave"
+	    mpath="$sglibpath:$mpath"
+	fi
+	echo "path( ['$mpath:' path] ); $cmd" | $OCTAVE $OCTAVE_FLAGS
+	;;
+    "matlab" )
+	$MATLAB $MATLAB_FLAGS "addpath('$mpath'); try $cmd; catch; x=lasterror; disp(x.message); disp('Callstack:'); disp(x.stack); end; quit"
+	;;
+    *)
+	echo "Unknown interpreter: $interp"
+	;;
+esac
