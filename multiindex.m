@@ -1,5 +1,5 @@
 function I_mp=multiindex(m,p,combine,varargin)
-% MULTIINDEX Generate a table of multiindices (block-scheme).
+% MULTIINDEX Generate a table of multiindices.
 %   I_MP=MULTIINDEX(M,P,COMBINE,OPTIONS) generate a table of multiindices using 
 %   the standard block scheme i.e. generating all multi-indices up to
 %   degree P in all M (random) variables. (Limitation to certain
