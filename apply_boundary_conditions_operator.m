@@ -18,7 +18,7 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: isnativesglib.m 61 2009-05-13 09:29:14Z ezander $ 
+%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

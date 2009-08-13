@@ -7,7 +7,7 @@ function plot_boundary( els, pos, varargin )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: plot_field_contour.m 20 2009-03-30 17:03:59Z ezander $ 
+%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

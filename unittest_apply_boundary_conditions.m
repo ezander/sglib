@@ -8,7 +8,7 @@ function unittest_apply_boundary_conditions
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: unittest_stiffness.m 37 2009-04-06 10:02:24Z ezander $ 
+%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

@@ -5,7 +5,12 @@ function gam=randn_sorted( Ns, unsort, correction )
 %   usually sorted (by construction) and not really meant as "random
 %   numbers", but rather for functions where a sample vector with normal
 %   distribution is needed. 
-%   TODO: more documentation
+%
+% Example (<a href="matlab:run_example randn_sorted">run</a>)
+%   disp(randn_sorted( 30 )');
+%   hist(randn_sorted(10000),100);
+%
+% See also RANDN
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

@@ -8,7 +8,7 @@ function unittest_merge_cells
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: unittest_merge_cells.m 96 2009-06-03 14:22:20Z ezander $ 
+%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
