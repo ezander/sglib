@@ -14,7 +14,7 @@ function [mean,var,skew,kurt]=pce_moments( pcc, pci ) %#ok: kurt never assigned
 %   [pcc,pci]=pce_expand_1d( @exp, 12 );
 %   [mean,var,skew]=pce_moments( pcc );
 %   [mean,var,skew]=pce_moments( pcc, pci );
-%   [mean,var,skew]=lognorm_moments( 0, 1);
+%   [mean,var,skew]=lognormal_moments( 0, 1);
 %
 % See also PCE_EXPAND_1D, DATA_MOMENTS
 

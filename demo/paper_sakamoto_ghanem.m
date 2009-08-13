@@ -66,7 +66,7 @@ els=[1:n-1; 2:n]';
 % Step 1: calculate the U_i(x) numerically
 % here the U_i are in pcc
 h=@(gamma)(beta_stdnor(gamma,4,0.4)); %#ok for testing
-h=@(gamma)(lognorm_stdnor(gamma,2,0.1)); %#ok for testing
+h=@(gamma)(lognormal_stdnor(gamma,2,0.1)); %#ok for testing
 h=@(gamma)(beta_stdnor(gamma,4,2)); 
 pcc=pce_expand_1d(h,p);
 [mu,sig2,skew]=beta_moments( 4, 2 );

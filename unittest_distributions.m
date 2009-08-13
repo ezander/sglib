@@ -38,20 +38,20 @@ assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Lognormal distribution
 mu=2; sig=0.5;
-assert_set_function('lognorm_cdf');
-assert_equals( lognorm_cdf(-inf,mu,sig), 0, 'cdf_minf' );
-assert_equals( lognorm_cdf(-1e8,mu,sig), 0, 'cdf_negative' );
-assert_equals( lognorm_cdf(inf,mu,sig), 1, 'cdf_inf' );
-assert_equals( lognorm_cdf(exp(mu),mu,sig), 1/2, 'cdf_median' );
+assert_set_function('lognormal_cdf');
+assert_equals( lognormal_cdf(-inf,mu,sig), 0, 'cdf_minf' );
+assert_equals( lognormal_cdf(-1e8,mu,sig), 0, 'cdf_negative' );
+assert_equals( lognormal_cdf(inf,mu,sig), 1, 'cdf_inf' );
+assert_equals( lognormal_cdf(exp(mu),mu,sig), 1/2, 'cdf_median' );
 
-assert_set_function('lognorm_pdf');
-assert_equals( lognorm_pdf(-inf,mu,sig), 0, 'pdf_minf' );
-assert_equals( lognorm_pdf(-1e8,mu,sig), 0, 'pdf_negative' );
-assert_equals( lognorm_pdf(inf,mu,sig), 0, 'pdf_inf' );
+assert_set_function('lognormal_pdf');
+assert_equals( lognormal_pdf(-inf,mu,sig), 0, 'pdf_minf' );
+assert_equals( lognormal_pdf(-1e8,mu,sig), 0, 'pdf_negative' );
+assert_equals( lognormal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 
 [x1,x2]=linspace_mp(0,exp(mu+5*sig));
-F=lognorm_cdf(x1, mu, sig);
-F2=pdf_integrate( lognorm_pdf(x2,mu,sig), F, x1);
+F=lognormal_cdf(x1, mu, sig);
+F2=pdf_integrate( lognormal_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Exponential distribution

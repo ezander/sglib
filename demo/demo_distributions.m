@@ -28,14 +28,14 @@ mu=2;
 var=0.5;
 
 x=linspace(0,30);
-f=lognorm_pdf(x,mu,var);
-F=lognorm_cdf(x,mu,var);
+f=lognormal_pdf(x,mu,var);
+F=lognormal_cdf(x,mu,var);
 subplot(2,1,1);
 plot(x,F,x,cumsum(f)*(x(2)-x(1)) )
 
 x=linspace(-10,20);
-f=lognorm_pdf(x,mu,var);
-F=lognorm_cdf(x,mu,var);
+f=lognormal_pdf(x,mu,var);
+F=lognormal_cdf(x,mu,var);
 subplot(2,1,2);
 plot(x,f,x(2:end)-diff(x(1:2)/2),diff(F)/(x(2)-x(1)))
 disp( 'Lognormal distribution' );

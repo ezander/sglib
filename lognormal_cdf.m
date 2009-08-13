@@ -1,16 +1,16 @@
-function y=lognorm_cdf( x, mu, sigma )
-% LOGNORM_CDF Cumulative distribution function of the lognorm distribution.
-%   Y=LOGNORM_CDF( X, MU, SIGMA ) computes the cdf for the lognormal for 
+function y=lognormal_cdf( x, mu, sigma )
+% LOGNORMAL_CDF Cumulative distribution function of the lognormal distribution.
+%   Y=LOGNORMAL_CDF( X, MU, SIGMA ) computes the cdf for the lognormal for 
 %   all values in X, which may be a vector. MU and SIGMA can be specified 
 %   optionally.
 %
-% Example (<a href="matlab:run_example lognorm_cdf">run</a>)
+% Example (<a href="matlab:run_example lognormal_cdf">run</a>)
 %   x=linspace(0,30);
-%   f=lognorm_pdf(x,2,.5);
-%   F=lognorm_cdf(x,2,.5);
+%   f=lognormal_pdf(x,2,.5);
+%   F=lognormal_cdf(x,2,.5);
 %   plot(x,F,x,cumsum(f)*(x(2)-x(1)) )
 %
-% See also LOGNORM_PDF
+% See also LOGNORMAL_PDF
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

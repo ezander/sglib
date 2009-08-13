@@ -32,13 +32,13 @@ x=2+3*randn(N,1);
 assert_equals( [md,vd,sd,kd], [m,v,s,k], 'normal_sampled', 'abstol', 1e-1, 'fuzzy', true );
 
 %% Moments of lognormal distribution
-[m,v,s,k]=lognorm_moments(0.2,0.3);
+[m,v,s,k]=lognormal_moments(0.2,0.3);
 e1=exp(0.245); e2=exp(0.09);
 assert_equals([m,v,s,k], [e1,(e2-1)*e1^2, (e2+2)*sqrt(e2-1),e2^4+2*e2^3+3*e2^2-6], 'lognormal');
 
 %% Sampled lognormal distribution
 N=100000;
-x=lognorm_stdnor( randn(N,1), 0.2, 0.3 );
+x=lognormal_stdnor( randn(N,1), 0.2, 0.3 );
 [md,vd,sd,kd]=data_moments( x );
 assert_equals( [md,vd,sd,kd], [m,v,s,k],  'lognormal_sampled', 'abstol', [0.01, 0.01, 0.1, 1], 'fuzzy', true );
 
@@ -67,9 +67,9 @@ assert_equals( [md,vd,sd,kd], [m,v,s,k], 'beta_sampled', 'abstol', [0.01, 0.01, 
 mu=-1;
 sigma=1;
 p=9;
-h={@lognorm_stdnor,{mu,sigma}};
+h={@lognormal_stdnor,{mu,sigma}};
 pcc=pce_expand_1d(h,p);
-[me,ve,se]=lognorm_moments( mu, sigma );
+[me,ve,se]=lognormal_moments( mu, sigma );
 [mp,vp,sp]=pce_moments( pcc );
-assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognorm', 'abstol', [1e-8,1e-6,2e-3] );
+assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognormal', 'abstol', [1e-8,1e-6,2e-3] );
 

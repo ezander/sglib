@@ -85,7 +85,7 @@ m_gam=4;
 m_u=5;
 M=[];
 
-h_u=@(x)(lognorm_stdnor( x, 2, 0.5) );
+h_u=@(x)(lognormal_stdnor( x, 2, 0.5) );
 u_i=pce_expand_1d(h_u,m_u);
 [mean_u,var_u]=pce_moments( u_i );
 mean_u; %#ok: mean_u unused
@@ -108,7 +108,7 @@ m_gam=8;
 p_u=10;
 M=[];
 
-h_u=@(x)(lognorm_stdnor( x, 2, 0.5) );
+h_u=@(x)(lognormal_stdnor( x, 2, 0.5) );
 u_i=pce_expand_1d(h_u,p_u);
 [mean_u,var_u]=pce_moments( u_i ); 
 mean_u; %#ok: mean_u unused

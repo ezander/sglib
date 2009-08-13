@@ -70,10 +70,10 @@
 %   exponential_pdf                       - Probability distribution function of the exponential distribution.
 %   exponential_moments                   - Compute moments of the exponential distribution.
 %   exponential_stdnor                    - Transforms standard normal random numbers into exponential distributed ones.
-%   lognorm_cdf                           - Cumulative distribution function of the lognorm distribution.
-%   lognorm_pdf                           - Probability distribution function of the lognorm distribution.
-%   lognorm_moments                       - Compute moments of the lognormal distribution.
-%   lognorm_stdnor                        - Transforms standard normal random numbers into lognormal distributed ones.
+%   lognormal_cdf                           - Cumulative distribution function of the lognormal distribution.
+%   lognormal_pdf                           - Probability distribution function of the lognormal distribution.
+%   lognormal_moments                       - Compute moments of the lognormal distribution.
+%   lognormal_stdnor                        - Transforms standard normal random numbers into lognormal distributed ones.
 %   normal_cdf                            - Cumulative distribution function of the normal distribution.
 %   normal_pdf                            - Probability distribution function of the normal distribution.
 %   normal_moments                        - Compute moments of the normal distribution.

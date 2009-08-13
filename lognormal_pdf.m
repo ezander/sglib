@@ -1,16 +1,16 @@
-function y=lognorm_pdf( x, mu, sigma )
-% LOGNORM_PDF Probability distribution function of the lognorm distribution.
-%   Y=LOGNORM_PDF( X, MU, SIGMA ) computes the pdf for the lognormal for 
+function y=lognormal_pdf( x, mu, sigma )
+% LOGNORMAL_PDF Probability distribution function of the lognormal distribution.
+%   Y=LOGNORMAL_PDF( X, MU, SIGMA ) computes the pdf for the lognormal for 
 %   all values in X, which may be a vector. MU and SIGMA can be specified 
 %   optionally.
 %
-% Example (<a href="matlab:run_example lognorm_pdf">run</a>)
+% Example (<a href="matlab:run_example lognormal_pdf">run</a>)
 %   x=linspace(-10,20);
-%   f=lognorm_pdf(x,2,.5);
-%   F=lognorm_cdf(x,2,.5);
+%   f=lognormal_pdf(x,2,.5);
+%   F=lognormal_cdf(x,2,.5);
 %   plot(x,f,x(2:end)-diff(x(1:2)/2),diff(F)/(x(2)-x(1)))
 %
-% See also LOGNORM_CDF
+% See also LOGNORMAL_CDF
 
 
 %   Elmar Zander

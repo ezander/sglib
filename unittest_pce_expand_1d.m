@@ -45,9 +45,9 @@ end
 mu=2;
 sigma=1;
 p=8;
-%h=@(x)(lognorm_stdnor(x,mu,sigma));
-h={@lognorm_stdnor,{mu,sigma},{2,3}};
-%h=inline( sprintf( 'lognorm_stdnor(x,%0.16e,%0.16e)', mu,sigma ), 'x' );
+%h=@(x)(lognormal_stdnor(x,mu,sigma));
+h={@lognormal_stdnor,{mu,sigma},{2,3}};
+%h=inline( sprintf( 'lognormal_stdnor(x,%0.16e,%0.16e)', mu,sigma ), 'x' );
 pcc=pce_expand_1d(h,p);
 
 ln_mean=exp(mu+sigma^2/2);
@@ -72,7 +72,7 @@ assert_equals( var_pce, var_ex, 'exp_variance', struct('reltol', 1e-6) );
 
 %% Lognormal distribution: comparison between analytical and MC solution
 N=10000;
-h={@lognorm_stdnor,{3,0.5},{2,3}};
+h={@lognormal_stdnor,{3,0.5},{2,3}};
 lognor_data=funcall(h,randn(N*10,1));
 pcc_int=pce_expand_1d(h,5);
 %pcc_mc=pce_expand_1d_mc(h,5);

@@ -22,7 +22,7 @@ check_unsupported_options( options, mfilename );
 % Define the random variables A, B and X.
 %a_func={@exponential_stdnor, {2}};
 a_func={@uniform_stdnor, {2,3}};
-b_func={@lognorm_stdnor, {1.5, 0.5}};
+b_func={@lognormal_stdnor, {1.5, 0.5}};
 x_func={@div_func,{b_func, a_func}};
 
 disp( 'show the pdf''s of the three random vars' );
