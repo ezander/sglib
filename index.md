@@ -51,7 +51,7 @@ program.  If not, see http://www.gnu.org/licenses/.
   
 ## Authors
 
-Elmar Zander (e.zander@tu-bs.de)
+Elmar Zander (<e.zander@tu-bs.de>)
 
 
 ## Download
