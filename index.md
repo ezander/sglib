@@ -3,6 +3,12 @@ layout: default
 title: 
 ---
 
+Heading 1
+=========
+
+Heading 2
+---------
+
 <div id="container">
 
   <div class="download">
@@ -29,10 +35,8 @@ title:
 <p>None.</p>
 
 <h2>Install</h2>
-<p>See the wiki. Test test.</p>
+<p>See the wiki.</p>
 
-A new heading
--------------
 
 <h2>License</h2>
 <p><a href="http://www.gnu.org/licenses/gpl-3.0.html">GPL v3.</a></p>
