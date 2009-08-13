@@ -13,7 +13,7 @@ title:
   </a>
 </div>
 
-# [sglib][] <span class="small">by [ezander][]</span>
+# [sglib][] <span class="small">by [ezander][ezander] </span>
   
 <div class="description">
   A Malab/Octave toolbox for stochastic Galerkin methods
