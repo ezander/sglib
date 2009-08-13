@@ -1,8 +1,8 @@
-function test_tensor_operator_compose
-% TEST_TENSOR_OPERATOR_COMPOSE Test the TENSOR_OPERATOR_COMPOSE function.
+function unittest_tensor_operator_compose
+% UNITTEST_TENSOR_OPERATOR_COMPOSE Test the TENSOR_OPERATOR_COMPOSE function.
 %
-% Example (<a href="matlab:run_example test_tensor_operator_compose">run</a>) 
-%    test_tensor_operator_compose
+% Example (<a href="matlab:run_example unittest_tensor_operator_compose">run</a>) 
+%    unittest_tensor_operator_compose
 %
 % See also TENSOR_OPERATOR_COMPOSE, TESTSUITE
 

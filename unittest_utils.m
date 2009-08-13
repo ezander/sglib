@@ -1,8 +1,8 @@
-function test_utils
-% TEST_UTILS Test utils related functions.
+function unittest_utils
+% UNITTEST_UTILS Test utils related functions.
 %
-% Example (<a href="matlab:run_example test_utils">run</a>) 
-%    test_utils
+% Example (<a href="matlab:run_example unittest_utils">run</a>) 
+%    unittest_utils
 %
 % See also TESTSUITE
 

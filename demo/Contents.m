@@ -42,7 +42,7 @@
 %
 % Obsolete
 %   tensor_operator_normest   - 
-%   test_tictoc               - 
+%   unittest_tictoc               - 
 
 
 

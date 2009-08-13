@@ -161,39 +161,39 @@
 % UP THE CONTENTS DISPLAY.
 % Test and demo functions/scripts
 %   testsuite                             - Run all unit tests in this directory.
-%   test_pce_expand_1d                    - Test the univariate PCE expansion 
-%   test_multiindex                       - Test multi-index related functions.
-%   test_moments                          - Test the moment computing functions.
-%   test_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
-%   test_gauss_legendre                   - Test the Gauss-Legendere quadrature methods.
-%   test_gauss_hermite                    - Test the Gauss-Hermite quadrature rules.
-%   test_distributions                    - Test the distribution functions.
-%   test_covariance                       - Test covariance related functions.
-%   test_inv_reg_beta                     - Test the inverse regularized beta function.
-%   test_normalize_pce                    - Test the normalize_pce function.
-%   test_pce_moments                      - Test the PCE_MOMENTS function.
-%   test_exponential_covariance           - Test exponential_covariance functions.
-%   test_gaussian_covariance              - Test gaussian_covariance functions.
-%   test_hermite                          - Test the HERMITE function.
-%   test_hermite_val                      - Test the HERMITE_VAL function.
-%   test_hermite_val_multi                - Test the hermite_val_multi function.
-%   test_utils                            - Test utils related functions.
-%   test_cross_correlation                - Test the CROSS_CORRELATION function.
-%   test_gram_schmidt                     - Test the GRAM_SCHMIDT function
-%   test_kl_expand                        - Test the KL_EXPAND function.
-%   test_kl_tensor                        - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
-%   test_linear_operator                  - Test the LINEAR_OPERATOR and related functions.
-%   test_pce_divide                       - Test the PCE_DIVIDE function.
-%   test_pce_multiply                     - Test the PCE_MULTIPLY function.
-%   test_pce_to_kl                        - Test pce_to_kl function.
-%   test_stochastic_pce_matrix            - Test the stochastic_pce_matrix function.
-%   test_tensor_methods                   - Test the TENSOR functions.
-%   test_tensor_operator_apply            - Test the TENSOR_OPERATOR_APPLY function.
-%   test_tensor_operator_compose          - Test the TENSOR_OPERATOR_COMPOSE function.
-%   test_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
-%   test_tkron                            - TEST_REVKRON Test the REVKRON and function.
-%   test_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
-%   test_tensor_operator_solve_richardson - 
+%   unittest_pce_expand_1d                    - Test the univariate PCE expansion 
+%   unittest_multiindex                       - Test multi-index related functions.
+%   unittest_moments                          - Test the moment computing functions.
+%   unittest_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
+%   unittest_gauss_legendre                   - Test the Gauss-Legendere quadrature methods.
+%   unittest_gauss_hermite                    - Test the Gauss-Hermite quadrature rules.
+%   unittest_distributions                    - Test the distribution functions.
+%   unittest_covariance                       - Test covariance related functions.
+%   unittest_inv_reg_beta                     - Test the inverse regularized beta function.
+%   unittest_normalize_pce                    - Test the normalize_pce function.
+%   unittest_pce_moments                      - Test the PCE_MOMENTS function.
+%   unittest_exponential_covariance           - Test exponential_covariance functions.
+%   unittest_gaussian_covariance              - Test gaussian_covariance functions.
+%   unittest_hermite                          - Test the HERMITE function.
+%   unittest_hermite_val                      - Test the HERMITE_VAL function.
+%   unittest_hermite_val_multi                - Test the hermite_val_multi function.
+%   unittest_utils                            - Test utils related functions.
+%   unittest_cross_correlation                - Test the CROSS_CORRELATION function.
+%   unittest_gram_schmidt                     - Test the GRAM_SCHMIDT function
+%   unittest_kl_expand                        - Test the KL_EXPAND function.
+%   unittest_kl_tensor                        - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
+%   unittest_linear_operator                  - Test the LINEAR_OPERATOR and related functions.
+%   unittest_pce_divide                       - Test the PCE_DIVIDE function.
+%   unittest_pce_multiply                     - Test the PCE_MULTIPLY function.
+%   unittest_pce_to_kl                        - Test pce_to_kl function.
+%   unittest_stochastic_pce_matrix            - Test the stochastic_pce_matrix function.
+%   unittest_tensor_methods                   - Test the TENSOR functions.
+%   unittest_tensor_operator_apply            - Test the TENSOR_OPERATOR_APPLY function.
+%   unittest_tensor_operator_compose          - Test the TENSOR_OPERATOR_COMPOSE function.
+%   unittest_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
+%   unittest_tkron                            - UNITTEST_REVKRON Test the REVKRON and function.
+%   unittest_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
+%   unittest_tensor_operator_solve_richardson - 
 
 
 

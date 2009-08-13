@@ -7,7 +7,7 @@
 %             private is the pure algorithm.
 %   * Idea 3: Functions should have their own unit test each, and should
 %             probably be named something like ut_*.m or utest_*.m, so that
-%             test_ can again be used freely for some free form testing.
+%             unittest_ can again be used freely for some free form testing.
 %   * Idea 4: Timing methods could go into prof_*.m and should remain there
 %             so that testing algorithm modifications can be repeated
 %             easily.

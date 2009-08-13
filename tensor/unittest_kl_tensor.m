@@ -1,8 +1,8 @@
-function test_kl_tensor
-% TEST_KL_TENSOR Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
+function unittest_kl_tensor
+% UNITTEST_KL_TENSOR Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
 %
-% Example (<a href="matlab:run_example test_kl_tensor">run</a>) 
-%    test_kl_tensor
+% Example (<a href="matlab:run_example unittest_kl_tensor">run</a>) 
+%    unittest_kl_tensor
 %
 % See also TESTSUITE
 

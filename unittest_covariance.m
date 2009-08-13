@@ -1,7 +1,9 @@
-function test_covariance
-% TEST_COVARIANCE Test covariance related functions.
-% Example (<a href="matlab:run_example test_covariance">run</a>) 
-%    test_covariance
+function unittest_covariance
+% UNITTEST_COVARIANCE Test covariance related functions.
+%
+% Example (<a href="matlab:run_example unittest_covariance">run</a>) 
+%   unittest_covariance
+%
 % See also TESTSUITE
 
 %   Elmar Zander

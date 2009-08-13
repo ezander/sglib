@@ -1,8 +1,8 @@
-function test_revkron
-% TEST_REVKRON Test the REVKRON and function.
+function unittest_revkron
+% UNITTEST_REVKRON Test the REVKRON and function.
 %
-% Example (<a href="matlab:run_example test_revkron">run</a>) 
-%    test_revkron
+% Example (<a href="matlab:run_example unittest_revkron">run</a>) 
+%    unittest_revkron
 %
 % See also REVKRON, TESTSUITE
 

@@ -1,8 +1,8 @@
-function test_gauss_hermite
-% TEST_GAUSS_HERMITE Test the Gauss-Hermite quadrature rules.
+function unittest_gauss_hermite
+% UNITTEST_GAUSS_HERMITE Test the Gauss-Hermite quadrature rules.
 %
-% Example (<a href="matlab:run_example test_gauss_hermite">run</a>)
-%    test_gauss_hermite
+% Example (<a href="matlab:run_example unittest_gauss_hermite">run</a>)
+%    unittest_gauss_hermite
 %
 % See also TESTSUITE
 

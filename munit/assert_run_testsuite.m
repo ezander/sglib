@@ -1,7 +1,7 @@
 function assert_run_testsuite( module_name, curr_dir, varargin )
 % ASSERT_RUN_TESTSUITE Runs all tests in one directory.
 %   ASSERT_RUN_TESTSUITE( MODULE_NAME, CURR_DIR ) runs all tests (contained
-%   in M-files matching "test_*.m") in the directory specified by CURR_DIR
+%   in M-files matching "unittest_*.m") in the directory specified by CURR_DIR
 %   under the module name MODULE_NAME.
 %
 % Options:
@@ -76,13 +76,9 @@ for subdir={'.', subdirs{:} }
           test_cmd=test_cmd( slash_pos(end)+1:end );
         end
 
-        if strcmp( test_cmd, 'test_suite' )
-            warning( 'assert_run_testsuite:test_suite', 'not running test "test_suite", better rename in "testsuite"' );
-        else
-            clr=safe_eval( test_cmd );
-            if clr
-                warning( 'assert:clear', ['Test function has cleared caller''s workspace (' test_cmd ').'] );
-            end
+	clr=safe_eval( test_cmd );
+        if clr
+          warning( 'assert:clear', ['Test function has cleared caller''s workspace (' test_cmd ').'] );
         end
     end
 end

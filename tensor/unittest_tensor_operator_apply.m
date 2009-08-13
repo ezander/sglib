@@ -1,8 +1,8 @@
-function test_tensor_operator_apply
-% TEST_TENSOR_OPERATOR_APPLY Test the TENSOR_OPERATOR_APPLY function.
+function unittest_tensor_operator_apply
+% UNITTEST_TENSOR_OPERATOR_APPLY Test the TENSOR_OPERATOR_APPLY function.
 %
-% Example (<a href="matlab:run_example test_tensor_operator_apply">run</a>) 
-%    test_tensor_operator_apply
+% Example (<a href="matlab:run_example unittest_tensor_operator_apply">run</a>) 
+%    unittest_tensor_operator_apply
 %
 % See also TENSOR_OPERATOR_APPLY, TESTSUITE
 

@@ -1,8 +1,8 @@
-function test_moments
-% TEST_MOMENTS Test the moment computing functions.
+function unittest_moments
+% UNITTEST_MOMENTS Test the moment computing functions.
 %
-% Example (<a href="matlab:run_example test_moments">run</a>) 
-%    test_moments
+% Example (<a href="matlab:run_example unittest_moments">run</a>) 
+%    unittest_moments
 %
 % See also TESTSUITE
 

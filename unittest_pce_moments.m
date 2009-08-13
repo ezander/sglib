@@ -1,8 +1,8 @@
-function test_pce_moments
-% TEST_PCE_MOMENTS Test the PCE_MOMENTS function.
+function unittest_pce_moments
+% UNITTEST_PCE_MOMENTS Test the PCE_MOMENTS function.
 %
-% Example (<a href="matlab:run_example test_pce_moments">run</a>) 
-%    test_pce_moments
+% Example (<a href="matlab:run_example unittest_pce_moments">run</a>) 
+%    unittest_pce_moments
 %
 % See also TESTSUITE
 

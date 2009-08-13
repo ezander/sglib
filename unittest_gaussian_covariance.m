@@ -1,8 +1,8 @@
-function test_gaussian_covariance
-% TEST_GAUSSIAN_COVARIANCE Test gaussian_covariance functions.
+function unittest_gaussian_covariance
+% UNITTEST_GAUSSIAN_COVARIANCE Test gaussian_covariance functions.
 %
-% Example (<a href="matlab:run_example test_gaussian_covariance">run</a>) 
-%    test_gaussian_covariance
+% Example (<a href="matlab:run_example unittest_gaussian_covariance">run</a>) 
+%    unittest_gaussian_covariance
 %
 % See also TESTSUITE
 

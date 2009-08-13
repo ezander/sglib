@@ -1,8 +1,8 @@
-function test_ismatoct
-% TEST_ISMATOCT Test the IS_MATLAB/IS_OCTAVE functions.
+function unittest_ismatoct
+% UNITTEST_ISMATOCT Test the IS_MATLAB/IS_OCTAVE functions.
 %
-% Example (<a href="matlab:run_example test_ismatoct">run</a>) 
-%    test_ismatoct
+% Example (<a href="matlab:run_example unittest_ismatoct">run</a>) 
+%    unittest_ismatoct
 %
 % See also IS_MATLAB, IS_OCTAVE, TESTSUITE
 

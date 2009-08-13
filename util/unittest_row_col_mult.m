@@ -1,8 +1,8 @@
-function test_row_col_mult
-% TEST_ROW_COL_MULT Test row_col_mult function.
+function unittest_row_col_mult
+% UNITTEST_ROW_COL_MULT Test row_col_mult function.
 %
-% Example (<a href="matlab:run_example test_row_col_mult">run</a>) 
-%    test_row_col_mult
+% Example (<a href="matlab:run_example unittest_row_col_mult">run</a>) 
+%    unittest_row_col_mult
 %
 % See also TESTSUITE
 
@@ -19,7 +19,7 @@ function test_row_col_mult
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'test_row_col_mult' );
+assert_set_function( 'unittest_row_col_mult' );
 assert_equals( row_col_mult([1 2; 3 4], [1, 2]), [1 4; 3 8], 'row_mult' );
 assert_equals( row_col_mult([1 2; 3 4], [1; 2]), [1 2; 6 8], 'col_mult' );
 assert_false( issparse( row_col_mult([1 2; 3 4], [1, 2])), [], 'full' );

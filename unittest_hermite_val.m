@@ -1,8 +1,8 @@
-function test_hermite_val
-% TEST_HERMITE_VAL Test the HERMITE_VAL function.
+function unittest_hermite_val
+% UNITTEST_HERMITE_VAL Test the HERMITE_VAL function.
 %
-% Example (<a href="matlab:run_example test_hermite_val">run</a>) 
-%    test_hermite_val
+% Example (<a href="matlab:run_example unittest_hermite_val">run</a>) 
+%    unittest_hermite_val
 %
 % See also TESTSUITE
 

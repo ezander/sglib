@@ -1,14 +1,14 @@
-function test_apply_boundary_conditions
-% TEST_APPLY_BOUNDARY_CONDITIONS Test the apply_boundary_conditionsfunction.
+function unittest_apply_boundary_conditions
+% UNITTEST_APPLY_BOUNDARY_CONDITIONS Test the apply_boundary_conditionsfunction.
 %
-% Example (<a href="matlab:run_example test_apply_boundary_conditions">run</a>) 
-%    test_apply_boundary_conditions
+% Example (<a href="matlab:run_example unittest_apply_boundary_conditions">run</a>) 
+%    unittest_apply_boundary_conditions
 %
 % See also APPLY_BOUNDARY_CONDITIONS, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: test_stiffness.m 37 2009-04-06 10:02:24Z ezander $ 
+%   $Id: unittest_stiffness.m 37 2009-04-06 10:02:24Z ezander $ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

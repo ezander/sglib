@@ -1,8 +1,8 @@
-function test_hermite_triples
-% TEST_HERMITE_TRIPLES Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
+function unittest_hermite_triples
+% UNITTEST_HERMITE_TRIPLES Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
 %
-% Example (<a href="matlab:run_example test_hermite_triples">run</a>) 
-%    test_hermite_triples
+% Example (<a href="matlab:run_example unittest_hermite_triples">run</a>) 
+%    unittest_hermite_triples
 %
 % See also TESTSUITE
 

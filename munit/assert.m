@@ -146,7 +146,7 @@ end
 
 if ~condition && isversion('6')
     stack=struct2cell( dbstack('-completenames') );
-    caller=find( strncmp( 'test_', stack(2,:), 5 ), 1, 'first' );
+    caller=find( strncmp( 'unittest_', stack(2,:), 5 ), 1, 'first' );
     if ~isempty(caller)
         assertion_id=sprintf( '<a href="error:%s,%d,1">%s</a>', ...
             stack{1,caller}, stack{3,caller}, assertion_id );

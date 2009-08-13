@@ -1,8 +1,8 @@
-function test_cached_funcall
-% TEST_CACHED_FUNCALL Test the CACHED_FUNCALL function.
+function unittest_cached_funcall
+% UNITTEST_CACHED_FUNCALL Test the CACHED_FUNCALL function.
 %
-% Example (<a href="matlab:run_example test_cached_funcall">run</a>) 
-%    test_cached_funcall
+% Example (<a href="matlab:run_example unittest_cached_funcall">run</a>) 
+%    unittest_cached_funcall
 %
 % See also TESTSUITE, CACHED_FUNCALL
 

@@ -1,8 +1,8 @@
-function test_gram_schmidt
-% TEST_GRAM_SCHMIDT Test the GRAM_SCHMIDT function
+function unittest_gram_schmidt
+% UNITTEST_GRAM_SCHMIDT Test the GRAM_SCHMIDT function
 %
-% Example (<a href="matlab:run_example test_gram_schmidt">run</a>) 
-%    test_gram_schmidt
+% Example (<a href="matlab:run_example unittest_gram_schmidt">run</a>) 
+%    unittest_gram_schmidt
 %
 % See also TESTSUITE
 

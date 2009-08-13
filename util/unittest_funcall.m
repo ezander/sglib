@@ -1,8 +1,8 @@
-function test_funcall
-% TEST_FUNCALL Test the FUNCALL function.
+function unittest_funcall
+% UNITTEST_FUNCALL Test the FUNCALL function.
 %
-% Example (<a href="matlab:run_example test_funcall">run</a>) 
-%    test_funcall
+% Example (<a href="matlab:run_example unittest_funcall">run</a>) 
+%    unittest_funcall
 %
 % See also TESTSUITE, FUNCALL
 

@@ -1,8 +1,8 @@
-function test_kl_expand
-% TEST_KL_EXPAND Test the KL_EXPAND function.
+function unittest_kl_expand
+% UNITTEST_KL_EXPAND Test the KL_EXPAND function.
 %
-% Example (<a href="matlab:run_example test_kl_expand">run</a>) 
-%    test_kl_expand
+% Example (<a href="matlab:run_example unittest_kl_expand">run</a>) 
+%    unittest_kl_expand
 %
 % See also TESTSUITE
 

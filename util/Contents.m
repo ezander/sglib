@@ -56,12 +56,12 @@
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
 % UP THE CONTENTS DISPLAY.
 % Test functions
-%   test_cached_funcall       - Test the CACHED_FUNCALL function.
-%   test_format_poly          - Test the FORMAT_POLY functions.
-%   test_funcall              - Test the FUNCALL function.
-%   test_ismatoct             - Test the IS_MATLAB/IS_OCTAVE functions.
-%   test_merge_cells          - Test the MERGE_CELLS function.
-%   test_row_col_mult         - Test row_col_mult function.
+%   unittest_cached_funcall       - Test the CACHED_FUNCALL function.
+%   unittest_format_poly          - Test the FORMAT_POLY functions.
+%   unittest_funcall              - Test the FUNCALL function.
+%   unittest_ismatoct             - Test the IS_MATLAB/IS_OCTAVE functions.
+%   unittest_merge_cells          - Test the MERGE_CELLS function.
+%   unittest_row_col_mult         - Test row_col_mult function.
 
 
 

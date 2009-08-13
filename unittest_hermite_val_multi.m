@@ -1,8 +1,8 @@
-function test_hermite_val_multi
-% TEST_HERMITE_VAL_MULTI Test the hermite_val_multi function.
+function unittest_hermite_val_multi
+% UNITTEST_HERMITE_VAL_MULTI Test the hermite_val_multi function.
 %
-% Example (<a href="matlab:run_example test_hermite_val_multi">run</a>) 
-%    test_hermite_val_multi
+% Example (<a href="matlab:run_example unittest_hermite_val_multi">run</a>) 
+%    unittest_hermite_val_multi
 %
 % See also TESTSUITE
 

@@ -1,8 +1,8 @@
-function test_tensor_truncate
-% TEST_TENSOR_TRUNCATE Test the TENSOR_TRUNCATE function.
+function unittest_tensor_truncate
+% UNITTEST_TENSOR_TRUNCATE Test the TENSOR_TRUNCATE function.
 %
-% Example (<a href="matlab:run_example test_tensor_truncate">run</a>) 
-%    test_tensor_truncate
+% Example (<a href="matlab:run_example unittest_tensor_truncate">run</a>) 
+%    unittest_tensor_truncate
 %
 % See also TENSOR_TRUNCATE, TESTSUITE
 

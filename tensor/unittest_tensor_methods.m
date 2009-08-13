@@ -1,8 +1,8 @@
-function test_tensor_methods
-% TEST_TENSOR_METHODS Test the TENSOR functions.
+function unittest_tensor_methods
+% UNITTEST_TENSOR_METHODS Test the TENSOR functions.
 %
-% Example (<a href="matlab:run_example test_tensor_methods">run</a>) 
-%    test_tensor_methods
+% Example (<a href="matlab:run_example unittest_tensor_methods">run</a>) 
+%    unittest_tensor_methods
 %
 % See also TESTSUITE
 

@@ -1,7 +1,7 @@
-% TEST_STOCHASTIC_PCE_MATRIX Test the stochastic_pce_matrix function.
+% UNITTEST_STOCHASTIC_PCE_MATRIX Test the stochastic_pce_matrix function.
 %
-% Example (<a href="matlab:run_example test_stochastic_pce_matrix">run</a>)
-%   test_stochastic_pce_matrix;
+% Example (<a href="matlab:run_example unittest_stochastic_pce_matrix">run</a>)
+%   unittest_stochastic_pce_matrix;
 %
 % See also STOCHASTIC_PCE_MATRIX, TESTSUITE
 

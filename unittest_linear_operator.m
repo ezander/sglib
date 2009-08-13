@@ -1,8 +1,8 @@
-function test_linear_operator
-% TEST_LINEAR_OPERATOR Test the LINEAR_OPERATOR and related functions.
+function unittest_linear_operator
+% UNITTEST_LINEAR_OPERATOR Test the LINEAR_OPERATOR and related functions.
 %
-% Example (<a href="matlab:run_example test_linear_operator">run</a>) 
-%    test_linear_operator
+% Example (<a href="matlab:run_example unittest_linear_operator">run</a>) 
+%    unittest_linear_operator
 %
 % See also LINEAR_OPERATOR, LINEAR_OPERATOR_SIZE, LINEAR_OPERATOR_APPLY,
 % LINEAR_OPERATOR_COMPOSE, TESTSUITE

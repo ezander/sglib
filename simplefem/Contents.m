@@ -17,9 +17,9 @@
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
 % UP THE CONTENTS DISPLAY.
 % Test functions
-%   test_boundary_projectors     - Test the boundary_projectors function.
-%   test_mass_matrix             - Test the mass_matrix function.
-%   test_stiffness               - Test the stiffness_matrix function.
+%   unittest_boundary_projectors     - Test the boundary_projectors function.
+%   unittest_mass_matrix             - Test the mass_matrix function.
+%   unittest_stiffness               - Test the stiffness_matrix function.
 
 
 

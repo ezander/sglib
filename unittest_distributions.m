@@ -1,8 +1,8 @@
-function test_distributions
-% TEST_DISTRIBUTIONS Test the distribution functions.
+function unittest_distributions
+% UNITTEST_DISTRIBUTIONS Test the distribution functions.
 %
-% Example (<a href="matlab:run_example test_distributions">run</a>) 
-%    test_distributions
+% Example (<a href="matlab:run_example unittest_distributions">run</a>) 
+%    unittest_distributions
 %
 % See also TESTSUITE
 

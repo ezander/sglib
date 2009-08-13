@@ -1,8 +1,8 @@
-function test_boundary_projectors
-% TEST_BOUNDARY_PROJECTORS Test the boundary_projectors function.
+function unittest_boundary_projectors
+% UNITTEST_BOUNDARY_PROJECTORS Test the boundary_projectors function.
 %
-% Example (<a href="matlab:run_example test_boundary_projectors">run</a>) 
-%    test_boundary_projectors
+% Example (<a href="matlab:run_example unittest_boundary_projectors">run</a>) 
+%    unittest_boundary_projectors
 %
 % See also BOUNDARY_PROJECTORS, TESTSUITE
 
