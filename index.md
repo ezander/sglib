@@ -32,7 +32,7 @@ None.
 
 ## Install
 
-See the wiki.
+See the [wiki](http://wiki.github.com/ezander/sglib).
 
 
 ## License
