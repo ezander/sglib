@@ -3,36 +3,31 @@ layout: default
 title: 
 ---
 
-Heading 1
-=========
 
-Heading 2
----------
+<div class="download">
+  <a href="http://github.com/ezander/sglib/zipball/master">
+    <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"/>
+  </a>
+  <a href="http://github.com/ezander/sglib/tarball/master">
+    <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"/>
+  </a>
+</div>
 
-<div id="container">
-
-  <div class="download">
-    <a href="http://github.com/ezander/sglib/zipball/master">
-      <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"/>
-    </a>
-    <a href="http://github.com/ezander/sglib/tarball/master">
-      <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"/>
-    </a>
-  </div>
-  <h1><a href="http://github.com/ezander/sglib">sglib</a> 
-    <span class="small">by <a href="http://github.com/ezander">ezander</a></span></h1>
+# <a href="http://github.com/ezander/sglib">sglib</a> 
+  <span class="small">by <a href="http://github.com/ezander">ezander</a></span>
   
-  <div class="description">
-    A Malab/Octave toolbox for stochastic Galerkin methods
-  </div>
+<div class="description">
+  A Malab/Octave toolbox for stochastic Galerkin methods
+</div>
 
-  <p>TEST SGLib is a toolbox for Matlab helping in the development of
-    stochastic Galerkin and (to a lesser part as yet) stochastic
-    collocation methods. More or less extensive documentation is
-    available in toolbox itself. </p>
+<p>TEST SGLib is a toolbox for Matlab helping in the development of
+  stochastic Galerkin and (to a lesser part as yet) stochastic
+  collocation methods. More or less extensive documentation is
+  available in toolbox itself. </p>
 
-<h2>Dependencies</h2>
-<p>None.</p>
+## Dependencies
+
+None.
 
 <h2>Install</h2>
 <p>See the wiki.</p>
@@ -74,4 +69,3 @@ Heading 2
     : <a href="http://github.com/ezander/sglib">ezander/sglib</a>
   </div>
     
-</div>
