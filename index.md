@@ -32,12 +32,12 @@ None.
 
 ## Install
 
-See the [wiki](http://wiki.github.com/ezander/sglib).
+See the [wiki][wiki].
 
 
 ## License
 
-[GPL v3][gpl-3.0](http://www.gnu.org/licenses/gpl-3.0.html).
+[GPL v3][gpl-3.0]
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,8 +46,7 @@ your option) any later version.<br/>
 
 See the GNU General Public License for more details. You should have
 received a copy of the GNU General Public License along with this
-program.  If not,
-see http://www.gnu.org/licenses/.
+program.  If not, see [][licenses].
 
   
 ## Authors
@@ -71,3 +70,5 @@ You can also clone the project with [Git](http://git-scm.com) by running:
     
 
 [gpl-3.0]: http://www.GNU.org/licenses/gpl-3.0.html
+[wiki]: http://wiki.github.com/ezander/sglib
+[licenses]: http://www.gnu.org/licenses/
