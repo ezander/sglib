@@ -13,7 +13,7 @@ title:
   </a>
 </div>
 
-# <a href="http://github.com/ezander/sglib">sglib</a> <span class="small">by <a href="http://github.com/ezander">ezander</a></span>
+# [sglib][] <span class="small">by [ezander][]</span>
   
 <div class="description">
   A Malab/Octave toolbox for stochastic Galerkin methods
@@ -62,8 +62,7 @@ You can also clone the project with [Git][] by running:
 <pre>$ git clone git://github.com/ezander/sglib</pre>
   
 <div class="footer">
-  get the source code on GitHub
-  : <a href="http://github.com/ezander/sglib">ezander/sglib</a>
+  get the source code on GitHub : [ezander/sglib][sglib]
 </div>
     
 
@@ -72,3 +71,5 @@ You can also clone the project with [Git][] by running:
 [zip]: http://github.com/ezander/sglib/zipball/master
 [tar]: http://github.com/ezander/sglib/tarball/master
 [git]: http://git-scm.com
+[ezander]: http://github.com/ezander
+[sglib]: http://github.com/ezander/sglib
