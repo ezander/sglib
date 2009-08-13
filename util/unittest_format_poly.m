@@ -36,3 +36,11 @@ options.twoline=true;
 options.symbol='u';
 assert_equals( format_poly( [-1 -1 -1], options ), ['  2        '; '-u  - u - 1'], 'twoline' );
 assert_equals( format_poly( [1 1 1], options ), [' 2        '; 'u  + u + 1'], 'twoline' );
+
+% multiple polynomials
+assert_equals( format_poly( [1 2 3; 0 -4 0] ), { 'x^2+2x+3', '-4x'}, 'multi' );
+assert_equals( format_poly( [1 2 3; 0 -4 0], 'symbol', 't', 'tight', false ), { 't^2 + 2t + 3', '-4t'}, 'multi_opt' );
+
+% no return value if not wanted
+assert_equals( evalc( 'format_poly( 1 )' ), sprintf('1\n'), 'noretval' );
+assert_equals( evalc( 'format_poly( eye(2) )' ), sprintf('x\n1\n'), 'noretval_mult' );
