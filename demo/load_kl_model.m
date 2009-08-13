@@ -1,6 +1,6 @@
 function varargout=load_kl_model( name, version, silent, output_vars )
 % MODEL_KL Load or compute a random field model in KL expanded form.
-%   MODEL_KL( NAME, REINIT, SILENT ) loads the model NAME. If the model 
+%   MODEL_KL( NAME, REINIT, SILENT ) loads the model NAME. If the model
 %   does not exist or REINIT is true, the model is recomputed and saved to
 %   the file 'data/<modelname>.mat'. If SILENT is specfied and true, no
 %   ouput is issued, when the model has to be recomputed (otherwise, you'll
@@ -11,7 +11,7 @@ function varargout=load_kl_model( name, version, silent, output_vars )
 global silent_computation
 
 rf_filename=['data/' name '.mat'];
-if nargin<2 
+if nargin<2
     version=[];
 end
 if nargin<3 || isempty(silent)
@@ -20,7 +20,7 @@ end
 silent_computation=silent;
 
 %% Part 1: Setting up options and params
-   
+
 % set global and default options
 meshname='';
 use_mass=true;
@@ -76,14 +76,14 @@ else
 end
 
 %% Part 2: Doing the actual computation or retrieval from file
- 
+
 [mu_r_j,rho_i_alpha,r_j_i, I_r]=cached_funcall(...
     @compute_random_field,...
     { stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r, m_r }, ...
     4, ...
     rf_filename, ...
     version );
-  
+
 
 %% Part 3: Assigning the output
 if nargin<4

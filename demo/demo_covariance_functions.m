@@ -38,7 +38,7 @@ end
 plot( x, y');
 userwait;
 
-%% exponential 
+%% exponential
 x=linspace(-5,5,300)'; y=x;
 l=[0.2 0.5 1 2];
 for i=1:length(l)

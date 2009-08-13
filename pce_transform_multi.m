@@ -13,17 +13,17 @@ function [u_alpha,I_u]=pce_transform_multi( g, u_i, varargin )
 %
 % Options:
 %   fast: {true}, false
-%     Specifies that a vectorized code is run, which does some "unnecessary" 
+%     Specifies that a vectorized code is run, which does some "unnecessary"
 %     logarithms and exponentials, but is much faster in Matlab.
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -68,7 +68,7 @@ if ~fast
         u_alpha(:,i)=factor*fun;
     end
 else
-    % Options: FAST - vectorized code 
+    % Options: FAST - vectorized code
     % In order to vectorize the exponentiation with the multiindex we have
     % to take logarithms and thus transform it into a scalar product with
     % the exponents (i.e. a1^b1*a2^b2*...= exp( log(a1)*b1+log(a2)*b2+...)

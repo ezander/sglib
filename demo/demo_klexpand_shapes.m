@@ -25,7 +25,7 @@ options.correct_var=true;
 v_f=kl_expand( covariance_matrix( pos, cov_func ), G_N, m, options );
 
 %% KL of the cardioid
-    
+
 set( gcf, 'Position', [0, 0, 900, 900] );
 set( gcf, 'Renderer', 'zbuffer' );
 
@@ -33,7 +33,7 @@ for i=1:8
     subplot(4,4,i);
     plot_field( els, pos, v_f(:,i) );
     title(sprintf('KLE: f_{%d}',i));
-    
+
     subplot(4,4,i+8);
     plot_field( els, pos, v_f(:,i), { 'view', [30,15] } );
     title(sprintf('KLE: f_{%d}',i));

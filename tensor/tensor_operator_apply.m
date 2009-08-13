@@ -4,7 +4,7 @@ function Y=tensor_operator_apply( A, X, varargin )
 %   to the tensor X. Different format for A and X are supported, and can be
 %   specified via additional options or automatically detected. The
 %   following formats are currently possible for the operator A:
-%      revkron:    A is just a huge M1M2xN1N2 matrix 
+%      revkron:    A is just a huge M1M2xN1N2 matrix
 %                i.e. A=revkron(M1xN1,M2xN2))
 %      block:    A is an M1xN1 cell array of M2xN2 matrices/linear operators
 %      tensor:   A is an Kx2 cell array of M1xN1 and M2xN2 matrices
@@ -14,7 +14,7 @@ function Y=tensor_operator_apply( A, X, varargin )
 %      tensor:   X is a Kx2 cell array of vectors of size N and M
 %   Note: the block format has to be specified explicitly, since it cannot
 %   be unambiguously differentiated from the tensor format.
-% 
+%
 %   The following combinations of formats are possible:
 %      revkron/vect, block/vect, block/mat, tensor/mat, tensor/tensor
 %
@@ -28,12 +28,12 @@ function Y=tensor_operator_apply( A, X, varargin )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -59,7 +59,7 @@ if strcmp( vectype, 'auto' )
         vectype='vect';
     elseif isnumeric(X) && ~isvector(X)
         vectype='mat';
-    elseif iscell(X) 
+    elseif iscell(X)
         vectype='tensor';
     else
         error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
@@ -85,13 +85,13 @@ switch [optype, '/', vectype]
     otherwise
         error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
-        
+
 
 function Y=apply_revkron_vect( A, X )
 %[s1,s2]=linear_operator_size( A );
 %[s1,s2]=size( A );
 s2=size(X,1);
-if s2~=size(X,1) 
+if s2~=size(X,1)
     check_condition( {A,X}, 'match', false, {'A','X'}, mfilename );
 end
 Y=linear_operator_apply( A, X );

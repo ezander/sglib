@@ -16,7 +16,7 @@ function spy2(A, varargin)
 %     Display the statistics below the axis. 'nz' or 'nnz' means number of
 %     nonzero element (matlab default). 'dens' or 'density' means nnz
 %     divided by matrix size. 'none' means none with high probability.
-% 
+%
 % Example (<a href="matlab:run_example spy2">run</a>)
 %     clf;
 %     A=rand(32);
@@ -25,17 +25,17 @@ function spy2(A, varargin)
 %     subplot(2,2,2); spy2(A);
 %     subplot(2,2,3); spy2(A,'face_color','g', 'display', 'density' );
 %     subplot(2,2,4); spy2(A,'face_color','g','edge_color','k');
-% 
+%
 % See also SPY, PATCH
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

@@ -26,20 +26,20 @@ for i=1:20
     % Solve for update:
     %  DX=M\R;
     DX=prec_solve( M, R );
-    
+
     % Apply update and truncate:
     %   X=X+DX
     X=add( X, DX );
     X=truncate( X, truncate_options );
-    
+
     % Compute residual and truncate:
     %   R=F-A*X;
     R=add( F, apply_operator( A, X ), -1 );
     [R,sigma]=truncate( R, truncate_options );
-    
+
     % TODO: compare residual and update, maybe the truncation is always
     % just reverting the previous update, then bail out
-    
+
     % increment and check iteration count
     iter=iter+1;
     if iter>maxiter
@@ -79,7 +79,7 @@ A0=A(1,:);
 AR=A(2:end,:);
 norm_A0=tensor_operator_normest( AR ); % need to relate the truncation epsilons depending on when truncation is performed
 
-X=tensor_null(F); 
+X=tensor_null(F);
 
 
 R=compute_residual( A0, AR, X, F, truncate_options );
@@ -122,10 +122,10 @@ while norm_R>tol
     if flag
         break;
     end
-    
+
     X=Z;
     norm_R=norm_R_new;
-    
+
     %fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, size(X_r{1},2), relax );
     fprintf( 'Iter: %d -> %g (k:%d,relax:%g)\n', iter, norm_R, -1, relax );
 

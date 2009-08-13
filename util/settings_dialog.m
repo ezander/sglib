@@ -54,7 +54,7 @@ switch setter_info{1}
         create_text( 1, ypos,  30, name, control );
         h=create_popupmenu( 25, ypos, 30, {'true', 'false'}, 2-value, 2-default, control );
         control.handles.(name)=h;
-    otherwise 
+    otherwise
         error( 'not supported' );
 end
 
@@ -67,11 +67,11 @@ for setter=setters
     setter_info=setter{1};
     switch setter_info{1}
         case 'list'
-            [name, option_list]=setter_info{[2,4]}; 
+            [name, option_list]=setter_info{[2,4]};
             value=get( control.handles.(name), 'Value' );
             settings.(name)=option_list{ value };
         case 'bool'
-            [name]=setter_info{2}; 
+            [name]=setter_info{2};
             value=get( control.handles.(name), 'Value' );
             settings.(name)=value==1;
         otherwise

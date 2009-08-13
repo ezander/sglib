@@ -1,18 +1,10 @@
-function [els,pos,bnd]=create_mesh_1d( n, x0, x1 )
-% CREATE_MESH_1D Creates a 1D mesh for simple finite element calculations.
-%   [ELS,POS,BND]=CREATE_MESH_1D( N, X0, X1 ) creates a
+function unittest_chopabs
+% UNITTEST_CHOPABS Test the CHOPABS function.
 %
-% Example (<a href="matlab:run_example create_mesh_1d">run</a>)
-%   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%   save_format( 'compact', 'short g' );
-%   els
-%   pos
-%   bnd
-%   restore_format();
-%   clf; dock; func=@cos;
-%   plot( pos, func(pos), 'b-x', pos(bnd), func(pos(bnd)), 'rx' );
+% Example (<a href="matlab:run_example unittest_chopabs">run</a>)
+%    unittest_chopabs
 %
-% See also
+% See also TESTSUITE, CHOPABS
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -26,6 +18,10 @@ function [els,pos,bnd]=create_mesh_1d( n, x0, x1 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-pos=linspace(x0,x1,n)';
-els=[1:n-1; 2:n]';
-bnd=[1,n];
+
+assert_set_function( 'chopabs' );
+
+A=[ 1 2 1e-11 1e-3 3];
+assert_equals( chopabs(A), [1, 2, 0, 1e-3, 3], 'oneparam' );
+assert_equals( chopabs(A,1e-2), [1, 2, 0, 0, 3], 'twoparam1' );
+assert_equals( chopabs(A,1e-12), A, 'twoparam2' );

@@ -14,18 +14,18 @@ function [mean,var,skew,kurt]=pce_moments( pcc, pci ) %#ok: kurt never assigned
 %   [pcc,pci]=pce_expand_1d( @exp, 12 );
 %   [mean,var,skew]=pce_moments( pcc );
 %   [mean,var,skew]=pce_moments( pcc, pci );
-%   [mean,var,skew]=lognorm_moments( 0, 1);
+%   [mean,var,skew]=lognormal_moments( 0, 1);
 %
 % See also PCE_EXPAND_1D, DATA_MOMENTS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -34,7 +34,7 @@ function [mean,var,skew,kurt]=pce_moments( pcc, pci ) %#ok: kurt never assigned
 if nargin==1
     p=size(pcc,2)-1;
     n=size(pcc,1);
-    
+
     % Coefficient a_0 (=pcc(1)) of H_0 is the mean of the PCE
     mean = pcc(:,1);
 
@@ -78,13 +78,13 @@ else
     % get the number of coefficient sets (i.e. the number of multivariate
     % Hermite polynomials)
     n=size(pcc,1);
-    
+
     % the first row in PCI should contain the mean (i.e. all indices have
     % to be zero)
-    if any(full(pci(1,:))~=0) 
+    if any(full(pci(1,:))~=0)
         error('pce_moments: the first row in argument pci has to be identical zero!' );
     end
-    
+
     mean = pcc(:,1);
     if nargout>=2
         %         var=zeros(1,n);
@@ -97,7 +97,7 @@ else
         %TODO: maybe for large multiindex sets the skewness should be
         % calculated by monte-carlo simulation (or is there another way to
         % speed things up?)
-        
+
         skew=zeros(n,1);
         hermite_triple_fast(max(pci(:))); % initialize
         for i=2:p+1
@@ -117,7 +117,7 @@ else
                         else % i==j && j==k
                             n_perm=1;
                         end
-                            
+
                         skew=skew+pcc(:,i).*pcc(:,j).*pcc(:,k)*h_abc*n_perm;
                     end
                 end

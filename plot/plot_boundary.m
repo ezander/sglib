@@ -3,16 +3,16 @@ function plot_boundary( els, pos, varargin )
 %
 % Example (<a href="matlab:run_example plot_boundary">run</a>)
 %
-% See also 
+% See also
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: plot_field_contour.m 20 2009-03-30 17:03:59Z ezander $ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

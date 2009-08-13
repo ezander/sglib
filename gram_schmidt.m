@@ -6,7 +6,7 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %   argument B may be omitted or an empty array is passed, in which case
 %   that standard Gram-Schmidt process is used (in that case, you may want
 %   to call the matlab/octave command QR anyway, because it is more stable
-%   and accurate than the Gram-Schmidt process). 
+%   and accurate than the Gram-Schmidt process).
 %   MOD (default: false) is a boolean flag signifying GRAM_SCHMIDT to use
 %   the modified Gram-Schmidt process.
 %   REORTH (default: 1) is a integer parameter given the number of
@@ -21,17 +21,17 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %   prime issue (which might or will be the case sooner or later, see [2])
 %
 % References:
-%   [1] L. Giraud, J. Langou , M. Rozloznik: On the loss of orthogonality 
-%       in the Gram-Schmidt orthogonalization process ,  Computers & 
+%   [1] L. Giraud, J. Langou , M. Rozloznik: On the loss of orthogonality
+%       in the Gram-Schmidt orthogonalization process ,  Computers &
 %       Mathematics with Applications 50 (2005), pp. 1069--1075.
 %   [2] L. Giraud, J.Langou:   A robust criterion for the modified Gram–
-%       Schmidt algorithm with selective reorthogonalization, SIAM J. Sci. 
+%       Schmidt algorithm with selective reorthogonalization, SIAM J. Sci.
 %       Comput., Vol. 25, No. 2, pp. 417–441
-%                            
+%
 % Example (<a href="matlab:run_example gram_schmidt">run</a>)
 %   n=100; m=200; k=40;
 %   A=rand(n,k);
-%   M=rand(n,n); M=M'*M; 
+%   M=rand(n,n); M=M'*M;
 %   for reorth=0:1
 %     for mod=[false,true]
 %       [Q,R]=gram_schmidt( A, M, mod, reorth );
@@ -43,16 +43,16 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %    end
 %  end
 %
-% See also 
+% See also
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

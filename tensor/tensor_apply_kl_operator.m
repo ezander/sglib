@@ -7,12 +7,12 @@ function U=tensor_apply_kl_operator( A, T, k, eps, M1, M2, inverse_order )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -32,7 +32,7 @@ end
 if isempty(M1)~=isempty(M2)
     error( 'tensor_truncate:gramians', 'both gramians must be given or both must be empty' );
 end
-    
+
 
 U_det=tensor_apply( {A{1}, A{2}}, T );
 

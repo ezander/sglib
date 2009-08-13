@@ -27,8 +27,8 @@ for i=1:100
         xi=(1-sp)*xi1+sp*xi2;
         f_ex=kl_pce_field_realization( pos, mu_f, v_f, f_i_alpha, I_f, xi );
         plot_field( els, pos, zinn_harvey_connected_stdnor( f_ex, 0.1, true ) );
-        
-        if ~isempty( get( gcf, 'UserData' ) ) 
+
+        if ~isempty( get( gcf, 'UserData' ) )
             set( gcf, 'UserData', [] );
             disp('quitting...');
             return

@@ -7,9 +7,9 @@ function c=hermite_triple_fast(i,j,k)
 %   you can pass all arguments I, J and K as arrays of multiindices. If you
 %   have just one array, say K and want to get rid of the leading singleton
 %   dimensions use SQUEEZE.
-% 
+%
 %   The cache has to be set up by a call to hermite_triple_fast with one
-%   argument only HERMITE_TRIPLE_FAST(MAX). 
+%   argument only HERMITE_TRIPLE_FAST(MAX).
 %
 % Example (<a href="matlab:run_example hermite_triple_fast">run</a>)
 %   c1=hermite_triple_fast(2,3,1);
@@ -25,12 +25,12 @@ function c=hermite_triple_fast(i,j,k)
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -150,7 +150,7 @@ end
 
 
 if 0 % old version (does not work on more than one vector argument)
-    
+
     % Note: multiindices are row vectors => size(i,2)
     if size(i,1)>1 || size(j,1)>1
         error([ 'hermite_triple_product: not yet implemented for ' ...

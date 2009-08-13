@@ -1,10 +1,10 @@
 function assert_set_option( varargin )
 % ASSERT_SET_OPTION Sets options for the following assertions.
 %   ASSERT_SET_OPTION( OPTIONS ) sets the options specified in the
-%   structure OPTIONS. 
+%   structure OPTIONS.
 %
 %   ASSERT_SET_OPTION( OPTION1, VALUE1, ...  ) sets the options specified
-%   in the options strings and corresponding values. 
+%   in the options strings and corresponding values.
 %
 % Example (<a href="matlab:run_example assert_set_option">run</a>)
 %   % Set the absolute tolerance generally to 0.0001
@@ -14,12 +14,12 @@ function assert_set_option( varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

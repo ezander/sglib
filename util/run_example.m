@@ -9,23 +9,23 @@ function cmds=run_example( cmd, show )
 %     %     now come the example commands ...
 %
 %   in your help file, the user can click directly on (run), which is
-%   displayed as link, and invoke the example (Note: remove the blank in 
+%   displayed as link, and invoke the example (Note: remove the blank in
 %   </ a>).
-% 
+%
 % Example 1 (<a href="matlab:run_example run_example">run</a>)
 %     disp( 'running the example section of erase_print:' );
 %     run_example erase_print
-% 
+%
 % See also HELP
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -37,9 +37,9 @@ end
 s=help(cmd);
 
 [x1,x2]=regexp( s, '\n *Example.*?\n' );
-if isempty(x1); 
+if isempty(x1);
     warning( 'run_example:not_found', 'No sample section found in: %s', cmd );
-    return; 
+    return;
 end
 s=s(x2(1)+1:end);
 

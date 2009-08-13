@@ -9,7 +9,7 @@ function K=revkron( A, B )
 %   operator and A is of size Rx2, i.e. A={ A_11, A_12; ...; A_R1, A_R2},
 %   returns the sum of the reversed Kronecker products of A{i,1} and
 %   A{i,2} for i=1:R.
-% 
+%
 % Rational
 %   Suppose an elementary tensor T is given by {X,Y}, where X an N vector
 %   and Y an M vector, and the matrix representation of T is M=X*Y', then
@@ -19,11 +19,11 @@ function K=revkron( A, B )
 %   represent stiffness matrices.). So this works both
 %      revkron(A,B)*revkron(x,y)==revkron(A*x,B*y)
 %      kron(A,B)*kron(x,y)==kron(A*x,B*y)
-%   but this works only with revkron naturally 
+%   but this works only with revkron naturally
 %      revkron(A,B)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
 %   compared to the hard to remember
 %      kron(B,A)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
-%   
+%
 
 %
 % Example (<a href="matlab:run_example revkron">run</a>)
@@ -47,17 +47,17 @@ function K=revkron( A, B )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<2 && iscell( A ) 
+if nargin<2 && iscell( A )
     K=kron( A{1,2}, A{1,1} );
     for i=2:size(A,1)
         K=K+kron( A{i,2}, A{i,1} );

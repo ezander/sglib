@@ -33,15 +33,15 @@
 %   pce_covariance                        - Computes the covariance between variables in a PC
 %   pce_field_realization                 - Compute a realization of a random field given by a
 %   pce_transform_multi                   - Transform from local univariate to global
-%   pce_cdf                               - 
-%   pce_pdf                               - 
+%   pce_cdf                               -
+%   pce_pdf                               -
 %
 % Experimental PCE routines
-%   pce_divide                            - 
-%   pce_function                          - 
-%   pce_function_polyexp                  - 
+%   pce_divide                            -
+%   pce_function                          -
+%   pce_function_polyexp                  -
 %   pce_multiply                          - Multiply two PC expanded random variables.
-%   pce_sqrt                              - 
+%   pce_sqrt                              -
 %
 % Karhunen-Loeve expansion
 %   kl_expand                             - Perform Karhunen-Loeve expansion.
@@ -70,10 +70,10 @@
 %   exponential_pdf                       - Probability distribution function of the exponential distribution.
 %   exponential_moments                   - Compute moments of the exponential distribution.
 %   exponential_stdnor                    - Transforms standard normal random numbers into exponential distributed ones.
-%   lognorm_cdf                           - Cumulative distribution function of the lognorm distribution.
-%   lognorm_pdf                           - Probability distribution function of the lognorm distribution.
-%   lognorm_moments                       - Compute moments of the lognormal distribution.
-%   lognorm_stdnor                        - Transforms standard normal random numbers into lognormal distributed ones.
+%   lognormal_cdf                           - Cumulative distribution function of the lognormal distribution.
+%   lognormal_pdf                           - Probability distribution function of the lognormal distribution.
+%   lognormal_moments                       - Compute moments of the lognormal distribution.
+%   lognormal_stdnor                        - Transforms standard normal random numbers into lognormal distributed ones.
 %   normal_cdf                            - Cumulative distribution function of the normal distribution.
 %   normal_pdf                            - Probability distribution function of the normal distribution.
 %   normal_moments                        - Compute moments of the normal distribution.
@@ -105,12 +105,12 @@
 %   cross_correlation                     - Compute cross correlation coefficient between functions.
 %   gram_schmidt                          - Perform Gram-Schmidt orthogonalization.
 %   revkron                               - Reversed Kronecker tensor product.
-%   solver_message                        - 
+%   solver_message                        -
 %
 % Stochastic Galerkin method
-%   stochastic_operator_kl_pce            - 
-%   stochastic_operator_pce               - 
-%   stochastic_pce_rhs                    - 
+%   stochastic_operator_kl_pce            -
+%   stochastic_operator_pce               -
+%   stochastic_pce_rhs                    -
 %   stochastic_pce_matrix                 - Compute the matrix that represents multiplication in the Hermite algebra.
 %
 % Tensor routines
@@ -125,11 +125,11 @@
 %   tensor_to_kl                          - Unpack a KL expansion from a tensor product.
 %   kl_to_tensor                          - Pack a KL expansion into tensor product format.
 %
-% Application of boundary conditions to tensors and tensor operators 
+% Application of boundary conditions to tensors and tensor operators
 %   boundary_projectors                   - Projection matrices on the set of inner and boundary nodes.
-%   apply_boundary_conditions_operator    - 
-%   apply_boundary_conditions_rhs         - 
-%   apply_boundary_conditions_solution    - 
+%   apply_boundary_conditions_operator    -
+%   apply_boundary_conditions_rhs         -
+%   apply_boundary_conditions_solution    -
 %
 % Tensor and linear operator routines
 %   linear_operator                       - Creates  a linear operator structure from a matrix.
@@ -143,8 +143,8 @@
 %   tensor_operator_solve_elementary      - Solves an equation with an elementary tensor operator.
 %
 % Solvers
-%   tensor_operator_solve_pcg             - 
-%   tensor_operator_solve_richardson      - 
+%   tensor_operator_solve_pcg             -
+%   tensor_operator_solve_richardson      -
 %
 % Miscellaneous system routines
 %   sglib_addpath                         - Set paths for sglib.
@@ -161,51 +161,51 @@
 % UP THE CONTENTS DISPLAY.
 % Test and demo functions/scripts
 %   testsuite                             - Run all unit tests in this directory.
-%   test_pce_expand_1d                    - Test the univariate PCE expansion 
-%   test_multiindex                       - Test multi-index related functions.
-%   test_moments                          - Test the moment computing functions.
-%   test_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
-%   test_gauss_legendre                   - Test the Gauss-Legendere quadrature methods.
-%   test_gauss_hermite                    - Test the Gauss-Hermite quadrature rules.
-%   test_distributions                    - Test the distribution functions.
-%   test_covariance                       - Test covariance related functions.
-%   test_inv_reg_beta                     - Test the inverse regularized beta function.
-%   test_normalize_pce                    - Test the normalize_pce function.
-%   test_pce_moments                      - Test the PCE_MOMENTS function.
-%   test_exponential_covariance           - Test exponential_covariance functions.
-%   test_gaussian_covariance              - Test gaussian_covariance functions.
-%   test_hermite                          - Test the HERMITE function.
-%   test_hermite_val                      - Test the HERMITE_VAL function.
-%   test_hermite_val_multi                - Test the hermite_val_multi function.
-%   test_utils                            - Test utils related functions.
-%   test_cross_correlation                - Test the CROSS_CORRELATION function.
-%   test_gram_schmidt                     - Test the GRAM_SCHMIDT function
-%   test_kl_expand                        - Test the KL_EXPAND function.
-%   test_kl_tensor                        - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
-%   test_linear_operator                  - Test the LINEAR_OPERATOR and related functions.
-%   test_pce_divide                       - Test the PCE_DIVIDE function.
-%   test_pce_multiply                     - Test the PCE_MULTIPLY function.
-%   test_pce_to_kl                        - Test pce_to_kl function.
-%   test_stochastic_pce_matrix            - Test the stochastic_pce_matrix function.
-%   test_tensor_methods                   - Test the TENSOR functions.
-%   test_tensor_operator_apply            - Test the TENSOR_OPERATOR_APPLY function.
-%   test_tensor_operator_compose          - Test the TENSOR_OPERATOR_COMPOSE function.
-%   test_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
-%   test_tkron                            - TEST_REVKRON Test the REVKRON and function.
-%   test_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
-%   test_tensor_operator_solve_richardson - 
+%   unittest_pce_expand_1d                    - Test the univariate PCE expansion
+%   unittest_multiindex                       - Test multi-index related functions.
+%   unittest_moments                          - Test the moment computing functions.
+%   unittest_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
+%   unittest_gauss_legendre                   - Test the Gauss-Legendere quadrature methods.
+%   unittest_gauss_hermite                    - Test the Gauss-Hermite quadrature rules.
+%   unittest_distributions                    - Test the distribution functions.
+%   unittest_covariance                       - Test covariance related functions.
+%   unittest_inv_reg_beta                     - Test the inverse regularized beta function.
+%   unittest_normalize_pce                    - Test the normalize_pce function.
+%   unittest_pce_moments                      - Test the PCE_MOMENTS function.
+%   unittest_exponential_covariance           - Test exponential_covariance functions.
+%   unittest_gaussian_covariance              - Test gaussian_covariance functions.
+%   unittest_hermite                          - Test the HERMITE function.
+%   unittest_hermite_val                      - Test the HERMITE_VAL function.
+%   unittest_hermite_val_multi                - Test the hermite_val_multi function.
+%   unittest_utils                            - Test utils related functions.
+%   unittest_cross_correlation                - Test the CROSS_CORRELATION function.
+%   unittest_gram_schmidt                     - Test the GRAM_SCHMIDT function
+%   unittest_kl_expand                        - Test the KL_EXPAND function.
+%   unittest_kl_tensor                        - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
+%   unittest_linear_operator                  - Test the LINEAR_OPERATOR and related functions.
+%   unittest_pce_divide                       - Test the PCE_DIVIDE function.
+%   unittest_pce_multiply                     - Test the PCE_MULTIPLY function.
+%   unittest_pce_to_kl                        - Test pce_to_kl function.
+%   unittest_stochastic_pce_matrix            - Test the stochastic_pce_matrix function.
+%   unittest_tensor_methods                   - Test the TENSOR functions.
+%   unittest_tensor_operator_apply            - Test the TENSOR_OPERATOR_APPLY function.
+%   unittest_tensor_operator_compose          - Test the TENSOR_OPERATOR_COMPOSE function.
+%   unittest_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
+%   unittest_tkron                            - UNITTEST_REVKRON Test the REVKRON and function.
+%   unittest_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
+%   unittest_tensor_operator_solve_richardson -
 
 
 
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

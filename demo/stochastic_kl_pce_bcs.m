@@ -13,7 +13,7 @@ if nargin<7 || isempty(gam_bnd_alpha)
     gam_bnd_alpha=zeros(1,length(I_u));
     gam_bnd_alpha(1)=1;
 end
-    
+
 trunc_k=100;
 trunc_eps=1e-7;
 

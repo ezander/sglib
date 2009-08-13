@@ -8,9 +8,9 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %
 % Options:
 %   vectorized: {true}, false
-%     Specifies whether the covariance functions is vectorized with respect 
+%     Specifies whether the covariance functions is vectorized with respect
 %     to the position arguments.
-% 
+%
 % Example (<a href="matlab:run_example covariance_matrix">run</a>)
 %   x=linspace(0,1,10)';
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
@@ -19,12 +19,12 @@ function C=covariance_matrix( pos, covar_func, varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

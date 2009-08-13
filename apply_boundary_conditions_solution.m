@@ -22,12 +22,12 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: isnativesglib.m 61 2009-05-13 09:29:14Z ezander $ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -50,7 +50,7 @@ if false && size(g,1)==Nb*M
 else
     g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
 end
-    
+
 u=tensor_add( u, g );
 if iscell(u)
     truncation_options={};

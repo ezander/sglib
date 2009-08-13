@@ -11,7 +11,7 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 %   the Kolmogorov-Smirnov test, and REJECT is a boolean value which
 %   indicates whether the null hypothesis should be rejected with the
 %   current significance level (i.e. the distributions seem not to match).
-%   In ALPHA*100 per cent of all cases the hypothesis is rejected in spite 
+%   In ALPHA*100 per cent of all cases the hypothesis is rejected in spite
 %   of them in fact being equal. CRIT is the critical value associated with
 %   the value of ALPHA and the sample size.
 %
@@ -21,9 +21,9 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 %    norm_cdf=@(x)(1/2*(1+erf(x/sqrt(2))));
 %    x_samp=randn(n,1);
 %    [reject]=ks_test( norm_cdf, x_samp );
-%    disp(reject); % will be 1 in approx. 5% of all runs if randn 
+%    disp(reject); % will be 1 in approx. 5% of all runs if randn
 %    % generates good normal random numbers, otherwise higher
-% 
+%
 % See also
 %
 % Reference
@@ -33,12 +33,12 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

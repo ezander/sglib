@@ -1,19 +1,19 @@
-function test_gauss_legendre
-% TEST_GAUSS_LEGENDRE Test the Gauss-Legendere quadrature methods.
+function unittest_gauss_legendre
+% UNITTEST_GAUSS_LEGENDRE Test the Gauss-Legendere quadrature methods.
 %
-% Example (<a href="matlab:run_example test_gauss_legendre">run</a>) 
-%    test_gauss_legendre
+% Example (<a href="matlab:run_example unittest_gauss_legendre">run</a>)
+%    unittest_gauss_legendre
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -46,12 +46,12 @@ for p=1:6
     end
     % end of: better not modify
     [x,w]=gauss_legendre_rule( p );
-    assert_equals( x, xi, sprintf('xi_%d',p) ); 
-    assert_equals( w, wi, sprintf('wi_%d',p) ); 
+    assert_equals( x, xi, sprintf('xi_%d',p) );
+    assert_equals( w, wi, sprintf('wi_%d',p) );
 end
 
 
-    
+
 assert_set_function( 'gauss_legendre_triangle_rule' );
 
 %TODO: put some real test code herein. also for 1d GL-function
@@ -66,11 +66,11 @@ N=2*p;
 A=zeros(N+1);
 B=zeros(N+1);
 I=zeros(N+1);
-for l=0:N; 
-    for k=0:N; 
+for l=0:N;
+    for k=0:N;
         A(l+1,k+1)=sum(x(:,1).^l.*x(:,2).^k.*w);
-        %numIntegrate( @(xx)(xx(1)^l*xx(2)^k), x, w ); 
+        %numIntegrate( @(xx)(xx(1)^l*xx(2)^k), x, w );
         B(l+1,k+1)=prod((1:l)./((k+1):(k+l)))/((k+l+1)*(k+l+2));
         I(l+1,k+1)=(l+k<=2*p-2);
-    end; 
-end; 
+    end;
+end;

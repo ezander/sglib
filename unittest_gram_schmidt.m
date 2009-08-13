@@ -1,19 +1,19 @@
-function test_gram_schmidt
-% TEST_GRAM_SCHMIDT Test the GRAM_SCHMIDT function
+function unittest_gram_schmidt
+% UNITTEST_GRAM_SCHMIDT Test the GRAM_SCHMIDT function
 %
-% Example (<a href="matlab:run_example test_gram_schmidt">run</a>) 
-%    test_gram_schmidt
+% Example (<a href="matlab:run_example unittest_gram_schmidt">run</a>)
+%    unittest_gram_schmidt
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -25,11 +25,11 @@ assert_set_function( 'gram_schmidt' );
 % matrices from the matrix toolbox (but first, availability for octave has
 % to be checked...)
 
-n=100; 
+n=100;
 k=40;
 A=rand(n,k);
-F=rand(n,n); 
-M=F'*F; 
+F=rand(n,n);
+M=F'*F;
 
 % Default Gram-Schmidt
 [Q,R]=gram_schmidt( A );

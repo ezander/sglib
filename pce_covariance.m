@@ -9,12 +9,12 @@ function C=pce_covariance( pcc, pci )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -24,7 +24,7 @@ if nargin==1
     % get the max. order of the pce
     p=size(pcc,1)-1;
     n=size(pcc,2);
-    
+
     % Variance is equal to \sum_{i=1}^\infty i\! a_i^2
     % (Important: start with 1(2) to exclude mean).
     % The first part of the expression calculated the squares of the
@@ -52,7 +52,7 @@ else
             end
         end
     end
-    
+
     f=multiindex_factorial(pci(2:end,:));
     C=pcc(:,2:end,:)*row_col_mult( pcc(:,2:end)', f );
 end

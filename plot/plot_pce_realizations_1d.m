@@ -11,7 +11,7 @@ if stat>=0
     oldmap=colormap;
     col=colormap(map);
     colormap(oldmap);
-    
+
     [mu_u, var_u]=pce_moments( u_alpha, I_u);
     std_u=sqrt(var_u);
     for i=0:stat

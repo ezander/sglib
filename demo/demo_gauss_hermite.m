@@ -40,13 +40,13 @@ clear a b
 a=zeros(5,5);
 b=a;
 pow2=@(x,i,j)(x(1)^i*x(2)^j);
-for i=0:4; 
-    for j=0:4; 
+for i=0:4;
+    for j=0:4;
         f={pow2,{i,j},{2,3}};
-        a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 ); 
+        a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 );
         b(i+1,j+1)=expect(i)*expect(j);
-    end; 
-end; 
+    end;
+end;
 disp('Result of Gauss-Hermite 2d quadrature');
 disp(a);
 disp('Difference to exact solution');

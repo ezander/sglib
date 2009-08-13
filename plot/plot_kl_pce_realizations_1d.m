@@ -11,12 +11,12 @@ if stat>=0
     oldmap=colormap;
     col=colormap(map);
     colormap(oldmap);
-    
+
     %[mu_u, var_u]=pce_moments( u_alpha, I_u);
     [mu_i,var_i]=pce_moments( u_i_alpha, I_u );
     var_u=u_j_i.^2*var_i;
     mu_u=u_j_i*mu_i+mu_u_j;
-    
+
     std_u=sqrt(var_u);
     for i=0:stat
         plot(x, mu_u_j*[1,1]+i*std_u*[-1,1], 'Color', col(1+round(i*size(col,1)/(stat+2)),:) );

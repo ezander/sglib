@@ -32,7 +32,7 @@ end
 % with PCE expanded random variables. I.e. first we have a field u(x,omega)
 % given by:
 %  u(x,omega)=Sum_alpha u_alpha(x) H_alpha(xi(omega))
-% and want to transform it into 
+% and want to transform it into
 %  u(x,omega)=mu_u(x) + Sum_u f_
 
 % Extract the mean of the KL expansion (that's simply the coefficient in
@@ -46,9 +46,9 @@ pcc_kl=f'*pcc;
 
 % Now the f's are normalized and the PCE coefficients of the KL random vars
 % have non-unity variance. Here we shift the variance to the KL functions.
-%TODO: check relation between 'v' and 'sqrt_lambda'; should be approx same 
+%TODO: check relation between 'v' and 'sqrt_lambda'; should be approx same
 % maybe in this case we should scale and rescale
-[m,v]=pce_moments( pcc_kl, pci ); 
+[m,v]=pce_moments( pcc_kl, pci );
 m; %#ok: m unused
 pcc_kl=row_col_mult( pcc_kl, 1./sqrt(v) );
 f=row_col_mult( f, sqrt(v)' );

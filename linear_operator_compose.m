@@ -1,7 +1,7 @@
 function C=linear_operator_compose( A, B, varargin )
 % LINEAR_OPERATOR_COMPOSE Return the composition of two linear operators.
 %   C=LINEAR_OPERATOR_COMPOSE( A, B ) returns the composition C of the
-%   linear operators A and B such that C(X)=A(B(X))). 
+%   linear operators A and B such that C(X)=A(B(X))).
 %
 % Example (<a href="matlab:run_example linear_operator_compose">run</a>)
 %
@@ -9,12 +9,12 @@ function C=linear_operator_compose( A, B, varargin )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

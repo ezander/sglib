@@ -69,14 +69,14 @@ userwait;
 
 
 
-function n=norm_integrate( wi, ci ) 
+function n=norm_integrate( wi, ci )
 n=sqrt( integrate( wi, ci.^2 ) );
 
-function s=integrate( wi, ci ) 
+function s=integrate( wi, ci )
 s=wi*ci;
 
 % One function that can be used to "simulate" some black-box computation of
-% CL 
+% CL
 function y=dummy_function1( theta )
 y=sin(theta(:,1))+cos(theta(:,2))+atan(theta(:,1).*theta(:,2));
 function y=dummy_function2( theta )

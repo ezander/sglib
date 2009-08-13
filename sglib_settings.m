@@ -50,7 +50,7 @@ end
 if nargout==0
     clear settings;
 end
-% 
+%
 
 
 

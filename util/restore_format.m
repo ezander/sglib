@@ -1,10 +1,10 @@
 function restore_format(format_info)
 % RESTORE_FORMAT Restores display formatting info.
 %   RESTORE_FORMAT() restores the display formatting that was saved by
-%   a call to SAVE_FORMAT without output arguments. 
+%   a call to SAVE_FORMAT without output arguments.
 %
 %   RESTORE_FORMAT(FORMAT_INFO) restores the display formatting that was
-%   returned by a call to SAVE_FORMAT with output arguments. 
+%   returned by a call to SAVE_FORMAT with output arguments.
 %
 % Example (<a href="matlab:run_example restore_format">run</a>)
 %   underline( 'Setting default format (short, loose)' );
@@ -17,17 +17,17 @@ function restore_format(format_info)
 %   restore_format(info2);
 %   1.1
 %   restore_format(info1);
-% 
+%
 % See also SAVE_FORMAT, FORMAT
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

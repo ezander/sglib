@@ -13,7 +13,7 @@ function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 %   then the f_i are multiplied by sqrt_lambda_i before).
 %
 %   Options:
-%     correct_var: true, {false} 
+%     correct_var: true, {false}
 %       With this option set to true you can apply a correction to the
 %       eigenfunctions such that they match the variance specified by
 %       diag(C) in each point exactly. This affects the accuracy
@@ -35,12 +35,12 @@ function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -76,7 +76,7 @@ end
 % Calculate eigenvalues and -vectors of generalized eigenvalue problem
 % Since EIGS uses RAND for the starting vector, results are every time
 % different, which makes a problem for cached function calls. Thus the
-% state of RAND is 
+% state of RAND is
 rand_state = rand('state');
 rand('state', 0);
 eigs_options.disp=0;

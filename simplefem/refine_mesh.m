@@ -26,9 +26,9 @@ newels=delaunay( newpos(:,1), newpos(:,2) );
 
 % function [newels,newpos]=refine_edgebased2( els, pos )
 % newpreels=[oldels max(els(:))+oldmesh.faces.edges];
-% 
+%
 % newcoords=[oldcoords; addcoords];
-% newnodes=[ 
+% newnodes=[
 %     newprenodes(:,6) newprenodes(:,1) newprenodes(:,4)
 %     newprenodes(:,4) newprenodes(:,2) newprenodes(:,5)
 %     newprenodes(:,5) newprenodes(:,3) newprenodes(:,6)
@@ -41,12 +41,12 @@ newels=delaunay( newpos(:,1), newpos(:,2) );
 % oldcoords=oldmesh.nodes.coords;
 % oldnodes=oldmesh.faces.nodes;
 % addcoords=1/3*(oldcoords(oldnodes(:,1),:) + oldcoords(oldnodes(:,2),:) + oldcoords(oldnodes(:,3),:));
-% 
+%
 % newprenodes=[oldnodes size(oldcoords,1)+(1:size(addcoords,1))'];
 % newcoords=[oldcoords; addcoords];
-% newnodes=[ 
+% newnodes=[
 %     newprenodes(:,1) newprenodes(:,2) newprenodes(:,4)
 %     newprenodes(:,2) newprenodes(:,3) newprenodes(:,4)
 %     newprenodes(:,3) newprenodes(:,1) newprenodes(:,4)
 %     ];
-% 
+%

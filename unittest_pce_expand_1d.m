@@ -1,19 +1,19 @@
-function test_pce_expand_1d
-% TEST_PCE_EXPAND_1D Test the univariate PCE expansion 
+function unittest_pce_expand_1d
+% UNITTEST_PCE_EXPAND_1D Test the univariate PCE expansion
 %
-% Example (<a href="matlab:run_example test_pce_expand_1d">run</a>) 
-%    test_pce_expand_1d
+% Example (<a href="matlab:run_example unittest_pce_expand_1d">run</a>)
+%    unittest_pce_expand_1d
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -31,9 +31,9 @@ assert_equals( poc, [0,0,0,0,0,0,1,0], 'poly_coeffs' );
 
 
 %% Check that polynomials are approximated correctly
-for p=0:5 
+for p=0:5
     f={@power,{p},{2}};
-    [pcc,pci,poc]=pce_expand_1d(f,10); 
+    [pcc,pci,poc]=pce_expand_1d(f,10);
     pcc; pci; %#ok pcc, pci unused
     % only the coefficient for x should be 1, the rest zero
     poc_ex=zeros(1,11);
@@ -45,9 +45,9 @@ end
 mu=2;
 sigma=1;
 p=8;
-%h=@(x)(lognorm_stdnor(x,mu,sigma));
-h={@lognorm_stdnor,{mu,sigma},{2,3}};
-%h=inline( sprintf( 'lognorm_stdnor(x,%0.16e,%0.16e)', mu,sigma ), 'x' );
+%h=@(x)(lognormal_stdnor(x,mu,sigma));
+h={@lognormal_stdnor,{mu,sigma},{2,3}};
+%h=inline( sprintf( 'lognormal_stdnor(x,%0.16e,%0.16e)', mu,sigma ), 'x' );
 pcc=pce_expand_1d(h,p);
 
 ln_mean=exp(mu+sigma^2/2);
@@ -72,7 +72,7 @@ assert_equals( var_pce, var_ex, 'exp_variance', struct('reltol', 1e-6) );
 
 %% Lognormal distribution: comparison between analytical and MC solution
 N=10000;
-h={@lognorm_stdnor,{3,0.5},{2,3}};
+h={@lognormal_stdnor,{3,0.5},{2,3}};
 lognor_data=funcall(h,randn(N*10,1));
 pcc_int=pce_expand_1d(h,5);
 %pcc_mc=pce_expand_1d_mc(h,5);

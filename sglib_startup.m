@@ -11,16 +11,16 @@
 % Example (<a href="matlab:run_example sglib_startup">run</a>)
 %   sglib_startup
 %
-% See also STARTUP, RUN, SGLIB_ADDPATH 
+% See also STARTUP, RUN, SGLIB_ADDPATH
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -35,7 +35,7 @@ appdata=struct();
 basepath=fileparts( mfilename('fullpath') );
 addpath( basepath );
 
-% 
+%
 is_octave=exist('octave_config_info', 'builtin');
 inc_experimental=false;
 sglib_addpath( basepath, true, inc_experimental, is_octave );
@@ -45,7 +45,7 @@ appdata.basepath=basepath;
 appdata.settings_file=[basepath '/sglib.settings' ];
 sglib_set_appdata( appdata );
 
-% do some init stuff depending on matlab/octave version 
+% do some init stuff depending on matlab/octave version
 if isoctave
 else
     %isversion
@@ -55,7 +55,7 @@ end
 appdata.settings=sglib_settings( 'load' );
 
 % show greeting if user wants that
-if appdata.settings.show_greeting 
+if appdata.settings.show_greeting
     fprintf( '\nSGLIB v0.9\n' );
     fprintf( 'Type SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
     fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n\n' );

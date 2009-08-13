@@ -12,7 +12,7 @@ function A=linear_operator( M, varargin )
 %   use_lu: true, {false}
 %     Computes the LU decomposition and stores the result in the solve part
 %     of the cell array acceleration future calls to LINEAR_OPERATOR_SOLVE.
-%   
+%
 %
 % Example (<a href="matlab:run_example linear_operator">run</a>)
 %     linop=linear_operator([1, 2, 3; 3, 4, 6; 5, 10, 8]);
@@ -20,21 +20,21 @@ function A=linear_operator( M, varargin )
 %     [m,n]=linear_operator_size( linop );
 %
 %     x=ones(n,1);
-%     y=linear_operator_apply( linop, x ); 
-%     x2=linear_operator_solve( linop, y ); 
-%     x3=linear_operator_solve( linop2, y ); 
+%     y=linear_operator_apply( linop, x );
+%     x2=linear_operator_solve( linop, y );
+%     x3=linear_operator_solve( linop2, y );
 %     disp(round([x,x2,x3]));
 %
 % See also LINEAR_OPERATOR_APPLY, LINEAR_OPERATOR_SIZE, LINEAR_OPERATOR_SOLVE, ISFUNCTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

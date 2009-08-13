@@ -2,10 +2,10 @@ function x=inv_reg_beta( y, a, b )
 % INV_REG_BETA Compute the inverse regularized beta function.
 %   X=INV_REG_BETA( Y, ALPHA, BETA ) computes the inverse regularized beta
 %   function which is used for the transformation of normally distributed
-%   random variables to beta distributed one. Y can be a vector and has to 
+%   random variables to beta distributed one. Y can be a vector and has to
 %   be in the range [0,1].
 %
-% Note 
+% Note
 %   If A or B are smaller than one the derivative of the betainc function
 %   has singularities at zero and one. If Y is very close to one of those
 %   singularities the algorithm might not converge or does so very slowly.
@@ -14,17 +14,17 @@ function x=inv_reg_beta( y, a, b )
 %   y=linspace(0,1);
 %   x=inv_reg_beta( y, 4, 2 );
 %   plot(x,y);
-% 
+%
 % See also BETA_STDNOR
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -98,11 +98,11 @@ while ~all(ok)
 
     % check whether some have converged
     notok=~ok;
-    
+
     dBx(notok)=x(notok).^(a-1).*(1-x(notok)).^(b-1)/bab;
     % Newton x_(n+1)=x_n - B_x/(dB_x/dx)
     x(notok)=x(notok)-(Bx(notok)-y(notok))./dBx(notok);
-    
+
     % check bounds
     ind=notok & ((x<x0) | (x>x1) | isnan(x));
     if num_it>40 && mod(num_it,2)==0
@@ -117,7 +117,7 @@ while ~all(ok)
     ind=(Bx-y<0);
     x0(ind&notok)=x(ind&notok);
     x1(~ind&notok)=x(~ind&notok);
-    
+
     ok=ok | abs(y-Bx)<1e-10;
     %fprintf( '%d: %d %d\n', num_it, sum(ok), length(find(ind1)) );
 end
@@ -127,8 +127,8 @@ end
 
 %TODO: maybe we should try this one (from gsl)
 % /*
-%  * Invert the Beta distribution. 
-%  * 
+%  * Invert the Beta distribution.
+%  *
 %  * References:
 %  *
 %  * Roger W. Abernathy and Robert P. Smith. "Applying Series Expansion
@@ -140,7 +140,7 @@ end
 %  * Cornish-Fisher type," Annals of Mathematical Statistics, volume 39,
 %  * number 8, August 1968, pages 1264-1273.
 %  */
-% 
+%
 % #include <config.h>
 % #include <math.h>
 % #include <gsl/gsl_math.h>
@@ -148,58 +148,58 @@ end
 % #include <gsl/gsl_sf_gamma.h>
 % #include <gsl/gsl_cdf.h>
 % #include <gsl/gsl_randist.h>
-% 
+%
 % #include "error.h"
-% 
+%
 % double
 % gsl_cdf_beta_Pinv (const double P, const double a, const double b)
 % {
 %   double x, mean;
-% 
+%
 %   if (P < 0.0 || P > 1.0)
 %     {
 %       CDF_ERROR ("P must be in range 0 < P < 1", GSL_EDOM);
 %     }
-% 
+%
 %   if (a < 0.0)
 %     {
 %       CDF_ERROR ("a < 0", GSL_EDOM);
 %     }
-% 
+%
 %   if (b < 0.0)
 %     {
 %       CDF_ERROR ("b < 0", GSL_EDOM);
 %     }
-% 
+%
 %   if (P == 0.0)
 %     {
 %       return 0.0;
 %     }
-% 
+%
 %   if (P == 1.0)
 %     {
 %       return 1.0;
 %     }
-% 
+%
 %   if (P > 0.5)
 %     {
 %       return gsl_cdf_beta_Qinv (1 - P, a, b);
 %     }
-% 
+%
 %   mean = a / (a + b);
-% 
+%
 %   if (P < 0.1)
 %     {
 %       /* small x */
-% 
+%
 %       double lg_ab = gsl_sf_lngamma (a + b);
 %       double lg_a = gsl_sf_lngamma (a);
 %       double lg_b = gsl_sf_lngamma (b);
-% 
+%
 %       double lx = (log (a) + lg_a + lg_b - lg_ab + log (P)) / a;
 %       x = exp (lx);             /* first approximation */
 %       x *= pow (1 - x, -(b - 1) / a);   /* second approximation */
-% 
+%
 %       if (x > mean)
 %         x = mean;
 %     }
@@ -208,26 +208,26 @@ end
 %       /* Use expected value as first guess */
 %       x = mean;
 %     }
-% 
+%
 %   {
 %     double lambda, dP, phi;
 %     unsigned int n = 0;
-% 
+%
 %   start:
 %     dP = P - gsl_cdf_beta_P (x, a, b);
 %     phi = gsl_ran_beta_pdf (x, a, b);
-% 
+%
 %     if (dP == 0.0 || n++ > 64)
 %       goto end;
-% 
+%
 %     lambda = dP / GSL_MAX (2 * fabs (dP / x), phi);
-% 
+%
 %     {
 %       double step0 = lambda;
 %       double step1 = -((a - 1) / x - (b - 1) / (1 - x)) * lambda * lambda / 2;
-% 
+%
 %       double step = step0;
-% 
+%
 %       if (fabs (step1) < fabs (step0))
 %         {
 %           step += step1;
@@ -237,7 +237,7 @@ end
 %           /* scale back step to a reasonable size when too large */
 %           step *= 2 * fabs (step0 / step1);
 %         };
-% 
+%
 %       if (x + step > 0 && x + step < 1)
 %         {
 %           x += step;
@@ -246,13 +246,13 @@ end
 %         {
 %           x = sqrt (x) * sqrt (mean);   /* try a new starting point */
 %         }
-% 
+%
 %       if (fabs (step0) > 1e-10 * x)
 %         goto start;
 %     }
-% 
+%
 %   end:
 %     return x;
-% 
+%
 %   }
 % }

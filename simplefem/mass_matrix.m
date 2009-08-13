@@ -2,7 +2,7 @@ function M=mass_matrix( elems, pos )
 % MASS_MATRIX Assemble the mass matrix.
 %   M=MASS_MATRIX( ELEMS, POS ) computes the mass_matrix for the triangular
 %   or tetrahedral elements specified in ELEMS with nodes specified in POS.
-%   Linear nodal ansatz functions are used here. 
+%   Linear nodal ansatz functions are used here.
 
 % TODO: implement for 3d
 
@@ -24,14 +24,14 @@ switch d
     otherwise
         error('probably you have to pass your position vector transposed...');
 end
-        
+
 
 for t=1:T
     nodes=elems(t,:);
     coords=pos(nodes,:);
 
     MT=elementMass( coords, xi, w );
-   
+
     M(nodes,nodes)=M(nodes,nodes)+MT;
 end
 M=0.5*(M+M');
@@ -55,7 +55,7 @@ end
 % TODO: what is the best thing to do if det J<0??
 if det(J)<=0
     warning( 'mass_matrix:neg_det', 'negative determinant detected' );
-end 
+end
 
 phi_xi=zeros(length(w),n_dof);
 for i=1:n_dof

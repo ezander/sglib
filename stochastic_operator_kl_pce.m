@@ -128,7 +128,7 @@ K_ab=assemble_alpha_beta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );
 %     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
 % end
 % m_iota_k=size(I_k,1);
-% 
+%
 % hermite_triple_fast( max([I_u(:);I_k(:)] ) );
 % m_alpha_u=size(I_u,1);
 % K_ab=cell(m_alpha_u,m_alpha_u);

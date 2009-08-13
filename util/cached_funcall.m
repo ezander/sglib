@@ -13,7 +13,7 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   values, which must be specified, since there is no way to get this
 %   information in matlab, and furthermore, one function can have a
 %   different number of output arguments, and even a different behaviour
-%   depending on that number. 
+%   depending on that number.
 %
 % Options:
 %   silent: {true}, false
@@ -25,12 +25,12 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %     parameters are replaced by the function name and the stringified
 %     parameters.
 %   extra_params: {{}}
-%     Parameters whose values should not affect recomputation because they do 
-%     not affect the result of the computation e.g. control parameters for 
+%     Parameters whose values should not affect recomputation because they do
+%     not affect the result of the computation e.g. control parameters for
 %     progress display.
 %
 % Example (<a href="matlab:run_example cached_funcall">run</a>)
-%     filename=[tempname, '.mat']; 
+%     filename=[tempname, '.mat'];
 %     ver=1;
 %     options={'silent', false};
 %     % should compute new values only once
@@ -51,12 +51,12 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -71,7 +71,7 @@ check_unsupported_options( options, mfilename );
 
 % Setting the following to true shouldn't be necessary, since TIC with
 % return value was introduced.
-use_cputime=false; 
+use_cputime=false;
 
 % if path is given and filename is not absolute => create path
 if ~isempty( path ) && filename(1)~='/'
@@ -82,7 +82,7 @@ if ~isempty( path ) && filename(1)~='/'
 end
 
 % load saved structure from file if possible
-%if exist( filename, 'file' ) 
+%if exist( filename, 'file' )
 %
 try
     s=load( filename );
@@ -109,7 +109,7 @@ if ~silent && ~isempty(message)
     str_func=char(func);
     str_params=strtrim(evalc('disp({params{:},extra_params{:}})'));
     str=sprintf( message, str_func, str_params );
-    fprintf( [str '\n'] ); 
+    fprintf( [str '\n'] );
 end
 if show_timings
     if use_cputime
@@ -126,7 +126,7 @@ if show_timings
     else
         t=toc(th);
     end
-    fprintf( '(%g s) \n', t ); 
+    fprintf( '(%g s) \n', t );
 end
 
 varargout=data;
