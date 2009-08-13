@@ -28,28 +28,34 @@ title:
 
 None.
 
-<h2>Install</h2>
-<p>See the wiki.</p>
+## Install
+
+See the wiki.
 
 
-<h2>License</h2>
-<p><a href="http://www.gnu.org/licenses/gpl-3.0.html">GPL v3.</a></p>
-<p>This program is free software: you can redistribute it and/or
- modify it under the terms of the GNU General Public License as
- published by the Free Software Foundation, either version 3 of the
- License, or (at your option) any later version.<br/>
+## License
 
- See the GNU General Public License for more details. You should have
- received a copy of the GNU General Public License along with this
- program.  If not,
- see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-</p>
+[GPL v3](http://www.gnu.org/licenses/gpl-3.0.html).
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.<br/>
+
+See the GNU General Public License for more details. You should have
+received a copy of the GNU General Public License along with this
+program.  If not,
+see http://www.gnu.org/licenses/.
+
   
-<h2>Authors</h2>
-<p>Elmar Zander (e.zander@tu-bs.de)<br/><br/>      </p>
+## Authors
 
-<h2>Contact</h2>
-<p> (elmar@zandere.de)<br/>      </p>
+Elmar Zander (e.zander@tu-bs.de)
+
+
+## Contact
+
+(elmar@zandere.de)
 
 
 <h2>Download</h2>
