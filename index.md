@@ -13,8 +13,7 @@ title:
   </a>
 </div>
 
-# <a href="http://github.com/ezander/sglib">sglib</a> 
-  <span class="small">by <a href="http://github.com/ezander">ezander</a></span>
+# <a href="http://github.com/ezander/sglib">sglib</a> <span class="small">by <a href="http://github.com/ezander">ezander</a></span>
   
 <div class="description">
   A Malab/Octave toolbox for stochastic Galerkin methods
