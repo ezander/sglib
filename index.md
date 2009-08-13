@@ -70,4 +70,4 @@ You can also clone the project with [Git](http://git-scm.com) by running:
 </div>
     
 
-[gpl-3.0]: http://www.gnu.org/licenses/gpl-3.0.html
+[gpl-3.0]: http://www.GNU.org/licenses/gpl-3.0.html
