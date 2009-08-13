@@ -29,14 +29,14 @@ switch d
     otherwise
         error('probably you have to pass your position vector transposed...');
 end
-        
+
 
 for t=1:T
     nodes=elems(t,:);
     coords=pos(nodes,:);
 
     KT=elementStiffness( coords, k(nodes), xi, w );
-   
+
     K(nodes,nodes)=K(nodes,nodes)+KT;
 end
 

@@ -16,7 +16,7 @@ check_unsupported_options( options, mfilename );
 % Trying to approximate a random variable X=B/A by PCE
 % b and a depending on the same basic gaussian random var i.e. a=a(xi),
 % b=b(xi). I should try the same with a=a(xi1) and b=b(xi2) then the pdf of
-% a\b will be the convolution of b and 1/a 
+% a\b will be the convolution of b and 1/a
 
 
 % Define the random variables A, B and X.
@@ -84,7 +84,7 @@ function x_iota=solve_sg_eq( a_alpha, b_beta )
 % sum( a_alpha  x_iota E[H_iota H_alpha H_delta])=sum( b_beta E[H_beta H_delta])
 % sum( a_alpha  x_iota Delta_iota_alpha_delta])=delta! b_delta
 % sum( a_alpha  x_iota Delta_iota_alpha_delta])=delta! b_delta
-% K*X=B with 
+% K*X=B with
 
 p=length(b_beta)-1;
 B=(factorial(0:p).*b_beta)';

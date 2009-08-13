@@ -1,6 +1,6 @@
 function Ki=apply_boundary_conditions_operator( K, P_I )
 % APPLY_BOUNDARY_CONDITIONS_OPERATOR Apply essential boundary conditions to operator.
-%   KI=APPLY_BOUNDARY_CONDITIONS_OPERATOR( K, P_I ) modifies the 
+%   KI=APPLY_BOUNDARY_CONDITIONS_OPERATOR( K, P_I ) modifies the
 %   linear operator (maybe matrix or tensor operator) to only act on the
 %   inner nodes. P_I is a matrix that project from the set of all nodes to
 %   the set of all inner nodes.
@@ -18,12 +18,12 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

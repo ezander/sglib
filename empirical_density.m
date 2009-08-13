@@ -3,7 +3,7 @@ function [x,p]=empirical_density(xl,n,nc,varargin)
 %   EMPIRICAL_DENSITY(XL,N,NC,VARARGIN) approximates the PDF underlying the
 %   given data in XL. N is the number of output points you want to have
 %   (should be some factor more than NC in order for the plot to look
-%   smooth, and depend further on the smoothness of the distribution.) 
+%   smooth, and depend further on the smoothness of the distribution.)
 %   NC is the number of points of the mesh, on which smooth interpolation
 %   of the approximate CDF is performed. If you have a non-smooth
 %   distribution you should choose higher values for NC (see Algorithm).
@@ -34,12 +34,12 @@ function [x,p]=empirical_density(xl,n,nc,varargin)
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -72,10 +72,10 @@ if ~isvector(xl)
         p=[p pn];
     end
 else
-    % Sort input values and associate values from [0,1], 
+    % Sort input values and associate values from [0,1],
     xl=sort(xl(:));
     yl=linspace(0,1,size(xl,1))';
-    
+
     % remove duplicates, giving the CDF in (xl,yl).
     ind=[diff(xl)~=0; true];
     xl=xl(ind);

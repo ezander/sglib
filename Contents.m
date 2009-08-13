@@ -33,15 +33,15 @@
 %   pce_covariance                        - Computes the covariance between variables in a PC
 %   pce_field_realization                 - Compute a realization of a random field given by a
 %   pce_transform_multi                   - Transform from local univariate to global
-%   pce_cdf                               - 
-%   pce_pdf                               - 
+%   pce_cdf                               -
+%   pce_pdf                               -
 %
 % Experimental PCE routines
-%   pce_divide                            - 
-%   pce_function                          - 
-%   pce_function_polyexp                  - 
+%   pce_divide                            -
+%   pce_function                          -
+%   pce_function_polyexp                  -
 %   pce_multiply                          - Multiply two PC expanded random variables.
-%   pce_sqrt                              - 
+%   pce_sqrt                              -
 %
 % Karhunen-Loeve expansion
 %   kl_expand                             - Perform Karhunen-Loeve expansion.
@@ -105,12 +105,12 @@
 %   cross_correlation                     - Compute cross correlation coefficient between functions.
 %   gram_schmidt                          - Perform Gram-Schmidt orthogonalization.
 %   revkron                               - Reversed Kronecker tensor product.
-%   solver_message                        - 
+%   solver_message                        -
 %
 % Stochastic Galerkin method
-%   stochastic_operator_kl_pce            - 
-%   stochastic_operator_pce               - 
-%   stochastic_pce_rhs                    - 
+%   stochastic_operator_kl_pce            -
+%   stochastic_operator_pce               -
+%   stochastic_pce_rhs                    -
 %   stochastic_pce_matrix                 - Compute the matrix that represents multiplication in the Hermite algebra.
 %
 % Tensor routines
@@ -125,11 +125,11 @@
 %   tensor_to_kl                          - Unpack a KL expansion from a tensor product.
 %   kl_to_tensor                          - Pack a KL expansion into tensor product format.
 %
-% Application of boundary conditions to tensors and tensor operators 
+% Application of boundary conditions to tensors and tensor operators
 %   boundary_projectors                   - Projection matrices on the set of inner and boundary nodes.
-%   apply_boundary_conditions_operator    - 
-%   apply_boundary_conditions_rhs         - 
-%   apply_boundary_conditions_solution    - 
+%   apply_boundary_conditions_operator    -
+%   apply_boundary_conditions_rhs         -
+%   apply_boundary_conditions_solution    -
 %
 % Tensor and linear operator routines
 %   linear_operator                       - Creates  a linear operator structure from a matrix.
@@ -143,8 +143,8 @@
 %   tensor_operator_solve_elementary      - Solves an equation with an elementary tensor operator.
 %
 % Solvers
-%   tensor_operator_solve_pcg             - 
-%   tensor_operator_solve_richardson      - 
+%   tensor_operator_solve_pcg             -
+%   tensor_operator_solve_richardson      -
 %
 % Miscellaneous system routines
 %   sglib_addpath                         - Set paths for sglib.
@@ -161,7 +161,7 @@
 % UP THE CONTENTS DISPLAY.
 % Test and demo functions/scripts
 %   testsuite                             - Run all unit tests in this directory.
-%   unittest_pce_expand_1d                    - Test the univariate PCE expansion 
+%   unittest_pce_expand_1d                    - Test the univariate PCE expansion
 %   unittest_multiindex                       - Test multi-index related functions.
 %   unittest_moments                          - Test the moment computing functions.
 %   unittest_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
@@ -193,19 +193,19 @@
 %   unittest_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
 %   unittest_tkron                            - UNITTEST_REVKRON Test the REVKRON and function.
 %   unittest_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
-%   unittest_tensor_operator_solve_richardson - 
+%   unittest_tensor_operator_solve_richardson -
 
 
 
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

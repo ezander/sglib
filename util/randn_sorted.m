@@ -4,7 +4,7 @@ function gam=randn_sorted( Ns, unsort, correction )
 %   samples which are normally (i.e. N(0,1)) distributed. This vector is
 %   usually sorted (by construction) and not really meant as "random
 %   numbers", but rather for functions where a sample vector with normal
-%   distribution is needed. 
+%   distribution is needed.
 %
 % Example (<a href="matlab:run_example randn_sorted">run</a>)
 %   disp(randn_sorted( 30 )');
@@ -14,12 +14,12 @@ function gam=randn_sorted( Ns, unsort, correction )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -39,7 +39,7 @@ end
 
 switch correction
     case 0 % no correction
-    case 1 % empirical correction 
+    case 1 % empirical correction
         p=[0.00108783445376  -0.25098458013272  -0.31386105173971];
         va=1-exp(polyval(p,(log(Ns).^1.5)));
         gam=gam/sqrt(va);
@@ -48,8 +48,8 @@ switch correction
         gam=(gam-m)/sqrt(v);
 end
 
-% sorting - gam is of course already sorted if we want so have a random 
-% vector we should "unsort" it... 
+% sorting - gam is of course already sorted if we want so have a random
+% vector we should "unsort" it...
 if nargin>=2 && ~unsort
     gam=gam(randperm(Ns));
 end

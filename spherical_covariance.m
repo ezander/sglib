@@ -5,7 +5,7 @@ function c=spherical_covariance( x1, x2, l, sigma, smooth )
 %   only contains distances. Otherwise, X1 and X2 can contain lists of
 %   points, where the first index in X1/X2 corresponds to the number of the
 %   point and the second index to the dimension, i.e. X1(i,:) is a row
-%   vector containing the coordinates of point x_i. 
+%   vector containing the coordinates of point x_i.
 %
 % Example (<a href="matlab:run_example spherical_covariance">run</a>)
 %   x1=rand(10,2);
@@ -20,12 +20,12 @@ function c=spherical_covariance( x1, x2, l, sigma, smooth )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -61,5 +61,5 @@ if smooth>0
     d=sqrt(d.^2+smooth^2)-smooth;
 end
 
-c = sigma^2*(1 - 1.5*d + 0.5*d.^3); 
+c = sigma^2*(1 - 1.5*d + 0.5*d.^3);
 c(d>1) = 0;

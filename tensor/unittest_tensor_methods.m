@@ -1,19 +1,19 @@
 function unittest_tensor_methods
 % UNITTEST_TENSOR_METHODS Test the TENSOR functions.
 %
-% Example (<a href="matlab:run_example unittest_tensor_methods">run</a>) 
+% Example (<a href="matlab:run_example unittest_tensor_methods">run</a>)
 %    unittest_tensor_methods
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -74,7 +74,7 @@ assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
 
 % testing function TENSOR_SCALAR_PRODUCT
 
-% implicitly test through tensor_norm 
+% implicitly test through tensor_norm
 % TODO: test tensor_scalar_product explicitly
 
 assert_set_function( 'tensor_scalar_product' );

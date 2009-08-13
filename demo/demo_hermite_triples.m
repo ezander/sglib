@@ -3,12 +3,12 @@
 
 %%
 t=zeros(6,6,3);
-for k=0:2; 
-    for i=0:5; 
-        for j=0:5; 
-            t(i+1,j+1,k+1)=hermite_triple_product(i,j,k); 
-        end; 
-    end; 
+for k=0:2;
+    for i=0:5;
+        for j=0:5;
+            t(i+1,j+1,k+1)=hermite_triple_product(i,j,k);
+        end;
+    end;
 end
 
 % should all give one
@@ -41,13 +41,13 @@ fprintf('Size of multiindices: %d\n', length(a) );
 for i=1:8
     N=round(10^(0.5*(i-1)));
     fprintf('Trial %d (std.): N=%5d %d,  ',i,N);
-    tic; 
-    for j=1:N; hermite_triple_product( a,b,c ); end; 
+    tic;
+    for j=1:N; hermite_triple_product( a,b,c ); end;
     t1=toc;
     fprintf('elapsed time: %9.6f seconds (%9.6f ms per cycle) \n',t1, t1/N*1000);
-    tic; 
+    tic;
     fprintf('Trial %d (fast): N=%5d %d,  ',i,N);
-    for j=1:N; hermite_triple_fast( a,b,c ); end; 
+    for j=1:N; hermite_triple_fast( a,b,c ); end;
     t2=toc;
     fprintf('elapsed time: %9.6f seconds (%9.6f ms per cycle) \n',t2, t2/N*1000);
 end

@@ -1,19 +1,19 @@
 function unittest_mass_matrix
 % UNITTEST_MASS_MATRIX Test the mass_matrix function.
 %
-% Example (<a href="matlab:run_example unittest_mass_matrix">run</a>) 
+% Example (<a href="matlab:run_example unittest_mass_matrix">run</a>)
 %    unittest_mass_matrix
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -90,6 +90,6 @@ s=[0.00539227889849   0.00269613944925   0.00269613944925   0.00685723155134   0
    0.00759078867282   0.02334707438813   0.15441715735138   0.00700654475469   0.00700654475469   0.00700654475469 ...
    0.01401308950938 ]';
 M_ex=accumarray([i,j],s);
- 
+
 M=full( mass_matrix( elems, x ) );
-assert_equals( M, M_ex, 'multielem2d' ); 
+assert_equals( M, M_ex, 'multielem2d' );

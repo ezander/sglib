@@ -2,7 +2,7 @@ function subtitle( str, varargin )
 % SUBTITLE Create a title over multiple subplots.
 %   SUBTITLE(STR, VARARGIN) plots a title over all subplots generated with
 %   the SUBPLOT command (in contrast the TITLE command only makes a title
-%   for each subplot separately). 
+%   for each subplot separately).
 %
 % Options:
 %   position:  {0.97}
@@ -11,24 +11,24 @@ function subtitle( str, varargin )
 %   interpreter:  tex, {latex}, none
 %     If set to tex or latex the title text is interpreted according to
 %     tex/latex rules.
-% 
+%
 % Example (<a href="matlab:run_example subtitle">run</a>)
 %     x=linspace(0,2*pi);
 %     clf;
 %     subplot(1,2,1); plot(x,sin(x)); title('Sin'); axis square;
 %     subplot(1,2,2); plot(x,cos(x)); title('Cos'); axis square;
 %     subtitle('Trigonometric functions');
-% 
+%
 % See also SUBPLOT, TITLE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

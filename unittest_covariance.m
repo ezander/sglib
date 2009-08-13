@@ -1,19 +1,19 @@
 function unittest_covariance
 % UNITTEST_COVARIANCE Test covariance related functions.
 %
-% Example (<a href="matlab:run_example unittest_covariance">run</a>) 
+% Example (<a href="matlab:run_example unittest_covariance">run</a>)
 %   unittest_covariance
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -112,7 +112,7 @@ M=[];
 
 h_u=@(x)(lognormal_stdnor( x, 2, 0.5) );
 u_i=pce_expand_1d(h_u,p_u);
-[mean_u,var_u]=pce_moments( u_i ); 
+[mean_u,var_u]=pce_moments( u_i );
 mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 

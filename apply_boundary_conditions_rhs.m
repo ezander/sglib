@@ -1,6 +1,6 @@
 function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 % APPLY_BOUNDARY_CONDITIONS_RHS Apply essential boundary conditions to right hand side.
-%   FI=APPLY_BOUNDARY_CONDITIONS_RHS( K, F, G, P_I, P_B ) modifies the 
+%   FI=APPLY_BOUNDARY_CONDITIONS_RHS( K, F, G, P_I, P_B ) modifies the
 %   right hand side F of a linear equation by projecting only to the inner
 %   nodes and incorporating the effect of the essential boundary condition
 %   in G. P_I is a matrix that project from the set of all nodes to
@@ -22,12 +22,12 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

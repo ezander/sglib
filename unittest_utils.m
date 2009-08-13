@@ -1,19 +1,19 @@
 function unittest_utils
 % UNITTEST_UTILS Test utils related functions.
 %
-% Example (<a href="matlab:run_example unittest_utils">run</a>) 
+% Example (<a href="matlab:run_example unittest_utils">run</a>)
 %    unittest_utils
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -46,6 +46,6 @@ dir_list  = lower(path);
 isoctave_ex = (length( findstr(dir_list, 'octave') )>0);
 ismatlab_ex = (length( findstr(dir_list, 'matlab') )>0);
 
-assert_equals( isoct, isoctave_ex, 'second_check_oct' ); 
-assert_equals( ismat, ismatlab_ex, 'second_check_oct' ); 
+assert_equals( isoct, isoctave_ex, 'second_check_oct' );
+assert_equals( ismat, ismatlab_ex, 'second_check_oct' );
 

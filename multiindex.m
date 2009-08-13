@@ -1,10 +1,10 @@
 function I_mp=multiindex(m,p,combine,varargin)
 % MULTIINDEX Generate a table of multiindices.
-%   I_MP=MULTIINDEX(M,P,COMBINE,OPTIONS) generate a table of multiindices using 
+%   I_MP=MULTIINDEX(M,P,COMBINE,OPTIONS) generate a table of multiindices using
 %   the standard block scheme i.e. generating all multi-indices up to
 %   degree P in all M (random) variables. (Limitation to certain
 %   limiters/norms will be added later). If combine is not specified or
-%   evaluates to true then the homogeneous multiindices will be combined 
+%   evaluates to true then the homogeneous multiindices will be combined
 %   into one large (sparse) array I_MP. Otherwise I_MP is a cell array
 %   where I_MP{q+1} represents the multiindices with degree q.
 %
@@ -12,22 +12,22 @@ function I_mp=multiindex(m,p,combine,varargin)
 %   use_sparse: true, {false}
 %     Return the result as a sparse array.
 %   lex_ordering: true, {false}
-%     Returns the result in lexicographical ordering (like e.g. A. Keese) instead 
-%     of ordering by degree first (this option is obviously ignored if COMBINE is 
+%     Returns the result in lexicographical ordering (like e.g. A. Keese) instead
+%     of ordering by degree first (this option is obviously ignored if COMBINE is
 %     false)
 %
 % Example (<a href="matlab:run_example multiindex">run</a>)
 %   % To generate the polynomial chaos for 2 random variables up to
-%   % polynomial order 4 
+%   % polynomial order 4
 %   I=multiindex(2,4);
 %   disp(I);
 %   % Get output as sparse array
-%   I=multiindex(2,4,[],'use_sparse',true); 
+%   I=multiindex(2,4,[],'use_sparse',true);
 %   disp(I); % convert from sparse
-% 
+%
 %   % To generate the polynomial chaos for 5 random variables up to
-%   % polynomial order 3, using only the homogeneous chaos of order 3 
-%   I=multiindex(5,3,false); 
+%   % polynomial order 3, using only the homogeneous chaos of order 3
+%   I=multiindex(5,3,false);
 %   I3=full(I{3+1});
 %   disp(I3)
 %
@@ -35,12 +35,12 @@ function I_mp=multiindex(m,p,combine,varargin)
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -59,7 +59,7 @@ check_unsupported_options( options, mfilename );
 % The (old) idea of the algorithm is the following:
 % We do a recursion on the number of random variables, not on the order (in
 % my opinion its easier and faster that way). For just one random variable
-% the multiindices are then trivial (0..p). For m+1 random variables we 
+% the multiindices are then trivial (0..p). For m+1 random variables we
 % take the result from m random variables, which are stored by order, and
 % for each order of the new set take all sets from m with lower order and
 % add the remaining difference as last column. At the end we combine all
@@ -95,7 +95,7 @@ end
 for k=1:m
     % Backup the old multiindex set for later use.
     I_k1p=I_kp;
-    
+
     % Get number of nonzero elements and number for multiindex set I_mp
     % nonzero and count are arrays that contain the respective values
     % indexed by order of the homogeneous indices (or polynomials). Then

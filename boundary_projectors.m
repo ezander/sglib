@@ -18,7 +18,7 @@ function [P_I,P_B]=boundary_projectors( bnd, n )
 %   % method 1
 %   I_B=P_B'*P_B;
 %   I_I=P_I'*P_I;
-%   Ks=I_I*K*I_I+I_B;         % modify operator 
+%   Ks=I_I*K*I_I+I_B;         % modify operator
 %   fs=I_I*(f-K*I_B*g)+I_B*g; % modify RHS
 %   u=Ks\fs;                  % now solve with mod operator
 %
@@ -32,12 +32,12 @@ function [P_I,P_B]=boundary_projectors( bnd, n )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

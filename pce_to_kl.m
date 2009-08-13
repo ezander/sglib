@@ -16,7 +16,7 @@ function [mu_r_i,r_i_k,rho_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, m_
 % with PCE expanded random variables. I.e. first we have a field u(x,omega)
 % given by:
 %  u(x,omega)=Sum_alpha u_alpha(x) H_alpha(xi(omega))
-% and want to transform it into 
+% and want to transform it into
 %  u(x,omega)=mu_u(x) + Sum_u f_
 if ~exist('G_N','var'); G_N=[]; end
 if ~exist('G_Phi','var'); G_Phi=[]; end
@@ -61,7 +61,7 @@ if ~isempty(G_N)
     U=L_N\U;
 end
 
-% Transform PCE coefficients back to unnormalized Hermite polynomials 
+% Transform PCE coefficients back to unnormalized Hermite polynomials
 rho_k_alpha=normalize_pce( V', I_r, true );
 
 if nargout<5
@@ -88,7 +88,7 @@ if sparse_svd
 else
     [U,S,V]=svd( A, 'econ' );
     normS=norm(diag(S));
-    if normS==0; 
+    if normS==0;
         relerr=0;
     else
         relerr=norm(diag(S(k+1:end,k+1:end)))/norm(diag(S));

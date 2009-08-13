@@ -1,7 +1,7 @@
 function assert_equals( actual, expected, assert_id, varargin )
 % ASSERT_EQUALS Check the equality of acutal and expected values.
 %   ASSERT_EQUALS( ACTUAL, EXPECTED, ASSERT_ID, OPTIONS ) checks that
-%   ACTUAL and EXPECTED match in type, size and value. 
+%   ACTUAL and EXPECTED match in type, size and value.
 %
 % Note: Row and column vectors don't match. If you want them to be treated
 %   as equal convert to one form.
@@ -13,12 +13,12 @@ function assert_equals( actual, expected, assert_id, varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -46,8 +46,8 @@ end
 % but only if it's not of class string (then there can be a more meaningful
 % message to the user)
 if ndims(actual)~=ndims(expected) || (any( size(actual)~=size(expected) ) && ~ischar(actual))
-    size_actual=print_vector( '%d', size(actual) ); 
-    size_expected=print_vector('%d', size(expected) ); 
+    size_actual=print_vector( '%d', size(actual) );
+    size_expected=print_vector('%d', size(expected) );
     assert( false, sprintf( 'size doesn''t match: %s~=%s', size_actual, ...
         size_expected ), assert_id );
     return;
@@ -56,7 +56,7 @@ end
 %TODO: if empty array assertion is ok, return
 
 % Get current options
-[stats,options]=assert(); %#ok 
+[stats,options]=assert(); %#ok
 
 % then do equality checking based on class
 switch class(actual)
@@ -83,10 +83,10 @@ function assert_equals_double( actual, expected, assert_id, curr_options, option
 % Get abstol and reltol
 abstol=get_option( curr_options, 'abstol', options );
 reltol=get_option( curr_options, 'reltol', options );
-if ~isscalar(abstol) && any(size(abstol)~=size(actual)) 
+if ~isscalar(abstol) && any(size(abstol)~=size(actual))
     error( 'assert_equals:options', 'if abstol is a vector then it must have the same size as the value vector' );
 end
-if ~isscalar(reltol) && any(size(reltol)~=size(actual)) 
+if ~isscalar(reltol) && any(size(reltol)~=size(actual))
     error( 'assert_equals:options', 'if reltol is a vector then it must have the same size as the value vector' );
 end
 
@@ -99,13 +99,13 @@ if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %g~=%g', actual, expected );
         assert( false, msg, assert_id );
-    elseif false && isvector(actual) && length(actual)<=4 
+    elseif false && isvector(actual) && length(actual)<=4
         % I think this kind of output isn't so helpful?!
         msg=sprintf( 'values don''t match %s~=%s', print_vector('%g', actual), print_vector('%g', expected) );
         assert( false, msg, assert_id );
     else
         linind=find(~comp);
-        if isvector(comp) 
+        if isvector(comp)
             ind=linind(:);
         else
             % here comes a bit tricky matlab cell array/matrix
@@ -136,7 +136,7 @@ end
 function assert_equals_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
 % ASSERT_EQUALS_CELL Assert equality for cell arrays.
 
-%TODO: very crude implementation for cell arrays 
+%TODO: very crude implementation for cell arrays
 
 for i=1:size(actual,1)
     for j=1:size(actual,2)
@@ -158,13 +158,13 @@ if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %d~=%d (logical)', actual, expected );
         assert( false, msg, assert_id );
-    elseif false && isvector(actual) && length(actual)<=4 
+    elseif false && isvector(actual) && length(actual)<=4
         % I think this kind of output isn't so helpful?!
         msg=sprintf( 'values don''t match %s~=%s (logical)', print_vector('%d', actual), print_vector('%d', expected) );
         assert( false, msg, assert_id );
     else
         linind=find(~comp);
-        if isvector(comp) 
+        if isvector(comp)
             ind=linind(:);
         else
             % here comes a bit tricky matlab cell array/matrix

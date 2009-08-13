@@ -20,12 +20,12 @@ function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d_mc( f, p )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -39,7 +39,7 @@ if nargout>1
     poly_coeff=zeros(1,p+1);
 end
 
-if isfunction(f) 
+if isfunction(f)
     Ns=100000;
     gam=randn(Ns,1);
     fgam=f(gam);
@@ -47,7 +47,7 @@ else
     fgam=sort(f(:));
     Ns=length(fgam);
     if 0
-        % this one is a bit faster then using the inverse cdf on the 
+        % this one is a bit faster then using the inverse cdf on the
         % interval (0,1), but the other one is more exact and the time
         % difference doesn't seem to be crucial
         gam=sort(randn(Ns,1));

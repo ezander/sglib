@@ -6,12 +6,12 @@ function ok=check_unsupported_options( options, mfilename )
 %   function provided a nice way to inform the user of such mistakes (most
 %   probably spelling mistakes). CHECK_UNSUPPORTED_OPTIONS returns true, if
 %   there were no fiels left over in OPTIONS, and false otherwise. In the
-%   latter case a warning about unsupported options for function MFILENAME 
-%   is issued. 
+%   latter case a warning about unsupported options for function MFILENAME
+%   is issued.
 %
 %   Note 1: for this method to work you have to call GET_OPTION with two
 %   output arguments, so that used options are eliminated from the options
-%   structure. 
+%   structure.
 %
 %   Note 2: pass mfilename literally for the second argument (i.e. pass the
 %   return value of the buildin function 'mfilename' which tells you the
@@ -33,12 +33,12 @@ function ok=check_unsupported_options( options, mfilename )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

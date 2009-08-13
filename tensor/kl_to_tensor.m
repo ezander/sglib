@@ -1,8 +1,8 @@
 function R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha )
 % KL_TO_TENSOR Pack a KL expansion into tensor product format.
 %   R=KL_TO_TENSOR( MU_R_J, R_J_I, RHO_I_ALPHA ) packs the KL expansion
-%   contained in MU_R_J, R_J_I and RHO_I_ALPHA into the tensor product R. 
-%   MU_R_J contains the mean of the random field or stochastic process, 
+%   contained in MU_R_J, R_J_I and RHO_I_ALPHA into the tensor product R.
+%   MU_R_J contains the mean of the random field or stochastic process,
 %   R_J_I contains the coefficients of the KL eigenfunctions with respect
 %   to the ansatz functions used, and RHO_I_ALPHA contains the PC expansion
 %   of the corresponding KL random variable.
@@ -11,12 +11,12 @@ function R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

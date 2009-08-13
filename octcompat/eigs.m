@@ -13,7 +13,7 @@ else
   m=varargin{3};
   %L=chol(B);
   [V,D]=eig(B\A);
-end 
+end
 
 d=diag(D);
 [d,i]=sort(d,'descend');

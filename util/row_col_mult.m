@@ -1,4 +1,4 @@
-function B=row_col_mult( A, x ) 
+function B=row_col_mult( A, x )
 % ROW_COL_MULT Multiply a matrix column- or row-wise with a vector.
 %   B=ROW_COL_MULT( A, X ) multiplies the matrix A with the vector X in a
 %   row or column wise fashion, depending on the shape of the vector X. If
@@ -14,23 +14,23 @@ function B=row_col_mult( A, x )
 %   A=[1 2; 3 4];
 %   row_col_mult(A,[1, 2]) % column-wise mult; prints [1 4; 3 8]
 %   row_col_mult(A,[1; 2]) % row-wise mult; prints [1 2; 6 8]
-% 
+%
 % See also TIMES, MTIMES
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if ~isvector(x) 
+if ~isvector(x)
     error('row_col_mult: input argument x is not a vector');
 end
 

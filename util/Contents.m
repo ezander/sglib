@@ -18,7 +18,7 @@
 %   check_unsupported_options - Check whether unsupported options were passed.
 %
 % Settings mechanism
-%   settings_dialog           - 
+%   settings_dialog           -
 %
 % Wait mechanism
 %   userwait                  - Wait for the user to press a button or klick the mouse.
@@ -49,7 +49,7 @@
 % Miscellaneous
 %   merge_cells               - Merges two cell arrays with specified positions.
 %   row_col_mult              - Multiply a matrix column- or row-wise with a vector.
-%   sort_triple               - Sorts an index triple (obsolete). 
+%   sort_triple               - Sorts an index triple (obsolete).
 %
 
 
@@ -67,12 +67,12 @@
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

@@ -1,19 +1,19 @@
 function unittest_gaussian_covariance
 % UNITTEST_GAUSSIAN_COVARIANCE Test gaussian_covariance functions.
 %
-% Example (<a href="matlab:run_example unittest_gaussian_covariance">run</a>) 
+% Example (<a href="matlab:run_example unittest_gaussian_covariance">run</a>)
 %    unittest_gaussian_covariance
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

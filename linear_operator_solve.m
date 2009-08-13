@@ -12,7 +12,7 @@ function x=linear_operator_solve( A, y )
 %     L=linear_operator( M );
 %     y=ones(size(M,1),1);
 %     x1=M\y;
-%     x2=linear_operator_solve( M, y); % uses 
+%     x2=linear_operator_solve( M, y); % uses
 %     x3=linear_operator_solve( L, y); % uses L{3}
 %     x4=linear_operator_solve( L(1:2), y); % uses cgs with L{2}
 %     fprintf( '%g %g %g\n', norm(x1-x2), norm(x1-x3), norm(x1-x4) );
@@ -21,19 +21,19 @@ function x=linear_operator_solve( A, y )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 if isnumeric(A)
-    % A is a matrix 
+    % A is a matrix
     x=A\y;
 elseif iscell(A) && length(A)>=3 && isfunction(A{3})
     % A is an operator and secondelement contains function returning the
@@ -52,7 +52,7 @@ elseif iscell(A) && isfunction(A{2})
         % TODO: modify itermsg to work here
         warning( 'linear_operator_solve:no_convergence', 'cgs did not converge...' );
     end
-    
+
 else
     error( 'linear_operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end
