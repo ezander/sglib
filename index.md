@@ -37,7 +37,7 @@ See the [wiki](http://wiki.github.com/ezander/sglib).
 
 ## License
 
-[GPL v3](http://www.gnu.org/licenses/gpl-3.0.html).
+[GPL v3][gpl-3.0](http://www.gnu.org/licenses/gpl-3.0.html).
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -69,3 +69,5 @@ You can also clone the project with [Git](http://git-scm.com) by running:
   : <a href="http://github.com/ezander/sglib">ezander/sglib</a>
 </div>
     
+
+[gpl-3.0]: http://www.gnu.org/licenses/gpl-3.0.html
