@@ -46,7 +46,7 @@ your option) any later version.<br/>
 
 See the GNU General Public License for more details. You should have
 received a copy of the GNU General Public License along with this
-program.  If not, see [][licenses].
+program.  If not, see http://www.gnu.org/licenses/.
 
   
 ## Authors
@@ -56,11 +56,9 @@ Elmar Zander (e.zander@tu-bs.de)
 
 ## Download
 
-You can download this project in either
-<a href="http://github.com/ezander/sglib/zipball/master">zip</a> or
-<a href="http://github.com/ezander/sglib/tarball/master">tar</a> formats.
+You can download this project in either [zip][] or [tar][] formats.
 
-You can also clone the project with [Git](http://git-scm.com) by running:
+You can also clone the project with [Git][] by running:
 <pre>$ git clone git://github.com/ezander/sglib</pre>
   
 <div class="footer">
@@ -69,6 +67,8 @@ You can also clone the project with [Git](http://git-scm.com) by running:
 </div>
     
 
-[gpl-3.0]: http://www.GNU.org/licenses/gpl-3.0.html
+[gpl-3.0]: http://www.gnu.org/licenses/gpl-3.0.html
 [wiki]: http://wiki.github.com/ezander/sglib
-[licenses]: http://www.gnu.org/licenses/
+[zip]: http://github.com/ezander/sglib/zipball/master
+[tar]: http://github.com/ezander/sglib/tarball/master
+[git]: http://git-scm.com
