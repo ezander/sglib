@@ -19,14 +19,16 @@ title:
   A Malab/Octave toolbox for stochastic Galerkin methods
 </div>
 
-<p>TEST SGLib is a toolbox for Matlab helping in the development of
-  stochastic Galerkin and (to a lesser part as yet) stochastic
-  collocation methods. More or less extensive documentation is
-  available in toolbox itself. </p>
+SGLib is a toolbox for Matlab helping in the development of stochastic
+Galerkin and (to a lesser part as yet) stochastic collocation
+methods. More or less extensive documentation is available in toolbox
+itself.
+
 
 ## Dependencies
 
 None.
+
 
 ## Install
 
@@ -53,24 +55,17 @@ see http://www.gnu.org/licenses/.
 Elmar Zander (e.zander@tu-bs.de)
 
 
-## Contact
+## Download
 
-(elmar@zandere.de)
+You can download this project in either
+<a href="http://github.com/ezander/sglib/zipball/master">zip</a> or
+<a href="http://github.com/ezander/sglib/tarball/master">tar</a> formats.
 
-
-<h2>Download</h2>
-  <p>
-    You can download this project in either
-    <a href="http://github.com/ezander/sglib/zipball/master">zip</a> or
-    <a href="http://github.com/ezander/sglib/tarball/master">tar</a> formats.
-  </p>
-  <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-    by running:
-    <pre>$ git clone git://github.com/ezander/sglib</pre>
-  </p>
+You can also clone the project with [Git](http://git-scm.com) by running:
+<pre>$ git clone git://github.com/ezander/sglib</pre>
   
-  <div class="footer">
-    get the source code on GitHub
-    : <a href="http://github.com/ezander/sglib">ezander/sglib</a>
-  </div>
+<div class="footer">
+  get the source code on GitHub
+  : <a href="http://github.com/ezander/sglib">ezander/sglib</a>
+</div>
     
