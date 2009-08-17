@@ -2,14 +2,14 @@ function d=tensor_norm( T, meth, M1, M2 )
 % TENSOR_NORM Compute the norm of a sparse tensor.
 %   D=TENSOR_NORM( T, METH ) computes the norm of the sparse tensor product
 %   T using the method specified in METH.
-%   
+%
 %   Methods to compute the tensor norm:
 %     'orth': assuming the column vectors in the components of T are
 %       orthogonal the tensor norm is just the sum of the products of the
-%       sum of squares of each pair of column vectors (i.e. assume the 
-%       tensor product is given as sum_i u_i x v_i then the norm is just 
+%       sum of squares of each pair of column vectors (i.e. assume the
+%       tensor product is given as sum_i u_i x v_i then the norm is just
 %       sqrt( sum_i u_i^2 v_i^2, but *only* if <u_i,u_j>=0 and <v_i,v_j>=0
-%       for i~=j) 
+%       for i~=j)
 %     'svd' (default): uses the sparse svd for computation of the norm
 %     'full': first computes the full tensor product and then computes the
 %       norm as the Frobenius norm of this matrix. *Note:* This is only
@@ -21,12 +21,12 @@ function d=tensor_norm( T, meth, M1, M2 )
 % Example (<a href="matlab:run_example tensor_norm">run</a>)
 %   T={rand(8,2), rand(10,2)};
 %   fprintf('Note that orth gives a wrong result since the columns are not orthogonal \n');
-%   for meth={'orth', 'svd', 'full', 'inner'}; 
+%   for meth={'orth', 'svd', 'full', 'inner'};
 %     fprintf('%- 5s:  %f\n', meth{1}, tensor_norm( T, meth{1} ) )
 %   end
 %   Z=tensor_add(T,T,-1);
 %   fprintf('Note that orth gives a wrong result since the columns are not orthogonal \n');
-%   for meth={'orth', 'svd', 'full', 'inner'}; 
+%   for meth={'orth', 'svd', 'full', 'inner'};
 %     fprintf('%- 5s:  %f\n', meth{1}, tensor_norm( Z, meth{1} ) )
 %   end
 %
@@ -34,12 +34,12 @@ function d=tensor_norm( T, meth, M1, M2 )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

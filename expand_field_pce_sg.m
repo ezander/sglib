@@ -18,12 +18,12 @@ function [r_j_alpha, I_r, C_r]=expand_field_pce_sg( rho_stdnor_func, cov_r_func,
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -43,7 +43,7 @@ options=varargin2options( varargin{:} );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 check_unsupported_options( options, mfilename );
 
-% Step 1: calculate the rho_k(pos) numerically 
+% Step 1: calculate the rho_k(pos) numerically
 rho_k=pce_expand_1d(rho_stdnor_func,p);
 
 % Step 2: calculate <gam_i gam_j> from <u_i u_j>

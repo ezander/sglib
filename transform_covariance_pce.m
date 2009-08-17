@@ -2,7 +2,7 @@ function C_gam=transform_covariance_pce( C_u, pcc_u, varargin )
 % TRANSFORM_COVARIANCE_PCE Transforms covariance of underlying Gaussian
 % field.
 %   C_gam=TRANSFORM_COVARIANCE_PCE( C_U, PCC_U ) transforms the values of the
-%   covariance of the original variable given in the covariance matrix C_U 
+%   covariance of the original variable given in the covariance matrix C_U
 %   to that of the Gaussian base field. The covariance matrix for the base
 %   field is returned in C_GAM. PCC_U containes the coefficients of the PCE
 %   of the random field. If the PCE is non-stationary an array of
@@ -30,20 +30,20 @@ function C_gam=transform_covariance_pce( C_u, pcc_u, varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-% TODO: in the stationary case it may be more efficient to compute the 
+% TODO: in the stationary case it may be more efficient to compute the
 % real root of the polynomial for some N points in the range spanned by
-% the original covariance and interpolate in between. 
+% the original covariance and interpolate in between.
 
 %TODO: check whether the variance of the marginal densities given via pcc_u
 %and the covariances given via C_u match (for the entries on the diagonal)
@@ -66,17 +66,17 @@ end
 
 
 % correct C_u if necessary
-if correct_var 
+if correct_var
     if ~stationary
         error( 'transform_covariance_pce:instationary', ...
 	      'correction of C_u not possible for instationary fields' );
     end
-    [mu,sig2]=pce_moments( pcc_u ); 
+    [mu,sig2]=pce_moments( pcc_u );
     mu; %#ok: mu unused
     C_u=C_u*sig2;
 end
 
-if ~stationary || ~interpolate 
+if ~stationary || ~interpolate
     C_gam=zeros(size(C_u));
     for i=1:size(C_u,1)
         for j=i:size(C_u,2)
@@ -120,14 +120,14 @@ function p=gen_cov_poly( pcc_u, i, j )
 p=0;
 for k=2:size(pcc_u,2)
     ak=factorial(k-1)*pcc_u(i,k)*pcc_u(j,k);
-    p=[ak p]; 
+    p=[ak p];
 end
 
 function r=findroot( p )
 % FINDROOT Find the real root in [-1,1] of a polynomial.
 if 1
     % Using "roots" seems to be somewhat faster in Matlab than determining
-    % just the one real root 
+    % just the one real root
     rs=roots(p);
     % we extend the interval a little bit to account for numerical errors
     ind=(rs>=-1.1) & (rs<=1.1) & (imag(rs)==0);

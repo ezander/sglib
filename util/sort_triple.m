@@ -1,5 +1,5 @@
 function [i,j,k]=sort_triple( i, j, k )
-% SORT_TRIPLE Sorts an index triple (obsolete). 
+% SORT_TRIPLE Sorts an index triple (obsolete).
 
 %NOTE: This function is unused currently. Was used to speed up the
 % computation of Hermite triple products.

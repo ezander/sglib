@@ -2,7 +2,7 @@ function paper_sakamoto_ghanem
 % PAPER_SAKAMOTO_GHANEM Test the ideas in a paper of Sakamoto and Ghanem.
 %
 % [1] S. Sakamoto and R. Ghanem "Simulation of multi-dimensional non-
-%     gaussian non-stationary random fields", Prog. Eng. Mech. 17 
+%     gaussian non-stationary random fields", Prog. Eng. Mech. 17
 %     (2002) 167-176
 
 no_cell_mode=true; %#ok
@@ -40,9 +40,9 @@ clf;
 N=10000;
 xn=randn(N,1);
 for i=1:4
-    p=i+(i==4); 
+    p=i+(i==4);
     bn=hermite_val( pcc(1:(p+1)), xn );
-    subplot(2,2,i); 
+    subplot(2,2,i);
     [x,f_pce]=kernel_density( bn, 100, 0.03 );
     f_ex=beta_pdf( x, 4, 2 );
     plot(x,f_pce,x,f_ex);
@@ -67,7 +67,7 @@ els=[1:n-1; 2:n]';
 % here the U_i are in pcc
 h=@(gamma)(beta_stdnor(gamma,4,0.4)); %#ok for testing
 h=@(gamma)(lognormal_stdnor(gamma,2,0.1)); %#ok for testing
-h=@(gamma)(beta_stdnor(gamma,4,2)); 
+h=@(gamma)(beta_stdnor(gamma,4,2));
 pcc=pce_expand_1d(h,p);
 [mu,sig2,skew]=beta_moments( 4, 2 );
 disp(sprintf('Orig: Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
@@ -145,7 +145,7 @@ disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
 
 %%
 
-%% 
+%%
 % Mathematica
 pce_mathematica=[ %#ok
    0.66666666666643792
@@ -176,7 +176,7 @@ pce_matlab_gh8=[ %#ok
    0.00018015036106
   -0.00002494738434
   -0.00000532251452];
-% Matlab (gh12)  
+% Matlab (gh12)
 pce_matlab_gh12=[ %#ok
    0.66666666667635
    0.17597895719950
@@ -187,7 +187,7 @@ pce_matlab_gh12=[ %#ok
   -0.00002547291497
   -0.00000453044796];
 
-  
+
 
 %%
 

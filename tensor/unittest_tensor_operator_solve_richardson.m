@@ -1,4 +1,4 @@
-function test_tensor_operator_solve_richardson
+function unittest_tensor_operator_solve_richardson
 
 [A,Am,M, Mm, F,Fvec]=setup( 5, 3, 3, 2 );
 XvecEx=Am\Fvec;

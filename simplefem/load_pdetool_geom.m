@@ -11,7 +11,7 @@ switch name
     case {'lshape'}
         geom='lshapeg'; % an lshape with 3 segments (upper left missing)
     case {'circle'}
-        geom='circleg'; % cirlce 
+        geom='circleg'; % cirlce
     case {'scatter'}
         geom='scatterg'; % circular with diamond in middle
     case {'card', 'cardioid' }
@@ -24,7 +24,7 @@ end
 [p,e,t]=initmesh(geom);
 if nargin>=2
     for i=1:numrefine
-        [p,e,t]=refinemesh(geom,p,e,t); 
+        [p,e,t]=refinemesh(geom,p,e,t);
     end
 end
 

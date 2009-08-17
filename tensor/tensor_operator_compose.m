@@ -4,8 +4,8 @@ function C=tensor_operator_compose( A, B )
 %   tensor operators A and B such that C(X)=A(B(X))). If one of the
 %   operators is purely numeric (i.e. a matrix), then the result will also
 %   be a matrix, i.e. the other operator, if not already a matrix, will be
-%   taken as its transposed Kronecker product. 
-%  
+%   taken as its transposed Kronecker product.
+%
 %   Note: You can use this also to convert a tensor operator from tensor
 %   format to matrix format by composing it with the identity matrix.
 %
@@ -25,19 +25,19 @@ function C=tensor_operator_compose( A, B )
 %    yv2=tensor_operator_apply( A2, tensor_operator_apply( A1M, xv ) );
 %    % should give all the same
 %    [revkron(y1), revkron(y2), yv1, yv2, AM*xv, A2M*(A1M*xv)]
-%    % should be zero 
+%    % should be zero
 %    norm( AM-revkron(A))
 %
 % See also LINEAR_OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

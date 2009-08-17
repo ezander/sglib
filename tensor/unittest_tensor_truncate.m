@@ -1,19 +1,19 @@
-function test_tensor_truncate
-% TEST_TENSOR_TRUNCATE Test the TENSOR_TRUNCATE function.
+function unittest_tensor_truncate
+% UNITTEST_TENSOR_TRUNCATE Test the TENSOR_TRUNCATE function.
 %
-% Example (<a href="matlab:run_example test_tensor_truncate">run</a>) 
-%    test_tensor_truncate
+% Example (<a href="matlab:run_example unittest_tensor_truncate">run</a>)
+%    unittest_tensor_truncate
 %
 % See also TENSOR_TRUNCATE, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

@@ -24,7 +24,7 @@ function [ret_stats,ret_options]=assert( condition, message, assert_id, varargin
 %   'reltol' and 'debug', 'fuzzy', 'no_step', 'function_name', 'module_name'. The
 %   latter two should only be set without performing an assertion, since
 %   they have to be set permanently and require the statistics to be reset.
-%   
+%
 %   ASSERT should usually not be called directly from user code but rather
 %   via some customized functions like ASSERT_EQUALS, ASSERT_SET_FUNCTION
 %   and the like.
@@ -45,12 +45,12 @@ function [ret_stats,ret_options]=assert( condition, message, assert_id, varargin
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -76,7 +76,7 @@ end
 % initialize options if called for the first time
 if isempty(options)
     options=assert_reset_options();
-    % only set the unchangeable options inside 
+    % only set the unchangeable options inside
     options.fuzzy=false;
     options.no_step=false;
 end
@@ -114,7 +114,7 @@ if isempty(condition)
         curr_options=rmfield( curr_options, 'function_name' );
         stats.tested_functions={stats.tested_functions{:}, options.function_name};
     end
-    
+
     [curr_options, options]=transfer_option( curr_options, options, 'debug' );
     [curr_options, options]=transfer_option( curr_options, options, 'abstol' );
     [curr_options, options]=transfer_option( curr_options, options, 'reltol' );
@@ -146,7 +146,7 @@ end
 
 if ~condition && isversion('6')
     stack=struct2cell( dbstack('-completenames') );
-    caller=find( strncmp( 'test_', stack(2,:), 5 ), 1, 'first' );
+    caller=find( strncmp( 'unittest_', stack(2,:), 5 ), 1, 'first' );
     if ~isempty(caller)
         assertion_id=sprintf( '<a href="error:%s,%d,1">%s</a>', ...
             stack{1,caller}, stack{3,caller}, assertion_id );
@@ -154,7 +154,7 @@ if ~condition && isversion('6')
 else
     caller=[];
 end
-    
+
 
 % check condition and show failure/passed respectively
 output_func=get_option( curr_options, 'output_func', options );
@@ -181,9 +181,9 @@ if ~condition
         output_func( sprintf( '%s in %s: %s', fail, assertion_id, message ) );
     end
 
-    if debug && ~fuzzy 
+    if debug && ~fuzzy
         output_func( '> Debugging is turned on and an assertion has failed' );
-        if ~isempty(caller) && isversion('6') 
+        if ~isempty(caller) && isversion('6')
             cmd=repmat( 'dbup;', 1, caller-1 );
             output_func( sprintf( '> use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to', cmd ) );
             output_func( '> investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.' )

@@ -5,8 +5,8 @@ function int=gauss_hermite_multi( func, n, p )
 %   by combined Gauss-Hermite quadrature of order 2*p. The weights and quadrature
 %   points are calculated on the fly but stored in a persistent array for
 %   later use. The precision of the coefficients has still to be assessed.
-% 
-% Note: 
+%
+% Note:
 %   func has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
 %
 % Example (<a href="matlab:run_example gauss_hermite_multi">run</a>)
@@ -19,12 +19,12 @@ function int=gauss_hermite_multi( func, n, p )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

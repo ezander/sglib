@@ -1,5 +1,5 @@
 % DOC_NAMING Naming and storage of variables and functions in SGLIB.
-%   
+%
 %   The intend of this document is not to bind the user to some naming
 %   scheme, but rather to aid the user in using a consistent, mnemonical
 %   naming scheme which can lead through the whole process of setting up
@@ -12,7 +12,7 @@
 % Naming of random fields:
 % ========================
 %   * Random fields generally have small Latin names like k,r,f etc. except
-%     some special cases 
+%     some special cases
 %   * When a quantity derived from a random field is purely stochastic its
 %     name will be the corresponding Greek letter, otherwise still Latin.
 %   * Names for the indices and index variables are Latin for normal
@@ -25,7 +25,7 @@
 %     storage (see also the section on storage).
 %   * Spatial functions are always vertical, stochastic functions are
 %     always horizontal (see Note 1).
-%   * Other expansions like e.g. the KL take the remaining dimensions. For 
+%   * Other expansions like e.g. the KL take the remaining dimensions. For
 %     the nice effect this has see Note 2.
 %
 % Example for a random field r(w,omega):
@@ -44,13 +44,13 @@
 %   * KL Expansion parameters and indices
 %       l_r : number of terms in the KL expansion of r
 %       k   : an index into the KL, element 1..l_r (see the mnemonic? k=1..l)
-%   * Spatial 
+%   * Spatial
 %       N : number of spatial ansatz functions
 %       i : a spatial index, element 1..N
 %   * Random field expansions
 %       r_i_alpha   : spatial PCE expansion, i spatial index, alpha
 %                     stochastic index in I_r, r_i_alpha(i,j) is equal to
-%                     r_i^(alpha(j)), must be accompanied by some I_r 
+%                     r_i^(alpha(j)), must be accompanied by some I_r
 %       mu_r_i      : mean of r, r_i_mu(i) mean at position pos(i)
 %       r_i_k       : spatial KL eigenfunction, r(:, k) is the k-th
 %                     eigenfunction
@@ -106,7 +106,7 @@
 %     G  : spatial Gramian, equal to mass matrix with constant mass density
 %          one (sometimes G_N to distinguish from the stochastic Gramian)
 %
-%  names for matrices (A,M), tensors (T,U,A,X,Y), linear operators (L), 
+%  names for matrices (A,M), tensors (T,U,A,X,Y), linear operators (L),
 %
 %
 % Structs and the like
@@ -121,7 +121,7 @@
 %   * When arguments are passed explicitly in and out it is absolutely
 %     clear which of the arguments are actually used or produced. In
 %     structs this is not clear (I've seen cases where it would take
-%     man-years to figure out what is actually done in a function). 
+%     man-years to figure out what is actually done in a function).
 %   * Grouping in structs is rather inflexible. Sometimes you want to have
 %     a little different grouping, e.g. a function needs parameter 1 from
 %     struct A and parameter 2 from struct B, then you can either put both
@@ -153,7 +153,7 @@
 %       [pce_f{1:2}]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
 %       [kl_f{1:3}]=pce_to_kl( pce_f{:}, l_f, G_N );
 %     and later:
-%       plot_kl_pce_realizations_1d( pos, kl_f{:}, pce_f{2}, 'realizations', 50 ); 
+%       plot_kl_pce_realizations_1d( pos, kl_f{:}, pce_f{2}, 'realizations', 50 );
 %     Here you see one problem: you have to reference the second field of
 %     the pce cell array which contains the multiindex array since the
 %     function needs to know that. You could, of course, put that into the
@@ -165,7 +165,7 @@
 %     update both cell arrays. (BTW, no, objects make this even worse,
 %     don't use them ...).
 %     However, SGLIB leaves that open to you how you want to do it.
-%   
+%
 %
 % See also: DOC_FUNCTION_HANDLE
 
@@ -186,7 +186,7 @@
 %
 %
 % Data structures
-%   Hermite polynomials: 
+%   Hermite polynomials:
 %   Polynomials are usually expressed as column vectors in Matlab, i.e. a
 %   polynomial p(x)=3x^2+5x-2 is represented as p=[3, 5, -2] (in this
 %   order, highest index first). The coefficients for Hermite polynomials
@@ -195,7 +195,7 @@
 %   programmers point of view), i.e. if some PCE expansion of a random
 %   variable returns something like p(x)=2 H_0(x) + 3 H_1(x) -4 H_2(x),
 %   then the coefficients are stored as p=[2, 3, -4] (mark the order and
-%   the semicolons). 
+%   the semicolons).
 %   Matlab usually doesn't care whether you pass a row or a column vector
 %   as a representation of a polynomial. Since we have to use arrays of
 %   polynomial coefficients quite often, we have to make a difference. Thus
@@ -205,9 +205,9 @@
 %   pcc(i,j) represents the coefficient of H_{j-1} in polynomial i. That
 %   means:
 %      p_i(x) = pcc(1,i) H_0(x) + pcc(2,i) H_1(x) + pcc(3,i) H_2(x) + ...
-%   
 %
-%   Multivariate Hermite polynomials:  
+%
+%   Multivariate Hermite polynomials:
 %   For multivariate Hermite polynomials things get a bit more difficult
 %   since the index of the polynomial can no longer be determined by the
 %   order of the coefficient. Only for the very first coefficient we adopt
@@ -215,8 +215,8 @@
 %   polynomial (i.e. H_0(xi1)*H_0(xi2)*H_0(xi3)*...). For all others we
 %   have to remember which order the Hermite polynomials have for each of
 %   the coefficients. The coefficients are ususally kept in an array by the
-%   name of pci (polynomial chaos indices). 
-%  
+%   name of pci (polynomial chaos indices).
+%
 %   Coordinates:
 %   In a coordinate array x the first index determines the point and the
 %   seoncd index the dimension, i.e. x(i,2) is the y coordinate of point

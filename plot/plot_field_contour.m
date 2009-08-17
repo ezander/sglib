@@ -8,16 +8,16 @@ function plot_field_contour( els, pos, u, varargin )
 %
 % Example (<a href="matlab:run_example plot_field_contour">run</a>)
 %
-% See also 
+% See also
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -61,7 +61,7 @@ for i=1:nlev
     c2=c(2:2:end);
     r2=r(2:2:end);
     np=size(X2,1);
-    
+
     PP=nan*ones(np*3,3);
     PP(1:3:end,1)=X2(r1+(c1-1)*np);
     PP(2:3:end,1)=X2(r2+(c2-1)*np);
@@ -82,7 +82,7 @@ for i=1:nlev
     line( PP(:,1), PP(:,2), PP(:,3), 'color', 'k');
      %'Parent',ax,...
      %       'color',contc,'Erasemode','normal');
-    
+
 end
 
 

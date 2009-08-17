@@ -99,13 +99,13 @@ for m=[1,2,3,4,5]
         dx=abs(X1-X2);
         dx=dx(:);
         dxu=unique(dx);
-        
+
         mu_err(p,m)=norm(mu_1-mu_2)/norm(mu_2); %#ok
         var_err(p,m)=norm(var_1-var_2)/norm(var_2); %#ok
         cov_err(p,m)=norm(C_u2-C_u1,'fro')/norm(C_u1,'fro'); %#ok
-    
+
     end
-    
+
 end
 userwait;
 

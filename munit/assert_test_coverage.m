@@ -12,7 +12,7 @@ for i=1:length(files)
     file=files(i);
     [path,name]=fileparts(file.name); %#ok
     fname=name;
-    if ~strncmp( fname, 'test_', 5 ) && ~contains( nocheck, fname )
+    if ~strncmp( fname, 'unittest_', 5 ) && ~contains( nocheck, fname )
         found=contains( stats.tested_functions, fname );
         if ~found
             if nargout==0

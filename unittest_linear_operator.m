@@ -1,20 +1,20 @@
-function test_linear_operator
-% TEST_LINEAR_OPERATOR Test the LINEAR_OPERATOR and related functions.
+function unittest_linear_operator
+% UNITTEST_LINEAR_OPERATOR Test the LINEAR_OPERATOR and related functions.
 %
-% Example (<a href="matlab:run_example test_linear_operator">run</a>) 
-%    test_linear_operator
+% Example (<a href="matlab:run_example unittest_linear_operator">run</a>)
+%    unittest_linear_operator
 %
 % See also LINEAR_OPERATOR, LINEAR_OPERATOR_SIZE, LINEAR_OPERATOR_APPLY,
 % LINEAR_OPERATOR_COMPOSE, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.

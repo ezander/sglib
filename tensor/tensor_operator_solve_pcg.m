@@ -57,13 +57,13 @@ while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
     Xn=add(Xc,Pc,alpha);
     Rn=add(Rc,apply_operator(A,Pc),-alpha);
-    
+
     Xn=truncate( Xn, truncate_options );
     Rn=truncate( Rn, truncate_options );
 
     normres=vec_norm( Rn );
     relres=normres/initres;
-    
+
     if do_stats
         % Proposed update is DY=alpha*Pc
         % actual update is DX=T(Xn)-Xc;
@@ -76,44 +76,44 @@ while true
         TRn=add( F, apply_operator( A, Xn ), -1 );
         normres=vec_norm( TRn );
         relres=normres/initres;
-        
+
         DRn=add( Rn, add( F, apply_operator( A, Xn ), -1 ), -1 );
         ra=vec_norm( DRn );
-        
+
         info.res_norm=[info.res_norm, normres];
         info.res_relnorm=[info.res_relnorm, relres];
         info.res_accuracy=[info.res_accuracy, ra];
         info.res_relacc=[info.res_relacc, ra/normres];
         info.update_ratio=[info.update_ratio, ur];
-        
-        if ~isempty( X_true ) 
+
+        if ~isempty( X_true )
             solerr=vec_norm( add( Xn, X_true, -1 ) );
             solrelerr=solerr/vec_norm( X_true );
             info.sol_err=[info.sol_err, solerr];
             info.sol_relerr=[info.sol_relerr, solrelerr];
-            
+
             solepserr=vec_norm( add( Xn, X_true_eps, -1 ) );
             solepsrelerr=solerr/vec_norm( X_true_eps );
             info.soleps_err=[info.soleps_err, solepserr];
             info.soleps_relerr=[info.soleps_relerr, solepsrelerr];
         end
-        
+
     end
-    
+
     if normres<abstol || relres<reltol; break; end
-    
+
     urc=iter-50;
     if ur<.1 && urc>10
         warning( 'a:b', 'update ratio too small ...' );
         flag=-1;
         break;
     end
-    
-    
+
+
     Zn=prec_solve(M,Rn);
     beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
     Pn=add(Zn,Pc,beta);
-    
+
     % truncate all iteration variables
     Xc=truncate( Xn, truncate_options );
     Pc=truncate( Pn, truncate_options );
@@ -127,7 +127,7 @@ while true
         break;
     end
 
-    
+
     if false && mod(iter,100)==0
         keyboard
     end

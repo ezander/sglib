@@ -1,19 +1,19 @@
-function test_stiffness
-% TEST_STIFFNESS Test the stiffness_matrix function.
+function unittest_stiffness
+% UNITTEST_STIFFNESS Test the stiffness_matrix function.
 %
-% Example (<a href="matlab:run_example test_stiffness">run</a>) 
-%    test_stiffness
+% Example (<a href="matlab:run_example unittest_stiffness">run</a>)
+%    unittest_stiffness
 %
 % See also TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -89,6 +89,6 @@ s=[1.00044619240874  -0.48528504013218  -0.51516115227656   1.00201354524399  -0
   -1.43109174181738  -0.50112669128050   2.61543090768886  -0.15039000932325  -1.66234454112176  -0.15039000932325 ...
    1.81273455044501 ];
 K_ex=accumarray( [i,j], s );
- 
+
 K=full( stiffness_matrix( elems, x ) );
-assert_equals( K, K_ex, 'multielem2d' ); 
+assert_equals( K, K_ex, 'multielem2d' );

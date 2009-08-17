@@ -1,7 +1,7 @@
 function assert_run_testsuite( module_name, curr_dir, varargin )
 % ASSERT_RUN_TESTSUITE Runs all tests in one directory.
 %   ASSERT_RUN_TESTSUITE( MODULE_NAME, CURR_DIR ) runs all tests (contained
-%   in M-files matching "test_*.m") in the directory specified by CURR_DIR
+%   in M-files matching "unittest_*.m") in the directory specified by CURR_DIR
 %   under the module name MODULE_NAME.
 %
 % Options:
@@ -20,12 +20,12 @@ function assert_run_testsuite( module_name, curr_dir, varargin )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -43,7 +43,7 @@ check_unsupported_options( options, mfilename );
 output_func=options.output_func;
 
 % get subdirs
-if ischar( subdirs ) 
+if ischar( subdirs )
     if strcmp('subdirs', 'auto' )
         subdirs={};
         files=dir(pwd);
@@ -70,19 +70,15 @@ for subdir={'.', subdirs{:} }
     for i=1:length(files)
         test_cmd=files(i).name(1:end-2);
         output_func( sprintf('Running: %s/%s', subdir{1}, test_cmd ) );
-        
+
         slash_pos=find(test_cmd=='/');
         if ~isempty(slash_pos)
           test_cmd=test_cmd( slash_pos(end)+1:end );
         end
 
-        if strcmp( test_cmd, 'test_suite' )
-            warning( 'assert_run_testsuite:test_suite', 'not running test "test_suite", better rename in "testsuite"' );
-        else
-            clr=safe_eval( test_cmd );
-            if clr
-                warning( 'assert:clear', ['Test function has cleared caller''s workspace (' test_cmd ').'] );
-            end
+	clr=safe_eval( test_cmd );
+        if clr
+          warning( 'assert:clear', ['Test function has cleared caller''s workspace (' test_cmd ').'] );
         end
     end
 end

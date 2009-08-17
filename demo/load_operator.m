@@ -20,4 +20,3 @@ if show_timings; tic; end
 K=stochastic_operator_kl_pce( mu_r_j, r_i_j, rho_i_alpha, I_r, I_u, stiffness_func, type );
 if show_timings; toc; end
 
-    

@@ -3,7 +3,7 @@
 init_demos
 
 
-% Test the univariate PCE expansion 
+% Test the univariate PCE expansion
 
 %% Lognormal distribution
 
@@ -123,7 +123,7 @@ userwait;
 % In the following the mean and variance of the lognormal distribution are
 % calculated in four different ways. The first one are the exact formulae
 % (see e.g. wikipedia). Then a MC simulation is made with 100000 exactly
-% transformed gaussian random numbers and the mean and variance calculated 
+% transformed gaussian random numbers and the mean and variance calculated
 % from there. Then pce expansions with increasing order are made and,
 % again, mean and variance are calculated with two methods. The first one
 % uses that the zeroth pce coefficient a_0 is the mean and sum_i=1^\infty
@@ -154,7 +154,7 @@ for p=1:8
     lognor_pce=hermite_val(pcc,nor);
     ln_mean_pce_mc=mean(lognor_pce);
     ln_var_pce_mc=var(lognor_pce);
-    
+
     disp(sprintf( '\np=%2d      exact         pce        mc        pce->mc', p ) );
     disp(sprintf( 'mean: %10.5f  %10.5f  %10.5f  %10.5f', ln_mean, ln_mean_pce, ln_mean_mc, ln_mean_pce_mc ) );
     disp(sprintf( 'var:  %10.5f  %10.5f  %10.5f  %10.5f', ln_var, ln_var_pce, ln_var_mc, ln_var_pce_mc  ) );

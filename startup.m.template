@@ -10,7 +10,7 @@ function startup
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: startup.m 131 2009-06-19 09:59:19Z ezander $ 
+%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

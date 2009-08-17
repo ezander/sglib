@@ -15,24 +15,24 @@ function y=logscale( x, varargin )
 %   relscale : true, {false}
 %     Scale everything relative to the maximum; thus every plot begins at
 %     zero and goes to the negative value -log(cutoff).
-% 
+%
 % Example (<a href="matlab:run_example logscale">run</a>)
 %   % semilog plot with base 1000 cutoff at 1000^-4
 %   x=1:20;
 %   y=10.^(-x.*(1+0.08*rand(1,20)));
 %   y(10)=0; % just see what it does here...
 %   plot( x, logscale(y,'cutoff',1e-12, 'base', 1000), 'x-' );
-%   
-% See also 
+%
+% See also
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -55,4 +55,4 @@ else
     y=abs(x);
 end
 y(y<cutoff)=cutoff;
-y=log(y)/log(base); 
+y=log(y)/log(base);

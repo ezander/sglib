@@ -18,7 +18,7 @@ subplot(1,2,1); plot(pos,k_j_i); title('KL eigenfunctions');
 subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_k_j, k_j_i, kappa_i_alpha, I_k ); title('mean/var/samples');
 userwait;
 
-%% load the kl variables of the right hand side f 
+%% load the kl variables of the right hand side f
 [mu_f_j,f_j_i,phi_i_alpha,I_f]=load_kl_model( [basename '_f'], kl_model_version, [], {'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
 subplot(1,2,1); plot(pos,f_j_i); title('KL eigenfunctions');
 subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_f_j, f_j_i, phi_i_alpha, I_f ); title('mean/var/samples');
@@ -52,7 +52,7 @@ g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
 
 
-%% load and create the operators 
+%% load and create the operators
 kl_operator_version=9;
 stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
 opt.silent=false;
@@ -73,7 +73,7 @@ Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
 fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
 fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_I, P_B );
 fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_I, P_B );
-% 
+%
 all_same=(norm(fi_vec-fi_vec2)+norm(fi_vec-fi_mat(:))+norm(Fi{1}*Fi{2}'-fi_mat)==0);
 underline('apply_boundary_conditions');
 fprintf( 'all_same: %g\n', all_same );

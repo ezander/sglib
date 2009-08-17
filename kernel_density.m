@@ -15,17 +15,17 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 %   plotted. Otherwise the plotting is suppressed. The additional
 %   arguments (VARARGIN) are passed directly to the PLOT command, so that
 %   e.g. line colors, line styles, marker styles can be specified.
-% 
+%
 % Note: If XL is a vector it doesn't matter whether it is a row or a column
 %   vector. If XL is a matrix each XN(i,:) is treated as an independent
 %   sample vector i.e. sample vectors are column vectors.
-%   
+%
 % Example (<a href="matlab:run_example kernel_density">run</a>)
 %   xn=randn(10000,1);
 %   [x,p]=kernel_density( xn, 100, 0.2 );
 %   plot( x, p, x, exp(-x.^2/2)/sqrt(2*pi) ); % should match approx.
 %   %pause
-%   % or 
+%   % or
 %   xn2=[randn(10000,1), 2*rand(10000,1)];
 %   kernel_density( xn2, 30, 0.1, '-*' );
 %   legend( 'normal dist.', 'uniform dist.' );
@@ -34,12 +34,12 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -48,8 +48,8 @@ function [x,p]=kernel_density(xl,n,sig,varargin)
 if nargin<2 || isempty(n)
     n=100;
 end
-if nargin<3; 
-    sig=[]; 
+if nargin<3;
+    sig=[];
 end;
 
 
@@ -83,7 +83,7 @@ else
 
     p=p/(size(xl,1)*sqrt(pi)*sig);
 end
-    
+
 if nargout==0
     plot_args=varargin;
    plot(x,p,plot_args{:});
