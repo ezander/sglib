@@ -1,13 +1,15 @@
-function edit_mfile( filename )
-% EDIT_MFILE Edit a new or existing m-file in the editor with path.
-%   EDIT_MFILE( FILENAME ) opens the m-file named by FILENAME in the Matlab
+function medit( filename )
+% MEDIT Edit a new or existing m-file in the editor with path.
+%   MEDIT( FILENAME ) opens the m-file named by FILENAME in the Matlab
 %   internal editor. If FILENAME doesn't end in '.m' it is appended. This
 %   function also opens the editor for not-yet-existing files if they are
 %   not in the current directory (which the internal EDIT command doesn't,
 %   it issues an error in this case, very annoyingly...).
+%   Further, if the file doesn't exist MEDIT formats the source with a
+%   predefined template.
 %
-% Example (<a href="matlab:run_example edit_mfile">run</a>)
-%   edit_mfile private/my_priv_func
+% Example (<a href="matlab:run_example medit">run</a>)
+%   medit private/my_priv_func
 %
 % See also EDIT
 
@@ -36,18 +38,33 @@ if ~strcmp( filename(end-1:end), '.m' )
 end
 [pathstr,name,ext] = fileparts(filename);
 
-if true || ~exist( filename, 'file' )
+is_unittest=strncmp( name, 'unittest_', 9 );
+show_options=false;
+show_notes=false;
+
+if ~exist( filename, 'file' )
     fid=fopen( filename, 'w' );
-    fprintf( fid, 'function ret=%s(varargin)\n', name );
-    fprintf( fid, '%%%s Short description of %s.\n', upper(name), name );
+    fprintf( fid, 'function %s(varargin)\n', name );
+    fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
     fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
-%     fprintf( fid, '%%Options:\n' );
-%     fprintf( fid, '%%\n' );
-%     fprintf( fid, '%%Notes:\n' );
     fprintf( fid, '%%\n' );
-    fprintf( fid, '%%Example (<a href="matlab:run_example %s">run</a>)\n', name );
-    fprintf( fid, '%%\n' );
-    fprintf( fid, '%%See also\n' );
+    if show_options
+        fprintf( fid, '%%Options:\n' );
+        fprintf( fid, '%%\n' );
+    end
+    if show_notes
+        fprintf( fid, '%%Notes:\n' );
+        fprintf( fid, '%%\n' );
+    end
+    fprintf( fid, '%% Example (<a href="matlab:run_example %s">run</a>)\n', name );
+    if is_unittest
+        fprintf( fid, '%%   %s\n', name );
+        fprintf( fid, '%%\n' );
+        fprintf( fid, '%% See also %s \n', upper(name(10:end)) );
+    else
+        fprintf( fid, '%%\n' );
+        fprintf( fid, '%% See also\n' );
+    end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );
     fprintf( fid, '%%   Copyright %s, %s.\n', year, institution );
@@ -64,4 +81,3 @@ if true || ~exist( filename, 'file' )
 end
 
 edit( filename )
-%com.mathworks.mlservices.MLEditorServices.openDocument( filename );
