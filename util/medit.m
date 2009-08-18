@@ -26,8 +26,11 @@ function medit( filename )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-author='Elmar Zander';
-institution='Institute of Scientific Computing, TU Braunschweig';
+settings=sglib_get_appdata( 'settings' );
+author=get_option( settings, 'medit_author', '<author>' );
+institution=get_option( settings, 'medit_institution', '<institution>' );
+show_options=get_option( settings, 'medit_options_and_notes', false );
+show_notes=show_options;
 
 d=date;
 year=d(end-3:end);
@@ -36,11 +39,9 @@ year=d(end-3:end);
 if ~strcmp( filename(end-1:end), '.m' )
     filename=[filename '.m'];
 end
-[pathstr,name,ext] = fileparts(filename);
+[pathstr,name,ext] = fileparts(filename); %#ok
 
 is_unittest=strncmp( name, 'unittest_', 9 );
-show_options=false;
-show_notes=false;
 
 if ~exist( filename, 'file' )
     fid=fopen( filename, 'w' );
@@ -67,7 +68,7 @@ if ~exist( filename, 'file' )
     end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );
-    fprintf( fid, '%%   Copyright %s, %s.\n', year, institution );
+    fprintf( fid, '%%   Copyright %s, %s\n', year, institution );
     fprintf( fid, '%%   $Id$ \n' );
     fprintf( fid, '%%\n' );
     fprintf( fid, '%%   This program is free software: you can redistribute it and/or modify it\n' );
