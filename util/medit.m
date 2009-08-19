@@ -46,8 +46,12 @@ is_unittest=strncmp( name, 'unittest_', 9 );
 if ~exist( filename, 'file' )
     fid=fopen( filename, 'w' );
     fprintf( fid, 'function %s(varargin)\n', name );
-    fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
-    fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
+    if is_unittest
+        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(name(10:end)) );
+    else
+        fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
+        fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
+    end
     fprintf( fid, '%%\n' );
     if show_options
         fprintf( fid, '%%Options:\n' );
