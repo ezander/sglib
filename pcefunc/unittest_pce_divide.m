@@ -1,8 +1,8 @@
-function test_pce_divide
-% TEST_PCE_DIVIDE Test the PCE_DIVIDE function.
+function unittest_pce_divide
+% UNITTEST_PCE_DIVIDE Test the PCE_DIVIDE function.
 %
-% Example (<a href="matlab:run_example test_pce_divide">run</a>) 
-%    test_pce_divide
+% Example (<a href="matlab:run_example unittest_pce_divide">run</a>) 
+%    unittest_pce_divide
 %
 % See also TESTSUITE
 
@@ -26,7 +26,7 @@ p=10;
 % Define the random variables A, B and X.
 %a_func={@exponential_stdnor, {2}};
 a_func={@uniform_stdnor, {2,3}};
-b_func={@lognorm_stdnor, {1.5, 0.5}};
+b_func={@lognormal_stdnor, {1.5, 0.5}};
 x_func={@div_func,{b_func, a_func}};
 
 % method 3: pce by b_func/a_func
