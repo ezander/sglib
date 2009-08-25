@@ -44,24 +44,35 @@
 % Development goodies
 %   run_example               - Runs the example for a command.
 %   publish_to_latex          - Uses the matlab publishing with options set up for Latex.
-%   edit_mfile                - Edit a new or existing m-file in the editor with path.
+%   medit                     - Edit a new or existing m-file in the editor with path.
+%   settings_dialog           - 
+%   get_mfile_path            - Return the complete path to the calling m-file.
+%   openeps                   - Handler for opening EPS files from Matlab's OPEN function.
 %
 % Miscellaneous
 %   merge_cells               - Merges two cell arrays with specified positions.
 %   row_col_mult              - Multiply a matrix column- or row-wise with a vector.
 %   sort_triple               - Sorts an index triple (obsolete).
 %
+% Numerical functions
+%   chopabs                   - Replace numbers close to zero with zero.
+%   randn_sorted              - Generate sorted, normally distributed numbers from the inverse CDF.
+%   revkron                   - Reversed Kronecker tensor product.
+%   inv_reg_beta              - Compute the inverse regularized beta function.
 
 
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
 % UP THE CONTENTS DISPLAY.
 % Test functions
-%   unittest_cached_funcall       - Test the CACHED_FUNCALL function.
-%   unittest_format_poly          - Test the FORMAT_POLY functions.
-%   unittest_funcall              - Test the FUNCALL function.
-%   unittest_ismatoct             - Test the IS_MATLAB/IS_OCTAVE functions.
-%   unittest_merge_cells          - Test the MERGE_CELLS function.
-%   unittest_row_col_mult         - Test row_col_mult function.
+%   unittest_cached_funcall   - Test the CACHED_FUNCALL function.
+%   unittest_format_poly      - Test the FORMAT_POLY functions.
+%   unittest_funcall          - Test the FUNCALL function.
+%   unittest_ismatoct         - Test the IS_MATLAB/IS_OCTAVE functions.
+%   unittest_merge_cells      - Test the MERGE_CELLS function.
+%   unittest_row_col_mult     - Test row_col_mult function.
+%   unittest_chopabs          - Test the CHOPABS function.
+%   unittest_inv_reg_beta     - Test the inverse regularized beta function.
+%   unittest_tkron            - UNITTEST_REVKRON Test the REVKRON and function.
 
 
 
@@ -76,3 +87,5 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
+
+

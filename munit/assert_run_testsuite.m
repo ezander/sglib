@@ -32,12 +32,19 @@ function assert_run_testsuite( module_name, curr_dir, varargin )
 
 options=varargin2options( varargin{:} );
 [subdirs,options]=get_option( options, 'subdirs', {} );
-[prefix,options]=get_option( options, 'prefix', 'ut_' );
+[prefix,options]=get_option( options, 'prefix', 'unittest_' );
 check_unsupported_options( options, mfilename );
 
 % TODO: function should run really recursively, maybe looking for all
 % subdirs that include testsuite, or were explicitly specified.
 % the otherwise passing the prefix along
+
+if ~exist('module_name', 'var' )
+    module_name='<unknown>';
+end
+if ~exist('curr_dir', 'var' )
+    curr_dir=pwd;
+end
 
 [stats,options]=assert(); %#ok
 output_func=options.output_func;

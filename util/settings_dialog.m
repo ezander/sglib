@@ -54,6 +54,17 @@ switch setter_info{1}
         create_text( 1, ypos,  30, name, control );
         h=create_popupmenu( 25, ypos, 30, {'true', 'false'}, 2-value, 2-default, control );
         control.handles.(name)=h;
+    case 'text'
+        [name, default]=setter_info{2:3};
+        if isfield( settings, name )
+            value=settings.(name);
+        else
+            value=default;
+        end
+        create_text( 1, ypos,  30, name, control );
+        h=create_textinput( 25, ypos, 30, value, control );
+        control.handles.(name)=h;
+        
     otherwise
         error( 'not supported' );
 end
@@ -74,6 +85,10 @@ for setter=setters
             [name]=setter_info{2};
             value=get( control.handles.(name), 'Value' );
             settings.(name)=value==1;
+        case 'text'
+            [name]=setter_info{2};
+            value=get( control.handles.(name), 'String' );
+            settings.(name)=value;
         otherwise
             error( 'not supported' );
     end
@@ -92,6 +107,15 @@ function ok_button_callback(h, eventdata, control) %#ok
 store_values( control );
 delete( control.h_mainfig );
 
+
+function h=create_textinput( x, y, w, value, control )
+h = uicontrol( 'Parent', control.h_mainfig, 'Units','characters', 'HandleVisibility','callback', ...
+    'Style','edit', ...
+    'String', value, ...
+    'HorizontalAlignment', 'left', ...
+    'BackgroundColor', 'white', ...
+    'Position',[control.indent+x,control.height-y*control.spacing,w,1.2]...
+    );
 
 function h=create_popupmenu( x, y, w, strings, current, default, control )
 if ischar(current); current=strmatch( current, strings, 'exact'); end
@@ -142,3 +166,4 @@ pos=get( h, 'Position' );
 pos(3)=100;
 pos(4)=control.height;
 set( h, 'Position', pos );
+
