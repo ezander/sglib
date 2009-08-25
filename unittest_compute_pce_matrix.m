@@ -1,9 +1,9 @@
-% UNITTEST_STOCHASTIC_PCE_MATRIX Test the stochastic_pce_matrix function.
+% UNITTEST_COMPUTE_PCE_MATRIX Test the compute_pce_matrix function.
 %
-% Example (<a href="matlab:run_example unittest_stochastic_pce_matrix">run</a>)
-%   unittest_stochastic_pce_matrix;
+% Example (<a href="matlab:run_example unittest_compute_pce_matrix">run</a>)
+%   unittest_compute_pce_matrix;
 %
-% See also STOCHASTIC_PCE_MATRIX, TESTSUITE
+% See also COMPUTE_PCE_MATRIX, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -37,7 +37,7 @@ Delta = [
          157         193         525         549           0         151         314         139         733         314
          326         398         422        1600           0           0           0         302         314        1522
          ];
-assert_equals( stochastic_pce_matrix( k_iota, I_k, I_u ), Delta, 'prime' );
+assert_equals( compute_pce_matrix( k_iota, I_k, I_u ), Delta, 'prime' );
 
 
 if 0
@@ -50,6 +50,6 @@ if 0
     n=10;
     k_iota=rand(n,size(I_k,1));
     tic;
-    Delta=stochastic_pce_matrix( k_iota, I_k, I_u );
+    Delta=compute_pce_matrix( k_iota, I_k, I_u );
     toc
 end

@@ -11,191 +11,149 @@
 % from here).
 %
 % Hermite polynomials
-%   hermite                               - Return the n-th Hermite polynomial.
-%   hermite_val                           - Evaluate expansion in Hermite polynomials.
-%   hermite_val_multi                     - Evaluate expansion in multivariate Hermite polynomials.
-%   hermite_triple_product                - Compute expectation of triple products of Hermite polynomials.
-%   hermite_triple_fast                   - Cached computation of the expectation of triple products of Hermite polynomials.
-%   hermite_norm                          - Compute the norm of multivariate Hermite polynomials.
+%   hermite                            - Return the n-th Hermite polynomial.
+%   hermite_val                        - Evaluate expansion in Hermite polynomials.
+%   hermite_val_multi                  - Evaluate expansion in multivariate Hermite polynomials.
+%   hermite_triple_product             - Compute expectation of triple products of Hermite polynomials.
+%   hermite_triple_fast                - Cached computation of the expectation of triple products of Hermite polynomials.
+%   hermite_norm                       - Compute the norm of multivariate Hermite polynomials.
 %
 % Multiindices
-%   multiindex                            - Generate a table of multiindices (block-scheme).
-%   multiindex_factorial                  - Compute the factorial of a multiindex.
-%   multiindex_order                      - Compute the order of a multiindex.
-%   multiindex_combine                    - Combine multiindices from different sources.
-%   multiindex_find                       - Find a multiindex in a list of indices.
+%   multiindex                         - Generate a table of multiindices.
+%   multiindex_factorial               - Compute the factorial of a multiindex.
+%   multiindex_order                   - Compute the order of a multiindex.
+%   multiindex_combine                 - Combine multiindices from different sources.
+%   multiindex_find                    - Find a multiindex in a list of indices.
 %
 % Polynomials chaos expansion
-%   pce_expand_1d                         - Calculate the PCE expansion in one stochastics dimension.
-%   pce_expand_1d_mc                      - Calculate the PCE expansion in one stochastics dimension (MC).
-%   pce_moments                           - Calculate the statistical moments of a distribution given as PCE.
-%   normalize_pce                         - Transforms a PCE in unnormed Hermite polys into a PCE in
-%   pce_covariance                        - Computes the covariance between variables in a PC
-%   pce_field_realization                 - Compute a realization of a random field given by a
-%   pce_transform_multi                   - Transform from local univariate to global
-%   pce_cdf                               -
-%   pce_pdf                               -
-%
-% Experimental PCE routines
-%   pce_divide                            -
-%   pce_function                          -
-%   pce_function_polyexp                  -
-%   pce_multiply                          - Multiply two PC expanded random variables.
-%   pce_sqrt                              -
+%   pce_expand_1d                      - Calculate the PCE expansion in one stochastics dimension.
+%   pce_expand_1d_mc                   - Calculate the PCE expansion in one stochastics dimension (MC).
+%   pce_moments                        - Calculate the statistical moments of a distribution given as PCE.
+%   normalize_pce                      - Transforms a PCE in unnormed Hermite polys into a PCE in
+%   pce_covariance                     - Computes the covariance between variables in a PC
+%   pce_field_realization              - Compute a realization of a random field given by a
+%   pce_transform_multi                - Transform from local univariate to global
 %
 % Karhunen-Loeve expansion
-%   kl_expand                             - Perform Karhunen-Loeve expansion.
-%   kl_pce_field_realization              - Compute a realization of a random field given by a
-%   pce_to_kl                             - Reduce a pure PCE field into a KL-PCE field.
-%   project_pce_on_kl                     - Project a spatially PC expanded field into a KL-PCE field.
+%   kl_expand                          - Perform Karhunen-Loeve expansion.
+%   kl_pce_field_realization           - Compute a realization of a random field given by a
+%   pce_to_kl                          - Reduce a pure PCE field into a KL-PCE field.
+%   project_pce_on_kl                  - Project a spatially PC expanded field into a KL-PCE field.
 %
 % Random field expansion
-%   expand_field_pce_sg                   - Compute the PC expansion of a random field according to a paper of Sakamoto and Ghanem.
+%   expand_field_pce_sg                - Compute the PC expansion of a random field according to a paper of Sakamoto and Ghanem.
 %
 % Covariances
-%   exponential_covariance                - Compute the exponential covariance function.
-%   gaussian_covariance                   - Compute the convariance function of gaussian.
-%   spherical_covariance                  - Compute the spherical covariance function.
-%   covariance_matrix                     - Calculate point covariance matrix.
-%   transform_covariance_pce              - Transforms covariance of underlying Gaussian
-%
-% Solvers
+%   exponential_covariance             - Compute the exponential covariance function.
+%   gaussian_covariance                - Compute the convariance function of gaussian.
+%   spherical_covariance               - Compute the spherical covariance function.
+%   covariance_matrix                  - Calculate point covariance matrix.
+%   transform_covariance_pce           - Transforms covariance of underlying Gaussian
 %
 % Distributions
-%   beta_cdf                              - Cumulative distribution function of the beta distribution.
-%   beta_pdf                              - Probability distribution function of the beta distribution.
-%   beta_moments                          - Compute moments of the beta distribution.
-%   beta_stdnor                           - Transforms standard normal random numbers into beta distributed ones.
-%   exponential_cdf                       - Cumulative distribution function of the exponential distribution.
-%   exponential_pdf                       - Probability distribution function of the exponential distribution.
-%   exponential_moments                   - Compute moments of the exponential distribution.
-%   exponential_stdnor                    - Transforms standard normal random numbers into exponential distributed ones.
-%   lognormal_cdf                           - Cumulative distribution function of the lognormal distribution.
-%   lognormal_pdf                           - Probability distribution function of the lognormal distribution.
-%   lognormal_moments                       - Compute moments of the lognormal distribution.
-%   lognormal_stdnor                        - Transforms standard normal random numbers into lognormal distributed ones.
-%   normal_cdf                            - Cumulative distribution function of the normal distribution.
-%   normal_pdf                            - Probability distribution function of the normal distribution.
-%   normal_moments                        - Compute moments of the normal distribution.
-%   normal_stdnor                         - Transforms standard normal random numbers into normal distributed ones.
-%   uniform_cdf                           - Cumulative distribution function of the uniform distribution.
-%   uniform_moments                       - Compute moments of the uniform distribution.
-%   uniform_pdf                           - Probability distribution function of the uniform distribution.
-%   uniform_stdnor                        - Transforms standard normal random numbers into uniform distributed ones.
+%   beta_cdf                           - Cumulative distribution function of the beta distribution.
+%   beta_pdf                           - Probability distribution function of the beta distribution.
+%   beta_moments                       - Compute moments of the beta distribution.
+%   beta_stdnor                        - Transforms standard normal random numbers into beta distributed ones.
+%   exponential_cdf                    - Cumulative distribution function of the exponential distribution.
+%   exponential_pdf                    - Probability distribution function of the exponential distribution.
+%   exponential_moments                - Compute moments of the exponential distribution.
+%   exponential_stdnor                 - Transforms standard normal random numbers into exponential distributed ones.
+%   lognormal_cdf                      - Cumulative distribution function of the lognormal distribution.
+%   lognormal_pdf                      - Probability distribution function of the lognormal distribution.
+%   lognormal_moments                  - Compute moments of the lognormal distribution.
+%   lognormal_stdnor                   - Transforms standard normal random numbers into lognormal distributed ones.
+%   normal_cdf                         - Cumulative distribution function of the normal distribution.
+%   normal_pdf                         - Probability distribution function of the normal distribution.
+%   normal_moments                     - Compute moments of the normal distribution.
+%   normal_stdnor                      - Transforms standard normal random numbers into normal distributed ones.
+%   uniform_cdf                        - Cumulative distribution function of the uniform distribution.
+%   uniform_moments                    - Compute moments of the uniform distribution.
+%   uniform_pdf                        - Probability distribution function of the uniform distribution.
+%   uniform_stdnor                     - Transforms standard normal random numbers into uniform distributed ones.
 %
 % Statistics
-%   data_moments                          - Compute moments of given data.
-%   inv_reg_beta                          - Compute the inverse regularized beta function.
-%   kernel_density                        - Kernel density estimation for given data.
-%   empirical_density                     - Probability density estimation for given data.
-%   ks_test                               - Perform the Kolmogorov-Smirnov test on the samples distribution.
-%   randn_sorted                          - Generate sorted, normally distributed numbers from the inverse CDF.
+%   data_moments                       - Compute moments of given data.
+
+%   kernel_density                     - Kernel density estimation for given data.
+%   empirical_density                  - Probability density estimation for given data.
+%   ks_test                            - Perform the Kolmogorov-Smirnov test on the samples distribution.
+
 %
 % Integration rules
-%   gauss_hermite                         - Numerically integrate with Gauss-Hermite quadrature rule.
-%   gauss_hermite_multi                   - Perform multidimensional Gauss-Hermite quadrature.
-%   gauss_hermite_rule                    - Return the Gauss-Hermite quadrature rule with p nodes.
-%   gauss_legendre_rule                   - Get Gauss points and weights for quadrature over [-1,1].
-%   clenshaw_curtis_legendre_rule         - quad1d_cc_legendre - nodes and weights of clenshaw-curtis formula
-%   full_tensor_grid                      - Return nodes and weights for full tensor product grid.
-%   smolyak_grid                          - Return nodes weights for Smolyak quadrature.
-%   tensor_mesh                           - Create D-dimensional tensor-product from 1D meshes and weights.
+%   gauss_hermite                      - Numerically integrate with Gauss-Hermite quadrature rule.
+%   gauss_hermite_multi                - Perform multidimensional Gauss-Hermite quadrature.
+%   gauss_hermite_rule                 - Return the Gauss-Hermite quadrature rule with p nodes.
+%   gauss_legendre_rule                - Get Gauss points and weights for quadrature over [-1,1].
+%   clenshaw_curtis_legendre_rule      - quad1d_cc_legendre - nodes and weights of clenshaw-curtis formula
+%   full_tensor_grid                   - Return nodes and weights for full tensor product grid.
+%   smolyak_grid                       - Return nodes weights for Smolyak quadrature.
+%   tensor_mesh                        - Create D-dimensional tensor-product from 1D meshes and weights.
 %
 % Miscellaneous numerical routines
-%   cross_correlation                     - Compute cross correlation coefficient between functions.
-%   gram_schmidt                          - Perform Gram-Schmidt orthogonalization.
-%   revkron                               - Reversed Kronecker tensor product.
-%   solver_message                        -
+%   cross_correlation                  - Compute cross correlation coefficient between functions.
+%   gram_schmidt                       - Perform Gram-Schmidt orthogonalization.
+%   solver_message                     - 
 %
 % Stochastic Galerkin method
-%   stochastic_operator_kl_pce            -
-%   stochastic_operator_pce               -
-%   stochastic_pce_rhs                    -
-%   stochastic_pce_matrix                 - Compute the matrix that represents multiplication in the Hermite algebra.
-%
-% Tensor routines
-%   tensor_add                            - Add two sparse tensor products.
-%   tensor_apply                          - Apply a tensor operator to a sparse tensor products.
-%   tensor_apply_kl_operator              - Apply a KL operator to a sparse tensor product.
-%   tensor_norm                           - Compute the norm of a sparse tensor.
-%   tensor_null                           - Create a sparse null tensor with correct dimensions.
-%   tensor_truncate                       - Computes a truncated rank tensor product.
-%   tensor_scalar_product                 - Compute the scalar product of two sparse tensors.
-%   tensor_scale                          - Scale a sparse tensor product by a scalar.
-%   tensor_to_kl                          - Unpack a KL expansion from a tensor product.
-%   kl_to_tensor                          - Pack a KL expansion into tensor product format.
+%   compute_kl_pce_operator            - 
+%   compute_pce_operator               - 
+%   compute_pce_matrix                 - Compute the matrix that represents multiplication in the Hermite algebra.
+%   compute_pce_rhs                    - Compute the right hand side in a linear equation involving the PCE.
 %
 % Application of boundary conditions to tensors and tensor operators
-%   boundary_projectors                   - Projection matrices on the set of inner and boundary nodes.
-%   apply_boundary_conditions_operator    -
-%   apply_boundary_conditions_rhs         -
-%   apply_boundary_conditions_solution    -
+%   boundary_projectors                - Projection matrices on the set of inner and boundary nodes.
+%   apply_boundary_conditions_operator - Apply essential boundary conditions to operator.
+%   apply_boundary_conditions_rhs      - Apply essential boundary conditions to right hand side.
+%   apply_boundary_conditions_solution - Applies boundary conditions to the solution.
 %
 % Tensor and linear operator routines
-%   linear_operator                       - Creates  a linear operator structure from a matrix.
-%   linear_operator_apply                 - Apply a linear operator or matrix to a vector.
-%   linear_operator_compose               - Return the composition of two linear operators.
-%   linear_operator_size                  - Return the size of a linear operator.
-%   linear_operator_solve                 - Solve a linear equation for a general linear operator.
-%   tensor_operator_apply                 - Apply a tensor operator to a tensor.
-%   tensor_operator_compose               - Return the composition of two tensor operators.
-%   tensor_operator_size                  - Elmar Zander
-%   tensor_operator_solve_elementary      - Solves an equation with an elementary tensor operator.
-%
-% Solvers
-%   tensor_operator_solve_pcg             -
-%   tensor_operator_solve_richardson      -
+%   linear_operator                    - Creates  a linear operator structure from a matrix.
+%   linear_operator_apply              - Apply a linear operator or matrix to a vector.
+%   linear_operator_compose            - Return the composition of two linear operators.
+%   linear_operator_size               - Return the size of a linear operator.
+%   linear_operator_solve              - Solve a linear equation for a general linear operator.
 %
 % Miscellaneous system routines
-%   sglib_addpath                         - Set paths for sglib.
-%   sglib_check_setup                     - Checks whether SGLIB was setup correctly.
-%   sglib_help                            - Show SGLIB help overview.
-%   sglib_settings                        - before running the setup should have been performed at least partly
-%   sglib_startup                         - Called automatically by Matlab at startup.
-%   startup                               - Called automatically by Matlab at startup.
-%   isnativesglib                         - Return whether native sglib functions are used.
+%   sglib_addpath                      - Set paths for sglib.
+%   sglib_check_setup                  - Checks whether SGLIB was setup correctly.
+%   sglib_get_appdata                  - Retrieves SGLib application specific data.
+%   sglib_help                         - Show SGLIB help overview.
+%   sglib_set_appdata                  - Stores SGLib application specific data.
+%   sglib_settings                     - before running the setup should have been performed at least partly
+%   sglib_startup                      - Called automatically by Matlab at startup.
+%   startup                            - Called automatically by Matlab at startup.
+
 %
 
 
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
 % UP THE CONTENTS DISPLAY.
 % Test and demo functions/scripts
-%   testsuite                             - Run all unit tests in this directory.
-%   unittest_pce_expand_1d                    - Test the univariate PCE expansion
-%   unittest_multiindex                       - Test multi-index related functions.
-%   unittest_moments                          - Test the moment computing functions.
-%   unittest_hermite_triples                  - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
-%   unittest_gauss_legendre                   - Test the Gauss-Legendere quadrature methods.
-%   unittest_gauss_hermite                    - Test the Gauss-Hermite quadrature rules.
-%   unittest_distributions                    - Test the distribution functions.
-%   unittest_covariance                       - Test covariance related functions.
-%   unittest_inv_reg_beta                     - Test the inverse regularized beta function.
-%   unittest_normalize_pce                    - Test the normalize_pce function.
-%   unittest_pce_moments                      - Test the PCE_MOMENTS function.
-%   unittest_exponential_covariance           - Test exponential_covariance functions.
-%   unittest_gaussian_covariance              - Test gaussian_covariance functions.
-%   unittest_hermite                          - Test the HERMITE function.
-%   unittest_hermite_val                      - Test the HERMITE_VAL function.
-%   unittest_hermite_val_multi                - Test the hermite_val_multi function.
-%   unittest_utils                            - Test utils related functions.
-%   unittest_cross_correlation                - Test the CROSS_CORRELATION function.
-%   unittest_gram_schmidt                     - Test the GRAM_SCHMIDT function
-%   unittest_kl_expand                        - Test the KL_EXPAND function.
-%   unittest_kl_tensor                        - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
-%   unittest_linear_operator                  - Test the LINEAR_OPERATOR and related functions.
-%   unittest_pce_divide                       - Test the PCE_DIVIDE function.
-%   unittest_pce_multiply                     - Test the PCE_MULTIPLY function.
-%   unittest_pce_to_kl                        - Test pce_to_kl function.
-%   unittest_stochastic_pce_matrix            - Test the stochastic_pce_matrix function.
-%   unittest_tensor_methods                   - Test the TENSOR functions.
-%   unittest_tensor_operator_apply            - Test the TENSOR_OPERATOR_APPLY function.
-%   unittest_tensor_operator_compose          - Test the TENSOR_OPERATOR_COMPOSE function.
-%   unittest_tensor_truncate                  - Test the TENSOR_TRUNCATE function.
-%   unittest_tkron                            - UNITTEST_REVKRON Test the REVKRON and function.
-%   unittest_apply_boundary_conditions        - Test the apply_boundary_conditionsfunction.
-%   unittest_tensor_operator_solve_richardson -
-
-
+%   testsuite                          - Run all unit tests in this directory.
+%   unittest_apply_boundary_conditions - Test the APPLY_BOUNDARY_CONDITIONS function.
+%   unittest_compute_pce_matrix        - Test the compute_pce_matrix function.
+%   unittest_covariance                - Test covariance related functions.
+%   unittest_cross_correlation         - Test the CROSS_CORRELATION function.
+%   unittest_distributions             - Test the distribution functions.
+%   unittest_exponential_covariance    - Test EXPONENTIAL_COVARIANCE functions.
+%   unittest_gauss_hermite             - Test the Gauss-Hermite quadrature rules.
+%   unittest_gauss_legendre            - Test the Gauss-Legendere quadrature methods.
+%   unittest_gaussian_covariance       - Test GAUSSIAN_COVARIANCE functions.
+%   unittest_gram_schmidt              - Test the GRAM_SCHMIDT function
+%   unittest_hermite                   - Test the HERMITE function.
+%   unittest_hermite_triples           - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
+%   unittest_hermite_val               - Test the HERMITE_VAL function.
+%   unittest_hermite_val_multi         - Test the hermite_val_multi function.
+%   unittest_kl_expand                 - Test the KL_EXPAND function.
+%   unittest_linear_operator           - Test the LINEAR_OPERATOR and related functions.
+%   unittest_moments                   - Test the moment computing functions.
+%   unittest_multiindex                - Test multi-index related functions.
+%   unittest_normalize_pce             - Test the normalize_pce function.
+%   unittest_pce_expand_1d             - Test the univariate PCE expansion
+%   unittest_pce_moments               - Test the PCE_MOMENTS function.
+%   unittest_pce_to_kl                 - Test the PCE_TO_KL function.
+%   unittest_utils                     - Test utils related functions.
 
 
 %   Elmar Zander
@@ -209,3 +167,5 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
+
+

@@ -1,4 +1,4 @@
-function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
+function K=compute_kl_pce_operator( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
 
 options=varargin2options( varargin{:} );
 [silent,options]=get_option( options, 'silent', true );

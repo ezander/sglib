@@ -1,4 +1,4 @@
-function K=stochastic_operator_pce( k_iota, I_k, I_u, stiffness_func, form, variant )
+function K=compute_pce_operator( k_iota, I_k, I_u, stiffness_func, form, variant )
 
 if nargin<6
     variant=1;

@@ -1,5 +1,5 @@
 function Delta=stochastic_pce_matrix( k_iota, I_k, I_u )
-% STOCHASTIC_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
+%COMPUTE_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
 %   DELTA=STOCHASTIC_PCE_MATRIX( K_IOTA, I_K, I_U ) gives the matrix
 %   representing multiplication with the random variable K(THETA) with a
 %   random variable U(THETA), where K(THETA) is given by its PCE

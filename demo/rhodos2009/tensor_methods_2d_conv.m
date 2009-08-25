@@ -73,12 +73,12 @@ M=size(I_u,1); %#ok, full stochastic dimension
 %% create the right hand side
 % i.e. scale the pce coefficients with the norm of the stochastic ansatz
 % functions and create tensor, matrix and vector versions out of it
-phi_k_beta=stochastic_pce_rhs( phi_k_alpha, I_f, I_u );
+phi_k_beta=compute_pce_rhs( phi_k_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_i, f_i_k, phi_k_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
-gamma_k_beta=stochastic_pce_rhs( gamma_k_alpha, I_g, I_u );
+gamma_k_beta=compute_pce_rhs( gamma_k_alpha, I_g, I_u );
 G=kl_to_tensor( mu_g_i, g_i_k, gamma_k_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
@@ -94,7 +94,7 @@ op_filename=sprintf('kl_operator_2d_%d_%d.mat', N, M );
 
 % create tensor operators
 K=cached_funcall(...
-    @stochastic_operator_kl_pce,...
+    @compute_kl_pce_operator,...
     { mu_k_i, k_i_k, kappa_k_alpha, I_k, I_u, stiffness_func, 'mu_delta' }, ...
     1,... % just one output argument
     op_filename, ...

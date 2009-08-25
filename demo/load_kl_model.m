@@ -10,7 +10,7 @@ function varargout=load_kl_model( name, version, silent, output_vars )
 
 global silent_computation
 
-rf_filename=['data/' name '.mat'];
+rf_filename=[name '.mat'];
 if nargin<2
     version=[];
 end
@@ -26,7 +26,7 @@ meshname='';
 use_mass=true;
 els=[]; pos=[];
 cov_gam=[];
-options_expand_r.transform.correct_var=true;
+options_expand_r={'transform', {'correct_var', true} };
 
 % set model specific options and parameters
 switch name
@@ -77,7 +77,7 @@ end
 
 %% Part 2: Doing the actual computation or retrieval from file
 
-[mu_r_j,rho_i_alpha,r_j_i, I_r]=cached_funcall(...
+[mu_r_j, r_j_i, rho_i_alpha,I_r]=cached_funcall(...
     @compute_random_field,...
     { stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r, m_r }, ...
     4, ...
@@ -87,7 +87,7 @@ end
 
 %% Part 3: Assigning the output
 if nargin<4
-    varargout={mu_r_j, r_j_i, els, pos, rho_i_alpha, I_r, p_r, m_gam_r, m_r, lc_r, stdnor_r, cov_r, cov_gam};
+    varargout={els, pos, mu_r_j, r_j_i, rho_i_alpha, I_r, p_r, m_gam_r, m_r, lc_r, stdnor_r, cov_r, cov_gam};
 else
     for i=1:length(output_vars)
         if exist(output_vars{i},'var')

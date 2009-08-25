@@ -48,11 +48,11 @@ a_alpha=pce_expand_1d( a_func, p );
 b_beta=pce_expand_1d( b_func, p );
 x_iota2=solve_sg_eq( a_alpha, b_beta );
 kernel_density( 3*shift+hermite_val( x_iota2, gam ), [], [], 'k' );
-% method 5: using the stochastic_operator_pce function (basically the same
+% method 5: using the compute_pce_operator function (basically the same
 % as method 4)
 I=(0:p)';
 stiffness_func={@(x)(x),{}};
-K=stochastic_operator_pce( a_alpha, I, I, stiffness_func, 'alpha_beta_mat')
+K=compute_pce_operator( a_alpha, I, I, stiffness_func, 'alpha_beta_mat')
 x_iota3=(K\(b_beta'.*factorial(I)))'
 kernel_density( 4*shift+hermite_val( x_iota3, gam ), [], [], 'y' );
 legend( 'method 1', 'method 2' , 'method 3' , 'method 4' , 'method 5' ); title( 'pdf''s of x' );
