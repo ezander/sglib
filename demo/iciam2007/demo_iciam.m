@@ -36,7 +36,7 @@ end
 show_sparsity_pattern( K_ab_mat, n );
 userwait;
 
-f_beta=stochastic_pce_rhs( f_alpha, I_f, I_u );
+f_beta=compute_pce_rhs( f_alpha, I_f, I_u );
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

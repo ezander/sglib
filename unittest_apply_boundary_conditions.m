@@ -1,5 +1,5 @@
 function unittest_apply_boundary_conditions
-% UNITTEST_APPLY_BOUNDARY_CONDITIONS Test the apply_boundary_conditionsfunction.
+% UNITTEST_APPLY_BOUNDARY_CONDITIONS Test the APPLY_BOUNDARY_CONDITIONS function.
 %
 % Example (<a href="matlab:run_example unittest_apply_boundary_conditions">run</a>)
 %    unittest_apply_boundary_conditions

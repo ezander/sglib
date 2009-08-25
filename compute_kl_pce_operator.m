@@ -1,4 +1,4 @@
-function K=stochastic_operator_kl_pce( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
+function K=compute_kl_pce_operator( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
 
 options=varargin2options( varargin{:} );
 [silent,options]=get_option( options, 'silent', true );
@@ -28,7 +28,7 @@ function K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_fun
 m_k=size(v_k_i,2);
 K_i=cell(m_k,1);
 Delta_i=cell(m_k,1);
-Delta=stochastic_pce_matrix( k_i_iota, I_k, I_u );
+Delta=compute_pce_matrix( k_i_iota, I_k, I_u );
 for i=1:m_k
     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
     Delta_i{i}=sparse(Delta(:,:,i));
@@ -50,10 +50,10 @@ K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );
 % for i=1:m_k
 %     erase_print( 'assemble: %d/%d', i, m_k );
 %     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
-%     Delta_i{i}=stochastic_pce_matrix( k_i_iota(i,:), I_k, I_u );
+%     Delta_i{i}=compute_pce_matrix( k_i_iota(i,:), I_k, I_u );
 % end
 % erase_print();
-% Delta_mu=stochastic_pce_matrix( [1,zeros(1,m_iota_k-1)], I_k, I_u );
+% Delta_mu=compute_pce_matrix( [1,zeros(1,m_iota_k-1)], I_k, I_u );
 % K_mu_delta={K_mu; Delta_mu; K_i; Delta_i };
 
 

@@ -1,5 +1,5 @@
 function unittest_pce_to_kl
-% UNITTEST_PCE_TO_KL Test pce_to_kl function.
+% UNITTEST_PCE_TO_KL Test the PCE_TO_KL function.
 %
 % Example (<a href="matlab:run_example unittest_pce_to_kl">run</a>)
 %    unittest_pce_to_kl
@@ -17,6 +17,5 @@ function unittest_pce_to_kl
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 

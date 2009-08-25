@@ -41,12 +41,12 @@ M=size(I_u,1); %#ok
 
 
 %% create the right hand side
-phi_i_beta=stochastic_pce_rhs( phi_i_alpha, I_f, I_u );
+phi_i_beta=compute_pce_rhs( phi_i_alpha, I_f, I_u );
 F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
-gamma_i_beta=stochastic_pce_rhs( gamma_i_alpha, I_g, I_u );
+gamma_i_beta=compute_pce_rhs( gamma_i_alpha, I_g, I_u );
 G=kl_to_tensor( mu_g_j, g_j_i, gamma_i_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
