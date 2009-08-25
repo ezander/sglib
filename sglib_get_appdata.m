@@ -29,6 +29,6 @@ if nargin>=1 && ~isempty(item)
     elseif nargin>=2
         appdata=default;
     else
-        appdata=[];
+        appdata=struct();
     end
 end
