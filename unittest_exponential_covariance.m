@@ -1,5 +1,5 @@
 function unittest_exponential_covariance
-% UNITTEST_EXPONENTIAL_COVARIANCE Test exponential_covariance functions.
+% UNITTEST_EXPONENTIAL_COVARIANCE Test the EXPONENTIAL_COVARIANCE function.
 %
 % Example (<a href="matlab:run_example unittest_exponential_covariance">run</a>)
 %    unittest_exponential_covariance

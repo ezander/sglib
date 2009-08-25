@@ -1,5 +1,5 @@
 function unittest_gaussian_covariance
-% UNITTEST_GAUSSIAN_COVARIANCE Test gaussian_covariance functions.
+% UNITTEST_GAUSSIAN_COVARIANCE Test the GAUSSIAN_COVARIANCE function.
 %
 % Example (<a href="matlab:run_example unittest_gaussian_covariance">run</a>)
 %    unittest_gaussian_covariance
