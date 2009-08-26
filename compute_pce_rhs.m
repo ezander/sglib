@@ -30,6 +30,8 @@ n=size(f_j_alpha,1);
 f_j_beta=zeros( n, m_beta_u );
 for i=1:m_alpha_f
     ind=multiindex_find(I_u, I_f(i,:));
-    f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+    if ind
+        f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+    end
 end
 
