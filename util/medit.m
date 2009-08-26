@@ -45,12 +45,13 @@ is_unittest=strncmp( name, 'unittest_', 9 );
 
 if ~exist( filename, 'file' )
     fid=fopen( filename, 'w' );
-    fprintf( fid, 'function %s(varargin)\n', name );
-    if is_unittest
-        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(name(10:end)) );
-    else
+    if ~is_unittest
+        fprintf( fid, 'function %s(varargin)\n', name );
         fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
         fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
+    else
+        fprintf( fid, 'function %s\n', name );
+        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(name(10:end)) );
     end
     fprintf( fid, '%%\n' );
     if show_options
@@ -62,13 +63,13 @@ if ~exist( filename, 'file' )
         fprintf( fid, '%%\n' );
     end
     fprintf( fid, '%% Example (<a href="matlab:run_example %s">run</a>)\n', name );
-    if is_unittest
-        fprintf( fid, '%%   %s\n', name );
-        fprintf( fid, '%%\n' );
-        fprintf( fid, '%% See also %s \n', upper(name(10:end)) );
-    else
+    if ~is_unittest
         fprintf( fid, '%%\n' );
         fprintf( fid, '%% See also\n' );
+    else
+        fprintf( fid, '%%   %s\n', name );
+        fprintf( fid, '%%\n' );
+        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(name(10:end)) );
     end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );

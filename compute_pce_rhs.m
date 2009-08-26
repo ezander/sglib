@@ -9,8 +9,12 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   alpha in I_F. If I_U is omitted I_U==I_F is assumed.
 %
 % Example (<a href="matlab:run_example compute_pce_rhs">run</a>)
+%   I_a=[0 0; 1 0; 0 2; 3 4]; % some multiindices
+%   I_b=[3 4; 1 1; 0 2; 0 0; 4 4]; % random permutation of I_a + some more
+%   a_alpha=[1 2 3 4; 5 6 7 8]; % pce coefficient w.r.t. I_a
+%   disp( compute_pce_rhs( a_alpha, I_a, I_b ) );
 %
-% See also
+% See also COMPUTE_PCE_MATRIX, COMPUTE_PCE_OPERATOR
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -30,6 +34,8 @@ n=size(f_j_alpha,1);
 f_j_beta=zeros( n, m_beta_u );
 for i=1:m_alpha_f
     ind=multiindex_find(I_u, I_f(i,:));
-    f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+    if ind
+        f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+    end
 end
 
