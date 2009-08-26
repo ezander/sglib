@@ -44,8 +44,10 @@ switch correction
         va=1-exp(polyval(p,(log(Ns).^1.5)));
         gam=gam/sqrt(va);
     case 2 % moment based correction
-        [m,v]=data_moments(gam);
-        gam=(gam-m)/sqrt(v);
+        if Ns>1
+            [m,v]=data_moments(gam);
+            gam=(gam-m)/sqrt(v);
+        end
 end
 
 % sorting - gam is of course already sorted if we want so have a random
