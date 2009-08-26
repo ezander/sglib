@@ -24,6 +24,10 @@ I_a=[0 0; 1 0; 0 2; 3 4];
 I_b=[3 4; 1 1; 0 2; 0 0; 4 4];
 
 a_alpha=[1 2 3 4];
+expected=[1*1*1, 1*1*2, 1*2*3, 6*24*4 ];
+actual=compute_pce_rhs( a_alpha, I_a );
+assert_equals( actual, expected, 'defarg' );
+
 expected=[6*24*4, 1*1*0, 1*2*3, 1*1*1, 24*24*0 ];
 actual=compute_pce_rhs( a_alpha, I_a, I_b );
 assert_equals( actual, expected, 'single' );
@@ -32,3 +36,4 @@ a_alpha=[a_alpha; 5 6 7 8];
 expected=[expected; 6*24*8, 1*1*0, 1*2*7, 1*1*5, 24*24*0 ];
 actual=compute_pce_rhs( a_alpha, I_a, I_b );
 assert_equals( actual, expected, 'mult' );
+

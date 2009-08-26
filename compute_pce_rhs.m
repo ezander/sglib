@@ -28,6 +28,10 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin<3
+    I_u=I_f;
+end
+
 m_alpha_f=size(I_f,1);
 m_beta_u=size(I_u,1);
 n=size(f_j_alpha,1);
