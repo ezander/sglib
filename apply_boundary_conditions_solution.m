@@ -1,4 +1,4 @@
-function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
+function u=apply_boundary_conditions_solution( ui, g, P_I, P_B, varargin )
 % APPLY_BOUNDARY_CONDITIONS_SOLUTION Applies boundary conditions to the solution.
 %   U=APPLY_BOUNDARY_CONDITIONS_SOLUTION( UI, G, P_I, P_B ) adds
 %   boundary conditions back to a solution given just on the inner nodes.
@@ -33,6 +33,10 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+options=varargin2options( varargin );
+[truncation_options,options]=get_option( options, 'truncation_options', {} );
+check_unsupported_options( options, mfilename );
+
 if iscell(ui)
     M=size(ui{2},1);
 else
@@ -43,16 +47,11 @@ end
 if M>1; I_S=speye(M); else I_S=1; end
 
 % Computes:
-%   fi=P_I*(f-K*P_B'*P_B*g);
+%   u=P_I'*ui+P_B'*gb (with gb=P_B*g)
 u=tensor_operator_apply( {P_I', I_S}, ui );
-if false && size(g,1)==Nb*M
-    g=tensor_operator_apply( {P_B', I_S}, g );
-else
-    g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
-end
+g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
 
 u=tensor_add( u, g );
 if iscell(u)
-    truncation_options={};
-    u=tensor_truncate( u );
+    u=tensor_truncate( u, truncation_options{:} );
 end
