@@ -1,20 +1,46 @@
 function [r_j_alpha, I_r, C_r]=expand_field_pce_sg( rho_stdnor_func, cov_r_func, cov_gam_func, pos, G_N, p, m_gam, varargin )
 % EXPAND_FIELD_PCE_SG Compute the PC expansion of a random field according to a paper of Sakamoto and Ghanem.
-%  [R_J_ALPHA, I_R]=EXPAND_FIELD_PCE_SG( RHO_STDNOR_FUNC, COV_R_FUNC,
-%  COV_GAM_FUNC, POS, G_N, P, M_GAM ) computes the PCE specified by the
-%  arguments (to be explained later) and returns the coefficients of the
-%  multivariate Hermite polynomials in RHO_J_ALPHA (indices returned in
-%  I_R). RHO_STDNOR_FUNC describes the marginal distribution function of
-%  the random field as a transform from a standard normal random variable
-%  (i.e. RHO_STDNOR_FUNC must be such, that if G is N(0,1), then
-%  RHO_STDNOR_FUNC(G) is distributed according to the desired marginal
-%  density); Currently, only stationary fields are supported. COV_R
-%  contains the covariance function of the field. COV_GAM, which may be
-%  empty, contains the covariance of the underlying Gaussian field. If it
-%  is not specified the covariance of the Gaussian field will be determined
-%  from COV_R. POS contains the points on which the field is expanded. G_N
-%  is the spatial Gramian. P is the order of the PC expansion. G_GAM is the
-%  order of the KL expansion of the Gaussian base field.
+%   [R_J_ALPHA, I_R]=EXPAND_FIELD_PCE_SG( RHO_STDNOR_FUNC, COV_R_FUNC,
+%   COV_GAM_FUNC, POS, G_N, P, M_GAM ) computes the PCE specified by the
+%   arguments (to be explained later) and returns the coefficients of the
+%   multivariate Hermite polynomials in RHO_J_ALPHA (indices returned in
+%   I_R). RHO_STDNOR_FUNC describes the marginal distribution function of
+%   the random field as a transform from a standard normal random variable
+%   (i.e. RHO_STDNOR_FUNC must be such, that if G is N(0,1), then
+%   RHO_STDNOR_FUNC(G) is distributed according to the desired marginal
+%   density); Currently, only stationary fields are supported. COV_R
+%   contains the covariance function of the field. COV_GAM, which may be
+%   empty, contains the covariance of the underlying Gaussian field. If it
+%   is not specified the covariance of the Gaussian field will be determined
+%   from COV_R. POS contains the points on which the field is expanded. G_N
+%   is the spatial Gramian. P is the order of the PC expansion. G_GAM is the
+%   order of the KL expansion of the Gaussian base field.
+%
+% Options
+%   transform_options: {'correct_var', true}
+%      If C_GAM_FUNC is not specified the covariance of the underlying
+%      field is computed by TRANSFORM_COVARIANCE_PCE and this option is
+%      passed through to this function. Usually the default is what you
+%      want (i.e. don't worry about the absolute magnitude of the
+%      covariance, but rather about its shape/relative magnitude).
+%
+% Example (<a href="matlab:run_example expand_field_pce_sg">run</a>)
+%   N=51;
+%   p_k=4;
+%   m_k=4;
+%   stdnor_k={@lognormal_stdnor,{0.5,1}};
+%   stdnor_k={@beta_stdnor,{4,2}};
+%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
+%   G_N=mass_matrix( els, pos );
+%   for i=1:4
+%     lc_k=0.5^(i-1);
+%     fprintf('conv. length: %g\n', lc_k);
+%     cov_k={@gaussian_covariance,{lc_k,1}};
+%     [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
+%     subplot(2,2,i); plot_pce_realizations_1d( pos, k_i_alpha, I_k );
+%   end
+% 
+% See also PLOT_PCE_REALIZATIONS_1D, COVARIANCE_MATRIX, TRANSFORM_COVARIANCE_PCE, PCE_TO_KL
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
