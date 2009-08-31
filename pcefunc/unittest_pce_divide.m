@@ -21,6 +21,32 @@ function unittest_pce_divide
 
 assert_set_function( 'pce_divide' );
 
+
+% test 1a) polynomial * 2
+x_gamma=pce_divide( [1 2 3 4], [0;1;2;3], [0.5 0 0 0], [0;1;2;3] );
+assert_equals( x_gamma, [2 4 6 8], 'const' );
+
+% test 1b) polynomial * 2, different multiindex sets
+x_gamma=pce_divide( [1 2 3 4], [0;1;2;3], [0.5 0], [0;1], [0;1;2;3;4;5] );
+assert_equals( x_gamma, [2 4 6 8 0 0], 'const_diff' );
+
+% test 1c) x^2 / x 
+x_gamma=pce_divide( [1 0 1], [0;1;2], [0 1], [0;1], [0;1;2;3] );
+assert_equals( x_gamma, [0 1 0 0], 'x2_by_x' );
+
+% test 1d) 2*poly / poly
+x_gamma=pce_divide( [2 4 6], [0;1;2], [1 3 2], [0;2;1] );
+assert_equals( x_gamma, [2 0 0], 'same' );
+
+
+% test 1b) polynomial * 2, different multiindex sets
+x_gamma=pce_divide( [1 2 3 4], [0;1;2;3], [0.5 0; 0.25 0], [0;1], [0;1;2;3] );
+assert_equals( x_gamma, [2 4 6 8; 4 8 12 16], 'const_diff' );
+
+
+return
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% test 1: single rand. var, using anon functions
 
