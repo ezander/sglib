@@ -1,10 +1,10 @@
-function test_pce_multiply
-% TEST_PCE_MULTIPLY Test the PCE_MULTIPLY function.
+function unittest_pce_multiply
+% UNITTEST_PCE_MULTIPLY Test the PCE_MULTIPLY function.
 %
-% Example (<a href="matlab:run_example test_pce_multiply">run</a>) 
-%    test_pce_multiply
+% Example (<a href="matlab:run_example unittest_pce_multiply">run</a>) 
+%    unittest_pce_multiply
 %
-% See also TESTSUITE
+% See also PCE_MULTIPLY, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -52,9 +52,10 @@ X_alpha=rand(N,5); I_X=(0:4)';
 Y_beta=rand(N,7);  I_Y=(0:6)';
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
 
-[Z,xi]=pce_field_realization( 1, Z_gamma, I_Z );
-[X]=pce_field_realization( 1, X_alpha, I_X, xi );
-[Y]=pce_field_realization( 1, Y_beta, I_Y, xi );
+xi=rand(1,10);
+Z=pce_evaluate( Z_gamma, I_Z, xi );
+X=pce_evaluate( X_alpha, I_X, xi );
+Y=pce_evaluate( Y_beta, I_Y, xi );
 assert_equals( Z, X.*Y, 'vec_rand' );
 
 % test for multiplication of a two random vector of multivariate Hermites
@@ -64,10 +65,8 @@ I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1));
 I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
 
-[Z,xi]=pce_field_realization( 1, Z_gamma, I_Z );
-[X]=pce_field_realization( 1, X_alpha, I_X, xi );
-[Y]=pce_field_realization( 1, Y_beta, I_Y, xi );
+xi=rand(m,10);
+Z=pce_evaluate( Z_gamma, I_Z, xi );
+X=pce_evaluate( X_alpha, I_X, xi );
+Y=pce_evaluate( Y_beta, I_Y, xi );
 assert_equals( Z, X.*Y, 'vec_rand_multi' );
-
-
-

@@ -35,10 +35,10 @@ end
 
 m_X=size(I_X,1);
 m_Z=size(I_Z,1);
-X_alpha_RHS=compute_pce_rhs( X_alpha, I_X );
+X_alpha_RHS=compute_pce_rhs( X_alpha, I_X, I_Z );
 
 K=compute_pce_matrix( Y_beta, I_Y, I_Z );
-K\X_alpha_RHS'
+Z_gamma=(K\X_alpha_RHS')';
 % K=zeros(m_X,m_Z);
 % 
 % for j=1:m_X

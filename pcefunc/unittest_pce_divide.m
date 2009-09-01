@@ -72,9 +72,9 @@ assert_equals( x_gamma(1:5), x_gamma_ex(1:5), 'pce_coeff', 'reltol', 10.^-[7,5,4
 % hold for any realization).
 
 xi=randn_sorted(10);
-A=pce_field_realization( 1, a_alpha, I_a, xi );
-B=pce_field_realization( 1, b_beta, I_b, xi );
-X=pce_field_realization( 1, x_gamma, I_b, xi );
+A=pce_evaluate( a_alpha, I_a, xi );
+B=pce_evaluate( b_beta, I_b, xi );
+X=pce_evaluate( x_gamma, I_b, xi );
 assert_equals( X, A./B, 'vec_rand_multi', 'reltol', 0.001 );
 return
 
@@ -99,9 +99,10 @@ X_alpha=rand(N,5); I_X=(0:4)';
 Y_beta=rand(N,7);  I_Y=(0:6)';
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
 
-[Z,xi]=pce_field_realization( 1, Z_gamma, I_Z );
-[X]=pce_field_realization( 1, X_alpha, I_X, xi );
-[Y]=pce_field_realization( 1, Y_beta, I_Y, xi );
+xi=rand(1,10);
+Z=pce_evaluate( Z_gamma, I_Z, xi );
+X=pce_evaluate( X_alpha, I_X, xi );
+Y=pce_evaluate( Y_beta, I_Y, xi );
 assert_equals( Z, X.*Y, 'vec_rand' );
 
 % test for multiplication of a two random vector of multivariate Hermites
@@ -111,9 +112,10 @@ I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1));
 I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
 
-[Z,xi]=pce_field_realization( 1, Z_gamma, I_Z );
-[X]=pce_field_realization( 1, X_alpha, I_X, xi );
-[Y]=pce_field_realization( 1, Y_beta, I_Y, xi );
+xi=rand(m,10);
+Z=pce_evaluate( Z_gamma, I_Z, xi );
+X=pce_evaluate( X_alpha, I_X, xi );
+Y=pce_evaluate( Y_beta, I_Y, xi );
 assert_equals( Z, X.*Y, 'vec_rand_multi' );
 
 
