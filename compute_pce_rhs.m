@@ -28,18 +28,28 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    I_u=I_f;
-end
-
-m_alpha_f=size(I_f,1);
-m_beta_u=size(I_u,1);
-n=size(f_j_alpha,1);
-f_j_beta=zeros( n, m_beta_u );
-for i=1:m_alpha_f
-    ind=multiindex_find(I_u, I_f(i,:));
-    if ind
-        f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+if nargin<3 || isequal(I_u,I_f)
+    m_f=size(I_f,1);
+    F=spdiags(multiindex_factorial(I_f),0,m_f,m_f);
+    f_j_beta=f_j_alpha*F;
+else   
+    m_f=size(I_f,1);
+    m_u=size(I_u,1);
+    n=size(f_j_alpha,1);
+    f_j_beta=zeros( n, m_u );
+    for i=1:m_f
+        ind=multiindex_find(I_u, I_f(i,:));
+        if ind
+            f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
+        end
     end
 end
 
+% TODO: there is possibly a faster way to do this instead of using
+% multiindex_find (or maybe speeding this up) by expressing the relation
+% betweegn f_j_beta and f_j_alpha as a matrix multiply by a sparse matrix,
+% this can be formed as Hadarmard product of logical matrices where each
+% matrix if for one index k and entry ij being true means that index k of
+% entry i in I_u (i.e. I_u(i,k)) and index k of entry j in I_f are the
+% same. Multiplying this by a diagonal matrix that contains the factorials
+% will do the rest of the trick.
