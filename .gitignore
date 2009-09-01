@@ -1,1 +1,4 @@
 sglib.settings
+.cache
+*.eps
+*.mat

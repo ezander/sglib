@@ -9,8 +9,8 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   alpha in I_F. If I_U is omitted I_U==I_F is assumed.
 %
 % Example (<a href="matlab:run_example compute_pce_rhs">run</a>)
-%   I_a=[0 0; 1 0; 0 2; 3 4]; % some multiindices
-%   I_b=[3 4; 1 1; 0 2; 0 0; 4 4]; % random permutation of I_a + some more
+%   I_a=[0 0; 1 0; 0 1; 2 0]; % some multiindices
+%   I_b=[0 0; 0 1; 1 0; 1 1; 2 0; 0 2]; % random permutation of I_a + some more
 %   a_alpha=[1 2 3 4; 5 6 7 8]; % pce coefficient w.r.t. I_a
 %   disp( compute_pce_rhs( a_alpha, I_a, I_b ) );
 %
@@ -28,18 +28,14 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    I_u=I_f;
-end
+g_j_alpha=row_col_mult( f_j_alpha, multiindex_factorial(I_f)' );
 
-m_alpha_f=size(I_f,1);
-m_beta_u=size(I_u,1);
-n=size(f_j_alpha,1);
-f_j_beta=zeros( n, m_beta_u );
-for i=1:m_alpha_f
-    ind=multiindex_find(I_u, I_f(i,:));
-    if ind
-        f_j_beta(:,ind)=multiindex_factorial(I_f(i,:))*f_j_alpha(:,i);
-    end
+if nargin<3 || isequal(I_u,I_f)
+    f_j_beta=g_j_alpha;
+else
+    m_u=size(I_u,1);
+    n=size(f_j_alpha,1);
+    f_j_beta=zeros( n, m_u );
+    ind=multiindex_find(I_u, I_f);
+    f_j_beta(:,ind)=g_j_alpha;
 end
-

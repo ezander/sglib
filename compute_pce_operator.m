@@ -1,7 +1,6 @@
-function K=compute_pce_operator( k_i_iota, I_k, I_u, stiffness_func, form, variant )
+function K=compute_pce_operator( k_i_iota, I_k, I_u, stiffness_func, form )
 % COMPUTE_PCE_MATRIX Compute the operator that represents multiplication with PC expanded random field.
-%   K=COMPUTE_PCE_OPERATOR( K_I_IOTA, I_K, I_U, STIFFNESS_FUNC, FORM,
-%   VARIANT) computes the PC multiplication operator where K_I_IOTA
+%   K=COMPUTE_PCE_OPERATOR( K_I_IOTA, I_K, I_U, STIFFNESS_FUNC, FORM) computes the PC multiplication operator where K_I_IOTA
 %   represents the PC expansion of the parameter field in the operator
 %   (e.g. the k(x,\omega) in the operator K u(x)=-div(k(x,\omega)grad
 %   u(x)), and STIFFNESS_FUNC represents the assembly of the discrete
@@ -14,10 +13,6 @@ function K=compute_pce_operator( k_i_iota, I_k, I_u, stiffness_func, form, varia
 %       matrix, corresponding to E(K*H_alpha*H_beta)
 %     'alpha_beta_mat': as full matrix 
 %     'iota': as cell array of stiffness matrices corresponding to E(k_iota)
-%   The first can be in two variants (specified by VARIANT), where 1
-%   specified the faster method and 2 the slower, but more intuitive (NOTE:
-%   the faster method here is still pretty slow, need to implement the fast
-%   method from compute_kl_pce_operator).
 %
 % Example (<a href="matlab:run_example compute_pce_operator">run</a>)
 %   N=11;
@@ -51,33 +46,32 @@ function K=compute_pce_operator( k_i_iota, I_k, I_u, stiffness_func, form, varia
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if nargin<6
-    variant=1;
-end
 if nargin<5
-    form='iota';
+    form='alpha_beta';
 end
 
 switch form
     case { 'alpha_beta' }
-        switch variant
-            case 1
-                K=assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func );
-            case 2
-                K=assemble_alpha_beta2( k_i_iota, I_k, I_u, stiffness_func );
-        end
+        K=assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func );
     case { 'alpha_beta_mat' }
-        switch variant
-            case 1
-                K=cell2mat( assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func ) );
-            case 2
-                K=cell2mat( assemble_alpha_beta2( k_i_iota, I_k, I_u, stiffness_func ) );
-        end
+        K=assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func );
+        K=cell2mat( K );
     case { 'iota' }
         K=assemble_iota( k_i_iota, I_k, I_u, stiffness_func );
     otherwise
+        error( 'compute_pce_operator:unkown_form', 'Unknown form: %s', form );
 end
 
+function K=assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func )
+m_u=size(I_u,1);
+K=cell(m_u,m_u);
+for alpha=1:m_u
+    for beta=1:alpha
+        k_ab=squeeze( tensor_multiply( hermite_triple_fast(I_u(alpha,:),I_u(beta,:),I_k), k_i_iota, 3, 2 ) );
+        K{alpha,beta}=funcall( stiffness_func, k_ab );
+        K{beta,alpha}=K{alpha,beta};
+    end
+end
 
 function K=assemble_iota( k_i_iota, I_k, I_u, stiffness_func )
 m_iota_k=size(I_k,1);
@@ -88,42 +82,3 @@ end
 K={K_iota;I_k;I_u};
 
 
-function K=assemble_alpha_beta( k_i_iota, I_k, I_u, stiffness_func )
-m_iota_k=size(I_k,1);
-K_iota=cell(m_iota_k,1);
-for iota=1:m_iota_k
-    K_iota{iota}=funcall( stiffness_func, k_i_iota(:,iota) );
-end
-
-m_alpha_u=size(I_u,1);
-K_ab=cell(m_alpha_u,m_alpha_u);
-n=size(k_i_iota,1);
-for alpha=1:m_alpha_u
-    for beta=1:alpha
-        K_ab{alpha,beta}=sparse(n,n);
-        for iota=1:m_iota_k
-            K_ab{alpha,beta}=K_ab{alpha,beta}+...
-                hermite_triple_product(I_u(alpha,:),I_u(beta,:),I_k(iota,:))*K_iota{iota};
-        end
-        K_ab{beta,alpha}=K_ab{alpha,beta};
-    end
-end
-K=K_ab;
-
-
-function K=assemble_alpha_beta2( k_i_iota, I_k, I_u, stiffness_func )
-m_alpha_u=size(I_u,1);
-K_ab=cell(m_alpha_u,m_alpha_u);
-n=size(k_i_iota,1);
-m_iota_k=size(I_k,1);
-for alpha=1:m_alpha_u
-    for beta=1:alpha
-        k_ab=zeros(n,1);
-        for iota=1:m_iota_k
-            k_ab=k_ab+hermite_triple_product(I_u(alpha,:),I_u(beta,:),I_k(iota,:))*k_i_iota(:,iota);
-        end
-        K_ab{alpha,beta}=funcall( stiffness_func, k_ab );
-        K_ab{beta,alpha}=K_ab{alpha,beta};
-    end
-end
-K=K_ab;

@@ -9,6 +9,9 @@
 %   datatypes). I think that the naming scheme described below does a
 %   fairly good job at that.
 %
+% Index notation, ordering of indices, and tensors:
+% =================================================
+%
 % Naming of random fields:
 % ========================
 %   * Random fields generally have small Latin names like k,r,f etc. except
@@ -223,5 +226,23 @@
 %   x_i.
 
 
+
+				% Duality between indices: one certain
+				% kind of index should always be in the
+				% same position (i.e. dimension) if
+				% there is a dual index (explain later
+				% what is) it should always occupy the
+				% "dual" position e.g. the random var
+				% index in a multiindex is in dim 2,
+				% thus when evaluating  with repect to a
+				% multiindex the actual values for the
+				% random vars should be in dim 1 the
+				% linear index of a multiindex is in dim
+				% 1, so a pce expansion of some random
+				% variable should be in dim 2; so the
+				% spatial index of the pce should be in
+				% dim 1
+
+%
 
 0176/61287253;

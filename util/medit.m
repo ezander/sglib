@@ -43,7 +43,20 @@ end
 
 is_unittest=strncmp( name, 'unittest_', 9 );
 
+writetofile=false;
 if ~exist( filename, 'file' )
+    writetofile=true;
+else 
+    fid=fopen( filename, 'r' );
+    if fid~=-1
+        if fseek( fid, 0, 'eof' )==0 && ftell( fid )==0
+            writetofile=true;
+        end
+        fclose(fid);
+    end
+end
+
+if writetofile
     fid=fopen( filename, 'w' );
     if ~is_unittest
         fprintf( fid, 'function %s(varargin)\n', name );
