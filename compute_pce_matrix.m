@@ -1,17 +1,20 @@
-function Delta=stochastic_pce_matrix( k_iota, I_k, I_u )
-%COMPUTE_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
-%   DELTA=STOCHASTIC_PCE_MATRIX( K_IOTA, I_K, I_U ) gives the matrix
-%   representing multiplication with the random variable K(THETA) with a
-%   random variable U(THETA), where K(THETA) is given by its PCE
-%   representation K_IOTA with respect to the multiindex set I_K (i.e.
-%   K(THETA)=SUM_{IOTA IN I_K} K_IOTA*H_IOTA(THETA)) and U(THETA) as well
-%   as the product K*U are represented by a PCE with respect to the
-%   multiindex set I_U.
+function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
+% COMPUTE_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
+%   DELTA_I=COMPUTE_PCE_MATRIX( K_I_IOTA, I_K, I_U ) computes the matrices
+%   DELTA_I representing multiplication with the random variables
+%   K_I(THETA) by a random variable U(THETA), where K_I(THETA) is given by
+%   its PCE representation K_I_IOTA with respect to the multiindex set I_K
+%   (i.e. K(THETA)=SUM_{IOTA IN I_K} K_I_IOTA*H_IOTA(THETA)) and U(THETA)
+%   as well as the product K*U are represented by a PCE with respect to the
+%   multiindex set I_U. Of U only the multiindex set is needed.
 %
-% Example (<a href="matlab:run_example stochastic_pce_matrix">run</a>)
-%   disp('still to come');
+% Example (<a href="matlab:run_example compute_pce_matrix">run</a>)
+%    I_u=multiindex(3,2);
+%    I_k=multiindex(3,3);
+%    k_i_iota=rand(2,size(I_k,1));
+%    Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
 %
-% See also
+% See also COMPUTE_PCE_RHS, COMPUTE_PCE_OPERATOR, COMPUTE_KL_PCE_OPERATOR
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -25,31 +28,34 @@ function Delta=stochastic_pce_matrix( k_iota, I_k, I_u )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-check_condition( {k_iota,I_k}, 'match', false, {'k_iota','I_k'}, mfilename );
+check_condition( {k_i_iota,I_k}, 'match', false, {'k_i_iota','I_k'}, mfilename );
 check_condition( {I_u,I_k'}, 'match', false, {'I_u','I_k'''}, mfilename );
 
 % initialize hermite_triple function cache
 hermite_triple_fast(max([I_k(:); I_u(:)]));
 
-n=size(k_iota,1);
-sel=2;
-switch sel
+n=size(k_i_iota,1);
+% We have different versions for computing the pce matrix here, with
+% different levels of vectorization. The old versions (1 and 2) are left in
+% to have comparisons when optimizations are performed.
+vect_level=3;
+switch vect_level
     case 1
         m_alpha_u=size(I_u,1);
-        Delta=zeros( m_alpha_u, m_alpha_u, n );
+        Delta_i=zeros( m_alpha_u, m_alpha_u, n );
         for alpha=1:m_alpha_u
             for beta=alpha:m_alpha_u
-                Delta(alpha,beta,:)=k_iota*squeeze(hermite_triple_fast( I_u(alpha,:), I_u(beta,:), I_k ));
-                Delta(beta,alpha,:)=Delta(alpha,beta,:);
+                Delta_i(alpha,beta,:)=k_i_iota*squeeze(hermite_triple_fast( I_u(alpha,:), I_u(beta,:), I_k ));
+                Delta_i(beta,alpha,:)=Delta_i(alpha,beta,:);
             end
         end
     case 2
         m_alpha_u=size(I_u,1);
-        Delta=zeros( m_alpha_u, m_alpha_u, n );
+        Delta_i=zeros( m_alpha_u, m_alpha_u, n );
         for alpha=1:m_alpha_u
-            Delta(alpha,:,:)=squeeze(hermite_triple_fast( I_u(alpha,:), I_u, I_k ))*k_iota';
-            Delta(:,alpha,:)=Delta(alpha,:,:);
+            Delta_i(alpha,:,:)=squeeze(hermite_triple_fast( I_u(alpha,:), I_u, I_k ))*k_i_iota';
+            Delta_i(:,alpha,:)=Delta_i(alpha,:,:);
         end
+    case 3
+        Delta_i=tensor_multiply( hermite_triple_fast( I_u, I_u, I_k ), k_i_iota, 3, 2 );
 end
