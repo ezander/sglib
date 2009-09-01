@@ -26,8 +26,8 @@ for p=1:6
     % better not modify (rather regenerate or change the program)
     switch p
         case 1
-            xi=[0];
-            wi=[2.0000000000000000000];
+            xi=0;
+            wi=2.0000000000000000000;
         case 2
             xi=[-0.57735026918962576451; 0.57735026918962576451];
             wi=[1.0000000000000000000; 1.0000000000000000000];

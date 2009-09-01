@@ -69,4 +69,4 @@ assert_equals( squeeze(hermite_triple_fast([1 2],[2 3],[3 3; 3 4; 3 5])), [216;0
 assert_equals( squeeze(hermite_triple_fast([1 2],[4 3],[3 3; 3 4; 3 5])), [864;0;2880], 'multivariate/kvec' );
 assert_equals( squeeze(hermite_triple_fast([1 2],[2 2],[3 3; 3 4; 3 5])), [0;144;0], 'multivariate/kvec' );
 assert_equals( squeeze(hermite_triple_fast([1 2],[2 3; 4 3; 2 2],[3 3; 3 4; 3 5])), [216,0,720; 864,0,2880; 0,144,0], 'multivariate/jkvec' );
-assert_equals( squeeze(hermite_triple_fast([1],[2; 4; 2],[3; 3; 3])), [6,6,6; 24,24,24; 6,6,6], 'multivariate/jkvec' );
+assert_equals( squeeze(hermite_triple_fast(1,[2; 4; 2],[3; 3; 3])), [6,6,6; 24,24,24; 6,6,6], 'multivariate/jkvec' );
