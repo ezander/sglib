@@ -1,5 +1,8 @@
 function os = solver_message( method, tol, maxit, flag, iter, relres )
 
+% TODO: need to rewrite from scratch, so it can be put under GPL (this is a
+% copy from the MathWorks code which can't be directly accessed.)
+
 if flag>0
     os = sprintf(['%s stopped at iteration %d without converging' ...
         ' to the desired tolerance %0.2g'], method, iter, tol);
@@ -24,7 +27,7 @@ switch(flag)
                 ' with relative residual %0.2g'],iter,relres);
         end
     case 1
-        os = [os sprintf('\nbecause the maximum number of iterations was reached.')];
+        os = [os sprintf('\nbecause the maximum number of iterations (%d) was reached.', maxit)];
     case 2
         os = [os sprintf(['\nbecause the system involving the' ...
             ' preconditioner was ill conditioned.'])];
