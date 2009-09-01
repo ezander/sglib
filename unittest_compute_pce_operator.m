@@ -22,13 +22,12 @@ function unittest_compute_pce_operator
 assert_set_function( 'pce_multiply' );
 
 N=4;
-[els,pos,bnd]=create_mesh_1d( N, 0, 1 );
+[els,pos]=create_mesh_1d( N, 0, 1 );
 stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
 
 k00=[1;1;1;1];
 k11=[1;2;3;4];
-k32=[1;0;1;0];
-k32=rand(4,1);
+k32=[7;2;1;3];
 
 I_k=[0 0; 1 1; 3 2];
 k_i_iota=[ k00 k11 k32 ];
