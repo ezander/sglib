@@ -29,7 +29,7 @@
 %   pce_expand_1d                      - Calculate the PCE expansion in one stochastics dimension.
 %   pce_expand_1d_mc                   - Calculate the PCE expansion in one stochastics dimension (MC).
 %   pce_moments                        - Calculate the statistical moments of a distribution given as PCE.
-%   normalize_pce                      - Transforms a PCE in unnormed Hermite polys into a PCE in
+%   pce_normalize                      - Transforms a PCE in unnormed Hermite polys into a PCE in
 %   pce_covariance                     - Computes the covariance between variables in a PC
 %   pce_field_realization              - Compute a realization of a random field given by a
 %   pce_transform_multi                - Transform from local univariate to global
@@ -149,7 +149,7 @@
 %   unittest_linear_operator           - Test the LINEAR_OPERATOR and related functions.
 %   unittest_moments                   - Test the moment computing functions.
 %   unittest_multiindex                - Test multi-index related functions.
-%   unittest_normalize_pce             - Test the normalize_pce function.
+%   unittest_pce_normalize             - Test the PCE_NORMALIZE function.
 %   unittest_pce_expand_1d             - Test the univariate PCE expansion
 %   unittest_pce_moments               - Test the PCE_MOMENTS function.
 %   unittest_pce_to_kl                 - Test the PCE_TO_KL function.

@@ -1,29 +1,29 @@
-function pcc_normed=normalize_pce( pcc_unnormed, pci, reverse )
-% NORMALIZE_PCE Transforms a PCE in unnormed Hermite polys into a PCE in
-% normed Hermite polys.
-%   PCC_NORMED=NORMALIZE_PCE( PCC_UNNORMED, PCI ) returns the PC
+function b_i_alpha=pce_normalize( a_i_alpha, I_a, reverse )
+% PCE_NORMALIZE Transforms a PCE in unnormed Hermite polys into a PCE in normed Hermite polys.
+%   B_I_ALPHA=PCE_NORMALIZE( A_I_ALPHA, I_F ) returns the PC
 %   coefficients of the PCE in terms of the normalized Hermite polynomials
 %   from the the PCE in terms of the unnormalized Hermite polynomials. This
 %   representation has the advantage that the covariance of two Gaussian
 %   random variables given in normalized PCE is just the Euclidian product
 %   of the coefficient vectors; and the variance of one Gaussian variable
 %   is likewise the Euclidian norm.
-%   PCC_UNNORMED=NORMALIZE_PCE( PCC_NORMED, PCI, TRUE ) reverses the
+%   A_I_ALPHA=PCE_NORMALIZE( B_I_ALPHA, I_F, TRUE ) reverses the
 %   normalization, i.e. converts to the coefficients of the unnormalized
 %   Hermite polynomials again.
+%
 % Note
 %   Most functions of this package currently expect the PCE to be given in
 %   unnormalized Hermite polynomials. This has advantages in some areas but
 %   disadvantages in others. In the future this might be changed.
 %
-% Example (<a href="matlab:run_example normalize_pce">run</a>)
-%   [pcc,pci]=pce_expand_1d( @(x)(lognormal_stdnor(x,0,1)), 4 );
-%   pccn=normalize_pce( pcc, pci );
-%   [mean1,var1]=pce_moments( pcc, pci );
-%   mean2=pccn(1);
-%   var2=sum(pccn(2:end).^2,1);
-%   disp(mean1==mean2); % true
-%   disp(var1==var2); %true
+% Example (<a href="matlab:run_example pce_normalize">run</a>)
+%   [a_alpha,I_a]=pce_expand_1d( @(x)(lognormal_stdnor(x,0,1)), 4 );
+%   b_alpha=pce_normalize( a_alpha, I_a );
+%   [mean_a,var_a]=pce_moments( a_alpha, I_a );
+%   mean_b=b_alpha(1);
+%   var_b=sum(b_alpha(2:end).^2,2);
+%   fprintf('mean: %g==%g\n', mean_a, mean_b);
+%   fprintf('var:  %g==%g\n', var_a, var_b);
 %
 % See also PCE_EXPAND_1D
 
@@ -42,7 +42,7 @@ function pcc_normed=normalize_pce( pcc_unnormed, pci, reverse )
 
 if nargin>2 && reverse
     % here the names are somehow reversed of course
-    pcc_normed=row_col_mult( pcc_unnormed, 1./hermite_norm( pci )' );
+    b_i_alpha=row_col_mult( a_i_alpha, 1./hermite_norm( I_a )' );
 else
-    pcc_normed=row_col_mult( pcc_unnormed, hermite_norm( pci )' );
+    b_i_alpha=row_col_mult( a_i_alpha, hermite_norm( I_a )' );
 end

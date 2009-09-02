@@ -1,28 +1,48 @@
-function [mu_r_i,r_i_k,rho_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, m_r, G_N, G_Phi, varargin )
+function [r_i_0,r_i_k,r_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, l_r, G_N, G_Phi, varargin )
 % PCE_TO_KL Reduce a pure PCE field into a KL-PCE field.
+%   [R_I_0,R_I_K,R_K_ALPHA,RELERR,SIGMA_K]=PCE_TO_KL( R_I_ALPHA, I_R, L_R,
+%   G_N, G_PHI ) computes the KL expansion of the (pointwise) PC expanded
+%   random field R, given by R_I_ALPHA, where the random variables in the
+%   KL are also given in their corresponding PC expanded form. The
+%   multiindex set for the PCE is in I_R; L_R specifies the number of terms
+%   in the KL. G_N is the spatial Gramian (AKA mass matrix). G_PHI the
+%   stochastic Gramian. In contrast to the normal KL the function R_I_K are
+%   not normalized but their 2-norm is equal to SIGMA_K, i.e. the K-th KL
+%   eigenvalue.
+%
+% Example (<a href="matlab:run_example pce_to_kl">run</a>)
+%   N=51;
+%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
+%   G_N=mass_matrix( els, pos );
+%   p_k=4;
+%   m_k=4;
+%   l_k=12;
+%   lc_k=0.3;
+%   stdnor_k={@beta_stdnor,{4,2}};
+%   cov_k={@gaussian_covariance,{lc_k,1}};
+%   [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
+%   [mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
+%
+% See also EXPAND_FIELD_PCE_SG
 
-%TODO: overhaul the comments
-%TODO: really: just use the truncation from tensor_truncate
+%   Elmar Zander
+%   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
+%   $Id$ 
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
-% ... do an SVD
-% directly on the PCE coefficients. If the PCE coefficients are given for
-% normalized Hermite polynomials this should give about the same as the
-% first method. For unnormalized coefficients we'll certainly get problems.
 
-
-
-
-% In the following we transform from a pure PCE expansion to a KL expansion
-% with PCE expanded random variables. I.e. first we have a field u(x,omega)
-% given by:
-%  u(x,omega)=Sum_alpha u_alpha(x) H_alpha(xi(omega))
-% and want to transform it into
-%  u(x,omega)=mu_u(x) + Sum_u f_
 if ~exist('G_N','var'); G_N=[]; end
 if ~exist('G_Phi','var'); G_Phi=[]; end
 
 check_condition( {G_N, r_i_alpha}, 'match', true, {'G_N', 'r_i_alpha'}, mfilename );
-check_range( m_r, 0, inf, 'm_r', mfilename );
+check_range( l_r, 0, inf, 'l_r', mfilename );
 check_condition( {r_i_alpha, I_r}, 'match', false, {'r_i_alpha', 'I_r'}, mfilename );
 check_condition( G_N, 'square', true, 'G_N', mfilename );
 check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
@@ -38,40 +58,35 @@ check_unsupported_options( options, mfilename );
 
 % Extract the mean of the KL expansion (that's simply the coefficient in
 % the PCE corresponding to the multiindex [0,0,0,...] )
-mu_r_i=r_i_alpha(:,1);
+r_i_0=r_i_alpha(:,1);
 r_i_alpha(:,1)=0;
 
 
 % Transform the PCE coefficients from unnormalized (orthogonal) Hermite
 % polynomials to normalized (orthonormal) Hermite polynomials
-pcc_normed=normalize_pce( r_i_alpha, I_r );
+rn_i_alpha=pce_normalize( r_i_alpha, I_r );
 
 if ~isempty(G_N)
     L_N=chol(G_N);
     % this is really strange, but multiplication with a full matrix seems
     % to be many, many times faster (about x15) than with a sparse matrix
-    % pcc_normed=L_N*pcc_normed; % very slow
-    % pcc_normed=full(L_N)*pcc_normed; % fastest, but problematic
-    pcc_normed=full(L_N*sparse(pcc_normed)); %reasonably fast
+    % rn_i_alpha=L_N*rn_i_alpha; % very slow
+    % rn_i_alpha=full(L_N)*rn_i_alpha; % fastest, but problematic
+    rn_i_alpha=full(L_N*sparse(rn_i_alpha)); %reasonably fast
 end
 
-[U,S,V,relerr]=truncated_svd_internal( pcc_normed, m_r, sparse_svd, tol, maxit );
+[U,S,V,relerr]=truncated_svd_internal( rn_i_alpha, l_r, sparse_svd, tol, maxit );
 
 if ~isempty(G_N)
     U=L_N\U;
 end
 
 % Transform PCE coefficients back to unnormalized Hermite polynomials
-rho_k_alpha=normalize_pce( V', I_r, true );
+r_k_alpha=pce_normalize( V', I_r, true );
 
-if nargout<5
-    r_i_k=U*S;
-else
-    r_i_k=U;
-    sigma_k=diag(S);
-end
-
-
+% scale spatial KL eigenfunction with KL eigenvalues
+r_i_k=U*S;
+sigma_k=diag(S);
 
 
 function [U,S,V,relerr]=truncated_svd_internal( A, k, sparse_svd, tol, maxit )

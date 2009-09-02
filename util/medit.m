@@ -1,4 +1,4 @@
-function medit( filename )
+function medit( filename, prepend )
 % MEDIT Edit a new or existing m-file in the editor with path.
 %   MEDIT( FILENAME ) opens the m-file named by FILENAME in the Matlab
 %   internal editor. If FILENAME doesn't end in '.m' it is appended. This
@@ -42,16 +42,33 @@ end
 [pathstr,name,ext] = fileparts(filename); %#ok
 
 is_unittest=strncmp( name, 'unittest_', 9 );
+if is_unittest
+    testfunction=name(10:end);
+end
 
+prev_contents=[];
 writetofile=false;
 if ~exist( filename, 'file' )
+    % if file doesn't yet exist we'll write to it
     writetofile=true;
-else 
-    fid=fopen( filename, 'r' );
-    if fid~=-1
-        if fseek( fid, 0, 'eof' )==0 && ftell( fid )==0
-            writetofile=true;
+else
+    if nargin>1 && all(prepend(:))
+        % if file exists and user wants to prepend save contents of file
+        writetofile=true;
+        prev_contents=readfile( filename );
+    else
+        % if file exists but is empty we also write to the file
+        fid=fopen( filename, 'r' );
+        if fid~=-1
+            if fseek( fid, 0, 'eof' )==0 && ftell( fid )==0
+                writetofile=true;
+            end
+            fclose(fid);
         end
+    end
+    if writetofile
+        fid=fopen( filename, 'r' );
+        filename=fopen(fid);
         fclose(fid);
     end
 end
@@ -64,7 +81,7 @@ if writetofile
         fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
     else
         fprintf( fid, 'function %s\n', name );
-        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(name(10:end)) );
+        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(testfunction) );
     end
     fprintf( fid, '%%\n' );
     if show_options
@@ -82,7 +99,7 @@ if writetofile
     else
         fprintf( fid, '%%   %s\n', name );
         fprintf( fid, '%%\n' );
-        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(name(10:end)) );
+        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(testfunction) );
     end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );
@@ -96,7 +113,28 @@ if writetofile
     fprintf( fid, '%%   See the GNU General Public License for more details. You should have\n' );
     fprintf( fid, '%%   received a copy of the GNU General Public License along with this\n' );
     fprintf( fid, '%%   program.  If not, see <http://www.gnu.org/licenses/>.\n' );
+    if is_unittest
+        fprintf( fid, '\n' );
+        fprintf( fid, 'assert_set_function( ''%s'' );\n', testfunction );
+    end
+    fprintf( fid, '\n' );
+    if ~isempty( prev_contents )
+        fprintf( fid, '%s', prev_contents );
+    end
+        
     fclose( fid );
 end
 
 edit( filename )
+
+
+
+function S=readfile( filename )
+fid=fopen(filename,'r');
+S=[];
+while true
+    line=fgets(fid);
+    if line==-1; break; end
+    S=[S line];
+end
+fclose(fid);

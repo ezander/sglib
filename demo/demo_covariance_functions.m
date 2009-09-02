@@ -1,6 +1,6 @@
-%%% DEMO_COVARIANCE_FUNCTIONS This demo shows the different covariance functions available.
+function demo_covariance_functions
+% DEMO_COVARIANCE_FUNCTIONS This demo shows the different covariance functions available.
 
-init_demos
 
 %% Gaussian
 x=linspace(-5,5,300)'; y=x;

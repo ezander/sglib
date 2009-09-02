@@ -1,8 +1,6 @@
-%function demo_tensor_methods
+function demo_tensor_methods
 
-init_demos
-
-clf; clear
+clf;
 dock;
 basename='rf_kl_1d_sfem21';
 

@@ -33,7 +33,6 @@
 %   paper_sakamoto_ghanem     - Test the ideas in a paper of Sakamoto and Ghanem.
 %
 % Helper functions
-%   init_demos                - Set some parameters for the demos to run correctly.
 %   load_kl_model             - MODEL_KL Load or compute a random field model in KL expanded form.
 %   load_kl_operator          -
 %   load_operator             -

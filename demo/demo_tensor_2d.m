@@ -1,12 +1,8 @@
-init_demos
-
-clear
+function demo_tensor_2d
 
 %% load and show mesh
 [els,pos,G,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
 pdemesh( ptdata{:} )
-
-
 
 p_f=3;
 m_gam_f=22;

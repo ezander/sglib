@@ -1,9 +1,7 @@
 function demo_animation
 % DEMO_ANIMATION Shows a smoothly varying random field.
 
-init_demos( true );
-
-clf; clear
+clf;
 
 if ismatlab
     set(gcf, 'WindowButtonUpFcn', @stop_demo );
@@ -26,7 +24,7 @@ for i=1:100
         sp=s^1.5;
         xi=(1-sp)*xi1+sp*xi2;
         f_ex=kl_pce_field_realization( pos, mu_f, v_f, f_i_alpha, I_f, xi );
-        plot_field( els, pos, zinn_harvey_connected_stdnor( f_ex, 0.1, true ) );
+        plot_field( els, pos, f_ex );
 
         if ~isempty( get( gcf, 'UserData' ) )
             set( gcf, 'UserData', [] );

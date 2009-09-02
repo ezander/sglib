@@ -1,6 +1,5 @@
+function demo_rf_expand_pce_sg
 % DEMO_RF_EXPAND_PCE_SG
-
-init_demos
 
 
 % show some realizations of a random field with marginal beta distribution

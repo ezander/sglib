@@ -1,8 +1,5 @@
 function demo_sparsity
 
-init_demos
-clf
-
 clf;
 subplot(1,2,1); sp_plots( 0, 0, 4, 2, 4, false ); title( 'degree ordering' );
 subplot(1,2,2); sp_plots( 0, 0, 4, 2, 4, true ); title( 'lexicographical ordering' );

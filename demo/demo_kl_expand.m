@@ -1,9 +1,8 @@
-%%% DEMO_KL_EXPAND Demonstrate usage of the Karhunen-Loeve expansion functions
-
-init_demos
+function demo_kl_expand
+% DEMO_KL_EXPAND Demonstrate usage of the Karhunen-Loeve expansion functions
 
 %% Setup grid
-clear; subplot(1,1,1); clf; hold off
+subplot(1,1,1); clf; hold off
 n=10;
 x=linspace(0,1,n)';
 els=[1:n-1; 2:n]';
@@ -93,7 +92,7 @@ userwait
 
 %%%%%%%%%%
 C_u_pce=pce_covariance( u_alpha, I_u );
-A=normalize_pce( u_alpha, I_u );
+A=pce_normalize( u_alpha, I_u );
 A(:,1)=0;
 C_u_pce2=A*A';
 
