@@ -42,6 +42,9 @@ end
 [pathstr,name,ext] = fileparts(filename); %#ok
 
 is_unittest=strncmp( name, 'unittest_', 9 );
+if is_unittest
+    testfunction=name(10:end);
+end
 
 writetofile=false;
 if ~exist( filename, 'file' )
@@ -64,7 +67,7 @@ if writetofile
         fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
     else
         fprintf( fid, 'function %s\n', name );
-        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(name(10:end)) );
+        fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(testfunction) );
     end
     fprintf( fid, '%%\n' );
     if show_options
@@ -82,7 +85,7 @@ if writetofile
     else
         fprintf( fid, '%%   %s\n', name );
         fprintf( fid, '%%\n' );
-        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(name(10:end)) );
+        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(testfunction) );
     end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );
@@ -96,6 +99,11 @@ if writetofile
     fprintf( fid, '%%   See the GNU General Public License for more details. You should have\n' );
     fprintf( fid, '%%   received a copy of the GNU General Public License along with this\n' );
     fprintf( fid, '%%   program.  If not, see <http://www.gnu.org/licenses/>.\n' );
+    if is_unittest
+        fprintf( fid, '\n' );
+        fprintf( fid, 'assert_set_function( ''%s'' );\n', testfunction );
+    end
+    fprintf( fid, '\n' );
     fclose( fid );
 end
 
