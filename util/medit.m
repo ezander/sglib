@@ -66,6 +66,11 @@ else
             fclose(fid);
         end
     end
+    if writetofile
+        fid=fopen( filename, 'r' );
+        filename=fopen(fid);
+        fclose(fid);
+    end
 end
 
 if writetofile
