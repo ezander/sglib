@@ -1,10 +1,7 @@
-%%% DEMO_FIELD_EXPAND_2D Show the expansion of a 2D random field.
+function demo_field_expand_2d
+% DEMO_FIELD_EXPAND_2D Show the expansion of a 2D random field.
 
 %% Init stuff
-init_demos
-clear
-%close
-
 % expansion of the right hand side field (f)
 m=22;
 lc_f=0.5; %#ok

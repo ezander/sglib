@@ -1,7 +1,5 @@
+function demo_gauss_hermite
 % DEMO_GAUSS_HERMITE Show some properties of Gauss-Hermite quadrature.
-
-init_demos
-
 
 % Calculate integral of monomials with Gaussian weighting function. The
 % result for x^i should be 0 for odd i and (i-1)!! for even i where

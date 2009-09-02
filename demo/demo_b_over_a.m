@@ -1,14 +1,10 @@
 function demo_b_over_a( varargin )
 % DEMO_B_OVER_A Show division of random variables.
 
-init_demos
-
-hold off
-
-options=varargin2options( varargin{:} );
 
 % the shift value let's you distinguish some of the pdf's which otherwise
 % would be right on top of each other
+options=varargin2options( varargin{:} );
 [shift,options]=get_option( options, 'shift', 0.02 );
 check_unsupported_options( options, mfilename );
 

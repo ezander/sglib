@@ -1,7 +1,5 @@
+function demo_pce_expand_1d
 % DEMO_PCE_EXPAND_1D
-
-init_demos
-
 
 % Test the univariate PCE expansion
 

@@ -1,8 +1,5 @@
+function demo_distributions
 % DEMO_DISTRIBUTIONS Demonstrate usage and some properties of the probability distribution functions.
-
-init_demos
-
-clear;
 
 %% Normal distribution
 % The normal distribution blah blah...

@@ -1,5 +1,5 @@
-% DEMO_HERMITE_TRIPLES Demonstrate the HERMITE_TRIPLES functions and do
-% some timings on them.
+function demo_hermite_triples
+% DEMO_HERMITE_TRIPLES Demonstrate the HERMITE_TRIPLES functions and do some timings on them.
 
 %%
 t=zeros(6,6,3);
