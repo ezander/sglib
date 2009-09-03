@@ -33,6 +33,8 @@ function [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y, I_Z )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin==0; unittest_pce_multiply; return; end
+
 % check number of arguments
 error( nargchk( 3, 5, nargin ) );
 
@@ -61,7 +63,7 @@ if nargin<5
 end
 
 % set up cache for triple products (structure coefficients)
-hermite_triple_fast( max([I_X(:); I_Y(:); I_Z(:) ]) );
+%hermite_triple_fast( max([I_X(:); I_Y(:); I_Z(:) ]) );
 
 % now loop over all alphas, betas and gammas for the result
 % TODO: this can most probably be optimized, e.g. maybe we can get at the
@@ -69,28 +71,32 @@ hermite_triple_fast( max([I_X(:); I_Y(:); I_Z(:) ]) );
 % Z(gamma)=X'*C(gamma)*Y or similar. Another possibility would be to
 % compute all products between X and Y and use something like ACCUMARRAY to
 % assemble stuff.
+
+M=hermite_triple_fast( I_X, I_Y, I_Z );
+
+
+% T=MxX: [MX,MY,MZ]x[N,MX]=>[MY,MZ,N] (contract on 1,2)
+% Z=TxY: [MY,MZ,1]x[1,MY]=>[MZ] (contract 1,2 )
+
 n=size(X_alpha,1);
 Z_gamma=zeros(n,size(I_Z,1));
-for j=1:size(I_X,1)
-    alpha=I_X(j,:);
-    for k=1:size(I_Y,1)
-        beta=I_Y(k,:);
-        %c=hermite_triple_product( alpha, beta, gamma )/multiindex_factorial( gamma );
-        if 1
-            c=squeeze(hermite_triple_fast( alpha, beta, I_Z ))./multiindex_factorial( I_Z );
+for i=1:n
+    Z_gamma(i,:)=tensor_multiply( tensor_multiply( M, X_alpha(i,:), 1, 2 ), Y_beta(i,:), 1, 2 )';
+end
+Z_gamma=row_col_mult( Z_gamma, 1./multiindex_factorial(I_Z)' );
+
+
+if 0
+    n=size(X_alpha,1);
+    Z_gamma=zeros(n,size(I_Z,1));
+    for j=1:size(I_X,1)
+        alpha=I_X(j,:);
+        for k=1:size(I_Y,1)
+            beta=I_Y(k,:);
+            c=squeeze(hermite_triple_fast( alpha, beta, I_Z ));
             i=find(c~=0);
             Z_gamma(:,i)=Z_gamma(:,i)+(X_alpha(:,j).*Y_beta(:,k))*c(i)';
-        else
-            for i=1:size(I_Z,1)
-                gamma=I_Z(i,:);
-                if all(mod(alpha+beta+gamma,2)==0) && ...
-                        all(alpha<=beta+gamma) && ...
-                        all(beta<=gamma+alpha) && ...
-                        all(gamma<=alpha+beta)
-                    c=hermite_triple_fast( alpha, beta, gamma )/multiindex_factorial( gamma );
-                    Z_gamma(:,i)=Z_gamma(:,i)+c*X_alpha(:,j).*Y_beta(:,k);
-                end
-            end
         end
     end
+    Z_gamma=row_col_mult( Z_gamma, 1./multiindex_factorial(I_Z)' );
 end
