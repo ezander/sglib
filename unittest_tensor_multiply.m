@@ -47,3 +47,36 @@ assert_equals( tensor_multiply( X, Y, 2, 1 ), X*Y, 'XY' );
 assert_equals( tensor_multiply( X, Y', 2, 2 ), X*Y, 'XYt' );
 assert_equals( tensor_multiply( X', Y, 1, 1 ), X*Y, 'XtY' );
 assert_equals( tensor_multiply( X', Y', 1, 2 ), X*Y, 'XtYt' );
+
+% the following is correct; result must be shape (2,3,1) since dimensions of
+% Y are appended, not (2,1,3) as I at one time erroneously thought; its
+% left in as a reminder
+X=ones(2,2,3);
+Y=ones(1,2);
+Z=2*ones( 2, 3, 1 );
+assert_equals( Z, tensor_multiply( X, Y, 2, 2 ), 'singdim' );
+
+
+% multiple contractions
+X=rand(2,3,4);
+Y=rand(5,2,3,2);
+Z=tensor_multiply( X, Y, [2 1], [3 2] );
+assert_equals( size(Z), [4,5,2], 'multcont' );
+
+
+X=[1 2; 3 4];
+Y=[5 6; 7 8];
+Z=tensor_multiply( X, Y, [1 2], [1 2] );
+assert_equals( Z, 70, 'multcont_1' );
+Z=tensor_multiply( X, Y, [2 1], [2 1] );
+assert_equals( Z, 70, 'multcont_2' );
+
+Z=tensor_multiply( X, Y, [1 2], [2 1] );
+assert_equals( Z, 69, 'multcont_3' );
+Z=tensor_multiply( X, Y, [2 1], [1 2] );
+assert_equals( Z, 69, 'multcont_4' );
+
+
+
+
+

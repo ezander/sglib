@@ -1,10 +1,27 @@
 function Z=tensor_multiply( X, Y, xdim, ydim )
 % TENSOR_MULTIPLY Multiplies to tensors, contracting dimensions.
-%   TENSOR_MULTIPLY Long description of tensor_multiply.
+%   Z=TENSOR_MULTIPLY( X, Y ) multiplies tensor X and Y given the result Z,
+%   where Z(i1,i2,...,j1,j2,...)=X(i1,i2,...)*Y(j1,j2,...).
+%   Z=TENSOR_MULTIPLY( X, Y, XDIM, YDIM ) gives the product of the tensors
+%   X and Y with dimension XDIM and YDIM contracted (i.e. summed over the
+%   products). Therefore SIZE(X,XDIM) must be equal to SIZE(Y,YDIM). The
+%   shape of the result tensor Z is that of the concatenation of the shapes
+%   of X and Y without the contracted dimensions (see example).
+%
+% Note: Currently only full tensors are supported.
 %
 % Example (<a href="matlab:run_example tensor_multiply">run</a>)
+%   X=rand(2,3,4);
+%   Y=rand(5,2,3,2);
+%   Z1=tensor_multiply( X, Y );
+%   disp( size(Z1) ); % should be [2,3,4,5,2,3,2]
+%   Z2=tensor_multiply( X, Y, 2, 3 );
+%   disp( size(Z2) ); % should be [2,4,5,2,2]
+%   % this doesn't work yet
+%   % Z3=tensor_multiply( X, Y, [2 1], [3 2] );
+%   % disp( size(Z3) ); % should be [4,5,2]
 %
-% See also
+% See also TENSOR_ADD, TENSOR_SCALE
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -25,14 +42,23 @@ if nargin<3
     zshape=[xshape yshape];
     Z=reshape( reshape(X, [], 1)*reshape(Y, 1, []), zshape );
 else
-    X=permute( X, [1:xdim-1, xdim+1:ndims(X), xdim] );
-    X=reshape( X, [], xshape(xdim) );
+    xperm=1:ndims(X);
+    xperm(xdim)=[];
+    X=permute( X, [xperm, xdim] );
+    X=reshape( X, [], prod(xshape(xdim)) );
     xshape(xdim)=[];
-    Y=permute( Y, [1:ydim-1, ydim+1:ndims(Y), ydim] );
-    Y=reshape( Y, [], yshape(ydim) );
+    
+    yperm=1:ndims(Y);
+    yperm(ydim)=[];
+    Y=permute( Y, [yperm, ydim] );
+    Y=reshape( Y, [], prod(yshape(ydim)) );
     yshape(ydim)=[];
+    
+    Z=X*Y';
     zshape=[xshape yshape];
-    Z=reshape( X*Y', zshape );
+    if length(zshape)
+        Z=reshape( Z, zshape );
+    end
 end
 
 
