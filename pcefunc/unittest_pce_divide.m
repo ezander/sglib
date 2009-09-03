@@ -44,7 +44,7 @@ x_gamma=pce_divide( [1 2 3 4], [0;1;2;3], [0.5 0; 0.25 0], [0;1], [0;1;2;3] );
 assert_equals( x_gamma, [2 4 6 8; 4 8 12 16], 'const_diff' );
 
 
-return
+%return
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,53 +71,28 @@ assert_equals( x_gamma(1:5), x_gamma_ex(1:5), 'pce_coeff', 'reltol', 10.^-[7,5,4
 % realization check (this is not stochastic like MC or something, should
 % hold for any realization).
 
-xi=randn_sorted(10);
+xi=randn_sorted(10)';
 A=pce_evaluate( a_alpha, I_a, xi );
 B=pce_evaluate( b_beta, I_b, xi );
 X=pce_evaluate( x_gamma, I_b, xi );
 assert_equals( X, A./B, 'vec_rand_multi', 'reltol', 0.001 );
-return
 
 %%% test 2: just do it with the previous pce variables doubled
 x_gamma_ex=[x_gamma_ex;x_gamma_ex];
 x_gamma=pce_divide( [a_alpha;a_alpha], I_a, [b_beta;b_beta], I_b );
 assert_equals( x_gamma(1:5), x_gamma_ex(1:5), 'pce_coeff', 'reltol', 10.^-[7,5,4,4,2] );
-return
 
 
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% test for multiplication of a two random vector of univariate Hermites
-% equality checked with random numbers, not directly on the polynomials
-N=10;
-X_alpha=rand(N,5); I_X=(0:4)';
-Y_beta=rand(N,7);  I_Y=(0:6)';
-[Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
-
-xi=rand(1,10);
-Z=pce_evaluate( Z_gamma, I_Z, xi );
-X=pce_evaluate( X_alpha, I_X, xi );
-Y=pce_evaluate( Y_beta, I_Y, xi );
-assert_equals( Z, X.*Y, 'vec_rand' );
-
-% test for multiplication of a two random vector of multivariate Hermites
-% equality checked with random numbers, not directly on the polynomials
+% test using pce_multiply (which hopefully works)
 N=10; m=3; p_X=2; p_Y=4;
 I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1)); 
 I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
+Y2_beta=pce_divide( Z_gamma, I_Z, X_alpha, I_X, I_Y );
+X2_alpha=pce_divide( Z_gamma, I_Z, Y_beta, I_Y, I_X );
 
-xi=rand(m,10);
-Z=pce_evaluate( Z_gamma, I_Z, xi );
-X=pce_evaluate( X_alpha, I_X, xi );
-Y=pce_evaluate( Y_beta, I_Y, xi );
-assert_equals( Z, X.*Y, 'vec_rand_multi' );
-
+assert_equals( X2_alpha, X_alpha, 'muldivx' );
+assert_equals( Y2_beta,  Y_beta, 'muldivy' );
 
 
 function y=div_func( x, num_func, den_func )

@@ -38,7 +38,37 @@ m_Z=size(I_Z,1);
 X_alpha_RHS=compute_pce_rhs( X_alpha, I_X, I_Z );
 
 K=compute_pce_matrix( Y_beta, I_Y, I_Z );
-Z_gamma=(K\X_alpha_RHS')';
+
+n=size(Y_beta,1);
+m=size(X_alpha,1);
+if n==1
+    Z_gamma=(K\X_alpha_RHS')';
+elseif n==m || m==1
+    Z_gamma=zeros(n,m_Z);
+    for i=1:n
+        if n==m; j=i; else j=1; end
+        Z_gamma(i,:)=(K(:,:,i)\X_alpha_RHS(j,:)')';
+    end
+else 
+    error('so nich...')
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % K=zeros(m_X,m_Z);
 % 
 % for j=1:m_X
