@@ -33,8 +33,6 @@ function [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y, I_Z )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin==0; unittest_pce_multiply; return; end
-
 % check number of arguments
 error( nargchk( 3, 5, nargin ) );
 
@@ -62,41 +60,25 @@ if nargin<5
     I_Z=multiindex( size(I_X,2), max( ord_Z ) );
 end
 
-% set up cache for triple products (structure coefficients)
-%hermite_triple_fast( max([I_X(:); I_Y(:); I_Z(:) ]) );
 
-% now loop over all alphas, betas and gammas for the result
-% TODO: this can most probably be optimized, e.g. maybe we can get at the
-% coefficient matrix for one gamma and all alphas and betas and compute
-% Z(gamma)=X'*C(gamma)*Y or similar. Another possibility would be to
-% compute all products between X and Y and use something like ACCUMARRAY to
-% assemble stuff.
+% We try to solve here (for all g):
+%   E[Z H_g]= E[X Y H_g]
+% which gives due to orthogonality (and expand in the H_a,b,g)
+%   Z_g = Sum_{a,b} E[X_a Y_b H_a H_b H_g]/E[H_g^2]
+% With M=E[H_a H_b H_g] this gives
+%   Z_g = Sum_{a,b} M_abg X_a Y_b / E[H_g^2]
+% which can be written as some tensor multiplication / contraction with the
+% order 3 tensor M of triple products
 
 M=hermite_triple_fast( I_X, I_Y, I_Z );
-
-
-% T=MxX: [MX,MY,MZ]x[N,MX]=>[MY,MZ,N] (contract on 1,2)
-% Z=TxY: [MY,MZ,1]x[1,MY]=>[MZ] (contract 1,2 )
 
 n=size(X_alpha,1);
 Z_gamma=zeros(n,size(I_Z,1));
 for i=1:n
-    Z_gamma(i,:)=tensor_multiply( tensor_multiply( M, X_alpha(i,:), 1, 2 ), Y_beta(i,:), 1, 2 )';
+    % The following shows the order of tensor multiplications and
+    % contractions
+    % tmp=MxY: [MX,MY,MZ]x[N,MY] & (contract on 2,2) => [MX,MZ,N] 
+    % Z=Xxtmp: [1,MX]x[MX,MZ,1] & (contract 2,1 ) => [1,MZ]
+    Z_gamma(i,:)=tensor_multiply( X_alpha(i,:), tensor_multiply( M, Y_beta(i,:), 2, 2 ), 2, 1 );
 end
 Z_gamma=row_col_mult( Z_gamma, 1./multiindex_factorial(I_Z)' );
-
-
-if 0
-    n=size(X_alpha,1);
-    Z_gamma=zeros(n,size(I_Z,1));
-    for j=1:size(I_X,1)
-        alpha=I_X(j,:);
-        for k=1:size(I_Y,1)
-            beta=I_Y(k,:);
-            c=squeeze(hermite_triple_fast( alpha, beta, I_Z ));
-            i=find(c~=0);
-            Z_gamma(:,i)=Z_gamma(:,i)+(X_alpha(:,j).*Y_beta(:,k))*c(i)';
-        end
-    end
-    Z_gamma=row_col_mult( Z_gamma, 1./multiindex_factorial(I_Z)' );
-end
