@@ -1,6 +1,6 @@
-function c=hermite_triple_fast(i,j,k)
+function M=hermite_triple_fast(i,j,k)
 % HERMITE_TRIPLE_FAST Cached computation of the expectation of triple products of Hermite polynomials.
-%   C=HERMITE_TRIPLE_FAST(I,J,K) computes the value of <H_i H_j H_k> where
+%   M=HERMITE_TRIPLE_FAST(I,J,K) computes the value of <H_i H_j H_k> where
 %   the H_ijk are the unnormalized (stochastic) Hermite polynomials and the
 %   expectation <.> is over a Gaussian measure i.e. <f(X)>=int_-infty^infty
 %   f(x) exp(-x^2/2)/sqrt(2*pi) dx. The result is a tensor of order 3, thus
@@ -41,49 +41,35 @@ function c=hermite_triple_fast(i,j,k)
 
 persistent triples max_ind;
 
-% Only one argument => do the initialization
-if nargin==1
-    if isempty(max_ind) || i>max_ind
-        max_ind=full(i);
-        triples=zeros(max_ind+1,max_ind+1,max_ind+1);
-        for i=0:max_ind
-            for j=0:i
-                % The indexing of the following loop takes into account that
-                % the sum i+j+k has to be even and that i,j and k have to
-                % fulfill the triangle inequality (not that this optimization
-                % would matter in any way...)
-                % Note: for gPC the step size should be 1, not 2
-                for k=i-j:2:j
-                    hijk=hermite_triple_product(i,j,k);
-                    triples(i+1,j+1,k+1)=hijk;
-                    triples(i+1,k+1,j+1)=hijk;
-                    triples(j+1,i+1,k+1)=hijk;
-                    triples(j+1,k+1,i+1)=hijk;
-                    triples(k+1,i+1,j+1)=hijk;
-                    triples(k+1,j+1,i+1)=hijk;
-                end
-            end
-        end
-    end
-    if nargout>0
-        c=triples;
-    end
-    return
-end
-
 % If no output argument is given the current cache is returned. This can
 % also be used to check whether the cache is already initialized.
 if nargin==0
-    c=triples;
+    M=triples;
     return
 end
 
-% Check whether cache is correctly initialized
-max_ind_cur=max([i(:); j(:); k(:)]);
-if isempty(triples) || max_ind_cur>max_ind
-    %warning('hermite_triples_fast:cache', 'Cache has not been set up correctly. Setting up cache...');
-    %disp([size(triples),max_ind]);
-    hermite_triple_fast( max( max_ind_cur, 15 ) );
+% Compute maximum index for triples cache 
+if nargin>=3
+    max_ind_cur=full(max([i(:); j(:); k(:)]));
+else
+    max_ind_cur=full(i);
+end
+max_ind_cur=max( 15, max_ind_cur );
+    
+% Initialize cache using some heuristic as which algorithm to use
+if nargin==1 || isempty(triples) || max_ind_cur>max_ind
+    max_ind=max_ind_cur;
+    if (max_ind<=140); % best choice actually depends on computer speed and free memory
+        triples=compute_hermite_triples_vectorized(max_ind);
+    else
+        triples=compute_hermite_triples(max_ind);
+    end
+end
+
+% bail out if only one argument given
+if nargin==1
+    M=triples;
+    return
 end
 
 % The purpose of the next few lines is to construct arrays of linear
@@ -112,26 +98,8 @@ ind=1+permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
 ind=ind+strides(1)*permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
 ind=ind+strides(2)*permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
 ind=reshape( ind, nd, [] );
-c=prod(triples(ind),1);
-c=reshape( c, [ni nj nk]);
-
-
-if 0
-    ni=size(i,1);
-    nj=size(j,1);
-    nk=size(k,1);
-    nd=size(i,2);
-    strides=cumprod(size(triples));
-    I=permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
-    J=permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
-    K=permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
-    I=reshape( I, nd, [] );
-    J=reshape( J, nd, [] );
-    K=reshape( K, nd, [] );
-    ind=1+I+strides(1)*J+strides(2)*K;
-    c=prod(triples(ind),1);
-    c=reshape( c, [ni nj nk]);
-end
+M=prod(triples(ind),1);
+M=reshape( M, [ni nj nk]);
 
 if 0
     % This is the implementation I like most, because it's the most
@@ -149,19 +117,28 @@ if 0
 end
 
 
-if 0 % old version (does not work on more than one vector argument)
-
-    % Note: multiindices are row vectors => size(i,2)
-    if size(i,1)>1 || size(j,1)>1
-        error([ 'hermite_triple_product: not yet implemented for ' ...
-            'vectors of multiindices in i or j (only in k). Maybe you want to pass a row vector?' ]);
+function M=compute_hermite_triples(p)
+M=zeros(p+1,p+1,p+1);
+for i=0:p
+    for j=0:i
+        % The indexing of the following loop takes into account that
+        % the sum i+j+k has to be even and that i,j and k have to
+        % fulfill the triangle inequality (not that this optimization
+        % would matter in any way...)
+        % Note: for gPC the step size should be 1, not 2
+        for k=i-j:2:j
+            ind=sub2ind( size(M), 1+[i,i,j,j,k,k], 1+[j,k,i,k,i,j], 1+[k,j,k,i,j,i] );
+            M(ind)=hermite_triple_product(i,j,k);
+        end
     end
-
-    % Calculation of scalar index (4x faster then sub2ind)
-    if size(k,1)>1
-        i=repmat( i, size(k,1), 1 );
-        j=repmat( j, size(k,1), 1 );
-    end
-    ind=(i+1)+j*(max_ind+1)+k*(max_ind+1)^2;
-    c=prod( triples( ind ), 2 );
 end
+
+function M=compute_hermite_triples_vectorized(p)
+[I,J,K]=meshgrid(0:p);
+S=I+J+K;
+S2=S/2;
+ind=mod(S,2)==0 & I<=J+K & J<=K+I & K<=I+J;
+
+M=zeros(size(S));
+fac=factorial(0:p);
+M(ind)=fac(1+I(ind)).*fac(1+J(ind)).*fac(1+K(ind))./(fac(1+S2(ind)-I(ind)).*fac(1+S2(ind)-J(ind)).*fac(1+S2(ind)-K(ind)));
