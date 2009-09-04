@@ -36,6 +36,6 @@ else
     m_u=size(I_u,1);
     n=size(f_j_alpha,1);
     f_j_beta=zeros( n, m_u );
-    ind=multiindex_find(I_u, I_f);
-    f_j_beta(:,ind)=g_j_alpha;
+    [ind_u,ind_f]=multiindex_find(I_f,I_u);
+    f_j_beta(:,ind_u)=g_j_alpha(:,ind_f);
 end
