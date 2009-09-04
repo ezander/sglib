@@ -1,16 +1,23 @@
-function ind=multiindex_find( I_r, alpha )
+function [ind_b, ind_a]=multiindex_find( I_a, I_b )
 % MULTIINDEX_FIND Find a multiindex in a list of indices.
-%   IND=MULTIINDEX_FIND( I_R, ALPHA ) tries to find the multiindex ALPHA in
-%   the list of multiindices given by I_R. Returned are the indices in I_R
-%   where ALPHA was found (not a logical array as in a previous version of
-%   this function). ALPHA may also contain more than one multiindex to
-%   find, e.g. you may use MULTIINDEX_FIND( I_U, I_F ) to find the indices
+%   IND_B=MULTIINDEX_FIND( ALPHA, I_B ) tries to find the multiindex ALPHA in
+%   the multiindex set I_B; if ALPHA cannot be found IND_B is zero, otherwise
+%   ALPHA==I_B(IND_B,:) will hold.
+%   IND_B=MULTIINDEX_FIND( I_A, I_B ) tries to find the multiindices in I_A in
+%   the multiindex set given by I_B. Returned are the indices in I_B
+%   where I_A was found and zero for each multiindex in I_A where no match in
+%   I_B could be found.
+%   [IND_B,IND_A]=MULTIINDEX_FIND( I_A, I_B ) tries to find the multiindices
+%   in I_A in the multiindex set given by I_B. If a multiindex from I_A could
+%   not be found no index is returned in IND_B; IND_A will contain all 
+%   indices of I_A for which a matching multiindex could be found, such
+%   that I_A(IND_A,:)==I_B(IND_B,:).
 %   of of all multiindices of I_F within I_U.
 %
 % Example (<a href="matlab:run_example multiindex_find">run</a>)
 %   I=multiindex(5,3);
-%   alpha=[0 0 0 0 0; 0 1 0 0 2]; disp('indices to find:'); disp(alpha);
-%   ind=multiindex_find( I, alpha );
+%   I_a=[0 0 0 0 0; 0 1 0 0 2]; disp('indices to find:'); disp(I_a);
+%   ind=multiindex_find( I_a, I );
 %   disp('found at:'); disp(ind);
 %   disp('check correctness:'); disp(I(ind,:));
 %
@@ -28,5 +35,10 @@ function ind=multiindex_find( I_r, alpha )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[dummy,ind]=ismember(alpha, I_r, 'rows'); 
-dummy; %#ok
+[found,ind]=ismember(I_a, I_b, 'rows'); 
+if nargout<2
+    ind_b=ind;
+else
+    ind_b=ind(found);
+    ind_a=find(found);
+end
