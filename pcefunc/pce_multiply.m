@@ -71,14 +71,34 @@ end
 % order 3 tensor M of triple products
 
 M=hermite_triple_fast( I_X, I_Y, I_Z );
-
 n=size(X_alpha,1);
-Z_gamma=zeros(n,size(I_Z,1));
-for i=1:n
+
+vectorized=true;
+full=false;
+
+if vectorized || full
     % The following shows the order of tensor multiplications and
     % contractions
-    % tmp=MxY: [MX,MY,MZ]x[N,MY] & (contract on 2,2) => [MX,MZ,N] 
+    % tmp=MxY: [MX,MY,MZ]x[N,MY] & (contract on 2,2) => [MX,MZ,N]
     % Z=Xxtmp: [1,MX]x[MX,MZ,1] & (contract 2,1 ) => [1,MZ]
-    Z_gamma(i,:)=tensor_multiply( X_alpha(i,:), tensor_multiply( M, Y_beta(i,:), 2, 2 ), 2, 1 );
+    Z_gamma_NN=tensor_multiply( X_alpha, tensor_multiply( M, Y_beta, 2, 2 ), 2, 1 );
+    Z_gamma_NN=permute( Z_gamma_NN, [2 1 3] );
+    if full
+        Z_gamma=reshape( Z_gamm_NN, size(I_Z,1), [] );
+    else
+        ind=sub2ind( [n, n], 1:n, 1:n );
+        Z_gamma=Z_gamma_NN(:,ind)';
+    end
+else
+    Z_gamma=zeros(n,size(I_Z,1));
+    for i=1:n
+        % The following shows the order of tensor multiplications and
+        % contractions
+        % tmp=MxY: [MX,MY,MZ]x[N,MY] & (contract on 2,2) => [MX,MZ,N]
+        % Z=Xxtmp: [1,MX]x[MX,MZ,1] & (contract 2,1 ) => [1,MZ]
+        Z_gamma(i,:)=tensor_multiply( X_alpha(i,:), tensor_multiply( M, Y_beta(i,:), 2, 2 ), 2, 1 );
+    end
 end
+
+
 Z_gamma=row_col_mult( Z_gamma, 1./multiindex_factorial(I_Z)' );

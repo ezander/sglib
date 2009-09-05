@@ -58,9 +58,9 @@ X=pce_evaluate( X_alpha, I_X, xi );
 Y=pce_evaluate( Y_beta, I_Y, xi );
 assert_equals( Z, X.*Y, 'vec_rand' );
 
-% test for multiplication of a two random vector of multivariate Hermites
+%% test for multiplication of a two random vector of multivariate Hermites
 % equality checked with random numbers, not directly on the polynomials
-N=10; m=3; p_X=2; p_Y=4;
+N=11; m=3; p_X=2; p_Y=4;
 I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1)); 
 I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 
 [Z_gamma,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
