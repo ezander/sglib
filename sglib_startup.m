@@ -25,9 +25,6 @@
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-% for some things we need to know whether we run for the first time or not
-run_first=isappdata( 0, 'sglib' );
-
 % initialize appdata structure
 appdata=struct();
 
