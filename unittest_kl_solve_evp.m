@@ -1,8 +1,8 @@
-function unittest_kl_expand
-% UNITTEST_KL_EXPAND Test the KL_EXPAND function.
+function unittest_kl_solve_evp
+% UNITTEST_KL_SOLVE_EVP Test the KL_SOLVE_EVP function.
 %
-% Example (<a href="matlab:run_example unittest_kl_expand">run</a>)
-%    unittest_kl_expand
+% Example (<a href="matlab:run_example unittest_kl_solve_evp">run</a>)
+%    unittest_kl_solve_evp
 %
 % See also TESTSUITE
 
@@ -19,27 +19,27 @@ function unittest_kl_expand
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'kl_expand' );
+assert_set_function( 'kl_solve_evp' );
 
 x=linspace(0,1,11)';
 els=[(1:10)',(2:11)'];
 C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 M=mass_matrix( els, x );
 
-[f,s]=kl_expand( C, [], 3 );
+[f,s]=kl_solve_evp( C, [], 3 );
 assert_equals( size(f), [11,3] );
 assert_equals( f'*f, eye(3) );
 assert_equals( f'*C*f, diag(s.^2) );
 
-[f,s]=kl_expand( C, M, 4 );
+[f,s]=kl_solve_evp( C, M, 4 );
 assert_equals( size(f), [11,4] );
 assert_equals( f'*M*f, eye(4) );
 assert_equals( f'*M*C*M*f, diag(s.^2) );
 
-fs=kl_expand( C, [], 5, 'correct_var', true );
+fs=kl_solve_evp( C, [], 5, 'correct_var', true );
 assert_equals( size(fs), [11,5] );
 assert_equals( diag(fs*fs'), diag(C) );
 
-fs=kl_expand( C, M, 5, 'correct_var', true );
+fs=kl_solve_evp( C, M, 5, 'correct_var', true );
 assert_equals( size(fs), [11,5] );
 assert_equals( diag(fs*fs'), diag(C) );

@@ -19,7 +19,7 @@ disp( 'expanding field, this may take a while ...' );
 disp( 'performing kl expansion, this may take a while, too ...' );
 if 1
     C=covariance_matrix( pos, cov_f );
-    f=kl_expand( C, G, m_f, options_expand_f.transform );
+    f=kl_solve_evp( C, G, m_f, options_expand_f.transform );
     v_f=f(:,2:end);
 else
     [mu_f,f_i_alpha,v_f,relerr]=pce_to_kl( f_alpha, I_f, m_f, M, [] );

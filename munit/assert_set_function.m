@@ -6,10 +6,10 @@ function assert_set_function( fun_name )
 %   "unittest_" prefix from the function name.
 %
 % Example (<a href="matlab:run_example assert_set_function">run</a>)
-%   % maybe in some function 'unittest_all_ssfem_methods'
-%   assert_set_function( 'kl_expand' );
+%   % maybe in some function 'unittest_all_of_my_methods'
+%   assert_set_function( 'my_function' );
 %
-%   % in a function 'unittest_kl_expand' this will also do
+%   % in a function 'unittest_my_function' this will also do
 %   assert_set_function();
 %
 % See also ASSERT, ASSERT_SET_MODULE

@@ -1,6 +1,6 @@
-function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
-% KL_EXPAND Perform Karhunen-Loeve expansion.
-%   [F,SQRT_LAMBDA]=KL_EXPAND( C, G, M, OPTIONS ) performs the
+function [f,sqrt_lambda]=kl_solve_evp( C, G, m, varargin )
+% KL_SOLVE_EVP Solve the Karhunen-Loeve eigenvalue problem.
+%   [F,SQRT_LAMBDA]=KL_SOLVE_EVP( C, G, M, OPTIONS ) performs the
 %   Karhunen-Loeve expansion on the input arguments. C is the pointwise
 %   covariance matrix (if you have the covariance functions first stuff it
 %   into COVARIANCE_MATRIX to generate the matrix). G is the spatial Gramian matrix,
@@ -21,14 +21,18 @@ function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 %   exactly variance 1 in each point, turn this on; otherwise you can leave
 %   it of.
 %
-% Example (<a href="matlab:run_example kl_expand">run</a>)
+% Note: This function was renamed from KL_EXPAND to KL_SOLVE_EVP because
+%   you don't actually get the full expansion, but only the spatial part of
+%   it by solving the KL the eigenvalue problem.
+%
+% Example (<a href="matlab:run_example kl_solve_evp">run</a>)
 %   n=10;
 %   x=linspace(0,1,n)';
 %   els=[1:n-1; 2:n]';
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 %   options.correct_var=true;
 %   G=mass_matrix( els, x );
-%   f=kl_expand( C, G, 3, options );
+%   f=kl_solve_evp( C, G, 3, options );
 %   [mu,sig2]=pce_moments( [zeros(size(f,1),1), f], multiindex(3,1))
 %
 % See also COVARIANCE_MATRIX, OPTIONS
@@ -46,7 +50,7 @@ function [f,sqrt_lambda]=kl_expand( C, G, m, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-%TODO: make kl_expand adhere to naming conventions
+%TODO: make kl_solve_evp adhere to naming conventions
 %TODO: dont actually compute GCG, use a function
 %TODO: accept function instead of explicit mass matrix
 
@@ -56,7 +60,7 @@ check_unsupported_options( options, mfilename );
 
 % check that not more eigenvectors are requested than size of C allows
 if m>size(C,1)
-    warning('kl_expand:options', 'more kl-eigenvectors requested than matrix size allows: %d (reducing to %d)', ...
+    warning('kl_solve_evp:options', 'more kl-eigenvectors requested than matrix size allows: %d (reducing to %d)', ...
         m, size(C,1) );
     m=size(C,1);
 end

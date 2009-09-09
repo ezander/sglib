@@ -31,7 +31,7 @@ subplot(1,2,2);
 spy2(G_N, 'display', 'density'); title('Gramian');
 userwait;
 
-r_i_k=kl_expand( C, G_N, l_r, options );
+r_i_k=kl_solve_evp( C, G_N, l_r, options );
 print( sprintf( 'shape_%s.eps', geometries{geom_num} ),'-depsc2' );
 
 %% KL of the cardioid

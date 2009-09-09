@@ -35,7 +35,7 @@
 %   pce_transform_multi                - Transform from local univariate to global
 %
 % Karhunen-Loeve expansion
-%   kl_expand                          - Perform Karhunen-Loeve expansion.
+%   kl_solve_evp                          - Perform Karhunen-Loeve expansion.
 %   kl_pce_field_realization           - Compute a realization of a random field given by a
 %   pce_to_kl                          - Reduce a pure PCE field into a KL-PCE field.
 %   project_pce_on_kl                  - Project a spatially PC expanded field into a KL-PCE field.
@@ -145,7 +145,7 @@
 %   unittest_hermite_triples           - Test the HERMITE_TRIPLE_PRODUCT and HERMITE_TRIPLE_FAST functions.
 %   unittest_hermite_val               - Test the HERMITE_VAL function.
 %   unittest_hermite_val_multi         - Test the hermite_val_multi function.
-%   unittest_kl_expand                 - Test the KL_EXPAND function.
+%   unittest_kl_solve_evp                 - Test the KL_SOLVE_EVP function.
 %   unittest_linear_operator           - Test the LINEAR_OPERATOR and related functions.
 %   unittest_moments                   - Test the moment computing functions.
 %   unittest_multiindex                - Test multi-index related functions.

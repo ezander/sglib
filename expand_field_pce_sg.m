@@ -83,7 +83,7 @@ end
 % Step 3: Calculate lamda_i and r_i (i.e. do KL expansion)
 % g contains the product sqrt(lambda_i)*g_i of the KL of gamma
 options.correct_var=true;
-g_j_i=kl_expand( C_gam, G_N, m_gam, options );
+g_j_i=kl_solve_evp( C_gam, G_N, m_gam, options );
 
 % Step 4: generate gam(pos)
 % this was implicit in step 3
