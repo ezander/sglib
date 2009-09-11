@@ -26,7 +26,7 @@ options=varargin2options( varargin{:} );
 [color,options]=get_option( options, 'color', 'k' );
 check_unsupported_options( options, mfilename );
 
-bnd=find_boundary( els );
+bnd=find_boundary( els, false );
 n=size(bnd,1);
 
 X=[pos(bnd(:,1),1)'; pos(bnd(:,2),1)'; nan*ones(n,1)'];

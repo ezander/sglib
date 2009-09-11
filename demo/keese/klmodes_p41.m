@@ -1,8 +1,25 @@
-%% KL modes on lshaped domain (page 41).
+function klmodes_p41
+% KLMODES_P41 Generates the plots of some KL-modes on an L-shaped domain from A. Keese's diss.
+%   KLMODES_P41 Generates the plots of some KL-modes on an L-shaped domain
+%   from A. Keese's diss. A. Keese's diss. (page 41). 
+%
+% Example (<a href="matlab:run_example klmodes_p41">run</a>)
+%   klmodes_p41
+%
+% See also KL_SOLVE_EVP, LOAD_PDETOOL_GEOM, PLOT_FIELD, PLOT_FIELD_CONTOUR, PLOT_BOUNDARY
 
-addpath('../');
-init_demos
-clear
+%   Elmar Zander
+%   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
+%   $Id$
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version.
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 % properties for the covariance function and expansion
 modes=[1,5,10,20];
@@ -13,7 +30,7 @@ cov_func={@gaussian_covariance,{lc,1}};
 
 % LShaped domain
 [els,pos,G_N]=load_pdetool_geom( 'lshape', 1, false );
-v_f=kl_expand( covariance_matrix( pos, cov_func ), G_N, m, 'correct_var', true );
+v_f=kl_solve_evp( covariance_matrix( pos, cov_func ), G_N, m, 'correct_var', true );
 for j=1:m
     if mean(v_f(:,j))<0; v_f(:,j)=-v_f(:,j); end
 end

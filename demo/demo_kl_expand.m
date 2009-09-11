@@ -17,7 +17,7 @@ plot( x1, funcall( cov_u, x1, x2 ) );
 userwait
 
 %% Create KL with variance correction on and M=I
-v_u=kl_expand( C_u, [], 3, 'correct_var', true );
+v_u=kl_solve_evp( C_u, [], 3, 'correct_var', true );
 plot( x, v_u );
 %legend( 'v_1', 'v_2', 'v_3' );
 userwait
@@ -30,7 +30,7 @@ fprintf( 'sigma^2=%f\n', sig2 );
 %% Now compute KL with a true mass matrix
 
 M=mass_matrix( els, x );
-v_u=kl_expand( C_u, M, 3, 'correct_var', true );
+v_u=kl_solve_evp( C_u, M, 3, 'correct_var', true );
 [mu,sig2]=pce_moments( [zeros(size(v_u,1),1), v_u], multiindex(3,1)); %#ok can't get only sig2
 fprintf( 'sigma^2=%f\n', sig2 );
 
@@ -55,7 +55,7 @@ M=mass_matrix( els, x );
 % KL is used here only for the underlying Gaussian field
 C_u=covariance_matrix( x, cov_u );
 C_gam=transform_covariance_pce( C_u, u_i, 'comp_ii_reltol', 1e-4 );
-v_gam=kl_expand( C_gam, M, m_gam, 'correct_var', true );
+v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
 [u_alpha,I_u]=pce_transform_multi( v_gam, u_i );
 
 xi=randn(50,m_gam);
@@ -63,8 +63,8 @@ u_real1=pce_field_realization( x, u_alpha, I_u, xi );
 plot( x, u_real1 );
 
 %% Make KL on RF and project on it
-[v,s]=kl_expand( C_u, M, m_u );
-v_u=kl_expand( C_u, M, m_u );
+[v,s]=kl_solve_evp( C_u, M, m_u );
+v_u=kl_solve_evp( C_u, M, m_u );
 [mu_u,u_i_alpha]=project_pce_on_kl( u_alpha, I_u, v_u );
 
 %% Get KL of PCE expansion directly by SVD
@@ -100,7 +100,7 @@ norm(C_u_pce-C_u)
 norm(C_u_pce2-C_u)
 
 %%
-v_u=kl_expand( C_u_pce, M, m_u );
+v_u=kl_solve_evp( C_u_pce, M, m_u );
 [mu_u,u_i_alpha]=project_pce_on_kl( u_alpha, I_u, v_u );
 [mu_u2,u_i_alpha2,v_u2]=pce_to_kl( u_alpha, I_u, m_u, M );
 cc=cross_correlation( v_u, v_u2, M );

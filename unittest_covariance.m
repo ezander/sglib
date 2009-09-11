@@ -94,7 +94,7 @@ mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 
 C_gam=transform_covariance_pce( C_u, u_i, 'comp_ii_reltol', 1e-1 );
-v_gam=kl_expand( C_gam, M, m_gam, 'correct_var', true );
+v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
 [u_alpha1,I_u1]=pce_transform_multi( v_gam, u_i, 'fast', false );
 [u_alpha2,I_u2]=pce_transform_multi( v_gam, u_i, 'fast', true );
 
@@ -117,7 +117,7 @@ mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 
 C_gam=transform_covariance_pce( C_u, u_i, 'comp_ii_reltol', 1e-2 );
-v_gam=kl_expand( C_gam, M, m_gam, 'correct_var', true );
+v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
 [u_alpha,I_u]=pce_transform_multi( v_gam, u_i, 'fast', true );
 
 C_u_pce=pce_covariance( u_alpha, I_u );

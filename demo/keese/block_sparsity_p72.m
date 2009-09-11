@@ -1,14 +1,26 @@
 function block_sparsity_p72
 % BLOCK_SPARSITY_P72 Generates the sparsity plots from A. Keese's diss.
-% BLOCK_SPARSITY_P72 Generates the sparsity plots from 
-%   A. Keese's diss. (fig 41. on page 72). 
+%   BLOCK_SPARSITY_P72 Generates the sparsity plots from A. Keese's diss.
+%   (fig 41. on page 72). 
+%
+% Example (<a href="matlab:run_example block_sparsity_p72">run</a>)
+%   block_sparsity_p72
+%
+% See also MULTIINDEX, HERMITE_TRIPLE_FAST
 
+%   Elmar Zander
+%   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
+%   $Id$
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version.
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
-%init_demos
 clf
-
-%setuserwaitmode( 'continue' );
-setuserwaitmode( 'mouse' );
 
 disp( 'sparsity plot (lexicographic ordering, A. Keese)' );
 sp_plots( true, false);
