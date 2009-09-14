@@ -12,6 +12,15 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %   cell array of rule functions, one for each dimension. The number of
 %   stages is implied by the length of the cell array.
 %
+% Options:
+%   verbose: true, {false}
+%      Shows statistics at the end of the run.
+%   make_unique: {true}, false
+%      Returns only unique points in XD. Needs additional sorting of XD and
+%      adding up of weights in WD at the end, saves in the integration
+%      however. (Note: I think this should always be true, left only as an
+%      option for compatibility with old A. K. versions.)
+%
 % Example (<a href="matlab:run_example smolyak_grid">run</a>)
 %   for rule={@gauss_hermite_rule, @gauss_legendre_rule, @clenshaw_curtis_legendre_rule }
 %     for i=1:4
@@ -39,63 +48,77 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 
 options=varargin2options( varargin );
 [verbose,options]=get_option( options, 'verbose', false );
+[make_unique,options]=get_option( options, 'make_unique', true );
 check_unsupported_options( options, mfilename );
 
 
+
+% set dimension parameter as length of oned_rule_func if not specified
 if isempty(d)
     d=size(oned_rule_func,1);
 end
-if ~iscell(oned_rule_func)
-    oned_rule_func=repmat({oned_rule_func},d,1);
-elseif size(oned_rule_func,1)==1
-    oned_rule_func=repmat(oned_rule_func,d,1);
+
+% Number of stages must be the same for all dimensions for Smolyak (thus scalar)
+if length(stages)~=1
+    error( 'Number of stages must be scalar for Smolyak.' );
 end
 
-n1d = zeros( d, stages );
+% expand oned_rule_func to cell array of appropriate size
+if ~iscell(oned_rule_func)
+    oned_rule_func=repmat({oned_rule_func},d,1);
+elseif length(oned_rule_func)==1
+    oned_rule_func=repmat(oned_rule_func,d,1);
+elseif length(oned_rule_func)~=d
+    error( 'Dimension d doesn''t match that of the cell array of rules functions.' );
+end
+
+
 
 % For each dimension n obtain all quadrature formulas
 % Q^{(n)}_1 \ldots Q^{(n)}_order
-
-x1 = cell( d, stages );
-w1 = cell( d, stages );
+x1=cell(d, stages);
+w1=cell(d, stages);
+n1d=zeros(d, stages);
 
 for k = 1:d
     for j = 1:stages
-        [x1{k,j},w1{k,j}] = funcall( oned_rule_func{k,:}, j );
+        [x1{k,j},w1{k,j}] = funcall( oned_rule_func{k}, j );
         n1d(k,j) = length(x1{k,j});
     end
 end
 
 % Construct Smolyak-nodes and weights based on the univariate
 % quadrature formulas:
-xd = [];
-wd = [];
+xd=[];
+wd=[];
 
-multi_list=multiindex(d,stages-1)+1;
+I=multiindex(d,stages-1)+1;
+I=I(sum(I,2)>=stages,:);
+for i=1:size(I,1)
 
-for i = 1 : size(multi_list,1)
-
-    alpha = multi_list(i,:);
+    alpha = I(i,:);
     alpha_sum = sum(alpha);
-
-    if alpha_sum < stages
-        continue
-    end
 
     tmp_x1 = cell(d,1);
     tmp_w1 = cell(d,1);
-    for i = 1:d
-        stage  = alpha(i);
-        tmp_x1{i} = x1{i,stage};
-        tmp_w1{i} = w1{i,stage};
+    for j=1:d
+        stage  = alpha(j);
+        tmp_x1{j} = x1{j,stage};
+        tmp_w1{j} = w1{j,stage};
     end
-    [tmp_yd,tmp_wd]=tensor_mesh(tmp_x1,tmp_w1);
+    [tmp_xd,tmp_wd]=tensor_mesh(tmp_x1,tmp_w1);
 
-    factor=(-1)^(d+stages-1-alpha_sum) * ...
-        nchoosek(d-1,alpha_sum-stages);
+    factor=(-1)^(d+stages-1-alpha_sum) * nchoosek(d-1,alpha_sum-stages);
 
-    xd=[xd,tmp_yd];
+    xd=[xd,tmp_xd];
     wd=[wd,factor*tmp_wd];
+end
+
+if make_unique
+    [xdt,i,j]=unique( xd', 'rows' );
+    wdt=accumarray(j,wd);
+    xd=xdt';
+    wd=wdt';
 end
 
 if verbose

@@ -1,4 +1,4 @@
-function unittest_full_tensor_grid
+function varargout=unittest_full_tensor_grid( varargin )
 % UNITTEST_FULL_TENSOR_GRID Test the FULL_TENSOR_GRID function.
 %
 % Example (<a href="matlab:run_example unittest_full_tensor_grid">run</a>)
@@ -18,8 +18,18 @@ function unittest_full_tensor_grid
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'full_tensor_grid' );
+% <ugly_hack>
+% If there is one arg to this function which equals the string 'export'
+% then we export the internal functions (which are used in the smolyak unit
+% tests, may some day they should be made public)
+if length(varargin)==1 && strcmp( varargin{1}, 'export' );
+    varargout={ @polyint_rule, @polyint_legendre, @polyint_gauss, @polyint_mixed };
+    return
+end
+% </ugly_hack>
 
+
+assert_set_function( 'full_tensor_grid' );
 
 % test 1: dummy in dim 1 should give the same as the rule itself
 [xd,wd]=full_tensor_grid( 1, 5, @dummy_rule );
