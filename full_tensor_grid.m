@@ -1,5 +1,15 @@
 function [xd,wd] = full_tensor_grid( d, stages, oned_rule_func )
 % FULL_TENSOR_GRID Return nodes and weights for full tensor product grid.
+%   [XD,WD]=FULL_TENSOR_GRID( D, STAGES, ONED_RULE_FUNC ) returns a grid
+%   and weights for multidimensional quadrature over tensor product grids.
+%   You can have different number of stages (degree, integration points) in
+%   each dimension, as well as different 1D integration rules in each
+%   dimension. E.g. [XD,WD]=FULL_TENSOR_GRID( 2, [3 5],
+%   {@GAUSS_HERMITE_RULE, @GAUSS_LEGENDRE_RULE} ) returns a grid to
+%   integrate with a Gauss-Hermite rule with 3 integration points in X
+%   direction and with a Gauss-Legendre rule with 5 integration points in Y
+%   direction (totalling 15 integration points).
+%
 %
 % Example (<a href="matlab:run_example tensor_mesh">run</a>)
 %   [xd,wd]=full_tensor_grid( 2, 7, @gauss_hermite_rule );
