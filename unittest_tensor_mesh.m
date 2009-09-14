@@ -20,6 +20,7 @@ function unittest_tensor_mesh
 
 assert_set_function( 'tensor_mesh' );
 
+
 % test 1: one dimensional (trivial, but should be checked)
 [xd,wd] = tensor_mesh({[1 2 3 4 5]},{[5 6 7 8 9]});
 assert_equals( xd, [1 2 3 4 5], 'xd1' );
@@ -47,3 +48,19 @@ assert_equals( wd, 2.^(0:7), 'wd3' );
 wd=wd(ind);
 assert_equals( [16 8 4 2 1]*xd', 0:31, 'xd5' );
 assert_equals( wd, 2.^(0:31), 'wd5' );
+
+% test 5: The following should go into the unit test
+x1{1}=[1,2,3];
+x1{2}=[4,5];
+x1{3}=[6,7,8,9];
+w1=x1;
+xde =[
+    1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3
+    4     4     4     5     5     5     4     4     4     5     5     5     4     4     4     5     5     5     4     4     4     5     5     5
+    6     6     6     6     6     6     7     7     7     7     7     7     8     8     8     8     8     8     9     9     9     9     9     9];
+wde = [
+    24    48    72    30    60    90    28    56    84    35    70   105    32    64    96    40    80   120    36    72   108    45    90   135 ];
+[xd,wd] = tensor_mesh(x1,w1);
+assert_equals( xd, xde, 'points' );
+assert_equals( wd, wde, 'weights' );
+

@@ -52,19 +52,3 @@ for k=1:d
 end
 
 
-% The following should go into the unit test
-% x1{1}=[1,2,3];
-% x1{2}=[4,5];
-% x1{3}=[6,7,8,9];
-% w1=x1;
-% xde =[
-%     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3     1     2     3
-%     4     4     4     5     5     5     4     4     4     5     5     5     4     4     4     5     5     5     4     4     4     5     5     5
-%     6     6     6     6     6     6     7     7     7     7     7     7     8     8     8     8     8     8     9     9     9     9     9     9];
-% wde = [
-%     24    48    72    30    60    90    28    56    84    35    70   105    32    64    96    40    80   120    36    72   108    45    90   135 ];
-% [xd,wd] = tensor_mesh(x1,w1);
-% assert_equals( xd, xde, 'points' );
-% assert_equals( wd, wde, 'weights' );
-% % plust test for 1d
-% % test for singleton dimensions
