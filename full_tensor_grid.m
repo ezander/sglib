@@ -25,32 +25,35 @@ function [xd,wd] = full_tensor_grid( d, stages, oned_rule_func )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-% if parameters missing or singleton replace with correct/repeated values
+% get dimension parameter as max length of either stages or oned_rule_func,
+% a 1 indicates the same value should be repeated as appropriate, if both
+% are not equal 1 they must be equal to each other (this is checked
+% later...)
 if isempty(d)
     d=max( length(stages), size(oned_rule_func,1) );
 end
+
+% expand stages to array of appropriate size
 if length(stages)==1
     stages=repmat(stages,d,1);
-end
-if ~iscell(oned_rule_func)
-    oned_rule_func=repmat({oned_rule_func},d,1);
-elseif size(oned_rule_func,1)==1
-    oned_rule_func=repmat(oned_rule_func,d,1);
-end
-
-% check dimension consistency
-if d~=size(oned_rule_func,1)
-    error( 'Dimension d doesn''t match that of the cell array of rules functions.' );
-end
-if d~=size(oned_rule_func,1)
+elseif length(stages)~=d
     error( 'Dimension d doesn''t match that of the array of number of stages.' );
 end
 
+% expand oned_rule_func to cell array of appropriate size
+if ~iscell(oned_rule_func)
+    oned_rule_func=repmat({oned_rule_func},d,1);
+elseif length(oned_rule_func)==1
+    oned_rule_func=repmat(oned_rule_func,d,1);
+elseif length(oned_rule_func)~=d
+    error( 'Dimension d doesn''t match that of the cell array of rules functions.' );
+end
+
 % get all 1d rules
-x1 = cell( d, 1 );
-w1 = cell( d, 1 );
+x1 = cell(d, 1);
+w1 = cell(d, 1);
 for k = 1:d
-    [x1{k},w1{k}] = funcall( oned_rule_func{k,:}, stages(k) );
+    [x1{k},w1{k}] = funcall( oned_rule_func{k}, stages(k) );
 end
 
 % create tensor mesh

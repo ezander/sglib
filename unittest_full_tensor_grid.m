@@ -49,12 +49,86 @@ assert_equals( numel(wd), 384, 'numel_wd_4' );
 assert_equals( numel(xd), 7*384, 'numel_xd_4' );
 
 
+% test 5: test for polynomials using gauss legendre quadrature
+% polyint_rule integrates using the rule, polyint_legendre does analytic integration
+% test 5a: for 2 vars and 2 stage rule (integrate exactly up to deg. 3)
+[xd,wd]=full_tensor_grid( 2, 2, @gauss_legendre_rule );
+a=[1, 10, 100];
+assert_equals( polyint_rule( 1, a, xd, wd ), polyint_legendre( 1, a, 2 ), 'gl_int2_1' );
+a=[0,0,0,1, 10, 100];
+assert_equals( polyint_rule( 2, a, xd, wd ), polyint_legendre( 2, a, 2 ), 'gl_int2_2' );
+a=[0,0,0,0,0,0,1, 10, 100,1000];
+assert_equals( polyint_rule( 3, a, xd, wd ), polyint_legendre( 3, a, 2 ), 'gl_int2_3' );
+% test 5b: for 2 vars and 3 stage rule (integrate exactly up to deg. 5)
+[xd,wd]=full_tensor_grid( 2, 3, @gauss_legendre_rule );
+a=rand(1,nchoosek(2+4,2));
+assert_equals( polyint_rule( 4, a, xd, wd ), polyint_legendre( 4, a, 2 ), 'gl_int2_4' );
+a=rand(1,nchoosek(2+5,2));
+assert_equals( polyint_rule( 5, a, xd, wd ), polyint_legendre( 5, a, 2 ), 'gl_int2_5' );
+% test 5b: for 4 vars and 4 stage rule (integrate exactly up to deg. 7)
+[xd,wd]=full_tensor_grid( 4, 4, @gauss_legendre_rule );
+a=rand(1,nchoosek(4+7,4));
+assert_equals( polyint_rule( 7, a, xd, wd ), polyint_legendre( 7, a, 4 ), 'gl_int4_4' );
 
-function [x,w]=dummy_rule( p ) 
+
+% test 6: test for polynomials using gauss hermite quadrature
+[xd,wd]=full_tensor_grid( 3, 3, @gauss_hermite_rule );
+a=rand(1,nchoosek(3+5,3));
+assert_equals( polyint_rule( 5, a, xd, wd ), polyint_gauss( 5, a, 3 ), 'gh_int3_3' );
+
+
+% test 6: test for polynomials using mixed hermite/legendre quadrature
+[xd,wd]=full_tensor_grid( 3, 3, {@gauss_hermite_rule, @gauss_legendre_rule, @gauss_hermite_rule} );
+a=rand(1,nchoosek(3+5,3));
+assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, [1, 3] ), 'gh_mixed_hlh' );
+[xd,wd]=full_tensor_grid( 3, 3, {@gauss_legendre_rule, @gauss_hermite_rule, @gauss_legendre_rule} );
+a=rand(1,nchoosek(3+5,3));
+assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, [2] ), 'gh_mixed_lhl' );
+
+
+function [x,w]=dummy_rule( p )
+% DUMMY_RULE No real integration rule, but easier to verfify with.
 x=linspace(-1,1,p);
 w=linspace(0,1,p);
 w=w/sum(w);
 
+function P=polyint_rule( p, a, xd, wd )
+% POLYINT_RULE Integrate some polynomial using some generated rule.
+Nx=size(xd,2);
+m=size(xd,1);
+I=multiindex( m, p );
+XX=repmat( xd, [1, 1, size(I,1)] );
+II=permute( repmat( I', [1, 1, Nx] ), [1 3 2] );
+P=wd*(a*permute( prod(XX.^II,1), [3,2,1]))';
+
+function P=polyint_legendre( p, a, m )
+% POLYINT_LENGENDRE Integrate some polynomial on [-1,1] analytically.
+P=polyint_mixed( p, a, m, [] );
+
+function P=polyint_gauss( p, a, m )
+% POLYINT_GAUSS Integrate some polynomial on [-inf,inf] with Gaussian measure analytically.
+P=polyint_mixed( p, a, m, 1:m );
+
+function P=polyint_mixed( p, a, m, gauss_vars )
+% POLYINT_MIXED Integrate some polynomial with Legendre measure (x2) and Gauss measure.
+I=multiindex( m, p );
+i=0:max(I(:));
+modes_legendre=2*uniform_raw_moments( i, -1, 1 )';
+modes_gauss=normal_raw_moments( i, 0, 1 )';
+legendre_vars=1:m;
+legendre_vars(gauss_vars)=[];
+P=a*(prod([modes_legendre(I(:,legendre_vars)+1), modes_gauss(I(:,gauss_vars)+1)],2));
 
 
-
+% Old and slower, but better intelligible polyint function
+% function P=polyint_rule( p, a, xd, wd )
+% P=0;
+% for i=1:size(xd,2)
+%     P=P+wd(i)*polyeval( p, a, xd(:,i)' );
+% end
+% function y=polyeval( p, a, x )
+% m=size(x,2);
+% I=multiindex( m, p );
+% X=repmat( x, size(I,1), 1 );
+% y=a*prod(X.^I,2);
+ 
