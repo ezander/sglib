@@ -36,8 +36,13 @@ options.debug=false;
 options.abstol=1e-8;
 options.reltol=1e-8;
 options.max_assertion_disp=10;
-options.output_func=@disp;
+options.output_func=@display_func;
 
 if nargout<1
     assert_set_option( options );
 end
+
+
+function display_func( s )
+stdin=1;
+fprintf( stdin, '%s\n', s );
