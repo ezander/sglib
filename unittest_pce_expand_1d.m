@@ -19,7 +19,7 @@ function unittest_pce_expand_1d
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_expand' );
+assert_set_function( 'pce_expand_1d' );
 
 %% Check that the normal distribution is approximated correctly
 [pcc,pci,poc]=pce_expand_1d(@(x)(x),7);
@@ -70,20 +70,9 @@ assert_equals( mu_pce, mu_ex, 'exp_mean' );
 assert_equals( var_pce, var_ex, 'exp_variance', struct('reltol', 1e-6) );
 
 
-%% Lognormal distribution: comparison between analytical and MC solution
-N=10000;
+%% Lognormal distribution: 
 h={@lognormal_stdnor,{3,0.5},{2,3}};
-lognor_data=funcall(h,randn(N*10,1));
 pcc_int=pce_expand_1d(h,5);
-%pcc_mc=pce_expand_1d_mc(h,5);
-pcc_mc2=pce_expand_1d_mc(lognor_data,5);
 
-
-pcc_ex=exp(3.125)./factorial(0:5).*(0.5.^(0:5)); % =exp(mu+sig^2/2)*(1+sig*gamma/1!+sig^2*gamma^2/2!+...)
-mc_options.abstol=1e-2;
-mc_options.reltol=10/sqrt(N);
-mc_options.fuzzy=true;
+pcc_ex=exp(3.125)./factorial(0:5).*(0.5.^(0:5)); 
 assert_equals( pcc_int, pcc_ex, 'numint' );
-%assert_equals( pcc_mc, pcc_ex, 'mc', mc_options );
-assert_equals( pcc_mc2(1:3), pcc_ex(1:3), 'mc_data', mc_options );
-
