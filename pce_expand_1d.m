@@ -1,4 +1,4 @@
-function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d( func, p )
+function [pce_coeff,pce_ind]=pce_expand_1d( func, p )
 % PCE_EXPAND_1D Calculate the PCE expansion in one stochastics dimension.
 %   [PCE_COEFF,PCE_IND,POLY_COEFF]=PCE_EXPAND_1D( F, P ) gives the polynomial
 %   chaos expansion of a random variable X with X=f(gamma), i.e. the
@@ -13,11 +13,6 @@ function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d( func, p )
 %   coefficients of the fully expanded polynomial in Matlab standard order
 %   such that poly_coeff(p+1-i) is the coefficient of x^i. The polynomials
 %   can most easily be evaluted at some point x by polyval(poly_coeff,x).
-%   The algorithm uses numerical quadrature to evaluate the coefficients,
-%   where the integration range is limited to [-20,20] since the integral
-%   kernel should be sufficiently zero outside for all sensible values of
-%   p. (Still the quadrature method should be improved to use maybe
-%   Gauss-Hermit integration).
 %
 % Note:
 %   PCE_IND is somehow unnecessary for a univariate PC expansion, it's
@@ -48,8 +43,8 @@ function [pce_coeff,pce_ind,poly_coeff]=pce_expand_1d( func, p )
 
 
 if nargin==0
-    func=@exp;
-    p=4;
+    unittest_pce_expand_1d;
+    return
 end
 
 global int_func h
@@ -62,27 +57,12 @@ end
 
 for i=0:p
     h=hermite(i);
-    if 0
-        pce_coeff(i+1)=quad(@int_kernel,-20,20)/factorial(i);
-    else
-        % TODO: the order of the gauss_hermite method should depend on the
-        % order of the coefficient being computed
-        pce_coeff(i+1)=gauss_hermite(@int_kernel_gh,2*max(p,1)+2)/factorial(i);
-        %pce_coeff(i+1)=gauss_hermite(@int_kernel_gh,12)/factorial(i);
-    end
-    if nargout>=3
-        poly_coeff(p-i+1:p+1)=poly_coeff(p-i+1:p+1)+pce_coeff(i+1)*h;
-    end
+    pce_coeff(i+1)=gauss_hermite(@int_kernel_gh,2*max(p,1)+2)/factorial(i);
 end
 
 if nargout>=2
     pce_ind=(0:p)';
 end
-
-function y=int_kernel(x)
-% INT_KERNEL evaluate the integral kernel of the gauss integral at location x.
-global int_func h
-y=funcall( int_func, x).*polyval(h,x).*exp(-x.^2/2)/sqrt(2*pi);
 
 function y=int_kernel_gh(x)
 % INT_KERNEL_GH evaluate the integral kernel for gauss hermite integration.

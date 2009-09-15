@@ -4,7 +4,7 @@ function unittest_pce_expand_1d
 % Example (<a href="matlab:run_example unittest_pce_expand_1d">run</a>)
 %    unittest_pce_expand_1d
 %
-% See also TESTSUITE
+% See also PCE_EXPAND_1D, TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -22,57 +22,54 @@ function unittest_pce_expand_1d
 assert_set_function( 'pce_expand_1d' );
 
 %% Check that the normal distribution is approximated correctly
-[pcc,pci,poc]=pce_expand_1d(@(x)(x),7);
+mu=3; sigma=5;
+N_h={@normal_stdnor, {mu,sigma}, {2,3}};
+[N_alpha,I_N]=pce_expand_1d(N_h,7);
 % only the coefficient for H_1 should be 1, the rest zero
-assert_equals( pcc, [0,1,0,0,0,0,0,0], 'hermite_coeffs' );
-assert_equals( pci, (0:7)', 'hermite_index' );
-% only the coefficient for x should be 1, the rest zero
-assert_equals( poc, [0,0,0,0,0,0,1,0], 'poly_coeffs' );
-
+assert_equals( N_alpha, [mu,sigma,0,0,0,0,0,0], 'normal_coeffs' );
+assert_equals( I_N, (0:7)', 'normal_multindex' );
 
 %% Check that polynomials are approximated correctly
+H=hermite(10,true);
 for p=0:5
-    f={@power,{p},{2}};
-    [pcc,pci,poc]=pce_expand_1d(f,10);
-    pcc; pci; %#ok pcc, pci unused
+    M_h={@power,{p},{2}};
+    [M_alpha,I_M]=pce_expand_1d(M_h,10);
     % only the coefficient for x should be 1, the rest zero
-    poc_ex=zeros(1,11);
-    poc_ex(end-p)=1;
-    assert_equals( poc, poc_ex, 'poly_coeffs' );
+    P_act=M_alpha*H;
+    P_ex=double((1:11)==(11-p));
+    assert_equals( P_act, P_ex, sprintf('poly_coeffs_%d', p) );
 end
 
 %% lognormal mean and variance
 mu=2;
 sigma=1;
-p=8;
-%h=@(x)(lognormal_stdnor(x,mu,sigma));
-h={@lognormal_stdnor,{mu,sigma},{2,3}};
-%h=inline( sprintf( 'lognormal_stdnor(x,%0.16e,%0.16e)', mu,sigma ), 'x' );
-pcc=pce_expand_1d(h,p);
+p=12;
+L_h={@lognormal_stdnor,{mu,sigma},{2,3}};
+L_alpha=pce_expand_1d(L_h,p);
 
-ln_mean=exp(mu+sigma^2/2);
-ln_mean_pce = pcc(1);
-assert_equals( ln_mean_pce, ln_mean, 'mean' );
+L_mu=exp(mu+sigma^2/2);
+L_mu_pce = L_alpha(1);
+assert_equals( L_mu_pce, L_mu, 'mean' );
 
-ln_var=(exp(sigma^2)-1)*exp(2*mu+sigma^2);
-ln_var_pce = sum(pcc(2:end).^2.*factorial(1:p));
-assert_equals( ln_var_pce, ln_var, 'variance', struct( 'reltol', 1e-5 ) );
+L_var=(exp(sigma^2)-1)*exp(2*mu+sigma^2);
+L_var_pce = sum(L_alpha(2:end).^2.*factorial(1:p));
+assert_equals( L_var_pce, L_var, 'variance' );
 
 %% Approximate the exponential distribution
 lambda=3;
-p=7;
-%h=inline( sprintf( 'exponential_stdnor(x,%0.16e)', lambda ), 'x' );
-h={@exponential_stdnor,{lambda},{2}};
-pcc=pce_expand_1d(h,p);
-[mu_pce, var_pce]=pce_moments( pcc );
+p=12;
+Exp_h={@exponential_stdnor,{lambda},{2}};
+Exp_alpha=pce_expand_1d(Exp_h,p);
+[mu_pce, var_pce]=pce_moments( Exp_alpha );
 [mu_ex, var_ex]=exponential_moments( lambda );
 assert_equals( mu_pce, mu_ex, 'exp_mean' );
-assert_equals( var_pce, var_ex, 'exp_variance', struct('reltol', 1e-6) );
+assert_equals( var_pce, var_ex, 'exp_variance' );
 
 
 %% Lognormal distribution: 
-h={@lognormal_stdnor,{3,0.5},{2,3}};
-pcc_int=pce_expand_1d(h,5);
+Log_h={@lognormal_stdnor,{3,0.5},{2,3}};
+Log_alpha=pce_expand_1d(Log_h,5);
 
-pcc_ex=exp(3.125)./factorial(0:5).*(0.5.^(0:5)); 
-assert_equals( pcc_int, pcc_ex, 'numint' );
+Log_alpha_ex=exp(3.125)./factorial(0:5).*(0.5.^(0:5)); 
+assert_equals( Log_alpha, Log_alpha_ex, 'lognormal' );
+
