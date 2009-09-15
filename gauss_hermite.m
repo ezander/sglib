@@ -10,9 +10,10 @@ function int=gauss_hermite( func, p )
 %   F has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
 %
 % Example (<a href="matlab:run_example gauss_hermite">run</a>)
-%   int=gauss_hermite( @(x)(ones(size(x))), 4 ); % => 1
-%   int=gauss_hermite( @(x)(x.*x), 4 ); % => 1
-%   int=gauss_hermite( @exp, 3 );
+%   fprintf( 'the following should print: %g %g %g\n', 1, 1, exp(.5) );
+%   int=gauss_hermite( @(x)(ones(size(x))), 4 ) % => 1
+%   int=gauss_hermite( @(x)(x.*x), 4 ) % => 1
+%   int=gauss_hermite( @exp, 3 ) % => exp(.5)
 %
 % See also GAUSS_HERMITE_RULE, GAUSS_HERMITE_MULTI
 
