@@ -47,24 +47,16 @@ if nargin==0
     return
 end
 
-global int_func h
-int_func=func;
-
 pce_coeff=zeros(1,p+1);
-if nargout>1
-    poly_coeff=zeros(1,p+1);
-end
+pce_ind=(0:p)';
 
 for i=0:p
     h=hermite(i);
-    pce_coeff(i+1)=gauss_hermite(@int_kernel_gh,2*max(p,1)+2)/factorial(i);
+    int_func={@int_kernel, {func, h}, {1, 2}};
+    order=2*max(p,1)+2;
+    pce_coeff(i+1)=gauss_hermite(int_func,order)/factorial(i);
 end
 
-if nargout>=2
-    pce_ind=(0:p)';
-end
-
-function y=int_kernel_gh(x)
-% INT_KERNEL_GH evaluate the integral kernel for gauss hermite integration.
-global int_func h
+function y=int_kernel(int_func, h, x)
+% INT_KERNEL evaluate the integral kernel for gauss hermite integration.
 y=funcall( int_func, x).*polyval(h,x);
