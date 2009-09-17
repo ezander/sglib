@@ -92,8 +92,8 @@ end
 xd=[];
 wd=[];
 
-I=multiindex(d,stages-1)+1;
-I=I(sum(I,2)>=stages,:);
+I=multiindex(d,stages-1,false);
+I=cell2mat(I(max(0,stages-d)+1:end)')+1;
 for i=1:size(I,1)
 
     alpha = I(i,:);
