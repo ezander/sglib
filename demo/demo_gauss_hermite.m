@@ -30,26 +30,30 @@ disp('using quadrature order p=2 sufficient for max degree n=2*p-1=3');
 disp(abs(err));
 
 
-
-% Testing multidimension gauss hermite quadrature
-% (Since the integrand simply factors the results should be the same as the
-% products of the single integrations.)
-clear a b
-a=zeros(5,5);
-b=a;
-pow2=@(x,i,j)(x(1)^i*x(2)^j);
-for i=0:4;
-    for j=0:4;
-        f={pow2,{i,j},{2,3}};
-        a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 );
-        b(i+1,j+1)=expect(i)*expect(j);
+if 0 
+    % gauss_hermite_multi has been removed, since it was unused so far and
+    % will be replaced by a better, more general mechanism
+    
+    % Testing multidimension gauss hermite quadrature
+    % (Since the integrand simply factors the results should be the same as the
+    % products of the single integrations.)
+    clear a b
+    a=zeros(5,5);
+    b=a;
+    pow2=@(x,i,j)(x(1)^i*x(2)^j);
+    for i=0:4;
+        for j=0:4;
+            f={pow2,{i,j},{2,3}};
+            a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 );
+            b(i+1,j+1)=expect(i)*expect(j);
+        end;
     end;
-end;
-disp('Result of Gauss-Hermite 2d quadrature');
-disp(a);
-disp('Difference to exact solution');
-disp(a-b);
+    disp('Result of Gauss-Hermite 2d quadrature');
+    disp(a);
+    disp('Difference to exact solution');
+    disp(a-b);
 
-% This should give e
-disp('The next output should be approx. zero');
-disp(gauss_hermite_multi( @(x)(exp(x(1)+x(2))), 2, 6)-exp(1));
+    % This should give e
+    disp('The next output should be approx. zero');
+    disp(gauss_hermite_multi( @(x)(exp(x(1)+x(2))), 2, 6)-exp(1));
+end

@@ -21,34 +21,26 @@ function unittest_gauss_hermite
 
 assert_set_function( 'gauss_hermite' );
 
+assert_equals( gauss_hermite({@uplus},2), 0, 'ident' );
+
 % Calculate integral of monomials with Gaussian weighting function. The
 % result for x^i should be 0 for odd i and (i-1)!! for even i where
 % n!!=1x3x5x...xn.
 expect=@(n)( mod(n-1,2)*prod(1:2:(n-1)) );
-
 for i=0:10
     f={@power,{i},{2}};
     p=ceil((i+1)/2);
     assert_equals( gauss_hermite(f,p), expect(i), sprintf('order_%d',i) );
 end
 
-% Testing multidimension gauss hermite quadrature
-% (Since the integrand simply factors the results should be the same as the
-% products of the single integrations.)
-clear a b
-a=zeros(5,5);
-b=a;
-for i=0:4;
-    for j=0:4;
-        f3=@(x,i,j)(x(1)^i*x(2)^j);
-        f={f3,{i,j},{2,3}};
-        a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 );
-        b(i+1,j+1)=expect(i)*expect(j);
-    end;
-end;
-assert_equals( a, b, 'gauss_hermite_multi' );
+% The integral of exp(ax) w.r.t. gaussian measure exp(-x^2/2) can be evaluated 
+% analytically to be exp(+a^2/2), since (x-a)^2/2=x^2/2-ax+a^2/2
+assert_equals( gauss_hermite(@(x)(exp(-x)),8), exp(1/2), 'neg_x' );
+assert_equals( gauss_hermite(@(x)(exp(x)),8), exp(1/2), 'x' );
+assert_equals( gauss_hermite(@(x)(exp(-pi*x)),18), exp(pi*pi/2), 'pi_x' );
 
-% This should give e
-int=gauss_hermite_multi( @(x)(exp(x(1)+x(2))), 2, 6);
-assert_equals( int, exp(1), 'gauss_hermite_multi', struct('abstol', 1e-5) );
+% Since the exp(ix)=i sin(x)=cos(x) from the preceding we immediately get
+assert_equals( gauss_hermite(@sin,2), 0, 'sin' );
+assert_equals( gauss_hermite(@cos,8), exp(-1/2), 'cos' );
+
 

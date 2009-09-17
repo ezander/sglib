@@ -29,6 +29,9 @@ function int=gauss_hermite( func, p )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[x,w]=gauss_hermite_rule(p);
+if nargin==0
+    unittest_gauss_hermite
+    return
+end
 
-int=sum(w.*funcall(func,x));
+int=integrate_1d( func, @gauss_hermite_rule, p );
