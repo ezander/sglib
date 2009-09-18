@@ -31,8 +31,18 @@ assert_equals( integrate_1d( @vector_func_trans, @gauss_hermite_rule, 3, 'transp
 assert_equals( integrate_1d( @vector_func_trans, @gauss_hermite_rule, 3, 'vectorized', false, 'transposed', true ), [1;0;1;0;3]', 'novec_trans' );
 
 % The example from the comments section
-int =integrate_1d( @(x)(exp((0:6)'*log(x))), @gauss_hermite_rule, 4 );
-assert_equals( round(int'), [1,0,1,0,3,0,15], 'example' );
+n=(0:6)';
+int =integrate_1d( {@all_powers, {n}, {2}}, @gauss_hermite_rule, 4 );
+assert_equals( round(int), [1;0;1;0;3;0;15], 'example' );
+
+% The example from the comments section
+n=(0:6)';
+int =integrate_1d( {@all_powers, {n}, {2}}, @gauss_legendre_rule, 8 );
+assert_equals( int, (1-(-1).^(n+1))./(n+1), 'example2' );
+
+
+function pow=all_powers( x, n )
+pow=repmat(x,size(n,1),1).^repmat(n,1,size(x,2));
 
 function res=scalar_func_1d( x )
 res=ones(size(x));
