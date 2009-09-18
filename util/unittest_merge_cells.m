@@ -28,3 +28,11 @@ assert_equals( merge_cells( {}, {}, {'c','d','e'}), {'c', 'd', 'e' }, 'em' );
 assert_equals( merge_cells( {'a','b'}, {2,1}, {} ), {'b', 'a'}, 'me' );
 assert_equals( merge_cells( {'a','b'}, {2,1}, {'c'} ), {'b', 'a', 'c'}, 'ms' );
 assert_equals( merge_cells( {}, {}, {} ), cell(1,0), 'ee' );
+
+% test 2
+assert_equals( merge_cells({'a','b'},{1,2},{'c'}), {'a','b','c'}, 'merge_pos1' );
+assert_equals( merge_cells({'a','b'},{1,3},{'c'}), {'a','c','b'}, 'merge_pos2' );
+assert_equals( merge_cells({'a','b'},{2,3},{'c'}), {'c','a','b'}, 'merge_pos3' );
+assert_equals( merge_cells({'a','b'},{2,1},{'c'}), {'b','a','c'}, 'merge_pos4' );
+assert_equals( merge_cells({'a','b'},{3,1},{'c'}), {'b','c','a'}, 'merge_pos5' );
+assert_equals( merge_cells({'a','b'},{3,2},{'c'}), {'c','b','a'}, 'merge_pos6' );

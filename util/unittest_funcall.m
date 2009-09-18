@@ -21,6 +21,13 @@ function unittest_funcall
 
 assert_set_function( 'funcall' );
 
+% old tests
+assert_equals( funcall( {@power,{3}},2 ), 8, 'nopos' );
+assert_equals( funcall( {@(y,x)(power(x,y)),{3}},2 ), 9, 'anon' );
+assert_equals( funcall( {@power,{3},{2}},2 ), 8, 'pos2' );
+assert_equals( funcall( {@power,{3},{1}},2 ), 9, 'pos1' );
+
+
 % test parameter placement
 res=[5,12];
 func=@test_it;
