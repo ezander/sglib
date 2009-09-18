@@ -8,6 +8,10 @@ function int=gauss_hermite( func, p )
 %
 % Note:
 %   F has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
+% NOTE:
+%   This function is more or less obsolete since INTEGRATE is more general
+%   and not more difficult to use. Will probably be removed in one of the
+%   next versions.
 %
 % Example (<a href="matlab:run_example gauss_hermite">run</a>)
 %   fprintf( 'the following should print: %g %g %g\n', 1, 1, exp(.5) );
@@ -15,7 +19,7 @@ function int=gauss_hermite( func, p )
 %   int=gauss_hermite( @(x)(x.*x), 4 ) % => 1
 %   int=gauss_hermite( @exp, 3 ) % => exp(.5)
 %
-% See also GAUSS_HERMITE_RULE, GAUSS_HERMITE_MULTI
+% See also GAUSS_HERMITE_RULE
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
