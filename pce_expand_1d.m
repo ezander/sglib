@@ -1,9 +1,9 @@
-function [X_alpha,I]=pce_expand_1d( func, p )
+function [X_alpha,I]=pce_expand_1d( X_func, p )
 % PCE_EXPAND_1D Calculate the PC expansion in one stochastics dimension.
-%   [X_ALPHA,I]=PCE_EXPAND_1D( FUNC, P ) gives the polynomial chaos
-%   expansion of a random variable X with X=FUNC(gamma), i.e. the random
+%   [X_ALPHA,I]=PCE_EXPAND_1D( X_FUNC, P ) gives the polynomial chaos
+%   expansion of a random variable X with X=X_FUNC(gamma), i.e. the random
 %   variable must be a transformed Gaussian random variable. E.g. for a
-%   lognormal random variable you would pass FUNC=@EXP (for some common
+%   lognormal random variable you would pass X_FUNC=@EXP (for some common
 %   distributions those functions are given by XXX_STDNOR where XXX is the
 %   name of the distribution). This is possible for an arbitrary random
 %   variable by specifying F(x)=F^-1(Phi(x)) where  F and Phi are the
@@ -46,16 +46,42 @@ if nargin==0
     return
 end
 
-X_alpha=zeros(1,p+1);
 I=(0:p)';
 order=2*max(p,1)+2;
 
-for i=0:p
-    h=hermite(i);
-    int_func={@int_kernel, {func, h}, {1, 2}};
-    X_alpha(i+1)=gauss_hermite(int_func,order)/factorial(i);
+vectorized_polys=true;
+if vectorized_polys
+    %H=hermite(p,true);
+    %int_func={@int_kernel_vecpoly_H, {X_func, H}, {1, 2}};
+    int_func={@int_kernel_vecpoly_p, {X_func, p}, {1, 2}};
+    X_alpha=(gauss_hermite(int_func,order)./factorial(I))';
+else
+    X_alpha=zeros(1,p+1);
+    for i=0:p
+        h=hermite(i);
+        int_func={@int_kernel, {X_func, h}, {1, 2}};
+        X_alpha(i+1)=gauss_hermite(int_func,order)/factorial(i);
+    end
 end
 
-function y=int_kernel(int_func, h, x)
+function y=int_kernel(X_func, h, x)
 % INT_KERNEL evaluate the pce integral kernel for gauss hermite integration.
-y=funcall( int_func, x).*polyval(h,x);
+y=funcall( X_func, x).*polyval(h,x);
+
+function y=int_kernel_vecpoly_H( X_func, H, x )
+% INT_KERNEL evaluate the pce integral kernel for gauss hermite integration.
+p=size(H,1)-1;
+Hx=fliplr(H)*real(exp((0:p)'*log(x)) );
+y=row_col_mult( Hx, funcall( X_func, x) );
+
+function y=int_kernel_vecpoly_p( X_func, p, x )
+% INT_KERNEL evaluate the pce integral kernel for gauss hermite integration.
+% Hx=pce_evaluate( eye(p+1),(0:p)',x);
+Hx(1,:)=ones(size(x));
+if p>=1
+    Hx(2,:)=x;
+    for i=2:p
+        Hx(i+1,:)=x.*Hx(i,:)-(i-1)*Hx(i-1,:);
+    end
+end
+y=row_col_mult( Hx, funcall( X_func, x) );
