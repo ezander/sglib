@@ -30,6 +30,13 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %       subtitle( func2str( rule{1} ), 'interpreter', 'none' );
 %     end
 %     pause( 2 )
+%     for i=1:4
+%       [xd,wd]=smolyak_grid( 3, 3+i, rule );
+%       subplot(2,2,i);
+%       plot3(xd(1,:),xd(2,:),xd(3,:),'.k')
+%       subtitle( func2str( rule{1} ), 'interpreter', 'none' );
+%     end
+%     pause( 2 )
 %   end
 %
 % See also FULL_TENSOR_GRID
