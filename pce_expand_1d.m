@@ -54,7 +54,7 @@ if vectorized_polys
     %H=hermite(p,true);
     %int_func={@int_kernel_vecpoly_H, {X_func, H}, {1, 2}};
     int_func={@int_kernel_vecpoly_p, {X_func, p}, {1, 2}};
-    X_alpha=(gauss_hermite(int_func,order)./factorial(I))';
+    X_alpha=(integrate_1d(int_func,@gauss_hermite_rule,order)./hermite_norm(I).^2)';
 else
     X_alpha=zeros(1,p+1);
     for i=0:p
