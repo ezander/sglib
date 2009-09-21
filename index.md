@@ -13,7 +13,7 @@ title:
   </a>
 </div>
 
-# [sglib][] <span class="small">by [ezander][ezander] </span>
+# [sglib][] <span class="small">by [ezander]</span>
   
 <div class="description">
   A Malab/Octave toolbox for stochastic Galerkin methods
@@ -21,8 +21,8 @@ title:
 
 SGLib is a toolbox for Matlab helping in the development of stochastic
 Galerkin and (to a lesser part as yet) stochastic collocation
-methods. More or less extensive documentation is available in toolbox
-itself.
+methods. More or less extensive documentation is available in the toolbox
+itself. 
 
 
 ## Dependencies
@@ -43,7 +43,6 @@ This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at
 your option) any later version.<br/>
-
 See the GNU General Public License for more details. You should have
 received a copy of the GNU General Public License along with this
 program.  If not, see http://www.gnu.org/licenses/.
