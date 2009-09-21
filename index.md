@@ -15,8 +15,9 @@ title:
 
 # [sglib][] <span class="small">by [ezander][]</span>
   
+[ezander][]
 <div class="description">
-  A Malab/Octave toolbox for stochastic Galerkin methods
+  A Malab/Octave toolbox for stochastic Galerkin methods [ezander][]
 </div>
 
 SGLib is a toolbox for Matlab helping in the development of stochastic
