@@ -13,7 +13,7 @@ title:
   </a>
 </div>
 
-# [sglib][] <span class="small">by [ezander]</span>
+# [sglib][] <span class="small">by [ezander][ezander]</span>
   
 <div class="description">
   A Malab/Octave toolbox for stochastic Galerkin methods
@@ -25,12 +25,7 @@ methods. More or less extensive documentation is available in the toolbox
 itself. 
 
 
-## Dependencies
-
-None.
-
-
-## Install
+## Installation
 
 See the [wiki][wiki].
 
@@ -55,13 +50,15 @@ Elmar Zander (<e.zander@tu-bs.de>)
 
 ## Download
 
-You can download this project in either [zip][] or [tar][] formats.
+You can download this project in either [zip][] or [tar][]
+formats. However, to always have the newest version you'd better
+install git and clone the project.
 
 You can also clone the project with [Git][] by running:
 <pre>$ git clone git://github.com/ezander/sglib</pre>
   
 <div class="footer">
-  get the source code on GitHub : [ezander/sglib][sglib]
+  Get the source code on GitHub : [ezander/sglib][sglib]
 </div>
     
 
