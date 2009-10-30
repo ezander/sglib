@@ -23,9 +23,15 @@ function startup
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 % We do the real startup in a file with a special name (SGLIB_STARTUP) so
 % the user can run it individually without any startup on the path
 % interfering with this one
 sglib_startup;
 
+% If exists run user startup.m file. Do after sglib startup since otherwise
+% user pathdefs might be resetted.
+userdir=getenv('HOME')
+if ~strcmp(userdir, pwd) && exist([userdir '/startup.m'])
+    fprintf('Running user startup.m ...\m')
+    run([userdir '/startup.m'])
+end
