@@ -1,15 +1,31 @@
-function save_eps( basename, topic );
+function save_eps( basename, topic, varargin );
 
-dir='eps';
-[success,message,messageid]=mkdir(dir);
+options=varargin2options( varargin{:} );
+[epsdir,options]=get_option( options, 'epsdir', 'eps' );
+[psfrag,options]=get_option( options, 'psfrag', true );
+[writetex,options]=get_option( options, 'writetex', false );
+[standalonetex,options]=get_option( options, 'standalonetex', false );
+[notitle,options]=get_option( options, 'notitle', true );
+check_unsupported_options( options, mfilename );
+
+
+[success,message,messageid]=mkdir(epsdir);
 if ~success
-    error( messageid, 'mkdir %s did not succeed: %s', dir, message);
+    error( messageid, 'mkdir %s did not succeed: %s', epsdir, message);
 end
-if ~exist('eps','dir')
-    error( '%s exists but is not a directory', dir );
+if ~exist(epsdir,'dir')
+    error( '%s exists but is not a directory', epsdir );
 end
 
-filename=sprintf( './%s/%s_%s.eps', dir, basename, topic );
-title('');
+% erase title (this the user should supply in the figure caption), usually
+% only needed inside matlab
+if notitle;
+    title('');
+end
+
+% Now save the EPS
+filename=sprintf( './%s/%s_%s.eps', epsdir, basename, topic );
 print( filename, '-depsc2' );
-disp(filename);
+
+
+
