@@ -1,80 +1,82 @@
 function psfrag_info=psfrag_format( axes_h, varargin )
 
-ticks_default.replace=true;
-ticks_default.tag_format='?t:%g';
+general_default.replace=false;
+general_default.replace=true;
+general_default.fontsize='\scriptsize';
+general_default.fontsize='\footnotesize';
+general_default.fontsize='\normalsize';
+general_default.orient='cc';
+
+ticks_default=general_default;
+ticks_default.tag_format='??:%g';
 ticks_default.tex_format='%g';
-ticks_default.fontsize=0;
-ticks_default.pos='cc';
+%ticks_default.fontsize='\tiny';
 
-xticks_options=ticks_default;
-xticks_options.tag_format='xt:%g';
-yticks_options=ticks_default;
-yticks_options.tag_format='yt:%g';
-zticks_options=ticks_default;
-zticks_options.tag_format='zt:%g';
+xticks_options=setfields( ticks_default, 'tag_format', 'xt:%g', 'orient', 'tc' );
+yticks_options=setfields( ticks_default, 'tag_format', 'yt:%g', 'orient', 'cr' );
+zticks_options=setfields( ticks_default, 'tag_format', 'zt:%g', 'orient', 'cr' );
 
-%xt=format_ticklabels( axes_h, 'x', xticks_options );
-%yt=format_ticklabels( axes_h, 'y', yticks_options );
-%zt=format_ticklabels( axes_h, 'z', zticks_options );
-xl=format_label( axes_h, 'x', 'xl:%s', '%s' );
-yl=format_label( axes_h, 'y', 'yl:%s', '%s' );
-zl=format_label( axes_h, 'z', 'zl:%s', '%s' );
+xt=format_ticklabels( axes_h, 'x', xticks_options );
+yt=format_ticklabels( axes_h, 'y', yticks_options );
+zt=format_ticklabels( axes_h, 'z', zticks_options );
 
-ti=format_title( axes_h, 'ti:%s', '%s' );
+label_default=general_default;
+label_default.tag_format='??:%s';
+label_default.tex_format='%s';
+%label_default.fontsize='\scriptsize';
 
-lg=format_legend( axes_h, 'lg:%s', '%s' );
-
-tx=format_text( axes_h, 'tx:%s', '%s' );
-
+xlabel_options=setfields( label_default, 'tag_format', 'xl:%g', 'orient', 'tc' );
+ylabel_options=setfields( label_default, 'tag_format', 'yl:%g', 'orient', 'cr' );
+zlabel_options=setfields( label_default, 'tag_format', 'zl:%g', 'orient', 'cr' );
+title_options =setfields( label_default, 'tag_format', 'tt:%g', 'orient', 'Bc' );
+legend_options=setfields( label_default, 'tag_format', 'lg:%g', 'orient', 'lc', 'fontsize', '\tiny' );
+text_options  =setfields( label_default, 'tag_format', 'tx:%g', 'orient', 'cc' );
 
 
-xt=format_ticklabels( axes_h, 'x', 'xt:%g', '%g' );
-yt=format_ticklabels( axes_h, 'y', 'yt:%g', '%g' );
-zt=format_ticklabels( axes_h, 'z', 'zt:%g', '%g' );
-
-xl=format_label( axes_h, 'x', 'xl:%s', '%s' );
-yl=format_label( axes_h, 'y', 'yl:%s', '%s' );
-zl=format_label( axes_h, 'z', 'zl:%s', '%s' );
-
-ti=format_title( axes_h, 'ti:%s', '%s' );
-
-lg=format_legend( axes_h, 'lg:%s', '%s' );
-
-tx=format_text( axes_h, 'tx:%s', '%s' );
-
-psfrag_info=celljoin( xt, yt, zt, xl, yl, zl, ti, lg, tx );
+xl=format_label( axes_h, 'x', xlabel_options );
+yl=format_label( axes_h, 'y', ylabel_options );
+zl=format_label( axes_h, 'z', zlabel_options );
+tt=format_title( axes_h, title_options );
+lg=format_legend( axes_h, legend_options );
+tx=format_text( axes_h, text_options );
 
 
-function psfrag_info=format_title( axes_h, tag_format, tex_format )
+psfrag_info=celljoin( xt, yt, zt, xl, yl, zl, tt, lg, tx );
+
+
+function psfrag_info=format_title( axes_h, options )
 % FORMAT_TITLE Formats a title text object belonging to an axis object.
 title_h=get( axes_h, 'Title' );
-psfrag_info=format_handle( title_h, tag_format, tex_format );
+psfrag_info=format_handle( title_h, options );
 
-function psfrag_info=format_label( axes_h, xyz, tag_format, tex_format )
+function psfrag_info=format_label( axes_h, xyz, options )
 % FORMAT_LABEL Formats a label text object belonging to an axis object.
 label_h=get( axes_h, [upper(xyz) 'Label'] );
-psfrag_info=format_handle( label_h, tag_format, tex_format );
+psfrag_info=format_handle( label_h, options );
 
-function psfrag_info=format_legend( axes_h, tag_format, tex_format )
+function psfrag_info=format_legend( axes_h, options )
 % FORMAT_TEXT Formats all text objects in a legend belonging to an axis object.
 legend_h=legend( axes_h );
 handles=findall(legend_h, 'type', 'text');
-psfrag_info=format_handles( handles, tag_format, tex_format );
+psfrag_info=format_handles( handles, options );
 
-function psfrag_info=format_text( axes_h, tag_format, tex_format )
+function psfrag_info=format_text( axes_h, options )
 % FORMAT_TEXT Formats all text objects descendant from some axis object.
 handles=findall(axes_h, 'type', 'text');
-psfrag_info=format_handles( handles, tag_format, tex_format );
+psfrag_info=format_handles( handles, options );
 
-function psfrag_info=format_ticklabels( axes_h, xyz, tag_format, tex_format )
+function psfrag_info=format_ticklabels( axes_h, xyz, options )
 % FORMAT_TICKLABELS Formats all the ticklables of some axis.
 psfrag_info={};
+if ~options.replace; return; end
 labels={};
 c=upper(xyz);
 for t=get( axes_h, [c 'Tick'] )
-    labels=cellappend( labels, sprintf(tag_format, t) );
-    psfrag_info=cellappend( psfrag_info, {sprintf(tag_format, t), ...
-                                          sprintf(tex_format, t)} );
+    labels=cellappend( labels, sprintf(options.tag_format, t) );
+    psfrag_info=cellappend( psfrag_info, {sprintf(options.tag_format, t), ...
+                                          sprintf(options.tex_format, t), ...
+                                          options.fontsize, ...
+                                          options.orient} );
 end
 set( axes_h, [c 'TickLabel'], labels )
 
@@ -88,24 +90,26 @@ function bool=is_handle_tagged( handle )
 bool=strcmp( 'psfrag', get( handle, 'Tag' ) );
 
 
-function psfrag_info=format_handle( h, tag_format, tex_format )
+function psfrag_info=format_handle( h, options )
 % FORMAT_HANDLE Formats one text objects passed in by handle.
 psfrag_info={};
 if is_handle_tagged(h); return; end
 label=get(h, 'String' );
 if isempty(strtrim(label) ); return; end
-tag_label=sprintf( tag_format, tex_escape(label));
-tex_label=sprintf( tex_format, label);
-psfrag_info={{tag_label, tex_label}};
+tag_handle( h );
+if ~options.replace; return; end
+
+tag_label=sprintf( options.tag_format, tex_escape(label));
+tex_label=sprintf( options.tex_format, label);
+psfrag_info={{tag_label, tex_label, options.fontsize, options.orient}};
 set( h, 'String', tag_label );
 set( h, 'Interpreter', 'none' );
-tag_handle( h );
 
-function psfrag_info=format_handles( handles, tag_format, tex_format )
+function psfrag_info=format_handles( handles, options )
 % FORMAT_HANDLES Formats all text objects passed in by their handle.
 psfrag_info={};
 for i=1:length(handles)
-    info=format_handle( handles(i), tag_format, tex_format);
+    info=format_handle( handles(i), options );
     psfrag_info=celljoin( psfrag_info, info );
 end
 
@@ -120,6 +124,11 @@ function list=celljoin(varargin)
 list={};
 for i=1:length(varargin)
     list={list{:}, varargin{i}{:} };
+end
+
+function obj=setfields( obj, varargin )
+for i=1:2:length(varargin)
+    obj.(varargin{i})=varargin{i+1};
 end
 
 
@@ -137,8 +146,3 @@ for x=str
             estr=[estr x];
     end
 end
-
-
-
-
-

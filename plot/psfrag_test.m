@@ -16,6 +16,9 @@ psfrag_list=psfrag_format( gca )
 % If requested also save tex file
 inc_filename=sprintf( '%s_%s', basename, topic );
 tex_filename=sprintf( './%s/%s_%s-fig.tex', 'eps', basename, topic );
-write_tex_include( basename, topic, 'eps', '', true, psfrag_list )
+write_tex_include( basename, topic, 'eps', '', true, psfrag_list );
 
 save_eps( basename, topic );
+
+system('cd eps && latex aaa_bbb && dvips aaa_bbb && gv aaa_bbb ')
+

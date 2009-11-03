@@ -1,4 +1,4 @@
-function write_tex_include( basename, topic, texdir, relepsdir, standalonetex, psfrag_list )
+function [main_tex, fig_tex]=write_tex_include( basename, topic, texdir, relepsdir, standalonetex, psfrag_list )
 
 
 if standalonetex
@@ -22,8 +22,8 @@ if standalonetex
     fprintf(fid,'%s\n', ['\input{',inc_filename,'}']);
     fprintf(fid,'%s\n', '\end{document}');
     fclose(fid);
+    main_tex=tex_filename;
 end
-
 if isempty(relepsdir); relepsdir='.'; end
 tex_filename=sprintf( './%s/%s_%s-fig.tex', texdir, basename, topic );
 eps_filename=sprintf( '%s/%s_%s.eps', relepsdir, basename, topic );
@@ -34,8 +34,10 @@ if fid==-1
     return
 end
 for i=1:length(psfrag_list)
-    fprintf(fid, '\\PSReplAny{%s}{%s}\n', psfrag_list{i}{1}, psfrag_list{i}{2} );
+    %fprintf(fid, '\\PSReplAny{%s}{%s}\n', psfrag_list{i}{1}, psfrag_list{i}{2} );
+    fprintf(fid, '\\psfrag{%s}[%s][%s][1][0]{{%s %s}}\n', psfrag_list{i}{1}, psfrag_list{i}{4}, psfrag_list{i}{4}, psfrag_list{i}{3}, psfrag_list{i}{2} );
 end
 fprintf(fid, '\\includegraphics[width=0.8\\textwidth]{%s}\n', eps_filename );
 fclose(fid);
+fig_tex=tex_filename;
 
