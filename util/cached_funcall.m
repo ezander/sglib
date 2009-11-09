@@ -25,11 +25,15 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %     parameters are replaced by the function name and the stringified
 %     parameters.
 %   extra_params: {{}}
-%     Parameters whose values should not affect recomputation because they do
-%     not affect the result of the computation e.g. control parameters for
-%     progress display.
+%     Parameters whose values should not affect recomputation because they
+%     do not affect the result of the computation e.g. control parameters
+%     for progress display.
 %
 % Example (<a href="matlab:run_example cached_funcall">run</a>)
+%     % One comment to the following example: something indeterministic
+%     % like RAND should never be cached - here it just serves the purpose
+%     % of showing when cached results were used and when results were
+%     % newly computed.
 %     filename=[tempname, '.mat'];
 %     ver=1;
 %     options={'silent', false};
@@ -68,6 +72,12 @@ options=varargin2options( varargin{:} );
 [extra_params,options]=get_option( options, 'extra_params', {} );
 [path,options]=get_option( options, 'path', '.cache' );
 check_unsupported_options( options, mfilename );
+
+% check that number output arguments match
+if ndata<nargout
+    warning( 'cached_funcall:nargout', 'Number of output arguments too large.' );
+    ndata=nargout;
+end 
 
 % Setting the following to true shouldn't be necessary, since TIC with
 % return value was introduced.

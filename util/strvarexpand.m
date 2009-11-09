@@ -34,9 +34,15 @@ doeval=false;
 for i=pos
     part=str(lpos:i-1);
     if doeval
+        orig=part;
         part=evalin( 'caller', part );
         if isnumeric(part)
             part=num2str(part);
+        elseif ischar(part)
+            % pass
+        else
+            warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(part) );
+            part=['$', orig, '$'];
         end
     end
     exstr=[exstr part];

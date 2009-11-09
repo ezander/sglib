@@ -7,20 +7,26 @@ last={};
 for i=1:size(build,1)
     script=build{i,1};
     target=build{i,2};
+    extra_deps=build{i,3};
     mdep=depfun(script,'-toponly','-quiet');
-    dep={which(script),last{:},mdep{:}};
+    dep={which(script),last{:},mdep{:},extra_deps{:}};
     if needs_update( target, dep )
         underline(['Running ', script]);
-        if isempty(target)
-            post_run='';
-        else
-            post_run=sprintf('disp( ''--> Storing: %s''); save( ''%s'' );', target, target );
+        post_run='';
+        if ~isempty(target)
+            post_run=[post_run sprintf('disp( ''--> Storing: %s'');', target )];
+            post_run=[post_run sprintf('save( ''%s'' );', target )];
         end
-        if isempty(last_target)
-            pre_run='';
-        else
-            pre_run=sprintf('disp( ''--> Loading: %s''); load( ''%s'' ); post_run=''%s'';', last_target, last_target, strrep(post_run, '''', '''''') );
+        pre_run='';
+        if ~isempty(last_target)
+            pre_run=[pre_run sprintf('disp( ''--> Loading: %s''); ', last_target)];
+            pre_run=[pre_run sprintf('load( ''%s'' );', last_target)];
         end
+        for j=1:length(extra_deps)
+            pre_run=[pre_run sprintf('disp( ''--> Loading: %s''); ', extra_deps{j})];
+            pre_run=[pre_run sprintf('load( ''%s'' );', extra_deps{j})];
+        end
+        pre_run=[pre_run sprintf('post_run=''%s'';', strrep(post_run, '''', '''''') )];
         
         funcall( script, pre_run, post_run );
     else

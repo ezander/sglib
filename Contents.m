@@ -26,7 +26,7 @@
 %   multiindex_find                    - Find a multiindex in a list of indices.
 %
 % Polynomials chaos expansion
-%   pce_expand_1d                      - Calculate the PCE expansion in one stochastics dimension.
+%   pce_expand_1d                      - Calculate the PC expansion in one stochastics dimension.
 %   pce_expand_1d_mc                   - Calculate the PCE expansion in one stochastics dimension (MC).
 %   pce_moments                        - Calculate the statistical moments of a distribution given as PCE.
 %   pce_normalize                      - Transforms a PCE in unnormed Hermite polys into a PCE in

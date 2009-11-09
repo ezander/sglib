@@ -113,7 +113,7 @@ if 0
     K=repmat( permute(k,[3 4 1 2] ), [ni nj 1 1] );
     strides=cumprod(size(triples));
     ind=1+I+strides(1)*J+strides(2)*K;
-    c=prod(triples(ind),4);
+    c=prod(triples(ind),4); %#ok
 end
 
 

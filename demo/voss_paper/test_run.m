@@ -3,12 +3,8 @@ if ~exist('model_base', 'var') || ~exist('solver_base', 'var') || ~exist('res_ba
 end
 
 build={
-    'build_model',  sprintf( './mat/model-%s.mat', model_base ), {};
-    'solve_model',  sprintf( './mat/solve-%s.mat', res_base ), {};
-    'solve_model',  sprintf( './mat/solve-%s.mat', res_base ), {};
-    'solve_model',  sprintf( './mat/solve-%s.mat', res_base ), {};
-    'solve_model',  sprintf( './mat/solve-%s.mat', res_base ), {};
-    'plot_results',  sprintf( './mat/results-%s.mat', res_base ), {};
+    'build_model',  sprintf( './mat/model-%s.mat', model_base ), {sprintf( './mat/model_params-%s.mat', model_base )};
+    'solve_model',  sprintf( './mat/solve-%s.mat', res_base ), {sprintf( './mat/solver_params-%s.mat', res_base )};
     'plot_results',  sprintf( './mat/results-%s.mat', res_base ), {};
     };
 autoloader2( build );
