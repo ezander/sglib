@@ -1,0 +1,1 @@
+function str=strvarexpand( str )
