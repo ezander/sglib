@@ -15,7 +15,12 @@ p_k=4;
 m_k=4;
 l_k=4;
 lc_k=0.3;
-stdnor_k={@beta_stdnor,{beta_a,4/beta_a}};
+%stdnor_k={@beta_stdnor,{beta_a,4/beta_a}};
+delta=0.1;
+stdnor_k=@(x)(delta+beta_stdnor(x,beta_a,1/beta_a));
+pdf_k=@(x)(beta_pdf(x-delta,beta_a,1/beta_a));
+[mu_k,var_k]=beta_moments( beta_a,1/beta_a);
+mu_k=mu_k+delta;
 cov_k={@gaussian_covariance,{lc_k,1}};
 % create field
 [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
