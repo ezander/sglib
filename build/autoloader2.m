@@ -8,7 +8,7 @@ for i=1:size(build,1)
     script=build{i,1};
     target=build{i,2};
     extra_deps=build{i,3};
-    mdep=depfun(script,'-toponly','-quiet');
+    mdep=find_deps(script);
     dep={which(script),last{:},mdep{:},extra_deps{:}};
     if needs_update( target, dep )
         underline(['Running ', script]);
@@ -36,3 +36,6 @@ for i=1:size(build,1)
     last={target,last{:}};
     last_target=target;
 end
+
+
+

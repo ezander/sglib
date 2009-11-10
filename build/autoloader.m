@@ -8,7 +8,7 @@ NS_invexpr='^NS_'; % match anything starting with NS_
 for NS_i=1:size(NS_build,1)
     NS_script=NS_build{NS_i,1};
     NS_target=NS_build{NS_i,2};
-    NS_mdep=depfun(NS_script,'-toponly','-quiet');
+    NS_mdep=find_deps(NS_script);
     NS_dep={NS_script,NS_last{:},NS_mdep{:}};
     if needs_update( NS_target, NS_dep )
         underline(['Running ', NS_script]);
