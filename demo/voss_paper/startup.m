@@ -29,3 +29,4 @@ function startup
 % interfering with this one
 run( '../../sglib_startup' );
 
+addpath ../../build
