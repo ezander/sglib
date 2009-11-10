@@ -56,11 +56,11 @@ for dryrun=[true,false]
                             
                         	model_param_file=['./mat/model_params-' model_base '.mat'];
                             if ~exist(model_param_file, 'file')
-                                save( model_param_file, '-V6', 'beta_a' );
+                                save( model_param_file, '-V6', 'beta_a', 'model_base' );
                             end
                         	solver_param_file=['./mat/solver_params-' res_base '.mat'];
                             if ~exist(solver_param_file, 'file')
-                                save( solver_param_file, '-V6', 'beta_a', 'solver', 'trunc_mode', 'trunc_klmode', 'eps_var', 'eps' );
+                                save( solver_param_file, '-V6', 'beta_a', 'solver', 'trunc_mode', 'trunc_klmode', 'eps_var', 'eps', 'solver_base', 'res_base' );
                             end
                             test_run;
                         end

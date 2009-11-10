@@ -5,17 +5,15 @@ function build_model( pre_run, post_run )
 % ==========
 eval( pre_run );
 disp('building model')
-%whos
 disp(strvarexpand( 'beta_a=$beta_a$'))
+%whos
 %keyboard
 
 % ==========
 % =  main  =
 % ==========
 
-
-
-
+build_model_1d;
 
 % ==========
 % = epilog =
