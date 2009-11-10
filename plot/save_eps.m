@@ -24,7 +24,7 @@ if notitle;
 end
 
 % Now save the EPS
-filename=sprintf( './%s/%s_%s.eps', epsdir, basename, topic );
+filename=sprintf( './%s/%s-%s.eps', epsdir, basename, topic );
 print( filename, '-depsc2' );
 
 
