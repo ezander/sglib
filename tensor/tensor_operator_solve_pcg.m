@@ -6,6 +6,8 @@ options=varargin2options( varargin{:} );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
 [truncate_options,options]=get_option( options, 'truncate_options', {} );
+[trunc_mode,options]=get_option( options, 'trunc_mode', 2 );
+[vareps,options]=get_option( options, 'vareps', false );
 [X_true,options]=get_option( options, 'true_sol', [] );
 check_unsupported_options( options, mfilename );
 
@@ -37,19 +39,19 @@ initres=vec_norm( Rc );
 
 do_stats=true;
 if do_stats
-    info.res_norm=[initres];
-    info.res_relnorm=[1];
+    info.res_norm=[initres]; %#ok
+    info.res_relnorm=[1]; %#ok
     info.res_accuracy=[];
     info.res_relacc=[];
     info.update_ratio=[];
     info.sol_err=[];
     info.sol_relerr=[];
     if ~isempty( X_true )
-        info.sol_err=[vec_norm( X_true )];
-        info.sol_relerr=[1];
+        info.sol_err=[vec_norm( X_true )]; %#ok
+        info.sol_relerr=[1]; %#ok
         X_true_eps=truncate( X_true );
-        info.soleps_err=[vec_norm( X_true_eps )];
-        info.soleps_relerr=[1];
+        info.soleps_err=[vec_norm( X_true_eps )]; %#ok
+        info.soleps_relerr=[1]; %#ok
     end
 end
 
