@@ -18,6 +18,9 @@ function save_figure( basename, topic, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+check_unsupported_options(options,mfilename);
+
 epsdir='eps';
 filename=sprintf( './%s/%s-%s.png', epsdir, basename, topic );
 print( filename, '-dpng' );

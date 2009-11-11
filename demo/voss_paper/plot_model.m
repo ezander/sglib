@@ -1,4 +1,4 @@
-function plot_results( pre_run, post_run )
+function plot_model( pre_run, post_run )
 
 % ==========
 % = prolog =
