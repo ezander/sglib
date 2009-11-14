@@ -17,7 +17,6 @@ end
 
 [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', truncate_options, 'true_sol', Ui, 'vareps', vareps, 'trunc_mode', trunc_mode );
 ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
-%relerr=norm(ui_vec-ui_vec2 )/norm(ui_vec);
 relerr=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);
 %relerr-relerr2
 k=size(Ui2{1},2);
@@ -26,15 +25,9 @@ if eps>0
 else
     R=1;
 end
-fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d, R: %g\n', eps, flag, relres, iter, relerr, k, R );
-    
-res.eps=eps;
-res.relerr=relerr;
-res.R=R;
-res.k=k;
-res.iter=iter;
-res.info=info;
-res.flag=flag;
+rank=size(Ui2,2);
+%fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g ... k:
+%%d, R: %g\n', eps, flag, relres, iter, relerr, k, R ); 
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 [mu_u_i, u_i_k, u_k_alpha]=tensor_to_kl( U );

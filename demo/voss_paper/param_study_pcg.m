@@ -1,4 +1,4 @@
-function param_study_pcg(varargin)
+%function param_study_pcg(varargin)
 % PARAM_STUDY_PCG Short description of param_study_pcg.
 %   PARAM_STUDY_PCG Long description of param_study_pcg.
 %
@@ -21,7 +21,7 @@ function param_study_pcg(varargin)
 defaults.N=51;
 defaults.geom='1d';
 defaults.dist='beta';
-defaults.dist_param={4,2};
+defaults.dist_params={4,2};
 defaults.dist_shift=0.1;
 defaults.dist_scale=1;
 defaults.solver='cg';
@@ -31,20 +31,16 @@ defaults.orth_mode='euc';
 defaults.eps_mode='fix';
 defaults.eps=1e-8;
 
-variable.trunc_mode={1,2,3};
-variable.orth_mode={'euc','klm'};
+%variable.trunc_mode={1,2,3};
+%variable.orth_mode={'euc','klm'};
+%variable.reltol={1e-4,1e-6,1e-8};
+variable.reltol={1e-4};
+variable.eps={1e-6,1e-8,1e-20};
 
-s=param_study( 'test_solver', variable, defaults, {'relerr','num_prec', 'num_iter', 'rank'} );
-clc
+s=param_study( 'test_solver', variable, defaults, {'relerr','relres', 'iter', 'flag', 'rank'} );
+%clc
 s.relerr
-s.num_prec
-s.num_iter
-
-
-
-
-
-
-
-
-
+s.relres
+s.iter
+s.flag
+s.rank

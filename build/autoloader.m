@@ -9,10 +9,15 @@ for NS_i=1:size(NS_build,1)
     NS_script=NS_build{NS_i,1};
     NS_target=NS_build{NS_i,2};
     NS_mdep=find_deps(NS_script);
-    NS_dep={NS_script,NS_last{:},NS_mdep{:}};
+    NS_dep={NS_last{:},NS_mdep{:}};
     if needs_update( NS_target, NS_dep )
-        underline(['Running ', NS_script]);
-        run( NS_script );
+        if ischar(NS_script)
+            underline( ['Computing ', NS_target, ' (by ', NS_script, ')' ]);
+            run( NS_script );
+        else
+            underline( ['Computing ', NS_target, ' (by ', func2str(NS_script), ')' ]);
+            NS_script();
+        end
         save( NS_target, '-regexp', NS_expr );
     else
         underline( ['Loading ', NS_target]);

@@ -29,6 +29,11 @@ if nargin<2
     excludepath=matlabroot;
 end
 
+if ~iscell(funs) && ~ischar(funs) && isfunction(funs)
+    f=functions(funs);
+    funs=f.file;
+end
+
 deps={};
 while ~isempty(funs)
     imdeps=depfun( funs, '-toponly', '-quiet' );

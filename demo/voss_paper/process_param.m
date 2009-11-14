@@ -49,8 +49,11 @@ if ~exist('stringify', 'var')
 end
 
 if ~isempty(stringify)
-    if ~isempty(info.base)
-        info.base=[info.base '-'];
+    strval=strvarexpand(stringify);
+    strval=strrep( strval, '.', '_' );
+    if isempty(info.base)
+        info.base=[info.base, strval];
+    else
+        info.base=[info.base, '-', strval];
     end
-    info.base=[info.base strvarexpand(stringify)];
 end
