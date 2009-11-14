@@ -1,6 +1,10 @@
 %% load the geomatry
 % 1D currently, so nothing to plot here
-N=51;
+
+if exist('geom','var' && ~strcmp(geom,'1d') )
+    error( 'unknown geometry' );
+end
+
 [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
 G_N=mass_matrix( els, pos );
 

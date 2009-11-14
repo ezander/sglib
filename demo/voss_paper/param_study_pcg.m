@@ -18,6 +18,8 @@ function param_study_pcg(varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+defaults.N=51;
+defaults.geom='1d';
 defaults.dist='beta';
 defaults.dist_param={4,2};
 defaults.dist_shift=0.1;

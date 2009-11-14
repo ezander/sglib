@@ -2,10 +2,13 @@ info=struct();
 info.param_str_map={
     'dist', '$value$';
     };
+info=process_param( 'N', info );
+info=process_param( 'geom', info );
 info=process_param( 'dist', info );
 info=process_param( 'dist_param', info );
 info=process_param( 'dist_shift', info );
 info=process_param( 'dist_scale', info );
+
 info=process_param( 'solver', info, '$value$' );
 info=process_param( 'reltol', info );
 info=process_param( 'trunc_mode', info );
