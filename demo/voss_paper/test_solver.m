@@ -12,7 +12,6 @@ info=process_param( 'trunc_mode', info );
 info=process_param( 'orth_mode', info );
 info=process_param( 'eps_mode', info );
 info=process_param( 'eps', info );
-info=process_param( 'gurke', info );
 
 
 relerr=trunc_mode;
