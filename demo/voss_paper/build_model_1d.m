@@ -1,8 +1,3 @@
-%% check that all external parameters are set
-if ~exist('beta_a','var')
-    error('parameter beta_a not set')
-end
-
 %% load the geomatry
 % 1D currently, so nothing to plot here
 N=51;

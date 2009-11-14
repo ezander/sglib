@@ -1,8 +1,3 @@
-%% check that all external parameters are set
-if ~exist('model_base','var')
-    error('parameter model_base not set')
-end
-
 % plot field f
 clf;
 plot(pos,f_i_k); 

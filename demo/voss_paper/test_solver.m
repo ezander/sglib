@@ -13,6 +13,8 @@ info=process_param( 'orth_mode', info );
 info=process_param( 'eps_mode', info );
 info=process_param( 'eps', info );
 
+build_model_1d;
+solve_pcg_1d;
 
 relerr=trunc_mode;
 num_prec=orth_mode;
