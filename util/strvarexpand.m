@@ -36,14 +36,7 @@ for i=pos
     if doeval
         orig=part;
         part=evalin( 'caller', part );
-        if isnumeric(part)
-            part=num2str(part);
-        elseif ischar(part)
-            % pass
-        else
-            warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(part) );
-            part=['$', orig, '$'];
-        end
+        part=tostring( part );
     end
     exstr=[exstr part];
     lpos=i+1;
@@ -53,3 +46,34 @@ if lpos<=length(str)
     part=str(lpos:end);
     exstr=[exstr part];
 end
+
+function str=tostring( val, orig )
+if isnumeric(val)
+    if isscalar(val)
+        str=num2str(val);
+    else
+        str='[';
+        for i=1:numel(val)
+            if i>1
+                str=[str, ','];
+            end
+            str=[str, tostring(val(i))];
+        end
+        str=[str, ']'];
+    end
+elseif ischar(val)
+    str=reshape( val, 1, []);
+elseif iscell(val)
+    str='{';
+    for i=1:numel(val)
+        if i>1
+            str=[str, ','];
+        end
+        str=[str, tostring(val{i})];
+    end
+    str=[str, '}'];
+else
+    warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );
+    str=['$', val, '$'];
+end
+

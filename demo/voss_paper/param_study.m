@@ -18,6 +18,9 @@ function s=param_study( script, var_params, def_params, ret_names )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+logzero_warn=warning('query', 'MATLAB:log:logOfZero');
+warning('off', 'MATLAB:log:logOfZero');
+
 % parameter looping stuff
 var_param_names=fieldnames(var_params);
 n_var_params=size(var_param_names,1);
@@ -25,7 +28,12 @@ max_ind=reshape( cellfun('length',struct2cell(var_params)), 1, []);
 num_ind=prod(max_ind);
 
 for i=1:length(ret_names)
-    s.(ret_names{i})=cell(max_ind);
+    name=ret_names{i};
+    if iscell(name)
+        s.(name{1})=cell(max_ind);
+    else
+        s.(name)=cell(max_ind);
+    end
 end
 
 % do the parameter loop
@@ -39,14 +47,20 @@ for n=1:num_ind
     end
     
     % 
+    pack;
     for i=1:length(param_names)
         name=param_names{i};
+        fprintf('%s\n', strvarexpand('$name$ -> $params.(name)$'));
         assignin( 'base', name, params.(name) );
     end
     evalin('base', script );
     for i=1:length(ret_names)
         name=ret_names{i};
-        s.(name){n}=evalin('base', name );
+        if iscell(name)
+            s.(name{1}){n}=evalin('base', name{2} );
+        else
+            s.(name){n}=evalin('base', name );
+        end
     end
     
     %disp(reshape( struct2cell(params), 1, [] ))
@@ -59,3 +73,4 @@ for n=1:num_ind
     end
 end
 
+warning(logzero_warn.state, 'MATLAB:log:logOfZero');

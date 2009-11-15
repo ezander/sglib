@@ -1,4 +1,4 @@
-%function param_study_pcg(varargin)
+function param_study_pcg(varargin)
 % PARAM_STUDY_PCG Short description of param_study_pcg.
 %   PARAM_STUDY_PCG Long description of param_study_pcg.
 %
@@ -18,6 +18,10 @@
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+clear
+
+global ps_results
+
 defaults.N=51;
 defaults.geom='1d';
 defaults.dist='beta';
@@ -33,14 +37,32 @@ defaults.eps=1e-8;
 
 %variable.trunc_mode={1,2,3};
 %variable.orth_mode={'euc','klm'};
-%variable.reltol={1e-4,1e-6,1e-8};
-variable.reltol={1e-4};
-variable.eps={1e-6,1e-8,1e-20};
+%variable.reltol={1e-4,1e-6,1e-7,1e-8};
+%variable.eps={1e-6,1e-8,1e-10,1e-20};
 
-s=param_study( 'test_solver', variable, defaults, {'relerr','relres', 'iter', 'flag', 'rank'} );
+%variable.reltol={1e-4,1e-5,1e-6,1e-7,1e-8};
+%variable.eps={1e-6,1e-200};
+%variable.eps={1e-200};
+defaults.eps=0;
+variable.reltol={1e-4,1e-5,1e-6,1e-7};
+variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
+
+%variable.reltol={1e-4};
+%variable.dist_shift={0.1};
+
+assignin( 'base', 'NS_rebuild', false );
+
+fields={'eps', 'reltol', 'relerr','relres', {'numiter', 'ifelse(flag==0,iter,inf)'}, 'flag', {'rank', 'size(Ui2{1},2)'}};
+ps_results=param_study( 'test_solver', variable, defaults, fields );
 %clc
-s.relerr
-s.relres
-s.iter
-s.flag
-s.rank
+
+for i=1:length(fields)
+    if iscell(fields{i})
+        name=fields{i}{1}
+    else
+        name=fields{i};
+    end
+    
+    fprintf('%s\n', name );
+    disp( ps_results.(name) );
+end

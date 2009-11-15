@@ -30,14 +30,14 @@ p_f=3;
 m_f=2;
 l_f=4;
 lc_f=2*0.3;
-%stdnor_f={@exponential_stdnor,{1.5}};
-stdnor_f={@lognormal_stdnor,{1.5,1}};
+%stdnor_f={@lognormal_stdnor,{0,2}};
+stdnor_f={@beta_stdnor,{4,2}};
 
 cov_f={@gaussian_covariance,{lc_f,1}};
 % create field
 [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
 [mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
-
+%'done'
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
 select=@(x,n)(x(:,n));
