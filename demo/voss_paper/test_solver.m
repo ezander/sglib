@@ -19,9 +19,20 @@ solver_base=info.base;
 %     @build_model, ['./mat/model-', model_base, '.mat'];
 %     @solve_model, ['./mat/solve-', solver_base, '.mat'];
 %     };
+%build={
+%   @build_model, ['./mat/model-', solver_base, '.mat'];
+%    @solve_model, ['./mat/solve-', solver_base, '.mat'];
+%    };
+if isoctave
+  dir='oct';
+else
+  dir='mat';
+end
+try; mkdir( dir ); catch; disp('mkdir failed'); end
+
 build={
-    @build_model, ['./mat/model-', solver_base, '.mat'];
-    @solve_model, ['./mat/solve-', solver_base, '.mat'];
+    'build_model', ['./', dir, '/model-', solver_base, '.mat'];
+    'solve_model', ['./', dir, '/solve-', solver_base, '.mat'];
     };
 autoloader;
 
