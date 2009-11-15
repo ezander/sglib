@@ -19,11 +19,11 @@ assert_equals( Xvec2, XvecEx, 'pcg_mat', assert_opts );
 
 
 function [A,Am,M, Mm, F,Fvec]=setup( n, m, kA, kf )
-A{1,1} = gallery('tridiag',n,-1,2,-1);
-A{1,2} = gallery('randcorr',m);
+A{1,1} = mygallery('tridiag',n,-1,2,-1);
+A{1,2} = mygallery('randcorr',m);
 for i=1:kA
-    A{i+1,1} = 0.1*gallery('tridiag',n,-1,3,-1);
-    A{i+1,2}=gallery('randcorr',m);
+    A{i+1,1} = 0.1*mygallery('tridiag',n,-1,3,-1);
+    A{i+1,2}=mygallery('randcorr',m);
 end
 Am=revkron(A);
 
@@ -32,3 +32,23 @@ Mm=revkron(M);
 
 F={rand(n,kf),  rand(m,kf) };
 Fvec=reshape( F{1}*F{2}', [], 1 );
+
+
+function mat=mygallery( name, varargin )
+if ismatlab
+  mat=gallery( name, varargin{:} );
+elseif strcmp(name,'tridiag')
+  n=varargin{1};
+  a=varargin{2};
+  b=varargin{3};
+  c=varargin{4};
+  mat=a*diag(ones(1,n-1),1)+b*diag(ones(1,n),0)+c*diag(ones(1,n-1),-1);
+elseif strcmp(name,'randcorr')
+  % this is not quite what the matlab function does
+  n=varargin{1};
+  X=rand(n);
+  mat=X'*X;
+  mat=0.5*(mat+mat');
+else
+  error( ['Unknown gallery matrix type: ', name ] );
+end

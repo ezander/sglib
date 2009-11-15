@@ -56,8 +56,13 @@ assert_equals( [5, 15], [d,e], 'new_file_unchanged' );
 [d,e]=cached_funcall( @test_it_v3, {2,3,5}, 2, filename2, 3 );
 assert_equals( [6, 18], [d,e], 'new_file_v3' );
 
-evalc( sprintf( 'delete %s.mat', filename1 ) );
-evalc( sprintf( 'delete %s.mat', filename2 ) );
+if ismatlab
+  evalc( sprintf( 'delete %s.mat', filename1 ) );
+  evalc( sprintf( 'delete %s.mat', filename2 ) );
+else
+  delete( sprintf('%s.mat', filename1 ) );
+  delete( sprintf('%s.mat', filename2 ) );
+end
 
 
 function [d,e]=test_it_v1( a, b, c )

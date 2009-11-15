@@ -52,7 +52,7 @@ variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
 
 assignin( 'base', 'NS_rebuild', false );
 
-fields={'eps', 'reltol', 'relerr','relres', {'numiter', 'ifelse(flag==0,iter,inf)'}, 'flag', {'rank', 'size(Ui2{1},2)'}};
+fields={'eps', 'reltol', 'relerr','relres', {'numiter', 'ifelse(flag==0,iter,inf)'}, {'rank', 'size(Ui2{1},2)'}};
 ps_results=param_study( 'test_solver', variable, defaults, fields );
 %clc
 
