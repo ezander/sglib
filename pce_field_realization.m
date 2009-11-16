@@ -6,7 +6,7 @@ function [u_x,xi]=pce_field_realization( x, u_alpha, I_alpha, xi, varargin )
 %   the PC expansion with coefficients in U_ALPHA (U(:,i) are the
 %   coefficients for point x_i) and multiindices of the expansion given in
 %   I_ALPHA. If XI is specified this XI is used, otherwise a normal random
-%   vector is generated.
+%   vector is generated (XI must be a row vector).
 %   If no output argument is specified the realiziation is plotted.
 %   Otherwise the field is returned in U_X. XI may also be returned, which
 %   may be interesting if it was generated inside.
@@ -30,10 +30,10 @@ check_unsupported_options( options, mfilename );
 m=size(I_alpha,2);
 
 if nargin<4 || isempty(xi)
-    xi=randn(1,m);
+    xi=randn(m,1);
 end
 
-u_x=hermite_val_multi( u_alpha, I_alpha, xi )';
+u_x=pce_evaluate( u_alpha, I_alpha, xi );
 
 if nargout<1
     plot( x, u_x, plot_options{:} );
