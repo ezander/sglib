@@ -35,7 +35,7 @@ addpath( basepath );
 %
 is_octave=exist('octave_config_info', 'builtin');
 inc_experimental=false;
-sglib_addpath( basepath, true, inc_experimental, is_octave );
+sglib_addpath( basepath, false, inc_experimental, is_octave );
 
 % put stuff in appdata
 appdata.basepath=basepath;

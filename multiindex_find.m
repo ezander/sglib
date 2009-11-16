@@ -35,6 +35,11 @@ function [ind_b, ind_a]=multiindex_find( I_a, I_b )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isoctave && size(I_a,2)==1
+  I_a=[I_a, zeros(size(I_a,1),1)];
+  I_b=[I_b, zeros(size(I_b,1),1)];
+end
+
 [found,ind]=ismember(I_a, I_b, 'rows'); 
 if nargout<2
     ind_b=ind;
