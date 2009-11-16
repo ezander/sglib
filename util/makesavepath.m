@@ -1,14 +1,13 @@
-function msave( file, varargin )
-% MSAVE Save variables to a file making subdirs as appropriate.
-%   MSAVE( FILE, VARARGIN ) has exactly the same options and meaning as the
-%   builtin SAVE command, however if FILE contains a directory
-%   specification and the directory does not exist MSAVE first tries to
-%   create this directory.
+function makesavepath( file )
+% MAKESAVEPATH Making necessary subdirs for saving a file.
+%   MAKESAVEPATH( FILE ) makes all necessary subdirs that are needed to
+%   create the file FILE.
 %
 % Example (<a href="matlab:run_example msave">run</a>)
-%   msave( 'foo/bar.mat', '-v6' )
+%   % the following should create the directory 'foo'
+%   makesavepath( 'foo/bar.mat' )
 % 
-% See also SAVE
+% See also MKDIR, SAVE
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -32,4 +31,3 @@ while ~exist(pathstr, 'dir' )
         keyboard;
     end
 end
-save( file, varargin{:} )

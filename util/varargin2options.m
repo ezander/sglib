@@ -39,18 +39,38 @@ function options=varargin2options( varargin )
 if isempty(varargin)
     options=struct();
 elseif isstruct( varargin{1} )
+    if nargin>2
+        error( 'varargin2options:options', 'Wrong option specification: when struct is given only one argument is allowed' );
+    end
     options=varargin{1};
 else
     if iscell( varargin{1} )
         c=varargin{1};
+        if nargin>2
+            error( 'varargin2options:options', 'Wrong option specification: when cell array is given only one argument is allowed' );
+        end
     else
         c=varargin;
     end
-    try
-        options=cell2struct( c(2:2:end), c(1:2:end), 2 );
-    catch
-        % most probable cause: number of preceding arguments wrong
-        error( 'varargin2options:options', 'wrong option specification: %s', evalc( 'disp(varargin);' ) );
+    
+    if isempty(c)
+        options=struct();
+    else
+        names=c(1:2:end);
+        values=c(2:2:end);
+        if ~iscellstr(names)
+            error( 'varargin2options:options', 'Wrong option specification: not all option names are strings: %s', evalc( 'disp(names);' ) );
+        end
+        if length(names)~=length(values)
+            error( 'varargin2options:options', 'Wrong option specification: not all option names and values have different lengths: %d', length(names) );
+        end
+        [unames,ind]=unique(names);
+        try
+            options=cell2struct( values(ind), names(ind), 2 );
+        catch
+            % most probable cause: number of preceding arguments wrong
+            error( 'varargin2options:options', 'wrong option specification: %s', evalc( 'disp(varargin);' ) );
+        end
     end
 end
 options.supported_fields__={};

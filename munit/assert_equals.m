@@ -135,9 +135,7 @@ end
 
 function assert_equals_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
 % ASSERT_EQUALS_CELL Assert equality for cell arrays.
-
 %TODO: very crude implementation for cell arrays
-
 for i=1:size(actual,1)
     for j=1:size(actual,2)
         assert_equals( actual{i,j}, expected{i,j}, sprintf('%s{%d,%d}', assert_id, i, j), curr_options, options );
@@ -145,6 +143,16 @@ for i=1:size(actual,1)
     end
 end
 
+function assert_equals_struct( actual, expected, assert_id, curr_options, options )
+% ASSERT_EQUALS_STRUCT Assert equality for structs.
+%TODO: very crude implementation for structs 
+exp_names=sort(fieldnames(expected));
+act_names=sort(fieldnames(actual));
+assert_equals_cell( act_names, exp_names, assert_id, curr_options, options )
+for i=1:numel(exp_names)
+    assert_equals( actual.(exp_names{i}), expected.(exp_names{i}), sprintf('%s.%s', assert_id, exp_names{i}), curr_options, options );
+    curr_options.no_step=true;
+end
 
 function assert_equals_logical( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
 % ASSERT_EQUALS_LOGICAL Assert equality for logicals.
@@ -202,12 +210,6 @@ else
     assert( true, [], assert_id );
 end
 
-function assert_equals_struct( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
-% ASSERT_EQUALS_STRUCT Assert equality for structs.
-
-error( 'not yet implemented' );
-%TODO: implement assert equals for structs
-%structure of asser_equals has to be changed for that.
 
 function s=print_vector( format, arr, del )
 % PRINT_VECTOR Pretty-prints a vector for display.

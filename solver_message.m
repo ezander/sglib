@@ -26,6 +26,10 @@ switch(flag)
             os = sprintf([method ' converged at iteration %d to a solution' ...
                 ' with relative residual %0.2g'],iter,relres);
         end
+    case -1
+        ratio=NaN;
+        os = [os sprintf('\nbecause the update ratio (%d) deviated too much from 1.', ratio)];
+       
     case 1
         os = [os sprintf('\nbecause the maximum number of iterations (%d) was reached.', maxit)];
     case 2

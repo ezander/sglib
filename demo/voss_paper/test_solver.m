@@ -28,7 +28,6 @@ if isoctave
 else
   dir='mat';
 end
-try; mkdir( dir ); catch; disp('mkdir failed'); end
 
 build={
     'build_model', ['./', dir, '/model-', solver_base, '.mat'];
@@ -36,8 +35,3 @@ build={
     };
 autoloader;
 
-
-% relerr=trunc_mode;
-% num_prec=orth_mode;
-% num_iter=model_base;
-% rank=solver_base;

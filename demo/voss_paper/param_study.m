@@ -1,4 +1,4 @@
-function s=param_study( script, var_params, def_params, ret_names )
+function s=param_study( script, var_params, def_params, ret_names, varargin )
 % PARAM_STUDY Short description of param_study.
 %   PARAM_STUDY Long description of param_study.
 %
@@ -18,6 +18,19 @@ function s=param_study( script, var_params, def_params, ret_names )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[cache,options]=get_option( options, 'cache', false );
+[cache_file,options]=get_option( options, 'cache_file', 'dummy' );
+check_unsupported_options(options,mfilename);
+
+if cache
+    s=cached_funcall( @param_study_internal, {script, var_params, def_params, ret_names}, 1, cache_file, 1, 'silent', false );
+else
+    s=param_study_internal( script, var_params, def_params, ret_names );
+end
+
+
+function s=param_study_internal( script, var_params, def_params, ret_names )
 logzero_warn=warning('query', 'MATLAB:log:logOfZero');
 warning('off', 'MATLAB:log:logOfZero');
 
@@ -48,6 +61,7 @@ for n=1:num_ind
     end
     
     % 
+    fprintf('Param study: %d/%d\n', n, num_ind );
     pack;
     for i=1:length(param_names)
         name=param_names{i};
