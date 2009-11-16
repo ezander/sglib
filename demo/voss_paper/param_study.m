@@ -27,6 +27,7 @@ n_var_params=size(var_param_names,1);
 max_ind=reshape( cellfun('length',struct2cell(var_params)), 1, []);
 num_ind=prod(max_ind);
 
+ret_names={var_param_names{:}, ret_names{:}};
 for i=1:length(ret_names)
     name=ret_names{i};
     if iscell(name)
