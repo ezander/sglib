@@ -64,14 +64,15 @@ while true
     normres=vec_norm( Rn );
     relres=normres/initres;
 
+    % Proposed update is DY=alpha*Pc
+    % actual update is DX=T(Xn)-Xc;
+    % update ratio is (DX,DY)/(DY,DY) should be near one
+    % no progress if near 0
+    DY=scale( Pc, alpha );
+    DX=add( Xn, Xc, -1 );
+    ur=inner_prod( DX, DY )/inner_prod( DY, DY );
+
     if do_stats
-        % Proposed update is DY=alpha*Pc
-        % actual update is DX=T(Xn)-Xc;
-        % update ratio is (DX,DY)/(DY,DY) should be near one
-        % no progress if near 0
-        DY=scale( Pc, alpha );
-        DX=add( Xn, Xc, -1 );
-        ur=inner_prod( DX, DY )/inner_prod( DY, DY );
 
         TRn=add( F, apply_operator( A, Xn ), -1 );
         normres=vec_norm( TRn );
@@ -102,13 +103,11 @@ while true
 
     if normres<abstol || relres<reltol; break; end
 
-    urc=iter-50;
-    if ur<.1 && urc>10
-        warning( 'a:b', 'update ratio too small ...' );
+    %urc=iter-50;
+    if abs(1-ur)>.2 %&& urc>10
         flag=-1;
         break;
     end
-
 
     Zn=prec_solve(M,Rn);
     beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
@@ -134,3 +133,8 @@ while true
 end
 X=truncate( Xn, truncate_options );
 
+% if we were not successful but the user doesn't retrieve the flag as
+% output argument we issue a warning on the terminal
+if flag && nargout<2
+    solver_message( method, tol, maxit, flag, iter, relres )
+end

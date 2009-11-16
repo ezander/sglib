@@ -140,6 +140,7 @@ if show_timings
 end
 
 varargout=data;
+makesavepath( filename );
 if ismatlab()
     % in matlab version 7 use this (doesn't work with 6)
 	save( filename, '-V6', 'data', 'params', 'version' );
