@@ -55,21 +55,15 @@ T={rand(8,2), rand(10,2)};
 normT=norm( T{1}*T{2}', 'fro' );
 normT2=sqrt(trace( T{1}*T{2}'*T{2}*T{1}' ));
 assert_equals( normT, normT2, 'check_test' );
-assert_equals( tensor_norm( T, 'svd' ), normT, 'svd' );
-assert_equals( tensor_norm( T, 'full' ), normT, 'full' );
-assert_equals( tensor_norm( T, 'inner' ), normT, 'inner' );
+assert_equals( tensor_norm( T ), normT, 'inner' );
 
 Z=tensor_add(T,T,-1);
-assert_equals( tensor_norm( Z, 'svd' ), 0, 'zero_svd', 'abstol', 1e-7 );
-assert_equals( tensor_norm( Z, 'full' ), 0, 'zero_full' );
-assert_equals( tensor_norm( Z, 'inner' ), 0, 'zero_inner', 'abstol', 1e-7 );
+assert_equals( tensor_norm( Z ), 0, 'zero_inner', 'abstol', 1e-7 );
 
 M1=rand(8); M1=M1*M1';
 M2=rand(10); M2=M2*M2';
 normT=sqrt(trace( M1*T{1}*T{2}'*M2*T{2}*T{1}' ));
-assert_equals( tensor_norm( T, 'svd', M1, M2 ), normT, 'svd' );
-assert_equals( tensor_norm( T, 'full', M1, M2 ), normT, 'full' );
-assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
+assert_equals( tensor_norm( T,  {M1, M2} ), normT, 'inner' );
 
 
 % testing function TENSOR_SCALAR_PRODUCT
@@ -87,16 +81,12 @@ t1=reshape(T1{1}*T1{2}',[],1);
 t2=reshape(T2{1}*T2{2}',[],1);
 s=tensor_scalar_product(T1,T2);
 assert_equals( s, t1'*t2, 'inner' );
-s=tensor_scalar_product(T1,T2,'M1',M1);
+s=tensor_scalar_product(T1,T2,{M1,[]});
 assert_equals( s, t1'*revkron(M1,eye(size(M2)))*t2, 'inner_M1' );
-s=tensor_scalar_product(T1,T2,'M2',M2);
+s=tensor_scalar_product(T1,T2,{[],M2});
 assert_equals( s, t1'*revkron(eye(size(M1)),M2)*t2, 'inner_M2' );
-s=tensor_scalar_product(T1,T2,'M1',M1,'M2',M2);
+s=tensor_scalar_product(T1,T2,{M1,M2});
 assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2' );
-
-%assert_equals( tensor_norm( T, 'svd', M1, M2 ), normT, 'svd' );
-%assert_equals( tensor_norm( T, 'full', M1, M2 ), normT, 'full' );
-%assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
 
 
 % testing function TENSOR_APPLY

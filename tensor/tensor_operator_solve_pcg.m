@@ -1,4 +1,4 @@
-function [X,flag,relres,iter,info]=tensor_operator_solve_pcg( A, F, varargin )
+function [X,flag,info,stats]=tensor_operator_solve_pcg( A, F, varargin )
 
 options=varargin2options( varargin{:} );
 [M,options]=get_option( options, 'M', [] );
@@ -8,9 +8,21 @@ options=varargin2options( varargin{:} );
 [truncate_options,options]=get_option( options, 'truncate_options', {} );
 [trunc_mode,options]=get_option( options, 'trunc_mode', 2 );
 [vareps,options]=get_option( options, 'vareps', false );
-[X_true,options]=get_option( options, 'true_sol', [] );
+[stats,options]=get_option( options, 'stats', 'this_a_bad_hack' );
+[stats_gatherer,options]=get_option( options, 'stats_gatherer', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
+if ischar(stats) && strcmp(stats, 'this_a_bad_hack')
+    stats=struct();
+end
+
+
+info.abstol=abstol;
+info.reltol=reltol;
+info.maxiter=maxiter;
+info.truncate_options=truncate_options;
+info.trunc_mode=trunc_mode;
+info.vareps=vareps;
 
 null_vector=@tensor_null;
 add=@tensor_add;
@@ -37,23 +49,7 @@ Pc=Zc;
 
 initres=vec_norm( Rc );
 
-do_stats=true;
-if do_stats
-    info.res_norm=[initres]; %#ok
-    info.res_relnorm=[1]; %#ok
-    info.res_accuracy=[];
-    info.res_relacc=[];
-    info.update_ratio=[];
-    info.sol_err=[];
-    info.sol_relerr=[];
-    if ~isempty( X_true )
-        info.sol_err=[vec_norm( X_true )]; %#ok
-        info.sol_relerr=[1]; %#ok
-        X_true_eps=truncate( X_true );
-        info.soleps_err=[vec_norm( X_true_eps )]; %#ok
-        info.soleps_relerr=[1]; %#ok
-    end
-end
+stats=stats_gatherer( 'init', stats, initres );
 
 while true
     alpha=inner_prod(Rc,Zc)/inner_prod(Pc,apply_operator(A,Pc));
@@ -72,41 +68,14 @@ while true
     % no progress if near 0
     DY=scale( Pc, alpha );
     DX=add( Xn, Xc, -1 );
-    ur=inner_prod( DX, DY )/inner_prod( DY, DY );
+    upratio=inner_prod( DX, DY )/inner_prod( DY, DY );
 
-    if do_stats
-
-        TRn=add( F, apply_operator( A, Xn ), -1 );
-        normres=vec_norm( TRn );
-        relres=normres/initres;
-
-        DRn=add( Rn, add( F, apply_operator( A, Xn ), -1 ), -1 );
-        ra=vec_norm( DRn );
-
-        info.res_norm=[info.res_norm, normres];
-        info.res_relnorm=[info.res_relnorm, relres];
-        info.res_accuracy=[info.res_accuracy, ra];
-        info.res_relacc=[info.res_relacc, ra/normres];
-        info.update_ratio=[info.update_ratio, ur];
-
-        if ~isempty( X_true )
-            solerr=vec_norm( add( Xn, X_true, -1 ) );
-            solrelerr=solerr/vec_norm( X_true );
-            info.sol_err=[info.sol_err, solerr];
-            info.sol_relerr=[info.sol_relerr, solrelerr];
-
-            solepserr=vec_norm( add( Xn, X_true_eps, -1 ) );
-            solepsrelerr=solerr/vec_norm( X_true_eps );
-            info.soleps_err=[info.soleps_err, solepserr];
-            info.soleps_relerr=[info.soleps_relerr, solepsrelerr];
-        end
-
-    end
+    stats=stats_gatherer( 'step', stats, F, A, Xn, Rn, normres, relres, upratio );
 
     if normres<abstol || relres<reltol; break; end
 
     %urc=iter-50;
-    if abs(1-ur)>.2 %&& urc>10
+    if abs(1-upratio)>.2 %&& urc>10
         flag=-1;
         break;
     end
@@ -128,15 +97,27 @@ while true
         break;
     end
 
-
     if false && mod(iter,100)==0
         keyboard
     end
 end
 X=truncate( Xn, truncate_options );
 
+stats=stats_gatherer( 'finish', stats, X );
+
+info.flag=flag;
+info.iter=iter;
+info.relres=relres;
+info.upratio=upratio;
+
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
 if flag && nargout<2
-    solver_message( method, tol, maxit, flag, iter, relres )
+    %solver_message( 'tensor_pcg', tol, maxit, flag, iter, relres )
+    solver_message( 'tensor_pcg', flag, info )
 end
+
+function stats=gather_stats_def( what, stats, varargin )
+what; %#ok, ignore
+varargin; %#ok, ignore
+
