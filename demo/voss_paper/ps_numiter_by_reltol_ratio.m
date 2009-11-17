@@ -36,10 +36,6 @@ defaults.eps=0;
 variable.reltol={1e-4,1e-5,1e-6,1e-7};
 variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
 
-variable.reltol={1e-4,1e-7};
-variable.dist_shift={0.1,0.2,3};
-
-
 % set return fields
 fields={'relerr', 'relres', {'numiter', 'ifelse(flag==0,iter,inf)'}, {'rank', 'size(Ui2{1},2)'}};
 
@@ -59,4 +55,7 @@ surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2ma
 view([-140,14]);
 colormap('copper')
 
+surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.numiter) );
+view([-140,14]);
+colormap('copper')
 
