@@ -54,6 +54,7 @@ I_g=multiindex(0,0);
 % Omega_g$ in which the solution lives)
 [I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, -1 );
 M=size(I_u,1); %#ok, full stochastic dimension
+G_X=spdiags(multiindex_factorial(I_u),0,M,M);
 
 
 %% create the right hand side
@@ -103,9 +104,12 @@ ui_mat=reshape( ui_vec, [], M );
 [U_,S_,V_]=svd(ui_mat);
 Ui={U_*S_,V_};
 
+U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 u_i_alpha=apply_boundary_conditions_solution( ui_mat, g_mat, P_I, P_B );
 l_u=min(size(u_i_alpha));
 [mu_u_i,u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
+%[mu_u_i,u_i_k,u_k_alpha]=tensor_to_kl( U );
+
 
 %%
 % the preconditioner
