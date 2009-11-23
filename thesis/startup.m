@@ -31,3 +31,4 @@ run( '../sglib_startup' );
 
 addpath( '../paramstudy' );
 
+dbstop if error

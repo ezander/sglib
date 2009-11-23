@@ -68,6 +68,7 @@ end
 % do the parameter loop
 params=def_params;
 param_names=reshape(fieldnames(params),1,[]);
+param_names=union(param_names,var_param_names);
 ind=ones(1,n_var_params);
 for n=1:num_ind
     % get current parameters
