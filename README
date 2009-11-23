@@ -1,2 +1,50 @@
-README information has moved into the doc/ subdirectory, to make it
-accessible also from within Matlab.
+SGLib is toolbox developed for Matlab/Octave to implement and investigate
+into stochastic Galerkin methods with a special focus on tensor product 
+methods. 
+
+INSTALLATION
+============
+
+There really is no installation. Just put the files into some directory of 
+your own and start Matlab or Octave from *this* directory. The last point 
+is necessary so that the initialization files startup.m (for Matlab) or 
+.octaverc for Octave are called. You should see some lines saying something 
+like
+
+  SGLIB v0.9
+  Type SGLIB_HELP to get help.
+  Type SGLIB_SETTINGS for changing the settings.
+
+The best thing to do first is to run the unit tests first. For this simply 
+type 'testsuite' one the command line and after a while and some screens 
+scrolled by it should say:
+
+  Module "sglib": 0 of ??? assertions failed.
+
+
+COMPATIBILITY
+=============
+
+The code is tested with Matlab version 7.2 to 7.8 and Octave since version 
+3.0.0. It won't work with Octave version 2.x and probably not with Matlab 
+6.x versions. While latter can probably be accomplished without too much 
+work, the former is quite difficult since there is just too much missing
+functionality in Octave. Especially support for sparse matrices was only 
+added to the mainline Octave version since 3.x and still is not "complete". 
+Further quite a few functions that use debugging/introspection features 
+from Matlab have only limited functionality under Ocatve (i.e. directly 
+jumping into the debugger to the correct line if a unit test failed). 
+Further speed is for many example about 1/10 of that of the Matlab version.
+
+CONTENTS
+========
+
+SGlib contains quite a few different areas 
+
+* Tensor methods
+* Statistics functions
+* Unit testing
+* Parameter studies
+* Option management
+* Lots of utilities
+
