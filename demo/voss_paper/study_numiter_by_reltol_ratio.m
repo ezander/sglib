@@ -1,8 +1,8 @@
-function ps_results=ps_numiter_by_reltol_ratio( varargin )
-% PS_NUMITER_BY_RELTOL_RATIO Study effect of reltol and mean/variance ratio on number of iterations.
+function study_results=ps_numiter_by_reltol_ratio( varargin )
+% STUDY_NUMITER_BY_RELTOL_RATIO Study effect of reltol and mean/variance ratio on number of iterations.
 %
 % Example (<a href="matlab:run_example ps_numiter_by_reltol_ratio">run</a>)
-%   ps_numiter_by_reltol_ratio
+%   study_numiter_by_reltol_ratio
 %
 % See also PARAM_STUDY
 
@@ -35,8 +35,6 @@ defaults.eps=0;
 % set parameters to vary
 variable.reltol={1e-4,1e-5,1e-6,1e-7};
 variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
-%variable.reltol={1e-4};
-%variable.dist_shift={0.1};
 
 % set return fields
 fields={...
@@ -45,22 +43,22 @@ fields={...
     {'rank', 'size(Ui2{1},2)'}, 'info', 'stats'};
 
 % run parameter study
-ps_options={'cache', true, 'cache_file', 'ps_numiter_by_reltol_ratio' };
+ps_options={'cache', true, 'cache_file', mfilename };
 ps_results=param_study( 'test_solver', variable, defaults, fields, ps_options{:}, varargin{:} );
 
-% print the results
-fields=fieldnames(ps_results);
-for i=1:length(fields)
-    name=fields{i};
-    fprintf('%s\n', name );
-    disp( ps_results.(name) );
-end
+print_results( variable, fields(1:3), ps_results );
+
+
+ps_bar_plot( variable, 'rank', ps_results );
+userwait;
+
+ps_bar_plot( variable, 'numiter', ps_results );
+userwait;
+
 
 surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.rank) );
 view([-140,14]);
-colormap('copper')
 
 surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.numiter) );
-view([-140,14]);
-colormap('copper')
+
 

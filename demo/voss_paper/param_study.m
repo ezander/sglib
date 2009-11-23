@@ -28,7 +28,22 @@ if cache
 else
     s=param_study_internal( script, var_params, def_params, ret_names );
 end
+check_var_params( s, var_params );
 
+
+function check_var_params( ps_results, var_params )
+var_param_names=fieldnames(var_params);
+n_var_params=size(var_param_names,1);
+
+for i=1:n_var_params
+    in_params=cell2mat(var_params.(var_param_names{i}));
+    in_params=shiftdim( in_params(:), -(i-1) );
+    out_params=cell2mat(ps_results.(var_param_names{i}));
+    res=binfun( @eq, out_params, in_params );
+    if ~all(res(:))
+        error('param_study:var_params', 'mismatch between input and output variable parameters' );
+    end
+end
 
 function s=param_study_internal( script, var_params, def_params, ret_names )
 logzero_warn=warning('query', 'MATLAB:log:logOfZero');
