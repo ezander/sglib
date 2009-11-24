@@ -72,8 +72,25 @@ test_equal( s.module_name, 'xxx', 'unknown' )
 fprintf('Testing: options function...\n');
 
 s=munit_options;
-test_equal( isempty(s), 0, 'notempty' )
-test_equal( class(s), 'struct', 'notempty' )
+test_equal( isempty(s), false, 'notempty' )
+test_equal( class(s), 'struct', 'struct' )
+test_equal( isfield(s,'abstol'), true, 'hasabstol' )
+oldabstol=s.abstol;
+munit_options('set','newfield',3);
+munit_options('set','abstol',10);
+s=munit_options('get');
+test_equal( s.newfield, 3, 'setget' )
+test_equal( s.abstol, 10, 'setget' )
+s=munit_options('reset');
+test_equal( s.abstol, oldabstol, 'reset' )
+s=munit_options();
+test_equal( s.abstol, oldabstol, 'reset2' )
+munit_set_debug();
+s=munit_options();
+test_equal( s.debug, true, 'debugon' )
+munit_set_debug('off');
+s=munit_options();
+test_equal( s.debug, false, 'debugoff' )
 
 
 
@@ -98,6 +115,10 @@ if ischar(a)
         error( 'test_munit:equal', 'values don'' match: %s', msg );
     end
 elseif isnumeric(a)
+    if ~all( a(:)==b(:) )
+        error( 'test_munit:equal', 'values don'' match: %s', msg );
+    end
+elseif islogical(a)
     if ~all( a(:)==b(:) )
         error( 'test_munit:equal', 'values don'' match: %s', msg );
     end
