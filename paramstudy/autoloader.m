@@ -18,20 +18,18 @@ for i=1:size(build,1)
     all_deps={last{:},script_deps{:}};
     if rebuild || needs_update( target, all_deps )
         if ~isempty(toload)
-            underline( ['Loading ', toload]);
-            system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
             load_base(toload);
-            system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
         end
-        if ischar(script)
-            underline( ['Computing ', target, ' (by ', script, ')' ]);
-            run( script );
+
+        if isa(script, 'function_handle')
+            cmd=func2str(script);
         else
-            underline( ['Computing ', target, ' (by ', func2str(script), ')' ]);
-            script();
+            cmd=script;
         end
-        makesavepath( target );
-        save( target, '-v6', '-regexp', expr );
+        underline( ['Computing ', target, ' (by ', cmd, ')' ]);
+        evalin( 'base', cmd );
+        
+        save_base( target );
         toload='';
     else
         toload=target;
@@ -40,65 +38,20 @@ for i=1:size(build,1)
     last={target,last{:}};
 end
 if ~isempty(toload)
-    underline( ['Loading ', toload]);
-    system( strvarexpand( 'echo "Trying to load $target$" >> autoloader.log' ) );
     load_base(toload);
-    system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
 end
-
 
 
 function load_base(filename)
-cmd=sprintf('load(%s);', filename);
+underline( ['Loading ', filename]);
+system( strvarexpand( 'echo "Trying to load $filename$" >> autoloader.log' ) );
+cmd=sprintf('load(''%s'');', filename);
 evalin('base',cmd);
+system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
 
 
-
-
-%%
-build=build;
-if ~exist('rebuild','var')
-    rebuild=false;
-end
-last={};
-expr='^([^N]..|.[^S].|..[^_]|..?$)'; % match anything except stuff starting with 
-invexpr='^'; % match anything starting with 
-toload='';
-
-for i=1:size(build,1)
-    script=build{i,1};
-    target=build{i,2};
-    mdep=find_deps(script);
-    dep={last{:},mdep{:}};
-    if rebuild || needs_update( target, dep )
-        if ~isempty(toload)
-            underline( ['Loading ', toload]);
-            system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
-            load( toload);
-            system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
-        end
-        if ischar(script)
-            underline( ['Computing ', target, ' (by ', script, ')' ]);
-            run( script );
-        else
-            underline( ['Computing ', target, ' (by ', func2str(script), ')' ]);
-            script();
-        end
-        makesavepath( target );
-        save( target, '-v6', '-regexp', expr );
-        toload='';
-    else
-        toload=target;
-    end
-    
-    last={target,last{:}};
-end
-if ~isempty(toload)
-    underline( ['Loading ', toload]);
-    system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
-    load(toload);
-    system( strvarexpand( 'echo "Success." >> autloader.log' ) );
-end
-
-
-clear( '-regexp', invexpr );
+function save_base(filename)
+%underline( ['Saving ', filename]);
+makesavepath( filename );
+cmd=sprintf('save(''%s'', ''-v6'');', filename);
+evalin('base',cmd);

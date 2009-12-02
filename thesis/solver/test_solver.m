@@ -22,8 +22,7 @@ else
 end
 
 build={
-    'build_model', ['./', dir, '/model-', solver_base, '.mat'];
-    'solve_model', ['./', dir, '/solve-', solver_base, '.mat'];
+    @build_model, ['./', dir, '/model-', solver_base, '.mat'];
+    @solve_model, ['./', dir, '/solve-', solver_base, '.mat'];
     };
-autoloader;
-
+autoloader(build);

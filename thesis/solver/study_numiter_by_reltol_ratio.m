@@ -35,6 +35,8 @@ defaults.eps=0;
 % set parameters to vary
 variable.reltol={1e-4,1e-5,1e-6,1e-7};
 variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
+variable.reltol={1e-4};
+variable.dist_shift={0.15, 0.17};
 
 % set return fields
 fields={...
@@ -43,7 +45,7 @@ fields={...
     {'rank', 'size(Ui2{1},2)'}, 'info', 'stats'};
 
 % run parameter study
-ps_options={'cache', true, 'cache_file', mfilename };
+ps_options={'cache', false, 'cache_file', mfilename };
 ps_results=param_study( 'test_solver', variable, defaults, fields, ps_options{:}, varargin{:} );
 
 
