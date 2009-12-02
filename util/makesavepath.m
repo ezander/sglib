@@ -22,7 +22,7 @@ function makesavepath( file )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 pathstr = fileparts(file);
-while ~exist(pathstr, 'dir' )
+while ~isempty(pathstr) && ~exist(pathstr, 'dir' )
     [status,message,messageid]=mkdir(pathstr);
     if ~status
         fprintf( 'Could not make directory %s: %s (%s)\n', pathstr, message, messageid ); 

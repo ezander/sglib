@@ -15,14 +15,6 @@ info=process_param( 'eps', info, 'eps$-log10(value)$' );
 info=process_param( 'eps_mode', info, '$value$' );
 solver_base=info.base;
 
-% build={
-%     @build_model, ['./mat/model-', model_base, '.mat'];
-%     @solve_model, ['./mat/solve-', solver_base, '.mat'];
-%     };
-%build={
-%   @build_model, ['./mat/model-', solver_base, '.mat'];
-%    @solve_model, ['./mat/solve-', solver_base, '.mat'];
-%    };
 if isoctave
   dir='oct';
 else

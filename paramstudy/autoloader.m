@@ -1,48 +1,104 @@
-% this is purposefully a script
-% all vars MUST be prefixed by NS_ (==no save) so they don't get in the way
-NS_build=build;
-if ~exist('NS_rebuild','var')
-    NS_rebuild=false;
-end
-NS_last={};
-NS_expr='^([^N]..|.[^S].|..[^_]|..?$)'; % match anything except stuff starting with NS_
-NS_invexpr='^NS_'; % match anything starting with NS_
-NS_toload='';
+function autoloader( build, rebuild )
 
-for NS_i=1:size(NS_build,1)
-    NS_script=NS_build{NS_i,1};
-    NS_target=NS_build{NS_i,2};
-    NS_mdep=find_deps(NS_script);
-    NS_dep={NS_last{:},NS_mdep{:}};
-    if NS_rebuild || needs_update( NS_target, NS_dep )
-        if ~isempty(NS_toload)
-            underline( ['Loading ', NS_toload]);
-            system( strvarexpand( 'echo "Trying to load $NS_target$" >> autloader.log' ) );
-            load( NS_toload);
-            system( strvarexpand( 'echo "Success." >> autloader.log' ) );
+if nargin==0
+    warning( 'autoloader should be called as a function now; using build-var from base workspace' );
+    build=evalin('base',build');
+end
+if nargin<2
+    rebuild=false;
+end
+
+last={};
+toload='';
+
+for i=1:size(build,1)
+    script=build{i,1};
+    target=build{i,2};
+    script_deps=find_deps(script);
+    all_deps={last{:},script_deps{:}};
+    if rebuild || needs_update( target, all_deps )
+        if ~isempty(toload)
+            underline( ['Loading ', toload]);
+            system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
+            load_base(toload);
+            system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
         end
-        if ischar(NS_script)
-            underline( ['Computing ', NS_target, ' (by ', NS_script, ')' ]);
-            run( NS_script );
+        if ischar(script)
+            underline( ['Computing ', target, ' (by ', script, ')' ]);
+            run( script );
         else
-            underline( ['Computing ', NS_target, ' (by ', func2str(NS_script), ')' ]);
-            NS_script();
+            underline( ['Computing ', target, ' (by ', func2str(script), ')' ]);
+            script();
         end
-        makesavepath( NS_target );
-        save( NS_target, '-v6', '-regexp', NS_expr );
-        NS_toload='';
+        makesavepath( target );
+        save( target, '-v6', '-regexp', expr );
+        toload='';
     else
-        NS_toload=NS_target;
+        toload=target;
     end
     
-    NS_last={NS_target,NS_last{:}};
+    last={target,last{:}};
 end
-if ~isempty(NS_toload)
-    underline( ['Loading ', NS_toload]);
-    system( strvarexpand( 'echo "Trying to load $NS_target$" >> autloader.log' ) );
-    load(NS_toload);
+if ~isempty(toload)
+    underline( ['Loading ', toload]);
+    system( strvarexpand( 'echo "Trying to load $target$" >> autoloader.log' ) );
+    load_base(toload);
+    system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
+end
+
+
+
+function load_base(filename)
+cmd=sprintf('load(%s);', filename);
+evalin('base',cmd);
+
+
+
+
+%%
+build=build;
+if ~exist('rebuild','var')
+    rebuild=false;
+end
+last={};
+expr='^([^N]..|.[^S].|..[^_]|..?$)'; % match anything except stuff starting with 
+invexpr='^'; % match anything starting with 
+toload='';
+
+for i=1:size(build,1)
+    script=build{i,1};
+    target=build{i,2};
+    mdep=find_deps(script);
+    dep={last{:},mdep{:}};
+    if rebuild || needs_update( target, dep )
+        if ~isempty(toload)
+            underline( ['Loading ', toload]);
+            system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
+            load( toload);
+            system( strvarexpand( 'echo "Success." >> autoloader.log' ) );
+        end
+        if ischar(script)
+            underline( ['Computing ', target, ' (by ', script, ')' ]);
+            run( script );
+        else
+            underline( ['Computing ', target, ' (by ', func2str(script), ')' ]);
+            script();
+        end
+        makesavepath( target );
+        save( target, '-v6', '-regexp', expr );
+        toload='';
+    else
+        toload=target;
+    end
+    
+    last={target,last{:}};
+end
+if ~isempty(toload)
+    underline( ['Loading ', toload]);
+    system( strvarexpand( 'echo "Trying to load $target$" >> autloader.log' ) );
+    load(toload);
     system( strvarexpand( 'echo "Success." >> autloader.log' ) );
 end
 
 
-clear( '-regexp', NS_invexpr );
+clear( '-regexp', invexpr );

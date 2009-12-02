@@ -1,4 +1,4 @@
-function study_results=ps_numiter_by_reltol_ratio( varargin )
+function ps_results=study_numiter_by_reltol_ratio( varargin )
 % STUDY_NUMITER_BY_RELTOL_RATIO Study effect of reltol and mean/variance ratio on number of iterations.
 %
 % Example (<a href="matlab:run_example ps_numiter_by_reltol_ratio">run</a>)
@@ -45,6 +45,7 @@ fields={...
 % run parameter study
 ps_options={'cache', true, 'cache_file', mfilename };
 ps_results=param_study( 'test_solver', variable, defaults, fields, ps_options{:}, varargin{:} );
+
 
 print_results( variable, fields(1:3), ps_results );
 

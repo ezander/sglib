@@ -39,18 +39,8 @@ ps_results=param_study( 'build_multiindex', variable, defaults, fields, ps_optio
 
 print_results( variable, fields, ps_results );
 
-return
-
-ps_bar_plot( variable, 'rank', ps_results );
-userwait;
-
-ps_bar_plot( variable, 'numiter', ps_results );
-userwait;
-
-
-surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.rank) );
-view([-140,14]);
-
-surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.numiter) );
-
+write_tex_tabular( '', ps_results.M, 'row_values', variable.m, 'col_values', variable.p, 'table_format', '%d' )
+%write_tex_tabular( 'tab.tex', ps_results.M, 'row_values', variable.m,
+%'col_values', variable.p, 'table_format', '%d' )
+write_tex_tabular( 'tab.tex', ps_results.M, 'col_values', variable.p, 'hline', true, 'table_format', '$a^{10}$ %d' )
 
