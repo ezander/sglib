@@ -32,57 +32,76 @@ if nargin<3
 end
 
 curr_options=varargin2options( varargin{:} );
+options=munit_options();
 
+result_list=compare_values( actual, expected, assert_id, curr_options, options );
+munit_process_assert_results( result_list, assert_id );
+
+function result_list=compare_values( actual, expected, assert_id, curr_options, options )
+
+result_list=compare_types( actual, expected, assert_id );
+if length(result_list); return; end
+
+result_list=compare_size( actual, expected, assert_id );
+if length(result_list); return; end
+
+result_list=compare_content( actual, expected, assert_id, curr_options, options );
+
+%%
+function result_list=compare_types( actual, expected, assert_id )
 % first check if both are of the same class
+result_list={};
 if ~(isnumeric(actual) && isnumeric(expected) )
     if ~strcmp( class(actual), class(expected) )
-        assert( false, sprintf( 'classes don''t match: %s~=%s', class(actual), ...
-            class(expected) ), assert_id );
+        msg=sprintf( 'classes don''t match: %s~=%s', class(actual), ...
+            class(expected) );
+        result_list={{msg, assert_id}};
         return
     end
 end
 
+%%
+function result_list=compare_size( actual, expected, assert_id )
 % then check whether they have the same size
 % but only if it's not of class string (then there can be a more meaningful
 % message to the user)
+result_list={};
 if ndims(actual)~=ndims(expected) || (any( size(actual)~=size(expected) ) && ~ischar(actual))
     size_actual=print_vector( '%d', size(actual) );
     size_expected=print_vector('%d', size(expected) );
-    assert( false, sprintf( 'size doesn''t match: %s~=%s', size_actual, ...
-        size_expected ), assert_id );
+    msg=sprintf( 'size doesn''t match: %s~=%s', size_actual, size_expected );
+    result_list={{msg, assert_id}};
     return;
 end
 
-%TODO: if empty array assertion is ok, return
-
-% Get current options
-[stats,options]=assert(); %#ok
-
+%%
+function result_list=compare_content( actual, expected, assert_id, curr_options, options )
 % then do equality checking based on class
+result_list={};
 switch class(actual)
     case {'double', 'sparse' }
-        assert_equals_double( actual, expected, assert_id, curr_options, options );
+        result_list=compare_double( actual, expected, assert_id, curr_options, options );
     case 'logical'
-        assert_equals_logical( actual, expected, assert_id, curr_options, options );
+        compare_logical( actual, expected, assert_id, curr_options, options );
     case 'char'
-        assert_equals_char( actual, expected, assert_id, curr_options, options );
+        compare_char( actual, expected, assert_id, curr_options, options );
     case 'struct'
-        assert_equals_struct( actual, expected, assert_id, curr_options, options );
+        compare_struct( actual, expected, assert_id, curr_options, options );
     case 'cell'
-        assert_equals_cell( actual, expected, assert_id, curr_options, options );
+        compare_cell( actual, expected, assert_id, curr_options, options );
     otherwise
         warning('assert_equals:unknown_class', ['don''t know how ' ...
             'to compare classes of type %s'], class(actual) );
-        %TODO: implement assert equals for cell arrays
-        %TODO: make assert equals recursive for recursive data types
 end
 
-function assert_equals_double( actual, expected, assert_id, curr_options, options )
+%%
+function result_list=compare_double( actual, expected, assert_id, curr_options, options )
 % ASSERT_EQUALS_DOUBLE Assert equality for doubles.
+result_list={};
 
 % Get abstol and reltol
-abstol=get_option( curr_options, 'abstol', options );
-reltol=get_option( curr_options, 'reltol', options );
+abstol=get_option( curr_options, 'abstol', options.abstol );
+reltol=get_option( curr_options, 'reltol', options.reltol );
 if ~isscalar(abstol) && any(size(abstol)~=size(actual))
     error( 'assert_equals:options', 'if abstol is a vector then it must have the same size as the value vector' );
 end
@@ -91,18 +110,18 @@ if ~isscalar(reltol) && any(size(reltol)~=size(actual))
 end
 
 % Get the max number of assertions to confront the user with
-max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options );
+max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options.max_assertion_disp );
 
 % Do actual comparison
 comp = (abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
 if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %g~=%g', actual, expected );
-        assert( false, msg, assert_id );
+        result_list={{msg, assert_id}};
     elseif false && isvector(actual) && length(actual)<=4
         % I think this kind of output isn't so helpful?!
         msg=sprintf( 'values don''t match %s~=%s', print_vector('%g', actual), print_vector('%g', expected) );
-        assert( false, msg, assert_id );
+        result_list={{msg, assert_id}};
     else
         linind=find(~comp);
         if isvector(comp)
@@ -117,23 +136,18 @@ if any(~comp(:))
             ind=[ind{:}];
         end
         curr_options.no_step=false;
-        for i=1:min(size(ind,1),max_assertion_disp)
+        for i=1:min(size(ind,1),max_assertion_disp+1)
             curr=ind(i,:);
             msg=sprintf( 'values don''t match at %s: %f~=%f', print_vector('%d',curr, ','), actual(linind(i)), expected(linind(i)));
+            result_list{end+1}={{msg, assert_id}};
             assert( false, msg, assert_id, curr_options );
             curr_options.no_step=true;
         end
-        if size(ind,1)>max_assertion_disp
-            msg='... further output suppressed ...';
-            assert( false, msg, assert_id, curr_options );
-        end
     end
-else
-    assert( true, [], assert_id );
 end
 
 
-function assert_equals_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+function compare_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
 % ASSERT_EQUALS_CELL Assert equality for cell arrays.
 %TODO: very crude implementation for cell arrays
 for i=1:size(actual,1)
@@ -143,18 +157,19 @@ for i=1:size(actual,1)
     end
 end
 
-function assert_equals_struct( actual, expected, assert_id, curr_options, options )
+function compare_struct( actual, expected, assert_id, curr_options, options )
 % ASSERT_EQUALS_STRUCT Assert equality for structs.
 %TODO: very crude implementation for structs 
 exp_names=sort(fieldnames(expected));
 act_names=sort(fieldnames(actual));
-assert_equals_cell( act_names, exp_names, assert_id, curr_options, options )
+compare_cell( act_names, exp_names, assert_id, curr_options, options )
 for i=1:numel(exp_names)
     assert_equals( actual.(exp_names{i}), expected.(exp_names{i}), sprintf('%s.%s', assert_id, exp_names{i}), curr_options, options );
     curr_options.no_step=true;
 end
 
-function assert_equals_logical( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+%%
+function compare_logical( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
 % ASSERT_EQUALS_LOGICAL Assert equality for logicals.
 
 % Get the max number of assertions to confront the user with
@@ -165,11 +180,11 @@ comp = (actual==expected);
 if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %d~=%d (logical)', actual, expected );
-        assert( false, msg, assert_id );
+        munit_assert_failed( msg, assert_id);
     elseif false && isvector(actual) && length(actual)<=4
         % I think this kind of output isn't so helpful?!
         msg=sprintf( 'values don''t match %s~=%s (logical)', print_vector('%d', actual), print_vector('%d', expected) );
-        assert( false, msg, assert_id );
+        munit_assert_failed( msg, assert_id);
     else
         linind=find(~comp);
         if isvector(comp)
@@ -199,18 +214,18 @@ else
     assert( true, [], assert_id );
 end
 
-
-function assert_equals_char( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+%%
+function compare_char( actual, expected, assert_id, curr_options, options )
 % ASSERT_EQUALS_CHAR Assert equality for strings/char arrays.
 
 if ~strcmp( actual, expected)
     msg=sprintf( 'values don''t match ''%s''~=''%s''', actual, expected );
-    assert( false, msg, assert_id );
+    munit_assert_failed( msg, assert_id );
 else
-    assert( true, [], assert_id );
+    munit_assert_passed( assert_id );
 end
 
-
+%%
 function s=print_vector( format, arr, del )
 % PRINT_VECTOR Pretty-prints a vector for display.
 % S=PRINT_VECTOR( FORMAT, ARR, DEL ) pretty-prints the vector given in ARR,

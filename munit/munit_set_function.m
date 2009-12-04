@@ -39,7 +39,4 @@ if nargin<1 || isempty(fun_name)
         fun_name='<unknown>';
     end
 end
-%options.function_name=fun_name;
-%assert_set_option( options );
-options.function_name=fun_name;
-munit_options( 'set', 'function_name', fun_name);
+munit_stats( 'set', 'function_name', fun_name);

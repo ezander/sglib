@@ -32,21 +32,33 @@ switch cmd
         if isempty(munit_stats)
             error( 'munit_stats:empty', 'No stats on the stack, call reset first.' );
         end
-        stats=munit_stats(end);
+        if isempty(varargin)
+            stats=munit_stats(end);
+        elseif length(varargin)==1 && ischar(varargin{1})
+            stats=munit_stats(end).(varargin{1});
+        end
     case 'set'
         if isempty(munit_stats)
             error( 'munit_stats:empty', 'No stats on the stack, call reset first.' );
         end
-        stats=varargin{1};
-        munit_stats(end)=stats;
+        if length(varargin)==1 && isstruct(varargin{1})
+            munit_stats(end)=varargin{1};
+        elseif length(varargin)==2 && ischar(varargin{1})
+            munit_stats(end).(varargin{1})=varargin{2};
+        else 
+            error( 'munit_stats:set', 'Pass either a stats struct or fieldname plus value combination.' );
+        end
     case 'push'
-        munit_stats(end+1)=init_stats( munit_stats(end).total_assertions, varargin{:} );
-        stats=munit_stats(end);
+        old_stats=munit_stats(end);
+        stats=init_stats( munit_stats(end).total_assertions, varargin{:} );
+        stats.total_module_name=[old_stats.total_module_name, '/', stats.module_name];
+        munit_stats(end+1)=stats;
     case 'pop'
         ls=munit_stats(end);
         munit_stats(end)=[];
         ns=munit_stats(end);
         ns.total_assertions=ls.total_assertions;
+        ns.total_assertions_module=ns.total_assertions_module+ls.total_assertions_module;
         ns.assertions_failed=ns.assertions_failed+ls.assertions_failed;
         ns.assertions_failed_poss=ns.assertions_failed_poss+...
             ls.assertions_failed_poss;
@@ -62,6 +74,7 @@ switch cmd
         
         ns.current_assertion=ns.current_assertion+1;
         ns.total_assertions=ns.total_assertions+1;
+        ns.total_assertions_module=ns.total_assertions_module+1;
         if ~passed
             if fuzzy
                 ns.assertions_failed_poss=ns.assertions_failed_poss+1;
@@ -81,8 +94,11 @@ if nargin<2
     module_name='<unknown>';
 end
 stats.module_name=module_name;
+stats.total_module_name=module_name;
+stats.function_name='<unknown>';
 stats.current_assertion=0;
 stats.assertions_failed=0;
 stats.assertions_failed_poss=0;
 stats.total_assertions=total_assertions;
+stats.total_assertions_module=0;
 stats.tested_functions={};

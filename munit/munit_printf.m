@@ -27,5 +27,10 @@ switch type
 end
 
 if ~no_disp
-    fprintf( message, vars{:} );
+    message(end+1:end+2)='\n';    
+    if nargin<3
+        fprintf( message );
+    else
+        fprintf( message, vars{:} );
+    end
 end

@@ -64,7 +64,7 @@ if level==1
     munit_stats('reset', module_name );
 end
 munit_stats('push', module_name );
-munit_printf('debug', 'Entered module (%d): %s\n', {level, module_name});
+munit_printf('debug', 'Entered module (%d): %s', {level, module_name});
 
 % first go through subdirs
 for subdir=subdirs
@@ -79,12 +79,12 @@ pattern=sprintf( '%s/%s*.m', curr_dir, prefix );
 files=dir( pattern );
 
 if length(files) || level==1
-    munit_printf('module', 'Testing module (%d): %s\n', {level, module_name});
+    munit_printf('module', 'Testing module (%d): %s', {level, module_name});
 end
 
 for i=1:length(files)
     test_cmd=files(i).name(1:end-2);
-    munit_printf( 'file', 'Running: %s\n', {fullfile(module_name, test_cmd)} );
+    munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
 
     slash_pos=find(test_cmd=='/');
     if ~isempty(slash_pos)

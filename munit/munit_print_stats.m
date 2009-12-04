@@ -26,11 +26,17 @@ function munit_print_stats
 stats=munit_stats('get');
 
 munit_printf( 'stats', ...
-    'Module "%s": %d of %d assertions failed.\n', ...
-    {stats.module_name, stats.assertions_failed, stats.total_assertions} );
+    'Module "%s": %d of %d assertions failed.', ...
+    {stats.total_module_name, stats.assertions_failed, stats.total_assertions_module} );
+%    {stats.module_name, stats.assertions_failed, stats.total_assertions} );
 
 if stats.assertions_failed_poss>0
+    if stats.assertions_failed>0
+        ending=', too';
+    else
+        ending='';
+    end
     munit_printf( 'stats',...
-        '%d (fuzzy) assertions possibly failed%s.\n', ...
-        {stats.assertions_failed_poss, ifelse( stats.assertions_failed>0,  ', too',  '' )} );
+        '%d (fuzzy) assertions possibly failed%s.', ...
+        {stats.assertions_failed_poss, ending} );
 end

@@ -61,6 +61,10 @@ function [ret_stats,ret_options]=assert( condition, message, assert_id, varargin
 
 persistent stats options
 
+
+fprintf('YOU SHOULD NOT GO HERE!!!\n');
+keyboard
+
 % initialize stats if called for the first time
 if isempty(stats)
     stats.current_assertion=0;

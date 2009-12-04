@@ -31,21 +31,30 @@ switch cmd
         if isempty(munit_options)
             munit_options=init_options();
         end
-        options=munit_options(end);
+        if isempty(varargin)
+            options=munit_options;
+        elseif length(varargin)==1 && ischar(varargin{1})
+            options=munit_options.(varargin{1});
+        end
     case 'set'
         if isempty(munit_options)
             munit_options=init_options();
         end
-        munit_options.(varargin{1})=varargin{2};
+        if length(varargin)==1 && isstruct(varargin{1})
+            munit_options=varargin{1};
+        elseif length(varargin)==2 && ischar(varargin{1})
+            munit_options.(varargin{1})=varargin{2};
+        else 
+            error( 'munit_options:set', 'Pass either a stats struct or fieldname plus value combination.' );
+        end
     otherwise
         error( 'munit_options:unknown_cmd', 'Unknown command: %s.', cmd );
 end
-if nargout>0
-    options=munit_options;
-end
 
 function options=init_options()
+options.function_name='<unknown>';
 options.debug=false;
+options.fuzzy=false;
 options.abstol=1e-8;
 options.reltol=1e-8;
 options.max_assertion_disp=10;
