@@ -1,4 +1,4 @@
-function test_munit(varargin)
+function test_munit
 % TEST_MUNIT Test the munit framework itself.
 %
 % Example (<a href="matlab:run_example test_munit">run</a>)
@@ -122,10 +122,10 @@ test_stats(munit_stats,7,0,4,1,[],'stats_proc_assert2');
 munit_stats('push','saeq');
 unittest_assert;
 munit_print_stats;
-%test_stats(munit_stats,13,6,6,0,[],'stats_assert_equals1');
+test_stats(munit_stats,52,45,27,0,[],'stats_assert_equals1');
 munit_stats('pop');
 munit_print_stats;
-%test_stats(munit_stats,13,0,10,1,[],'stats_assert_equals2');
+test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
 fprintf('=====================================================\n');
 
 
@@ -152,12 +152,67 @@ assert_equals( {1}, 'a', 'fail_class_mismatch2' );
 assert_equals( ones(1,1), ones(2,1), 'fail_size_mismatch1' );
 assert_equals( ones(1,3), ones(3,1), 'fail_size_mismatch2' );
 assert_equals( ones(2,2), ones(2,2,2), 'fail_size_mismatch3' );
-assert_equals( ones(2,2), ones(2,2,2), 'fail_size_mismatch4' );
+assert_equals( ones(2,2,3), ones(2,2,2), 'fail_size_mismatch4' );
 
+munit_options('set', 'max_assertion_disp', 1 );
 assert_equals( 1, 2, 'fail_sca_num_mismatch1' );
+assert_equals( ones(2,1), 3*ones(2,1), 'fail_vec_num_mismatch1' );
+assert_equals( ones(1,2), 4*ones(1,2), 'fail_vec_num_mismatch2' );
+assert_equals( ones(2,2), 5*ones(2,2), 'fail_mat_num_mismatch1' );
+assert_equals( ones(2,2,2), 6*ones(2,2,2), 'fail_tens_num_mismatch1' );
+assert_equals( 1, 1, 'pass_sca_num' );
+assert_equals( ones(2,1), ones(2,1), 'pass_vec_num1' );
+assert_equals( ones(1,2), ones(1,2), 'pass_vec_num2' );
+assert_equals( ones(2,2), ones(2,2), 'pass_mat_num' );
+assert_equals( ones(2,2,2), ones(2,2,2), 'pass_tens_num' );
 
-%assert_equals( 1, 1, 's_num_true' );
-%assert_equals( 1, 2, 's_num_false' );
+assert_equals( true, false, 'fail_sca_log_mismatch' );
+assert_equals( repmat(true,2,1), repmat(false,2,1), 'fail_vec_log_mismatch' );
+assert_equals( repmat(false,1,2), repmat(true,1,2), 'fail_vec_log_mismatch2' );
+assert_equals( repmat(true,2,2), repmat(false,2,2), 'fail_mat_log_mismatch1' );
+assert_equals( repmat(false,[2,2,2]), repmat(true,[2,2,2]), 'fail_tens_log_mismatch1' );
+
+assert_equals( true, true, 'pass_sca_log' );
+assert_equals( repmat(true,2,1), repmat(true,2,1), 'pass_vec_log1' );
+assert_equals( repmat(false,1,2), repmat(false,1,2), 'pass_vec_log2' );
+
+assert_equals( 'abc', 'abd', 'fail_str_mismatch' );
+assert_equals( 'abcd', 'abcd', 'pass_str' );
+
+munit_options('set', 'max_assertion_disp', 10 );
+x.diff=1;
+x.unexp=2;
+x.dtype='aaa';
+x.dsize=ones(1,3);
+y.diff=2;
+y.miss=3;
+y.dtype=true;
+y.dsize=ones(1,2);
+assert_equals( x, y, 'fail_struct' );
+assert_equals( x, x, 'pass_struct_x' );
+assert_equals( y, y, 'pass_struct_y' );
+assert_equals( struct(), struct(), 'pass_struct_empty' );
+
+assert_equals( cell(1,1), cell(2,1), 'fail_csize_mismatch1' );
+assert_equals( cell(1,3), cell(3,1), 'fail_csize_mismatch2' );
+assert_equals( cell(2,2), cell(2,2,2), 'fail_csize_mismatch3' );
+assert_equals( cell(2,2,3), cell(2,2,2), 'fail_csize_mismatch4' );
+assert_equals( {1,2;3,4}, {1,2;3,5}, 'fail_cell1' );
+assert_equals( {1,2;3,4}, {1,2;3,'A'}, 'fail_cell2' );
+assert_equals( {1,2;3,'a'}, {1,2;3,'A'}, 'fail_cell3' );
+assert_equals( {1,2;3,struct('diff',1)}, {1,2;3,struct('diff',2)}, 'fail_cell3' );
+
+x=cell(3,3,3);
+y=x; y{3,2,3}=1;
+assert_equals( x, y, 'fail_cell' );
+
+
+assert_equals( cell(1,1), cell(1,1), 'pass_cell1' );
+assert_equals( cell(1,2), cell(1,2), 'pass_cell2' );
+assert_equals( cell(2,1), cell(2,1), 'pass_cell3' );
+assert_equals( cell(2,2), cell(2,2), 'pass_cell4' );
+assert_equals( {1,'aaa',true}, {1,'aaa',true}, 'pass_cell5' );
+assert_equals( cell(2,2,2), cell(2,2,2), 'pass_cell6' );
 
 %% 
 function test_stats(s,ta,ca,af,afp,tf,id)

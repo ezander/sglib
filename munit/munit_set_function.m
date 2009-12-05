@@ -1,18 +1,18 @@
-function assert_set_function( fun_name )
-% ASSERT_SET_FUNCTION Sets the function name for the following assertions.
-%   ASSERT_SET_FUNCTION( FUN_NAME ) sets the function name to FUN_NAME for
+function munit_set_function( fun_name )
+% MUNIT_SET_FUNCTION Sets the function name for the following assertions.
+%   MUNIT_SET_FUNCTION( FUN_NAME ) sets the function name to FUN_NAME for
 %   the following assertions. FUN_NAME can also be empty in which case the
 %   function name is determined via the stack contents, removing any
 %   "unittest_" prefix from the function name.
 %
-% Example (<a href="matlab:run_example assert_set_function">run</a>)
+% Example (<a href="matlab:run_example munit_set_function">run</a>)
 %   % maybe in some function 'unittest_all_of_my_methods'
-%   assert_set_function( 'my_function' );
+%   munit_set_function( 'my_function' );
 %
 %   % in a function 'unittest_my_function' this will also do
-%   assert_set_function();
+%   munit_set_function();
 %
-% See also ASSERT, ASSERT_SET_MODULE
+% See also MUNIT_SET_MODULE, MUNIT_STATS, MUNIT_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

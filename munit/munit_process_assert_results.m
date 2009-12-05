@@ -1,4 +1,4 @@
-function munit_assert_failed( result_list, assert_id, varargin )
+function munit_process_assert_results( result_list, assert_id, varargin )
 % MUNIT_ASSERT_FAILED Invoked when an assertion has failed.
 %   MUNIT_ASSERT_FAILED( MESSAGE, ASSERT_ID, OPTIONS ) prints the error
 %   message and increases the stats counter. All other fields are optional.

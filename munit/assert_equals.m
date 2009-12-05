@@ -23,10 +23,6 @@ function assert_equals( actual, expected, assert_id, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-%TODO: write more docu, with more examples
-%TODO: document the options
-
 if nargin<3
     assert_id=[];
 end
@@ -67,8 +63,8 @@ function result_list=compare_size( actual, expected, assert_id )
 % message to the user)
 result_list={};
 if ndims(actual)~=ndims(expected) || (any( size(actual)~=size(expected) ) && ~ischar(actual))
-    size_actual=print_vector( '%d', size(actual) );
-    size_expected=print_vector('%d', size(expected) );
+    size_actual=print_vector( '%d', size(actual), [], iscell(actual) );
+    size_expected=print_vector('%d', size(expected), [], iscell(expected) );
     msg=sprintf( 'size doesn''t match: %s~=%s', size_actual, size_expected );
     result_list={{msg, assert_id}};
     return;
@@ -82,13 +78,13 @@ switch class(actual)
     case {'double', 'sparse' }
         result_list=compare_double( actual, expected, assert_id, curr_options, options );
     case 'logical'
-        compare_logical( actual, expected, assert_id, curr_options, options );
+        result_list=compare_logical( actual, expected, assert_id, curr_options, options );
     case 'char'
-        compare_char( actual, expected, assert_id, curr_options, options );
+        result_list=compare_char( actual, expected, assert_id, curr_options, options );
     case 'struct'
-        compare_struct( actual, expected, assert_id, curr_options, options );
+        result_list=compare_struct( actual, expected, assert_id, curr_options, options );
     case 'cell'
-        compare_cell( actual, expected, assert_id, curr_options, options );
+        result_list=compare_cell( actual, expected, assert_id, curr_options, options );
     otherwise
         warning('assert_equals:unknown_class', ['don''t know how ' ...
             'to compare classes of type %s'], class(actual) );
@@ -118,10 +114,6 @@ if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %g~=%g', actual, expected );
         result_list={{msg, assert_id}};
-    elseif false && isvector(actual) && length(actual)<=4
-        % I think this kind of output isn't so helpful?!
-        msg=sprintf( 'values don''t match %s~=%s', print_vector('%g', actual), print_vector('%g', expected) );
-        result_list={{msg, assert_id}};
     else
         linind=find(~comp);
         if isvector(comp)
@@ -131,46 +123,21 @@ if any(~comp(:))
             % manipulation to get the index in the form we want
             %TODO: write a small tutorial on the stupied cell handling and
             %conversion stuff in matlab
-            ind=cell(1,length(size(comp)));
+            ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);
             ind=[ind{:}];
         end
-        curr_options.no_step=false;
         for i=1:min(size(ind,1),max_assertion_disp+1)
             curr=ind(i,:);
-            msg=sprintf( 'values don''t match at %s: %f~=%f', print_vector('%d',curr, ','), actual(linind(i)), expected(linind(i)));
-            result_list{end+1}={{msg, assert_id}};
-            assert( false, msg, assert_id, curr_options );
-            curr_options.no_step=true;
+            msg=sprintf( 'values don''t match at %s: %g~=%g', print_vector('%d',curr, ','), actual(linind(i)), expected(linind(i)));
+            result_list{end+1}={msg, assert_id};
         end
     end
 end
 
-
-function compare_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
-% ASSERT_EQUALS_CELL Assert equality for cell arrays.
-%TODO: very crude implementation for cell arrays
-for i=1:size(actual,1)
-    for j=1:size(actual,2)
-        assert_equals( actual{i,j}, expected{i,j}, sprintf('%s{%d,%d}', assert_id, i, j), curr_options, options );
-        curr_options.no_step=true;
-    end
-end
-
-function compare_struct( actual, expected, assert_id, curr_options, options )
-% ASSERT_EQUALS_STRUCT Assert equality for structs.
-%TODO: very crude implementation for structs 
-exp_names=sort(fieldnames(expected));
-act_names=sort(fieldnames(actual));
-compare_cell( act_names, exp_names, assert_id, curr_options, options )
-for i=1:numel(exp_names)
-    assert_equals( actual.(exp_names{i}), expected.(exp_names{i}), sprintf('%s.%s', assert_id, exp_names{i}), curr_options, options );
-    curr_options.no_step=true;
-end
-
-%%
-function compare_logical( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+function result_list=compare_logical( actual, expected, assert_id, curr_options, options ) 
 % ASSERT_EQUALS_LOGICAL Assert equality for logicals.
+result_list={};
 
 % Get the max number of assertions to confront the user with
 max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options );
@@ -180,11 +147,7 @@ comp = (actual==expected);
 if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %d~=%d (logical)', actual, expected );
-        munit_assert_failed( msg, assert_id);
-    elseif false && isvector(actual) && length(actual)<=4
-        % I think this kind of output isn't so helpful?!
-        msg=sprintf( 'values don''t match %s~=%s (logical)', print_vector('%d', actual), print_vector('%d', expected) );
-        munit_assert_failed( msg, assert_id);
+        result_list{end+1}={msg, assert_id};
     else
         linind=find(~comp);
         if isvector(comp)
@@ -194,53 +157,86 @@ if any(~comp(:))
             % manipulation to get the index in the form we want
             %TODO: write a small tutorial on the stupied cell handling and
             %conversion stuff in matlab
-            ind=cell(1,length(size(comp)));
+            ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);
             ind=[ind{:}];
         end
-        curr_options.no_step=false;
-        for i=1:min(size(ind,1),max_assertion_disp)
+        for i=1:min(size(ind,1),max_assertion_disp+1)
             curr=ind(i,:);
             msg=sprintf( 'values don''t match at %s: %d~=%d (logical)', print_vector('%d',curr, ','), actual(linind(i)), expected(linind(i)));
-            assert( false, msg, assert_id, curr_options );
-            curr_options.no_step=true;
-        end
-        if size(ind,1)>max_assertion_disp
-            msg='... further output suppressed ...';
-            assert( false, msg, assert_id, curr_options );
+            result_list{end+1}={msg, assert_id};
         end
     end
-else
-    assert( true, [], assert_id );
 end
 
+
 %%
-function compare_char( actual, expected, assert_id, curr_options, options )
+function result_list=compare_char( actual, expected, assert_id, curr_options, options ) %#ok
 % ASSERT_EQUALS_CHAR Assert equality for strings/char arrays.
+result_list={};
 
 if ~strcmp( actual, expected)
     msg=sprintf( 'values don''t match ''%s''~=''%s''', actual, expected );
-    munit_assert_failed( msg, assert_id );
-else
-    munit_assert_passed( assert_id );
+    result_list{end+1}={msg, assert_id};
 end
 
+function result_list=compare_struct( actual, expected, assert_id, curr_options, options )
+% ASSERT_EQUALS_STRUCT Assert equality for structs.
+result_list={};
+
+exp_names=sort(fieldnames(expected));
+act_names=sort(fieldnames(actual));
+unexpected=setdiff(act_names, exp_names);
+missing=setdiff(exp_names, act_names);
+common=intersect(act_names, exp_names);
+
+for i=1:length(unexpected)
+    msg=sprintf( 'field ''%s'' was not expected', unexpected{i} );
+    result_list{end+1}={msg, assert_id};
+end
+for i=1:length(missing)
+    msg=sprintf( 'field ''%s'' was missing', missing{i} );
+    result_list{end+1}={msg, assert_id};
+end
+
+for i=1:length(common)
+    new_assert_id=sprintf('%s.%s', assert_id, common{i});
+    new_list=compare_values( actual.(common{i}), expected.(common{i}), new_assert_id, curr_options, options );
+    result_list={result_list{:}, new_list{:}};
+end
+
+
 %%
-function s=print_vector( format, arr, del )
+function result_list=compare_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+% ASSERT_EQUALS_CELL Assert equality for cell arrays.
+result_list={};
+
+for i=1:numel(actual)
+    new_assert_id=sprintf('%s%s', assert_id, print_vector('%g', ind2sub(i,size(actual)), ',', true) );
+    new_list=compare_values( actual{i}, expected{i}, new_assert_id, curr_options, options );
+    result_list={result_list{:}, new_list{:}};
+end
+
+
+%%
+function s=print_vector( format, arr, del, cellarr )
 % PRINT_VECTOR Pretty-prints a vector for display.
 % S=PRINT_VECTOR( FORMAT, ARR, DEL ) pretty-prints the vector given in ARR,
 % whereby every element is formatted using the code in FORMAT (e.g. '%g'
 % for floats or '%d' for integers) and using DEL as delimiter between
 % elements. DEL defaults to ', '.
-
-if nargin<3
+braces='[]{}';
+if nargin<3 || isempty(del)
     del=', ';
 end
-s='[';
+if nargin<4
+    cellarr=false;
+end
+s=braces(2*cellarr+1);
 for i=1:length(arr)
     s=[s sprintf(format, arr(i))];
     if i<length(arr)
         s=[s del];
     end
 end
-s=[s ']'];
+s=[s braces(2*cellarr+2)];

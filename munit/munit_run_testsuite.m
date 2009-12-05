@@ -45,6 +45,7 @@ check_unsupported_options( options, mfilename );
 
 if isempty(module_name)
     [dummy,module_name]=fileparts(curr_dir);
+    dummy; %#ok
 end
 
 % get subdirs
