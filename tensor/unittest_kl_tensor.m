@@ -20,7 +20,7 @@ function unittest_kl_tensor
 
 
 % Test KL_TO_TENSOR
-assert_set_function( 'kl_to_tensor' );
+munit_set_function( 'kl_to_tensor' );
 
 mu_r_j=(1:5)';
 r_j_i=(6:10)';
@@ -32,7 +32,7 @@ assert_equals( R, R_ex, 'R' );
 
 
 % Test TENSOR_TO_KL
-assert_set_function( 'tensor_to_kl' );
+munit_set_function( 'tensor_to_kl' );
 
 R={[1:5;6:10]',[1,zeros(1,9);11:20]'};
 mu_r_j_ex=(1:5)'+11*(6:10)';

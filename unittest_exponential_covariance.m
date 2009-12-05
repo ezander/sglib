@@ -19,7 +19,7 @@ function unittest_exponential_covariance
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'exponential_covariance' );
+munit_set_function( 'exponential_covariance' );
 
 assert_equals( exponential_covariance( 0, 1, 1, 2 ), 4*exp(-1), 'scalar_1d' );
 assert_equals( exponential_covariance( 0, 1, 1, 0.5 ), 0.25*exp(-1), 'scalar_1d' );

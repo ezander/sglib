@@ -19,7 +19,7 @@ function unittest_pce_normalize
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_normalize' );
+munit_set_function( 'pce_normalize' );
 
 
 I_a=[0 0; 1 1; 2 2; 3 3];

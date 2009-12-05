@@ -19,7 +19,7 @@ function unittest_compute_pce_operator
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_multiply' );
+munit_set_function( 'pce_multiply' );
 
 N=4;
 [els,pos]=create_mesh_1d( N, 0, 1 );

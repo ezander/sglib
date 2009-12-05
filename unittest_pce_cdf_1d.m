@@ -18,25 +18,23 @@ function unittest_pce_cdf_1d
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'pce_cdf_1d' );
+munit_set_function( 'pce_cdf_1d' );
 
-X_alpha=[30, 12, 1];
-I_X=(0:2)';
-
-y=pce_cdf( [-10 -8 -4 3]', X_alpha, I_X )
-x=linspace(-30,50);
-y=pce_cdf( x, X_alpha, I_X )
-plot(x,y)
-
-X_alpha=[0 1 0];
-I_X=(0:2)';
-
-clf
-hold on
-x=linspace(-3,3);
-y=pce_cdf( x, X_alpha, I_X, 'N', 1000000 );
-plot(x,y)
-
-
-
-pce_cdf_1d( [-10 -8 -4 3]', X_alpha, I_X  )
+% X_alpha=[30, 12, 1];
+% I_X=(0:2)';
+% 
+% y=pce_cdf( [-10 -8 -4 3]', X_alpha, I_X )
+% x=linspace(-30,50);
+% y=pce_cdf( x, X_alpha, I_X )
+% plot(x,y)
+% 
+% X_alpha=[0 1 0];
+% I_X=(0:2)';
+% 
+% clf
+% hold on
+% x=linspace(-3,3);
+% y=pce_cdf( x, X_alpha, I_X, 'N', 1000000 );
+% plot(x,y)
+% 
+% pce_cdf_1d( [-10 -8 -4 3]', X_alpha, I_X  )

@@ -19,7 +19,7 @@ function unittest_format_poly
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'format_poly' );
+munit_set_function( 'format_poly' );
 
 assert_equals( format_poly( [1] ), '1', 'const 1' ); %#ok [1]
 assert_equals( format_poly( [0 0 0 0] ), '0', 'zero' );

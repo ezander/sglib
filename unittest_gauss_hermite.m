@@ -19,7 +19,7 @@ function unittest_gauss_hermite
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'gauss_hermite' );
+munit_set_function( 'gauss_hermite' );
 
 assert_equals( gauss_hermite({@uplus},2), 0, 'ident' );
 

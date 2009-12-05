@@ -20,7 +20,7 @@ function unittest_hermite_triples
 
 
 % Test the hermite_triple_product function
-assert_set_function( 'hermite_triple_product' );
+munit_set_function( 'hermite_triple_product' );
 t=zeros(6,6,3);
 for k=0:2;
     for i=0:5;
@@ -42,7 +42,7 @@ assert_equals( hermite_triple_product([1 2],[2 3],[3 5]), 720, 'multivariate' );
 
 
 % Test the hermite_triple_fast function
-assert_set_function( 'hermite_triple_fast' );
+munit_set_function( 'hermite_triple_fast' );
 hermite_triple_fast(5);
 t=zeros(6,6,3);
 for k=0:2;

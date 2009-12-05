@@ -19,7 +19,7 @@ function unittest_row_col_mult
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'unittest_row_col_mult' );
+munit_set_function( 'unittest_row_col_mult' );
 assert_equals( row_col_mult([1 2; 3 4], [1, 2]), [1 4; 3 8], 'row_mult' );
 assert_equals( row_col_mult([1 2; 3 4], [1; 2]), [1 2; 6 8], 'col_mult' );
 assert_false( issparse( row_col_mult([1 2; 3 4], [1, 2])), [], 'full' );

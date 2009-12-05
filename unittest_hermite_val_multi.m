@@ -19,7 +19,7 @@ function unittest_hermite_val_multi
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'hermite_val_multi' );
+munit_set_function( 'hermite_val_multi' );
 
 x=linspace(0,1)';
 y=rand(size(x));

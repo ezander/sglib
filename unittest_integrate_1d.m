@@ -18,7 +18,7 @@ function unittest_integrate_1d
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'integrate_1d' );
+munit_set_function( 'integrate_1d' );
 
 identity=@uplus;
 assert_equals( integrate_1d( identity, @gauss_hermite_rule, 3 ), 0, 'uplus' );

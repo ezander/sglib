@@ -19,7 +19,7 @@ function unittest_multiindex
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'multiindex' );
+munit_set_function( 'multiindex' );
 
 ind=multiindex(2,6);
 assert_false( issparse(ind), 'multiindex should be full matrix', 'not_sparse' )

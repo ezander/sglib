@@ -18,7 +18,7 @@ function unittest_gendist
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'gendist' );
+munit_set_function( 'gendist' );
 
 % first test without shift and scaling
 x=linspace(-10,10,1000);

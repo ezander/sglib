@@ -19,7 +19,7 @@ function unittest_tensor_operator_compose
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'tensor_operator_compose' );
+munit_set_function( 'tensor_operator_compose' );
 
 % some small integer matrices
 A={ [1 1; 2 2], [1 1 1; 2 2 2; 3 3 3 ] };

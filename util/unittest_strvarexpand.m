@@ -18,7 +18,7 @@ function unittest_strvarexpand
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'strvarexpand' );
+munit_set_function( 'strvarexpand' );
 
 a=10; %#ok
 cell={10,'abc'}; %#ok

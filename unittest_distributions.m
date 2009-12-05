@@ -22,12 +22,12 @@ function unittest_distributions
 
 %% Normal distribution
 mu=1; sig=2;
-assert_set_function('normal_cdf');
+munit_set_function('normal_cdf');
 assert_equals( normal_cdf(-inf,mu,sig), 0, 'cdf_minf' );
 assert_equals( normal_cdf(inf,mu,sig), 1, 'cdf_inf' );
 assert_equals( normal_cdf(mu,mu,sig), 1/2, 'cdf_median' );
 
-assert_set_function('normal_pdf');
+munit_set_function('normal_pdf');
 assert_equals( normal_pdf(-inf,mu,sig), 0, 'pdf_minf' );
 assert_equals( normal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 
@@ -38,13 +38,13 @@ assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Lognormal distribution
 mu=2; sig=0.5;
-assert_set_function('lognormal_cdf');
+munit_set_function('lognormal_cdf');
 assert_equals( lognormal_cdf(-inf,mu,sig), 0, 'cdf_minf' );
 assert_equals( lognormal_cdf(-1e8,mu,sig), 0, 'cdf_negative' );
 assert_equals( lognormal_cdf(inf,mu,sig), 1, 'cdf_inf' );
 assert_equals( lognormal_cdf(exp(mu),mu,sig), 1/2, 'cdf_median' );
 
-assert_set_function('lognormal_pdf');
+munit_set_function('lognormal_pdf');
 assert_equals( lognormal_pdf(-inf,mu,sig), 0, 'pdf_minf' );
 assert_equals( lognormal_pdf(-1e8,mu,sig), 0, 'pdf_negative' );
 assert_equals( lognormal_pdf(inf,mu,sig), 0, 'pdf_inf' );
@@ -56,13 +56,13 @@ assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Exponential distribution
 alpha=1.5;
-assert_set_function('exponential_cdf');
+munit_set_function('exponential_cdf');
 assert_equals( exponential_cdf(-inf,alpha), 0, 'cdf_minf' );
 assert_equals( exponential_cdf(-1e10,alpha), 0, 'cdf_negative' );
 assert_equals( exponential_cdf(inf,alpha), 1, 'cdf_inf' );
 assert_equals( exponential_cdf(log(2)/alpha,alpha), 1/2, 'cdf_median' );
 
-assert_set_function('exponential_pdf');
+munit_set_function('exponential_pdf');
 assert_equals( exponential_pdf(-inf,alpha), 0, 'pdf_minf' );
 assert_equals( exponential_pdf(-1e10,alpha), 0, 'pdf_negative' );
 assert_equals( exponential_pdf(inf,alpha), 0, 'pdf_inf' );
@@ -74,7 +74,7 @@ assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
 %% Beta distribution
 a=2; b=3;
-assert_set_function('beta_cdf');
+munit_set_function('beta_cdf');
 assert_equals( beta_cdf(-inf,a,b), 0, 'cdf_minf' );
 assert_equals( beta_cdf(-1e8,a,b), 0, 'cdf_zero' );
 assert_equals( beta_cdf(1+1e8,a,b), 1, 'cdf_zero' );
@@ -83,7 +83,7 @@ assert_equals( beta_cdf(1/2,a,a), 1/2, 'cdf_median' );
 assert_equals( beta_cdf(1/2,b,b), 1/2, 'cdf_median' );
 assert_equals( beta_cdf(1/2,1/b,1/b), 1/2, 'cdf_median' );
 
-assert_set_function('beta_pdf');
+munit_set_function('beta_pdf');
 assert_equals( beta_pdf(-inf,a,b), 0, 'pdf_minf' );
 assert_equals( beta_pdf(-1e8,a,b), 0, 'pdf_zero' );
 assert_equals( beta_pdf(0,a,b), 0, 'pdf_zero' );

@@ -19,7 +19,7 @@ function unittest_tensor_methods
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 % testing function TENSOR_NULL
-assert_set_function( 'tensor_null' );
+munit_set_function( 'tensor_null' );
 
 T={rand(8,3), rand(10,3)};
 Z=tensor_null(T);
@@ -28,7 +28,7 @@ assert_equals( size(Z{1}), [8,0], 'size_1' );
 assert_equals( size(Z{2}), [10,0], 'size_2' );
 
 % testing function TENSOR_ADD
-assert_set_function( 'tensor_add' );
+munit_set_function( 'tensor_add' );
 
 T1={rand(8,2), rand(10,2)};
 T2={rand(8,3), rand(10,3)};
@@ -39,7 +39,7 @@ assert_equals( size(Z{2}), [10,5], 'size_2' );
 
 
 % testing function TENSOR_SCALE
-assert_set_function( 'tensor_scale' );
+munit_set_function( 'tensor_scale' );
 
 T={rand(8,2), rand(10,2)};
 S=tensor_scale(T,-3);
@@ -49,7 +49,7 @@ assert_equals( Z{1}*Z{2}', zeros(8,10), 'scale_zero' )
 
 
 % testing function TENSOR_NORM
-assert_set_function( 'tensor_norm' );
+munit_set_function( 'tensor_norm' );
 
 T={rand(8,2), rand(10,2)};
 normT=norm( T{1}*T{2}', 'fro' );
@@ -77,7 +77,7 @@ assert_equals( tensor_norm( T, 'inner', M1, M2 ), normT, 'inner' );
 % implicitly test through tensor_norm
 % TODO: test tensor_scalar_product explicitly
 
-assert_set_function( 'tensor_scalar_product' );
+munit_set_function( 'tensor_scalar_product' );
 
 T1={rand(8,4), rand(10,4) };
 T2={rand(8,3), rand(10,3) };
@@ -100,7 +100,7 @@ assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2' );
 
 
 % testing function TENSOR_APPLY
-assert_set_function( 'tensor_apply' );
+munit_set_function( 'tensor_apply' );
 
 A={rand(8,8), rand(10,10)};
 B={@(x)(A{1}*x), @(x)(A{2}*x)};
@@ -112,7 +112,7 @@ assert_equals( UA{1}*UA{2}', UB{1}*UB{2}' );
 assert_equals( UA{1}*UA{2}', UC{1}*UC{2}' );
 
 % testing function TENSOR_APPLY
-assert_set_function( 'tensor_operator_solve_elementary' );
+munit_set_function( 'tensor_operator_solve_elementary' );
 A={M1+eye(size(M1)), M2+eye(size(M2))};
 Uex=tensor_apply({inv(A{1}),inv(A{2})},T);
 U1=tensor_operator_solve_elementary(A,T);

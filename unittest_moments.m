@@ -19,7 +19,7 @@ function unittest_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'moments' );
+munit_set_function( 'moments' );
 
 %% Normal distribution
 [m,v,s,k]=normal_moments(2,3);

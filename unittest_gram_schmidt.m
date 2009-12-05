@@ -19,7 +19,7 @@ function unittest_gram_schmidt
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'gram_schmidt' );
+munit_set_function( 'gram_schmidt' );
 
 % Test is currently only with random matrices, should be done also with
 % matrices from the matrix toolbox (but first, availability for octave has

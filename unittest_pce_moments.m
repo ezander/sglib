@@ -19,7 +19,7 @@ function unittest_pce_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_moments' );
+munit_set_function( 'pce_moments' );
 
 pcc=[4 0.3 0 0];
 pci=[0 1 2 3]';

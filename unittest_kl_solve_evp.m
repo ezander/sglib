@@ -19,7 +19,7 @@ function unittest_kl_solve_evp
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'kl_solve_evp' );
+munit_set_function( 'kl_solve_evp' );
 
 x=linspace(0,1,11)';
 els=[(1:10)',(2:11)'];

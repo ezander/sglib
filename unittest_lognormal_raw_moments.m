@@ -19,7 +19,7 @@ function unittest_lognormal_raw_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'lognormal_raw_moments' );
+munit_set_function( 'lognormal_raw_moments' );
 
 expected=[ 1., 1.6487212707001282, 7.38905609893065, 90.01713130052181, ...
     2980.9579870417283, 268337.2865208745, 6.565996913733051e7, ...

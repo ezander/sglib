@@ -18,7 +18,7 @@ function unittest_integrate
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'integrate' );
+munit_set_function( 'integrate' );
 
 assert_equals( integrate( @scalar_func_2d_vec, @gauss_hermite_rule, 2, 3 ), [1;0;0;1;0;1;0;3], 'default' );
 assert_equals( integrate( @scalar_func_2d_vec, @gauss_hermite_rule, 2, 3, 'grid', 'smolyak' ), [1;0;0;1;0;1;0;3], 'smolyak' );

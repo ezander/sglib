@@ -19,7 +19,7 @@ function unittest_multiindex_factorial
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'multiindex_factorial' );
+munit_set_function( 'multiindex_factorial' );
 fac=multiindex_factorial( [0,1,2,3,4]' );
 assert_equals( fac, [1,1,2,6,24]', 'factorial' );
 

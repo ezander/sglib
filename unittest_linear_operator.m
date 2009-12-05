@@ -30,26 +30,26 @@ s=size(M);
 linop1={ size(M), {@mtimes, {M}, {1} } };
 linop2={ linop1{:}, {@mldivide, {M}, {1} } };
 
-assert_set_function( 'linear_operator_size' );
+munit_set_function( 'linear_operator_size' );
 
 assert_equals( linear_operator_size( M ), s, 'M_size' );
 assert_equals( linear_operator_size( linop1 ), s, 'lo1_size' );
 assert_equals( linear_operator_size( linop2 ), s, 'lo2_size' );
 
-assert_set_function( 'linear_operator_apply' );
+munit_set_function( 'linear_operator_apply' );
 
 assert_equals( linear_operator_apply( M, x ), y, 'M_apply' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'lo1_apply' );
 assert_equals( linear_operator_apply( linop2, x ), y, 'lo2_apply' );
 
-assert_set_function( 'linear_operator' );
+munit_set_function( 'linear_operator' );
 
 linop1=linear_operator( M );
 assert_equals( linear_operator_size( linop1 ), s, 'lo1_size' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'lo1_apply' );
 
 
-assert_set_function( 'linear_operator_solve' );
+munit_set_function( 'linear_operator_solve' );
 
 M=[1, 2, 3; 3, 4, 6; 5, 10, 14];
 x=[1; 5; 7];
@@ -66,7 +66,7 @@ if ismatlab()
 end
 
 % test the operator composition (not directly by all that follows)
-assert_set_function( 'linear_operator_compose' );
+munit_set_function( 'linear_operator_compose' );
 
 A=[4 3 2 5; 2 6 4 8; 1 1 2 5];
 B=[1, 2 4; 3, 4 7; 5, 10, 2; 6, 6, 5];

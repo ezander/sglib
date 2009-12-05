@@ -115,7 +115,7 @@ if writetofile
     fprintf( fid, '%%   program.  If not, see <http://www.gnu.org/licenses/>.\n' );
     if is_unittest
         fprintf( fid, '\n' );
-        fprintf( fid, 'assert_set_function( ''%s'' );\n', testfunction );
+        fprintf( fid, 'munit_set_function( ''%s'' );\n', testfunction );
     end
     fprintf( fid, '\n' );
     if ~isempty( prev_contents )

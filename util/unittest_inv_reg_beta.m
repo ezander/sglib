@@ -19,7 +19,7 @@ function unittest_inv_reg_beta
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'inv_reg_beta' );
+munit_set_function( 'inv_reg_beta' );
 
 % do for a small set for which there is no interpolation
 do_test( 1, 1, 20, 'small_11' );

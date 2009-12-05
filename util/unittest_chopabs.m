@@ -19,7 +19,7 @@ function unittest_chopabs
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'chopabs' );
+munit_set_function( 'chopabs' );
 
 A=[ 1 2 1e-11 1e-3 3];
 assert_equals( chopabs(A), [1, 2, 0, 1e-3, 3], 'oneparam' );

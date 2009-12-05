@@ -19,7 +19,7 @@ function unittest_exponential_raw_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'exponential_raw_moments' );
+munit_set_function( 'exponential_raw_moments' );
 
 expected=[1., 0.7692307692307692, 1.1834319526627217, 2.7309968138370504, 8.403067119498616, 32.31948892114852];
 assert_equals( expected, exponential_raw_moments( 0:5, 1.3 ), 'lam1.3' );

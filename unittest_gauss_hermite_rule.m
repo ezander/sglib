@@ -18,7 +18,7 @@ function unittest_gauss_hermite_rule
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'gauss_hermite_rule' );
+munit_set_function( 'gauss_hermite_rule' );
 
 xi=0;
 wi=1.;
