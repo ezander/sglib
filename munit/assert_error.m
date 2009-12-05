@@ -1,4 +1,4 @@
-function assert_error( eval_func, expect_err_id, assert_id, varargin )
+function assert_error( eval_func, expect_err_id, assert_id)
 % ASSERT_ERROR Asserts that the called function emits a correct error.
 %   ASSERT_ERROR Long description of assert_error.
 %
@@ -21,15 +21,18 @@ function assert_error( eval_func, expect_err_id, assert_id, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-noerror=false;
+result_list={};
 try
     funcall( eval_func );
-    noerror=true;
+    result_list{end+1}={'no error was raised as expected', assert_id};
 catch
-    if noerror
-        fprintf( 'error not caught\n' );
+    err_struct=lasterror;
+    if regexp( err_struct.identifier, expect_err_id )
+        % ok
     else
-        s=lasterror;
-        fprintf( '%s\n', s.identifier );
+        msg=sprintf('raised error ''%s'' did not match regexp ''%s''', ...
+            err_struct.identifier, expect_err_id );
+        result_list{end+1}={msg, assert_id};
     end
 end
+munit_process_assert_results( result_list, assert_id );

@@ -8,7 +8,7 @@ function old_val=munit_set_debug( bool_val )
 %   % turn debugging on
 %   munit_set_debug( true );
 %
-% See also ASSERT
+% See also MUNIT_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

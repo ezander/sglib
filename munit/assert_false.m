@@ -1,4 +1,4 @@
-function assert_false( bool_val, message, assert_id, options )
+function assert_false( bool_val, message, assert_id )
 % ASSERT_FALSE Asserts that the given condition is false.
 %   ASSERT_FALSE( BOOL_VAL, MESSAGE, ASSERT_ID, OPTIONS ) checks that
 %   the condition given in BOOL_VAL is false; otherwise issues an
@@ -8,7 +8,7 @@ function assert_false( bool_val, message, assert_id, options )
 % Example (<a href="matlab:run_example assert_false">run</a>)
 %   assert_false( x<0, 'x may not be negative', 'non_negative' );
 %
-% See also ASSERT, ASSERT_TRUE, ASSERT_EQUALS
+% See also ASSERT_TRUE, ASSERT_EQUALS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

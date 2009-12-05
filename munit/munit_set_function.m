@@ -12,7 +12,7 @@ function munit_set_function( fun_name )
 %   % in a function 'unittest_my_function' this will also do
 %   munit_set_function();
 %
-% See also MUNIT_SET_MODULE, MUNIT_STATS, MUNIT_OPTIONS
+% See also MUNIT_STATS, MUNIT_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

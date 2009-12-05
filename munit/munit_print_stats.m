@@ -8,7 +8,7 @@ function munit_print_stats
 %   assert_equals( myfunc, 3, 'some_test' );
 %   munit_print_stats();
 %
-% See also ASSERT, ASSERT_EQUALS, ASSERT_SET_MODULE
+% See also MUNIT_STATS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

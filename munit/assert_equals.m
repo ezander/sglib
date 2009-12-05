@@ -9,10 +9,10 @@ function assert_equals( actual, expected, assert_id, varargin )
 % Example (<a href="matlab:run_example assert_equals">run</a>)
 %   assert_equals( factorial(1:4), [1,2,6,24], 'fact', 'abstol', 0, 'reltol', 0 );
 %
-% See also ASSERT
+% See also ASSERT_TRUE, ASSERT_FALSE, ASSERT_ERROR
 
 %   Elmar Zander
-%   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2006, 2009, Institute of Scientific Computing, TU Braunschweig.
 %   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it

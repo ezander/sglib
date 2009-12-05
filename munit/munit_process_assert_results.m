@@ -15,13 +15,12 @@ function munit_process_assert_results( result_list, assert_id, varargin )
 %     'fuzzy', 
 %
 %   MUNIT_ASSERT_FAILED should usually not be called directly from user code but rather
-%   via some customized functions like ASSERT_EQUALS, ASSERT_SET_FUNCTION
+%   via some customized functions like ASSERT_EQUALS, MUNIT_SET_FUNCTION
 %   and the like.
 %
 % Example (<a href="matlab:run_example assert">run</a>)
 %
-% See also ASSERT_EQUALS, ASSERT_TRUE, ASSERT_FALSE, ASSERT_SET_FUNCTION,
-%    ASSERT_SET_MODULE
+% See also ASSERT_EQUALS, ASSERT_TRUE, ASSERT_FALSE, MUNIT_SET_FUNCTION
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

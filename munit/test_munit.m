@@ -135,10 +135,19 @@ test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
 munit_stats('push','sab');
 unittest_assert_bool;
 munit_print_stats;
-%test_stats(munit_stats,52,45,27,0,[],'stats_assert_equals1');
+test_stats(munit_stats,60,8,4,0,[],'stats_assert_bool1');
 munit_stats('pop');
 munit_print_stats;
-%test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
+test_stats(munit_stats,60,0,35,1,[],'stats_assert_bool2');
+
+
+munit_stats('push','error');
+unittest_assert_error;
+munit_print_stats;
+%test_stats(munit_stats,60,8,4,0,[],'stats_assert_error1');
+munit_stats('pop');
+munit_print_stats;
+%test_stats(munit_stats,60,0,35,1,[],'stats_assert_error2');
 
 fprintf('=====================================================\n');
 
@@ -240,6 +249,17 @@ assert_false( true, 'some message (2)' );
 assert_false( false, 'some message (3)', 'pass_bool2' );
 assert_false( false, 'some message (4)' );
 
+
+function unittest_assert_error
+munit_set_function('assert_error');
+A=rand(3);
+B=rand(4);
+assert_error( {@times, {A,B}, {1,2}}, 'MATLAB:dimagree', 'pass_corr_error1' )
+assert_error( {@times, {A,B}, {1,2}}, 'MATLAB', 'pass_corr_error2' )
+assert_error( {@times, {A,B}, {1,2}}, '.*:dimagree', 'pass_corr_error3' )
+assert_error( {@times, {A,A}, {1,2}}, 'MATLAB:dimagree', 'fail_no_error' )
+assert_error( {@times, {A,B}, {1,2}}, 'foo:bar', 'fail_wrong_error' )
+assert_error( {@times, {A,B}, {1,2}}, '^ATLAB', 'fail_wrong_error2' )
 
 function unittest_foo
 munit_set_function('wrong_name');
