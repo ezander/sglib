@@ -106,6 +106,11 @@ s=munit_options();
 test_equal( s.debug, false, 'debugoff' );
 
 %% 
+fprintf('Testing: set_function function...\n');
+unittest_foo;
+
+
+%% 
 fprintf('Testing: assertion function...\n');
 fprintf('Check that the following looks reasonably yourself...\n');
 fprintf('=====================================================\n');
@@ -120,12 +125,21 @@ munit_print_stats;
 test_stats(munit_stats,7,0,4,1,[],'stats_proc_assert2');
 
 munit_stats('push','saeq');
-unittest_assert;
+unittest_assert_equals;
 munit_print_stats;
 test_stats(munit_stats,52,45,27,0,[],'stats_assert_equals1');
 munit_stats('pop');
 munit_print_stats;
 test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
+
+munit_stats('push','sab');
+unittest_assert_bool;
+munit_print_stats;
+%test_stats(munit_stats,52,45,27,0,[],'stats_assert_equals1');
+munit_stats('pop');
+munit_print_stats;
+%test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
+
 fprintf('=====================================================\n');
 
 
@@ -145,7 +159,7 @@ munit_options('set', 'max_assertion_disp', 2 );
 munit_process_assert_results( {{'1', 'fail_7[1]_is_ok'}, {'2', 'fail_7[2]_is_ok'}, {'3', 'fail_7[3]_but_dont_show'}}, 'fail_7' );
 munit_options('set', 'max_assertion_disp', 10 );
 
-function unittest_assert
+function unittest_assert_equals
 munit_set_function('assert_equals');
 assert_equals( 1, 'a', 'fail_class_mismatch1' );
 assert_equals( {1}, 'a', 'fail_class_mismatch2' );
@@ -213,6 +227,51 @@ assert_equals( cell(2,1), cell(2,1), 'pass_cell3' );
 assert_equals( cell(2,2), cell(2,2), 'pass_cell4' );
 assert_equals( {1,'aaa',true}, {1,'aaa',true}, 'pass_cell5' );
 assert_equals( cell(2,2,2), cell(2,2,2), 'pass_cell6' );
+
+
+function unittest_assert_bool
+munit_set_function('assert_true');
+assert_true( true, 'some message (1)', 'pass_bool1' );
+assert_true( true, 'some message (2)' );
+assert_true( false, 'some message (3)', 'fail_bool1' );
+assert_true( false, 'some message (4)' );
+assert_false( true, 'some message (1)', 'fail_bool2' );
+assert_false( true, 'some message (2)' );
+assert_false( false, 'some message (3)', 'pass_bool2' );
+assert_false( false, 'some message (4)' );
+
+
+function unittest_foo
+munit_set_function('wrong_name');
+fname=munit_stats( 'get', 'function_name');
+if ~strcmp(fname,'wrong_name')
+    error('error setting function name ...');
+end
+munit_set_function;
+fname=munit_stats( 'get', 'function_name');
+if ~strcmp(fname,'foo')
+    error('tmu:sf', 'error detecting function name from unittest name...(%s~=%s)', fname, 'foo');
+end
+some_sub_function('foo');
+unittest_bar;
+
+function unittest_bar
+munit_set_function('wrong_name');
+munit_set_function;
+fname=munit_stats( 'get', 'function_name');
+if ~strcmp(fname,'bar')
+    error('tmu:sf', 'error detecting function name from unittest name...(%s~=%s)', fname, 'bar');
+end
+some_sub_function('bar');
+
+function some_sub_function(expected_name)
+munit_set_function('wrong_name');
+munit_set_function;
+fname=munit_stats( 'get', 'function_name');
+if ~strcmp(fname, expected_name)
+    error('tmu:sf', 'error detecting function name from unittest name...(%s~=%s)', fname, expected_name);
+end
+
 
 %% 
 function test_stats(s,ta,ca,af,afp,tf,id)

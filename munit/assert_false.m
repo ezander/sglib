@@ -23,15 +23,12 @@ function assert_false( bool_val, message, assert_id, options )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-switch nargin
-    case 1
-        assert( ~bool_val );
-    case 2
-        assert( ~bool_val, message );
-    case 3
-        assert( ~bool_val, message, assert_id );
-    case 4
-        assert( ~bool_val, message, assert_id, options );
-    otherwise
-        error( 'wrong argument count' );
+if nargin<3
+    assert_id='';
 end
+
+result_list={};
+if bool_val
+    result_list{end+1}={message, assert_id};
+end
+munit_process_assert_results( result_list, assert_id );

@@ -37,7 +37,7 @@ function munit_run_testsuite( varargin )
 
 options=varargin2options( varargin{:} );
 [subdirs,options]=get_option( options, 'subdirs', 'auto' );
-[prefix,options]=get_option( options, 'prefix', 'unittest_' );
+[prefix,options]=get_option( options, 'prefix', munit_options('get','prefix') );
 [curr_dir,options]=get_option( options, 'curr_dir', pwd );
 [module_name,options]=get_option( options, 'module_name', '' );
 [level,options]=get_option( options, 'level', 1 );

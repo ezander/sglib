@@ -29,12 +29,16 @@ function munit_set_function( fun_name )
 
 if nargin<1 || isempty(fun_name)
     frame=dbstack;
-    if length(frame)>=2
-        fun_name=frame(2).name;
-        if strncmp( fun_name, 'unittest_', 5 )
-            fun_name=fun_name( 6:end );
+    prefix=munit_options('get','prefix');
+    fun_name='';
+    for i=2:length(frame)
+        curr_name=frame(i).name;
+        if strncmp( curr_name, prefix, length(prefix) )
+            fun_name=curr_name( length(prefix)+1:end );
+            break;
         end
-    else
+    end
+    if isempty(fun_name)
         warning('could not determine function name from stack'); %#ok
         fun_name='<unknown>';
     end
