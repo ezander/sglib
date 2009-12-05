@@ -19,7 +19,7 @@ function unittest_covariance
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'covariance' );
+munit_set_function( 'covariance' );
 
 % some initialization stuff
 n=300;

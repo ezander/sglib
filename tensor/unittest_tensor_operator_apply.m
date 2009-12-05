@@ -19,7 +19,7 @@ function unittest_tensor_operator_apply
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'tensor_operator_apply' );
+munit_set_function( 'tensor_operator_apply' );
 
 
 % A pretty basic tests that checks that for matrices the result is just

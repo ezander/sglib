@@ -19,7 +19,7 @@ function unittest_pce_multiply
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_multiply' );
+munit_set_function( 'pce_multiply' );
 
 
 % test for multiplication of H1 with itself

@@ -1,18 +1,18 @@
-function assert_set_function( fun_name )
-% ASSERT_SET_FUNCTION Sets the function name for the following assertions.
-%   ASSERT_SET_FUNCTION( FUN_NAME ) sets the function name to FUN_NAME for
+function munit_set_function( fun_name )
+% MUNIT_SET_FUNCTION Sets the function name for the following assertions.
+%   MUNIT_SET_FUNCTION( FUN_NAME ) sets the function name to FUN_NAME for
 %   the following assertions. FUN_NAME can also be empty in which case the
 %   function name is determined via the stack contents, removing any
 %   "unittest_" prefix from the function name.
 %
-% Example (<a href="matlab:run_example assert_set_function">run</a>)
+% Example (<a href="matlab:run_example munit_set_function">run</a>)
 %   % maybe in some function 'unittest_all_of_my_methods'
-%   assert_set_function( 'my_function' );
+%   munit_set_function( 'my_function' );
 %
 %   % in a function 'unittest_my_function' this will also do
-%   assert_set_function();
+%   munit_set_function();
 %
-% See also ASSERT, ASSERT_SET_MODULE
+% See also MUNIT_STATS, MUNIT_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -29,15 +29,18 @@ function assert_set_function( fun_name )
 
 if nargin<1 || isempty(fun_name)
     frame=dbstack;
-    if length(frame)>=2
-        fun_name=frame(2).name;
-        if strncmp( fun_name, 'unittest_', 5 )
-            fun_name=fun_name( 6:end );
+    prefix=munit_options('get','prefix');
+    fun_name='';
+    for i=2:length(frame)
+        curr_name=frame(i).name;
+        if strncmp( curr_name, prefix, length(prefix) )
+            fun_name=curr_name( length(prefix)+1:end );
+            break;
         end
-    else
+    end
+    if isempty(fun_name)
         warning('could not determine function name from stack'); %#ok
         fun_name='<unknown>';
     end
 end
-options.function_name=fun_name;
-assert_set_option( options );
+munit_stats( 'set', 'function_name', fun_name);

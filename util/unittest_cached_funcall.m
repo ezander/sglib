@@ -19,7 +19,7 @@ function unittest_cached_funcall
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'cached_funcall' );
+munit_set_function( 'cached_funcall' );
 
 filename1=tempname;
 filename2=tempname;

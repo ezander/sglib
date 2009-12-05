@@ -18,7 +18,7 @@ function unittest_binfun
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'binfun' );
+munit_set_function( 'binfun' );
 
 A=ones(4,5);
 B=1:5;

@@ -29,7 +29,7 @@ end
 % </ugly_hack>
 
 
-assert_set_function( 'full_tensor_grid' );
+munit_set_function( 'full_tensor_grid' );
 
 % test 1: dummy in dim 1 should give the same as the rule itself
 [xd,wd]=full_tensor_grid( 1, 5, @dummy_rule );

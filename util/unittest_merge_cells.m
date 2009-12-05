@@ -19,7 +19,7 @@ function unittest_merge_cells
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'merge_cells' );
+munit_set_function( 'merge_cells' );
 
 % test parameter placement
 assert_equals( merge_cells( {'a','b'}, {2,4}, {'c','d','e'}), {'c', 'a', 'd', 'b', 'e' }, 'mm' );

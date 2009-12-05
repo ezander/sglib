@@ -19,7 +19,7 @@ function unittest_revkron
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'revkron' );
+munit_set_function( 'revkron' );
 
 M1=3; N1=4;
 M2=2; N2=5;

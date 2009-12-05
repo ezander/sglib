@@ -19,7 +19,7 @@ function unittest_cross_correlation
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'cross_correlation' );
+munit_set_function( 'cross_correlation' );
 
 assert_equals( cross_correlation( [[1;0;0] [1;1;1]], [ [0;2;0] [3;0;0]] ), ...
     [0 1; 1/sqrt(3) 1/sqrt(3)] );

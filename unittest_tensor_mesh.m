@@ -18,7 +18,7 @@ function unittest_tensor_mesh
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'tensor_mesh' );
+munit_set_function( 'tensor_mesh' );
 
 
 % test 1: one dimensional (trivial, but should be checked)

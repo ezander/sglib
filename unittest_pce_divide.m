@@ -19,7 +19,7 @@ function unittest_pce_divide
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_divide' );
+munit_set_function( 'pce_divide' );
 
 
 % test 1a) polynomial * 2

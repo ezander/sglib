@@ -19,7 +19,7 @@ function unittest_multiindex_order
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 % Test for MULTIINDEX_ORDER
-assert_set_function( 'multiindex_order' );
+munit_set_function( 'multiindex_order' );
 ind=multiindex(2,6,[],'use_sparse',true);
 ord=multiindex_order(ind([1,2,3,25,28],:));
 assert_equals( ord, [0,1,1,6,6]', 'order' );

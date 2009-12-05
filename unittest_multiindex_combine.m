@@ -19,7 +19,7 @@ function unittest_multiindex_combine
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'multiindex_combine' );
+munit_set_function( 'multiindex_combine' );
 
 I_f0=multiindex(2,6,[],'use_sparse', false);
 I_k0=multiindex(4,5,[],'use_sparse', false);

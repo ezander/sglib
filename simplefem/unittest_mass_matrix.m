@@ -19,7 +19,7 @@ function unittest_mass_matrix
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'mass_matrix' );
+munit_set_function( 'mass_matrix' );
 
 % one element 1d
 x=[0;1];

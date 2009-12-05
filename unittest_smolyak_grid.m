@@ -18,7 +18,7 @@ function unittest_smolyak_grid
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'smolyak_grid' );
+munit_set_function( 'smolyak_grid' );
 
 % for this ugly hack see 'unittest_full_tensor_grid.m' (for short: we
 % import some private functions here, don't do that at home...)

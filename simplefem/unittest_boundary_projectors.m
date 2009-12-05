@@ -18,7 +18,7 @@ function unittest_boundary_projectors
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'boundary_projectors' );
+munit_set_function( 'boundary_projectors' );
 [P_I,P_B]=boundary_projectors( [1,3,5], 8 );
 
 assert_equals( P_B*(1:8)', [1;3;5], 'P_B' );

@@ -19,7 +19,7 @@ function unittest_pce_expand_1d
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'pce_expand_1d' );
+munit_set_function( 'pce_expand_1d' );
 
 %% Check that the normal distribution is approximated correctly
 mu=3; sigma=5;

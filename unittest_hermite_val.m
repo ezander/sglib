@@ -19,7 +19,7 @@ function unittest_hermite_val
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'hermite_val' );
+munit_set_function( 'hermite_val' );
 
 x=linspace(0,1);
 

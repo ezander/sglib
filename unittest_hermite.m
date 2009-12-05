@@ -19,7 +19,7 @@ function unittest_hermite
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'hermite' );
+munit_set_function( 'hermite' );
 
 % test explicitly polynomials up to order 6
 assert_equals( hermite(0), 1, 'H1' );

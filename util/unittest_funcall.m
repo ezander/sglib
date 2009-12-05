@@ -19,7 +19,7 @@ function unittest_funcall
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'funcall' );
+munit_set_function( 'funcall' );
 
 % old tests
 assert_equals( funcall( {@power,{3}},2 ), 8, 'nopos' );

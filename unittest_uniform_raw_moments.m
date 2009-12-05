@@ -19,7 +19,7 @@ function unittest_uniform_raw_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'uniform_raw_moments' );
+munit_set_function( 'uniform_raw_moments' );
 
 expected=[ 1.0, 0.5, 0.33333333333333331, 0.25, 0.20000000000000001, ...
     0.16666666666666666, 0.14285714285714285, 0.125, 0.1111111111111111, ...

@@ -20,7 +20,7 @@ function unittest_tensor_truncate
 
 
 
-assert_set_function( 'tensor_truncate' );
+munit_set_function( 'tensor_truncate' );
 
 k0=5;
 T={rand(8,k0), rand(10,k0)};
@@ -49,7 +49,7 @@ assert_equals( true, abs(schatten_norm(tensor_add(T,U,-1),2))>eps, 'truncate_0',
 
 if exist( 'schattenp_truncate' ) %#ok
     % copy this function inline to test it
-    assert_set_function( 'schattenp_truncate' );
+    munit_set_function( 'schattenp_truncate' );
 
     s=[5,4,3,2,1];
     assert_equals( schattenp_truncate( s, 6, false, inf ), 0 );

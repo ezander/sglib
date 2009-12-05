@@ -1,4 +1,4 @@
-function assert_true( bool_val, message, assert_id, options  )
+function assert_true( bool_val, message, assert_id  )
 % ASSERT_TRUE Asserts that the given condition is true.
 %   ASSERT_TRUE( BOOL_VAL, MESSAGE, ASSERT_ID, OPTIONS ) checks that
 %   the condition given in BOOL_VAL is true; otherwise issues an assertion.
@@ -8,7 +8,7 @@ function assert_true( bool_val, message, assert_id, options  )
 % Example (<a href="matlab:run_example assert_true">run</a>)
 %   assert_true( x>0, 'x must be a positive number' );
 %
-% See also ASSERT, ASSERT_FALSE, ASSERT_EQUALS
+% See also ASSERT_FALSE, ASSERT_EQUALS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -23,15 +23,12 @@ function assert_true( bool_val, message, assert_id, options  )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-switch nargin
-    case 1
-        assert( bool_val );
-    case 2
-        assert( bool_val, message );
-    case 3
-        assert( bool_val, message, assert_id );
-    case 4
-        assert( bool_val, message, assert_id, options );
-    otherwise
-        error( 'wrong argument count' );
+if nargin<3
+    assert_id='';
 end
+
+result_list={};
+if ~bool_val
+    result_list{end+1}={message, assert_id};
+end
+munit_process_assert_results( result_list, assert_id );

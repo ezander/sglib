@@ -18,7 +18,7 @@ function unittest_stiffness
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'stiffness_matrix' );
+munit_set_function( 'stiffness_matrix' );
 
 % one element 1d
 x=[0;1];

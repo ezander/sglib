@@ -19,7 +19,7 @@ function unittest_normal_raw_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'normal_raw_moments' );
+munit_set_function( 'normal_raw_moments' );
 
 expected=[1, 0, 1, 0, 3, 0, 15, 0, 105, 0, 945];
 assert_equals( expected, normal_raw_moments( 0:10, 0, 1 ), 'mu0sig1' );

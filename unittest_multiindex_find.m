@@ -19,7 +19,7 @@ function unittest_multiindex_find
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'multiindex_find' );
+munit_set_function( 'multiindex_find' );
 
 I=multiindex(5,3);
 

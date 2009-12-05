@@ -11,7 +11,7 @@
 %   assert_reset_options      - Resets the permanent options.
 %   assert_run_testsuite      - Runs all tests in one directory.
 %   assert_set_debug          - Sets debugging in failed assertions on and off.
-%   assert_set_function       - Sets the function name for the following assertions.
+%   munit_set_function        - Sets the function name for the following assertions.
 %   assert_set_module         - Sets the module name for the following assertions.
 %   assert_set_option         - Sets options for the following assertions.
 %   assert_true               - Asserts that the given condition is true.

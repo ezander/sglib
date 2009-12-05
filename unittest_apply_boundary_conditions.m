@@ -18,7 +18,7 @@ function unittest_apply_boundary_conditions
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'apply_boundary_conditions' );
+munit_set_function( 'apply_boundary_conditions' );
 
 
 

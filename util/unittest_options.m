@@ -18,7 +18,7 @@ function unittest_options
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'varargin2options' );
+munit_set_function( 'varargin2options' );
 
 % test 2 element varargin for list, cell, struct
 options_exp=struct( 'foo', 1, 'bar', 'baz', 'supported_fields__', {{}} );

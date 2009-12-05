@@ -19,12 +19,12 @@ function unittest_ismatoct
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-assert_set_function( 'ismatlab' );
+munit_set_function( 'ismatlab' );
 
 isml=ismatlab;
 assert_true( isml==true || isml==false, 'function must return a boolean value' );
 
-assert_set_function( 'isoctave' );
+munit_set_function( 'isoctave' );
 
 isoct=isoctave;
 assert_true( isoct==true || isoct==false, 'function must return a boolean value' );

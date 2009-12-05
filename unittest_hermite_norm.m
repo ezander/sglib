@@ -18,7 +18,7 @@ function unittest_hermite_norm
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-assert_set_function( 'hermite_norm' );
+munit_set_function( 'hermite_norm' );
 
 assert_equals( hermite_norm([0;1;2;3;4]), sqrt([1;1;2;6;24]), 'single' );
 
