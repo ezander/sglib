@@ -1,9 +1,9 @@
-function d=tensor_scalar_product( T1, T2, varargin )
+function d=tensor_scalar_product( T1, T2, G )
 % TENSOR_SCALAR_PRODUCT Compute the scalar product of two sparse tensors.
 %   D=TENSOR_SCALAR_PRODUCT( T1, T2 ) computes the scalar product of the
 %   two sparse tensors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1,
-%   T2, M1, M2 ) the scalar product is taken with respect to the "mass"
-%   matrices or Gramians M1 and M2.
+%   T2, G ) the scalar product is taken with respect to the "mass"
+%   matrices or Gramians in G (i.e. G{1} and G{2} for order 2 tensors).
 %
 % Example (<a href="matlab:run_example tensor_scalar_product">run</a>)
 %
@@ -21,20 +21,18 @@ function d=tensor_scalar_product( T1, T2, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
-[M1,options]=get_option( options, 'M1', [] );
-[M2,options]=get_option( options, 'M2', [] );
-check_unsupported_options( options, mfilename );
+if nargin<3
+    G={[],[]};
+end
 
-S1=inner( T1{1}, T2{1}, M1 );
-S2=inner( T1{2}, T2{2}, M2 );
+S1=inner( T1{1}, T2{1}, G{1} );
+S2=inner( T1{2}, T2{2}, G{2} );
 s=S1.*S2;
 d=-1i*sum(sort(1i*s(:))); % sum in order of ascending magnitude
 
-function S=inner( A, B, M )
-if ~isempty(M)
-    S=A'*M*B;
+function S=inner( A, B, G )
+if ~isempty(G)
+    S=A'*G*B;
 else
     S=A'*B;
 end
-

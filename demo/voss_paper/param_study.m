@@ -63,6 +63,7 @@ for n=1:num_ind
     % 
     fprintf('Param study: %d/%d\n', n, num_ind );
     pack;
+    evalin( 'base', 'clear' );
     for i=1:length(param_names)
         name=param_names{i};
         fprintf('%s\n', strvarexpand('$name$ -> $params.(name)$'));

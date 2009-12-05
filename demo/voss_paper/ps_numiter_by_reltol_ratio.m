@@ -35,13 +35,14 @@ defaults.eps=0;
 % set parameters to vary
 variable.reltol={1e-4,1e-5,1e-6,1e-7};
 variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
-
-variable.reltol={1e-4,1e-7};
-variable.dist_shift={0.1,0.2,3};
-
+%variable.reltol={1e-4};
+%variable.dist_shift={0.1};
 
 % set return fields
-fields={'relerr', 'relres', {'numiter', 'ifelse(flag==0,iter,inf)'}, {'rank', 'size(Ui2{1},2)'}};
+fields={...
+    {'relres','info.relres'}, ...
+    {'numiter', 'ifelse(info.flag==0,info.iter,inf)'}, ...
+    {'rank', 'size(Ui2{1},2)'}, 'info', 'stats'};
 
 % run parameter study
 ps_options={'cache', true, 'cache_file', 'ps_numiter_by_reltol_ratio' };
@@ -59,4 +60,7 @@ surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2ma
 view([-140,14]);
 colormap('copper')
 
+surf(-log(cell2mat(ps_results.reltol)), cell2mat(ps_results.dist_shift), cell2mat(ps_results.numiter) );
+view([-140,14]);
+colormap('copper')
 
