@@ -35,23 +35,26 @@ defaults.eps=0;
 % set parameters to vary
 variable.reltol={1e-4,1e-5,1e-6,1e-7};
 variable.dist_shift={0.1,0.2,0.3, 0.5,0.7, 1,2,3};
-variable.reltol={1e-4};
-variable.dist_shift={0.15, 0.17};
+%variable.reltol={1e-4};
+%variable.dist_shift={0.15, 0.17};
 
 % set return fields
 fields={...
     {'relres','info.relres'}, ...
     {'numiter', 'ifelse(info.flag==0,info.iter,inf)'}, ...
+    {'ratio', 'sqrt(var_k)/mu_k'}, ...
     {'rank', 'size(Ui2{1},2)'}, 'info', 'stats'};
 
 % run parameter study
-ps_options={'cache', false, 'cache_file', mfilename };
+ps_options={'cache', true, 'cache_file', mfilename };
 ps_results=param_study( 'test_solver', variable, defaults, fields, ps_options{:}, varargin{:} );
 
 
 print_results( variable, fields(1:3), ps_results );
 
-
+var.reltol=variable.reltol;
+var.ratio=cell2mat(ps_results.ratio(1,:))
+variable=var;
 ps_bar_plot( variable, 'rank', ps_results );
 userwait;
 

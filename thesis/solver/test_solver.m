@@ -5,7 +5,7 @@ info=process_param( 'dist', info, '$value$' );
 info=process_param( 'dist_params', info, '$value{1}$_$value{2}$' );
 info=process_param( 'dist_shift', info, 'mu$value$' );
 info=process_param( 'dist_scale', info );
-model_base=info.base;
+model_params=info;
 
 info=process_param( 'solver', info, '$value$' );
 info=process_param( 'reltol', info, 'tol$-log10(value)$' );
