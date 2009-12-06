@@ -23,7 +23,8 @@ function testsuite
 
 % TODO: implement proper recursive behaviour of testsuite
 
-munit_run_testsuite( 'module_name', 'sglib' );
+dir=fileparts(mfilename('fullpath'));
+munit_run_testsuite( 'module_name', 'sglib', 'curr_dir', dir );
 
 if false
     subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
