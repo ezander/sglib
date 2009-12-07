@@ -70,11 +70,11 @@ if iscell( func )
     if length(func)<2
         args=varargin;
     elseif ~iscell(func{2})
-        error( 'element 2 of function cell array has to be a cell array of parameters' );
+        error( 'util:funcall:need_cell_array2', 'element 2 of function cell array has to be a cell array of parameters' );
     elseif length(func)<3
         args=cat( 2, varargin, func{2});
     elseif ~iscell(func{3})
-        error( 'element 3 of function cell array has to be a cell array of parameter positions' );
+        error( 'util:funcall:need_cell_array3', 'element 3 of function cell array has to be a cell array of parameter positions' );
     else
         args=merge_cells( func{2}, func{3}, varargin );
     end

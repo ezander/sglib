@@ -8,9 +8,6 @@ function [val,options]=get_option( options, field, default )
 %   is removed from the struct. This feature can be used to make sure only
 %   valid options were passed to the function (struct should be empty after
 %   all options have been queried.)
-%   DEFAULT may also be a struct, in which case a the field DEFAULT.FIELD
-%   will be used as default (this field must exist, no check is made for
-%   existence).
 %
 % Example (<a href="matlab:run_example get_option">run</a>)
 %   function retval=my_function( arg1, arg2, arg3, varargin );
@@ -35,20 +32,16 @@ function [val,options]=get_option( options, field, default )
 
 
 if ~isstruct(options)
-    error( 'First argument to get_option must be a struct (maybe you interchanged options and field?)' );
+    error( 'util:get_option:wrong_param', 'First argument to get_option must be a struct (maybe you interchanged options and field?)' );
 elseif ~ischar(field)
-    error( 'Second argument to get_option must be a string (maybe you interchanged options and field?)' );
-end
+    error( 'util:get_option:wrong_param', 'Second argument to get_option must be a string (maybe you interchanged options and field?)' );
+end;
 
 % set field or use default
 if isfield( options, field )
     val=options.(field);
 else
-    if isstruct(default)
-        val=default.(field);
-    else
-        val=default;
-    end
+    val=default;
 end
 
 % if second output argument present, store field in supported field list

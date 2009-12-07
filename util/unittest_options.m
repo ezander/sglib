@@ -51,6 +51,6 @@ assert_equals( options_act, options_exp, 'empty_struct' );
 options_act=varargin2options({});
 assert_equals( options_act, options_exp, 'empty_cell' );
 
-
-
-
+% test errors
+assert_error( 'get_option({},''x'',1);', 'util:get_option', 'param_check1' );
+assert_error( 'get_option(struct(),2,1);', 'util:get_option', 'param_check2' );

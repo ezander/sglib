@@ -23,7 +23,11 @@ function assert_error( eval_func, expect_err_id, assert_id)
 
 result_list={};
 try
-    funcall( eval_func );
+    if ischar(eval_func)
+        eval(eval_func);
+    else
+        funcall( eval_func );
+    end
     result_list{end+1}={'no error was raised as expected', assert_id};
 catch
     err_struct=lasterror;

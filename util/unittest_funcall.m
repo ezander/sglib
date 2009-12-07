@@ -54,6 +54,7 @@ func={@test_it, {4}};
 [d,e]=funcall( func, 2, 3 );
 assert_equals( [d,e], res, 'param_last' );
 
+
 % test no output arg behaviour
 if ismatlab
   s=evalc( 'funcall( @sin, 3 )' );
@@ -64,6 +65,11 @@ if ismatlab
 end
 x=funcall( @noargout, 3 );
 assert_equals( x, 4, 'no_argout_1' );
+
+assert_error( 'funcall( {@power,[3],{1}},2 );', 'util:funcall', 'param_error1' );
+assert_error( 'funcall( {@power,{3},[1]},2 );', 'util:funcall', 'param_error2' );
+
+
 
 % test behaviour with different function specs
 % string 1

@@ -31,11 +31,11 @@ do_test( 4, 2, 10000, 'large_42' );
 do_test( .2, .9, 20, 'small_0209' );
 do_test( .2, .9, 10000, 'large_0209' );
 
-% this test is very hard since betainc is very steep at the sides and it a
-% long while for the algorithm to converge
-do_test( .4, .2, 20, 'small_0402', 'abstol', 1e-4  );
-%do_test( .4, .2, 10000, 'large_0402', 'abstol', 1e-4  );
+do_test( .4, .2, 10, 'small_0402', 'abstol', 1e-4  );
+do_test( .4, .2, 10, 'small_0402', 'abstol', 1e-4  );
 
+assert_equals( inv_reg_beta( linspace(0,1,10), 0.000001, 0.000001 ), [0,0,0,0,0,1,1,1,1,1], 'small' );
+assert_error( 'inv_reg_beta( [0,1], 1e4, 1e4 )', 'util:inv_reg_beta', 'error_too_large' );
 
 function do_test( a, b, N, id, varargin )
 y=linspace(0,1,N);

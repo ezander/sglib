@@ -30,6 +30,7 @@ function B=row_col_mult( A, x )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% x must be a vector or scalar (isvector checks for both)
 if ~isvector(x)
     error('util:row_col_mult:no_vector', 'input argument x is not a vector');
 end
