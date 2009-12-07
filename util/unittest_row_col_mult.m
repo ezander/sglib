@@ -31,3 +31,6 @@ assert_equals( row_col_mult(sparse([1 2; 3 4]), [1, 2]), [1 4; 3 8], 'row_mult_s
 assert_equals( row_col_mult(sparse([1 2; 3 4]), [1; 2]), [1 2; 6 8], 'col_mult_sp' );
 assert_true( issparse( row_col_mult(sparse([1 2; 3 4]), [1; 2])), [], 'sparse' );
 assert_true( issparse( row_col_mult(sparse([1 2; 3 4]), 1)), [], 'sparse' );
+
+assert_error( {@row_col_mult,{[1 2; 3 4], [1, 2; 2,  3]},{1,2}}, 'util:row_col_mult:', 'no_vector' )
+

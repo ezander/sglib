@@ -36,7 +36,7 @@ for i=pos
     if doeval
         orig=part;
         part=evalin( 'caller', part );
-        part=tostring( part );
+        part=tostring( part, orig );
     end
     exstr=[exstr part];
     lpos=i+1;
@@ -74,6 +74,6 @@ elseif iscell(val)
     str=[str, '}'];
 else
     warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );
-    str=['$', val, '$'];
+    str=['$', orig, '$'];
 end
 
