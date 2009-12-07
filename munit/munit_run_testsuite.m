@@ -5,6 +5,8 @@ function munit_run_testsuite( varargin )
 %   under the module name MODULE_NAME.
 %
 % Options:
+%   dir: <current working directory (pwd)>
+%     The directory in which the testsuite is run.
 %   subdirs: {auto}
 %     Runs MUNIT_RUN_TESTSUITE recursively in all subdirectories. Passing
 %     a cell array of relative pathnames runs MUNIT_RUN_TESTSUITE only in
@@ -15,6 +17,12 @@ function munit_run_testsuite( varargin )
 %     was deliberate by the author to choose the longer name 'unittest' as
 %     default, since it happend to often, that one writes some file
 %     'test_xyz' to try out something, which is no true unit test.
+%   coverage: false
+%     Create and show a coverage report for this run. This indicates to
+%     you, whether all functions in the current dir have been thoroughly
+%     tested. Since this functions relies on the profiler and the coverage
+%     report feature this option is only available in matlab version from
+%     probably 7 onward.
 %
 % Example
 %   munit_reset_options();
@@ -38,8 +46,9 @@ function munit_run_testsuite( varargin )
 options=varargin2options( varargin{:} );
 [subdirs,options]=get_option( options, 'subdirs', 'auto' );
 [prefix,options]=get_option( options, 'prefix', munit_options('get','prefix') );
-[curr_dir,options]=get_option( options, 'curr_dir', pwd );
+[curr_dir,options]=get_option( options, 'dir', pwd );
 [module_name,options]=get_option( options, 'module_name', '' );
+[coverage,options]=get_option( options, 'coverage', false );
 [level,options]=get_option( options, 'level', 1 );
 check_unsupported_options( options, mfilename );
 
@@ -62,16 +71,21 @@ end
 
 % 
 if level==1
-    munit_stats('reset', module_name );
+    munit_stats('reset');
 end
 munit_stats('push', module_name );
 munit_printf('debug', 'Entered module (%d): %s', {level, module_name});
 
+% for coverage report we need to start profiling
+if coverage
+    profile('on');
+end
+
 % first go through subdirs
 for subdir=subdirs
     munit_run_testsuite( 'subdirs','auto', 'prefix', prefix, ...
-        'curr_dir', fullfile(curr_dir, subdir{1}), ...
-        'module_name', [module_name, ':', subdir{1}], ...
+        'dir', fullfile(curr_dir, subdir{1}), ...
+        'module_name', subdir{1}, ...
         'level', level+1);
 end
 
@@ -100,7 +114,12 @@ if length(files) || level==1
 end
 munit_stats('pop' );
 
-
+% need to end profiling if we have started
+if coverage
+    profile('off');
+    full_dir=fullfile(pwd,curr_dir);
+    coveragerpt(full_dir);
+end
 
 
 function safe_eval( unittest_cmd )

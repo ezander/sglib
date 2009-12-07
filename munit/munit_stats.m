@@ -25,6 +25,10 @@ if nargin<1
     cmd='get';
 end
 
+if isempty(munit_stats)
+    munit_stats=init_stats(0);
+end
+
 switch cmd
     case {'reset', 'init'}
         munit_stats=init_stats(0, varargin{:});
@@ -51,7 +55,11 @@ switch cmd
     case 'push'
         old_stats=munit_stats(end);
         stats=init_stats( munit_stats(end).total_assertions, varargin{:} );
-        stats.total_module_name=[old_stats.total_module_name, '/', stats.module_name];
+        if strcmp(old_stats.total_module_name,'<unknown>')
+            stats.total_module_name=stats.module_name;
+        else
+            stats.total_module_name=[old_stats.total_module_name, '/', stats.module_name];
+        end
         munit_stats(end+1)=stats;
     case 'pop'
         ls=munit_stats(end);

@@ -31,7 +31,7 @@ function B=row_col_mult( A, x )
 
 
 if ~isvector(x)
-    error('row_col_mult: input argument x is not a vector');
+    error('util:row_col_mult:no_vector', 'input argument x is not a vector');
 end
 
 if size(x,1)==1

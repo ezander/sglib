@@ -24,14 +24,14 @@ function testsuite
 % TODO: implement proper recursive behaviour of testsuite
 
 dir=fileparts(mfilename('fullpath'));
-munit_run_testsuite( 'module_name', 'sglib', 'curr_dir', dir );
+munit_run_testsuite( 'module_name', 'sglib', 'dir', dir );
 
-if false
-    subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
-    %recursive=true;
-    %dir=get_mfile_path;
-    dir=fileparts(mfilename('fullpath'));
-    prefix='unittest_';
-    disp(dir)
-    munit_run_testsuite( 'sglib', dir, 'subdirs', subdirs, 'prefix', prefix );
-end
+% if false
+%     subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
+%     %recursive=true;
+%     %dir=get_mfile_path;
+%     dir=fileparts(mfilename('fullpath'));
+%     prefix='unittest_';
+%     disp(dir)
+%     munit_run_testsuite( 'sglib', dir, 'subdirs', subdirs, 'prefix', prefix );
+% end
