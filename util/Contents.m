@@ -52,7 +52,7 @@
 % Miscellaneous
 %   merge_cells               - Merges two cell arrays with specified positions.
 %   row_col_mult              - Multiply a matrix column- or row-wise with a vector.
-%   sort_triple               - Sorts an index triple (obsolete).
+
 %
 % Numerical functions
 %   chopabs                   - Replace numbers close to zero with zero.
@@ -72,7 +72,7 @@
 %   unittest_row_col_mult     - Test row_col_mult function.
 %   unittest_chopabs          - Test the CHOPABS function.
 %   unittest_inv_reg_beta     - Test the inverse regularized beta function.
-%   unittest_tkron            - UNITTEST_REVKRON Test the REVKRON and function.
+
 
 
 
@@ -89,3 +89,26 @@
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+%   binfun                    - Computes a binary function with singleton dimensions expanded.
+%   check_function            - Check whether input is callable.
+%   check_match               - Check whether input matrices are compatible.
+%   check_matrix              - Check whether input is a matrix with certain properties.
+%   check_scalar              - Check whether input is scalar.
+%   check_type                - Check whether input is of the specified type.
+%   check_vector              - Check whether input is a vector.
+%   ifelse                    - Returns one of two arguments depending on condition.
+%   makesavepath              - Making necessary subdirs for saving a file.
+%   strvarexpand              - Expand variables and expression inside a string.
+%   unittest_binfun           - Test the BINFUN function.
+%   unittest_checks           - Test the CHECKS function.
+%   unittest_funcall_funfun   - Test the FUNCALL_FUNFUN function.
+%   unittest_get_mfile_path   - Test the GET_MFILE_PATH function.
+%   unittest_ifelse           - Test the IFELSE function.
+%   unittest_isfunction       - Test the ISFUNCTION function.
+%   unittest_isversion        - Test the ISVERSION function.
+%   unittest_makesavepath     - Test the MAKESAVEPATH function.
+%   unittest_options          - Test the OPTIONS function.
+%   unittest_randn_sorted     - Test the RANDN_SORTED function.
+%   unittest_revkron          - Test the REVKRON and function.
+%   unittest_strvarexpand     - Test the STRVAREXPAND function.
+%   unittest_underline        - Test the UNDERLINE function.

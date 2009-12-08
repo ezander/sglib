@@ -1,4 +1,4 @@
-function ok=check_condition( x, emptyok, varname, mfilename, varargin )
+function ok=check_vector( x, emptyok, varname, mfilename, varargin )
 % CHECK_VECTOR Check whether input is a vector.
 %
 % Example (<a href="matlab:run_example check_condition">run</a>)

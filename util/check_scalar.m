@@ -1,4 +1,4 @@
-function ok=check_scalar( x, emptyok, varname, mfilename, varargin )
+function ok=check_scalar( x, emptyok, varname, filename, varargin )
 % CHECK_SCALAR Check whether input is scalar.
 %
 %   Note: pass mfilename literally for the last argument (i.e. pass the
@@ -31,10 +31,6 @@ function ok=check_scalar( x, emptyok, varname, mfilename, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-% TODO: this is really ugly and should go into separate files (maybe
-% retaining this file for compatibility)
-
 options=varargin2options( varargin );
 [mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );
@@ -51,7 +47,7 @@ if ~ok
         emptystr='';
     end
     message=sprintf( '%s must be %sa scalar', varname, emptystr );
-    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
+    check_boolean( ok, message, filename, 'depth', 2, 'mode', mode );
 end
 
 if nargout==0

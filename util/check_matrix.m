@@ -34,10 +34,6 @@ function ok=check_matrix( x, matcond, emptyok, varname, mfilename, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-% TODO: this is really ugly and should go into separate files (maybe
-% retaining this file for compatibility)
-
 options=varargin2options( varargin );
 [mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );

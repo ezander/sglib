@@ -48,8 +48,6 @@ if ~isempty(x1)
     s=s(1:x1(1)-1);
 end
 if ~show
-    %eval( s );
-    %evalin( 'caller', s );
     evalin( 'base', s );
 else
     fprintf( 'Sorry, the example code cannot be run directly (probably some function decls inside).\n' );

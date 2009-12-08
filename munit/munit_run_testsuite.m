@@ -117,7 +117,11 @@ munit_stats('pop' );
 % need to end profiling if we have started
 if coverage
     profile('off');
-    full_dir=fullfile(pwd,curr_dir);
+    if curr_dir(1)=='/'
+        full_dir=curr_dir;
+    else
+        full_dir=fullfile(pwd,curr_dir);
+    end
     coveragerpt(full_dir);
 end
 
