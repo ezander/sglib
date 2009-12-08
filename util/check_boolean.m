@@ -1,4 +1,4 @@
-function ok=check_boolean( ok, message, mfilename, varargin )
+function ok=check_boolean( ok, message, filename, varargin )
 % CHECK_BOOLEAN Check whether condition is true on input.
 %   OK=CHECK_BOOLEAN( COND, MESSAGE, MFILENAME ) checks whether the given condition
 %   is true. If not an error message is printed and the program is aborted.
@@ -36,11 +36,15 @@ options=varargin2options( varargin );
 [depth,options]=get_option( options, 'depth', 1 );
 check_unsupported_options( options, mfilename );
 
+if isempty(filename)
+    filename='util:check';
+end
+
 switch mode
     case 'error'
         stack=dbstack('-completenames');
-        err_struct.message=sprintf( '%s: %s', mfilename, message );
-        err_struct.id=[mfilename ':condition'];
+        err_struct.message=sprintf( '%s: %s', filename, message );
+        err_struct.identifier=[filename ':check_failed'];
         err_struct.stack=stack((1+depth):end);
         % using 'rethrow' instead of 'error' suppresses incorrect
         % reports of error position in 'check_condition' (the 'error'
@@ -48,14 +52,25 @@ switch mode
         % position)
         rethrow( err_struct );
     case 'warning'
-        %warning([mfilename ':condition'], '%s: %s', mfilename, message );
-        fprintf('Warning: %s: %s\n', mfilename, message );
-        stack=dbstack('-completenames');
-        for i=(1+depth):length(stack)
-            fprintf( '  In <a href="matlab: edit %s">%s at line %d</a>\n', stack(i).file, stack(i).name, stack(i).line );
+        if exist('dbstack') %#ok
+            fprintf('Warning: %s: %s\n', filename, message );
+            stack=dbstack('-completenames');
+            for i=(1+depth):length(dbstack)
+                fprintf( '  In <a href="matlab: edit %s">%s at line %d</a>\n', stack(i).file, stack(i).name, stack(i).line );
+            end
+        else
+            warning([filename ':check_failed'], '%s: %s', filename, message );
+        end
+    case 'print'
+        if exist('dbstack') %#ok
+            stack=dbstack('-completenames');
+            i=(1+depth);
+            fprintf( 'Check failed in <a href="error:%s,%d,1">%s at line %d</a>: %s\n', stack(i).file, stack(i).line, stack(i).name, stack(i).line, message );
+        else
+            fprintf( 'Check failed in %s: %s\n', filename, message );
         end
     case 'debug'
-        fprintf( '\nCheck failed in: %s\n%s\n', mfilename, message );
+        fprintf( '\nCheck failed in: %s\n%s\n', filename, message );
         cmd=repmat( 'dbup;', 1, depth );
         fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
         fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )

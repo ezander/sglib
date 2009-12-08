@@ -13,11 +13,11 @@ function ok=check_range( x, lo, hi, varname, mfilename, varargin )
 %   % function my_function( num )
 %     mfile='my_function';
 %     num=3;
-%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'print' );
 %     num=7;
-%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'print' );
 %     num=[1 3];
-%     check_range( num, 1, 5, 'num', mfile, 'mode', 'warning' );
+%     check_range( num, 1, 5, 'num', mfile, 'mode', 'print' );
 %
 % See also CHECK_CONDITION, CHECK_UNSUPPORTED_OPTIONS
 

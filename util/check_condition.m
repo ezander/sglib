@@ -22,7 +22,7 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 % Example (<a href="matlab:run_example check_condition">run</a>)
 %     x=[1;2;3];
 %     A=[1, 2; 3, 4]; B=eye(2);
-%     options=struct( 'mode', 'warning' );
+%     options=struct( 'mode', 'print' );
 %     %pass
 %     check_condition( x, 'vector', false, 'x', mfilename, options );
 %     check_condition( [], 'vector', true, '?', mfilename, options );
@@ -33,7 +33,6 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %     check_condition( {A,[]}, 'match', true, {'A','?'}, mfilename, options );
 %     check_condition( {x,'double'}, 'isa', false, x, mfilename, options );
 %     disp( 'No warning should have appeared until now. But now they come...');
-%     disp( 'Press enter to continue' ); pause;
 %
 %     %fail
 %     check_condition( A, 'vector', true, 'A', mfilename, options );
@@ -60,87 +59,21 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-% TODO: this is really ugly and should go into separate files (maybe
-% retaining this file for compatibility)
-
-options=varargin2options( varargin );
-[mode,options]=get_option( options, 'mode', 'debug' );
-check_unsupported_options( options, mfilename );
-
-if ~any( strmatch( mode, {'error','warning', 'debug'}, 'exact' ) )
-	warning([mfilename ':condition'], 'unknown mode argument: %s', mode );
-    mode='debug';
-end
-
-
-if emptyok
-    emptystr='empty or ';
-else
-    emptystr='';
-end
-
-message=''; % hinder matlab from issuing a stupid error message
-ok=true;
 switch varcond
     case {'vector', 'isvector'}
-        empty=isempty(x);
-        ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty||isvector( x ));
-        if ~ok
-            message=sprintf( '%s must be %sa vector', varname, emptystr );
-        end
+        ok=check_vector( x, emptyok, varname, mfilename, varargin{:} );
     case {'scalar', 'isscalar'}
-        empty=isempty(x);
-        ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty||isscalar( x ));
-        if ~ok
-            message=sprintf( '%s must be %sa scalar', varname, emptystr );
-        end
+        ok=check_scalar( x, emptyok, varname, mfilename, varargin{:} );
     case {'square', 'issquare' }
-        empty=isempty(x);
-        ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty||size(x,1)==size(x,2));
-        if ~ok
-            s1=strtrim(evalc('disp({x})'));
-            message=sprintf( '%s must be %sa square matrix: %s', varname, emptystr, s1);
-        end
+        ok=check_matrix( x, 'square', emptyok, varname, mfilename, varargin{:} );
     case {'function', 'isfunction'}
-        empty=isempty(x);
-        ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty||isfunction( x ));
-        if ~ok
-            message=sprintf( '%s must be %sa function type', varname, emptystr );
-        end
+        ok=check_function( x, emptyok, varname, mfilename, varargin{:} );
     case 'match'
-        % we interpret empty here a bit differently, namely that ALL
-        % dimensions are 0 (that what you get from []). A Nx0 matrix is
-        % also reported as empty by matlab (which makes sense), but still
-        % can be checked for compatibility).
-        empty=max(size(x{1}))==0||max(size(x{2}))==0;
-        ok=ok&&(emptyok||~empty);
-        if ~empty
-            sz1=linear_operator_size( x{1} );
-            sz2=linear_operator_size( x{2} );
-            ok=ok&&(sz1(2)==sz2(1));
-        end
-        if ~ok
-            s1=strtrim(evalc('disp({x{1}})'));
-            s2=strtrim(evalc('disp({x{2}})'));
-            message=sprintf( 'inner dimensions of %s and %s don'' match: %s ~ %s', varname{1}, varname{2}, s1, s2 );
-        end
+        ok=check_match( x{1}, x{2}, emptyok, varname{1}, varname{2}, mfilename, varargin{:} );
     case {'class', 'isa'}
-        empty=isempty(x{1})||isempty(x{2});
-        ok=ok&&(emptyok||~empty);
-        ok=ok&&(empty||isa( x{1}, x{2} ));
-        if ~ok
-            message=sprintf( '%s must be %sof type %s: %s', varname, emptystr, x{2}, class(x{1}) );
-        end
+        ok=check_type( x{1}, x{2}, emptyok, varname, mfilename, varargin{:} );
     otherwise
         error([mfilename ':condition'], '%s: unknown condition to check: %s', mfilename, varcond );
-end
-
-if ~ok
-    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
 end
 
 if nargout==0
