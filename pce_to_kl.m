@@ -48,7 +48,7 @@ check_condition( G_N, 'square', true, 'G_N', mfilename );
 check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
 
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [sparse_svd,options]=get_option( options, 'sparse_svd', false );
 [tol,options]=get_option( options, 'tol', 1e-7 );
 [maxit,options]=get_option( options, 'maxit', 30 );

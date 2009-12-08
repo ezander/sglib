@@ -1,6 +1,6 @@
 function save_eps( basename, topic, varargin );
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [epsdir,options]=get_option( options, 'epsdir', 'eps' );
 [psfrag,options]=get_option( options, 'psfrag', true );
 [writetex,options]=get_option( options, 'writetex', false );

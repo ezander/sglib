@@ -40,7 +40,7 @@ function spy2(A, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [display,options]=get_option( options, 'display', 'nnz' );
 [face_color,options]=get_option( options, 'face_color', 'b' );
 [edge_color,options]=get_option( options, 'edge_color', 'none' );

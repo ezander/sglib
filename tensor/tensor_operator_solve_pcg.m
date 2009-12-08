@@ -1,6 +1,6 @@
 function [X,flag,info,stats]=tensor_operator_solve_pcg( A, F, varargin )
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [M,options]=get_option( options, 'M', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );

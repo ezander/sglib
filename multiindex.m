@@ -51,7 +51,7 @@ if nargin<3 || isempty(combine)
     combine=true;
 end
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [use_sparse,options]=get_option( options, 'use_sparse', false );
 [lex_ordering,options]=get_option( options, 'lex_ordering', false );
 check_unsupported_options( options, mfilename );

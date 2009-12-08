@@ -45,7 +45,7 @@ function [x,p]=empirical_density(xl,n,nc,varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [plot_args,options]=get_option( options, 'plot_args', {} );
 [mesh_interp,options]=get_option( options, 'mesh_interp_method', 'pchip' );
 [poly_interp,options]=get_option( options, 'poly_interp_method', 'spline' );

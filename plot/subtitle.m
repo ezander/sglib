@@ -33,7 +33,7 @@ function subtitle( str, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [position,options]=get_option( options, 'position', 0.97 );
 [interpreter,options]=get_option( options, 'interpreter', 'latex' );
 check_unsupported_options( options, mfilename );

@@ -1,6 +1,6 @@
 function plot_kl_pce_realizations_1d( x, mu_u_j, u_j_i, u_i_alpha, I_u, varargin )
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [n,options]=get_option( options, 'realizations', 20 );
 [xi,options]=get_option( options, 'xi', [] );
 [stat,options]=get_option( options, 'show_stat', 3 );

@@ -20,37 +20,39 @@ function unittest_options
 
 munit_set_function( 'varargin2options' );
 
-% test 2 element varargin for list, cell, struct
-options_exp=struct( 'foo', 1, 'bar', 'baz', 'supported_fields__', {{}} );
-options_act=varargin2options( 'foo', 1, 'bar', 'baz' );
+% test 1 element varargin for list, cell, struct
+options_exp=struct( 'foo', 1, 'bar', 'baz' );
+options_act=varargin2options( {'foo', 1, 'bar', 'baz'} );
 assert_equals( options_act, options_exp, 'list' );
 
-options_act=varargin2options( struct( 'foo', 1, 'bar', 'baz' ) );
-assert_equals( options_act, options_exp, 'list_struct' );
-
-options_act=varargin2options( { 'foo', 1, 'bar', 'baz' } );
-assert_equals( options_act, options_exp, 'list_cell' );
+options_act=varargin2options( {struct( 'foo', 1, 'bar', 'baz' )} );
+assert_equals( options_act, options_exp, 'struct' );
 
 % test 2 element varargin with repetition for list, cell
 
-options_exp=struct( 'foo', 2, 'bar', 'baz', 'supported_fields__', {{}} );
-options_act=varargin2options( 'foo', 1, 'bar', 'baz', 'foo', 2 );
+options_exp=struct( 'foo', 2, 'bar', 'baz' );
+options_act=varargin2options( {'foo', 1, 'bar', 'baz', 'foo', 2} );
 assert_equals( options_act, options_exp, 'repeat' );
 
-options_act=varargin2options( {'foo', 1, 'bar', 'baz', 'foo', 2} );
-assert_equals( options_act, options_exp, 'repeat_cell' );
-
 % test empty varargin for list, cell, struct
-options_exp=struct( 'supported_fields__', {{}} );
-options_act=varargin2options();
+options_exp=struct();
+options_act=varargin2options({});
 assert_equals( options_act, options_exp, 'empty' );
 
-options_act=varargin2options(struct());
+options_act=varargin2options({struct()});
 assert_equals( options_act, options_exp, 'empty_struct' );
 
-options_act=varargin2options({});
-assert_equals( options_act, options_exp, 'empty_cell' );
 
-% test errors
+% test errors for varargin2options
+assert_error( 'varargin2options( struct() );', 'util:varargin2options:', 'no_cell1' );
+assert_error( 'varargin2options( {struct(), ''a'', 1 } );', 'util:varargin2options:', 'args after struct' );
+assert_error( 'varargin2options( {1,2} );', 'util:varargin2options:', 'invalid_name' );
+assert_error( 'varargin2options( {''a''} );', 'util:varargin2options:', 'missing1' );
+assert_error( 'varargin2options( {''a'',1,''b''} );', 'util:varargin2options:', 'missing2' );
+
+
+% test errors for get_option
+munit_set_function( 'get_option' );
+
 assert_error( 'get_option({},''x'',1);', 'util:get_option', 'param_check1' );
 assert_error( 'get_option(struct(),2,1);', 'util:get_option', 'param_check2' );

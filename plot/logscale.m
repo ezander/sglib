@@ -37,7 +37,7 @@ function y=logscale( x, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [cutoff,options]=get_option( options, 'cutoff', 1e-18 );
 [base,options]=get_option( options, 'base', 10 );
 [relscale,options]=get_option( options, 'relscale', false );

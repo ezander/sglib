@@ -48,7 +48,7 @@ function varargout=multiindex_combine( I_j, p, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [use_sparse,options]=get_option( options, 'use_sparse', 'auto' );
 [lex_ordering,options]=get_option( options, 'lex_ordering', false );
 check_unsupported_options( options, mfilename );

@@ -27,7 +27,7 @@ if nargin<3
     assert_id=[];
 end
 
-curr_options=varargin2options( varargin{:} );
+curr_options=varargin2options( varargin );
 options=munit_options();
 
 result_list=compare_values( actual, expected, assert_id, curr_options, options );

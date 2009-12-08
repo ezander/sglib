@@ -1,6 +1,6 @@
 function [X,flag,relres,iter,info]=tensor_operator_solve_richardson( A, F, varargin )
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [M,options]=get_option( options, 'M', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-5 );
 [reltol,options]=get_option( options, 'reltol', 1e-5 );
@@ -59,7 +59,7 @@ function [X,flag,relres,iter]=old_tensor_operator_solve_jacobi( A, F, varargin )
 % SOLVE_LINEAR_STAT_TENSOR Solves a linear system in tensor product form using stationary methods.
 
 % init section
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [M,options]=get_option( options, 'M', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-7 );
 [reltol,options]=get_option( options, 'reltol', 1e-7 );

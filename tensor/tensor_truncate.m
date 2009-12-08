@@ -30,7 +30,7 @@ function [T_k,sigma,k]=tensor_truncate( T, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [G1,options]=get_option( options, 'G1', [] );
 [G2,options]=get_option( options, 'G2', [] );
 [p,options]=get_option( options, 'p', 2 );

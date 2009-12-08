@@ -32,7 +32,7 @@ function [u_alpha,I_u]=pce_transform_multi( g, u_i, varargin )
 %TODO: make pce_transform_multi adhere to naming conventions
 
 % Put options into structure
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [fast,options]=get_option( options, 'fast', false );
 check_unsupported_options( options, mfilename );
 

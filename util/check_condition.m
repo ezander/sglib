@@ -63,7 +63,7 @@ function ok=check_condition( x, varcond, emptyok, varname, mfilename, varargin )
 % TODO: this is really ugly and should go into separate files (maybe
 % retaining this file for compatibility)
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );
 

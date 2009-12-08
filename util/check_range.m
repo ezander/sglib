@@ -33,7 +33,7 @@ function ok=check_range( x, lo, hi, varname, mfilename, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [mode,options]=get_option( options, 'mode', 'debug' );
 check_unsupported_options( options, mfilename );
 

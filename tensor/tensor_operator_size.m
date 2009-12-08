@@ -12,7 +12,7 @@ function S=tensor_operator_size( A, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [optype,options]=get_option( options, 'optype', 'auto' );
 check_unsupported_options( options, mfilename );
 

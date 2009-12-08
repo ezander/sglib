@@ -29,7 +29,7 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [vectorized,options]=get_option( options, 'vectorized', true );
 [max_dist,options]=get_option( options, 'max_dist', inf );
 check_unsupported_options( options, mfilename );

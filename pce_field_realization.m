@@ -23,7 +23,7 @@ function [u_x,xi]=pce_field_realization( x, u_alpha, I_alpha, xi, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [plot_options,options]=get_option( options, 'plot_options', {} );
 check_unsupported_options( options, mfilename );
 

@@ -38,7 +38,7 @@ function Y=tensor_operator_apply( A, X, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [optype,options]=get_option( options, 'optype', 'auto' );
 [vectype,options]=get_option( options, 'vectype', 'auto' );
 check_unsupported_options( options, mfilename );

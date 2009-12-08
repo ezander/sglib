@@ -19,7 +19,7 @@ function C=linear_operator_compose( A, B, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [step_solve,options]=get_option( options, 'step_solve', true );
 check_unsupported_options( options, mfilename );
 

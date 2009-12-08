@@ -65,7 +65,7 @@ check_range( p, 1, 10, 'p', mfilename );
 check_range( m_gam, 1, 1000, 'm_gam', mfilename );
 
 % get options
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 check_unsupported_options( options, mfilename );
 

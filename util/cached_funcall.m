@@ -65,7 +65,7 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [silent,options]=get_option( options, 'silent', true );
 [show_timings,options]=get_option( options, 'show_timings', false );
 [message,options]=get_option( options, 'message', 'Recomputing: %s( %s )' );

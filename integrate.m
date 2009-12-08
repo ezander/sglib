@@ -50,7 +50,7 @@ if nargin==0
     return
 end
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [vectorized,options]=get_option( options, 'vectorized', true );
 [transposed,options]=get_option( options, 'transposed', false );
 [grid,options]=get_option( options, 'grid', 'smolyak' );

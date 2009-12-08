@@ -28,7 +28,7 @@ check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
 check_boolean( size(pos,1)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,1))', mfilename );
 
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 'min' );
 check_unsupported_options( options, mfilename );
 

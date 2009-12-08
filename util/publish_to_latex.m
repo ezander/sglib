@@ -29,7 +29,7 @@ function publish_to_latex( file, read_now, varargin )
 
 
 % parse options
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [puboptions.format,options]=get_option( options, 'format', 'latex' );
 [puboptions.stylesheet,options]=get_option( options, 'stylesheet', '');
 [puboptions.outputDir,options]=get_option( options, 'outputDir', 'tex' );

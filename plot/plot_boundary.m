@@ -21,7 +21,7 @@ function plot_boundary( els, pos, varargin )
 check_boolean( size(els,2)==3, 'elements must be triangles (size(els,2)==3)', mfilename );
 check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 0 );
 [color,options]=get_option( options, 'color', 'k' );
 check_unsupported_options( options, mfilename );

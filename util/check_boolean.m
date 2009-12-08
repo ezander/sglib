@@ -31,7 +31,7 @@ if ok
     return
 end
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [mode,options]=get_option( options, 'mode', 'debug' );
 [depth,options]=get_option( options, 'depth', 1 );
 check_unsupported_options( options, mfilename );

@@ -1,6 +1,6 @@
 function K=load_kl_operator( name, version, mu_r_j, r_i_j, rho_i_alpha, I_r, I_u, stiffness_func, type, varargin )
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [silent,options]=get_option( options, 'silent', true );
 [show_timings,options]=get_option( options, 'show_timings', false );
 [use_waitbar,options]=get_option( options, 'use_waitbar', false );

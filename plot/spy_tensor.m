@@ -1,6 +1,6 @@
 function spy_tensor( A, varargin )
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [num_shown,options]=get_option( options, 'num_shown', 2 );
 [show_all,options]=get_option( options, 'show_all', false );
 [spy_func,options]=get_option( options, 'spy_func', @spy2 );

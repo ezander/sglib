@@ -54,7 +54,7 @@ function [f,sqrt_lambda]=kl_solve_evp( C, G, m, varargin )
 %TODO: dont actually compute GCG, use a function
 %TODO: accept function instead of explicit mass matrix
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [correct_var,options]=get_option( options, 'correct_var', false );
 check_unsupported_options( options, mfilename );
 

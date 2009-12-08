@@ -37,7 +37,7 @@ function s=format_poly( p, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [tight,options]=get_option( options, 'tight', true );
 [twoline,options]=get_option( options, 'twoline', false );
 [symbol,options]=get_option( options, 'symbol', 'x' );
