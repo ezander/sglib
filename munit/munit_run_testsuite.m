@@ -43,7 +43,7 @@ function munit_run_testsuite( varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [subdirs,options]=get_option( options, 'subdirs', 'auto' );
 [prefix,options]=get_option( options, 'prefix', munit_options('get','prefix') );
 [curr_dir,options]=get_option( options, 'dir', pwd );
