@@ -61,15 +61,14 @@ end;
 
 
 if ~isvector(xl)
-    if size(xl,2)>100
+    m=size(xl,2);
+    if m>100
         warning('empirical_density:many_rows', 'Very large amount of rows specified; maybe you want to transpose the vector?');
     end
-    x=zeros(n,0);
-    p=zeros(n,0);
-    for i=1:size(xl,2)
-        [xn,pn]=empirical_density( xl(:,i), n, nc, varargin{:} );
-        x=[x xn];
-        p=[p pn];
+    x=zeros(n,m);
+    p=zeros(n,m);
+    for i=1:m
+        [x(:,i),p(:,i)]=empirical_density( xl(:,i), n, nc, varargin{:} );
     end
 else
     % Sort input values and associate values from [0,1],

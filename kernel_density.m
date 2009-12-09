@@ -54,15 +54,14 @@ end;
 
 
 if ~isvector(xl)
-    if size(xl,2)>100
+    m=size(xl,2);
+    if m>100
         warning('kernel_density:many_rows', 'Very large amount of rows specified; maybe you want to transpose the vector?');
     end
-    x=zeros(n,0);
-    p=zeros(n,0);
+    x=zeros(n,m);
+    p=zeros(n,m);
     for i=1:size(xl,2)
-        [xn,pn]=kernel_density( xl(:,i), n, sig, varargin{:} );
-        x=[x xn];
-        p=[p pn];
+        [x(:,i),p(:,i)]=kernel_density( xl(:,i), n, sig, varargin{:} );
     end
 else
     xl=xl(:);

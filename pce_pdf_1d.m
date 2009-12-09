@@ -1,4 +1,4 @@
-function y=pce_pdf( x, pcc )%, pci )
+function y=pce_pdf_1d( x, pcc )%, pci )
 
 if nargin==0
     pce_pdf( [-10 -8 -4 3]', [3 5 7] )
@@ -19,12 +19,12 @@ for i=1:length(x(:))
     
     sign_minf=sign(p(1))*(1-2*mod(n,2));
     if sign_minf<0
-        r=[-inf; r];
+        r=[-inf; r]; %#ok<AGROW>
     end
     
     sign_inf=sign(p(1));
     if sign_inf<0
-        r=[r; inf];
+        r=[r; inf]; %#ok<AGROW>
     end
     
     y(i)=0;

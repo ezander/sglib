@@ -33,7 +33,6 @@ if nargin<5
     I_Z=I_X;
 end
 
-m_X=size(I_X,1);
 m_Z=size(I_Z,1);
 X_alpha_RHS=compute_pce_rhs( X_alpha, I_X, I_Z );
 
@@ -54,21 +53,7 @@ else
 end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% m_X=size(I_X,1);
 % K=zeros(m_X,m_Z);
 % 
 % for j=1:m_X

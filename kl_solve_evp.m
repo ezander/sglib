@@ -81,15 +81,15 @@ end
 % Since EIGS uses RAND for the starting vector, results are every time
 % different, which makes a problem for cached function calls. Thus the
 % state of RAND is
-rand_state = rand('state');
-rand('state', 0);
+rand_state = rand('state'); %#ok<RAND>
+rand('state', 0); %#ok<RAND>
 eigs_options.disp=0;
 if isempty(G)
     [V,D]=eigs( W, m, 'lm', eigs_options );
 else
     [V,D]=eigs( W, G, m, 'lm', eigs_options );
 end
-rand('state',rand_state);
+rand('state',rand_state); %#ok<RAND>
 
 % retrieve the lambdas
 sqrt_lambda=reshape( sqrt(diag(D)), 1, [] );

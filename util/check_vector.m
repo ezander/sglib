@@ -1,4 +1,4 @@
-function ok=check_vector( x, emptyok, varname, mfilename, varargin )
+function ok=check_vector( x, emptyok, varname, filename, varargin )
 % CHECK_VECTOR Check whether input is a vector.
 %
 % Example (<a href="matlab:run_example check_condition">run</a>)
@@ -45,7 +45,7 @@ if ~ok
         emptystr='';
     end
     message=sprintf( '%s must be %sa vector', varname, emptystr );
-    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
+    check_boolean( ok, message, filename, 'depth', 2, 'mode', mode );
 end
 
 if nargout==0

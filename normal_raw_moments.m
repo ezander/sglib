@@ -24,10 +24,11 @@ if nargin<3
     sigma=1;
 end
 
-for j=0:max(n(:))
+max_n=max(n(:));
+M=zeros(1,max_n+1);
+for j=0:max_n
     % NOTE: we need the hermite polynomials here to compute the moments,
     % hopefully we don't byte ourselved in the tail here
-    M(j+1)=sigma.^j.*hermite_val([zeros(1,j) 1],mu/sigma/i).*(i.^j);
-end    
-    
+    M(j+1)=sigma.^j.*hermite_val([zeros(1,j) 1],mu/sigma/1i).*(1i.^j);
+end
 m=M(n+1);

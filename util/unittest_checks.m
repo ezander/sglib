@@ -39,7 +39,7 @@ assert_true( check_vector( 1, false, 'x' ), [], 'num1' );
 assert_true( check_vector( 2, true, 'x' ), [], 'num2' );
 assert_true( check_vector( [], true, 'x' ), [], 'empty_ok' );
 assert_error( 'check_vector( [], false, ''x'', ''foo'', ''mode'', ''error'' );', 'foo:check.*', 'empty_not_ok' );
-assert_error( 'check_vector( [1 2], false, ''x'', ''foo'', ''mode'', ''error'' );', 'foo:check.*', 'vector1' );
-assert_error( 'check_vector( [1 2], true, ''x'', ''foo'', ''mode'', ''error'' );', 'foo:check.*', 'vector2' );
+assert_error( 'check_vector( [1 2; 3 4], false, ''x'', ''foo'', ''mode'', ''error'' );', 'foo:check.*', 'matrix' );
+assert_error( 'check_vector( [1 2; 3 4], true, ''x'', ''foo'', ''mode'', ''error'' );', 'foo:check.*', 'matrix2' );
 
 

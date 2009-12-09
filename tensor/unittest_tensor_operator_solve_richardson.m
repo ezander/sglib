@@ -8,11 +8,11 @@ assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
 [X,flag,info]=tensor_operator_solve_pcg( A, F, 'M', M );
 Xvec1=reshape( X{1}*X{2}', [], 1 );
-assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts  );
+assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts{:} );
 
 
 [Xvec2,flag,info]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm );
-assert_equals( Xvec2, XvecEx, 'pcg_mat', assert_opts );
+assert_equals( Xvec2, XvecEx, 'pcg_mat', assert_opts{:} );
 
 
 

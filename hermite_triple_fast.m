@@ -105,7 +105,7 @@ if 0
     % This is the implementation I like most, because it's the most
     % symmetric one and doesn't need any reshaping. However, it's 30 to 40
     % percent slower than the current one (above).
-    ni=size(i,1);
+    ni=size(i,1); %#ok<UNRCH>
     nj=size(j,1);
     nk=size(k,1);
     I=repmat( permute(i,[1 3 4 2] ), [1 nj nk 1] );

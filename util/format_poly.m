@@ -36,6 +36,7 @@ function s=format_poly( p, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+%#ok<*AGROW>
 
 options=varargin2options( varargin );
 [tight,options]=get_option( options, 'tight', true );
@@ -44,9 +45,9 @@ options=varargin2options( varargin );
 check_unsupported_options( options, mfilename );
 
 if size(p,1)>1
-    s={};
+    s=cell(1,size(p,1));
     for i=1:size(p,1);
-        s={s{:}, format_poly( p(i,:), varargin{:} )};
+        s{i}=format_poly( p(i,:), varargin{:} );
     end
 else
     s='';
@@ -56,17 +57,17 @@ else
         if a~=0
             if a>0
                 if ~first;
-                    if tight; s=[s '+']; else s=[s ' + ']; end
+                    if tight; s=[s '+']; else s=[s ' + ']; end 
                 end
             else
                 if ~first;
-                    if tight; s=[s '-']; else s=[s ' - ']; end
+                    if tight; s=[s '-']; else s=[s ' - ']; end 
                 else
                     s='-';
                 end
             end
             if ~(abs(a)==1 && i>=2)
-                s=[s num2str(abs(a))];
+                s=[s num2str(abs(a))]; 
             end
             switch(i)
                 case 1

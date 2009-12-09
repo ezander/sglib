@@ -1,4 +1,4 @@
-function y=pce_cdf_1d( x, X_alpha, I_X, varargin )
+function y=pce_cdf( x, X_alpha, I_X, varargin )
 % PCE_CDF Short description of pce_cdf.
 %   PCE_CDF Long description of pce_cdf.
 %
@@ -24,7 +24,6 @@ check_unsupported_options(options,mfilename);
 
 
 m=size(I_X,2);
-iter=1;
 y_r=linspace(0,1,N);
 xi=randn(m,N);
 x_r=pce_evaluate( X_alpha, I_X, xi );

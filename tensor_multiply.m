@@ -56,7 +56,7 @@ else
     
     Z=X*Y';
     zshape=[xshape yshape];
-    if length(zshape)
+    if ~isempty(zshape)
         Z=reshape( Z, zshape );
     end
 end

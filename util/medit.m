@@ -135,6 +135,6 @@ S=[];
 while true
     line=fgets(fid);
     if line==-1; break; end
-    S=[S line];
+    S=[S line]; %#ok<AGROW>
 end
 fclose(fid);

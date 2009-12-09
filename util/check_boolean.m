@@ -1,7 +1,8 @@
 function ok=check_boolean( ok, message, filename, varargin )
 % CHECK_BOOLEAN Check whether condition is true on input.
-%   OK=CHECK_BOOLEAN( COND, MESSAGE, MFILENAME ) checks whether the given condition
-%   is true. If not an error message is printed and the program is aborted.
+%   OK=CHECK_BOOLEAN( COND, MESSAGE, MFILENAME ) checks whether the given
+%   condition is true. If not an error message is printed and the program
+%   is aborted.
 %
 %   Note: pass mfilename literally for the last argument (i.e. pass the
 %   return value of the buildin function 'mfilename' which tells you the

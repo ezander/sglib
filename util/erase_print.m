@@ -37,7 +37,7 @@ function erase_print( varargin )
 persistent n
 if isempty(n); n=0; end;
 cl=repmat(sprintf('\b'), 1, n);
-if length(varargin)
+if ~isempty(varargin)
     s=sprintf( varargin{:} );
     fprintf( [cl s] );
     n=length(s);

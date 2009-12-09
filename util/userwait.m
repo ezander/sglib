@@ -35,17 +35,17 @@ end
 
 switch mode
     case 1
-        if length(msg); disp(msg); end
+        if ~isempty(msg); disp(msg); end
         pause
     case 2
         % There is a bug in matlab that causes the stdout buffer to
         % be flushed after waitforbuttonpress, causing the message to be
         % diplayed much too late.
         % TODO: find a workaround if possible
-        if length(msg); disp(msg); end
+        if ~isempty(msg); disp(msg); end
         try
             waitforbuttonpress
-        catch
+        catch %#ok<CTCH>
             % do nothing, we just don't to have an error message displayed
             % or matlab jump into the debugger, just because the user
             % closed the window

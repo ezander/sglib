@@ -78,7 +78,7 @@ assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u ), Delta, 'multi' );
 if 0
     % this section is for testing speed only
     % don't include in normal test runs
-    hermite_triple_fast(10);
+    hermite_triple_fast(10); %#ok<UNRCH>
     I_k=multiindex(4,4);
     I_f=multiindex(2,3);
     [I_k,I_f,I_u]=multiindex_combine( {I_k, I_f}, -1 );

@@ -24,7 +24,7 @@ switch form
 end
 
 
-function K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
+function K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt ) %#ok<INUSD>
 m_k=size(v_k_i,2);
 K_i=cell(m_k,1);
 Delta_i=cell(m_k,1);
@@ -33,7 +33,7 @@ for i=1:m_k
     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
     Delta_i{i}=sparse(Delta(:,:,i));
 end
-K_mu_delta={K_i{:};Delta_i{:}}';
+K_mu_delta=[K_i,Delta_i];
 
 function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
 v_k_i=[mu_k, v_k_i];
@@ -80,7 +80,6 @@ K_i=cell(m_k,1);
 for i=1:m_k
     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
 end
-m_iota_k=size(I_k,1);
 
 hermite_triple_fast( max([I_u(:);I_k(:)] ) );
 m_alpha_u=size(I_u,1);
@@ -93,7 +92,7 @@ for alpha=1:m_alpha_u
         N=size(K_i{i},1);
         h_i=k_i_iota*squeeze(hermite_triple_fast(I_u(alpha,:),I_u(beta,:),I_k(:,:)));
         if 0
-            K_ab{alpha,beta}=sparse(N,N);
+            K_ab{alpha,beta}=sparse(N,N); %#ok<UNRCH>
             for i=1:m_k
                 K_ab{alpha,beta}=K_ab{alpha,beta}+h_i(i)*K_i{i};
             end
