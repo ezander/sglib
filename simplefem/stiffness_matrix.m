@@ -57,8 +57,6 @@ switch n_dof
         dphi{3}=@(xi)( ones(size(xi,1),1)*[ 0, 1] );
         J=[positions(2,:)-positions(1,:)
             positions(3,:)-positions(1,:)];
-    case 4 % d=3
-        error( 'not yet implemented');
 end
 
 phi_xi=zeros(length(w),n_dof);
