@@ -49,7 +49,3 @@ pos=[0 1; -1 0; 0 0; 1 0; 0 -1];
 assert_equals( els2, [1 2 3; 1 3 4; 3 2 5; 4 3 5], '2d_els' );
 assert_equals( pos2, pos, '2d_pos' );
 
-
-
-assert_error( '', '2d_pos' );
-
