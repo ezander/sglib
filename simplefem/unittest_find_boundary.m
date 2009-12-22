@@ -20,6 +20,20 @@ function unittest_find_boundary
 
 munit_set_function( 'find_boundary' );
 
-[els,pos,bnd]=create_mesh_1d( 5, 0, 2);
+els=create_mesh_1d( 5, 0, 2);
 assert_equals( find_boundary( els ), [1;5], '1d' );
 
+% 2D test for the following grid
+%  1
+% 234
+%  5
+els=[1 2 3; 1 3 4; 2 3 5; 3 4 5];
+assert_equals( find_boundary( els, true ), [1;2;4;5], '2d_points' );
+assert_equals( find_boundary( els, false ), [1 2;1 4;2 5; 4 5], '2d_els' );
+
+% shuffle stuff a bit
+els=els([3,4,1,2],[2,1,3]);
+assert_equals( find_boundary( els, true ), [1;2;4;5], '2d2_points' );
+assert_equals( find_boundary( els, false ), [1 2;1 4;2 5; 4 5], '2d2_els' );
+
+assert_error( 'find_boundary([1 2 3 4])', 'simplefem:find_boundary', 'wrong_dimen' );

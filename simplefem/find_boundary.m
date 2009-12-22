@@ -1,13 +1,13 @@
 function bnd=find_boundary( els, points_only )
 
-d=size(els,2);
+d=size(els,2)-1;
 switch d
-    case 2
+    case 1
         bnd=find_boundary_1d( els );
-    case 3
-        bnd=find_boundary_2d( els );
+    case 2
+        bnd=find_boundary_2d( els, points_only );
     otherwise
-        error('probably you have to pass your position vector transposed...');
+        error('simplefem:find_boundary:param_error', 'Unsupported dimension: %d. Maybe you have to pass your position vector transposed?', d);
 end
 
 

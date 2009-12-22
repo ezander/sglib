@@ -93,3 +93,6 @@ M_ex=accumarray([i,j],s);
 
 M=full( mass_matrix( elems, x ) );
 assert_equals( M, M_ex, 'multielem2d' );
+
+
+assert_error( 'mass_matrix(1:4, rand(4,3))', 'simplefem:mass_matrix', 'wrong_dimen' );

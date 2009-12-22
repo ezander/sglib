@@ -39,3 +39,17 @@ pos3=pos1;
 assert_equals( els1, els2, 'invert1' );
 assert_equals( pos1, pos2, 'invert2' );
 
+% 2D test for the following grid
+%  1
+% 234
+%  5
+els=[1 2 3; 1 3 4; 2 3 5; 3 4 5];
+pos=[0 1; -1 0; 0 0; 1 0; 0 -1];
+[els2,pos2]=correct_mesh( els, pos );
+assert_equals( els2, [1 2 3; 1 3 4; 3 2 5; 4 3 5], '2d_els' );
+assert_equals( pos2, pos, '2d_pos' );
+
+
+
+assert_error( '', '2d_pos' );
+

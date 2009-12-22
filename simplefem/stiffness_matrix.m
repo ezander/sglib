@@ -5,7 +5,6 @@ function K=stiffness_matrix( elems, pos, k )
 %   specified in POS. Linear nodal ansatz functions are used here. K on
 %   input is a vector specifiying a coefficient field given at the nodes.
 
-% TODO: implement for 3d.
 % TODO: check dimension of k
 if nargin<3 || isempty(k)
     k=ones(size(pos,1),1);
@@ -24,10 +23,8 @@ switch d
         w=w/2;
     case 2
         [xi,w]=gauss_legendre_triangle_rule(3);
-    case 3
-        error('not implemented yet');
     otherwise
-        error('probably you have to pass your position vector transposed...');
+        error('simplefem:stiffness_matrix:param_error', 'Unsupported dimension: %d. Maybe you have to pass your position vector transposed?', d);
 end
 
 

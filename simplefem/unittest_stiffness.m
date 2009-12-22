@@ -92,3 +92,5 @@ K_ex=accumarray( [i,j], s );
 
 K=full( stiffness_matrix( elems, x ) );
 assert_equals( K, K_ex, 'multielem2d' );
+
+assert_error( 'stiffness_matrix(1:4, rand(4,3))', 'simplefem:stiffness', 'wrong_dimen' );

@@ -4,8 +4,6 @@ function M=mass_matrix( elems, pos )
 %   or tetrahedral elements specified in ELEMS with nodes specified in POS.
 %   Linear nodal ansatz functions are used here.
 
-% TODO: implement for 3d
-
 N=size(pos,1);
 T=size(elems,1);
 
@@ -19,10 +17,8 @@ switch d
         w=w/2;
     case 2
         [xi,w]=gauss_legendre_triangle_rule(3);
-    case 3
-        error('not implemented yet');
     otherwise
-        error('probably you have to pass your position vector transposed...');
+        error('simplefem:mass_matrix:param_error', 'Unsupported dimension: %d. Maybe you have to pass your position vector transposed?', d);
 end
 
 
@@ -38,21 +34,19 @@ M=0.5*(M+M');
 
 function MT=elementMass( positions, xi, w )
 n_dof=size( positions, 2 )+1;
-switch n_dof
-    case 2 % d=1
+switch n_dof-1
+    case 1 % d=1
         phi{1}=@(xi)(1-xi);
         phi{2}=@(xi)(xi);
         J=positions(2,:)-positions(1,:);
-    case 3 % d=2
+    case 2 % d=2
         phi{1}=@(xi)(1-xi(:,1)-xi(:,2));
         phi{2}=@(xi)(xi(:,1));
         phi{3}=@(xi)(xi(:,2));
         J=[positions(2,:)-positions(1,:)
             positions(3,:)-positions(1,:)];
-    case 4 % d=3
-        error( 'not yet implemented');
 end
-% TODO: what is the best thing to do if det J<0??
+
 if det(J)<=0
     warning( 'mass_matrix:neg_det', 'negative determinant detected' );
 end
