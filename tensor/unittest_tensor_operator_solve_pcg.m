@@ -1,20 +1,19 @@
-function unittest_tensor_operator_solve_richardson
+function unittest_tensor_operator_solve_pcg
 
 [A,Am,M, Mm, F,Fvec]=setup( 5, 3, 3, 2 );
 XvecEx=Am\Fvec;
 tol=1e-7;
-pcg_opts={ 'eps', 1e-7, 'k_max', 2 };
+%pcg_opts={ 'eps', 1e-7, 'k_max', 2 };
 assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
-[X,flag,info]=tensor_operator_solve_pcg( A, F, 'M', M );
+[X,flag]=tensor_operator_solve_pcg( A, F, 'M', M );
 Xvec1=reshape( X{1}*X{2}', [], 1 );
+assert_equals( flag, 0, 'pcg_op_flag' );
 assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts{:} );
 
-
-[Xvec2,flag,info]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm );
+[Xvec2,flag]=tensor_operator_solve_pcg( Am, Fvec, 'M', Mm );
+assert_equals( flag, 0, 'pcg_mat_flag' );
 assert_equals( Xvec2, XvecEx, 'pcg_mat', assert_opts{:} );
-
-
 
 
 
@@ -50,5 +49,5 @@ elseif strcmp(name,'randcorr')
   mat=X'*X;
   mat=0.5*(mat+mat');
 else
-  error( ['Unknown gallery matrix type: ', name ] );
+  error( 'tensor:unittest:internal', 'Unknown gallery matrix type: %s', name );
 end
