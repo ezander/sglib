@@ -46,16 +46,9 @@ if isfunction(f)
 else
     fgam=sort(f(:));
     Ns=length(fgam);
-    if 0
-        % this one is a bit faster then using the inverse cdf on the
-        % interval (0,1), but the other one is more exact and the time
-        % difference doesn't seem to be crucial
-        gam=sort(randn(Ns,1));
-    else
-        uni=linspace(0,1,Ns+2)';
-        uni=uni(2:end-1);
-        gam=sqrt(2)*erfinv(2*uni-1);
-    end
+    uni=linspace(0,1,Ns+2)';
+    uni=uni(2:end-1);
+    gam=sqrt(2)*erfinv(2*uni-1);
 end
 
 for i=0:p

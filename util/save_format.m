@@ -45,7 +45,7 @@ info={get(0,'Format'), get(0,'FormatSpacing') };
 if nargout>0
     format_info=info;
 else
-    format_stack={format_stack{:}, info };
+    format_stack{end+1}=info;
 end
 
 for new_format=varargin

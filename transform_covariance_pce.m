@@ -117,15 +117,14 @@ end
 
 function p=gen_cov_poly( pcc_u, i, j )
 % GEN_COV_POLY Generate transformation polynomial between points i and j.
-p=0;
-for k=2:size(pcc_u,2)
-    ak=factorial(k-1)*pcc_u(i,k)*pcc_u(j,k);
-    p=[ak p];
-end
+M=size(pcc_u,2);
+K=M:-1:1;
+p=factorial(K-1).*pcc_u(i,K).*pcc_u(j,K);
+p(end)=0;
 
 function r=findroot( p )
 % FINDROOT Find the real root in [-1,1] of a polynomial.
-if 1
+if 1==1
     % Using "roots" seems to be somewhat faster in Matlab than determining
     % just the one real root
     rs=roots(p);

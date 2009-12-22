@@ -45,7 +45,7 @@ else
 end
 
 for i=ind
-    dU=tensor_apply( {A{3}{i}, A{4}{i}}, T );
+    %dU=tensor_apply( {A{3}{i}, A{4}{i}}, T );
     U=tensor_truncate( tensor_add( U, U_det ), k, eps );
 end
 

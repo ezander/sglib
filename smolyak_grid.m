@@ -117,12 +117,12 @@ for i=1:size(I,1)
 
     factor=(-1)^(d+stages-1-alpha_sum) * nchoosek(d-1,alpha_sum-stages);
 
-    xd=[xd,tmp_xd];
-    wd=[wd,factor*tmp_wd];
+    xd=[xd,tmp_xd]; %#ok<AGROW>
+    wd=[wd,factor*tmp_wd]; %#ok<AGROW>
 end
 
 if make_unique
-    [xdt,i,j]=unique( xd', 'rows' );
+    [xdt,i,j]=unique( xd', 'rows' ); %#ok<ASGLU>
     wdt=accumarray(j,wd);
     xd=xdt';
     wd=wdt';

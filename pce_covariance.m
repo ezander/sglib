@@ -40,19 +40,6 @@ if nargin==1
 else
     % get the number of coefficient sets (i.e. the number of multivariate
     % Hermite polynomials)
-    if 0
-        % This here is the old unvectorized (slow) version
-        n=size(pcc,2);
-
-        C=zeros(n,n);
-        for i=1:n
-            for j=1:i
-                C(i,j) = sum(pcc(2:end,i).*pcc(2:end,j).*multiindex_factorial(pci(2:end,:)),1);
-                C(j,i) = C(i,j);
-            end
-        end
-    end
-
     f=multiindex_factorial(pci(2:end,:));
     C=pcc(:,2:end,:)*row_col_mult( pcc(:,2:end)', f );
 end

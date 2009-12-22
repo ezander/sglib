@@ -33,7 +33,7 @@ assert_equals( I_N, (0:7)', 'normal_multindex' );
 H=hermite(10,true);
 for p=0:5
     M_h={@power,{p},{2}};
-    [M_alpha,I_M]=pce_expand_1d(M_h,10);
+    M_alpha=pce_expand_1d(M_h,10);
     % only the coefficient for x should be 1, the rest zero
     P_act=M_alpha*H;
     P_ex=double((1:11)==(11-p));

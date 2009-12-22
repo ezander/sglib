@@ -37,7 +37,7 @@ for t=1:T
 
     KT=elementStiffness( coords, k(nodes), xi, w );
 
-    K(nodes,nodes)=K(nodes,nodes)+KT;
+    K(nodes,nodes)=K(nodes,nodes)+KT; %#ok<SPRIX>
 end
 
 
@@ -73,35 +73,15 @@ for i=1:n_dof
 end
 k_xi=phi_xi*k;
 
-invJJ=inv(J*J');
+invJJ=inv(J*J'); %#ok<*MINV>
 
 KT=zeros(n_dof,n_dof);
 for i=1:n_dof
     i2=d*(i-1)+(1:d);
     for j=1:n_dof
         j2=d*(j-1)+(1:d);
-        KT(i,j)=sum(k_xi.*w.*sum((dphi_xi(:,i2)*invJJ).*dphi_xi(:,j2),2));
+        KT(i,j)=sum(k_xi.*w.*sum((dphi_xi(:,i2)*invJJ).*dphi_xi(:,j2),2)); 
     end
 end
 
 KT=det(J)*KT;
-
-
-% function y=N_P1_1d( xi )
-% switch dof
-%     case 1
-%         y=1-xi
-%     case 2
-%         phi{1}=@(xi)(1-xi);
-%         phi{2}=@(xi)(xi);
-%         dphi{1}=@(xi)(-1*one);
-%         dphi{2}=@(xi)( 1*one);
-%         J=positions(2,:)-positions(1,:);
-%     case 3 % d=2
-%         phi{1}=@(xi)(1-xi(:,1)-xi(:,2));
-%         phi{2}=@(xi)(xi(:,1));
-%         phi{3}=@(xi)(xi(:,2));
-%         dphi{1}=@(xi)( [-1*one,-1*one]  );
-%         dphi{2}=@(xi)( [ 1*one, 0*one]  );
-%         dphi{3}=@(xi)( [ 0*one, 1*one]  );
-

@@ -20,3 +20,6 @@ function unittest_find_boundary
 
 munit_set_function( 'find_boundary' );
 
+[els,pos,bnd]=create_mesh_1d( 5, 0, 2);
+assert_equals( find_boundary( els ), [1;5], '1d' );
+

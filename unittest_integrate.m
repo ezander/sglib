@@ -54,30 +54,3 @@ res=[ ones(size(x)); x; y; x.^2; x.*y; y.^2; x.^3; y.^4 ];
 
 
 
-function foobar
-if 0
-    % Calculate integral of monomials with Gaussian weighting function. The
-    % result for x^i should be 0 for odd i and (i-1)!! for even i where
-    % n!!=1x3x5x...xn.
-    expect=@(n)( mod(n-1,2)*prod(1:2:(n-1)) );
-
-    % Testing multidimension gauss hermite quadrature
-    % (Since the integrand simply factors the results should be the same as the
-    % products of the single integrations.)
-    clear a b
-    a=zeros(5,5);
-    b=a;
-    for i=0:4;
-        for j=0:4;
-            f3=@(x,i,j)(x(1)^i*x(2)^j);
-            f={f3,{i,j},{2,3}};
-            a(i+1,j+1)=gauss_hermite_multi( f, 2, 4 );
-            b(i+1,j+1)=expect(i)*expect(j);
-        end;
-    end;
-    assert_equals( a, b, 'gauss_hermite_multi' );
-
-    % This should give e
-end
-
-

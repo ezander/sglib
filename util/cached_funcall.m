@@ -81,7 +81,7 @@ end
 
 % Setting the following to true shouldn't be necessary, since TIC with
 % return value was introduced.
-use_cputime=false;
+use_cputime=1==0;
 
 % if path is given and filename is not absolute => create path
 if ~isempty( path ) && filename(1)~='/'
@@ -96,7 +96,7 @@ end
 %
 try
     s=load( filename );
-catch
+catch %#ok<CTCH>
     s=struct();
 end
 

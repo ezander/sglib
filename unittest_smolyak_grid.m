@@ -69,5 +69,5 @@ a=rand(1,nchoosek(3+5,3));
 assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, [1, 3] ), 'gh_mixed_hlh' );
 [xd,wd]=smolyak_grid( 3, 3, {@gauss_legendre_rule, @gauss_hermite_rule, @gauss_legendre_rule} );
 a=rand(1,nchoosek(3+5,3));
-assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, [2] ), 'gh_mixed_lhl' );
+assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, 2 ), 'gh_mixed_lhl' );
 

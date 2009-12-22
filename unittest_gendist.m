@@ -50,8 +50,6 @@ assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'shift_normal_moments2' );
 % test internal consistency of shifting and scaling with beta distribution
 x=linspace(-10,10,10000);
 h=x(2)-x(1);
-mom_ex=cell(1,4);
-mom_ac=cell(1,4);
 pdf=gendist_pdf('beta', x, {2.5, 3.7}, 1.3, 4.6);
 cdf=gendist_cdf('beta', x, {2.5, 3.7}, 1.3, 4.6);
 % -> test that pdf is the derivative of cdf

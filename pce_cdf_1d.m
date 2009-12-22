@@ -36,12 +36,12 @@ for i=1:length(x(:))
     
     sign_minf=sign(p(1))*(1-2*mod(n,2));
     if sign_minf<0
-        r=[-inf; r];
+        r=[-inf; r]; %#ok<AGROW>
     end
     
     sign_inf=sign(p(1));
     if sign_inf<0
-        r=[r; inf];
+        r=[r; inf]; %#ok<AGROW>
     end
     
     y(i)=0;

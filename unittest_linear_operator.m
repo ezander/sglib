@@ -28,7 +28,7 @@ x=[1; 5];
 y=M*x;
 s=size(M);
 linop1={ size(M), {@mtimes, {M}, {1} } };
-linop2={ linop1{:}, {@mldivide, {M}, {1} } };
+linop2=[ linop1, {{@mldivide, {M}, {1} }} ];
 
 munit_set_function( 'linear_operator_size' );
 
@@ -56,7 +56,7 @@ x=[1; 5; 7];
 y=M*x;
 linop1=linear_operator( M );
 linop2={ size(M), {@mtimes, {M}, {1} } };
-linop3={ linop2{:}, {@mldivide, {M}, {1} } };
+linop3=[ linop2, {{@mldivide, {M}, {1} }}];
 
 assert_equals( linear_operator_solve( M, y ), x, 'M_solve' );
 assert_equals( linear_operator_solve( linop1, y ), x, 'lo1_solve' );

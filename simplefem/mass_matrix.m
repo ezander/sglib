@@ -32,7 +32,7 @@ for t=1:T
 
     MT=elementMass( coords, xi, w );
 
-    M(nodes,nodes)=M(nodes,nodes)+MT;
+    M(nodes,nodes)=M(nodes,nodes)+MT; %#ok<SPRIX>
 end
 M=0.5*(M+M');
 

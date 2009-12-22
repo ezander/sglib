@@ -15,17 +15,17 @@ m_shading_types = {'none', 'faceted', 'interp'};
 m_userwaitmodes = {'keyboard','mouse','continue'};
 
 setters={};
-setters={ setters{:}, {'list', 'userwaitmode', setuserwaitmode('getmode'), m_userwaitmodes  } };
-setters={ setters{:}, {'bool', 'show_greeting', true } };
-setters={ setters{:}, {'bool', 'munit_jump_debugger', true } };
+setters{end+1}={'list', 'userwaitmode', setuserwaitmode('getmode'), m_userwaitmodes  };
+setters{end+1}={'bool', 'show_greeting', true };
+setters{end+1}={'bool', 'munit_jump_debugger', true };
 
-setters={ setters{:}, {'text', 'medit_author', '<author>' } };
-setters={ setters{:}, {'text', 'medit_institution', '<institution>' } };
-setters={ setters{:}, {'bool', 'medit_options_and_notes', false } };
+setters{end+1}={'text', 'medit_author', '<author>' };
+setters{end+1}={'text', 'medit_institution', '<institution>' };
+setters{end+1}={'bool', 'medit_options_and_notes', false };
 
 if exist( 'we_dont_need_that_stuff_yet', 'var' )
-    setters={ setters{:}, {'list', 'shading', 'faceted', m_shading_types } };
-    setters={ setters{:}, {'list', 'solver_show_message', 'error', m_solver_showmessage } };
+    setters{end+1}={'list', 'shading', 'faceted', m_shading_types };
+    setters{end+1}={'list', 'solver_show_message', 'error', m_solver_showmessage };
 end
 
 % do action
@@ -34,7 +34,7 @@ switch action
         settings_file=sglib_get_appdata('settings_file');
         try
             settings=read( settings_file );
-        catch
+        catch %#ok<CTCH>
             settings=struct();
         end
         % for loop setting all defaults on non existent fields
@@ -64,7 +64,7 @@ end
 
 function do_set( settings )
 setuserwaitmode( settings.userwaitmode );
-assert_set_debug( settings.munit_jump_debugger );
+munit_set_debug( settings.munit_jump_debugger );
 
 settings_file=sglib_get_appdata( 'settings_file' );
 write( settings_file, settings );
@@ -106,15 +106,15 @@ bracket=false;
 stringval='';
 for i=1:size(value,1)
     if i>1
-        stringval=[stringval ''';'''];
+        stringval=[stringval ''';''']; %#ok<AGROW>
         bracket=true;
     end
     for j=1:size(value,2)
         c=value(i,j);
         if (c>=32 && c<=126) || (c>=161 && c<=255) 
-            stringval=[stringval c];
+            stringval=[stringval c]; %#ok<AGROW>
         else
-            stringval=[stringval sprintf(''' char(%d) ''',c)];
+            stringval=[stringval sprintf(''' char(%d) ''',c)]; %#ok<AGROW>
             bracket=true;
         end
     end
@@ -146,13 +146,3 @@ while true
     s.(name)=value;
 end
 fclose(fid);
-
-
-
-
-
-
-
-
-
-

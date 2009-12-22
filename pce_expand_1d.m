@@ -40,7 +40,6 @@ function [X_alpha,I]=pce_expand_1d( X_func, p )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 if nargin==0
     unittest_pce_expand_1d;
     return
@@ -49,7 +48,7 @@ end
 I=(0:p)';
 order=2*max(p,1)+2;
 
-vectorized_polys=true;
+vectorized_polys=(1==1);
 if vectorized_polys
     %H=hermite(p,true);
     %int_func={@int_kernel_vecpoly_H, {X_func, H}, {1, 2}};
@@ -68,7 +67,7 @@ function y=int_kernel(X_func, h, x)
 % INT_KERNEL evaluate the pce integral kernel for gauss hermite integration.
 y=funcall( X_func, x).*polyval(h,x);
 
-function y=int_kernel_vecpoly_H( X_func, H, x )
+function y=int_kernel_vecpoly_H( X_func, H, x ) %#ok<DEFNU>
 % INT_KERNEL evaluate the pce integral kernel for gauss hermite integration.
 p=size(H,1)-1;
 Hx=fliplr(H)*real(exp((0:p)'*log(x)) );

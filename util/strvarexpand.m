@@ -38,7 +38,7 @@ for i=pos
         part=evalin( 'caller', part );
         part=tostring( part, orig );
     end
-    exstr=[exstr part];
+    exstr=[exstr part]; %#ok<AGROW>
     lpos=i+1;
     doeval=~doeval;
 end
@@ -55,7 +55,7 @@ if isnumeric(val)
         str='[';
         for i=1:numel(val)
             if i>1
-                str=[str, ','];
+                str=[str, ',']; %#ok<*AGROW>
             end
             str=[str, tostring(val(i))];
         end
