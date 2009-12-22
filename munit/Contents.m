@@ -4,20 +4,20 @@
 % This directory contains functions helping unit testing your application.
 %
 % Unit testing
-%   assert                    - Swiss army knife of the assertion package.
-%   assert_equals             - Check the equality of acutal and expected values.
-%   assert_false              - Asserts that the given condition is false.
-%   assert_print_module_stats - Print the statistics of the current module.
-%   assert_reset_options      - Resets the permanent options.
-%   assert_run_testsuite      - Runs all tests in one directory.
-%   assert_set_debug          - Sets debugging in failed assertions on and off.
-%   munit_set_function        - Sets the function name for the following assertions.
-%   assert_set_module         - Sets the module name for the following assertions.
-%   assert_set_option         - Sets options for the following assertions.
-%   assert_true               - Asserts that the given condition is true.
-%   assert_test_coverage      -
-
-
+%   assert_equals                - Check the equality of acutal and expected values.
+%   assert_error                 - Asserts that the called function emits a correct error.
+%   assert_false                 - Asserts that the given condition is false.
+%   assert_output                - Short description of assert_output.
+%   assert_true                  - Asserts that the given condition is true.
+%   munit_options                - Set or get unit options.
+%   munit_print_stats            - Print the statistics of the current module.
+%   munit_printf                 - Short description of munit_printf.
+%   munit_process_assert_results - Invoked when an assertion has failed.
+%   munit_run_testsuite          - Runs all tests in one directory.
+%   munit_set_debug              - Sets debugging in failed assertions on and off.
+%   munit_set_function           - Sets the function name for the following assertions.
+%   munit_stats                  - Short description of munit_stats.
+%   test_munit                   - Test the munit framework itself.
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -30,5 +30,4 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-%   create_mesh_1d               - Creates a 1D mesh for simple finite element calculations.
-%   load_pdetool_geom            -
+

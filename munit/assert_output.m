@@ -1,8 +1,10 @@
 function assert_output( command, expected_output, assert_id )
 % ASSERT_OUTPUT Short description of assert_output.
-%   ASSERT_OUTPUT Long description of assert_output.
+%   ASSERT_OUTPUT Asserts that a given commmand screen output is correct.
 %
 % Example (<a href="matlab:run_example assert_output">run</a>)
+%    assert_output( 'fprintf(''%03d'', 12)', '012', 'pass' )
+%    assert_output( 'fprintf(''%03d'', 12)', '0012', 'fail' )
 %
 % See also
 
