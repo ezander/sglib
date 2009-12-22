@@ -64,7 +64,7 @@ if ischar( subdirs ) && strcmp( subdirs, 'auto' )
     for i=1:length(files)
         file=files(i);
         if file.isdir && file.name(1)~='.';
-            subdirs={subdirs{:}, file.name };
+            subdirs{end+1}=file.name; %#ok<AGROW>
         end
     end
 end
@@ -93,7 +93,7 @@ end
 pattern=sprintf( '%s/%s*.m', curr_dir, prefix );
 files=dir( pattern );
 
-if length(files) || level==1
+if ~isempty(files) || level==1
     munit_printf('module', 'Testing module (%d): %s', {level, module_name});
 end
 
@@ -109,7 +109,7 @@ for i=1:length(files)
     safe_eval( test_cmd );
 end
 
-if length(files) || level==1
+if ~isempty(files) || level==1
     munit_print_stats();
 end
 munit_stats('pop' );

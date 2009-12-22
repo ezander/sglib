@@ -29,8 +29,8 @@ try
         funcall( eval_func );
     end
     result_list{end+1}={'no error was raised as expected', assert_id};
-catch
-    err_struct=lasterror;
+catch %#ok<CTCH>
+    err_struct=lasterror; %#ok<LERR>
     if regexp( err_struct.identifier, expect_err_id )
         % ok
     else
