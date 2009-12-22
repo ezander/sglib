@@ -18,7 +18,7 @@ function assert_output( command, expected_output, assert_id )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if exist('evalc') %#ok
+if exist('evalc')  %#ok<EXIST>
     if ~isempty(expected_output)
         expected_output=sprintf(expected_output);
     end

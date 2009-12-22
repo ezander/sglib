@@ -22,8 +22,7 @@ function old_val=munit_set_debug( bool_val )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=munit_options('get');
-curr_val=options.debug;
+curr_val=munit_options('get', 'debug');
 
 if nargin<1
     bool_val=true;

@@ -80,6 +80,35 @@ test_stats(munit_stats,0,12,123,0,{},'set_ca')
 
 
 %% 
+fprintf('Testing: set_debug function...\n');
+munit_set_debug;
+test_equal( munit_options('get', 'debug'), true, 'sd_default' );
+munit_set_debug(true);
+test_equal( munit_options('get', 'debug'), true, 'sd_true' );
+munit_set_debug(12.2);
+test_equal( munit_options('get', 'debug'), true, 'sd_num1' );
+munit_set_debug yes
+test_equal( munit_options('get', 'debug'), true, 'sd_str1' );
+munit_set_debug on
+test_equal( munit_options('get', 'debug'), true, 'sd_str2' );
+munit_set_debug true
+test_equal( munit_options('get', 'debug'), true, 'sd_str3' );
+test_equal( munit_set_debug('state'), true, 'sd_state' );
+
+munit_set_debug(false);
+test_equal( munit_options('get', 'debug'), false, 'sd_false' );
+munit_set_debug(0);
+test_equal( munit_options('get', 'debug'), false, 'sd_num2' );
+munit_set_debug no
+test_equal( munit_options('get', 'debug'), false, 'sd_str4' );
+munit_set_debug off
+test_equal( munit_options('get', 'debug'), false, 'sd_str5' );
+munit_set_debug false
+test_equal( munit_options('get', 'debug'), false, 'sd_str6' );
+test_equal( munit_set_debug('state'), false, 'sd_state2' );
+
+
+%% 
 fprintf('Testing: options function...\n');
 
 s=munit_options;
@@ -127,18 +156,18 @@ test_stats(munit_stats,7,0,4,1,[],'stats_proc_assert2');
 munit_stats('push','saeq');
 unittest_assert_equals;
 munit_print_stats;
-test_stats(munit_stats,52,45,27,0,[],'stats_assert_equals1');
+test_stats(munit_stats,53,46,27,1,[],'stats_assert_equals1');
 munit_stats('pop');
 munit_print_stats;
-test_stats(munit_stats,52,0,31,1,[],'stats_assert_equals2');
+test_stats(munit_stats,53,0,31,2,[],'stats_assert_equals2');
 
 munit_stats('push','sab');
 unittest_assert_bool;
 munit_print_stats;
-test_stats(munit_stats,60,8,4,0,[],'stats_assert_bool1');
+test_stats(munit_stats,61,8,4,0,[],'stats_assert_bool1');
 munit_stats('pop');
 munit_print_stats;
-test_stats(munit_stats,60,0,35,1,[],'stats_assert_bool2');
+test_stats(munit_stats,61,0,35,2,[],'stats_assert_bool2');
 
 
 munit_stats('push','error');
@@ -237,6 +266,9 @@ assert_equals( cell(2,2), cell(2,2), 'pass_cell4' );
 assert_equals( {1,'aaa',true}, {1,'aaa',true}, 'pass_cell5' );
 assert_equals( cell(2,2,2), cell(2,2,2), 'pass_cell6' );
 
+assert_equals( 1, 2, 'fail_fuzzy', 'fuzzy', true );
+
+
 
 function unittest_assert_bool
 munit_set_function('assert_true');
@@ -265,7 +297,7 @@ function unittest_foo
 munit_set_function('wrong_name');
 fname=munit_stats( 'get', 'function_name');
 if ~strcmp(fname,'wrong_name')
-    error('error setting function name ...');
+    error('tmu:sf', 'error setting function name ...');
 end
 munit_set_function;
 fname=munit_stats( 'get', 'function_name');

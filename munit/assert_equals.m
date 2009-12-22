@@ -23,23 +23,28 @@ function assert_equals( actual, expected, assert_id, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+%#ok<*AGROW>
+%#ok<*MSNU>
+
 if nargin<3
     assert_id=[];
 end
 
 curr_options=varargin2options( varargin );
+fuzzy=get_option( curr_options, 'fuzzy', false );
+
 options=munit_options();
 
 result_list=compare_values( actual, expected, assert_id, curr_options, options );
-munit_process_assert_results( result_list, assert_id );
+munit_process_assert_results( result_list, assert_id, 'fuzzy', fuzzy );
 
 function result_list=compare_values( actual, expected, assert_id, curr_options, options )
 
 result_list=compare_types( actual, expected, assert_id );
-if length(result_list); return; end
+if ~isempty(result_list); return; end
 
 result_list=compare_size( actual, expected, assert_id );
-if length(result_list); return; end
+if ~isempty(result_list); return; end
 
 result_list=compare_content( actual, expected, assert_id, curr_options, options );
 
@@ -130,7 +135,7 @@ if any(~comp(:))
         for i=1:min(size(ind,1),max_assertion_disp+1)
             curr=ind(i,:);
             msg=sprintf( 'values don''t match at %s: %g~=%g', print_vector('%d',curr, ','), actual(linind(i)), expected(linind(i)));
-            result_list{end+1}={msg, assert_id};
+            result_list{end+1}={msg, assert_id}; 
         end
     end
 end
@@ -140,7 +145,7 @@ function result_list=compare_logical( actual, expected, assert_id, curr_options,
 result_list={};
 
 % Get the max number of assertions to confront the user with
-max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options );
+max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options.max_assertion_disp);
 
 % Do actual comparison
 comp = (actual==expected);
@@ -202,19 +207,19 @@ end
 for i=1:length(common)
     new_assert_id=sprintf('%s.%s', assert_id, common{i});
     new_list=compare_values( actual.(common{i}), expected.(common{i}), new_assert_id, curr_options, options );
-    result_list={result_list{:}, new_list{:}};
+    result_list=[result_list, new_list];
 end
 
 
 %%
-function result_list=compare_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented
+function result_list=compare_cell( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented 
 % ASSERT_EQUALS_CELL Assert equality for cell arrays.
 result_list={};
 
 for i=1:numel(actual)
     new_assert_id=sprintf('%s%s', assert_id, print_vector('%g', ind2sub(i,size(actual)), ',', true) );
     new_list=compare_values( actual{i}, expected{i}, new_assert_id, curr_options, options );
-    result_list={result_list{:}, new_list{:}};
+    result_list=[result_list, new_list];
 end
 
 
