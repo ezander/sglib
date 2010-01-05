@@ -1,8 +1,9 @@
 function Z=tensor_null( T )
 % TENSOR_NULL Create a sparse null tensor with correct dimensions.
 %   Z=TENSOR_NULL( T ) create a sparse tensor product with the same
-%   dimensions as the tensor T. In more detail: suppose T consists of an
-%   N*K and an M*K matrix then Z will consist of an N*0 and an M*0 matrix.
+%   dimensions as the tensor T (which is used as kind of a model). In more
+%   detail: suppose T consists of an N*K and an M*K matrix then Z will
+%   consist of an N*0 and an M*0 matrix.
 %
 % Example (<a href="matlab:run_example tensor_null">run</a>)
 %   T={rand(8,3), rand(10,3)}
@@ -24,9 +25,13 @@ function Z=tensor_null( T )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-%Z={T{1}(:,[]),T{2}(:,[])};
-if isnumeric(T)
+if isfull(T)
     Z=zeros(size(T));
+elseif iscanonical(T)
+    dims=cellfun('size', T, 1 );
+    C=zeros(sum(dims),0);
+    Z=mat2cell(C,dims)';
 else
-    Z={zeros(size(T{1},1),0),zeros(size(T{2},1),0)};
+    error( 'tensor:tensor_null:param_error', ...
+        'input parameter is no recognized tensor format' );
 end

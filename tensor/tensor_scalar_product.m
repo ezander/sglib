@@ -22,13 +22,44 @@ function d=tensor_scalar_product( T1, T2, G )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<3
-    G={[],[]};
+    G=[];
 end
 
-S1=inner( T1{1}, T2{1}, G{1} );
-S2=inner( T1{2}, T2{2}, G{2} );
-s=S1.*S2;
-d=-1i*sum(sort(1i*s(:))); % sum in order of ascending magnitude
+[bool1,format1]=istensor(T1);
+[bool2,format2]=istensor(T2);
+
+if ~bool1 || ~bool2
+    error( 'tensor:tensor_scalar_product:param_error', ...
+        'one input parameter is in no recognized tensor format' );
+end
+if ~strcmp(format1,format2)
+    error( 'tensor:tensor_scalar_product:param_error', ...
+        'input parameter have different tensor formats' );
+end
+
+
+if isfull(T1)
+    if ~isempty(G)
+        error('tensor:tensor_scalar_product:not_implemented', 'not implemented yet' );
+    end
+    S=T1.*T2;
+elseif iscanonical(T1)
+    S=ones(tensor_rank(T1),tensor_rank(T2));
+    for i=1:length(T1)
+        if isempty(G)
+            S=S.*inner(T1{i},T2{i},[]);
+        else
+            S=S.*inner(T1{i},T2{i},G{i});
+        end
+    end
+else
+    error( 'tensor:tensor_scalar_product:param_error', ...
+        'input parameter is no recognized tensor format' );
+end
+d=-1i*sum(sort(1i*S(:))); % sum in order of ascending magnitude
+
+
+
 
 function S=inner( A, B, G )
 if ~isempty(G)

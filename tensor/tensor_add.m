@@ -1,6 +1,6 @@
 function T=tensor_add( T1, T2, alpha )
-% TENSOR_ADD Add two sparse tensor products.
-%   TENSOR_ADD( T1, T2, ALPHA ) adds two sparse tensors T1 and T2,
+% TENSOR_ADD Add two tensors.
+%   TENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2,
 %   multiplying T2 by ALPHA first if given.
 %
 % Note 1: implementation is of course trivial, since addition of sparse
@@ -35,10 +35,27 @@ if nargin<3
     alpha=1;
 end
 
-if iscell(T1) && iscell(T2)
+[bool1,format1]=istensor(T1);
+[bool2,format2]=istensor(T2);
+
+if ~bool1 || ~bool2
+    error( 'tensor:tensor_null:param_error', ...
+        'one input parameter is in no recognized tensor format' );
+end
+if ~strcmp(format1,format2)
+    error( 'tensor:tensor_null:param_error', ...
+        'input parameter have different tensor formats' );
+end
+
+if isfull(T1)
+    T=T1+alpha*T2;
+elseif iscanonical(T1)
     % Important: apply alpha only to one argument! This guy is a tensor not
     % a cartesian product.
-    T={ [T1{1},alpha*T2{1}], [T1{2},T2{2}] };
+    T2{1}=alpha*T2{1};
+    dims=cellfun('size', T1, 1 );
+    T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
 else
-    T=T1+alpha*T2;
+    error( 'tensor:tensor_null:param_error', ...
+        'input parameter is no recognized tensor format' );
 end

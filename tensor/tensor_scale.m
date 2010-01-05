@@ -20,15 +20,17 @@ function U=tensor_scale( T, alpha )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if iscell(T)
-    if alpha==0 % yep, exact test for floating points is ok here
-        % If scale if zero we can save space by returning a real null tensor
-        U=tensor_null(T);
-    else
-        % Important: apply alpha only to one argument! This guy is a tensor not
-        % a cartesian product.
-        U={ alpha*T{1}, T{2} };
-    end
-else
+if alpha==0 % yep, exact test for floating points is ok here
+    % If scale if zero we can save space by returning a real null tensor
+    U=tensor_null(T);
+elseif isfull(T)
     U=alpha*T;
+elseif iscanonical(T)
+    % Important: apply alpha only to one argument! This guy is a tensor not
+    % a cartesian product.
+    U=T;
+    U{1}=alpha*T{1};
+else
+    error( 'tensor:tensor_scale:param_error', ...
+        'input parameter is no recognized tensor format' );   
 end
