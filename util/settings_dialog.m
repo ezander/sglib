@@ -66,7 +66,7 @@ switch setter_info{1}
         control.handles.(name)=h;
         
     otherwise
-        error( 'not supported' );
+        error( 'util:settings_dialog:unknown_elem', 'Unsupported element: %s', setter_info{1} );
 end
 
 
@@ -90,7 +90,7 @@ for setter=setters
             value=get( control.handles.(name), 'String' );
             settings.(name)=value;
         otherwise
-            error( 'not supported' );
+            error( 'util:settings_dialog:unknown_elem', 'Unsupported element: %s', setter_info{1} );
     end
 end
 if ~isempty( control.set_callback )

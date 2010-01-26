@@ -26,6 +26,7 @@ function exstr=strvarexpand( str )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+%#ok<*MSNU>
 
 exstr='';
 lpos=1;
@@ -38,7 +39,7 @@ for i=pos
         part=evalin( 'caller', part );
         part=tostring( part, orig );
     end
-    exstr=[exstr part]; %#ok<AGROW>
+    exstr=[exstr part]; %#ok<AGROW> 
     lpos=i+1;
     doeval=~doeval;
 end
