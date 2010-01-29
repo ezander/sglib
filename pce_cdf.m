@@ -22,16 +22,19 @@ options=varargin2options(varargin);
 [N,options]=get_option(options,'N',10000);
 check_unsupported_options(options,mfilename);
 
-
+% generate random samples
 m=size(I_X,2);
-y_r=linspace(0,1,N);
 xi=randn(m,N);
 x_r=pce_evaluate( X_alpha, I_X, xi );
 x_r=sort(x_r);
+y_r=linspace(0,1,N);
+
+% remove duplicates
 rmind=(abs(x_r(2:end)-x_r(1:end-1))==0);
 x_r(rmind)=[];
 y_r(rmind)=[];
+
+% interpolate and fix both ends of the distribution
 y=interp1(x_r, y_r, x, 'pchip', NaN );
 y(isnan(y) & (x<=x_r(1)))=0;
 y(isnan(y) & (x>=x_r(end)))=1;
-
