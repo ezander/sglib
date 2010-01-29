@@ -1,4 +1,4 @@
-function save_eps( basename, topic, varargin );
+function save_eps( basename, topic, varargin )
 
 options=varargin2options( varargin );
 [epsdir,options]=get_option( options, 'epsdir', 'eps' );
@@ -14,7 +14,7 @@ if ~success
     error( messageid, 'mkdir %s did not succeed: %s', epsdir, message);
 end
 if ~exist(epsdir,'dir')
-    error( '%s exists but is not a directory', epsdir );
+    error( 'util:save_eps:not_a_directory', '%s exists but is not a directory', epsdir );
 end
 
 % erase title (this the user should supply in the figure caption), usually
@@ -24,8 +24,11 @@ if notitle;
 end
 
 % Now save the EPS
-filename=sprintf( './%s/%s-%s.eps', epsdir, basename, topic );
+if ischar(topic)
+    % old deprecated version
+    filename=sprintf( './%s/%s-%s.eps', epsdir, basename, topic );
+else
+    filename=sprintf( './%s/%s.eps', epsdir, basename );
+    filename=sprintf( filename, topic{:} );
+end
 print( filename, '-depsc2' );
-
-
-
