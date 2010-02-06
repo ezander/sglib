@@ -32,6 +32,6 @@ sglib_startup;
 % user pathdefs might be resetted.
 userdir=getenv('HOME');
 if ~strcmp(userdir, pwd) && exist([userdir '/startup.m'], 'file')
-    fprintf('Running user startup.m ...\m')
+    %fprintf('Running user startup.m ...\n')
     run([userdir '/startup.m'])
 end
