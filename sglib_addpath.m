@@ -60,6 +60,14 @@ addpath( [basepath '/util'] );
 addpath( [basepath '/tensor'] );
 addpath( [basepath '/simplefem'] );
 
+if exist( [basepath '/thesis'], 'dir' )
+  addpath( [basepath '/thesis'] )
+end
+if exist( [basepath '/paramstudy'], 'dir' )
+  addpath( [basepath '/paramstudy'] )
+end
+
+
 if add_octave_path
     addpath( [basepath '/octcompat'] );
 end
