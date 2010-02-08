@@ -3,3 +3,4 @@ sglib.settings
 *.eps
 *.mat
 *~
+*.log
