@@ -73,3 +73,9 @@ pcc=pce_expand_1d(h,p);
 [mp,vp,sp]=pce_moments( pcc );
 assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognormal', 'abstol', [1e-8,1e-6,2e-3] );
 
+
+%% Uniform distribution
+[m,v,s,k]=uniform_moments( 2, 4 );
+assert_equals( [m,v,s,k], [3,4/12,0,-6/5], 'exp' );
+
+

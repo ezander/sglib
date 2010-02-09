@@ -101,6 +101,25 @@ F=beta_cdf(x1,a,b);
 F2=pdf_integrate( beta_pdf(x2,a,b), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
+%% Uniform distribution
+a=2; b=4;
+munit_set_function('uniform_cdf');
+assert_equals( uniform_cdf(1.9,a,b), 0, 'cdf_smaller' );
+assert_equals( uniform_cdf(2.5,a,b), 1/4, 'cdf_inside' );
+assert_equals( uniform_cdf(5,a,b), 1, 'cdf_larger' );
+assert_equals( uniform_cdf((a+b)/2,a,b), 1/2, 'cdf_median' );
+
+munit_set_function('uniform_pdf');
+assert_equals( uniform_pdf(-inf,a,b), 0, 'pdf_minf' );
+assert_equals( uniform_pdf(3.5,a,b), 1/2, 'pdf_inside' );
+assert_equals( uniform_pdf(inf,a,b), 0, 'pdf_inf' );
+
+[x1,x2]=linspace_mp( -0.1, 5 );
+F=uniform_cdf( x1, a,b );
+F2=pdf_integrate( uniform_pdf( x2, a,b ), F, x1);
+assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
+
+
 function [x1,x2]=linspace_mp( xmin, xmax )
 x1=linspace(xmin,xmax,100);
 x2=x1(1:end-1)+(x1(2)-x1(1))/2;
