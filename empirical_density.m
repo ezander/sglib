@@ -21,12 +21,15 @@ function [x,p]=empirical_density(xl,n,nc,varargin)
 %
 % Example (<a href="matlab:run_example empirical_density">run</a>)
 %   xn=[randn(10000,1), 2*rand(10000,1)-2];
+%   x=linspace(-4,4);
 %   subplot(2,1,1);
 %   empirical_density( xn, 30, 10, 'plot_args', {'-*'} );
+%   hold on; plot( x, normal_pdf(x,0,1),'k', x, uniform_pdf(x,-2,0),'k'); hold off;
 %   xlabel( 'empirical density plot' );
 %   legend( 'normal dist.', 'uniform dist.' );
 %   subplot(2,1,2);
 %   kernel_density( xn, 30, 0.1, '-*' );
+%   hold on; plot( x, normal_pdf(x,0,1),'k', x, uniform_pdf(x,-2,0),'k'); hold off;
 %   xlabel( 'kernel density plot' );
 %   legend( 'normal dist.', 'uniform dist.' );
 %
