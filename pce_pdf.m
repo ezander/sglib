@@ -36,12 +36,12 @@ y_r(rmind)=[];
 
 % now interpolate to coarse mesh
 M=30;
-x_c=linspace( min(x_r), max(x_r), M );
-y_c=interp1(x_r, y_r, x_c, 'spline');
+%x_c=linspace( min(x_r), max(x_r), M );
+%y_c=interp1(x_r, y_r, x_c, 'spline');
 
 ind=round(linspace(1,length(x_r),M));
 x_c=x_r(ind);
-y_c=y_r(ind);;
+y_c=y_r(ind);
 
 
 
