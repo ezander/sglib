@@ -22,6 +22,3 @@ ylim([-10,10])
 grid on
 title('Hermite polynomials')
 save_thesis_figure( 'hermite_polynomials_1d', {} );
-
-
-
