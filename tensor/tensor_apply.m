@@ -32,14 +32,14 @@ function U=tensor_apply( A, T )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-%U={ apply(A{1},T{1}), apply(A{2},T{2}) };
-U=cellfun( @apply, A, T, 'UniformOutput', false );
+U=cellfun( @linear_operator_apply, A, T, 'UniformOutput', false );
 
-function U=apply( A, T )
-if isfunction(A)
-    U=funcall(A,T);
-elseif isnumeric(A)
-    U=A*T;
-else
-    error([ 'unknown type for apply: ', class(A)]);
-end
+%U={ apply(A{1},T{1}), apply(A{2},T{2}) };
+% function U=apply( A, T )
+% if isfunction(A)
+%     U=funcall(A,T);
+% elseif isnumeric(A)
+%     U=A*T;
+% else
+%     error([ 'unknown type for apply: ', class(A)]);
+% end

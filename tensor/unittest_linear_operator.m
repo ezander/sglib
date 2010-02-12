@@ -44,7 +44,7 @@ assert_equals( linear_operator_apply( linop2, x ), y, 'lo2_apply' );
 
 munit_set_function( 'linear_operator' );
 
-linop1=linear_operator( M );
+linop1=linear_operator_from_matrix( M );
 assert_equals( linear_operator_size( linop1 ), s, 'lo1_size' );
 assert_equals( linear_operator_apply( linop1, x ), y, 'lo1_apply' );
 
@@ -54,7 +54,7 @@ munit_set_function( 'linear_operator_solve' );
 M=[1, 2, 3; 3, 4, 6; 5, 10, 14];
 x=[1; 5; 7];
 y=M*x;
-linop1=linear_operator( M );
+linop1=linear_operator_from_matrix( M );
 linop2={ size(M), {@mtimes, {M}, {1} } };
 linop3=[ linop2, {{@mldivide, {M}, {1} }}];
 
@@ -74,8 +74,8 @@ x=[1; 5; 2];
 y=A*B*x;
 s=size(A*B);
 linop1=linear_operator_compose( A, B );
-linop2=linear_operator_compose( linear_operator(A), linear_operator(B), 'step_solve', false );
-linop3=linear_operator_compose( linear_operator(A), linear_operator(B) );
+linop2=linear_operator_compose( linear_operator_from_matrix(A), linear_operator_from_matrix(B), 'step_solve', false );
+linop3=linear_operator_compose( linear_operator_from_matrix(A), linear_operator_from_matrix(B) );
 
 assert_equals( linear_operator_size( linop1 ), s, 'loc1_size' );
 assert_equals( linear_operator_size( linop2 ), s, 'loc2_size' );
