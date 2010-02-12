@@ -27,6 +27,11 @@ C={A{1}, @(x)(A{2}*x)};
 UA=tensor_apply(A,T);
 UB=tensor_apply(B,T);
 UC=tensor_apply(C,T);
-assert_equals( UA{1}*UA{2}', UB{1}*UB{2}' );
-assert_equals( UA{1}*UA{2}', UC{1}*UC{2}' );
+assert_equals( UA, {A{1}*T{1}, A{2}*T{2}}, 'mat' );
+assert_equals( UB, {A{1}*T{1}, A{2}*T{2}}, 'op' );
+assert_equals( UC, {A{1}*T{1}, A{2}*T{2}}, 'mat_op' );
 
+T={rand(8,3), rand(10,3), rand(12,3), rand(13,3)};
+A={rand(8,8), rand(10,10), rand(12,12), rand(13,13)};
+U=tensor_apply(A, T);
+assert_equals( U, {A{1}*T{1}, A{2}*T{2}, A{3}*T{3}, A{4}*T{4}}, 'ord4' );

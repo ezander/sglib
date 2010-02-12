@@ -32,8 +32,8 @@ function U=tensor_apply( A, T )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-U={ apply(A{1},T{1}), apply(A{2},T{2}) };
+%U={ apply(A{1},T{1}), apply(A{2},T{2}) };
+U=cellfun( @apply, A, T, 'UniformOutput', false );
 
 function U=apply( A, T )
 if isfunction(A)

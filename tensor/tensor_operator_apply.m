@@ -132,8 +132,8 @@ end
 
 
 function Y=apply_tensor_mat( A, X )
-% TODO: doesn't yet work with higher order tensors
 % TODO: no reduction yet
+check_second_order(A);
 check_condition( {A{1,1},X}, 'match', false, {'A{1,1}','X'}, mfilename );
 check_condition( {A{1,2},X'}, 'match', false, {'A{1,2}','X'''}, mfilename );
 
@@ -146,8 +146,15 @@ end
 
 
 function Y=apply_tensor_vect( A, X )
+check_second_order(A);
 [M1,N1]=linear_operator_size(A{1,1});
 [M2,N2]=linear_operator_size(A{1,2});
 X=reshape( X, [N1, N2] );
 Y=apply_tensor_mat( A, X );
 Y=reshape( Y, [M1*M2,1] );
+
+
+function check_second_order(A)
+if size(A,2)>2
+    error('tensor:tensor_operator_apply:only_second_order', 'Method only implemented for tensor operators of second order.' );
+end

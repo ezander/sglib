@@ -1,9 +1,11 @@
-function [d,d2]=tensor_norm( T, G )
+function [d,dsqr]=tensor_norm( T, G )
 % TENSOR_NORM Compute the norm of a sparse tensor.
 %   D=TENSOR_NORM( T, G ) computes the norm of the sparse tensor product
 %   T with respect to scalar product defined by the matrices given in G. G
 %   may be ommitted or single entries in G may be empty, in which case the
 %   Euclidean scalar product is used.
+%   As second output argument the square of the norm is also returned
+%   (i.e. if the function is called like [D,DSQR]=TENSOR_NORM( T, G )).
 %
 %
 % Example (<a href="matlab:run_example tensor_norm">run</a>)
@@ -28,9 +30,8 @@ function [d,d2]=tensor_norm( T, G )
 
 
 if nargin<2
-    G={[], []};
+    G=[];
 end
 
-d2=max( tensor_scalar_product(T,T,G), 0 );
-d=sqrt( d2 );
-
+dsqr=max( tensor_scalar_product(T,T,G), 0 );
+d=sqrt( dsqr );
