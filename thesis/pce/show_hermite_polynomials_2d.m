@@ -1,17 +1,19 @@
 function show_hermite_polynomials_2d
 
 for i=0:3
+    i=3;
     for j=i:3
+        fprintf( 'H_{%d,%d}\n', i, j );
         d=1.5;
         x=linspace(-d,d);
         [X,Y]=meshgrid(x);
-        Z=pce_evaluate( 1, [i j], [X(:) Y(:)]' )
+        Z=pce_evaluate( 1, [i j], [X(:) Y(:)]' );
         Z=reshape(Z,size(X));
         clf;
         surf(X,Y,Z)
         view(2);
         hold on;
-        shading interp
+        shading flat
         %contour(X,Y,Z)
         hold on;
         
@@ -26,6 +28,7 @@ for i=0:3
         
         title('Hermite polynomials')
         save_thesis_figure( 'hermite_polynomials_2d-%d_%d', {i,j} );
+        return;
     end
 end
 

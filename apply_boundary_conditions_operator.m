@@ -28,11 +28,17 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-N=size(P_I,2);
-NM=tensor_operator_size(K);
-M=NM(1)/N;
-if M>1; I_S=speye(M); else I_S=1; end
-
-% Ki=P_I*K*P_I';
-Ki=tensor_operator_compose( {P_I, I_S}, K );
-Ki=tensor_operator_compose( Ki, {P_I', I_S} );
+if ~iscell(K) || size(K,2)<=2
+    N=size(P_I,2);
+    NM=tensor_operator_size(K);
+    M=NM(1)/N;
+    I_S={speye(M)};
+else
+    r=size(K,2);
+    I_S=cell(1,r-1);
+    for i=1:r-1
+        I_S{1,i}=speye(size(K{1,i+1},1));
+    end
+end
+Ki=tensor_operator_compose( [{P_I}, I_S], K );
+Ki=tensor_operator_compose( Ki, [{P_I'}, I_S] );

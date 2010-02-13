@@ -1,5 +1,7 @@
 function show_hermite_polynomials
 
+clf
+
 x=linspace(-3.5,3.5);
 y=pce_evaluate( eye(5), multiindex(1,4), x )
 y=row_col_mult( y, exp(-x.^2/2)/sqrt(2*pi) );

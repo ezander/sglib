@@ -132,7 +132,6 @@ end
 
 function Y=apply_tensor_tensor( A, X )
 % TODO: no reduction yet
-check_second_order(A);
 d=size(A,2);
 for i=1:d
     check_condition( {A{1,i},X{i}}, 'match', true, {'A{1,i}','X{i}'}, mfilename );
@@ -142,15 +141,13 @@ dims=[dims{:}];
 dims=dims(1:2:end);
 C=zeros(sum(dims),0);
 Y=mat2cell(C,dims)';
-
-%[M1,N1]=linear_operator_size(A{1,1}); %#ok
-%[M2,N2]=linear_operator_size(A{1,2}); %#ok
-%Y={zeros(M1,0),zeros(M2,0)};
 R=size(A,1);
 for i=1:R
-    Y1n=linear_operator_apply(A{i,1},X{1});
-    Y2n=linear_operator_apply(A{i,2},X{2});
-    Y={[Y{1}, Y1n], [Y{2}, Y2n] };
+%     Y1n=linear_operator_apply(A{i,1},X{1});
+%     Y2n=linear_operator_apply(A{i,2},X{2});
+%     Y={[Y{1}, Y1n], [Y{2}, Y2n] };
+        Yn=tensor_apply( A(i,:), X );
+        Y=tensor_add( Y, Yn );
 end
 
 

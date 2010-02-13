@@ -33,20 +33,28 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-N=size(P_I,2);
-NM=tensor_operator_size(K);
-M=NM(1)/N;
-if M>1; I_S=speye(M); else I_S=1; end
+if ~iscell(K) || size(K,2)<=2
+    N=size(P_I,2);
+    NM=tensor_operator_size(K);
+    M=NM(1)/N;
+    I_S={speye(M)};
+else
+    r=size(K,2);
+    I_S=cell(1,r-1);
+    for i=1:r-1
+        I_S{1,i}=speye(size(K{1,i+1},1));
+    end
+end
 
 % this computes the following:
 %   fi=P_I*(f-K*P_B'*P_B*g);
 % to accomodate for tensor product operators the projection operators are
 % extended like P_I => P_I \otimes I_S where I_S is the identity on the
 % "second" space (usually the stochastic one).
-fi=tensor_operator_apply( {P_I, I_S}, f );
-g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
+fi=tensor_operator_apply( [{P_I}, I_S], f );
+g=tensor_operator_apply( [{P_B'*P_B}, I_S], g );
 g=tensor_operator_apply( K, g );
-gi=tensor_operator_apply( {P_I, I_S}, g );
+gi=tensor_operator_apply( [{P_I}, I_S], g );
 fi=tensor_add( fi, gi, -1 );
 
 % TODO: maybe we should truncate here, maybe the user should that himself in the
