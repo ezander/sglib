@@ -56,10 +56,3 @@ g=tensor_operator_apply( [{P_B'*P_B}, I_S], g );
 g=tensor_operator_apply( K, g );
 gi=tensor_operator_apply( [{P_I}, I_S], g );
 fi=tensor_add( fi, gi, -1 );
-
-% TODO: maybe we should truncate here, maybe the user should that himself in the
-% calling code (have to think about that)
-if iscell(fi)
-    truncation_options={};
-    fi=tensor_truncate( fi, truncation_options{:} );
-end

@@ -1,9 +1,4 @@
 N=50;
-dist='beta';
-dist_params={4,2};
-rng=[0,1.2];
-dist_shift=0.1;
-dist_scale=1;
 
 
 %% load the geomatry
@@ -21,27 +16,34 @@ G_N=mass_matrix( els, pos );
 p_k=4;
 m_k=4;
 l_k=4;
-lc_k=0.3;
+dist='beta';
+dist_params={4,2};
+rng=[0,1.2];
+dist_shift=0.1;
+dist_scale=1;
+
+
 
 stdnor_k=@(x)(gendist_stdnor(dist,x,dist_params,dist_shift,dist_scale));
 pdf_k=@(x)(gendist_pdf(dist,x,dist_params,dist_shift,dist_scale));
 [mu_k,var_k]=gendist_moments(dist,dist_params,dist_shift,dist_scale);
 
+lc_k=0.3;
 cov_k={@gaussian_covariance,{lc_k,1}};
 
-[mu_k_i,k_i_k,kappa_k_alpha]=expand_field_kl_pce( stdnor_k, cov_k, [], pos, G_N, p_k, m_k, l_k );
+[mu_k_i,k_i_k,kappa_k_alpha,I_k]=expand_field_kl_pce( stdnor_k, cov_k, [], pos, G_N, p_k, m_k, l_k );
 
 %% load the kl variables of the right hand side f 
 % define stochastic parameters
 p_f=3;
 m_f=2;
 l_f=4;
-lc_f=2*0.3;
 stdnor_f={@beta_stdnor,{4,2}};
 
+lc_f=2*0.3;
 cov_f={@gaussian_covariance,{lc_f,1}};
 
-[mu_f_i,f_i_k,phi_k_alpha]=expand_field_kl_pce( stdnor_f, cov_f, [], pos, G_N, p_f, m_f, l_f );
+[mu_f_i,f_i_k,phi_k_alpha,I_f]=expand_field_kl_pce( stdnor_f, cov_f, [], pos, G_N, p_f, m_f, l_f );
 
 
 %% define (deterministic) boundary conditions g
@@ -65,65 +67,58 @@ M_k=size(I_k,1);
 M_r=size(I_r,1);
 G_k=spdiags(multiindex_factorial(I_k),0,M_k,M_k);
 G_r=spdiags(multiindex_factorial(I_r),0,M_r,M_r);
-
+M=0;
 
 %% create the right hand side
 % i.e. scale the pce coefficients with the norm of the stochastic ansatz
 % functions and create tensor, matrix and vector versions out of it
 phi_k_beta=compute_pce_rhs( phi_k_alpha, I_f, I_r );
 F=kl_to_tensor( mu_f_i, f_i_k, phi_k_beta );
-F=extend_rhs( F, I_k );
-f_vec=tensor_to_vector( F );
 
 gamma_k_beta=compute_pce_rhs( gamma_k_alpha, I_g, I_r );
 G=kl_to_tensor( mu_g_i, g_i_k, gamma_k_beta );
-g_vec=tensor_to_vector( G );
 
 
 %% load and create the operators 
-% since this takes a while we cache the function call
-kl_operator_version=1;
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
-opt.silent=false;
-opt.show_timings=true;
-op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 
 % create tensor operators
 K=compute_kl_pce_operator(mu_k_i, k_i_k, kappa_k_alpha, I_k, I_k, stiffness_func, 'mu_delta');
 
-
 % extend stuff to third order
 K=extend_kl_operator( K, I_r );
+F=extend_rhs( F, I_k );
 G=extend_rhs( G, I_k );
-% create matrix and tensor operators
-%K_mat=revkron(K);
 
 
 %% apply boundary conditions
 [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
-%Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
-
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
-%fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
-%fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_I, P_B );
-%fi_mat=apply_boundary_conditions_rhs( K, f_mat, g_mat, P_I, P_B );
 
-%% solve the system via direct solver for comparison
-ui_vec=Ki_mat\fi_vec;
-ui_mat=reshape( ui_vec, [], M );
-[U_,S_,V_]=svd(ui_mat);
-Ui={U_*S_,V_};
-
-U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-u_i_alpha=apply_boundary_conditions_solution( ui_mat, g_mat, P_I, P_B );
-l_u=min(size(u_i_alpha));
-[mu_u_i,u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
-%[mu_u_i,u_i_k,u_k_alpha]=tensor_to_kl( U );
-
-
-%%
-% the preconditioner
+%% the preconditioner
 Mi=Ki(1,:);
 Mi_mat=revkron( Mi );
+
+%% solve the system via direct solver for comparison
+% create matrix and tensor operators
+if false
+    K_mat=tensor_operator_to_matrix(K);
+    %Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
+    %fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
+    %fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_I, P_B );
+    f_vec=tensor_to_vector( F );
+    g_vec=tensor_to_vector( G );
+    
+    ui_vec=Ki_mat\fi_vec;
+    ui_mat=reshape( ui_vec, [], M );
+    [U_,S_,V_]=svd(ui_mat);
+    Ui={U_*S_,V_};
+    
+    U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
+    u_i_alpha=apply_boundary_conditions_solution( ui_mat, g_mat, P_I, P_B );
+    l_u=min(size(u_i_alpha));
+    [mu_u_i,u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
+    %[mu_u_i,u_i_k,u_k_alpha]=tensor_to_kl( U );
+end
+    
