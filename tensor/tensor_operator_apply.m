@@ -143,10 +143,7 @@ C=zeros(sum(dims),0);
 Y=mat2cell(C,dims)';
 R=size(A,1);
 for i=1:R
-%     Y1n=linear_operator_apply(A{i,1},X{1});
-%     Y2n=linear_operator_apply(A{i,2},X{2});
-%     Y={[Y{1}, Y1n], [Y{2}, Y2n] };
-        Yn=tensor_apply( A(i,:), X );
+        Yn=tensor_operator_apply_elementary( A(i,:), X );
         Y=tensor_add( Y, Yn );
 end
 

@@ -1,8 +1,8 @@
-function unittest_tensor_apply
-% UNITTEST_TENSOR_APPLY Test the TENSOR functions.
+function unittest_tensor_operator_apply_elementary
+% UNITTEST_TENSOR_OPERATOR_APPLY_ELEMENTARY Test the TENSOR functions.
 %
-% Example (<a href="matlab:run_example unittest_tensor_apply">run</a>)
-%    unittest_tensor_apply
+% Example (<a href="matlab:run_example unittest_tensor_operator_apply_elementary">run</a>)
+%    unittest_tensor_operator_apply_elementary
 %
 % See also TESTSUITE
 
@@ -18,20 +18,22 @@ function unittest_tensor_apply
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'tensor_apply' );
+munit_set_function( 'tensor_operator_apply_elementary' );
 
 T={rand(8,3), rand(10,3)};
 A={rand(8,8), rand(10,10)};
-B={@(x)(A{1}*x), @(x)(A{2}*x)};
-C={A{1}, @(x)(A{2}*x)};
-UA=tensor_apply(A,T);
-UB=tensor_apply(B,T);
-UC=tensor_apply(C,T);
+L1=linear_operator_from_matrix(A{1});
+L2=linear_operator_from_matrix(A{2});
+B={L1, L2};
+C={A{1}, L2};
+UA=tensor_operator_apply_elementary(A,T);
+UB=tensor_operator_apply_elementary(B,T);
+UC=tensor_operator_apply_elementary(C,T);
 assert_equals( UA, {A{1}*T{1}, A{2}*T{2}}, 'mat' );
 assert_equals( UB, {A{1}*T{1}, A{2}*T{2}}, 'op' );
 assert_equals( UC, {A{1}*T{1}, A{2}*T{2}}, 'mat_op' );
 
 T={rand(8,3), rand(10,3), rand(12,3), rand(13,3)};
 A={rand(8,8), rand(10,10), rand(12,12), rand(13,13)};
-U=tensor_apply(A, T);
+U=tensor_operator_apply_elementary(A, T);
 assert_equals( U, {A{1}*T{1}, A{2}*T{2}, A{3}*T{3}, A{4}*T{4}}, 'ord4' );

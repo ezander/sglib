@@ -4,9 +4,11 @@
 
 underline( 'Tensor product PCG: ' );
 
+vareps='fix';
+trunc_mode=1;
 %vareps=strcmp(eps_mode,'var');
-%trunc_mode;
 
+trunc_options=struct();
 %trunc_options.eps=eps;
 %trunc_options.relcutoff=true;
 %if strcmp(orth_mode,'klm')

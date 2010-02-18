@@ -143,10 +143,10 @@ relres=norm_R/norm_R0;
 
 function R=compute_residual( A0, AR, X, F, truncate_opts )
 R=F;
-R=tensor_add( R, tensor_apply( A0, X ), -1 );
+R=tensor_add( R, tensor_operator_apply_elementary( A0, X ), -1 );
 R=tensor_truncate( R, truncate_opts );
 for i=1:size(AR,1)
-    R=tensor_add( R, tensor_apply( AR(i,:), X ), -1 );
+    R=tensor_add( R, tensor_operator_apply_elementary( AR(i,:), X ), -1 );
     R=tensor_truncate( R, truncate_opts );
 end
 
@@ -154,7 +154,7 @@ end
 function Y=jacobi_step_alg1( X, A0, AR, F, truncate_opts )
 Y=tensor_solve( A0, F );
 for i=1:size(AR,1)
-    S=tensor_apply( AR(i,:), X );
+    S=tensor_operator_apply_elementary( AR(i,:), X );
     S=tensor_solve( A0, S );
     Y=tensor_add( Y, S, -1 );
     Y=tensor_truncate( Y, truncate_opts );
@@ -164,7 +164,7 @@ end
 function Y=jacobi_step_alg2( X, A0, AR, F, truncate_opts )
 Y=F;
 for i=1:size(AR,1)
-    S=tensor_apply( AR(i,:), X );
+    S=tensor_operator_apply_elementary( AR(i,:), X );
     Y=tensor_add( Y, S, -1 );
     Y=tensor_truncate( Y, truncate_opts );
 end
