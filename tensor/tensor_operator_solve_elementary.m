@@ -24,6 +24,8 @@ elseif iscell(T)
     % some assertions stuff comes here
     %U={ linear_operator_solve( A{1}, T{1} ), linear_operator_solve( A{2}, T{2} ) };
     U=cellfun( @linear_operator_solve, A, T, 'UniformOutput', false );
+elseif isobject(T)
+    U=tt_tensor_operator_solve_elementary( A, T );
 else
     error('unknown tensor type');
 end

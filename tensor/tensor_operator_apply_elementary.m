@@ -39,6 +39,8 @@ if isnumeric(T)
     U=A*T;
 elseif iscell(T)
     U=cellfun( @linear_operator_apply, A, T, 'UniformOutput', false );
+elseif isobject(T)
+    U=tt_tensor_operator_apply_elementary( A, T );
 else
     error('unknown tensor type');
 end

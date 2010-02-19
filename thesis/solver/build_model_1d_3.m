@@ -5,11 +5,13 @@ N=50;
 % 1D currently, so nothing to plot here
 
 if exist('geom','var') && ~strcmp(geom,'1d')
-    error( 'unknown geometry' );
+    error( 'unknown geometry' ); %#ok<ERTAG>
 end
 
 [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
 G_N=mass_matrix( els, pos );
+stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+
 
 %% load the kl variables of the conductivity k
 % define stochastic parameters

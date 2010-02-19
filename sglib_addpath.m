@@ -66,6 +66,9 @@ end
 if exist( [basepath '/paramstudy'], 'dir' )
   addpath( [basepath '/paramstudy'] )
 end
+if exist( [basepath '/contrib'], 'dir' )
+  addpath( [basepath '/contrib'] )
+end
 
 
 if add_octave_path

@@ -6,8 +6,6 @@ function [T_k,sigma,k]=tensor_truncate( T, varargin )
 %   parameters.
 %
 % Options:
-%   G1: []
-%   G2: []
 %   p: 2
 %   k_max: inf
 %   eps: 0
@@ -31,22 +29,52 @@ function [T_k,sigma,k]=tensor_truncate( T, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[G1,options]=get_option( options, 'G1', [] );
-[G2,options]=get_option( options, 'G2', [] );
+[G,options]=get_option( options, 'G', {} );
 [p,options]=get_option( options, 'p', 2 );
 [k_max,options]=get_option( options, 'k_max', inf );
 [eps,options]=get_option( options, 'eps', 0 );
 [relcutoff,options]=get_option( options, 'relcutoff', true );
 check_unsupported_options( options, mfilename );
 
-
-if iscell(T)
-    [Q1,R1]=qr_internal(T{1},G1);
-    [Q2,R2]=qr_internal(T{2},G2);
-    [U,S,V]=svd(R1*R2',0);
-else
+if isnumeric(T)
     [U,S,V]=svd(T,0);
+    [T_k,sigma,k]=tensor_truncate_2( {U*S,V}, G, eps, k_max, relcutoff, p );
+    T_k=T_k{1}*T_k{2}';
+elseif iscell(T)
+    if length(T)==2
+        [T_k,sigma,k]=tensor_truncate_2( T, G, eps, k_max, relcutoff, p );
+    else
+        U=ktensor( T );
+        OPTS.tol=eps;
+        OPTS.maxiters=50;
+        OPTS.dimorder=1:length(T);
+        OPTS.init='random';
+        OPTS.printitn=10;
+        U_k=cp_als( U, k_max, OPTS );
+        lambda=U_k.lambda(:);
+        T_k=U_k.u';
+        T_k{1}=row_col_mult( T_k{1}, lambda' );
+        if any(isnan(double(U_k)))
+            keyboard;
+        end
+    end
+elseif isobject(T)
+        OPTS.tol=eps;
+        OPTS.maxiters=50;
+        %OPTS.dimorder=1:length(T);
+        OPTS.init='random';
+        OPTS.printitn=10;
+        T_k=cp_als( T, k_max, OPTS );
+else
+    error( 'tensor:tensor_truncate:tensor_format', 'Unknown tensor format' );
 end
+
+
+function [T_k,sigma,k]=tensor_truncate_2( T, G, eps, k_max, relcutoff, p )
+if isempty(G); G={[],[]}; end
+[Q1,R1]=qr_internal(T{1},G{1});
+[Q2,R2]=qr_internal(T{2},G{2});
+[U,S,V]=svd(R1*R2',0);
 
 sigma=diag(S);
 k=schattenp_truncate( sigma, eps, relcutoff, p );
@@ -56,11 +84,7 @@ U_k=U(:,1:k);
 S_k=S(1:k,1:k);
 V_k=V(:,1:k);
 
-if iscell(T)
-    T_k={Q1*U_k*S_k,Q2*V_k};
-else
-    T_k=U_k*S_k*V_k';
-end
+T_k={Q1*U_k*S_k,Q2*V_k};
 
 
 function [Q,R]=qr_internal( A, G )

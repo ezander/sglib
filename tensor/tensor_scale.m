@@ -30,6 +30,8 @@ elseif iscanonical(T)
     % a cartesian product.
     U=T;
     U{1}=alpha*T{1};
+elseif isobject(T)
+    U=alpha*T;
 else
     error( 'tensor:tensor_scale:param_error', ...
         'input parameter is no recognized tensor format' );   

@@ -9,6 +9,7 @@ trunc_mode=1;
 %vareps=strcmp(eps_mode,'var');
 
 trunc_options=struct();
+trunc_options.k_max=30;
 %trunc_options.eps=eps;
 %trunc_options.relcutoff=true;
 %if strcmp(orth_mode,'klm')
@@ -24,6 +25,7 @@ stats.G=[];
 
 reltol=1e-4;
 
+Fi=ktensor(Fi);
 [Ui2,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', trunc_options, 'vareps', vareps, 'trunc_mode', trunc_mode, 'stats_gatherer', stats_gatherer, 'stats', stats );
 ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
 relerr=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);

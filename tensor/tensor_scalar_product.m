@@ -52,6 +52,9 @@ elseif iscanonical(T1)
             S=S.*inner(T1{i},T2{i},G{i});
         end
     end
+elseif isobject(T1)
+    d=tt_tensor_scalar_product(T1,T2,G);
+    return
 else
     error( 'tensor:tensor_scalar_product:param_error', ...
         'input parameter is no recognized tensor format' );

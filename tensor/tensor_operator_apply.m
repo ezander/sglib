@@ -61,6 +61,8 @@ if strcmp( vectype, 'auto' )
         vectype='mat';
     elseif iscell(X)
         vectype='tensor';
+    elseif isobject(X)
+        vectype='object';
     else
         error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
     end
@@ -76,12 +78,16 @@ switch [optype, '/', vectype]
         Y=apply_block_vect( A, X );
     case 'block/mat'
         Y=apply_block_mat( A, X );
-    case 'tensor/tensor'
-        Y=apply_tensor_tensor( A, X );
     case 'tensor/mat'
         Y=apply_tensor_mat( A, X );
     case 'tensor/vect'
         Y=apply_tensor_vect( A, X );
+    case 'tensor/tensor'
+        Y=apply_tensor_tensor( A, X );
+    case 'tensor/object'
+        % this goes to contrib (tensor_toolbox)
+        %Y=tt_tensor_operator_apply( A, X );
+        Y=apply_tensor_tensor( A, X );
     otherwise
         error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
@@ -132,19 +138,20 @@ end
 
 function Y=apply_tensor_tensor( A, X )
 % TODO: no reduction yet
-d=size(A,2);
-for i=1:d
-    check_condition( {A{1,i},X{i}}, 'match', true, {'A{1,i}','X{i}'}, mfilename );
+if iscell(X)
+    d=size(A,2);
+    for i=1:d
+        check_condition( {A{1,i},X{i}}, 'match', true, {'A{1,i}','X{i}'}, mfilename );
+    end
 end
-dims=cellfun( @linear_operator_size, A(1,:), 'UniformOutput', false);
-dims=[dims{:}];
-dims=dims(1:2:end);
-C=zeros(sum(dims),0);
-Y=mat2cell(C,dims)';
 R=size(A,1);
 for i=1:R
-        Yn=tensor_operator_apply_elementary( A(i,:), X );
+    Yn=tensor_operator_apply_elementary( A(i,:), X );
+    if i==1
+        Y=Yn;
+    else
         Y=tensor_add( Y, Yn );
+    end
 end
 
 

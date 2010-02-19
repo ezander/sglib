@@ -60,8 +60,7 @@ if ~isempty( stats.X_true )
 end
 
 function stats=gather_stats_finish( stats, varargin ) %#ok
-stats=rmfield( stats, 'X_true' );
-stats=rmfield( stats, 'X_true_eps' );
-stats=rmfield( stats, 'G' );
+fields=intersect( fieldnames(stats), {'X_true', 'X_true_eps', 'G'} )
+stats=rmfield( stats, fields );
 %nothing yet
 
