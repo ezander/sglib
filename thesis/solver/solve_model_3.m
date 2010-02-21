@@ -25,11 +25,11 @@ stats.G=[];
 
 reltol=1e-4;
 
-Fi=ktensor(Fi);
+Fi=tt_ktensor(Fi);
 [Ui2,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', trunc_options, 'vareps', vareps, 'trunc_mode', trunc_mode, 'stats_gatherer', stats_gatherer, 'stats', stats );
-ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
 [Ui,I_u]=combine_dimensions( Ui, I_k, I_r )
-relerr=tensor_error( Ui, Ui2, true );
+%relerr=tensor_error( Ui, Ui2, true );
+%ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
 %tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);
 
 k=size(Ui2{1},2);

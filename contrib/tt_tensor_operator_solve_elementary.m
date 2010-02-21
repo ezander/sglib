@@ -18,6 +18,7 @@ function U=tt_tensor_operator_solve_elementary( A, T );
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+tt_available(true);
 if isa(T,'ktensor')
     lambda=T.lambda;
     u=cellfun( @linear_operator_solve, A, T.u(:)', 'UniformOutput', false );

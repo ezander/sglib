@@ -18,11 +18,11 @@ function init_contrib
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-currpath=fileparts( mfilename('fullpath') );
-if exist(fullfile( currpath, 'tensor_toolbox'), 'dir' )
+[available,tt_path]=tt_available();
+if available
     fprintf( 'Contrib: Tensor toolbox found. Adding path\n' );
-    addpath( fullfile( currpath, 'tensor_toolbox') );
-    addpath( fullfile( currpath, 'tensor_toolbox/algorithms') );
+    addpath( tt_path );
+    addpath( fullfile( tt_path, 'algorithms') );
 else
     fprintf( 'Contrib: Tensor toolbox not found. Disabled.\n' );
 end
