@@ -60,7 +60,7 @@ elseif iscanonical(T1)
     dims=cellfun('size', T1, 1 );
     T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
 elseif isobject(T1)
-    T=tt_tensor_add( T1, T2, alpha );
+    T=T1+alpha*T2;
 else
     error( 'tensor:tensor_null:param_error', ...
         'input parameter is no recognized tensor format' );

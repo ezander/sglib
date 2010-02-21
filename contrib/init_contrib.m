@@ -28,4 +28,17 @@ else
 end
 
 
+p=toolboxdir('');
+s=dir(p);
+for i=3:length(s)
+    switch s(i).name
+        case {'matlab', 'pde', 'shared', 'local' }
+            % pass
+        otherwise
+            state=warning( 'off', 'MATLAB:rmpath:DirNotFound' );
+            rmpath( genpath( fullfile( p, s(i).name ) ) );
+            warning(state);
+    end
+end
+
 

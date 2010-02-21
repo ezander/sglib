@@ -92,6 +92,7 @@ F=extend_rhs( F, I_k );
 G=extend_rhs( G, I_k );
 
 
+
 %% apply boundary conditions
 [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
 

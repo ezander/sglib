@@ -65,6 +65,9 @@ elseif isobject(T)
         OPTS.init='random';
         OPTS.printitn=10;
         T_k=cp_als( T, k_max, OPTS );
+        if any(isnan(double(T_k)))
+            keyboard;
+        end
 else
     error( 'tensor:tensor_truncate:tensor_format', 'Unknown tensor format' );
 end
