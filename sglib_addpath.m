@@ -59,6 +59,8 @@ addpath( [basepath '/plot'] );
 addpath( [basepath '/util'] );
 addpath( [basepath '/tensor'] );
 addpath( [basepath '/simplefem'] );
+addpath( [basepath '/statistics'] );
+addpath( [basepath '/quadrature'] );
 
 if exist( [basepath '/thesis'], 'dir' )
   addpath( [basepath '/thesis'] )
