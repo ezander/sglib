@@ -106,7 +106,7 @@ for i=1:length(files)
         test_cmd=test_cmd( slash_pos(end)+1:end );
     end
 
-    safe_eval( test_cmd );
+    safe_eval( curr_dir, test_cmd );
 end
 
 if ~isempty(files) || level==1
@@ -126,11 +126,17 @@ if coverage
 end
 
 
-function safe_eval( unittest_cmd )
+function safe_eval( dir, unittest_cmd )
 % MUNIT_SAFE_FEVAL Evaluate command safely.
 %
 % If we call eval(test_cmd) directly from MUNIT_RUN_TESTSUITE and the
 % command is a script and clears the workspace (yes, this happens) we have
 % a problem. Putting this into a separate functions separates the
 % workspaces and so the user can do whatever he likes in 'test_cmd'.
-eval( unittest_cmd );
+olddir=cd(dir);
+try
+    eval( unittest_cmd );
+catch
+    cd(olddir);
+    rethrow(lasterror);
+end

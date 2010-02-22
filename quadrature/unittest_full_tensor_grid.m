@@ -142,3 +142,13 @@ P=a*(prod([modes_legendre(I(:,legendre_vars)+1), modes_gauss(I(:,gauss_vars)+1)]
 % X=repmat( x, size(I,1), 1 );
 % y=a*prod(X.^I,2);
  
+function m=uniform_raw_moments(n,a,b)
+m=(a.^(n+1)-b.^(n+1))/(a-b)./(n+1);
+
+function m=normal_raw_moments(n, mu, sigma)
+max_n=max(n(:));
+M=zeros(1,max_n+1);
+for j=0:max_n
+    M(j+1)=sigma.^j.*hermite_val([zeros(1,j) 1],mu/sigma/1i).*(1i.^j);
+end
+m=M(n+1);
