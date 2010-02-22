@@ -23,5 +23,11 @@ function y=lognormal_stdnor( x, mu, sigma )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin<2
+    mu=0;
+end
+if nargin<3
+    sigma=1;
+end
 
 y=exp(mu+sigma*x);
