@@ -1,4 +1,4 @@
-function y=gendist_pdf(dist, x, params, shift, scale)
+function y=gendist_pdf(x, dist, params, shift, scale)
 % GENDIST_PDF Short description of gendist_pdf.
 %   GENDIST_PDF Long description of gendist_pdf.
 %

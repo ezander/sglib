@@ -1,4 +1,4 @@
-function y=gendist_stdnor(dist, x, params, shift, scale)
+function y=gendist_stdnor(x, dist, params, shift, scale)
 % GENDIST_STDNOR Short description of gendist_stdnor.
 %   GENDIST_STDNOR Long description of gendist_stdnor.
 %

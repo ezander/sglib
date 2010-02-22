@@ -26,8 +26,8 @@ dist_scale=1;
 
 
 
-stdnor_k=@(x)(gendist_stdnor(dist,x,dist_params,dist_shift,dist_scale));
-pdf_k=@(x)(gendist_pdf(dist,x,dist_params,dist_shift,dist_scale));
+stdnor_k=@(x)(gendist_stdnor(x,dist,dist_params,dist_shift,dist_scale));
+pdf_k=@(x)(gendist_pdf(x,dist,dist_params,dist_shift,dist_scale));
 [mu_k,var_k]=gendist_moments(dist,dist_params,dist_shift,dist_scale);
 
 lc_k=0.3;

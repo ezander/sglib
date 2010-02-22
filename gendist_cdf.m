@@ -1,4 +1,4 @@
-function y=gendist_cdf(dist, x, params, shift, scale)
+function y=gendist_cdf(x, dist, params, shift, scale)
 % GENDIST_CDF Short description of gendist_cdf.
 %   GENDIST_CDF Long description of gendist_cdf.
 %
