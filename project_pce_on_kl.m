@@ -1,10 +1,10 @@
-function [mu,pcc_kl,f]=project_pce_on_kl( pcc, pci, f, sqrt_lambda )
+function [mu_r_i,r_k_alpha,r_i_k]=project_pce_on_kl( r_i_alpha, I_r, r_i_k, sigma_k )
 % PROJECT_PCE_ON_KL Project a spatially PC expanded field into a KL-PCE field.
-%   [MU,PCC_KL,F]=PROJECT_PCE_ON_KL( PCC, PCI, F, SQRT_LAMBDA ) transforms
+%   [MU_R_I,R_K_ALPHA,R_I_K]=PROJECT_PCE_ON_KL( R_I_ALPHA, I_R, R_I_K, SIGMA_K ) transforms
 %   a field that is given by a pointwise PCE into a field given by a KL
 %   with PCE for each KL random variable.
 
-% TODO: why is sqrt_lambda not used???
+% TODO: why is sigma_k not used???
 % TODO: check this function, seems a bit weird
 
 
@@ -16,16 +16,16 @@ function [mu,pcc_kl,f]=project_pce_on_kl( pcc, pci, f, sqrt_lambda )
 % normalized Hermite polynomials this should give about the same as the
 % first method. For unnormalized coefficients we'll certainly get problems.
 
-if size(f,1)~=size(pcc,1)
-    error( 'project_pce_on_kl:wrong_args', 'Input arguments pcc and f must have the same spatial dimension (2)' );
+if size(r_i_k,1)~=size(r_i_alpha,1)
+    error( 'project_pce_on_kl:wrong_args', 'Input arguments r_i_alpha and r_i_k must have the same spatial dimension (2)' );
 end
 
-% If the f's are unnormalized and no KL eigenvalues are given (i.e. they
-% are included) we extract the eigenvalues and normalize the f's (maybe
+% If the r_i_k's are unnormalized and no KL eigenvalues are given (i.e. they
+% are included) we extract the eigenvalues and normalize the r_i_k's (maybe
 % this is unnecessary... see TODO below)
 if nargin<4
-    sqrt_lambda=sqrt(sum( f.^2, 1 ));
-    f=row_col_mult( f, 1./sqrt_lambda );
+    sigma_k=sqrt(sum( r_i_k.^2, 1 ));
+    r_i_k=row_col_mult( r_i_k, 1./sigma_k );
 end
 
 % In the following we transform from a pure PCE expansion to a KL expansion
@@ -37,19 +37,19 @@ end
 
 % Extract the mean of the KL expansion (that's simply the coefficient in
 % the PCE corresponding to the multiindex [0,0,0,...] )
-mu=pcc(:,1);
-pcc(:,1)=0;
+mu_r_i=r_i_alpha(:,1);
+r_i_alpha(:,1)=0;
 
-% Now do the projection. Since the f are normalized this amounts to just a
-% scalar product between the PCE coefficients and the f's.
-pcc_kl=f'*pcc;
+% Now do the projection. Since the r_i_k are normalized this amounts to just a
+% scalar product between the PCE coefficients and the r_i_k's.
+r_k_alpha=r_i_k'*r_i_alpha;
 
-% Now the f's are normalized and the PCE coefficients of the KL random vars
+% Now the r_i_k's are normalized and the PCE coefficients of the KL random vars
 % have non-unity variance. Here we shift the variance to the KL functions.
-%TODO: check relation between 'v' and 'sqrt_lambda'; should be approx same
+%TODO: check relation between 'v' and 'sigma_k'; should be approx same
 % maybe in this case we should scale and rescale
-[m,v]=pce_moments( pcc_kl, pci );
+[m,v]=pce_moments( r_k_alpha, I_r );
 m; %#ok: m unused
-pcc_kl=row_col_mult( pcc_kl, 1./sqrt(v) );
-f=row_col_mult( f, sqrt(v)' );
+r_k_alpha=row_col_mult( r_k_alpha, 1./sqrt(v) );
+r_i_k=row_col_mult( r_i_k, sqrt(v)' );
 

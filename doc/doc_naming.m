@@ -11,6 +11,52 @@
 %
 % Index notation, ordering of indices, and tensors:
 % =================================================
+%    Two things have to be noted about indices:
+%      1) Many quantities here have two or more indices. Since it is
+%         difficult to remember which comes at which position, an index
+%         indicates the order of indices, where indices belonging to
+%         certain concepts have fixed names. E.g. the number of point in a
+%         set of points is i, a multiindex is alpha, one specific KL
+%         eigenfunction and related quantities have a k, ... So for example
+%         r_i_alpha is the coefficient in the PCE in the random field r at
+%         position x_i belongin to multiindex alpha (exactly: for
+%         r_i_alpha(j) the corresponding alpha is I_r(j,:))
+%      2) Duality is an important concept: if a prime index has usually
+%         position 1 or 2 then the "dual" index should have position 2 or
+%         1. One sees that good in the call to e.g. pce_field_realization(
+%         x, u_i_alpha, I_alpha, xi, varargin ). Here the dimensions are: 
+%         x is spatial dimension times number of points, u_i_alpha is
+%         number of points times size of multiindex set, I_alpha is size of
+%         multiindex set times number of Gaussians, xi is number of
+%         Gaussian times number of realizations. 
+%         This reminds much of matrix multiplication and makes it much
+%         easier to have things consistent then trying to always put an
+%         index belonging to a concept into one position (this really
+%         doesn't work). 
+%    Some examples:
+%       r_i_alpha: pce of random field r, first index position, second
+%                  multiindex
+%       r_i_k:     KL eigenfunction of r, first index position, second number
+%                  of eigenfunction
+%       mu_r_i:    mean of random field r at position i
+%       sigma_k:   KL eigenvalue of KL eigenfunction k (should be
+%                  sigma_r_k) probably
+%       I_r:       (should be I_r_alpha_j) first index multiindex number,
+%                  second number of Gaussian
+%       x or pos:  should be x_j_i, first index spatial coordinate, second
+%                  is point number
+%       xi:        a random vector for stochastic field generation, (should
+%                  be xi_j_?) first coordinate number of 
+%     Old text (revamp or delete)
+%         Duality between indices: one certain kind of index should always
+%         be in the same position (i.e. dimension) if there is a dual index
+%         (explain later what is) it should always occupy the "dual"
+%         position e.g. the random var index in a multiindex is in dim 2,
+%         thus when evaluating with repect to a multiindex the actual
+%         values for the random vars should be in dim 1 the linear index of
+%         a multiindex is in dim 1, so a pce expansion of some random
+%         variable should be in dim 2; so the spatial index of the pce
+%         should be in dim 1
 %
 % Naming of random fields:
 % ========================
@@ -227,21 +273,6 @@
 
 
 
-				% Duality between indices: one certain
-				% kind of index should always be in the
-				% same position (i.e. dimension) if
-				% there is a dual index (explain later
-				% what is) it should always occupy the
-				% "dual" position e.g. the random var
-				% index in a multiindex is in dim 2,
-				% thus when evaluating  with repect to a
-				% multiindex the actual values for the
-				% random vars should be in dim 1 the
-				% linear index of a multiindex is in dim
-				% 1, so a pce expansion of some random
-				% variable should be in dim 2; so the
-				% spatial index of the pce should be in
-				% dim 1
 
 %
 

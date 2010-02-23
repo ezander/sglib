@@ -1,4 +1,4 @@
-function unittest_covariance
+function unittest_covariance_matrix
 % UNITTEST_COVARIANCE Test covariance related functions.
 %
 % Example (<a href="matlab:run_example unittest_covariance">run</a>)
@@ -18,7 +18,17 @@ function unittest_covariance
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+munit_set_function( 'covariance' );
 
+
+n=11;
+x=linspace(0,1,n);
+C_u=covariance_matrix( x, {@gaussian_covariance,{1e-10}} );
+assert_equals( C_u, eye(n), 'identity' );
+
+
+
+return
 munit_set_function( 'covariance' );
 
 % some initialization stuff

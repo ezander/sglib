@@ -6,13 +6,16 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   comply to the interface covar_func( x1, x2 ) (see also
 %   PARAMETERIZED_FUNCTIONS)
 %
+%   POS must be DxN where D is the spatial dimension and N is the number of
+%   points. C is then a NxN matrix.
+%
 % Options:
 %   vectorized: {true}, false
 %     Specifies whether the covariance functions is vectorized with respect
 %     to the position arguments.
 %
 % Example (<a href="matlab:run_example covariance_matrix">run</a>)
-%   x=linspace(0,1,10)';
+%   x=linspace(0,1,10);
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 %
 % See also GAUSSIAN_COVARIANCE, EXPONENTIAL_COVARIANCE
@@ -34,7 +37,7 @@ options=varargin2options( varargin );
 [max_dist,options]=get_option( options, 'max_dist', inf );
 check_unsupported_options( options, mfilename );
 
-n=size(pos,1);
+n=size(pos,2);
 if isinf(max_dist)
     C=zeros(n,n);
 else
@@ -45,9 +48,9 @@ if ~vectorized
     % maybe this will be needed later for non-vectorized covariance
     % functions, but it's awfully slow
     for i=1:n
-        C(i,i)=funcall( covar_func, pos(i,:), pos(i,:) );
+        C(i,i)=funcall( covar_func, pos(:,i), pos(:,i) );
         for j=(i+1):n
-            C(i,j)=funcall( covar_func, pos(i,:), pos(j,:) );
+            C(i,j)=funcall( covar_func, pos(:,i), pos(:,j) );
             C(j,i)=C(i,j);
         end
     end
@@ -55,14 +58,14 @@ else
     % TODO: maybe this should be vectorized even further
     for i=1:n
         if isinf(max_dist)
-            C(i:end,i)=funcall( covar_func, repmat(pos(i,:),n-i+1,1), ...
-                pos(i:end,:) );
+            C(i:end,i)=funcall( covar_func, repmat(pos(:,i),n-i+1,1), ...
+                pos(:,i:end) );
             C(i,i:end)=C(i:end,i)';
         else
-            d=sum((repmat(pos(i,:),n-i+1,1)-pos(i:end,:)).^2,2);
+            d=sum((repmat(pos(i,:),n-i+1,1)-pos(:,i:end)).^2,2);
             ind=i-1+find(d<max_dist^2);
-            C(ind,i)=funcall( covar_func, repmat(pos(i,:),length(ind),1), ...
-                pos(ind,:) );
+            C(ind,i)=funcall( covar_func, repmat(pos(:,i),length(ind),1), ...
+                pos(:,ind) );
             C(i,ind)=C(ind,i)';
         end
     end

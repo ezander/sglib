@@ -1,16 +1,16 @@
-function [f,sqrt_lambda]=kl_solve_evp( C, G, m, varargin )
+function [r_i_k,sigma_k]=kl_solve_evp( C, G_N, l, varargin )
 % KL_SOLVE_EVP Solve the Karhunen-Loeve eigenvalue problem.
-%   [F,SQRT_LAMBDA]=KL_SOLVE_EVP( C, G, M, OPTIONS ) performs the
+%   [R_I_K,SIGMA_K]=KL_SOLVE_EVP( C, G_N, L, OPTIONS ) performs the
 %   Karhunen-Loeve expansion on the input arguments. C is the pointwise
 %   covariance matrix (if you have the covariance functions first stuff it
-%   into COVARIANCE_MATRIX to generate the matrix). G is the spatial Gramian matrix,
-%   if unspecified (i.e. []) the identity matrix is used. G can also be a
-%   function that computes a matrix-vector product instead of an explicit
-%   matrix represenation. M is the number of KL terms to be
-%   returned.
-%   F and SQRT_LAMBDA contain the eigenfunctions and eigenvalues of the KL
-%   eigenproblem respectively. If only one output argument (i.e. F) is used,
-%   then the f_i are multiplied by sqrt_lambda_i before).
+%   into COVARIANCE_MATRIX to generate the matrix). G_N is the spatial
+%   Gramian matrix, if unspecified (i.e. []) the identity matrix is used.
+%   G_N can also be a function that computes a matrix-vector product
+%   instead of an explicit matrix represenation. L is the number of KL
+%   terms to be returned.
+%   R_I_K and SIGMA_K contain the eigenfunctions and eigenvalues of the KL
+%   eigenproblem respectively. If only one output argument (i.e. R_I_K) is
+%   used, then the R_I_K are multiplied by SIGMA_K before).
 %
 %   Options:
 %     correct_var: true, {false}
@@ -20,6 +20,9 @@ function [f,sqrt_lambda]=kl_solve_evp( C, G, m, varargin )
 %   of some algorithms, but generally not the convergence. If you need e.g.
 %   exactly variance 1 in each point, turn this on; otherwise you can leave
 %   it of.
+%
+% Note: A mnemonic for the indices: for the KL the index of the
+%   eigenfunctions is K and runs from to L
 %
 % Note: This function was renamed from KL_EXPAND to KL_SOLVE_EVP because
 %   you don't actually get the full expansion, but only the spatial part of
@@ -31,9 +34,9 @@ function [f,sqrt_lambda]=kl_solve_evp( C, G, m, varargin )
 %   els=[1:n-1; 2:n]';
 %   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
 %   options.correct_var=true;
-%   G=mass_matrix( els, x );
-%   f=kl_solve_evp( C, G, 3, options );
-%   [mu,sig2]=pce_moments( [zeros(size(f,1),1), f], multiindex(3,1))
+%   G_N=mass_matrix( els, x );
+%   r_i_k=kl_solve_evp( C, G_N, 3, options );
+%   [mu,sig2]=pce_moments( [zeros(size(r_i_k,1),1), r_i_k], multiindex(3,1))
 %
 % See also COVARIANCE_MATRIX, OPTIONS
 
@@ -59,21 +62,21 @@ options=varargin2options( varargin );
 check_unsupported_options( options, mfilename );
 
 % check that not more eigenvectors are requested than size of C allows
-if m>size(C,1)
+if l>size(C,1)
     warning('kl_solve_evp:options', 'more kl-eigenvectors requested than matrix size allows: %d (reducing to %d)', ...
-        m, size(C,1) );
-    m=size(C,1);
+        l, size(C,1) );
+    l=size(C,1);
 end
 
 % calculate discrete covariance matrix W
-if ~isempty(G)
-    W=G*C*G;
+if ~isempty(G_N)
+    W=G_N*C*G_N;
 else
     W=C;
 end
 
 % symmetrise W (often slightly unsymmetric causing eigs to complain)
-if issymmetric( C ) && ~issymmetric( G ) && ~issymmetric( W )
+if issymmetric( C ) && ~issymmetric( G_N ) && ~issymmetric( W )
     W=0.5*(W+W');
 end
 
@@ -84,19 +87,19 @@ end
 rand_state = rand('state'); %#ok<RAND>
 rand('state', 0); %#ok<RAND>
 eigs_options.disp=0;
-if isempty(G)
-    [V,D]=eigs( W, m, 'lm', eigs_options );
+if isempty(G_N)
+    [V,D]=eigs( W, l, 'lm', eigs_options );
 else
-    [V,D]=eigs( W, G, m, 'lm', eigs_options );
+    [V,D]=eigs( W, G_N, l, 'lm', eigs_options );
 end
 rand('state',rand_state); %#ok<RAND>
 
-% retrieve the lambdas
-sqrt_lambda=reshape( sqrt(diag(D)), 1, [] );
-% retrieve the f's (f_i should correspond to f(:,i))
-f=V;
-if ~isempty(G) && isoctave()
-    f=row_col_mult( f, 1./sqrt(diag(f'*G*f)') );
+% retrieve the sigmas
+sigma_k=reshape( sqrt(diag(D)), 1, [] );
+% retrieve the r_i's
+r_i_k=V;
+if ~isempty(G_N) && isoctave()
+    r_i_k=row_col_mult( r_i_k, 1./sqrt(diag(r_i_k'*G_N*r_i_k)') );
 end
 
 % correct the variance of output field to match that of the covariance
@@ -104,19 +107,18 @@ end
 if correct_var
     in_var=diag(C);
     out_var=zeros(size(in_var));
-    for i=1:m
-        out_var=out_var+(f(:,i)*sqrt_lambda(i)).^2;
+    for k=1:l
+        out_var=out_var+(r_i_k(:,k)*sigma_k(k)).^2;
     end
-    f=row_col_mult( f, sqrt(in_var./out_var) );
+    r_i_k=row_col_mult( r_i_k, sqrt(in_var./out_var) );
 end
 
-% if the user doesn't want to have sqrt_lambda then we put it into the f's
-% then f*M*f'=diag(lambda) instead of f*M*f'=eye(m)
+% if the user doesn't want to have sigma_k then we put it into the r_i_k's
+% then r_i_k*G_N*r_i_k'=diag(lambda) instead of r_i_k*G_N*r_i_k'=eye(m)
 if  nargout<2
-    f=row_col_mult( f, sqrt_lambda );
+    r_i_k=row_col_mult( r_i_k, sigma_k );
 end
 
 function bool=issymmetric( A )
 B=A';
 bool=all(B(:)==A(:));
-
