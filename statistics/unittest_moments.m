@@ -19,15 +19,15 @@ function unittest_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-munit_set_function( 'moments' );
-
 % Normal distribution
+munit_set_function( 'normal_moments' );
 [m,v,s,k]=normal_moments();
 assert_equals( [m,v,s,k], [0,1,0,0], 'normal1' );
 [m,v,s,k]=normal_moments(2,3);
 assert_equals( [m,v,s,k], [2,3^2,0,0], 'normal2' );
 
 % Moments of lognormal distribution
+munit_set_function( 'lognormal_moments' );
 [m,v,s,k]=lognormal_moments();
 e=exp(1);
 assert_equals([m,v,s,k], [sqrt(e), (e-1)*e, (e+2)*sqrt(e-1), e^4+2*e^3+3*e^2-6], 'lognormal1');
@@ -36,10 +36,22 @@ e1=exp(0.245); e2=exp(0.09);
 assert_equals([m,v,s,k], [e1,(e2-1)*e1^2, (e2+2)*sqrt(e2-1),e2^4+2*e2^3+3*e2^2-6], 'lognormal2');
 
 % Exponential distribution
+munit_set_function( 'exponential_moments' );
 [m,v,s,k]=exponential_moments( 1.3 );
 assert_equals( [m,v,s,k], [1/1.3,1/1.3^2,2,6], 'exp' );
 
 % Beta distribution
+munit_set_function( 'beta_moments' );
 [m,v,s,k]=beta_moments(4,2);
 assert_equals( [m,v,s,k], [4/6,8/(36*7),2*(-2)*sqrt(7)/(8*sqrt(8)),6*(64-48+12-64)/(8*8*9)], 'beta' );
+
+
+% Uniform distribution
+[m,v,s,k]=uniform_moments();
+assert_equals( [m,v,s,k], [0.5,1/12,0,-6/5], 'uniform1' );
+[m,v,s,k]=uniform_moments(2,4);
+assert_equals( [m,v,s,k], [3,1/3,0,-6/5], 'uniform2' );
+[m,v,s,k]=uniform_moments(7,7);
+assert_equals( [m,v,s,k], [7,0,0,-6/5], 'uniform_empty' );
+
 
