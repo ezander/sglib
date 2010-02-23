@@ -30,14 +30,25 @@ assert_equals( exponential_covariance( 0, 0, 1, 2 ), 4, 'scalar_1d' );
 assert_equals( exponential_covariance( 0, [], 1, 2 ), 4, 'scalar_1d' );
 assert_equals( exponential_covariance( 3, [], 2, 1 ), exp(-1.5), 'scalar_1d' );
 
-assert_equals( exponential_covariance( [1 2], [2 3], 1, 2 ), 4*exp(-sqrt(2)), 'scalar_2d_iso' );
-assert_equals( exponential_covariance( [1 2], [2 4], [1 2], 2 ), 4*exp(-sqrt(2)), 'scalar_2d_non' );
-assert_equals( exponential_covariance( [1 2 3], [2 3 4], 1, 2 ), 4*exp(-sqrt(3)), 'scalar_3d_iso' );
-assert_equals( exponential_covariance( [1 2 3], [2 7 12], [1 5 3], 2 ), 4*exp(-sqrt(11)), 'scalar_3d_non' );
+assert_equals( exponential_covariance( [1; 2], [2; 3], 1, 2 ), 4*exp(-sqrt(2)), 'scalar_2d_iso' );
+assert_equals( exponential_covariance( [1; 2], [2; 4], [1 2], 2 ), 4*exp(-sqrt(2)), 'scalar_2d_non' );
+assert_equals( exponential_covariance( [1; 2; 3], [2; 3; 4], 1, 2 ), 4*exp(-sqrt(3)), 'scalar_3d_iso' );
+assert_equals( exponential_covariance( [1; 2; 3], [2; 7; 12], [1 5 3], 2 ), 4*exp(-sqrt(11)), 'scalar_3d_non' );
 
-assert_equals( exponential_covariance( [1 2; 3 5], [2 3;4 7], 1, 2 ), 4*exp(-sqrt([2;5])), 'vector_2d_iso' );
-assert_equals( exponential_covariance( [1 2; 3 5], [2 3;4 7], [1 0.5], 2 ), 4*exp(-sqrt([5;17])), 'vector_2d_non' );
-assert_equals( exponential_covariance( [1 2; 3 5; 1 2], [2 3;4 7; 3 4], 1, 2 ), 4*exp(-sqrt([2;5;8])), 'vector_2d_iso' );
-assert_equals( exponential_covariance( [1 2; 3 5; 1 2], [2 3;4 7; 3 4], [1 0.5], 2 ), 4*exp(-sqrt([5;17;20])), 'vector_2d_non' );
-assert_equals( exponential_covariance( [1 2 3;1 1 1;1 1 1], [2 3 4;2 3 4;3 4 5], 1, 2 ), 4*exp(-sqrt([3;14;29])), 'vector_3d_iso' );
-assert_equals( exponential_covariance( [1 2 3;1 1 1;1 1 1], [2 3 4;2 3 4;3 4 5], [1 0.5 0.25]*10, 2 ), 4*exp(-sqrt([21;161;296])/10), 'vector_3d_non' );
+assert_equals( exponential_covariance( [1 2; 3 5], [2 3; 4 7], 1, 2 ), 4*exp(-sqrt([2,5])), 'vector_2d_iso' );
+assert_equals( exponential_covariance( [1 2; 3 5], [2 3; 4 7], [1 0.5], 2 ), 4*exp(-sqrt([5,17])), 'vector_2d_non' );
+assert_equals( exponential_covariance( [1 3 1; 2 5 2], [2 4 3; 3 7 4], 1, 2 ), 4*exp(-sqrt([2,5,8])), 'vector_2d_iso' );
+assert_equals( exponential_covariance( [1 3 1; 2 5 2], [2 4 3; 3 7 4], [1 0.5], 2 ), 4*exp(-sqrt([5,17,20])), 'vector_2d_non' );
+assert_equals( exponential_covariance( [1 1 1; 2 1 1; 3 1 1], [2 2 3; 3 3 4; 4 4 5], 1, 2 ), 4*exp(-sqrt([3,14,29])), 'vector_3d_iso' );
+assert_equals( exponential_covariance( [1 1 1; 2 1 1; 3 1 1], [2 2 3; 3 3 4; 4 4 5], [1 0.5 0.25]*10, 2 ), 4*exp(-sqrt([21,161,296])/10), 'vector_3d_non' );
+
+
+munit_set_function( 'exponential_covariance' );
+x=linspace(0,1,10);
+assert_equals( exponential_covariance(x), exp(-x), 'simple' );
+assert_equals( exponential_covariance(zeros(size(x)), x), exp(-x), 'simple' );
+assert_equals( exponential_covariance(x,x), ones(size(x)), 'simple2' );
+assert_equals( exponential_covariance(x'), exp(-norm(x)), 'simple3' );
+assert_equals( exponential_covariance([x;x],[x;x]), ones(size(x)), 'simple3' );
+
+
