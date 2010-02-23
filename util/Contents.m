@@ -62,13 +62,12 @@
 %   binfun                    - Computes a binary function with singleton dimensions expanded.
 %   ifelse                    - Returns one of two arguments depending on condition.
 %   makesavepath              - Making necessary subdirs for saving a file.
-
 %
 % Numerical functions
 %   chopabs                   - Replace numbers close to zero with zero.
-%   randn_sorted              - Generate sorted, normally distributed numbers from the inverse CDF.
 %   revkron                   - Reversed Kronecker tensor product.
-%   inv_reg_beta              - Compute the inverse regularized beta function.
+%   unitvector                - Creates one or more unit vectors.
+
 
 
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
@@ -83,18 +82,18 @@
 %   unittest_funcall_funfun   - Test the FUNCALL_FUNFUN function.
 %   unittest_get_mfile_path   - Test the GET_MFILE_PATH function.
 %   unittest_ifelse           - Test the IFELSE function.
-%   unittest_inv_reg_beta     - Test the inverse regularized beta function.
 %   unittest_isfunction       - Test the ISFUNCTION function.
 %   unittest_ismatoct         - Test the IS_MATLAB/IS_OCTAVE functions.
 %   unittest_isversion        - Test the ISVERSION function.
 %   unittest_makesavepath     - Test the MAKESAVEPATH function.
 %   unittest_merge_cells      - Test the MERGE_CELLS function.
 %   unittest_options          - Test the OPTIONS function.
-%   unittest_randn_sorted     - Test the RANDN_SORTED function.
 %   unittest_revkron          - Test the REVKRON and function.
 %   unittest_row_col_mult     - Test row_col_mult function.
 %   unittest_strvarexpand     - Test the STRVAREXPAND function.
 %   unittest_underline        - Test the UNDERLINE function.
+%   unittest_unitvector       - Test the UNITVECTOR function.
+%   unittest_unitvector       - Test the UNITVECTOR function.
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

@@ -40,3 +40,14 @@ pci=[0 1 2 3]';
 [mu,sig2,skew]=pce_moments( pcc, [pci zeros(4,1)]);
 assert_equals( [mu,sig2,skew], [4,0.09,0;2,3,14/(3*sqrt(3))], 'moments_mult' );
 
+
+
+% from old unittest_moments
+mu=-1;
+sigma=1;
+p=9;
+h={@lognormal_stdnor,{mu,sigma}};
+pcc=pce_expand_1d(h,p);
+[me,ve,se]=lognormal_moments( mu, sigma );
+[mp,vp,sp]=pce_moments( pcc );
+assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognormal', 'abstol', [1e-8,1e-6,2e-3] );

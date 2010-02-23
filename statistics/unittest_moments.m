@@ -19,59 +19,41 @@ function unittest_moments
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-munit_set_function( 'moments' );
-
-%% Normal distribution
+% Normal distribution
+munit_set_function( 'normal_moments' );
+[m,v,s,k]=normal_moments();
+assert_equals( [m,v,s,k], [0,1,0,0], 'normal1' );
 [m,v,s,k]=normal_moments(2,3);
-assert_equals( [m,v,s,k], [2,3^2,0,0], 'normal' );
+assert_equals( [m,v,s,k], [2,3^2,0,0], 'normal2' );
 
-%% Sampled normal distribution
-N=100000;
-x=2+3*randn(N,1);
-[md,vd,sd,kd]=data_moments( x );
-assert_equals( [md,vd,sd,kd], [m,v,s,k], 'normal_sampled', 'abstol', 1e-1, 'fuzzy', true );
-
-%% Moments of lognormal distribution
+% Moments of lognormal distribution
+munit_set_function( 'lognormal_moments' );
+[m,v,s,k]=lognormal_moments();
+e=exp(1);
+assert_equals([m,v,s,k], [sqrt(e), (e-1)*e, (e+2)*sqrt(e-1), e^4+2*e^3+3*e^2-6], 'lognormal1');
 [m,v,s,k]=lognormal_moments(0.2,0.3);
 e1=exp(0.245); e2=exp(0.09);
-assert_equals([m,v,s,k], [e1,(e2-1)*e1^2, (e2+2)*sqrt(e2-1),e2^4+2*e2^3+3*e2^2-6], 'lognormal');
+assert_equals([m,v,s,k], [e1,(e2-1)*e1^2, (e2+2)*sqrt(e2-1),e2^4+2*e2^3+3*e2^2-6], 'lognormal2');
 
-%% Sampled lognormal distribution
-N=100000;
-x=lognormal_stdnor( randn(N,1), 0.2, 0.3 );
-[md,vd,sd,kd]=data_moments( x );
-assert_equals( [md,vd,sd,kd], [m,v,s,k],  'lognormal_sampled', 'abstol', [0.01, 0.01, 0.1, 1], 'fuzzy', true );
-
-%% Exponential distribution
+% Exponential distribution
+munit_set_function( 'exponential_moments' );
 [m,v,s,k]=exponential_moments( 1.3 );
 assert_equals( [m,v,s,k], [1/1.3,1/1.3^2,2,6], 'exp' );
 
-%% Sampled exponential distribution
-N=100000;
-x=exponential_stdnor( randn(N,1), 1.3 );
-[md,vd,sd,kd]=data_moments( x );
-assert_equals( [md,vd,sd,kd], [m,v,s,k], 'exp_sampled', 'abstol', [0.01, 0.01, 0.1, 1], 'fuzzy', true );
-
-%% Beta distribution
+% Beta distribution
+munit_set_function( 'beta_moments' );
 [m,v,s,k]=beta_moments(4,2);
 assert_equals( [m,v,s,k], [4/6,8/(36*7),2*(-2)*sqrt(7)/(8*sqrt(8)),6*(64-48+12-64)/(8*8*9)], 'beta' );
 
 
-%% Sampled beta distribution
-N=10000;
-x=beta_stdnor( randn(N,1), 4, 2 );
-[md,vd,sd,kd]=data_moments( x );
-assert_equals( [md,vd,sd,kd], [m,v,s,k], 'beta_sampled', 'abstol', [0.01, 0.01, 0.1, 0.2], 'fuzzy', true );
+% Uniform distribution
+[m,v,s,k]=uniform_moments();
+assert_equals( [m,v,s,k], [0.5,1/12,0,-6/5], 'uniform1' );
+[m,v,s,k]=uniform_moments(2,4);
+assert_equals( [m,v,s,k], [3,1/3,0,-6/5], 'uniform2' );
+[m,v,s,k]=uniform_moments(7,7);
+assert_equals( [m,v,s,k], [7,0,0,-6/5], 'uniform_empty' );
 
-%% pce of lognormal
-mu=-1;
-sigma=1;
-p=9;
-h={@lognormal_stdnor,{mu,sigma}};
-pcc=pce_expand_1d(h,p);
-[me,ve,se]=lognormal_moments( mu, sigma );
-[mp,vp,sp]=pce_moments( pcc );
-assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognormal', 'abstol', [1e-8,1e-6,2e-3] );
 
 
 %% Uniform distribution
