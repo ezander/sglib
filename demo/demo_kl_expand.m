@@ -4,7 +4,7 @@ function demo_kl_expand
 %% Setup grid
 subplot(1,1,1); clf; hold off
 n=10;
-x=linspace(0,1,n)';
+x=linspace(0,1,n);
 els=[1:n-1; 2:n]';
 
 %% Create covariance matrix
@@ -59,7 +59,7 @@ v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
 [u_alpha,I_u]=pce_transform_multi( v_gam, u_i );
 
 xi=randn(50,m_gam);
-u_real1=pce_field_realization( x, u_alpha, I_u, xi );
+u_real1=pce_field_realization( x', u_alpha, I_u, xi' );
 plot( x, u_real1 );
 
 %% Make KL on RF and project on it
