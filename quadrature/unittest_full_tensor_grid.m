@@ -99,7 +99,7 @@ assert_equals( polyint_rule( 5, a, xd, wd ), polyint_mixed( 5, a, 3, 2 ), 'gh_mi
 function [x,w]=dummy_rule( p )
 % DUMMY_RULE No real integration rule, but easier to verfify with.
 x=linspace(-1,1,p);
-w=linspace(0,1,p);
+w=linspace(0,1,p)';
 w=w/sum(w);
 
 function P=polyint_rule( p, a, xd, wd )
@@ -109,7 +109,7 @@ m=size(xd,1);
 I=multiindex( m, p );
 XX=repmat( xd, [1, 1, size(I,1)] );
 II=permute( repmat( I', [1, 1, Nx] ), [1 3 2] );
-P=wd*(a*permute( prod(XX.^II,1), [3,2,1]))';
+P=(a*permute( prod(XX.^II,1), [3,2,1]))*wd;
 
 function P=polyint_legendre( p, a, m )
 % POLYINT_LENGENDRE Integrate some polynomial on [-1,1] analytically.

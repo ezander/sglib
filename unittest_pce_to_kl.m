@@ -27,8 +27,8 @@
 % 4. we get the PCE back from the KL
 
 N=51;
-[els,pos]=create_mesh_1d( N, 0, 1 );
-G_N=mass_matrix( els, pos );
+[pos,els]=create_mesh_1d( N, 0, 1 );
+G_N=mass_matrix( pos, els );
 p_kap=3;
 m_kap=3;
 M_kap=nchoosek( p_kap+m_kap, m_kap ); % full kl without truncation

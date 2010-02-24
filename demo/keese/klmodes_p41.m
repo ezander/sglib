@@ -29,7 +29,7 @@ lc=0.5;
 cov_func={@gaussian_covariance,{lc,1}};
 
 % LShaped domain
-[els,pos,G_N]=load_pdetool_geom( 'lshape', 1, false );
+[pos,els,G_N]=load_pdetool_geom( 'lshape', 1, false );
 v_f=kl_solve_evp( covariance_matrix( pos, cov_func ), G_N, m, 'correct_var', true );
 for j=1:m
     if mean(v_f(:,j))<0; v_f(:,j)=-v_f(:,j); end
@@ -43,8 +43,8 @@ end
 for i=1:4
     subplot(2,2,i);
     u=v_f(:,modes(i));
-    plot_field( els, pos, u, 'view', [220,25], 'colormap', 'cool', 'show_surf', true, 'shading', 'faceted' );
-    plot_field_contour( els, pos, u, 'zpos', 'min' );
-    plot_boundary( els, pos, 'color', 'k', 'zpos', min(u) );
+    plot_field( pos, els, u, 'view', [220,25], 'colormap', 'cool', 'show_surf', true, 'shading', 'faceted' );
+    plot_field_contour( pos, els, u, 'zpos', 'min' );
+    plot_boundary( pos, els, 'color', 'k', 'zpos', min(u) );
     title(sprintf('%s KL-mode, L-shaped domain',mode_names{i}));
 end

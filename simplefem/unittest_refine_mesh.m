@@ -20,6 +20,6 @@ function unittest_refine_mesh
 
 munit_set_function( 'refine_mesh' );
 
-[ne,np]=refine_mesh( [1 2 3], [-2 0; 0 4; 2 0] );
-assert_equals( ne, [5 4 6; 2 4 5; 5 6 3; 4 1 6], 'new_el' );
-assert_equals( np, [-2 0; 0 4; 2 0; -1 2; 1 2; 0 0], 'new_pos' );
+[np,ne]=refine_mesh( [-2 0; 0 4; 2 0]', [1 2 3]' );
+assert_equals( np, [-2 0; 0 4; 2 0; -1 2; 1 2; 0 0]', 'new_pos' );
+assert_equals( ne, [5 4 6; 2 4 5; 5 6 3; 4 1 6]', 'new_el' );

@@ -41,7 +41,7 @@ switch name
         cov_r={@gaussian_covariance,{lc_r,1}};
         cov_gam={@gaussian_covariance,{lc_r,1}};
     case 'rf_kl_1d_sfem21_f'
-        [els,pos,bnd]=make_1d_mesh( 21 );
+        [pos,els,bnd]=make_1d_mesh( 21 );
         p_r=3;
         m_gam_r=2;
         m_r=4;
@@ -49,7 +49,7 @@ switch name
         stdnor_r={@beta_stdnor,{4,2}};
         cov_r={@gaussian_covariance,{lc_r,1}};
     case 'rf_kl_1d_sfem21_k'
-        [els,pos,bnd]=make_1d_mesh( 21 );
+        [pos,els,bnd]=make_1d_mesh( 21 );
         p_r=4;
         m_gam_r=4;
         m_r=4;
@@ -63,14 +63,14 @@ end
 
 % load mesh if necessary
 if ~isempty( meshname )
-    [els,pos,bnd]=load_and_correct_mesh( meshname );
+    [pos,els,bnd]=load_and_correct_mesh( meshname );
 elseif isempty(els) || isempty(pos)
     error( 'model_kl:unspec', 'Neither meshname nor els/pos was specified.' )
 end
 
 % compute mass matrix if wanted
 if use_mass
-    M_N=mass_matrix( els, pos );
+    M_N=mass_matrix( pos, els );
 else
     M_N=[];
 end
@@ -87,7 +87,7 @@ end
 
 %% Part 3: Assigning the output
 if nargin<4
-    varargout={els, pos, mu_r_j, r_j_i, rho_i_alpha, I_r, p_r, m_gam_r, m_r, lc_r, stdnor_r, cov_r, cov_gam};
+    varargout={pos, els, mu_r_j, r_j_i, rho_i_alpha, I_r, p_r, m_gam_r, m_r, lc_r, stdnor_r, cov_r, cov_gam};
 else
     for i=1:length(output_vars)
         if exist(output_vars{i},'var')
@@ -101,7 +101,7 @@ end
 
 %% Appendix: Some auxiliary functions
 
-function [els,pos,bnd]=make_1d_mesh( n, int )
+function [pos,els,bnd]=make_1d_mesh( n, int )
 if nargin<2
     int=[0,1];
 end
@@ -110,22 +110,15 @@ els=[1:n-1; 2:n]';
 bnd=[1,n];
 
 
-function [els,pos,bnd]=load_and_correct_mesh( meshname );
+function [pos,els,bnd]=load_and_correct_mesh( meshname );
 s=load( ['data/' meshname '.mat' ]);
 els=s.nodes;
 pos=s.coords;
-[els,pos]=correct_mesh( els, pos );
+[pos,els]=correct_mesh( pos, els );
 if isfield(s, 'bnd')
     bnd=s.bnd;
 else
-    bnd=[];
-    for i=1:size(pos,2);
-        x1=min(pos(:,i));
-        x2=max(pos(:,i));
-        delta=1e-7;
-        bnd=[bnd; find(abs(pos(:,i)-x1)<delta)];
-        bnd=[bnd; find(abs(pos(:,i)-x2)<delta)];
-    end
+    bnd=find_bounary( els );
 end
 % TODO: boundary detection with convex hull and delta's
 % Idea: use convhulln store boundary nodes, move boundary nodes to

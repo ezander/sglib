@@ -32,10 +32,11 @@ if length(quadrule)<p || isempty(quadrule{p})
     hm=hermite(p-1);
 
     x=sort(roots(h));
-    w=factorial(p-1)./(polyval(hm,x).*polyval(dh,x));
+    x=x(:)';
+    w=factorial(p-1)./(polyval(hm,x).*polyval(dh,x))';
 
-    quadrule{p}.x=x(:);
-    quadrule{p}.w=w(:);
+    quadrule{p}.x=x;
+    quadrule{p}.w=w;
 else
     rule=quadrule{p};
     x=rule.x;

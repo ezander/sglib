@@ -12,8 +12,8 @@ function [r_i_0,r_i_k,r_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, l_r, 
 %
 % Example (<a href="matlab:run_example pce_to_kl">run</a>)
 %   N=51;
-%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-%   G_N=mass_matrix( els, pos );
+%   [pos,els,bnd]=create_mesh_1d( N, 0, 1 );
+%   G_N=mass_matrix( pos, els );
 %   p_k=4;
 %   m_k=4;
 %   l_k=12;

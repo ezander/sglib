@@ -10,7 +10,7 @@ end
 
 
 kl_model_version=[];
-[m_gam_f, els, pos, mu_f, v_f, f_i_alpha, I_f]=...
+[m_gam_f, pos,els, mu_f, v_f, f_i_alpha, I_f]=...
     load_kl_model( 'rf_kl_2d-1', kl_model_version, [], {'m_gam_r', 'els', 'pos', 'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
 
 N=200;
@@ -23,7 +23,7 @@ for i=1:1000
     xi=ppval(pp,i)';
     xi=(xi-mean(xi))/sqrt(var(xi))+mean(xi);
     f_ex=kl_pce_field_realization( pos, mu_f, v_f, f_i_alpha, I_f, xi );
-    plot_field( els, pos, f_ex, 'lighting', 'gouraud' );
+    plot_field( pos, els, f_ex, 'lighting', 'gouraud' );
 
     if ~isempty( get( gcf, 'UserData' ) )
         set( gcf, 'UserData', [] );

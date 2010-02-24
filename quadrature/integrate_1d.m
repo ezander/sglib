@@ -44,16 +44,17 @@ options=varargin2options( varargin );
 [transposed,options]=get_option( options, 'transposed', false );
 check_unsupported_options( options, mfilename );
 
-% get pos and weights and make sure they are in the right shape
+% get pos and weights and make sure they are in the right shape (i.e. x is
+% a row vector and w a column vector)
 [x,w]=funcall(rule_func, p);
 x=x(:)';
-w=w(:)';
+w=w(:);
 
 if vectorized
-    if transposed
-        int=w*funcall(func,x');
+    if ~transposed
+        int=funcall(func,x)*w;
     else
-        int=(w*funcall(func,x)')';
+        int=w'*funcall(func,x');
     end
 else
     int=w(1)*funcall(func,x(1));

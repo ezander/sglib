@@ -6,8 +6,8 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 %   the set of all inner nodes.
 %
 % Example (<a href="matlab:run_example apply_boundary_conditions_operator">run</a>)
-%   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%   K=stiffness_matrix( els, pos, ones(size(pos)) );
+%   [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
+%   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   fprintf( 'cond. number of K:  %g\n', condest(K) );
 %   [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
 %   Ki=apply_boundary_conditions_operator( K, P_I );

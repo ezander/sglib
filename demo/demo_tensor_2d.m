@@ -1,7 +1,7 @@
 function demo_tensor_2d
 
 %% load and show mesh
-[els,pos,G,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
+[pos,els,G,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
 pdemesh( ptdata{:} )
 
 p_f=3;
@@ -26,10 +26,10 @@ else
 end
 fprintf( 'relative error computing KL: %g\n', relerr );
 
-subplot(2,2,1); plot_field( els, pos, mu_f );
-subplot(2,2,2); plot_field( els, pos, v_f(:,1) );
-subplot(2,2,3); plot_field( els, pos, v_f(:,2) );
-subplot(2,2,4); plot_field( els, pos, v_f(:,3) );
+subplot(2,2,1); plot_field( pos, els, mu_f );
+subplot(2,2,2); plot_field( pos, els, v_f(:,1) );
+subplot(2,2,3); plot_field( pos, els, v_f(:,2) );
+subplot(2,2,4); plot_field( pos, els, v_f(:,3) );
 
 
 

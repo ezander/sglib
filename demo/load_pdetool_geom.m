@@ -1,4 +1,4 @@
-function [els,pos,G,ptdata]=load_pdetool_geom( name, numrefine, showmesh )
+function [pos,els,G,ptdata]=load_pdetool_geom( name, numrefine, showmesh )
 
 
 switch name

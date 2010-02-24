@@ -24,7 +24,7 @@ userwait;
 
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
+select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
 mu_g_j=funcall( g_func, pos);
 % "null" kl expansion of g

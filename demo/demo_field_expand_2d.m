@@ -5,7 +5,7 @@ function demo_field_expand_2d
 %% Initialization stuff
 % We use the pde toolbox to generate the geometry and the mass matrix
 % (gramian)
-[els,pos,G_N]=load_pdetool_geom( 'cardioid', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
 
 
 % expansion of the right hand side field (f)
@@ -41,13 +41,13 @@ set( gcf, 'Renderer', 'zbuffer' );
 
 for k=1:12
     subplot(4,4,k);
-    plot_field( els, pos, f_i_k(:,k) );
+    plot_field( pos, els, f_i_k(:,k) );
     title(sprintf('KLE: f_{%d}',k));
 end
 for j=1:4
     subplot(4,4,12+j);
     f_ex=kl_pce_field_realization( pos, f_i_0, f_i_k, f_k_alpha, I_f );
-    plot_field( els, pos, f_ex );
+    plot_field( pos, els, f_ex );
     title(sprintf('Sample: %d',j));
 end
 

@@ -20,32 +20,32 @@ function unittest_correct_mesh
 
 munit_set_function( 'correct_mesh' );
 
-[els1,pos1]=create_mesh_1d( 10, 2, 5 );
-[els2,pos2]=correct_mesh( els1, pos1 );
-assert_equals( els1, els2, 'no_change1' );
-assert_equals( pos1, pos2, 'no_change2' );
+[pos1,els1]=create_mesh_1d( 10, 2, 5 );
+[pos2,els2]=correct_mesh( pos1, els1 );
+assert_equals( pos1, pos2, 'no_change1' );
+assert_equals( els1, els2, 'no_change2' );
 
 els3=els1+5;
-pos3=[zeros(5,1); pos1; ones(3,1)];
-[els2,pos2]=correct_mesh( els3, pos3 );
-assert_equals( els1, els2, 'rem_points1' );
-assert_equals( pos1, pos2, 'rem_points2' );
+pos3=[zeros(1,5), pos1, ones(1,3)];
+[pos2,els2]=correct_mesh( pos3, els3 );
+assert_equals( pos1, pos2, 'rem_points1' );
+assert_equals( els1, els2, 'rem_points2' );
 
 els3=els1;
 ind=[1,3,7];
-els3(ind,[1,2])=els3(ind,[2,1]);
+els3([1,2],ind)=els3([2,1],ind);
 pos3=pos1;
-[els2,pos2]=correct_mesh( els3, pos3 );
-assert_equals( els1, els2, 'invert1' );
-assert_equals( pos1, pos2, 'invert2' );
+[pos2,els2]=correct_mesh( pos3, els3 );
+assert_equals( pos1, pos2, 'invert1' );
+assert_equals( els1, els2, 'invert2' );
 
 % 2D test for the following grid
 %  1
 % 234
 %  5
-els=[1 2 3; 1 3 4; 2 3 5; 3 4 5];
-pos=[0 1; -1 0; 0 0; 1 0; 0 -1];
-[els2,pos2]=correct_mesh( els, pos );
-assert_equals( els2, [1 2 3; 1 3 4; 3 2 5; 4 3 5], '2d_els' );
+els=[1 2 3; 1 3 4; 2 3 5; 3 4 5]';
+pos=[0 1; -1 0; 0 0; 1 0; 0 -1]';
+[pos2,els2]=correct_mesh( pos, els );
 assert_equals( pos2, pos, '2d_pos' );
+assert_equals( els2, [1 2 3; 1 3 4; 3 2 5; 4 3 5]', '2d_els' );
 

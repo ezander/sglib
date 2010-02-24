@@ -11,9 +11,9 @@ geom_num=2;
 
 clf;
 set( gcf, 'Renderer', 'painters' );
-[els,pos,G_N]=load_pdetool_geom( geometries{geom_num}, 0, true );
+[pos,els,G_N]=load_pdetool_geom( geometries{geom_num}, 0, true );
 userwait;
-N=size(pos,1);
+N=size(pos,2);
 bnd=find_boundary( els, true );
 
 
@@ -30,7 +30,7 @@ cov_k={@gaussian_covariance,{lc_k,1}};
 [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
 [mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
 % plot field
-plot_kl( els, pos, mu_k_i, k_i_k, kappa_k_alpha );
+plot_kl( pos, els, mu_k_i, k_i_k, kappa_k_alpha );
 set( gcf, 'Renderer', 'painters' );
 print( sprintf( 'k_%s_%d_kl.eps', geometries{geom_num}, N ),'-depsc2' );
 userwait;
@@ -47,14 +47,14 @@ cov_f={@gaussian_covariance,{lc_f,1}};
 [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
 [mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
 % plot field
-plot_kl( els, pos, mu_f_i, f_i_k, phi_k_alpha );
+plot_kl( pos, els, mu_f_i, f_i_k, phi_k_alpha );
 set( gcf, 'Renderer', 'painters' );
 print( sprintf( 'f_%s_%d_kl.eps', geometries{geom_num}, N ),'-depsc2' );
 userwait;
 
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
+select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
 % dummy pce (just the mean)
 g_i_alpha=funcall( g_func, pos);
@@ -87,7 +87,7 @@ g_vec=g_mat(:);
 %% load and create the operators 
 % since this takes a while we cache the function call
 kl_operator_version=1;
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
 op_filename=sprintf('kl_operator_2d_%d_%d.mat', N, M );

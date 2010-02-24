@@ -1,9 +1,9 @@
-function [els,pos,bnd]=create_mesh_1d( n, x0, x1 )
+function [pos,els,bnd]=create_mesh_1d( n, x0, x1, shuffle )
 % CREATE_MESH_1D Creates a 1D mesh for simple finite element calculations.
-%   [ELS,POS,BND]=CREATE_MESH_1D( N, X0, X1 ) creates a
+%   [POS,ELS,BND]=CREATE_MESH_1D( N, X0, X1 ) creates a
 %
 % Example (<a href="matlab:run_example create_mesh_1d">run</a>)
-%   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
+%   [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
 %   save_format( 'compact', 'short g' );
 %   els
 %   pos
@@ -26,6 +26,17 @@ function [els,pos,bnd]=create_mesh_1d( n, x0, x1 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-pos=linspace(x0,x1,n)';
-els=[1:n-1; 2:n]';
+if nargin<4
+    shuffle=false;
+end
+
+pos=linspace(x0,x1,n);
+els=[1:n-1; 2:n];
 bnd=[1,n];
+
+if shuffle
+    p=randperm(n);
+    pos(p)=pos;
+    els=p(els);
+    bnd=p(bnd);
+end

@@ -7,8 +7,10 @@ text_opts=tex_opts;
 %% load the geomatry
 % 1D currently, so nothing to plot here
 N=51;
-[els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-G_N=mass_matrix( els, pos );
+d=1;
+[pos,els,bnd]=create_mesh_1d( N, 0, 1 );
+G_N=mass_matrix( pos, els );
+
 
 %% load the kl variables of the conductivity k
 % define stochastic parameters
@@ -54,7 +56,7 @@ userwait;
 
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
+select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
 % dummy pce (just the mean)
 g_i_alpha=funcall( g_func, pos);
@@ -87,7 +89,7 @@ g_vec=g_mat(:);
 %% load and create the operators 
 % since this takes a while we cache the function call
 kl_operator_version=1;
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
 op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
@@ -99,10 +101,9 @@ K=cached_funcall(...
     1,... % just one output argument
     op_filename, ...
     kl_operator_version, ...
-    {'message', 'recomputing kl-operator', ...
-     'show_timings', opt.show_timings, 'silent', opt.silent, ...
-     'extra_params', {'show_timings', opt.show_timings, 'silent', opt.silent}...
-    } ...
+    'message', 'recomputing kl-operator', ...
+    'show_timings', opt.show_timings, 'silent', opt.silent, ...
+    'extra_params', {'show_timings', opt.show_timings, 'silent', opt.silent}...
 );
 
 % create matrix and tensor operators
@@ -110,7 +111,7 @@ K_mat=revkron(K);
 
 
 %% apply boundary conditions
-[P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
+[P_I,P_B]=boundary_projectors( bnd, N );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );

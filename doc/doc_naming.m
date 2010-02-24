@@ -186,8 +186,8 @@
 %     and the sequenced with {:} into the argument list. E.g. the elements
 %     and points for the geometry always appear in this order. So you can
 %     write e.g.
-%       [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%       geom={els,pos};
+%       [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
+%       geom={pos,els};
 %       K=stiffness_matrix( geom{:}, ones(size(pos)) );
 %     You can even place the cell array in the output argument lists:
 %       [geom{1:3}]=create_mesh_1d( 5, 0, 2 );

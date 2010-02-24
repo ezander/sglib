@@ -59,7 +59,8 @@ elseif length(oned_rule_func)~=d
     error( 'Dimension d doesn''t match that of the cell array of rules functions.' );
 end
 
-% get all 1d rules
+% get all 1d rules (i.e. one for each dimension, may of course be all the
+% same--usually they are--but can also be different in each dimension)
 x1 = cell(d, 1);
 w1 = cell(d, 1);
 for k = 1:d

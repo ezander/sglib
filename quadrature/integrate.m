@@ -72,10 +72,10 @@ end
 [xd,wd]=funcall(grid_func, m, p, rule_func );
 
 if vectorized
-    if transposed
-        int=wd*funcall(func,xd');
+    if ~transposed
+        int=funcall(func,xd)*wd;
     else
-        int=(wd*funcall(func,xd)')';
+        int=wd'*funcall(func,xd');
     end
 else
     int=wd(1)*funcall(func,xd(:,1));

@@ -22,46 +22,34 @@ function unittest_mass_matrix
 munit_set_function( 'mass_matrix' );
 
 % one element 1d
-x=[0;1];
-els=[1, 2];
-assert_equals( full( mass_matrix( els, x ) ), 1/6*[2, 1; 1, 2], 'oneelem1d' );
+pos=[0, 1];
+els=[1; 2];
+assert_equals( full( mass_matrix( pos, els ) ), 1/6*[2, 1; 1, 2], 'oneelem1d' );
 
-x=[3; 7];
-els=[1, 2];
-assert_equals( full( mass_matrix( els, x ) ), 4/6*[2, 1; 1, 2], 'oneelem1d' );
+pos=[3, 7];
+els=[1; 2];
+assert_equals( full( mass_matrix( pos, els ) ), 4/6*[2, 1; 1, 2], 'oneelem1d' );
 
-x=[6; 3; 5; 7; 2];
-els=[2, 4];
+pos=[6, 3, 5, 7, 2];
+els=[2; 4];
 M_ex=zeros(5,5); M_ex(els,els)=4/6*[2, 1; 1, 2];
-assert_equals( full( mass_matrix( els, x ) ), M_ex, 'oneelem1d' );
+assert_equals( full( mass_matrix( pos, els ) ), M_ex, 'oneelem1d' );
 
 % more elements 1d
-x=linspace(0,1,11)';
-els=[(1:10)',(2:11)'];
-M=full( mass_matrix( els, x ) );
+[pos,els]=create_mesh_1d(11,0,1);
+M=full( mass_matrix( pos, els ) );
 M_ex=1/60*( diag([2 4*ones(1,9) 2])+diag(ones(1,10),1)+diag(ones(1,10),-1) );
 assert_equals( sum(M(:)), 1, 'moreelem1d' );
 assert_equals( M, M_ex, 'moreelem1d' );
 
 
 % one element 2d
-x=[0, 0; 1, 0; 0, 1];
-els=[1 2 3];
-assert_equals( full( mass_matrix( els, x ) ), 1/24*[2, 1, 1; 1, 2, 1;1, 1, 2], 'oneelem2d' );
+pos=[0, 0; 1, 0; 0, 1]';
+els=[1; 2; 3];
+assert_equals( full( mass_matrix( pos, els ) ), 1/24*[2, 1, 1; 1, 2, 1;1, 1, 2], 'oneelem2d' );
 
 % multi element 2d
-elems=[
-     6     9    10
-     4    10     5
-     4     6    10
-    10     7     5
-     3     8    10
-     8     7    10
-     4     1     6
-     7     2     5
-     9    11    10
-     ];
- x=[
+ pos=[
                   0                  0
                   0   1.00000000000000
    1.00000000000000   1.00000000000000
@@ -73,7 +61,18 @@ elems=[
    0.77510383423028  -0.00000000000212
    1.00000000985480   0.74770982772568
    1.00000000102578   0.00000000008107
-    ];
+    ]';
+els=[
+     6     9    10
+     4    10     5
+     4     6    10
+    10     7     5
+     3     8    10
+     8     7    10
+     4     1     6
+     7     2     5
+     9    11    10
+     ]';
 i=[  1     4     6     2     5     7     3     8    10     1     4     5     6    10     2     4     5     7    10     1 ...
      4     6     9    10     2     5     7     8    10     3     7     8    10     6     9    10    11     3     4     5 ...
      6     7     8     9    10    11     9    10    11 ]';
@@ -91,8 +90,8 @@ s=[0.00539227889849   0.00269613944925   0.00269613944925   0.00685723155134   0
    0.01401308950938 ]';
 M_ex=accumarray([i,j],s);
 
-M=full( mass_matrix( elems, x ) );
+M=full( mass_matrix( pos, els ) );
 assert_equals( M, M_ex, 'multielem2d' );
 
 
-assert_error( 'mass_matrix(1:4, rand(4,3))', 'simplefem:mass_matrix', 'wrong_dimen' );
+assert_error( 'mass_matrix(rand(3,4), (1:4)'')', 'simplefem:mass_matrix', 'wrong_dimen' );

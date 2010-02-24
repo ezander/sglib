@@ -30,8 +30,8 @@ function [r_j_alpha, I_r, C_r]=expand_field_pce_sg( rho_stdnor_func, cov_r_func,
 %   m_k=4;
 %   stdnor_k={@lognormal_stdnor,{0.5,1}};
 %   stdnor_k={@beta_stdnor,{4,2}};
-%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-%   G_N=mass_matrix( els, pos );
+%   [pos,els,bnd]=create_mesh_1d( N, 0, 1 );
+%   G_N=mass_matrix( pos, els );
 %   for i=1:4
 %     lc_k=0.5^(i-1);
 %     fprintf('conv. length: %g\n', lc_k);
@@ -58,9 +58,9 @@ function [r_j_alpha, I_r, C_r]=expand_field_pce_sg( rho_stdnor_func, cov_r_func,
 check_condition( rho_stdnor_func, 'isfunction', false, 'rho_stdnor_func', mfilename );
 check_condition( cov_r_func, 'isfunction', false, 'cov_r_func', mfilename );
 check_condition( cov_gam_func, 'isfunction', true, 'cov_gam_func', mfilename );
-check_range( size(pos,2), 1, 3, 'sizeof(pos,2)', mfilename );
+check_range( size(pos,1), 1, 3, 'sizeof(pos,1)', mfilename );
 check_condition( G_N, 'square', true, 'G_N', mfilename );
-check_condition( {G_N, pos}, 'match', true, {'G_N', 'pos'}, mfilename );
+check_condition( {pos, G_N}, 'match', true, {'pos', 'G_N'}, mfilename );
 check_range( p, 1, 10, 'p', mfilename );
 check_range( m_gam, 1, 1000, 'm_gam', mfilename );
 
