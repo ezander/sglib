@@ -52,7 +52,7 @@ g_vec=g_mat(:);
 
 %% load and create the operators
 kl_operator_version=9;
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+stiffness_func={@stiffness_matrix, {pos,els}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
 K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );

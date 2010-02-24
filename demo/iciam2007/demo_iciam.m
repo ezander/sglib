@@ -8,7 +8,7 @@ clf
 clear
 
 % Solving with stochastic operator
-global n x els M %#ok
+global n pos els M %#ok
 global p_f m_gam_f m_f lc_f h_f cov_f f_alpha I_f mu_f f_i_alpha v_f %#ok
 global p_k m_gam_k m_k lc_k h_k cov_k k_alpha I_k mu_k k_i_alpha v_k %#ok
 global p_u m_gam_u I_u %#ok
@@ -148,11 +148,11 @@ fprintf( 'error:    %g\n', normest(u_alpha-u_alpha0)/normest(u_alpha0))
 %return
 
 % Show sample realizations and 
-show_in_out_samples( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, 30 );
+show_in_out_samples( pos, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, 30 );
 userwait;
 %return
 
 % Show covariances
-show_covariances2( x, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
+show_covariances2( pos, k_alpha, f_alpha, u_alpha, I_k, I_f, I_u, cov_k, cov_f );
 userwait;
 

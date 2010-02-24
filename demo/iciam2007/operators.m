@@ -1,11 +1,11 @@
 function operators
-global n x els M %#ok
+global n pos els M %#ok
 global p_f m_gam_f m_f lc_f h_f cov_f f_alpha I_f mu_f f_i_alpha v_f %#ok
 global p_k m_gam_k m_k lc_k h_k cov_k k_alpha I_k mu_k k_i_alpha v_k %#ok
 global p_u m_gam_u I_u %#ok
 
 global K_ab K_mu_delta K_mu_iota %#ok
-stiffness_func={@stiffness_matrix, {els, x}, {1,2}};
+stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 
 rf_filename='operator_kl_smd.mat';
 reinit=false;

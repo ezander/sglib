@@ -1,5 +1,9 @@
 function bnd=find_boundary( els, points_only )
 
+if nargin<2
+    points_only=false;
+end
+
 d=size(els,1)-1;
 switch d
     case 1

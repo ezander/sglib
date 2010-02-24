@@ -64,22 +64,22 @@ end
 % load mesh if necessary
 if ~isempty( meshname )
     [pos,els,bnd]=load_and_correct_mesh( meshname );
-elseif isempty(els) || isempty(pos)
+elseif isempty(pos) || isempty(els)
     error( 'model_kl:unspec', 'Neither meshname nor els/pos was specified.' )
 end
 
 % compute mass matrix if wanted
 if use_mass
-    M_N=mass_matrix( pos, els );
+    G_N=mass_matrix( pos, els );
 else
-    M_N=[];
+    G_N=[];
 end
 
 %% Part 2: Doing the actual computation or retrieval from file
 
 [mu_r_j, r_j_i, rho_i_alpha,I_r]=cached_funcall(...
     @compute_random_field,...
-    { stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r, m_r }, ...
+    { stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_gam_r, options_expand_r, m_r }, ...
     4, ...
     rf_filename, ...
     version );
@@ -103,28 +103,28 @@ end
 
 function [pos,els,bnd]=load_and_correct_mesh( meshname );
 s=load( ['data/' meshname '.mat' ]);
-els=s.nodes;
-pos=s.coords;
+pos=s.coords';
+els=s.nodes';
 [pos,els]=correct_mesh( pos, els );
 if isfield(s, 'bnd')
     bnd=s.bnd;
 else
-    bnd=find_bounary( els );
+    bnd=find_boundary( els );
 end
 
 
-function [mu_r_j,rho_i_alpha,r_j_i, I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r, m_r )
+function [mu_r_j,rho_i_alpha,r_j_i, I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_gam_r, options_expand_r, m_r )
 global silent_computation
 silent=silent_computation;
 % compute the random field
 if ~silent
     fprintf( 'model_kl: expanding field, this may take a while...\n' );
 end
-[r_j_alpha, I_r]=expand_field_pce_sg( stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r );
+[r_j_alpha, I_r]=expand_field_pce_sg( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_gam_r, options_expand_r{:} );
 if ~silent
     fprintf( 'model_kl: computing kl, this may take a while, too...\n' );
 end
-[mu_r_j,rho_i_alpha,r_j_i]=pce_to_kl( r_j_alpha, I_r, m_r, M_N );
+[mu_r_j,r_j_i,rho_i_alpha]=pce_to_kl( r_j_alpha, I_r, m_r, G_N );
 if ~silent
     fprintf( 'model_kl: finished, saving to file...\n' );
 end

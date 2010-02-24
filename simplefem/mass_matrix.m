@@ -1,6 +1,6 @@
 function M=mass_matrix( pos, els )
 % MASS_MATRIX Assemble the mass matrix.
-%   M=MASS_MATRIX( ELS, POS ) computes the mass_matrix for the triangular
+%   M=MASS_MATRIX( POS, ELS ) computes the mass_matrix for the triangular
 %   or tetrahedral elements specified in ELS with nodes specified in POS.
 %   Linear nodal ansatz functions are used here.
 

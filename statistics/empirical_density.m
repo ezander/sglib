@@ -63,7 +63,7 @@ end;
 if ~isvector(xl)
     m=size(xl,2);
     if m>100
-        warning('empirical_density:many_rows', 'Very large amount of rows specified; maybe you want to transpose the vector?');
+        warning('empirical_density:many_rows', 'Very large amount of columns specified; maybe you want to transpose the vector?');
     end
     x=zeros(n,m);
     p=zeros(n,m);
