@@ -35,7 +35,7 @@ M_ex=zeros(5,5); M_ex(els,els)=1/4*[1 -1; -1 1];
 assert_equals( full( stiffness_matrix( pos, els ) ), M_ex, 'oneelem1d' );
 
 % more elements 1d
-[pos,els]=create_mesh_1d(11,0,1);
+[pos,els]=create_mesh_1d(0,1,11);
 K=full( stiffness_matrix( pos, els ) );
 K_ex=10*( diag([1 2*ones(1,9) 1])-diag(ones(1,10),1)-diag(ones(1,10),-1) );
 assert_equals( sum(K(:)), 0, 'moreelem1d' );

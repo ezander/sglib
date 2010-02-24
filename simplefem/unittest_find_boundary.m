@@ -20,7 +20,7 @@ function unittest_find_boundary
 
 munit_set_function( 'find_boundary' );
 
-[pos,els]=create_mesh_1d( 5, 0, 2);
+[pos,els]=create_mesh_1d( 0, 2, 5);
 assert_equals( find_boundary( els ), [1,5], '1d' );
 
 % 2D test for the following grid

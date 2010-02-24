@@ -4,7 +4,7 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B, varargin )
 %   boundary conditions back to a solution given just on the inner nodes.
 %
 % Example (<a href="matlab:run_example apply_boundary_conditions_solution">run</a>)
-%   [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
+%   [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
 %   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   f=sin(pi*pos);
 %   g=2+pos;

@@ -41,7 +41,7 @@ switch name
         cov_r={@gaussian_covariance,{lc_r,1}};
         cov_gam={@gaussian_covariance,{lc_r,1}};
     case 'rf_kl_1d_sfem21_f'
-        [pos,els,bnd]=make_1d_mesh( 21 );
+        [pos,els,bnd]=create_mesh_1d( 0, 1, 21 );
         p_r=3;
         m_gam_r=2;
         m_r=4;
@@ -49,7 +49,7 @@ switch name
         stdnor_r={@beta_stdnor,{4,2}};
         cov_r={@gaussian_covariance,{lc_r,1}};
     case 'rf_kl_1d_sfem21_k'
-        [pos,els,bnd]=make_1d_mesh( 21 );
+        [pos,els,bnd]=create_mesh_1d( 0, 1, 21 );
         p_r=4;
         m_gam_r=4;
         m_r=4;
@@ -101,15 +101,6 @@ end
 
 %% Appendix: Some auxiliary functions
 
-function [pos,els,bnd]=make_1d_mesh( n, int )
-if nargin<2
-    int=[0,1];
-end
-pos=linspace(int(1),int(2),n)';
-els=[1:n-1; 2:n]';
-bnd=[1,n];
-
-
 function [pos,els,bnd]=load_and_correct_mesh( meshname );
 s=load( ['data/' meshname '.mat' ]);
 els=s.nodes;
@@ -120,14 +111,6 @@ if isfield(s, 'bnd')
 else
     bnd=find_bounary( els );
 end
-% TODO: boundary detection with convex hull and delta's
-% Idea: use convhulln store boundary nodes, move boundary nodes to
-% interior by, say, one tenth of minimum dist, then recompute
-% convhull, store and only move newly detected boundary nodes into
-% interior (i.e. direction of center of gravity). This moving and
-% recomputing is necessary for straight boundaries, but we may not
-% move to far so as to make real interior nodes lie on the
-% boundary).
 
 
 function [mu_r_j,rho_i_alpha,r_j_i, I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, M_N, p_r, m_gam_r, options_expand_r, m_r )

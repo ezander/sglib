@@ -4,12 +4,11 @@ function demo_kl_expand
 %% Setup grid
 subplot(1,1,1); clf; hold off
 n=10;
-x=linspace(0,1,n);
-els=[1:n-1; 2:n]';
+[pos,els]=create_mesh_1d(0,1,n);
 
 %% Create covariance matrix
 cov_u={@gaussian_covariance, {0.3,2}};
-C_u=covariance_matrix( x, cov_u );
+C_u=covariance_matrix( pos, cov_u );
 
 %% Plot the covariance function
 x1=linspace(-1,1,100)'; x2=zeros(size(x1));
@@ -18,7 +17,7 @@ userwait
 
 %% Create KL with variance correction on and M=I
 v_u=kl_solve_evp( C_u, [], 3, 'correct_var', true );
-plot( x, v_u );
+plot( pos, v_u );
 %legend( 'v_1', 'v_2', 'v_3' );
 userwait
 
@@ -29,7 +28,7 @@ fprintf( 'sigma^2=%f\n', sig2 );
 
 %% Now compute KL with a true mass matrix
 
-M=mass_matrix( els, x );
+M=mass_matrix( pos, els );
 v_u=kl_solve_evp( C_u, M, 3, 'correct_var', true );
 [mu,sig2]=pce_moments( [zeros(size(v_u,1),1), v_u], multiindex(3,1)); %#ok can't get only sig2
 fprintf( 'sigma^2=%f\n', sig2 );
@@ -47,20 +46,20 @@ u_i=pce_expand_1d(h_u,p);
 [mu,sig2]=pce_moments( u_i );
 %cov_u=@(x1,x2)(gaussian_covariance( x1, x2, 0.3, sqrt(sig2) ) );
 cov_u={@gaussian_covariance, {0.3, sqrt(sig2)}, {3,4} };
-M=mass_matrix( els, x );
+M=mass_matrix( pos, els );
 %M=[];
 
 %% Make PC expansion of the random field
 % Using basic ghanem&sakamoto algorithm
 % KL is used here only for the underlying Gaussian field
-C_u=covariance_matrix( x, cov_u );
+C_u=covariance_matrix( pos, cov_u );
 C_gam=transform_covariance_pce( C_u, u_i, 'comp_ii_reltol', 1e-4 );
 v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
 [u_alpha,I_u]=pce_transform_multi( v_gam, u_i );
 
-xi=randn(50,m_gam);
-u_real1=pce_field_realization( x', u_alpha, I_u, xi' );
-plot( x, u_real1 );
+xi=randn(m_gam,50);
+u_real1=pce_field_realization( pos, u_alpha, I_u, xi );
+plot( pos, u_real1 );
 
 %% Make KL on RF and project on it
 [v,s]=kl_solve_evp( C_u, M, m_u );
@@ -78,15 +77,15 @@ format short
 disp( diag(ccorr)' )
 
 %% Now get a realization for the KL-PCE expanded field
-u_real2=kl_pce_field_realization( x, mu_u, v_u, u_i_alpha, I_u, xi );
-plot( x, u_real2 );
+u_real2=kl_pce_field_realization( pos, mu_u, v_u, u_i_alpha, I_u, xi );
+plot( pos, u_real2 );
 userwait
 
 %% Show small difference between realizations
 hold off
-plot( x, u_real1(:,1:3) );
+plot( pos, u_real1(:,1:3) );
 hold on
-plot( x, u_real2(:,1:3) );
+plot( pos, u_real2(:,1:3) );
 hold off
 userwait
 
@@ -140,8 +139,8 @@ userwait
 subplot(1,1,1); clf;
 N=10000;
 xi=randn(N,m_gam);
-u_1=kl_pce_field_realization( x, mu_u,  v_u,  u_i_alpha,  I_u, xi );
-u_2=kl_pce_field_realization( x, mu_u2, v_u2, u_i_alpha2, I_u, xi );
+u_1=kl_pce_field_realization( pos, mu_u,  v_u,  u_i_alpha,  I_u, xi );
+u_2=kl_pce_field_realization( pos, mu_u2, v_u2, u_i_alpha2, I_u, xi );
 subplot(2,2,1);
 xb=linspace(-.2,1.2); plot( xb, beta_pdf( xb, 4, 2 ), 'r' );
 hold on;

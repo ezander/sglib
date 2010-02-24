@@ -8,7 +8,7 @@ text_opts=tex_opts;
 % 1D currently, so nothing to plot here
 N=51;
 d=1;
-[pos,els,bnd]=create_mesh_1d( N, 0, 1 );
+[pos,els,bnd]=create_mesh_1d( 0, 1, N );
 G_N=mass_matrix( pos, els );
 
 

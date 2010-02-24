@@ -36,7 +36,7 @@ M_ex=zeros(5,5); M_ex(els,els)=4/6*[2, 1; 1, 2];
 assert_equals( full( mass_matrix( pos, els ) ), M_ex, 'oneelem1d' );
 
 % more elements 1d
-[pos,els]=create_mesh_1d(11,0,1);
+[pos,els]=create_mesh_1d(0,1,11);
 M=full( mass_matrix( pos, els ) );
 M_ex=1/60*( diag([2 4*ones(1,9) 2])+diag(ones(1,10),1)+diag(ones(1,10),-1) );
 assert_equals( sum(M(:)), 1, 'moreelem1d' );

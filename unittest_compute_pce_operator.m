@@ -22,7 +22,7 @@ function unittest_compute_pce_operator
 munit_set_function( 'pce_multiply' );
 
 N=4;
-[pos,els]=create_mesh_1d( N, 0, 1 );
+[pos,els]=create_mesh_1d( 0, 1, N );
 stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 
 k00=[1;1;1;1];

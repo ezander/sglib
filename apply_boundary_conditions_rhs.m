@@ -8,7 +8,7 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 %   normal (matrix) as on tensor product equations.
 %
 % Example (<a href="matlab:run_example apply_boundary_conditions_rhs">run</a>)
-%   [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
+%   [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
 %   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   f=sin(pi*pos);
 %   g=2+pos;

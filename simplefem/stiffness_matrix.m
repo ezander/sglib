@@ -1,6 +1,6 @@
 function K=stiffness_matrix( pos, els, k )
 % STIFFNESS_MATRIX Assemble stiffness matrix for linear tri/tet elements.
-%   K=STIFFNESS_MATRIX( ELS, POS, K ) computes the stiffness matrix for
+%   K=STIFFNESS_MATRIX( POS, ELS, K ) computes the stiffness matrix for
 %   triangular or tetrahedral elements specified in ELS with nodes
 %   specified in POS. Linear nodal ansatz functions are used here. K on
 %   input is a vector specifiying a coefficient field given at the nodes.

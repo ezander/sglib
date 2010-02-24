@@ -20,7 +20,7 @@ function unittest_correct_mesh
 
 munit_set_function( 'correct_mesh' );
 
-[pos1,els1]=create_mesh_1d( 10, 2, 5 );
+[pos1,els1]=create_mesh_1d( 2, 5, 10 );
 [pos2,els2]=correct_mesh( pos1, els1 );
 assert_equals( pos1, pos2, 'no_change1' );
 assert_equals( els1, els2, 'no_change2' );

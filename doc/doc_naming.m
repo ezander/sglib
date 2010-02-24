@@ -186,11 +186,11 @@
 %     and the sequenced with {:} into the argument list. E.g. the elements
 %     and points for the geometry always appear in this order. So you can
 %     write e.g.
-%       [pos,els,bnd]=create_mesh_1d( 5, 0, 2 );
+%       [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
 %       geom={pos,els};
 %       K=stiffness_matrix( geom{:}, ones(size(pos)) );
 %     You can even place the cell array in the output argument lists:
-%       [geom{1:3}]=create_mesh_1d( 5, 0, 2 );
+%       [geom{1:3}]=create_mesh_1d( 0, 2, 5 );
 %       K=stiffness_matrix( geom{1:2}, ones(size(pos)) );
 %     But as you can see, you are free to include information about
 %     boundary nodes into your struct or not.

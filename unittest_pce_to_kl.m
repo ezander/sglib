@@ -27,7 +27,7 @@
 % 4. we get the PCE back from the KL
 
 N=51;
-[pos,els]=create_mesh_1d( N, 0, 1 );
+[pos,els]=create_mesh_1d( 0, 1, N );
 G_N=mass_matrix( pos, els );
 p_kap=3;
 m_kap=3;

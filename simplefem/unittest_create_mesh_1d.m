@@ -21,7 +21,7 @@ function unittest_create_mesh_1d
 munit_set_function( 'create_mesh_1d' );
 
 % ordered nodes
-[pos,els,bnd]=create_mesh_1d( 17, -1.2, 3.5 );
+[pos,els,bnd]=create_mesh_1d( -1.2, 3.5, 17 );
 h=4.7/16;
 assert_equals( min(pos), -1.2, 'left' );
 assert_equals( max(pos), 3.5, 'right' );
@@ -31,7 +31,7 @@ assert_equals( size(els), [2,16], 'size_els' );
 assert_equals( pos(els(2,:))-pos(els(1,:)), h*ones(1,16), 'all_h' );
 
 % shuffled nodes
-[pos,els,bnd]=create_mesh_1d( 17, -1.2, 3.5, true );
+[pos,els,bnd]=create_mesh_1d( -1.2, 3.5, 17, true );
 h=4.7/16;
 assert_equals( min(pos), -1.2, 'left' );
 assert_equals( max(pos), 3.5, 'right' );

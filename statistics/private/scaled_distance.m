@@ -29,9 +29,11 @@ if d==1
     dist=abs(dx/l);
 elseif isscalar(l)
     dist=sqrt(sum( (dx/l).^2, 1));
-else
+elseif length(l)==d
     invl=diag(1./l);
     dist=sqrt(sum( (invl*dx).^2, 1));
+else
+    error( 'statistics:scaled_distance', 'Size of cov_length vector doesn''t match dimension. Transposed?' );
 end
 
 if smooth>0

@@ -59,8 +59,7 @@ p=5;
 m=3;
 lc=1;
 
-x=linspace(0,1,n)';
-els=[1:n-1; 2:n]';
+[pos,els]=create_mesh_1d(0,1,n);
 
 %h=@(gamma)(4+0.3*gamma);
 % Step 1: calculate the U_i(x) numerically
@@ -75,13 +74,13 @@ disp(sprintf('Orig: Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
 disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
 
 % Step 2: calculate <gam_i gam_j> from <u_i u_j>
-Cu=covariance_matrix( x, {@gaussian_covariance, {lc, sqrt(sig2)}} );
+Cu=covariance_matrix( pos, {@gaussian_covariance, {lc, sqrt(sig2)}} );
 Cgam=transform_covariance_pce( Cu, pcc );
 disp(['<u_1 u_i>:    ' sprintf('%9.5f',Cu(1,:))] );
 disp(['<gam_1 gam_i>:' sprintf('%9.5f',Cgam(1,:))] );
 
 % Step 3: Calculate lamda_i and f_i (i.e. do KL expansion)
-M=mass_matrix( els, x );
+M=mass_matrix( pos, els );
 W=M*Cgam*M; W=0.5*(W+W');
 [V,D]=eigs(W,M,m,'lm',struct('disp',0));
 %sqrt_lambda=sqrt(diag(D)/sum(diag(D)));
