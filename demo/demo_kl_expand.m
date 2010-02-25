@@ -58,7 +58,7 @@ v_gam=kl_solve_evp( C_gam, G_N, m_u, 'correct_var', true );
 [u_i_alpha,I_u]=pce_transform_multi( v_gam, u_i );
 
 xi=randn(m_u,50);
-u_real1=pce_field_realization( pos, u_i_alpha, I_u, xi );
+u_real1=pce_field_realization( u_i_alpha, I_u, xi );
 plot( pos, u_real1 );
 
 %% Make KL on RF and project on it
@@ -77,7 +77,7 @@ format short
 disp( diag(ccorr)' )
 
 %% Now get a realization for the KL-PCE expanded field
-u_real2=kl_pce_field_realization( pos, mu_u, u_i_k, u_k_alpha, I_u, xi );
+u_real2=kl_pce_field_realization( mu_u, u_i_k, u_k_alpha, I_u, xi );
 plot( pos, u_real2 );
 userwait
 
@@ -109,7 +109,7 @@ fprintf( 'cross correlation=%f\n', cc );
 disp(mu_u-mu_u2);
 disp(u_k_alpha-row_col_mult(u_k_alpha2,diag(cc)));
 
-u_1=pce_field_realization( 0, u_i_alpha(5,:), I_u, randn(m_u,10000) );
+u_1=pce_field_realization( u_i_alpha(5,:), I_u, randn(m_u,10000) );
 subplot(1,1,1); clf;
 hold on;
 kernel_density( u_1, 100, 0.05, 'g' );
@@ -121,8 +121,8 @@ userwait
 clf; hold off;
 N=10000;
 xi=randn(m_u,N);
-u_1=pce_field_realization( 0, u_k_alpha, I_u, xi );
-u_2=pce_field_realization( 0, u_k_alpha2, I_u, xi );
+u_1=pce_field_realization( u_k_alpha, I_u, xi );
+u_2=pce_field_realization( u_k_alpha2, I_u, xi );
 subplot(2,2,1);
 kernel_density( [u_1(1,:); u_2(1,:)]', 100, 0.3 );
 subplot(2,2,2);
@@ -139,8 +139,8 @@ userwait
 subplot(1,1,1); clf;
 N=10000;
 xi=randn(m_u,N);
-u_1=kl_pce_field_realization( pos, mu_u,  u_i_k,  u_k_alpha,  I_u, xi );
-u_2=kl_pce_field_realization( pos, mu_u2, u_i_k2, u_k_alpha2, I_u, xi );
+u_1=kl_pce_field_realization( mu_u,  u_i_k,  u_k_alpha,  I_u, xi );
+u_2=kl_pce_field_realization( mu_u2, u_i_k2, u_k_alpha2, I_u, xi );
 subplot(2,2,1);
 xb=linspace(-.2,1.2); plot( xb, beta_pdf( xb, 4, 2 ), 'r' );
 hold on;

@@ -97,7 +97,7 @@ disp(norm(Fs*M*Fs'-D));
 I_gam=full(multiindex(m,1));
 pcc_gam=[zeros(1,n); Fs];
 
-[mu,sig2]=pce_moments( pcc_gam, I_gam );
+[mu,sig2]=pce_moments( pcc_gam', I_gam );
 disp([mu;sig2]);
 
 %%
@@ -126,7 +126,7 @@ end
 %[mu,sig2]=pce_moments( u, I_u );
 %disp([mu;sig2]);
 %[mu,sig2,skew]=pce_moments( u, I_u );
-[mu,sig2]=pce_moments( u, I_u );
+[mu,sig2]=pce_moments( u', I_u );
 skew=NaN*sig2;
 for i=1:n; disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu(i), sig2(i), skew(i) ) ); end;
 %omu=mu;

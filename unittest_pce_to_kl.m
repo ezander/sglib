@@ -1,4 +1,4 @@
-%function unittest_pce_to_kl
+function unittest_pce_to_kl
 % UNITTEST_PCE_TO_KL Test the PCE_TO_KL function.
 %
 % Example (<a href="matlab:run_example unittest_pce_to_kl">run</a>)

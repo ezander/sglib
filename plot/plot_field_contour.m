@@ -1,6 +1,6 @@
-function plot_field_contour( els, pos, u, varargin )
+function plot_field_contour( pos, els, u, varargin )
 % PLOT_FIELD_CONTOUR Plots a field given on a triangular mesh.
-%   PLOT_FIELD_CONTOUR( ELS, POS, U, VARARGIN ) plots the field given in U on the
+%   PLOT_FIELD_CONTOUR( POS, ELS, U, VARARGIN ) plots the field given in U on the
 %   nodes given in POS performing interpolation on the triangles given in
 %   ELS. Certain formatting options can be specified in the remaining
 %   arguments:
@@ -22,11 +22,12 @@ function plot_field_contour( els, pos, u, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_boolean( size(els,1)==3, 'elements must be triangles (size(els,1)==3)', mfilename );
+check_range( size(pos,1), 2, 2, 'sizeof(pos,1)', mfilename );
+check_boolean( size(pos,2)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,2))', mfilename );
 
-check_boolean( size(els,2)==3, 'elements must be triangles (size(els,2)==3)', mfilename );
-check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
-check_boolean( size(pos,1)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,1))', mfilename );
-
+pos=pos';
+els=els';
 
 options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 'min' );

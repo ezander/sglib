@@ -19,8 +19,8 @@ cov_u=@(x1,x2)(gaussian_covariance(x1,x2,lc,sqrt(sig2)));
 cov_gam=[];
 
 [u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, pos, M, p, m );
-xi=randn(100,m);
-y=pce_field_realization( pos, u_alpha, I_u, xi );
+xi=randn(m,100);
+y=pce_field_realization( u_alpha, I_u, xi );
 plot(pos,y);
 %plot(pos(2:end),diff(y,1,1));
 userwait

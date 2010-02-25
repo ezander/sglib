@@ -46,7 +46,7 @@ for k=1:12
 end
 for j=1:4
     subplot(4,4,12+j);
-    f_ex=kl_pce_field_realization( pos, f_i_0, f_i_k, f_k_alpha, I_f );
+    f_ex=kl_pce_field_realization( f_i_0, f_i_k, f_k_alpha, I_f );
     plot_field( pos, els, f_ex );
     title(sprintf('Sample: %d',j));
 end

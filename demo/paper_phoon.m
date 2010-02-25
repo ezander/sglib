@@ -1,4 +1,4 @@
-
+function paper_phoon
 
 
 %% Multivariate level incompatibility
@@ -31,7 +31,7 @@ pcc_u=pce_expand_1d( @(x)(x.^3), 10 );
 C_u %#ok
 
 % Transform to Gaussian (see Phoon 15 that this matches)
-C_gam2=transform_covariance_pce( C_u, pcc_u, true );
+C_gam2=transform_covariance_pce( C_u, pcc_u );
 C_gam %#ok
 
 % The transformed covariance matrix is not positive definite (type II

@@ -62,8 +62,6 @@ options=varargin2options( varargin );
 [lighting_mode,options]=get_option( options, 'lighting', 'flat' );
 [map,options]=get_option( options, 'colormap', 'jet' );
 [axis_mode,options]=get_option( options, 'axis', 'square' );
-[draw_now,options]=get_option( options, 'draw_now', true );
-[wait,options]=get_option( options, 'wait', false );
 check_unsupported_options( options, mfilename );
 
 
@@ -87,12 +85,6 @@ if ismatlab()
     shading( shading_mode );
     lighting( lighting_mode );
     colormap( map );
-    if draw_now || wait
-        drawnow;
-    end
-    if wait
-        userwait
-    end
 else
     fprintf('plot_field not yet implemented for octave\n');
 end

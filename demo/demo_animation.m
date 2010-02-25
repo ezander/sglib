@@ -2,12 +2,9 @@ function demo_animation
 % DEMO_ANIMATION Shows a smoothly varying random field.
 
 clf;
-if ismatlab
-    set(gcf, 'WindowButtonUpFcn', @stop_demo );
-else
-    error( 'This demo does not work with Octave yet.' );
-end
-
+animation_control( 'start', gcf );
+view_mode=2;
+set( gcf, 'Renderer', 'painters' );
 
 kl_model_version=[];
 [m_f, pos,els, mu_f_i, v_f, f_i_alpha, I_f]=...
@@ -17,21 +14,44 @@ N=200;
 xi_N=randn(m_f,N);
 pp = interp1(linspace(1,1000,N),xi_N','spline','pp');
 
-set( gcf, 'UserData', [] ); % just in case
-disp('Click into the graphics window to stop the demo...' );
 for i=1:1000
     xi=ppval(pp,i);
     xi=(xi-mean(xi))/sqrt(var(xi))+mean(xi);
-    f_ex=kl_pce_field_realization( pos, mu_f_i, v_f, f_i_alpha, I_f, xi );
-    plot_field( pos, els, f_ex, 'lighting', 'gouraud' );
+    f_ex=kl_pce_field_realization( mu_f_i, v_f, f_i_alpha, I_f, xi );
+    plot_field( pos, els, f_ex, 'lighting', 'gouraud', 'view', view_mode );
+    zlim([-4,4]);
+    drawnow;
 
-    if ~isempty( get( gcf, 'UserData' ) )
-        set( gcf, 'UserData', [] );
+    if ~animation_control( 'check' )
         disp('quitting...');
         return
     end
 end
 
 
-function stop_demo(src,evt) %#ok
-set( gcf, 'UserData', 1 );
+function ret=animation_control( cmd, varargin )
+if isoctave
+    error( 'animation_control:no_octave_yet', 'This does not work with Octave yet.' );
+end
+switch cmd
+    case 'start'
+        set( gcf, 'WindowButtonUpFcn', @stop_animation );
+        set( gcf, 'UserData', 1 );
+        disp('Click into the graphics window to stop the demo...' );
+    case 'check'
+        h=get(0,'CurrentFigure');
+        if h
+            ret=~isempty( get( h, 'UserData' ) );
+        else
+            ret=false;
+        end
+    case 'stop'
+        h=get(0,'CurrentFigure');
+        if h
+            set( h, 'UserData', [] );
+        end
+end
+
+
+function stop_animation(src,evt) %#ok
+set( gcf, 'UserData', [] );

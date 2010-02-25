@@ -56,6 +56,11 @@ if isstruct( args{1} )
     return
 end
 
+% options wrapped in a cell
+if length(args)==1 && iscell(args{1})
+    args=args{1};
+end
+
 names=args(1:2:end);
 values=args(2:2:end);
 if ~iscellstr(names)
