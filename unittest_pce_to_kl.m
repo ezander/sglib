@@ -26,26 +26,42 @@ function unittest_pce_to_kl
 % 3. stochastic eigenfunction (random vars) are orthogonal
 % 4. we get the PCE back from the KL
 
+
 N=51;
-[pos,els]=create_mesh_1d( 0, 1, N );
-G_N=mass_matrix( pos, els );
-p_kap=3;
-m_kap=3;
-M_kap=nchoosek( p_kap+m_kap, m_kap ); % full kl without truncation
-l_kap=M_kap; % full kl without truncation
-lc_kap=0.3;
-stdnor_kap={@beta_stdnor,{4,2}};
-cov_kap={@gaussian_covariance,{lc_kap,1}};
-[kap_i_alpha, I_kap]=expand_field_pce_sg( stdnor_kap, cov_kap, [], pos, G_N, p_kap, m_kap );
-[kap_i_0,kap_i_k,kap_k_alpha,relerr,sigma_k]=pce_to_kl( kap_i_alpha, I_kap, l_kap, G_N );
+G_N=eye(N);
+I_r=multiindex(5,3);
+G_X=diag(multiindex_factorial(I_r));
+M_r=size(I_r,1);
+r_i_alpha=rand(N,M_r);
 
 
-G_Phi=diag(multiindex_factorial(I_kap));
+% return only some eigenfunctions
+l_r=7;
+[r_i_k, r_k_alpha, sigma_r_k]=pce_to_kl( r_i_alpha, I_r, l_r, [] );
+assert_equals( size(r_i_k), [N,l_r+1], 'sizeN' );
+assert_equals( size(r_k_alpha), [l_r+1,M_r], 'sizeX' );
+%assert_equals( norm((r_i_k*r_k_alpha-r_i_alpha)*G_X,'fro'), relerr, 'pce_back' );
+assert_equals( r_i_k(:,2:end)'*G_N*r_i_k(:,2:end), diag(sigma_r_k)^2, 'spat_orth' );
+assert_equals( r_k_alpha*G_X*r_k_alpha', eye(l_r+1), 'stoch_orth' );
 
-assert_equals( kap_i_0, kap_i_alpha(:,1), 'mean' );
-assert_equals( kap_i_k'*G_N*kap_i_k, diag(sigma_k)^2, 'spat_orth' );
-assert_equals( kap_k_alpha*G_Phi*kap_k_alpha', eye(M_kap), 'stoch_orth' );
+% return all KL eigenfunctions
+[r_i_k, r_k_alpha, sigma_r_k]=pce_to_kl( r_i_alpha, I_r, inf, G_N );
+l_r=size(r_i_k,2)-1;
 
-kap2_i_alpha=kap_i_k*kap_k_alpha;
-kap2_i_alpha(:,1)=kap_i_0;
-assert_equals( kap2_i_alpha, kap_i_alpha, 'pce_back' );
+assert_equals( r_i_k(:,1), r_i_alpha(:,1), 'mean' );
+assert_equals( r_i_k(:,2:end)'*G_N*r_i_k(:,2:end), diag(sigma_r_k)^2, 'spat_orth' );
+assert_equals( r_k_alpha*G_X*r_k_alpha', eye(l_r+1), 'stoch_orth' );
+assert_equals( r_i_k*r_k_alpha, r_i_alpha, 'pce_back' );
+
+% with nontrivial spatial Gramian
+A=rand(N); A=A'*A;
+G_N=(A+A')/2;
+
+[r_i_k, r_k_alpha, sigma_r_k]=pce_to_kl( r_i_alpha, I_r, inf, G_N );
+l_r=size(r_i_k,2)-1;
+
+assert_equals( r_i_k(:,1), r_i_alpha(:,1), 'mean' );
+assert_equals( r_i_k(:,2:end)'*G_N*r_i_k(:,2:end), diag(sigma_r_k)^2, 'spat_orth' );
+assert_equals( r_k_alpha*G_X*r_k_alpha', eye(l_r+1), 'stoch_orth' );
+assert_equals( r_i_k*r_k_alpha, r_i_alpha, 'pce_back' );
+
