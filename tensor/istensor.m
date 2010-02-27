@@ -50,11 +50,14 @@ elseif iscell(T)
     if ndims(1)==length(T)-1 && all(ndims(2:end)==2)
         dim1=cellfun( 'size', T, 1 );
         if all(dim2(2:end)==dim2(2)) && all(dim1(2:end)==ndims(1))
-            bool='true';
+            bool=true;
             format='tucker';
             return;
         end
     end
+elseif isobject(T)
+    bool=true;
+    format=['class:' class(T)];
 end
 
     

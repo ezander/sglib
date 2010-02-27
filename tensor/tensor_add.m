@@ -50,11 +50,17 @@ end
 if isfull(T1)
     T=T1+alpha*T2;
 elseif iscanonical(T1)
+    if length(T1)~=length(T2)
+        error( 'tensor:tensor_add:order_mismatch', 'Adding tensors of different order' );
+    end
+    
     % Important: apply alpha only to one argument! This guy is a tensor not
     % a cartesian product.
     T2{1}=alpha*T2{1};
     dims=cellfun('size', T1, 1 );
     T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
+elseif isobject(T1)
+    T=T1+alpha*T2;
 else
     error( 'tensor:tensor_null:param_error', ...
         'input parameter is no recognized tensor format' );

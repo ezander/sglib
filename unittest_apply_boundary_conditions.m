@@ -43,3 +43,6 @@ u2=P_I'*ui+P_B'*P_B*g;
 assert_equals( u, u2, 'u' );
 assert_equals( P_B*u, P_B*g, 'u_g_B' );
 assert_equals( P_I*K*u, P_I*f, 'Ku_f_I' );
+
+
+

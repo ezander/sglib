@@ -53,8 +53,8 @@ for testnum=1:2
     B={zeros(M1,0), zeros(M2,0)};
     for i=1:R
         A(i,1:2)={rand(M1,N1), rand(M2,N2) };
-        Alin{i,1}=linear_operator(A{i,1});
-        Alin{i,2}=linear_operator(A{i,2});
+        Alin{i,1}=linear_operator_from_matrix(A{i,1});
+        Alin{i,2}=linear_operator_from_matrix(A{i,2});
 
         Ak=Ak+revkron( A{i,1}, A{i,2} );
         for j=1:M2

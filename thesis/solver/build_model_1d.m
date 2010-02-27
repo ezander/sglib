@@ -5,8 +5,8 @@ if exist('geom','var') && ~strcmp(geom,'1d')
     error( 'unknown geometry' );
 end
 
-[pos,els,bnd]=create_mesh_1d( 0, 1, N );
-G_N=mass_matrix( pos, els );
+[els,pos,bnd]=create_mesh_1d( N, 0, 1 );
+G_N=mass_matrix( els, pos );
 
 %% load the kl variables of the conductivity k
 % define stochastic parameters
@@ -15,8 +15,8 @@ m_k=4;
 l_k=4;
 lc_k=0.3;
 
-stdnor_k=@(x)(gendist_stdnor(x,dist,dist_params,dist_shift,dist_scale));
-pdf_k=@(x)(gendist_pdf(x,dist,dist_params,dist_shift,dist_scale));
+stdnor_k=@(x)(gendist_stdnor(dist,x,dist_params,dist_shift,dist_scale));
+pdf_k=@(x)(gendist_pdf(dist,x,dist_params,dist_shift,dist_scale));
 [mu_k,var_k]=gendist_moments(dist,dist_params,dist_shift,dist_scale);
 
 cov_k={@gaussian_covariance,{lc_k,1}};
@@ -40,7 +40,7 @@ cov_f={@gaussian_covariance,{lc_f,1}};
 %'done'
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(n,:)');
+select=@(x,n)(x(:,n));
 g_func={ select, {1}, {2} };
 % dummy pce (just the mean)
 g_i_alpha=funcall( g_func, pos);
@@ -74,7 +74,7 @@ g_vec=g_mat(:);
 %% load and create the operators 
 % since this takes a while we cache the function call
 kl_operator_version=1;
-stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
+stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
 op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );

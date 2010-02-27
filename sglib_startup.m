@@ -57,3 +57,8 @@ if appdata.settings.show_greeting
     fprintf( 'Type SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
     fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n\n' );
 end
+
+% init contrib if it exists
+if exist( 'init_contrib', 'file' )
+    init_contrib;
+end

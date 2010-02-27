@@ -1,10 +1,9 @@
 function r=tensor_rank(T)
 % TENSOR_RANK Returns the numerical rank of the given CP tensor.
 %   R=TENSOR_RANK(T) returns the numerical rank R of the tensor, if the
-%   tensor is in canonical format. If T is a full tensor, the number of
-%   elements of the tensor are returned (which is a crude upper limit to
-%   the tensor rank of T; actually you shouldn't call this method for a
-%   full tensor).
+%   tensor is in canonical format. If T is a full tensor, we get an upper
+%   limit by reshaping it into a matrix (if its a higher order tensor) and
+%   then returning the matrix rank.
 %
 % Example (<a href="matlab:run_example tensor_rank">run</a>)
 %
@@ -23,7 +22,10 @@ function r=tensor_rank(T)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if isfull(T)
-    r=numel(T);
+    if ndims(T)>2
+        T=reshape(T,size(T,1),[]);
+    end
+    r=rank(T);
 elseif iscanonical(T)
     r=size(T{1},2);
 else

@@ -26,9 +26,11 @@ normT2=sqrt(trace( T{1}*T{2}'*T{2}*T{1}' ));
 assert_equals( normT, normT2, 'check_test' );
 assert_equals( tensor_norm( T ), normT, 'inner' );
 
+T={rand(8,2), rand(10,2), rand(12,2)};
 Z=tensor_add(T,T,-1);
-assert_equals( tensor_norm( Z ), 0, 'zero_inner', 'abstol', 1e-7 );
+assert_equals( tensor_norm( Z ), 0, 'zero_inner3', 'abstol', 1e-7 );
 
+T={rand(8,2), rand(10,2)};
 M1=rand(8); M1=M1*M1';
 M2=rand(10); M2=M2*M2';
 normT=sqrt(trace( M1*T{1}*T{2}'*M2*T{2}*T{1}' ));

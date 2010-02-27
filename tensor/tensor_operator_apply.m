@@ -61,6 +61,8 @@ if strcmp( vectype, 'auto' )
         vectype='mat';
     elseif iscell(X)
         vectype='tensor';
+    elseif isobject(X)
+        vectype='object';
     else
         error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
     end
@@ -76,12 +78,16 @@ switch [optype, '/', vectype]
         Y=apply_block_vect( A, X );
     case 'block/mat'
         Y=apply_block_mat( A, X );
-    case 'tensor/tensor'
-        Y=apply_tensor_tensor( A, X );
     case 'tensor/mat'
         Y=apply_tensor_mat( A, X );
     case 'tensor/vect'
         Y=apply_tensor_vect( A, X );
+    case 'tensor/tensor'
+        Y=apply_tensor_tensor( A, X );
+    case 'tensor/object'
+        % this goes to contrib (tensor_toolbox)
+        %Y=tt_tensor_operator_apply( A, X );
+        Y=apply_tensor_tensor( A, X );
     otherwise
         error( 'apply_tensor_operator:format', 'unsupported tensor operator/vector combination: %s',  [optype, '/', vectype]);
 end
@@ -115,9 +121,9 @@ function Y=apply_block_mat( A, X )
 [M2,N2]=size(A{1,1});  %#ok
 Y=reshape(cell2mat(A)*X(:),[M2,M1]);
 
-function Y=apply_tensor_tensor( A, X )
-% TODO: doesn't yet work with higher order tensors
+function Y=apply_tensor_tensor_2( A, X )
 % TODO: no reduction yet
+check_second_order(A);
 check_condition( {A{1,1},X{1}}, 'match', true, {'A{1,1}','X{1}'}, mfilename );
 check_condition( {A{1,2},X{2}}, 'match', true, {'A{1,2}','X{2}'}, mfilename );
 [M1,N1]=linear_operator_size(A{1,1}); %#ok
@@ -130,10 +136,28 @@ for i=1:R
     Y={[Y{1}, Y1n], [Y{2}, Y2n] };
 end
 
+function Y=apply_tensor_tensor( A, X )
+% TODO: no reduction yet
+if iscell(X)
+    d=size(A,2);
+    for i=1:d
+        check_condition( {A{1,i},X{i}}, 'match', true, {'A{1,i}','X{i}'}, mfilename );
+    end
+end
+R=size(A,1);
+for i=1:R
+    Yn=tensor_operator_apply_elementary( A(i,:), X );
+    if i==1
+        Y=Yn;
+    else
+        Y=tensor_add( Y, Yn );
+    end
+end
+
 
 function Y=apply_tensor_mat( A, X )
-% TODO: doesn't yet work with higher order tensors
 % TODO: no reduction yet
+check_second_order(A);
 check_condition( {A{1,1},X}, 'match', false, {'A{1,1}','X'}, mfilename );
 check_condition( {A{1,2},X'}, 'match', false, {'A{1,2}','X'''}, mfilename );
 
@@ -146,8 +170,15 @@ end
 
 
 function Y=apply_tensor_vect( A, X )
+check_second_order(A);
 [M1,N1]=linear_operator_size(A{1,1});
 [M2,N2]=linear_operator_size(A{1,2});
 X=reshape( X, [N1, N2] );
 Y=apply_tensor_mat( A, X );
 Y=reshape( Y, [M1*M2,1] );
+
+
+function check_second_order(A)
+if size(A,2)>2
+    error('tensor:tensor_operator_apply:only_second_order', 'Method only implemented for tensor operators of second order.' );
+end

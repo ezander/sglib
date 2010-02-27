@@ -31,6 +31,8 @@ elseif iscanonical(T)
     dims=cellfun('size', T, 1 );
     C=zeros(sum(dims),0);
     Z=mat2cell(C,dims)';
+elseif isobject(T)
+    Z=0*T; % need something better here
 else
     error( 'tensor:tensor_null:param_error', ...
         'input parameter is no recognized tensor format' );

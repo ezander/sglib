@@ -7,7 +7,7 @@ switch(what)
     case 'finish'
         stats=gather_stats_finish( stats, varargin{:} );
     otherwise
-        error( 'not yet implemented' )
+        error( 'sglib:pcg_gather_stats:wrong_arg', 'Unknown argument value: %s', what );
 end
 
 
@@ -34,7 +34,7 @@ norm_func={@tensor_norm,  {stats.G}, {2}};
 
 % maybe there is a difference between the residual in the alg and here
 % I think so...
-TRn=tensor_add( F, tensor_operator_apply( A, Xn ), -1 );
+%TRn=tensor_add( F, tensor_operator_apply( A, Xn ), -1 );
 %normres=funcall( norm_func, TRn );
 %relres=normres/stats.initres;
 
@@ -59,9 +59,8 @@ if ~isempty( stats.X_true )
     stats.soleps_relerr(end+1)=solepsrelerr;
 end
 
-function stats=gather_stats_finish( stats, varargin ) %#ok
-stats=rmfield( stats, 'X_true' );
-stats=rmfield( stats, 'X_true_eps' );
-stats=rmfield( stats, 'G' );
+function stats=gather_stats_finish( stats, varargin ) 
+fields=intersect( fieldnames(stats), {'X_true', 'X_true_eps', 'G'} );
+stats=rmfield( stats, fields );
 %nothing yet
 
