@@ -55,3 +55,9 @@ assert_equals( [m,v,s,k], [3,1/3,0,-6/5], 'uniform2' );
 assert_equals( [m,v,s,k], [7,0,0,-6/5], 'uniform_empty' );
 
 
+
+%% Uniform distribution
+[m,v,s,k]=uniform_moments( 2, 4 );
+assert_equals( [m,v,s,k], [3,4/12,0,-6/5], 'exp' );
+
+
