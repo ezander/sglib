@@ -22,7 +22,7 @@ pdf_k=@(x)(gendist_pdf(x,dist,dist_params,dist_shift,dist_scale));
 cov_k={@gaussian_covariance,{lc_k,1}};
 % create field
 [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-[mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
+[k_i_k,k_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
 
 %% load the kl variables of the right hand side f 
 % define stochastic parameters
@@ -36,7 +36,7 @@ stdnor_f={@beta_stdnor,{4,2}};
 cov_f={@gaussian_covariance,{lc_f,1}};
 % create field
 [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-[mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
+[f_i_k,f_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
 %'done'
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
@@ -46,7 +46,7 @@ g_func={ select, {1}, {2} };
 g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
 % "null" kl expansion of g
-[mu_g_i,g_i_k,gamma_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
+[g_i_k,g_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
 
 
 %% combine the multiindices
@@ -60,13 +60,13 @@ G_X=spdiags(multiindex_factorial(I_u),0,M,M);
 %% create the right hand side
 % i.e. scale the pce coefficients with the norm of the stochastic ansatz
 % functions and create tensor, matrix and vector versions out of it
-phi_k_beta=compute_pce_rhs( phi_k_alpha, I_f, I_u );
-F=kl_to_tensor( mu_f_i, f_i_k, phi_k_beta );
+f_k_beta=compute_pce_rhs( f_k_alpha, I_f, I_u );
+F=kl_to_tensor( f_i_k, f_k_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
-gamma_k_beta=compute_pce_rhs( gamma_k_alpha, I_g, I_u );
-G=kl_to_tensor( mu_g_i, g_i_k, gamma_k_beta );
+g_k_beta=compute_pce_rhs( g_k_alpha, I_g, I_u );
+G=kl_to_tensor( g_i_k, g_k_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
 
@@ -80,7 +80,7 @@ opt.show_timings=true;
 op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 
 % create tensor operators
-K=compute_kl_pce_operator(mu_k_i, k_i_k, kappa_k_alpha, I_k, I_u, stiffness_func, 'mu_delta');
+K=compute_kl_pce_operator(k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta');
 
 
 % create matrix and tensor operators
@@ -107,8 +107,8 @@ Ui={U_*S_,V_};
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 u_i_alpha=apply_boundary_conditions_solution( ui_mat, g_mat, P_I, P_B );
 l_u=min(size(u_i_alpha));
-[mu_u_i,u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
-%[mu_u_i,u_i_k,u_k_alpha]=tensor_to_kl( U );
+[u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
+%[u_i_k,u_k_alpha]=tensor_to_kl( U );
 
 
 %%

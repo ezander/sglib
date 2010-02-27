@@ -40,5 +40,5 @@ for i=1:length(exponents)
 end
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-[mu_u_i, u_i_k, u_k_alpha]=tensor_to_kl( U );
+[u_i_k, u_k_alpha]=tensor_to_kl( U );
 

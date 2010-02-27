@@ -22,13 +22,13 @@ stdnor_k={@beta_stdnor,{4,2}};
 cov_k={@gaussian_covariance,{lc_k,1}};
 % create field
 [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-[mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
+[k_i_k,k_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
 % plot field
 clf;
 plot(pos,k_i_k); 
 title('KL eigenfunctions of $\kappa$', text_opts{:});
 print( 'rf_k_kl_eig.eps', '-depsc' );
-plot_kl_pce_realizations_1d( pos, mu_k_i, k_i_k, kappa_k_alpha, I_k, 'realizations', 50 ); 
+plot_kl_pce_realizations_1d( pos, k_i_k, k_k_alpha, I_k, 'realizations', 50 ); 
 title('mean/var/samples of $\kappa$', text_opts{:} );
 print( 'rf_k_kl_real.eps', '-depsc' );
 userwait;
@@ -43,13 +43,13 @@ stdnor_f={@beta_stdnor,{4,2}};
 cov_f={@gaussian_covariance,{lc_f,1}};
 % create field
 [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-[mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
+[f_i_k,f_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
 % plot field
 clf;
 plot(pos,f_i_k); 
 title('KL eigenfunctions of $f$', text_opts{:});
 print( 'rf_f_kl_eig.eps', '-depsc' );
-plot_kl_pce_realizations_1d( pos, mu_f_i, f_i_k, phi_k_alpha, I_f, 'realizations', 50 ); 
+plot_kl_pce_realizations_1d( pos, f_i_k, f_k_alpha, I_f, 'realizations', 50 ); 
 title('mean/var/samples of $f$', text_opts{:});
 print( 'rf_f_kl_real.eps', '-depsc' );
 userwait;
@@ -62,7 +62,7 @@ g_func={ select, {1}, {2} };
 g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
 % "null" kl expansion of g
-[mu_g_i,g_i_k,gamma_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
+[g_i_k,g_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
 
 
 %% combine the multiindices
@@ -75,13 +75,13 @@ M=size(I_u,1); %#ok, full stochastic dimension
 %% create the right hand side
 % i.e. scale the pce coefficients with the norm of the stochastic ansatz
 % functions and create tensor, matrix and vector versions out of it
-phi_k_beta=compute_pce_rhs( phi_k_alpha, I_f, I_u );
-F=kl_to_tensor( mu_f_i, f_i_k, phi_k_beta );
+f_k_beta=compute_pce_rhs( f_k_alpha, I_f, I_u );
+F=kl_to_tensor( f_i_k, f_k_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
-gamma_k_beta=compute_pce_rhs( gamma_k_alpha, I_g, I_u );
-G=kl_to_tensor( mu_g_i, g_i_k, gamma_k_beta );
+g_k_beta=compute_pce_rhs( g_k_alpha, I_g, I_u );
+G=kl_to_tensor( g_i_k, g_k_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
 
@@ -97,7 +97,7 @@ op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 % create tensor operators
 K=cached_funcall(...
     @compute_kl_pce_operator,...
-    { mu_k_i, k_i_k, kappa_k_alpha, I_k, I_u, stiffness_func, 'mu_delta' }, ...
+    { k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta' }, ...
     1,... % just one output argument
     op_filename, ...
     kl_operator_version, ...
