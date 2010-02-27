@@ -1,8 +1,8 @@
-function A=linear_operator_from_function( size, func )
+function A=linear_operator_from_function( func, size )
 % LINEAR_OPERATOR Creates  a linear operator structure from a function.
 %   A linear operator is a cell array containing information about its
-%   size and application to a vector and inversion of a vector. The first
-%   element must contain the size as a 1x2 array (i.e. [M,N], the second
+%   size and application to a vector and inversion of a vector. The second
+%   element must contain the size as a 1x2 array (i.e. [M,N], the first
 %   element must contain application of the linear operator to a vector
 %   from of size [N,K] producing a vector of size [M,K]. 
 %   If the second argument FUNC is 'id' then the resulting operator will be

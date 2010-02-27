@@ -1,4 +1,4 @@
-function A=linear_operator( M, solve, varargin )
+function A=linear_operator_from_matrix( M, solve, varargin )
 % LINEAR_OPERATOR Creates  a linear operator structure from a matrix.
 %   A=LINEAR_OPERATOR( M ) constructs a linear operator, i.e. a cell array
 %   containing information about its size and application to a vector and
@@ -54,12 +54,12 @@ if ~solve
     A={ size(M), {@mtimes, {M}, {1}} };
 elseif ~use_lu
     % solve each time 
-    A={ size(M), {@mldivide, {M}, {1}} };
+    A={ size(M'), {@mldivide, {M}, {1}} };
 else
     % precompute lu decomposition and solve only triangular systems
     [L,U,P]=lu(M);
     [p,j]=find(P'); %#ok
-    A={ size(M), {@lu_solve, {L,U,p}} };
+    A={ size(M'), {@lu_solve, {L,U,p}} };
 end
 
 function x=lu_solve( b, L, U, p )

@@ -22,7 +22,7 @@ info.vareps=vareps;
 
 null_vector=@tensor_null;
 add=@tensor_add;
-prec_solve=@tensor_operator_solve_elementary;
+prec_apply=@tensor_operator_apply_elementary;
 apply_operator=@tensor_operator_apply;
 scale=@tensor_scale;
 if isnumeric(F)
@@ -40,7 +40,7 @@ flag=0;
 
 Xc=null_vector(F);
 Rc=add( F, apply_operator( A, Xc ), -1);
-Zc=prec_solve( M, Rc );
+Zc=prec_apply( M, Rc );
 Pc=Zc;
 
 initres=vec_norm( Rc );
@@ -76,7 +76,7 @@ while true
         break;
     end
 
-    Zn=prec_solve(M,Rn);
+    Zn=prec_apply(M,Rn);
     beta=inner_prod(Rn,Zn)/inner_prod(Rc,Zc);
     Pn=add(Zn,Pc,beta);
 
