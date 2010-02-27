@@ -7,8 +7,8 @@ view_mode=2;
 set( gcf, 'Renderer', 'painters' );
 
 kl_model_version=[];
-[m_f, pos,els, mu_f_i, v_f, f_i_alpha, I_f]=...
-    load_kl_model( 'rf_kl_2d-1', kl_model_version, [], {'m_gam_r', 'pos', 'els', 'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
+[m_f, pos,els, f_i_k, f_i_alpha, I_f]=...
+    load_kl_model( 'rf_kl_2d-1', kl_model_version, [], {'m_r', 'pos', 'els', 'r_i_k', 'r_k_alpha', 'I_r'} );
 
 N=200;
 xi_N=randn(m_f,N);
@@ -17,7 +17,7 @@ pp = interp1(linspace(1,1000,N),xi_N','spline','pp');
 for i=1:1000
     xi=ppval(pp,i);
     xi=(xi-mean(xi))/sqrt(var(xi))+mean(xi);
-    f_ex=kl_pce_field_realization( mu_f_i, v_f, f_i_alpha, I_f, xi );
+    f_ex=kl_pce_field_realization( f_i_k, f_i_alpha, I_f, xi );
     plot_field( pos, els, f_ex, 'lighting', 'gouraud', 'view', view_mode );
     zlim([-4,4]);
     drawnow;

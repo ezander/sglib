@@ -5,8 +5,8 @@ tic
 
 N=50;
 
-[els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-G_N=mass_matrix( els, pos );
+[pos,els,bnd]=create_mesh_1d( 0, 1, N );
+G_N=mass_matrix( pos, els );
 
 % load the kl variables of the conductivity k
 % define stochastic parameters
@@ -35,16 +35,15 @@ for i=1:3
         l_k=4;
         lc_k=0.3;
         
-        stdnor_k=@(x)(gendist_stdnor(dist,x,dist_params,dist_shift,dist_scale));
-        pdf_k=@(x)(gendist_pdf(dist,x,dist_params,dist_shift,dist_scale));
+        stdnor_k=@(x)(gendist_stdnor(x,dist,dist_params,dist_shift,dist_scale));
+        pdf_k=@(x)(gendist_pdf(x,dist,dist_params,dist_shift,dist_scale));
         [mu_k,var_k]=gendist_moments(dist,dist_params,dist_shift,dist_scale);
         
         cov_k={@gaussian_covariance,{lc_k,1}};
         % create field
+        tic;
         [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-        [mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
-        
-        toc
+        toc;
         
         x=linspace(rng(1),rng(2));
         y_ex=pdf_k(x);
@@ -60,7 +59,7 @@ for i=1:3
         plot(x, y_rf3, 'g' );
         plot(x, y_rf4, 'g' );
         hold off;
-        save_figure( 'ranfield_marginal_density-%s-p%d', {dist,p_k} );
+        save_thesis_figure( 'ranfield_marginal_density-%s-p%d', {dist,p_k} );
         userwait;
     end
 end

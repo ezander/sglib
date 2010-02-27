@@ -3,6 +3,7 @@ function demo_tensor_2d
 %% load and show mesh
 [pos,els,G_N,ptdata]=load_pdetool_geom( 'cardioid', 1, false );
 pdemesh( ptdata{:} )
+N=size(pos,2);
 
 p_f=3;
 m_f=22;
@@ -21,19 +22,17 @@ disp( 'performing kl expansion, this may take a while, too ...' );
 for t=1:2
     if t==1
         C=covariance_matrix( pos, cov_f );
-        f_i_k=kl_solve_evp( C, G_N, l_f );
-        %f_i_k=f_i_k(:,2:end); %???
-        mu_f_i=f_i_alpha(:,1);
+        f_i_k=[ones(N,1), kl_solve_evp( C, G_N, l_f )];
     else
-        [mu_f_i,f_i_k,f_k_alpha,relerr]=pce_to_kl( f_i_alpha, I_f, l_f, G_N, [] );
+        [f_i_k,f_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N, [] );
     end
     
-    subplot(4,4,1+8*(t-1)); plot_field( pos, els, mu_f_i );
-    subplot(4,4,2+8*(t-1)); plot_field( pos, els, f_i_k(:,1) );
-    subplot(4,4,3+8*(t-1)); plot_field( pos, els, f_i_k(:,2) );
-    subplot(4,4,4+8*(t-1)); plot_field( pos, els, f_i_k(:,3) );
-    subplot(4,4,5+8*(t-1)); plot_field( pos, els, f_i_k(:,4) );
-    subplot(4,4,6+8*(t-1)); plot_field( pos, els, f_i_k(:,5) );
-    subplot(4,4,7+8*(t-1)); plot_field( pos, els, f_i_k(:,6) );
-    subplot(4,4,8+8*(t-1)); plot_field( pos, els, f_i_k(:,7) );
+    subplot(4,4,1+8*(t-1)); plot_field( pos, els, f_i_k(:,1) );
+    subplot(4,4,2+8*(t-1)); plot_field( pos, els, f_i_k(:,2) );
+    subplot(4,4,3+8*(t-1)); plot_field( pos, els, f_i_k(:,3) );
+    subplot(4,4,4+8*(t-1)); plot_field( pos, els, f_i_k(:,4) );
+    subplot(4,4,5+8*(t-1)); plot_field( pos, els, f_i_k(:,5) );
+    subplot(4,4,6+8*(t-1)); plot_field( pos, els, f_i_k(:,6) );
+    subplot(4,4,7+8*(t-1)); plot_field( pos, els, f_i_k(:,7) );
+    subplot(4,4,8+8*(t-1)); plot_field( pos, els, f_i_k(:,8) );
 end    

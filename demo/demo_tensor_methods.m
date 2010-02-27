@@ -11,26 +11,27 @@ kl_model_version=1;
 N=size(pos,2);
 
 %% load the kl variables of the conductivity k
-[mu_k_i,k_i_k,k_k_alpha,I_k]=load_kl_model( [basename '_k'], kl_model_version, [], {'mu_r_k', 'r_i_k', 'r_k_alpha', 'I_r'} );
+[k_i_k,k_k_alpha,I_k]=load_kl_model( [basename '_k'], kl_model_version, [], {'r_i_k', 'r_k_alpha', 'I_r'} );
 subplot(1,2,1); plot(pos,k_i_k); title('KL eigenfunctions');
-subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_k_i, k_i_k, k_k_alpha, I_k ); title('mean/var/samples');
+subplot(1,2,2); plot_kl_pce_realizations_1d( pos, k_i_k, k_k_alpha, I_k ); title('mean/var/samples');
 userwait;
 
 %% load the kl variables of the right hand side f
-[mu_f_j,f_j_i,phi_i_alpha,I_f]=load_kl_model( [basename '_f'], kl_model_version, [], {'mu_r_k', 'r_i_k', 'r_k_alpha', 'I_r'} );
+[f_j_i,phi_i_alpha,I_f]=load_kl_model( [basename '_f'], kl_model_version, [], {'r_i_k', 'r_k_alpha', 'I_r'} );
 subplot(1,2,1); plot(pos,f_j_i); title('KL eigenfunctions');
-subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_f_j, f_j_i, phi_i_alpha, I_f ); title('mean/var/samples');
+subplot(1,2,2); plot_kl_pce_realizations_1d( pos, f_j_i, phi_i_alpha, I_f ); title('mean/var/samples');
 userwait;
 
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
 select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
-mu_g_i=funcall( g_func, pos);
-% "null" kl expansion of g
+% dummy pce (just the mean)
+g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
-g_i_k=zeros(N,0);
-g_k_alpha=zeros(0,size(I_g,1));
+% "null" kl expansion of g
+[g_i_k,g_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
+
 
 
 %% combine the multiindices
@@ -40,12 +41,12 @@ M=size(I_u,1); %#ok
 
 %% create the right hand side
 phi_i_beta=compute_pce_rhs( phi_i_alpha, I_f, I_u );
-F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
+F=kl_to_tensor( f_j_i, phi_i_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
 g_k_beta=compute_pce_rhs( g_k_alpha, I_g, I_u );
-G=kl_to_tensor( mu_g_i, g_i_k, g_k_beta );
+G=kl_to_tensor( g_i_k, g_k_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
 
@@ -55,8 +56,8 @@ kl_operator_version=9;
 stiffness_func={@stiffness_matrix, {pos,els}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
-K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_i, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
-K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_i, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
+K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
+K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
 % create matrix and tensor operators
 K_mat=cell2mat(K_ab);
 

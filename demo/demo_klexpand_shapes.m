@@ -23,7 +23,9 @@ f_i_k=kl_solve_evp( covariance_matrix( pos, cov_func ), G_N, m, options );
 
 %% KL of the cardioid
 
+ws=warning( 'off', 'MATLAB:Figure:SetPosition' );
 set( gcf, 'Position', [0, 0, 900, 900] );
+warning( ws );
 set( gcf, 'Renderer', 'zbuffer' );
 
 for k=1:8

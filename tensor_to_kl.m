@@ -1,10 +1,9 @@
-function [mu_r_j, r_j_i, rho_i_alpha]=tensor_to_kl( R )
+function [r_i_k, r_k_alpha]=tensor_to_kl( R )
 % TENSOR_TO_KL Unpack a KL expansion from a tensor product.
-%   [MU_R_J, R_J_I, RHO_I_ALPHA]=TENSOR_TO_KL( R ) unpacks a KL expansion
-%   from the tensor product R into MU_R_J, R_J_I and RHO_I_ALPHA. MU_R_J
-%   contains the mean of the random field or stochastic process, R_J_I
+%   [R_I_K, R_K_ALPHA]=TENSOR_TO_KL( R ) unpacks a KL expansion
+%   from the tensor product R into R_I_K and R_K_ALPHA. R_I_K
 %   contains the coefficients of the KL eigenfunctions with respect to the
-%   ansatz functions used, and RHO_I_ALPHA contains the PC expansion of the
+%   ansatz functions used, and R_K_ALPHA contains the PC expansion of the
 %   corresponding KL random variable.
 %
 %   Note: This function does not guarantee orthogonality of eigenfunctions
@@ -32,17 +31,5 @@ function [mu_r_j, r_j_i, rho_i_alpha]=tensor_to_kl( R )
 error( nargchk( 1, 1, nargin ) );
 
 % extract parts from the tensor (second component is transposed in KL form)
-r_j_i=R{1};
-rho_i_alpha=R{2}';
-
-% now extract deterministic part and clear that one from the variable part
-mu_r_j=r_j_i*rho_i_alpha(:,1);
-rho_i_alpha(:,1)=0;
-
-% if we have a full zero for a random variable we can erase that (this
-% sometimes happens when first combining a KL to a tensor and then doing
-% the reverse process)
-if all(rho_i_alpha(1,:)==0)
-    rho_i_alpha=rho_i_alpha(2:end,:);
-    r_j_i=r_j_i(:,2:end);
-end
+r_i_k=R{1};
+r_k_alpha=R{2}';

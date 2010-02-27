@@ -62,22 +62,23 @@ u_real1=pce_field_realization( u_i_alpha, I_u, xi );
 plot( pos, u_real1 );
 
 %% Make KL on RF and project on it
-[v,s]=kl_solve_evp( C_u, G_N, l_u );
-u_i_k=kl_solve_evp( C_u, G_N, l_u );
-[mu_u,u_k_alpha]=project_pce_on_kl( u_i_alpha, I_u, u_i_k );
+v_i_k=kl_solve_evp( C_u, G_N, l_u );
+[u_i_k,u_k_alpha]=project_pce_on_kl( u_i_alpha, I_u, v_i_k );
 
 %% Get KL of PCE expansion directly by SVD
-[mu_u2,u_i_k2,u_k_alpha2]=pce_to_kl( u_i_alpha, I_u, l_u, G_N ); %#ok
+[u_i_k2,u_k_alpha2]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
+%u_i_k2=u_i_k2(:,2:end);
 
 %% Show that both are results are basically the same
 % The correlation coefficient between each two functions should be one or
 % minus one.
+
 ccorr=abs(u_i_k*u_i_k2' ./ sqrt( sum(u_i_k.^2,2)*sum(u_i_k2.^2,2)' ));
 format short
 disp( diag(ccorr)' )
 
 %% Now get a realization for the KL-PCE expanded field
-u_real2=kl_pce_field_realization( mu_u, u_i_k, u_k_alpha, I_u, xi );
+u_real2=kl_pce_field_realization( u_i_k, u_k_alpha, I_u, xi );
 plot( pos, u_real2 );
 userwait
 
@@ -99,15 +100,11 @@ norm(C_u_pce-C_u)
 norm(C_u_pce2-C_u)
 
 %%
-u_i_k=kl_solve_evp( C_u_pce, G_N, l_u );
-[mu_u,u_k_alpha]=project_pce_on_kl( u_i_alpha, I_u, u_i_k );
-[mu_u2,u_i_k2,u_k_alpha2]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
-cc=cross_correlation( u_i_k, u_i_k2, G_N );
+v_i_k=kl_solve_evp( C_u_pce, G_N, l_u );
+[u_i_k,u_k_alpha]=project_pce_on_kl( u_i_alpha, I_u, v_i_k );
+[u_i_k2,u_k_alpha2]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
+cc=cross_correlation( u_i_k(:,2:end), u_i_k2(:,2:end), G_N );
 fprintf( 'cross correlation=%f\n', cc );
-
-
-disp(mu_u-mu_u2);
-disp(u_k_alpha-row_col_mult(u_k_alpha2,diag(cc)));
 
 u_1=pce_field_realization( u_i_alpha(5,:), I_u, randn(m_u,10000) );
 subplot(1,1,1); clf;
@@ -139,8 +136,8 @@ userwait
 subplot(1,1,1); clf;
 N=10000;
 xi=randn(m_u,N);
-u_1=kl_pce_field_realization( mu_u,  u_i_k,  u_k_alpha,  I_u, xi );
-u_2=kl_pce_field_realization( mu_u2, u_i_k2, u_k_alpha2, I_u, xi );
+u_1=kl_pce_field_realization( u_i_k,  u_k_alpha,  I_u, xi );
+u_2=kl_pce_field_realization( u_i_k2, u_k_alpha2, I_u, xi );
 subplot(2,2,1);
 xb=linspace(-.2,1.2); plot( xb, beta_pdf( xb, 4, 2 ), 'r' );
 hold on;

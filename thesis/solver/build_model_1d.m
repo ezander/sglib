@@ -5,7 +5,7 @@ if exist('geom','var') && ~strcmp(geom,'1d')
     error( 'unknown geometry' );
 end
 
-[els,pos,bnd]=create_mesh_1d( N, 0, 1 );
+[els,pos,bnd]=create_mesh_1d( 0, 1, N );
 G_N=mass_matrix( els, pos );
 
 %% load the kl variables of the conductivity k
@@ -15,8 +15,8 @@ m_k=4;
 l_k=4;
 lc_k=0.3;
 
-stdnor_k=@(x)(gendist_stdnor(dist,x,dist_params,dist_shift,dist_scale));
-pdf_k=@(x)(gendist_pdf(dist,x,dist_params,dist_shift,dist_scale));
+stdnor_k=@(x)(gendist_stdnor(x,dist,dist_params,dist_shift,dist_scale));
+pdf_k=@(x)(gendist_pdf(x,dist,dist_params,dist_shift,dist_scale));
 [mu_k,var_k]=gendist_moments(dist,dist_params,dist_shift,dist_scale);
 
 cov_k={@gaussian_covariance,{lc_k,1}};

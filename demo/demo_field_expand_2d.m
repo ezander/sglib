@@ -29,24 +29,26 @@ tic
 toc
 disp( 'performing kl expansion, this may take a while, too ...' );
 tic
-[f_i_0, f_i_k, f_k_alpha, relerr]=pce_to_kl( f_i_alpha, I_f, l_f, G_N, [] );
+[f_i_k, f_k_alpha, relerr]=pce_to_kl( f_i_alpha, I_f, l_f, G_N, [] );
 toc
 fprintf( 'relative error computing KL: %g\n', relerr );
 
 %% plot the whole stuff
 h=clf;
+ws=warning( 'off', 'MATLAB:Figure:SetPosition' );
 set( h, 'Position', [0, 0, 600, 900] );
-%set( h, 'PaperPosition', [0, 0, 600, 900] );
+warning( ws );
+
 set( gcf, 'Renderer', 'zbuffer' );
 
 for k=1:12
     subplot(4,4,k);
-    plot_field( pos, els, f_i_k(:,k) );
+    plot_field( pos, els, f_i_k(:,k+1) );
     title(sprintf('KLE: f_{%d}',k));
 end
 for j=1:4
     subplot(4,4,12+j);
-    f_ex=kl_pce_field_realization( f_i_0, f_i_k, f_k_alpha, I_f );
+    f_ex=kl_pce_field_realization( f_i_k, f_k_alpha, I_f );
     plot_field( pos, els, f_ex );
     title(sprintf('Sample: %d',j));
 end

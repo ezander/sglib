@@ -1,4 +1,9 @@
-function K=compute_kl_pce_operator( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, form, varargin )
+function K=compute_kl_pce_operator( kc_i_k, kc_k_iota, I_k, I_u, stiffness_func, form, varargin )
+
+[mu_k, v_k_i,sigma_k,k_i_iota]=kl_pce_to_standard_form( kc_i_k, kc_k_iota );
+v_k_i=row_col_mult( v_k_i, sigma_k(:)' );
+
+
 
 options=varargin2options( varargin );
 [silent,options]=get_option( options, 'silent', true );

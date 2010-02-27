@@ -197,10 +197,10 @@
 %     You can to the same with the KL e.g. and the PCE: Instead of writing
 %       % snip
 %       [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-%       [mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
+%       [f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
 %     you can write
 %       [pce_f{1:2}]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-%       [kl_f{1:3}]=pce_to_kl( pce_f{:}, l_f, G_N );
+%       [kl_f{1:2}]=pce_to_kl( pce_f{:}, l_f, G_N );
 %     and later:
 %       plot_kl_pce_realizations_1d( pos, kl_f{:}, pce_f{2}, 'realizations', 50 );
 %     Here you see one problem: you have to reference the second field of

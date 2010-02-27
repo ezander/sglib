@@ -77,17 +77,17 @@ end
 
 %% Part 2: Doing the actual computation or retrieval from file
 
-[mu_r_k, r_i_k, r_k_alpha,I_r]=cached_funcall(...
+[r_i_k, r_k_alpha,I_r]=cached_funcall(...
     @compute_random_field,...
     { stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_r, options_expand_r, l_r }, ...
-    4, ...
+    3, ...
     rf_filename, ...
     version );
 
 
 %% Part 3: Assigning the output
 if nargin<4
-    varargout={pos, els, mu_r_k, r_i_k, r_k_alpha, I_r, p_r, m_r, l_r, lc_r, stdnor_r, cov_r, cov_gam};
+    varargout={pos, els, r_i_k, r_k_alpha, I_r, p_r, m_r, l_r, lc_r, stdnor_r, cov_r, cov_gam};
 else
     for i=1:length(output_vars)
         if exist(output_vars{i},'var')
@@ -113,7 +113,7 @@ else
 end
 
 
-function [mu_r_k,r_i_k,r_k_alpha,I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_r, options_expand_r, l_r )
+function [r_i_k,r_k_alpha,I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_r, options_expand_r, l_r )
 global silent_computation
 silent=silent_computation;
 % compute the random field
@@ -124,7 +124,7 @@ end
 if ~silent
     fprintf( 'model_kl: computing kl, this may take a while, too...\n' );
 end
-[mu_r_k,r_i_k,r_k_alpha]=pce_to_kl( r_j_alpha, I_r, l_r, G_N );
+[r_i_k,r_k_alpha]=pce_to_kl( r_j_alpha, I_r, l_r, G_N );
 if ~silent
     fprintf( 'model_kl: finished, saving to file...\n' );
 end
