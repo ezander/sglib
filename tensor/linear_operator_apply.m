@@ -34,7 +34,10 @@ function y=linear_operator_apply( A, x )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if isnumeric(A)
+if isempty(A)
+    % A is the identity
+    y=x;
+elseif isnumeric(A)
     % A is a matrix
     y=A*x;
 elseif iscell(A) && isfunction(A{2})

@@ -30,17 +30,12 @@ function [m,n]=linear_operator_size( A )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
 if isnumeric(A)
-    % A is a matrix
+    % A is a matrix (meaningsless result for identity)
     m=size(A);
 elseif iscell(A) && isnumeric(A{1})
     % A is an operator and first element is the size
     m=A{1};
-elseif iscell(A) && isfunction(A{1})
-    % A is an operator and first element contains function returning the
-    % size
-    m=funcall( A{1} );
 else
     error( 'linear_operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end

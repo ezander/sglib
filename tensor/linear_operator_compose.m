@@ -1,7 +1,11 @@
-function C=linear_operator_compose( A, B, varargin )
+function C=linear_operator_compose( A, B )
 % LINEAR_OPERATOR_COMPOSE Return the composition of two linear operators.
 %   C=LINEAR_OPERATOR_COMPOSE( A, B ) returns the composition C of the
 %   linear operators A and B such that C(X)=A(B(X))).
+%   If the operators are both matrices then the matrix product is computed.
+%   If you don't want this behaviour first call LINEAR_OPERATOR_FROM_MATRIX
+%   on one of the operands--in this case the composition is an object that
+%   performs the matrix multiplications step by step.
 %
 % Example (<a href="matlab:run_example linear_operator_compose">run</a>)
 %
@@ -19,28 +23,19 @@ function C=linear_operator_compose( A, B, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin );
-[step_solve,options]=get_option( options, 'step_solve', true );
-check_unsupported_options( options, mfilename );
+%check_match( linear_operator_size(A), linear_operator_size(B), false, 'A', 'B', mfilename );
+check_match( A, B, false, 'A', 'B', mfilename );
 
-
-if isnumeric(A) && isnumeric(B)
+if isempty(A)
+    C=B;
+elseif isempty(B)
+    C=A;
+elseif isnumeric(A) && isnumeric(B)
     % A and B are matrices
     C=A*B;
 else
     sa=linear_operator_size(A);
     sb=linear_operator_size(B);
-    if step_solve
-        C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}}, {@comp_solve, {A,B}, {1,2}} };
-    else
-        C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}} };
-    end
+    C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}} };
 end
 
-function z=comp_apply( A, B, x )
-y=linear_operator_apply( B, x );
-z=linear_operator_apply( A, y );
-
-function x=comp_solve( A, B, z )
-y=linear_operator_solve( A, z );
-x=linear_operator_solve( B, y );
