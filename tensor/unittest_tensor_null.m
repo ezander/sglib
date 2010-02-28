@@ -20,8 +20,6 @@ function unittest_tensor_null
 
 munit_set_function( 'tensor_null' );
 
-assert_equals( tensor_null(ones(3,4,5)), zeros(3,4,5), 'full' );
-
 Z=tensor_null({rand(8,3), rand(10,3)});
 assert_equals( norm( Z{1}*Z{2}', 'fro' ), 0, 'norm' );
 assert_equals( size(Z{1}), [8,0], 'size_1' );

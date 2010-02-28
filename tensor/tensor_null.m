@@ -25,14 +25,10 @@ function Z=tensor_null( T )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if isfull(T)
-    Z=zeros(size(T));
-elseif iscanonical(T)
+if iscanonical(T)
     dims=cellfun('size', T, 1 );
     C=zeros(sum(dims),0);
     Z=mat2cell(C,dims)';
-elseif isobject(T)
-    Z=0*T; % need something better here
 else
     error( 'tensor:tensor_null:param_error', ...
         'input parameter is no recognized tensor format' );
