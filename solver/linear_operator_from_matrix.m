@@ -63,6 +63,10 @@ else
 end
 
 function x=lu_solve( b, L, U, p )
-lower.LT=true;
-upper.UT=true;
-x=linsolve(U, linsolve(L,b(p),lower), upper );
+if issparse(L) || issparse(U)
+    x=mldivide(U, mldivide(L,b(p)) );
+else
+    lower.LT=true;
+    upper.UT=true;
+    x=linsolve(U, linsolve(L,b(p),lower), upper );
+end

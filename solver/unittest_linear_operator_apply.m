@@ -27,6 +27,7 @@ A1=linear_operator_from_matrix( M );
 A2=linear_operator_from_function( {@mtimes, {M}, {1}}, size(M) );
 A3=linear_operator_from_matrix( M, 'solve' );
 A4=linear_operator_from_matrix( M, 'solve', 'use_lu', true );
+A5=linear_operator_from_matrix( sparse(M), 'solve', 'use_lu', true );
 I=linear_operator_from_function( 'id' );
 
 assert_equals( linear_operator_apply( M, x ), y, 'M' );
@@ -34,6 +35,7 @@ assert_equals( linear_operator_apply( A1, x ), y, 'A1' );
 assert_equals( linear_operator_apply( A2, x ), y, 'A2' );
 assert_equals( linear_operator_apply( A3, y ), x, 'A3' );
 assert_equals( linear_operator_apply( A4, y ), x, 'A4' );
+assert_equals( linear_operator_apply( A5, y ), x, 'A5' );
 
 assert_equals( linear_operator_apply( I, x ), x, 'Ix' );
 assert_equals( linear_operator_apply( I, y ), y, 'Iy' );

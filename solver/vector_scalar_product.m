@@ -36,8 +36,8 @@ if isnumeric(T1) && isnumeric(T2)
     end
 elseif iscell(T1) && iscell(T2)
     d=tensor_scalar_product(T1,T2,G);
-elseif isobject(T1) && iscell(T2)
-    d=tt_vector_scalar_product(T1,T2,G);
+elseif isobject(T1) && isobject(T2)
+    d=tt_tensor_scalar_product(T1,T2,G);
 else
     error( 'vector:vector_scalar_product:param_error', ...
         'input parameter is no recognized vector format or formats don''t match' );

@@ -1,5 +1,21 @@
 function unittest_tensor_operator_solve_pcg
 
+
+[A,Am,M, Mm, F,Fvec]=setup( 5, 3, 3, 2 );
+XvecEx=Am\Fvec;
+tol=1e-7;
+%pcg_opts={ 'eps', 1e-7, 'k_max', 2 };
+assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
+
+[X,flag]=tensor_operator_solve_pcg( A, F, 'M', M );
+Xvec1=reshape( X{1}*X{2}', [], 1 );
+assert_equals( flag, 0, 'pcg_op_flag' );
+assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts{:} );
+
+
+
+return
+
 [A,Am,M, Mm, F,Fvec]=setup( 5, 3, 3, 2 );
 XvecEx=Am\Fvec;
 tol=1e-7;
