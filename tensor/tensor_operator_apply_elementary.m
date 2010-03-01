@@ -63,61 +63,17 @@ n=length(A);
 d=tensor_operator_size( A );
 U=T;
 for i=1:n
+    % the following is a bit tricky: we shift in turn every dimension to
+    % the front, then reshape the array into a matrix and do a matrix
+    % multiplication, replace now in d (first column contains the
+    % dimension of the codomain, second one that of the domain) the
+    % dimension with the new size, then we reshape back to the correct
+    % form, and then shift dimensions (and d accordingsly) by one dimension
     U=reshape( U, d(1,2), [] );
     U=A{i}*U;
     d(1,2)=d(1,1);
-    d=[d(2:n,:); d(1,:)];
     U=reshape(U,d(:,2)');
     U=permute( U, [2:n, 1] );
+    d=[d(2:n,:); d(1,:)];
 end
 
-
-% if isnumeric(T) && isvector(T)
-%     Y=apply_tensor_vect( A, T );
-% elseif isnumeric(T) && ~isvector(T)
-%     Y=apply_tensor_mat( A, T );
-% elseif iscell(T) || isobject(T)
-%     Y=apply_tensor_tensor( A, T, truncate_func );
-% else
-%     error( 'apply_tensor_operator:vector_type', 'cannot determine vector type (%s)', class(A) );
-% end
-% 
-% 
-% function Y=apply_tensor_tensor( A, T, truncate_func )
-% if iscell(T)
-%     d=size(A,2);
-%     for i=1:d
-%         check_condition( {A{1,i},T{i}}, 'match', true, {'A{1,i}','T{i}'}, mfilename );
-%     end
-% end
-% R=size(A,1);
-% for i=1:R
-%     V=tensor_operator_apply_elementary( A(i,:), T );
-%     if i==1
-%         Y=V;
-%     else
-%         Y=gvector_add( Y, V );
-%     end
-%     Y=funcall( truncate_func, Y );
-% end
-% 
-% 
-% function Y=apply_tensor_mat( A, T )
-% % TODO: no reduction yet
-% check_second_order(A);
-% check_condition( {A{1,1},T}, 'match', false, {'A{1,1}','T'}, mfilename );
-% check_condition( {A{1,2},T'}, 'match', false, {'A{1,2}','T'''}, mfilename );
-% 
-% K=size(A,1);
-% for i=1:K
-%     U=operator_apply(A{i,1},T)';
-%     V=operator_apply(A{i,2},U)';
-%     if i==1; 
-%         Y=V; 
-%     else
-%         Y=Y+V; 
-%     end;
-% end
-% 
-% 
-% 

@@ -1,8 +1,8 @@
-function t=tensor_to_matrix(T)
-% TENSOR_TO_MATRIX Short description of tensor_to_matrix.
-%   TENSOR_TO_MATRIX Long description of tensor_to_matrix.
+function t=tensor_to_array(T)
+% TENSOR_TO_ARRAY Short description of tensor_to_array.
+%   TENSOR_TO_ARRAY Long description of tensor_to_array.
 %
-% Example (<a href="matlab:run_example tensor_to_matrix">run</a>)
+% Example (<a href="matlab:run_example tensor_to_array">run</a>)
 %
 % See also
 

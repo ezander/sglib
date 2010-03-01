@@ -1,13 +1,13 @@
-function bool=check_tensor_format(T)
-% CHECK_TENSOR_FORMAT Short description of check_tensor_format.
-%   CHECK_TENSOR_FORMAT Long description of check_tensor_format.
+function tensor_extend(varargin)
+% TENSOR_EXTEND Short description of tensor_extend.
+%   TENSOR_EXTEND Long description of tensor_extend.
 %
-% Example (<a href="matlab:run_example check_tensor_format">run</a>)
+% Example (<a href="matlab:run_example tensor_extend">run</a>)
 %
 % See also
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2010, Inst. of Scientific Comuting
 %   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -18,8 +18,3 @@ function bool=check_tensor_format(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~istensor(T)
-    error( 'tensor:param_error', ...
-        'input parameter is no recognized tensor format' );
-end
-bool=true;

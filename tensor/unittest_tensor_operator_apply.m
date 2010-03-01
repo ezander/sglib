@@ -33,7 +33,7 @@ A=cell(R,2);
 Alin=cell(R,2);
 
 X={rand(N1,RX), rand(N2,RX)};
-Xmat=tensor_to_matrix(X);
+Xmat=tensor_to_array(X);
 Xvec=tensor_to_vector(X);
 B={zeros(M1,0), zeros(M2,0)};
 for i=1:R
@@ -43,7 +43,7 @@ for i=1:R
     
     B={[B{1}, A{i,1}*X{1}], [B{2}, A{i,2}*X{2}] };
 end
-Bmat=tensor_to_matrix(B);
+Bmat=tensor_to_array(B);
 Bvec=tensor_to_vector(B);
 
 

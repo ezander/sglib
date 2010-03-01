@@ -27,18 +27,13 @@ end
 
 check_tensors_compatible( T1, T2 );
 
-if iscanonical(T1)
-    S=ones(tensor_rank(T1),tensor_rank(T2));
-    for i=1:length(T1)
-        if isempty(G)
-            S=S.*inner(T1{i},T2{i},[]);
-        else
-            S=S.*inner(T1{i},T2{i},G{i});
-        end
+S=ones(tensor_rank(T1),tensor_rank(T2));
+for i=1:length(T1)
+    if isempty(G)
+        S=S.*inner(T1{i},T2{i},[]);
+    else
+        S=S.*inner(T1{i},T2{i},G{i});
     end
-else
-    error( 'tensor:tensor_scalar_product:param_error', ...
-        'input parameter is no recognized tensor format' );
 end
 d=sum(S(:));
 

@@ -20,20 +20,14 @@ function unittest_istensor
 
 munit_set_function( 'istensor' );
 
+assert_false( istensor('rand(3,4)'), 'istensor(str)', 'numeric' );
 assert_false( istensor('abc'), 'istensor(str)', 'string' );
 assert_false( istensor(struct()), 'istensor(str)', 'struct' );
 
-assert_true( istensor([]), 'istensor([])', 'empty' );
-assert_true( istensor(ones(3,1)), 'istensor(arr)', 'full1' );
-assert_true( istensor(ones(3,3)), 'istensor(arr)', 'full2' );
-assert_true( istensor(ones(3,4,5)), 'istensor(arr)', 'full3' );
-
 b=istensor( {ones(3,3), ones(5,5)} );
 assert_equals(  b, false, 'no_canon' );
-[b,f]=istensor( {ones(3,3), ones(5,3)} );
+b=istensor( {ones(3,3), ones(5,3)} );
 assert_equals(  b, true, 'canon' );
-assert_equals(  f, 'canonical', 'canon_format' );
-[b,f]=istensor( {ones(3,1), ones(5,1)} );
+b=istensor( {ones(3,1), ones(5,1)} );
 assert_equals(  b, true, 'canon2' );
-assert_equals(  f, 'canonical', 'canon2_format' );
 
