@@ -17,34 +17,34 @@ info.maxiter=maxiter;
 iter=0;
 flag=0;
 
-Xc=vector_null(F);
-Rc=vector_add( F, linear_operator_apply( A, Xc ), -1);
-Zc=linear_operator_apply( Minv, Rc );
+Xc=gvector_null(F);
+Rc=gvector_add( F, operator_apply( A, Xc ), -1);
+Zc=operator_apply( Minv, Rc );
 Pc=Zc;
 
-initres=vector_norm( Rc );
+initres=gvector_norm( Rc );
 
 stats=funcall( stats_func, 'init', stats, initres );
 
 while true
-    alpha=vector_scalar_product( Rc, Zc)/...
-        vector_scalar_product( Pc, linear_operator_apply(A,Pc) );
-    Xn=vector_add( Xc, Pc, alpha);
-    Rn=vector_add( Rc, linear_operator_apply(A,Pc), -alpha );
+    alpha=gvector_scalar_product( Rc, Zc)/...
+        gvector_scalar_product( Pc, operator_apply(A,Pc) );
+    Xn=gvector_add( Xc, Pc, alpha);
+    Rn=gvector_add( Rc, operator_apply(A,Pc), -alpha );
 
     Xn=funcall( truncate_func, Xn );
     Rn=funcall( truncate_func, Rn );
 
-    normres=vector_norm( Rn );
+    normres=gvector_norm( Rn );
     relres=normres/initres;
 
     % Proposed update is DY=alpha*Pc
     % actual update is DX=T(Xn)-Xc;
     % update ratio is (DX,DY)/(DY,DY) should be near one
     % no progress if near 0
-    DY=vector_scale( Pc, alpha );
-    DX=vector_add( Xn, Xc, -1 );
-    upratio=vector_scalar_product( DX, DY )/vector_scalar_product( DY, DY );
+    DY=gvector_scale( Pc, alpha );
+    DX=gvector_add( Xn, Xc, -1 );
+    upratio=gvector_scalar_product( DX, DY )/gvector_scalar_product( DY, DY );
 
     stats=funcall( stats_func, 'step', stats, F, A, Xn, Rn, normres, relres, upratio );
 
@@ -56,9 +56,9 @@ while true
         break;
     end
 
-    Zn=linear_operator_apply(Minv,Rn);
-    beta=vector_scalar_product(Rn,Zn)/vector_scalar_product(Rc,Zc);
-    Pn=vector_add(Zn,Pc,beta);
+    Zn=operator_apply(Minv,Rn);
+    beta=gvector_scalar_product(Rn,Zn)/gvector_scalar_product(Rc,Zc);
+    Pn=gvector_add(Zn,Pc,beta);
 
     % truncate all iteration variables
     Xc=funcall( truncate_func, Xn );

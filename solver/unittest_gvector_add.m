@@ -1,8 +1,8 @@
-function unittest_vector_add
-% UNITTEST_VECTOR_ADD Test the VECTOR functions.
+function unittest_gvector_add
+% UNITTEST_GVECTOR_ADD Test the VECTOR functions.
 %
-% Example (<a href="matlab:run_example unittest_vector_add">run</a>)
-%    unittest_vector_add
+% Example (<a href="matlab:run_example unittest_gvector_add">run</a>)
+%    unittest_gvector_add
 %
 % See also TESTSUITE
 
@@ -18,24 +18,24 @@ function unittest_vector_add
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'vector_add' );
+munit_set_function( 'gvector_add' );
 
 T1=rand(3,4,5);
 T2=rand(3,4,5);
-Z=vector_add(T1,T2,2);
+Z=gvector_add(T1,T2,2);
 assert_equals( Z, T1+2*T2, 'full_sum' )
 
 
 T1={rand(8,2), rand(10,2)};
 T2={rand(8,3), rand(10,3)};
-Z=vector_add(T1,T2,3);
+Z=gvector_add(T1,T2,3);
 assert_equals( Z{1}*Z{2}', T1{1}*T1{2}'+3*T2{1}*T2{2}', 'sum' )
 assert_equals( size(Z{1}), [8,5], 'size_1' );
 assert_equals( size(Z{2}), [10,5], 'size_2' );
 
 T1={rand(8,2), rand(10,2), rand(12,2)};
 T2={rand(8,3), rand(10,3), rand(12,3)};
-Z=vector_add(T1,T2,3);
+Z=gvector_add(T1,T2,3);
 assert_equals( cellfun('size', Z, 1 ), [8,10,12], 'size_dim1' );
 assert_equals( cellfun('size', Z, 2 ), [5,5,5], 'size_dim2' );
 

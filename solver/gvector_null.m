@@ -1,16 +1,16 @@
-function Z=vector_null( T )
-% VECTOR_NULL Create a sparse null vector with correct dimensions.
-%   Z=VECTOR_NULL( T ) create a sparse vector product with the same
+function Z=gvector_null( T )
+% GVECTOR_NULL Create a sparse null vector with correct dimensions.
+%   Z=GVECTOR_NULL( T ) create a sparse vector product with the same
 %   dimensions as the vector T (which is used as kind of a model). In more
 %   detail: suppose T consists of an N*K and an M*K matrix then Z will
 %   consist of an N*0 and an M*0 matrix.
 %
-% Example (<a href="matlab:run_example vector_null">run</a>)
+% Example (<a href="matlab:run_example gvector_null">run</a>)
 %   T={rand(8,3), rand(10,3)}
-%   Z=vector_null(T)
+%   Z=gvector_null(T)
 %   norm( Z{1}*Z{2}', 'fro' ) % should be zero
 %
-% See also VECTOR_ADD
+% See also GVECTOR_ADD
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -32,6 +32,6 @@ elseif iscell(T)
 elseif isobject(T)
     Z=0*T;
 else
-    error( 'vector:vector_null:param_error', ...
+    error( 'vector:gvector_null:param_error', ...
         'input parameter is no recognized vector format' );
 end

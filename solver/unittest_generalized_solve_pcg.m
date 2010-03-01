@@ -24,7 +24,7 @@ munit_set_function( 'generalized_solve_pcg' );
 [A,M,F]=setup( 5, 3, 3, 2 );
 A=tensor_operator_to_matrix(A);
 M=tensor_operator_to_matrix(M);
-Minv=linear_operator_from_matrix(M,'solve', 'use_lu', true);
+Minv=operator_from_matrix(M,'solve', 'use_lu', true);
 F=tensor_to_vector(F);
 Xex=A\F;
 tol=1e-6;
@@ -37,7 +37,7 @@ assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 assert_equals( flag, 0, 'pcgprec_op_flag' );
 assert_equals( X, Xex, 'pcgprec_op', 'abstol', tol, 'reltol', tol  );
 
-A=linear_operator_from_matrix(A);
+A=operator_from_matrix(A);
 [X,flag,info]=generalized_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_linop_flag' );
 assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
@@ -46,9 +46,9 @@ assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 % test the stuff for matrices and linear operators
 [A,M,F]=setup( 5, 3, 3, 2 );
 %M=tensor_operator_to_matrix(M);
-%Minv=linear_operator_from_matrix(M,'solve', 'use_lu', true);
+%Minv=operator_from_matrix(M,'solve', 'use_lu', true);
 Xex=tensor_operator_to_matrix(A)\tensor_to_vector(F);
-A=linear_operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
+A=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
 tol=1e-5;
 truncate_func={@tensor_truncate, {'eps', 0}};
 [X,flag,info]=generalized_solve_pcg( A, F, 'truncate_func', truncate_func );
@@ -56,10 +56,10 @@ assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
-M1=linear_operator_from_matrix( M{1}, 'solve' );
-M2=linear_operator_from_matrix( M{2}, 'solve' );
+M1=operator_from_matrix( M{1}, 'solve' );
+M2=operator_from_matrix( M{2}, 'solve' );
 M={M1,M2};
-M=linear_operator_from_function( {@tensor_operator_apply, {M}, {1}}, tensor_operator_size(M) );
+M=operator_from_function( {@tensor_operator_apply, {M}, {1}}, tensor_operator_size(M) );
 
 [X,flag,info]=generalized_solve_pcg( A, F, 'truncate_func', truncate_func );
 assert_equals( flag, 0, 'pcg_op_flag' );

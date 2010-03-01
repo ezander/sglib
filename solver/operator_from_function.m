@@ -1,5 +1,5 @@
-function A=linear_operator_from_function( func, size )
-% LINEAR_OPERATOR Creates  a linear operator structure from a function.
+function A=operator_from_function( func, size )
+% OPERATOR Creates  a linear operator structure from a function.
 %   A linear operator is a cell array containing information about its
 %   size and application to a vector and inversion of a vector. The second
 %   element must contain the size as a 1x2 array (i.e. [M,N], the first
@@ -9,10 +9,10 @@ function A=linear_operator_from_function( func, size )
 %   the identity operator. SIZE is changed to be the same in both domain
 %   and codomain.
 %
-% Example (<a href="matlab:run_example linear_operator_from_function">run</a>)
+% Example (<a href="matlab:run_example operator_from_function">run</a>)
 %
 %
-% See also LINEAR_OPERATOR_APPLY, LINEAR_OPERATOR_SIZE, ISFUNCTION
+% See also OPERATOR_APPLY, OPERATOR_SIZE, ISFUNCTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

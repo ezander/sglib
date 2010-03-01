@@ -1,34 +1,34 @@
-function A=linear_operator_from_matrix( M, solve, varargin )
-% LINEAR_OPERATOR Creates  a linear operator structure from a matrix.
-%   A=LINEAR_OPERATOR( M ) constructs a linear operator, i.e. a cell array
+function A=operator_from_matrix( M, solve, varargin )
+% OPERATOR Creates  a linear operator structure from a matrix.
+%   A=OPERATOR( M ) constructs a linear operator, i.e. a cell array
 %   containing information about its size and application to a vector and
 %   inversion of a vector, from the matrix M. The first element of A
 %   contains the size (domain and codomain of the operator) as a 1x2 array
 %   (i.e. [M,N], the second element contains application of the linear
 %   operator to a vector from of size [N,K] producing a vector of size
 %   [M,K]. 
-%   A=LINEAR_OPERATOR( M, TRUE ) constructs a linear operator, i.e. always
+%   A=OPERATOR( M, TRUE ) constructs a linear operator, i.e. always
 %   solves with the given matrix when applied. See also the option
 %   'use_lu'.
 %
 % Options:
 %   use_lu: true, {false}
 %     Computes the LU decomposition and stores the result at the end
-%     of the cell array acceleration future calls to LINEAR_OPERATOR_APPLY.
+%     of the cell array acceleration future calls to OPERATOR_APPLY.
 %     Has only effect, when SOLVE is set to true.
 %
 %
-% Example (<a href="matlab:run_example linear_operator_from_matrix">run</a>)
-%     apply=linear_operator_from_matrix([1, 2, 3; 3, 4, 6; 5, 10, 8]);
-%     solve=linear_operator_from_matrix([1, 2, 3; 3, 4, 6; 5, 10, 8], true, 'use_lu', true);
-%     [m,n]=linear_operator_size( apply );
+% Example (<a href="matlab:run_example operator_from_matrix">run</a>)
+%     apply=operator_from_matrix([1, 2, 3; 3, 4, 6; 5, 10, 8]);
+%     solve=operator_from_matrix([1, 2, 3; 3, 4, 6; 5, 10, 8], true, 'use_lu', true);
+%     [m,n]=operator_size( apply );
 %
 %     x=ones(n,1);
-%     y=linear_operator_apply( apply, x );
-%     x2=linear_operator_apply( solve, y );
+%     y=operator_apply( apply, x );
+%     x2=operator_apply( solve, y );
 %     disp(round([x,x2, y]));
 %
-% See also LINEAR_OPERATOR_APPLY, LINEAR_OPERATOR_SIZE, LINEAR_OPERATOR_SOLVE, ISFUNCTION
+% See also OPERATOR_APPLY, OPERATOR_SIZE, OPERATOR_SOLVE, ISFUNCTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

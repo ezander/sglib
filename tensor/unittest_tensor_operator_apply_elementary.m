@@ -22,8 +22,8 @@ munit_set_function( 'tensor_operator_apply_elementary' );
 
 T={rand(8,3), rand(10,3)};
 A={rand(8,8), rand(10,10)};
-L1=linear_operator_from_matrix(A{1});
-L2=linear_operator_from_matrix(A{2});
+L1=operator_from_matrix(A{1});
+L2=operator_from_matrix(A{2});
 B={L1, L2};
 C={A{1}, L2};
 UA=tensor_operator_apply_elementary(A,T);
