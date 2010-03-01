@@ -51,7 +51,4 @@ if M>1; I_S=speye(M); else I_S=1; end
 u=tensor_operator_apply( {P_I', I_S}, ui );
 g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
 
-u=tensor_add( u, g );
-if iscell(u)
-    u=tensor_truncate( u, truncation_options{:} );
-end
+u=vector_add( u, g );

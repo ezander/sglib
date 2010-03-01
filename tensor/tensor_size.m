@@ -18,9 +18,6 @@ function d=tensor_size(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if iscanonical(T)
-    d=cellfun('size', T, 1 );
-else
-    error( 'tensor:param_error', ...
-        'input parameter is no recognized tensor format' );
-end
+check_tensor_format( T );
+
+d=cellfun('size', T, 1 );

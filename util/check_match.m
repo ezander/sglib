@@ -44,8 +44,8 @@ empty=max(size(x1))==0||max(size(x2))==0;
 ok=true;
 ok=ok&&(emptyok||~empty);
 if ~empty
-    sz1=linear_operator_size( x1 );
-    sz2=linear_operator_size( x2 );
+    sz1=operator_size( x1 );
+    sz2=operator_size( x2 );
     ok=ok&&(sz1(2)==sz2(1));
 end
 if ~ok

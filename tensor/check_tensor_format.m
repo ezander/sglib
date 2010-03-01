@@ -1,13 +1,13 @@
-function err=tensor_error(T1, T2, relerr)
-% TENSOR_ERROR Short description of tensor_error.
-%   TENSOR_ERROR Long description of tensor_error.
+function bool=check_tensor_format(T)
+% CHECK_TENSOR_FORMAT Short description of check_tensor_format.
+%   CHECK_TENSOR_FORMAT Long description of check_tensor_format.
 %
-% Example (<a href="matlab:run_example tensor_error">run</a>)
+% Example (<a href="matlab:run_example check_tensor_format">run</a>)
 %
 % See also
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Comuting
+%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
 %   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -18,18 +18,8 @@ function err=tensor_error(T1, T2, relerr)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    relerr=false;
+if ~iscanonical(T)
+    error( 'tensor:param_error', ...
+        'input parameter is no recognized tensor format' );
 end
-
-check_tensors_compatible( T1, T2 );
-
-norm_T1=tensor_norm(T1);
-norm_T2=tensor_norm(T2);
-inner_T1_T2=tensor_scalar_product( T1, T2 );
-err=norm_T1^2+norm_T2^2-2*inner_T1_T2;
-
-if relerr
-    err=err/norm_T2;
-end
-    
+bool=true;

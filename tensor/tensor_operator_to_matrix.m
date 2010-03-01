@@ -18,21 +18,19 @@ function A_mat=tensor_operator_to_matrix(A)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(A)
-    A_mat=A;
-else
-    d=size(A,2);
-    R=size(A,1);
-    A_mat=[];
-    for i=1:R
-        B_mat=1;
-        for k=1:d
-            B_mat=revkron(B_mat,A{i,k});
-        end
-        if i==1
-            A_mat=B_mat;
-        else
-            A_mat=A_mat+B_mat;
-        end
+check_tensor_operator_format( A );
+
+d=size(A,2);
+R=size(A,1);
+A_mat=[];
+for i=1:R
+    B_mat=1;
+    for k=1:d
+        B_mat=revkron(B_mat,A{i,k});
+    end
+    if i==1
+        A_mat=B_mat;
+    else
+        A_mat=A_mat+B_mat;
     end
 end

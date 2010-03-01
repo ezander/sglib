@@ -28,7 +28,7 @@ function C=tensor_operator_compose( A, B )
 %    % should be zero
 %    norm( AM-revkron(A))
 %
-% See also LINEAR_OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
+% See also OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -42,24 +42,20 @@ function C=tensor_operator_compose( A, B )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_tensor_operator_format( A, 2 );
+check_tensor_operator_format( B, 2 );
+    
 
-if isnumeric(A) && isnumeric(B)
-    C=linear_operator_compose( A, B );
-elseif isnumeric(A)
-    C=linear_operator_compose( A, revkron(B) );
-elseif isnumeric(B)
-    C=linear_operator_compose( revkron(A), B );
-else
-    ka=size(A,1);
-    kb=size(B,1);
-    r=size(A,2); % should be 2 currently
-    C=cell(ka*kb,r);
-    for ia=1:ka
-        for ib=1:kb
-            i=ib+(ia-1)*kb;
-            for j=1:r
-                C{i,j}=linear_operator_compose( A{ia,j}, B{ib,j} );
-            end
+ka=size(A,1);
+kb=size(B,1);
+r=size(A,2); % should be 2 currently
+C=cell(ka*kb,r);
+for ia=1:ka
+    for ib=1:kb
+        i=ib+(ia-1)*kb;
+        for j=1:r
+            C{i,j}=operator_compose( A{ia,j}, B{ib,j} );
         end
     end
 end
+

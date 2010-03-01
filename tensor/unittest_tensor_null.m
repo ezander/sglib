@@ -30,3 +30,9 @@ Z=tensor_null({rand(8,3), rand(10,3), rand(12,3)});
 assert_equals( cellfun('size', Z, 1 ), [8,10,12], 'size_dim1' );
 assert_equals( cellfun('size', Z, 2 ), [0,0,0], 'size_dim2' );
 
+Z=tensor_null({...
+    rand(8,5), rand(10,6), rand(12,7); ...
+    rand(8,5), rand(10,6), rand(12,7)}, true);
+assert_equals( cellfun('size', Z, 1 ), [8,10,12], 'size_op1' );
+assert_equals( cellfun('size', Z, 2 ), [0,0,0], 'size_op2' );
+

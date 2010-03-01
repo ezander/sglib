@@ -31,17 +31,15 @@ if ~strcmp(format1,format2)
         'Tensors have different tensor formats' );
 end
 
-if iscell(T1)
-    if length(T1)~=length(T2)
-        error( 'tensor:different_order', 'Tensors have different order' );
-    end
-    
-    sz1=cellfun( 'size', T1, 1 );
-    sz2=cellfun( 'size', T2, 1 );
-    
-    if any(sz1~=sz2)
-        error( 'tensor:dimension_mismatch', 'Tensors have different dimensions' );
-    end
+if length(T1)~=length(T2)
+    error( 'tensor:different_order', 'Tensors have different order' );
+end
+
+sz1=tensor_size( T1 );
+sz2=tensor_size( T2 );
+
+if any(sz1~=sz2)
+    error( 'tensor:dimension_mismatch', 'Tensors have different dimensions' );
 end
     
 bool=true;

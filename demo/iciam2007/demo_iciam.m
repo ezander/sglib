@@ -90,7 +90,7 @@ switch solve_method
         options.abstol=tol;
         options.reltol=tol;
         options.maxiter=maxit;
-        [u_alpha,flag,relres,iter]=solve_linear_stat( K_ab_mat, f_beta(:), options );
+        [u_alpha,flag,relres,iter]=solve_stat( K_ab_mat, f_beta(:), options );
         itermethod='mat_decomp(mat)';
     case 6
         options.method='gs';
@@ -130,7 +130,7 @@ switch solve_method
         K_mu_delta{2}=sparse(K_mu_delta{2});
         for i=1:size(K_mu_delta{4},1); K_mu_delta{4}{i}=sparse(K_mu_delta{4}{i}); end
         
-        [u_alpha,flag,relres,iter]=solve_linear_stat_tensor( K_mu_delta, F_tp, options );
+        [u_alpha,flag,relres,iter]=solve_stat_tensor( K_mu_delta, F_tp, options );
         itermethod='mat_decomp(tensor)';
         u_alpha=u_alpha{1}*u_alpha{2}';
     case 99 % statements saved for later use

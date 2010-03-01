@@ -33,12 +33,13 @@ function U=tensor_operator_apply_elementary( A, T )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_tensor_operator_format( A );
 
 if isnumeric(T)
     % TODO: works only for matrices, not higher order
     U=A*T;
 elseif iscell(T)
-    U=cellfun( @linear_operator_apply, A, T, 'UniformOutput', false );
+    U=cellfun( @operator_apply, A, T, 'UniformOutput', false );
 elseif isobject(T)
     U=tt_tensor_operator_apply_elementary( A, T );
 else

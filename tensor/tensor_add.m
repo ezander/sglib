@@ -37,13 +37,8 @@ end
 
 check_tensors_compatible( T1, T2 );
 
-if iscanonical(T1)
-    % Important: apply alpha only to one argument! This guy is a tensor not
-    % a cartesian product.
-    T2{1}=alpha*T2{1};
-    dims=cellfun('size', T1, 1 );
-    T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
-else
-    error( 'tensor:tensor_null:param_error', ...
-        'input parameter is no recognized tensor format' );
-end
+% Important: apply alpha only to one argument! This guy is a tensor not
+% a cartesian product.
+T2{1}=alpha*T2{1};
+dims=tensor_size(T1);
+T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';

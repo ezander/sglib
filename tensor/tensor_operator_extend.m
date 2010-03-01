@@ -18,6 +18,8 @@ function A=tensor_operator_extend( A, I, n )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_tensor_operator_format( A );
+
 N=size(A,2);
 if nargin<3
     n=N+1;
