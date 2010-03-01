@@ -20,8 +20,7 @@ function unittest_tensor_rank
 
 munit_set_function( 'tensor_rank' );
 
-assert_equals( tensor_rank(rand(3,5)), 3, 'full' );
-assert_equals( tensor_rank(rand(5,3,4)), 5, 'full3' );
 assert_equals( tensor_rank({zeros(10,4), zeros(10,4), zeros(12,4)}), 4, 'full' );
 
-assert_error( 'tensor_rank(''dummy'')', 'tensor:tensor_rank', 'wrong_arg' );
+assert_error( 'tensor_rank(rand(3,4))', 'tensor:param', 'param' );
+assert_error( 'tensor_rank(''dummy'')', 'tensor:param', 'wrong_arg' );

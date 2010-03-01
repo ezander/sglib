@@ -1,8 +1,8 @@
-function bool=isfull(T)
-% ISFULL Checks whether object is a full tensor.
-%   BOOL=ISTENSOR(T) returns true if T is a full tensor.
+function d=tensor_order(T)
+% TENSOR_ORDER Short description of tensor_order.
+%   TENSOR_ORDER Long description of tensor_order.
 %
-% Example (<a href="matlab:run_example isfull">run</a>)
+% Example (<a href="matlab:run_example tensor_order">run</a>)
 %
 % See also
 
@@ -18,4 +18,6 @@ function bool=isfull(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-bool=isnumeric(T);
+check_tensor_format( T );
+
+d=size( T, 2 );

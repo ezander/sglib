@@ -19,16 +19,9 @@ function bool=check_tensors_compatible( T1, T2 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[bool1,format1]=istensor(T1);
-[bool2,format2]=istensor(T2);
-
-if ~bool1 || ~bool2
+if ~istensor(T1) || ~istensor(T2)
     error( 'tensor:no_tensor', ...
         'No recognized tensor format' );
-end
-if ~strcmp(format1,format2)
-    error( 'tensor:different_formats', ...
-        'Tensors have different tensor formats' );
 end
 
 if length(T1)~=length(T2)
