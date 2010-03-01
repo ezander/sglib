@@ -32,3 +32,12 @@ assert_equals ( tensor_operator_size( T22, true ), [N1*N2 M1*M2], 'T22contract' 
 assert_equals ( tensor_operator_size( T23 ), [N1 M1; N2 M2], 'T23' );
 assert_equals ( tensor_operator_size( T32 ), [N1 M1; N2 M2; N3 M3], 'T32' );
 assert_equals ( tensor_operator_size( T32, true ), [N1*N2*N3 M1*M2*M3], 'T32contract' );
+
+for i=1:size(T22,1)
+    for j=1:size(T22,2)
+        T22{i,j}=operator_from_matrix(T22{i,j});
+    end
+end
+assert_equals ( tensor_operator_size( T22 ), [N1 M1; N2 M2], 'T22op' );
+
+

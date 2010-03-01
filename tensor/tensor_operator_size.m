@@ -18,7 +18,9 @@ if nargin<2
     contract=false;
 end
 
-d=[cellfun('size', A(1,:), 1 ); cellfun('size', A(1,:), 2 )]';
+%d=[cellfun('size', A(1,:), 1 ); cellfun('size', A(1,:), 2 )]';
+d=cellfun( @operator_size, A(1,:), 'UniformOutput', false );
+d=cell2mat(d');
 
 if contract
     d=prod(d,1);

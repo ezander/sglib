@@ -35,13 +35,89 @@ function U=tensor_operator_apply_elementary( A, T )
 
 check_tensor_operator_format( A );
 
-if isnumeric(T)
-    % TODO: works only for matrices, not higher order
-    U=A*T;
+if isnumeric(T) 
+    if isvector(T)
+        U=apply_to_vector( A, T );
+    else
+        U=apply_to_array( A, T );
+    end
 elseif iscell(T)
-    U=cellfun( @operator_apply, A, T, 'UniformOutput', false );
+    U=apply_to_tensor( A, T );
 elseif isobject(T)
     U=tt_tensor_operator_apply_elementary( A, T );
 else
     error('unknown tensor type');
 end
+
+function U=apply_to_tensor( A, T )
+U=cellfun( @operator_apply, A, T, 'UniformOutput', false );
+
+function U=apply_to_vector( A, T )
+d=tensor_operator_size( A );
+T=reshape( T, d(:,2)' );
+U=apply_to_array( A, T );
+U=reshape( U, [], 1 );
+
+function U=apply_to_array( A, T )
+n=length(A);
+d=tensor_operator_size( A );
+U=T;
+for i=1:n
+    U=reshape( U, d(1,2), [] );
+    U=A{i}*U;
+    d(1,2)=d(1,1);
+    d=[d(2:n,:); d(1,:)];
+    U=reshape(U,d(:,2)');
+    U=permute( U, [2:n, 1] );
+end
+
+
+% if isnumeric(T) && isvector(T)
+%     Y=apply_tensor_vect( A, T );
+% elseif isnumeric(T) && ~isvector(T)
+%     Y=apply_tensor_mat( A, T );
+% elseif iscell(T) || isobject(T)
+%     Y=apply_tensor_tensor( A, T, truncate_func );
+% else
+%     error( 'apply_tensor_operator:vector_type', 'cannot determine vector type (%s)', class(A) );
+% end
+% 
+% 
+% function Y=apply_tensor_tensor( A, T, truncate_func )
+% if iscell(T)
+%     d=size(A,2);
+%     for i=1:d
+%         check_condition( {A{1,i},T{i}}, 'match', true, {'A{1,i}','T{i}'}, mfilename );
+%     end
+% end
+% R=size(A,1);
+% for i=1:R
+%     V=tensor_operator_apply_elementary( A(i,:), T );
+%     if i==1
+%         Y=V;
+%     else
+%         Y=gvector_add( Y, V );
+%     end
+%     Y=funcall( truncate_func, Y );
+% end
+% 
+% 
+% function Y=apply_tensor_mat( A, T )
+% % TODO: no reduction yet
+% check_second_order(A);
+% check_condition( {A{1,1},T}, 'match', false, {'A{1,1}','T'}, mfilename );
+% check_condition( {A{1,2},T'}, 'match', false, {'A{1,2}','T'''}, mfilename );
+% 
+% K=size(A,1);
+% for i=1:K
+%     U=operator_apply(A{i,1},T)';
+%     V=operator_apply(A{i,2},U)';
+%     if i==1; 
+%         Y=V; 
+%     else
+%         Y=Y+V; 
+%     end;
+% end
+% 
+% 
+% 
