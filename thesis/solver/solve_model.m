@@ -22,7 +22,7 @@ stats.G={P_I*G_N*P_I', G_X};
 [Ui2,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', trunc_options, 'vareps', vareps, 'trunc_mode', trunc_mode, 'stats_gatherer', stats_gatherer, 'stats', stats );
 relerr=tensor_error( Ui2, Ui, [], true );
 
-k=size(Ui2{1},2);
+k=tensor_rank(Ui);
 if eps>0
     R=relerr/eps;
 else
