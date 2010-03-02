@@ -27,37 +27,11 @@ if isnumeric(T)
     bool=true;
     format='full';
     return;
-elseif iscell(T)
-    if ~isvector(T)
-        return;
-    end
-    isnum=cellfun(@isnumeric, T );
-    if ~all(isnum)
-        return
-    end
-
-    ndims=cellfun( 'ndims', T );
-    dim2=cellfun( 'size', T, 2 );
-    
-    % first check for canonical format
-    if all(ndims==2) && all(dim2(:)==dim2(1))
-        bool=true;
-        format='canonical';
-        return;
-    end
-    
-    % not canonical, try tucker (i.e. first ones is core tensor);
-    if ndims(1)==length(T)-1 && all(ndims(2:end)==2)
-        dim1=cellfun( 'size', T, 1 );
-        if all(dim2(2:end)==dim2(2)) && all(dim1(2:end)==ndims(1))
-            bool=true;
-            format='tucker';
-            return;
-        end
-    end
+elseif istensor(T)
+    bool=true;
+    format='canonical';
+    return;
 elseif isobject(T)
     bool=true;
     format=['class:' class(T)];
 end
-
-    
