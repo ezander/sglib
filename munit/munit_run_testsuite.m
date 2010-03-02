@@ -49,6 +49,7 @@ options=varargin2options( varargin );
 [curr_dir,options]=get_option( options, 'dir', pwd );
 [module_name,options]=get_option( options, 'module_name', '' );
 [coverage,options]=get_option( options, 'coverage', false );
+[on_error,options]=get_option( options, 'on_error', 'debug' );
 [level,options]=get_option( options, 'level', 1 );
 check_unsupported_options( options, mfilename );
 
@@ -106,7 +107,7 @@ for i=1:length(files)
         test_cmd=test_cmd( slash_pos(end)+1:end );
     end
 
-    safe_eval( curr_dir, test_cmd );
+    safe_eval( curr_dir, test_cmd, on_error );
 end
 
 if ~isempty(files) || level==1
@@ -126,7 +127,7 @@ if coverage
 end
 
 
-function safe_eval( dir, unittest_cmd )
+function safe_eval( dir, unittest_cmd, on_error )
 % MUNIT_SAFE_FEVAL Evaluate command safely.
 %
 % If we call eval(test_cmd) directly from MUNIT_RUN_TESTSUITE and the
@@ -138,5 +139,13 @@ try
     eval( unittest_cmd );
 catch
     cd(olddir);
-    rethrow(lasterror);
+    switch on_error
+        case 'debug'
+            assert_false( true, sprintf( 'Caught an error in %s:  %s', unittest_cmd, lasterr ) );
+            keyboard;
+        case 'rethrow'
+            rethrow(lasterror);
+        case 'continue'
+            assert_false( true, sprintf( 'Caught an error in %s:  %s', unittest_cmd, lasterr ) );
+    end
 end
