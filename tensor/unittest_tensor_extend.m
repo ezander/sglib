@@ -1,10 +1,10 @@
-function d=gvector_size(T)
-% GVECTOR_SIZE Short description of gvector_size.
-%   GVECTOR_SIZE Long description of gvector_size.
+function unittest_tensor_extend
+% UNITTEST_TENSOR_EXTEND Test the TENSOR_EXTEND function.
 %
-% Example (<a href="matlab:run_example gvector_size">run</a>)
+% Example (<a href="matlab:run_example unittest_tensor_extend">run</a>)
+%   unittest_tensor_extend
 %
-% See also
+% See also TENSOR_EXTEND, TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -18,13 +18,7 @@ function d=gvector_size(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(T)
-    d=size(T);
-elseif is_tensor(T)
-    d=tensor_size(T);
-elseif isobject(T)
-    d=size(T); % class must have overwritten the size function
-else
-    error( 'vector:param_error', ...
-        'input parameter is no recognized vector format' );
-end
+munit_set_function( 'tensor_extend' );
+
+%tensor_extend
+

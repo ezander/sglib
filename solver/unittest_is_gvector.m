@@ -1,5 +1,5 @@
 function unittest_is_gvector
-% UNITTEST_ISTENSOR Test the ISTENSOR function.
+% UNITTEST_IS_TENSOR Test the IS_TENSOR function.
 %
 % Example (<a href="matlab:run_example unittest_is_gvector">run</a>)
 %   unittest_is_gvector

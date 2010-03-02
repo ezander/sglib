@@ -34,7 +34,7 @@ if isnumeric(T1) && isnumeric(T2)
     else
         error('vector:gvector_scalar_product:not_implemented', 'not implemented yet' );
     end
-elseif iscell(T1) && iscell(T2)
+elseif is_tensor(T1) && is_tensor(T2)
     d=tensor_scalar_product(T1,T2,G);
 elseif isobject(T1) && isobject(T2)
     d=tt_tensor_scalar_product(T1,T2,G);

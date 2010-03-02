@@ -51,15 +51,15 @@ if nargin<2
 end
 
 if ~solve
-    A={ size(M), {@mtimes, {M}, {1}} };
+    A=operator_from_function( {@mtimes, {M}, {1}}, size(M) );
 elseif ~use_lu
     % solve each time 
-    A={ size(M'), {@mldivide, {M}, {1}} };
+    A=operator_from_function( {@mldivide, {M}, {1}}, size(M') );
 else
     % precompute lu decomposition and solve only triangular systems
     [L,U,P]=lu(M);
     [p,j]=find(P'); %#ok
-    A={ size(M'), {@lu_solve, {L,U,p}} };
+    A=operator_from_function( {@lu_solve, {L,U,p}}, size(M') );
 end
 
 function x=lu_solve( b, L, U, p )

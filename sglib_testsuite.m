@@ -1,6 +1,6 @@
-function testsuite
-% TESTSUITE Run all unit tests in this directory.
-%   TESTSUITE runs all tests in this directory.
+function sglib_testsuite
+% SGLIB_TESTSUITE Run all unit tests in this directory.
+%   SGLIB_TESTSUITE runs all tests in this directory.
 %
 % Example (<a href="matlab:run_example testsuite">run</a>)
 %   assert_set_debug( debug )
@@ -22,16 +22,6 @@ function testsuite
 
 
 % TODO: implement proper recursive behaviour of testsuite
-
+% TODO: specify which dirs to run first
 dir=fileparts(mfilename('fullpath'));
 munit_run_testsuite( 'module_name', 'sglib', 'dir', dir );
-
-% if false
-%     subdirs={ 'munit', 'util', 'plot', 'simplefem', 'tensor' };
-%     %recursive=true;
-%     %dir=get_mfile_path;
-%     dir=fileparts(mfilename('fullpath'));
-%     prefix='unittest_';
-%     disp(dir)
-%     munit_run_testsuite( 'sglib', dir, 'subdirs', subdirs, 'prefix', prefix );
-% end

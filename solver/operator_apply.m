@@ -40,6 +40,8 @@ if isempty(A)
 elseif isnumeric(A)
     % A is a matrix
     y=A*x;
+elseif is_tensor_operator(A)
+    y=tensor_operator_apply( A, x );
 elseif iscell(A) && isfunction(A{2})
     % A is an operator and secondelement contains function returning the
     % application of the linear operator

@@ -34,7 +34,7 @@ if ischar(func) && strcmp(func,'id')
     return;
 end
 
-A={size, func};
+A={size, func, 'op_marker'};
 
 %function x=identity( x )
 % no body, thats all

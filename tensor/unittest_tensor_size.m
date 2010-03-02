@@ -1,10 +1,10 @@
-function d=gvector_size(T)
-% GVECTOR_SIZE Short description of gvector_size.
-%   GVECTOR_SIZE Long description of gvector_size.
+function unittest_tensor_size
+% UNITTEST_TENSOR_SIZE Test the TENSOR_SIZE function.
 %
-% Example (<a href="matlab:run_example gvector_size">run</a>)
+% Example (<a href="matlab:run_example unittest_tensor_size">run</a>)
+%   unittest_tensor_size
 %
-% See also
+% See also TENSOR_SIZE, TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -18,13 +18,11 @@ function d=gvector_size(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(T)
-    d=size(T);
-elseif is_tensor(T)
-    d=tensor_size(T);
-elseif isobject(T)
-    d=size(T); % class must have overwritten the size function
-else
-    error( 'vector:param_error', ...
-        'input parameter is no recognized vector format' );
-end
+munit_set_function( 'tensor_size' );
+
+T={rand(8,2), rand(10,2)};
+assert_equals( tensor_size(T), [8,10], 'canonical2' );
+T={rand(8,3), rand(10,3), rand(12,3)};
+assert_equals( tensor_size(T), [8,10,12], 'canonical3' );
+
+assert_error( 'tensor_size(rand(3,4))', '.*param.*', 'wrong_arg' );

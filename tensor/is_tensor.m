@@ -1,9 +1,9 @@
-function bool=istensor(T)
-% ISTENSOR Checks whether object is canonical tensor format.
-%   BOOL=ISTENSOR(T) returns true if T is in a recognized tensor format.
+function bool=is_tensor(T)
+% IS_TENSOR Checks whether object is canonical tensor format.
+%   BOOL=IS_TENSOR(T) returns true if T is in a recognized tensor format.
 %   Currently that means that T if in canonical format.
 %
-% Example (<a href="matlab:run_example istensor">run</a>)
+% Example (<a href="matlab:run_example is_tensor">run</a>)
 %
 % See also
 

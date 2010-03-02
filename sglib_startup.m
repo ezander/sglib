@@ -55,7 +55,8 @@ appdata.settings=sglib_settings( 'load' );
 if appdata.settings.show_greeting
     fprintf( '\nSGLIB v0.9\n' );
     fprintf( 'Type SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
-    fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n\n' );
+    fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n' );
+    fprintf( 'Type SGLIB_TESTSUITE to run the <a href="matlab:sglib_testsuite">unit tests</a>.\n\n' );
 end
 
 % init contrib if it exists

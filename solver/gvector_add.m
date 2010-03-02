@@ -37,7 +37,7 @@ end
 
 if isnumeric(T1) && isnumeric(T2)
     T=T1+alpha*T2;
-elseif iscell(T1) && iscell(T2)
+elseif is_tensor(T1) && is_tensor(T2)
     T=tensor_add( T1, T2, alpha );
 elseif isobject(T1)
     T=T1+alpha*T2;

@@ -37,3 +37,6 @@ T={rand(8,2), rand(10,2), rand(12,2)};
 Z=gvector_scale(T,2);
 assert_equals( Z, {2*T{1},T{2},T{3}}, 'scale_ord_three' );
 
+assert_error( 'gvector_scale(struct(),2)', '.*param.*', 'param_err' );
+
+

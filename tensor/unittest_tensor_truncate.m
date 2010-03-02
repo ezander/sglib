@@ -47,6 +47,18 @@ U={U{1}(:,1:end-1),U{2}(:,1:end-1)};
 assert_equals( true, abs(schatten_norm(tensor_add(T,U,-1),2))>eps, 'truncate_0', 'abstol', eps )
 
 
+L1=rand(8,8);
+L2=rand(10,10);
+G={L1*L1',L2*L2'};
+U=tensor_truncate(T,'G',G);
+P1=U{1}'*G{1}*U{1};
+P2=U{2}'*G{2}*U{2};
+assert_equals( P1, diag(diag(P1)), 'P1_G_orth' )
+assert_equals( P2, diag(diag(P2)), 'P2_G_orth' )
+
+
+
+
 function n=schatten_norm( A, p )
 if iscell(A)
     A=A{1}*A{2}';

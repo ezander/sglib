@@ -1,9 +1,7 @@
-function [m,n]=operator_size( A )
+function d=operator_size( A )
 % OPERATOR_SIZE Return the size of a linear operator.
-%   [M,N]=OPERATOR_SIZE( A ) returns the size of the linear operator
-%   A. N is the size of the input vector and M is the size of the result
-%   vector (i.e. A: R^N->R^M). If only one output argument is given the
-%   function returns the result as a vector.
+%   D=OPERATOR_SIZE( A ) returns the size of the linear operator
+%   A. 
 %
 % Example (<a href="matlab:run_example operator_size">run</a>)
 %     M=[1, 2; 3, 4; 5, 10];
@@ -32,14 +30,12 @@ function [m,n]=operator_size( A )
 
 if isnumeric(A)
     % A is a matrix (meaningsless result for identity)
-    m=size(A);
-elseif iscell(A) && isnumeric(A{1})
+    d=size(A);
+elseif is_tensor_operator(A)
+    d=tensor_operator_size( A, true );
+elseif iscell(A) && isfunction(A{2})
     % A is an operator and first element is the size
-    m=A{1};
+    d=A{1};
 else
     error( 'operator_size:type', 'linear operator is neither a matrix nor a cell array' );
-end
-
-if nargout==2
-    n=m(2); m=m(1);
 end

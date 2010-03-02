@@ -28,17 +28,33 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~iscell(K) || size(K,2)<=2
+if isnumeric(K)
     N=size(P_I,2);
-    NM=tensor_operator_size(K);
+    NM=size(K,1);
     M=NM(1)/N;
-    I_S={speye(M)};
-else
-    r=size(K,2);
-    I_S=cell(1,r-1);
-    for i=1:r-1
-        I_S{1,i}=speye(size(K{1,i+1},1));
+    I_S=speye(M);
+    P=revkron(P_I,I_S);
+    PT=revkron(P_I',I_S);
+elseif is_tensor_operator(K) % tensor operator
+    d=tensor_operator_size( K, false )
+    n=size(d,2)-1;
+    I_S=cell(1,n-1);
+    for i=1:n-1
+        I_S{1,i}=speye(d(i+1,1));
     end
+    P=[{P_I}, I_S];
+    PT=[{P_I'}, I_S];
+    
+%     r=size(K,2);
+%     I_S=cell(1,r-1);
+%     for i=1:r-1
+%         I_S{1,i}=speye(size(K{1,i+1},1));
+%     end
+%     Ki=tensor_operator_compose( [{P_I}, I_S], K );
+%     Ki=tensor_operator_compose( Ki, [{P_I'}, I_S] );
+else
+    error( 'sglib:unknown_operator_type', 'Unknown or unsupported operator type' );
 end
-Ki=tensor_operator_compose( [{P_I}, I_S], K );
-Ki=tensor_operator_compose( Ki, [{P_I'}, I_S] );
+
+Ki=operator_compose( P, operator_compose( K, PT ) );
+

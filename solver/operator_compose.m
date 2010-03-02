@@ -23,7 +23,6 @@ function C=operator_compose( A, B )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-%check_match( operator_size(A), operator_size(B), true, 'A', 'B', mfilename );
 check_match( A, B, true, 'A', 'B', mfilename );
 
 if isempty(A)
@@ -33,10 +32,12 @@ elseif isempty(B)
 elseif isnumeric(A) && isnumeric(B)
     % A and B are matrices
     C=A*B;
+elseif is_tensor_operator(A) && is_tensor_operator(B)
+    C=tensor_operator_compose( A, B );
 else
     sa=operator_size(A);
     sb=operator_size(B);
-    C={[sa(1), sb(2)], {@comp_apply, {A,B}, {1,2}} };
+    C=operator_from_function( {@comp_apply, {A,B}, {1,2}}, [sa(:,1), sb(:,2)] );
 end
 
 function z=comp_apply( A, B, x )

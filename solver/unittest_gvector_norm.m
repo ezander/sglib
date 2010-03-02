@@ -28,7 +28,7 @@ assert_equals( gvector_norm( T ), normT, 'inner' );
 
 T={rand(8,2), rand(10,2), rand(12,2)};
 Z=gvector_add(T,T,-1);
-assert_equals( gvector_norm( Z ), 0, 'zero_inner3', 'abstol', 1e-7 );
+assert_equals( gvector_norm( Z ), 0, 'zero_inner3', 'abstol', 1e-6 );
 
 T={rand(8,2), rand(10,2)};
 M1=rand(8); M1=M1*M1';

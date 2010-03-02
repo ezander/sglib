@@ -19,7 +19,7 @@ function bool=check_tensors_compatible( T1, T2 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~istensor(T1) || ~istensor(T2)
+if ~is_tensor(T1) || ~is_tensor(T2)
     error( 'tensor:no_tensor', ...
         'No recognized tensor format' );
 end
