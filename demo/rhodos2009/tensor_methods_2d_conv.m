@@ -106,7 +106,7 @@ K=cached_funcall(...
 );
 
 % create matrix and tensor operators
-K_mat=revkron(K);
+K_mat=tensor_operator_to_matrix(K);
 
 
 %% apply boundary conditions
@@ -131,7 +131,7 @@ ui_vec=Ki_mat\fi_vec;
 %%
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );
 
 %% Now apply the world-famous tensor product solver
 % u_vec=apply_boundary_conditions_solution( u_vec_i, g_vec, P_I, P_B );
@@ -148,9 +148,9 @@ for tolexp=1:8
         truncate=sprintf('eps 10^-%d', tolexp);
     end
     [Ui,flag,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
-    ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
-    relerr=norm(ui_vec-ui_vec3 )/norm(ui_vec);
-    k=size(Ui{1},2);
+    ui_vec3=tensor_to_vector(Ui);
+    relerr=gvector_error(ui_vec3, ui_vec3, [], true );
+    k=tensor_rank( Ui );
     if tol>0
         R=relerr/tol;
     else

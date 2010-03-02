@@ -107,7 +107,7 @@ K=cached_funcall(...
 );
 
 % create matrix and tensor operators
-K_mat=revkron(K);
+K_mat=tensor_operator_to_matrix(K);
 
 
 %% apply boundary conditions
@@ -136,4 +136,4 @@ Ui={U_*S_,V_};
 %%
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );

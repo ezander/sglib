@@ -106,7 +106,7 @@ l_u=min(size(u_i_alpha));
 %%
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );
 
 %% solve the system via direct solver for comparison
 % create matrix and tensor operators

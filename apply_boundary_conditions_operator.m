@@ -36,22 +36,14 @@ if isnumeric(K)
     P=revkron(P_I,I_S);
     PT=revkron(P_I',I_S);
 elseif is_tensor_operator(K) % tensor operator
-    d=tensor_operator_size( K, false )
-    n=size(d,2)-1;
+    d=tensor_operator_size( K, false );
+    n=size(d,2);
     I_S=cell(1,n-1);
     for i=1:n-1
         I_S{1,i}=speye(d(i+1,1));
     end
     P=[{P_I}, I_S];
     PT=[{P_I'}, I_S];
-    
-%     r=size(K,2);
-%     I_S=cell(1,r-1);
-%     for i=1:r-1
-%         I_S{1,i}=speye(size(K{1,i+1},1));
-%     end
-%     Ki=tensor_operator_compose( [{P_I}, I_S], K );
-%     Ki=tensor_operator_compose( Ki, [{P_I'}, I_S] );
 else
     error( 'sglib:unknown_operator_type', 'Unknown or unsupported operator type' );
 end

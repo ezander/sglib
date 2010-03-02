@@ -26,7 +26,7 @@ function C=tensor_operator_compose( A, B )
 %    % should give all the same
 %    [revkron(y1), revkron(y2), yv1, yv2, AM*xv, A2M*(A1M*xv)]
 %    % should be zero
-%    norm( AM-revkron(A))
+%    norm( AM-tensor_operator_to_matrix(A))
 %
 % See also OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
 

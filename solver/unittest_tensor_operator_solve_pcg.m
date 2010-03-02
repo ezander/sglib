@@ -8,7 +8,7 @@ tol=1e-7;
 assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
 [X,flag]=tensor_operator_solve_pcg( A, F, 'M', M );
-Xvec1=reshape( X{1}*X{2}', [], 1 );
+Xvec1=tensor_to_vector( X );
 assert_equals( flag, 0, 'pcg_op_flag' );
 assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts{:} );
 
@@ -23,7 +23,7 @@ tol=1e-7;
 assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
 [X,flag]=tensor_operator_solve_pcg( A, F, 'M', M );
-Xvec1=reshape( X{1}*X{2}', [], 1 );
+Xvec1=tensor_to_vector( X );
 assert_equals( flag, 0, 'pcg_op_flag' );
 assert_equals( Xvec1, XvecEx, 'pcg_op', assert_opts{:} );
 
@@ -40,13 +40,13 @@ for i=1:kA
     A{i+1,1} = 0.1*mygallery('tridiag',n,-1,3,-1);
     A{i+1,2}=mygallery('randcorr',m);
 end
-Am=revkron(A);
+Am=tensor_operator_to_matrix(A);
 
 M=A(1,:);
-Mm=revkron(M);
+Mm=tensor_operator_to_matrix(M);
 
 F={rand(n,kf),  rand(m,kf) };
-Fvec=reshape( F{1}*F{2}', [], 1 );
+Fvec=tensor_to_vector( F );
 
 
 function mat=mygallery( name, varargin )

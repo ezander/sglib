@@ -84,7 +84,7 @@ K=compute_kl_pce_operator(mu_k_i, k_i_k, kappa_k_alpha, I_k, I_u, stiffness_func
 
 
 % create matrix and tensor operators
-K_mat=revkron(K);
+K_mat=tensor_operator_to_matrix(K);
 
 
 %% apply boundary conditions
@@ -114,4 +114,4 @@ l_u=min(size(u_i_alpha));
 %%
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );

@@ -90,7 +90,7 @@ fprintf( '(tensor op) %g \n', norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec
 %% Solve system with Matlab's pcg (must use normal vectors for rep)
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );
 % solve
 tic; [ui_vec2(:,1),flag]=pcg(Ki_mat,fi_vec,[],[],Mi_mat,[],[]); t(1)=toc;
 tic; [ui_vec2(:,2),flag]=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); t(2)=toc;
@@ -110,17 +110,17 @@ fprintf( '\n' );
 underline( 'Tensor product PCG: ' );
 
 [Ui,flag,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi );
-ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+ui_vec3=tensor_to_vector( Ui );
 truncate='none';
 fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d\n', truncate, flag, info.relres, info.iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
 
 for tolexp=1:7
     tol=10^-tolexp;
     [Ui,flag,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
-    ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+    ui_vec3=tensor_to_vector( Ui );
     truncate=sprintf('eps 10^-%d', tolexp);
-    relerr=norm(ui_vec-ui_vec3 )/norm(ui_vec);
-    k=size(Ui{1},2);
+    relerr=gvector_error( ui_vec3, ui_vec, [], true );
+    k=tensor_rank( Ui );
     R=relerr/tol;
     fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d, R: %g\n', truncate, flag, info.relres, info.iter, relerr, k, R );
 end

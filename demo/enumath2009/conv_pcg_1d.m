@@ -17,11 +17,8 @@ for i=1:length(exponents)
         truncate=sprintf('eps 10^-%d', tolexp);
     end
     [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
-    ui_vec2=reshape(Ui2{1}*Ui2{2}',[],1);
-    %relerr=norm(ui_vec-ui_vec2 )/norm(ui_vec);
-    relerr=tensor_norm(tensor_add(Ui,Ui2,-1))/tensor_norm(Ui);
-    %relerr-relerr2
-    k=size(Ui2{1},2);
+    relerr=tensor_error( Ui2, Ui, [], true );
+    k=tensor_rank( Ui2 );
     if tol>0
         R=relerr/tol;
     else
