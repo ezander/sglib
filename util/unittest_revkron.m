@@ -31,4 +31,7 @@ S3=kron(A{3,2},A{3,1});
 
 assert_equals( revkron(A{1,1}, A{1,2}), S1, 'norm' );
 assert_equals( revkron(A{1,:}), S1, 'single' );
+
+s=warning( 'off', 'revrkon:deprecated' );
 assert_equals( revkron(A), S1+S2+S3, 'multiple' );
+warning(s);
