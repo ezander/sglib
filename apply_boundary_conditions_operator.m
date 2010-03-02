@@ -9,7 +9,7 @@ function Ki=apply_boundary_conditions_operator( K, P_I )
 %   [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
 %   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   fprintf( 'cond. number of K:  %g\n', condest(K) );
-%   [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
+%   [P_I,P_B]=boundary_projectors( bnd, size(pos,2) );
 %   Ki=apply_boundary_conditions_operator( K, P_I );
 %   fprintf( 'cond. number of Ki: %g\n', condest(Ki) );
 %
@@ -37,7 +37,7 @@ if isnumeric(K)
     PT=revkron(P_I',I_S);
 elseif is_tensor_operator(K) % tensor operator
     d=tensor_operator_size( K, false );
-    n=size(d,2);
+    n=size(d,1);
     I_S=cell(1,n-1);
     for i=1:n-1
         I_S{1,i}=speye(d(i+1,1));

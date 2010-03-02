@@ -1,9 +1,9 @@
-function [r_i_k,r_k_alpha,I_r]=expand_field_kl_pce( r_stdnor_func, cov_r_func,  pos, G_N, p_r, m_r, l_r, varargin )
+function [r_i_k,r_k_alpha,I_r]=expand_field_kl_pce( r_stdnor_func, cov_r_func, pos, G_N, p_r, m_r, l_r, varargin )
 
 options=varargin2options(varargin);
 [cov_gam_func,options]=get_option( options, 'cov_gam_func', [] );
 [projection_method,options]=get_option( options, 'projection_method', true );
-check_unsupported_options(varargin,mfilename);
+check_unsupported_options(options,mfilename);
 % , from options
 
 [r_i_alpha, I_r]=expand_field_pce_sg( r_stdnor_func, cov_r_func, cov_gam_func, pos, G_N, p_r, m_r );

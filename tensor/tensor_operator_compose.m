@@ -42,13 +42,13 @@ function C=tensor_operator_compose( A, B )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-check_tensor_operator_format( A, 2 );
-check_tensor_operator_format( B, 2 );
+check_tensor_operator_format( A );
+check_tensor_operator_format( B );
     
 
 ka=size(A,1);
 kb=size(B,1);
-r=size(A,2); % should be 2 currently
+r=size(A,2);
 C=cell(ka*kb,r);
 for ia=1:ka
     for ib=1:kb

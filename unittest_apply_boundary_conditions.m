@@ -20,6 +20,16 @@ function unittest_apply_boundary_conditions
 
 munit_set_function( 'apply_boundary_conditions' );
 
+K={rand(3,3), rand(4,4), rand(5,5);
+    rand(3,3), rand(4,4), rand(5,5)};
+P=rand(2,3);
+KP=apply_boundary_conditions_operator( K, P );
+KPex=K;
+KPex{1,1}=P*K{1,1}*P';
+KPex{2,1}=P*K{2,1}*P';
+assert_equals( KP, KPex, 'operator' );
+
+% consistency check
 n=7;
 K=spdiags( ones(n,1)*[-1,2,-1], [-1,0,1], n, n );
 K(1,1)=1;
