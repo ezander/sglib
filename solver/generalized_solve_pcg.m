@@ -27,13 +27,19 @@ initres=gvector_norm( Rc );
 stats=funcall( stats_func, 'init', stats, initres );
 
 while true
+    APc=operator_apply(A,Pc);
+    APc=funcall( truncate_func, APc );
     alpha=gvector_scalar_product( Rc, Zc)/...
-        gvector_scalar_product( Pc, operator_apply(A,Pc) );
+        gvector_scalar_product( Pc, APc );
     Xn=gvector_add( Xc, Pc, alpha);
-    Rn=gvector_add( Rc, operator_apply(A,Pc), -alpha );
+    Rn=gvector_add( Rc, APc, -alpha );
+%     alpha=gvector_scalar_product( Rc, Zc)/...
+%         gvector_scalar_product( Pc, operator_apply(A,Pc) );
+%     Xn=gvector_add( Xc, Pc, alpha);
+%     Rn=gvector_add( Rc, operator_apply(A,Pc), -alpha );
 
-    Xn=funcall( truncate_func, Xn );
-    Rn=funcall( truncate_func, Rn );
+    %Xn=funcall( truncate_func, Xn );
+    %Rn=funcall( truncate_func, Rn );
 
     normres=gvector_norm( Rn );
     relres=normres/initres;
@@ -61,10 +67,17 @@ while true
     Pn=gvector_add(Zn,Pc,beta);
 
     % truncate all iteration variables
-    Xc=funcall( truncate_func, Xn );
-    Pc=funcall( truncate_func, Pn );
-    Rc=funcall( truncate_func, Rn );
-    Zc=funcall( truncate_func, Zn );
+    if false
+        Xc=funcall( truncate_func, Xn );
+        Pc=funcall( truncate_func, Pn );
+        Rc=funcall( truncate_func, Rn );
+        Zc=funcall( truncate_func, Zn );
+    else
+        Xc=funcall( truncate_func, Xn );
+        Pc=funcall( truncate_func, Pn );
+        Rc=funcall( truncate_func, Rn );
+        Zc=funcall( truncate_func, Zn );
+    end
 
     % increment and check iteration counter
 %     disp(iter);

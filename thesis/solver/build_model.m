@@ -50,7 +50,7 @@ cov_f={@gaussian_covariance,{lc_f,1}};
 
 %% construct the (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
+select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
 % dummy pce (just the mean)
 g_i_alpha=funcall( g_func, pos);
@@ -101,7 +101,7 @@ Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
 
 %% the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );
 
 %% solve the system via direct solver for comparison
 % create matrix and tensor operators

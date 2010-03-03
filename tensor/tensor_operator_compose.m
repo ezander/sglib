@@ -12,8 +12,8 @@ function C=tensor_operator_compose( A, B )
 % Example (<a href="matlab:run_example tensor_operator_compose">run</a>)
 %    A1={ [1 2; 3 4], [3 5 1; 6 4 2; 2 3 7 ] };
 %    A2={ [1 1; 2 2], [1 1 1; 2 2 2; 3 3 3 ] };
-%    A1M=revkron( A1 );
-%    A2M=revkron( A2 );
+%    A1M=tensor_operator_to_matrix( A1 );
+%    A2M=tensor_operator_to_matrix( A2 );
 %    x={[1;2], [6;3;2]}; xv=revkron(x);
 %    % in tensor format
 %    A=tensor_operator_compose( A1, A2 )
