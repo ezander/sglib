@@ -94,7 +94,7 @@ for setter=setters
     end
 end
 if ~isempty( control.set_callback )
-    funcall( control.set_callback, settings );
+    funcall( control.set_callback, settings, setters );
 end
 
 
