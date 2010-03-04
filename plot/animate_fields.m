@@ -23,12 +23,20 @@ options=varargin2options( varargin );
 [rows, options]=get_option( options, 'rows', 1 );
 [renderer, options]=get_option( options, 'renderer', 'zbuffer' );
 [view_mode, options]=get_option( options, 'view_mode', 3 );
+[zrange, options]=get_option( options, 'zrange', [] );
+[dynamicz,options]=get_option( options, 'dynamicz', true );
 check_unsupported_options( options, mfilename );
 
+if iscell(zrange) && isempty(zrange)
+    zrange=cell(length(fields));
+end
+
 N=200;
+L=500;
 m=size(fields{1}{end},2);
 xi_N=randn(m,N);
-pp = interp1(linspace(1,500,N),xi_N','spline','pp');
+%pp = interp1(linspace(1,L,N),xi_N','spline','pp');
+pp = interp1(linspace(0,1,N),xi_N','spline','pp');
 
 clf;
 animation_control( 'start', gcf );
@@ -36,8 +44,10 @@ set( gcf, 'Renderer', renderer );
 cols=ceil(length(fields)/rows);
 
 
-for i=1:1000
-    xi=ppval(pp,i);
+% for i=1:L
+%     xi=ppval(pp,i);
+for t=linspace(0,1,L)
+    xi=ppval(pp,t);
     %xi=(xi-mean(xi))/sqrt(var(xi))+mean(xi);
     for j=1:length(fields)
         field=fields{j};
@@ -46,10 +56,27 @@ for i=1:1000
         else
             u=pce_field_realization( field{1:2}, xi );
         end
+        
         subplot(rows,cols,j);
         plot_field( pos, els, u, 'lighting', 'gouraud', 'view', view_mode );
-        zlim([-3,3]);
-        caxis([-3,3]);
+        
+        if iscell(zrange)
+            zr=zrange{j};
+        else
+            zr=zrange;
+        end
+        if dynamicz
+            zr=minmax( [zr, u(:)'] );
+        end
+        if ~isempty(zrange)
+            zlim(zr);
+            caxis(zr);
+        end
+        if iscell(zrange)
+            zrange{j}=zr;
+        else
+            zrange=zr;
+        end
     end
     drawnow;
     
@@ -86,3 +113,7 @@ end
 
 function stop_animation(src,evt) %#ok
 set( gcf, 'UserData', [] );
+
+function mm=minmax( x )
+mm=[min(x), max(x)];
+

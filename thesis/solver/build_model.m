@@ -2,7 +2,7 @@
 geom=get_param( 'geom', '' );
 if isempty(geom)
     N=get_param( 'N', 50 );
-    [pos,els,bnd]=create_mesh_1d( 0, 1, N );
+    [pos,els,bnd_nodes]=create_mesh_1d( 0, 1, N );
     G_N=mass_matrix( pos, els );
     stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
     d=1;
@@ -10,6 +10,8 @@ else
     num_refine=get_param( 'num_refine', 1 );
     show_mesh=get_param( 'show_mesh', false );
     [pos,els,G_N]=load_pdetool_geom( geom, num_refine, show_mesh );
+    N=size(pos,2);
+    bnd_nodes=find_boundary( els, true );
     stiffness_func={@stiffness_matrix, {pos, els}, {1,2}}; % could be changed to a pdetool function
     d=2;
 end
@@ -25,8 +27,9 @@ dist_k=get_param( 'dist_k', {'beta', {4,2}, 0.1, 1.0 } );
 stdnor_k=@(x)(gendist_stdnor(x,dist_k{:}));
 
 % define the covariance of the field
-lc_k=0.3;
-cov_k={@gaussian_covariance,{lc_k,1}};
+lc_k=get_param( 'lc_k', 0.3 );
+cov_k_func=get_param( 'cov_k_func', @gaussian_covariance );
+cov_k=get_param( 'cov_k', {cov_k_func,{lc_k,1}} );
 
 % expand the field
 [k_i_k,k_k_alpha,I_k]=expand_field_kl_pce( stdnor_k, cov_k, pos, G_N, p_k, m_k, l_k );
@@ -34,16 +37,18 @@ cov_k={@gaussian_covariance,{lc_k,1}};
 
 %% construct the right hand side random field f 
 % define stochastic expansion parameters
-p_f=3;
-m_f=2;
-l_f=4;
+p_f=get_param( 'p_f', 3 );
+m_f=get_param( 'm_f', 2 );
+l_f=get_param( 'l_f', 4 );
 
 % define the distribution
-stdnor_f={@beta_stdnor,{4,2}};
+dist_f=get_param( 'dist_k', {'beta', {4,2}, 0, 1.0 } );
+stdnor_f=@(x)(gendist_stdnor(x,dist_f{:}));
 
 % define 
-lc_f=2*0.3;
-cov_f={@gaussian_covariance,{lc_f,1}};
+lc_f=get_param( 'lc_f', 0.6 );
+cov_f_func=get_param( 'cov_f_func', @gaussian_covariance );
+cov_f=get_param( 'cov_f', {cov_f_func,{lc_f,1}} );
 
 [f_i_k,f_k_alpha,I_f]=expand_field_kl_pce( stdnor_f, cov_f, pos, G_N, p_f, m_f, l_f );
 
@@ -57,6 +62,11 @@ g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
 % "null" kl expansion of g
 [g_i_k,g_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
+
+
+return 
+% the rest should go into "discretize_bla where bla is one full_pce, kl,
+% third order...)
 
 
 %% combine the multiindices
@@ -94,7 +104,7 @@ G=extend_rhs( G, I_k );
 
 
 %% apply boundary conditions
-[P_I,P_B]=boundary_projectors( bnd, size(pos,2) );
+[P_I,P_B]=boundary_projectors( bnd_nodes, size(pos,2) );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );

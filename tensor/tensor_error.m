@@ -27,13 +27,19 @@ end
 
 % For normal vectors the following is pretty inefficient, for separated
 % representations, however it is more efficient. Note that we cannot write
-% TA-TE since minus is not necessarily defined for the gvector type, and
-% taking the norm of gvector_add( TA, TE, -1 ) takes more time than the
+% TA-TE since minus is not necessarily defined for the tensor type, and
+% taking the norm of tensor_add( TA, TE, -1 ) takes more time than the
 % following lines.
-norm_TA=gvector_norm(TA,G);
-norm_TE=gvector_norm(TE,G);
-inner_TAE=gvector_scalar_product( TA, TE, G );
-err=sqrt(norm_TA^2+norm_TE^2-2*inner_TAE);
+if false
+    norm_TA=tensor_norm(TA,G);
+    norm_TE=tensor_norm(TE,G);
+    inner_TAE=tensor_scalar_product( TA, TE, G );
+    err=sqrt(max(norm_TA^2+norm_TE^2-2*inner_TAE),0);
+else
+    norm_TE=tensor_norm(TE,G);
+    DT=tensor_add(TA,TE,-1);
+    err=tensor_norm(DT,G);
+end
 
 if relerr
     err=err/norm_TE;

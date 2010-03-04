@@ -18,4 +18,9 @@ function value=get_param(name, default)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-value=default;
+try
+    value=evalin( 'caller', name );
+catch
+    value=default;
+end
+
