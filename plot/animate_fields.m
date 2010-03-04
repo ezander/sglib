@@ -25,6 +25,7 @@ options=varargin2options( varargin );
 [view_mode, options]=get_option( options, 'view_mode', 3 );
 [zrange, options]=get_option( options, 'zrange', [] );
 [dynamicz,options]=get_option( options, 'dynamicz', true );
+[titles,options]=get_option( options, 'titles', {} );
 check_unsupported_options( options, mfilename );
 
 if iscell(zrange) && isempty(zrange)
@@ -59,6 +60,10 @@ for t=linspace(0,1,L)
         
         subplot(rows,cols,j);
         plot_field( pos, els, u, 'lighting', 'gouraud', 'view', view_mode );
+        
+        if j<=length(titles)
+            title(titles{j});
+        end
         
         if iscell(zrange)
             zr=zrange{j};
