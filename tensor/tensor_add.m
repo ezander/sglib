@@ -37,8 +37,15 @@ end
 
 check_tensors_compatible( T1, T2 );
 
+if tensor_rank(T1)+tensor_rank(T2)>1000
+    warning( 'tensor:tensor_add:large', 'Your tensor is growing pretty large. Forgotten to truncate?' );
+    keyboard;
+end
+    
+
 % Important: apply alpha only to one argument! This guy is a tensor not
 % a cartesian product.
+% TODO: Maybe a loop if faster than this mat2cell stuff? Check performance
 T2{1}=alpha*T2{1};
 dims=tensor_size(T1);
 T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';

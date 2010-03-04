@@ -9,27 +9,45 @@ options=varargin2options( varargin );
 [truncate_options,options]=get_option( options, 'truncate_options', struct() );
 [trunc_mode,options]=get_option( options, 'trunc_mode', 2 );
 [vareps,options]=get_option( options, 'vareps', false );
+[eps,options]=get_option( options, 'eps', 0 );
 [stats,options]=get_option( options, 'stats', struct() );
-[stats_gatherer,options]=get_option( options, 'stats_gatherer', @gather_stats_def );
+[stats_func,options]=get_option( options, 'stats_func', [] );
 check_unsupported_options( options, mfilename );
 
+
 pass_options={...
-    'M', M, ...
-    'Minv', Minv,...
     'abstol', abstol,...
     'reltol', reltol,...
     'maxiter', maxiter,...
     'stats', stats,...
-    'stats_gatherer', stats_gatherer...
     };
 
+if ~isempty(stats_func)
+    pass_options=[pass_options {'stats_func', stats_func}];
+end
 
+
+if isempty(Minv)
+    if ~isempty(M)
+        Minv=stochastic_preconditioner_deterministic( M );
+    else
+        % Ok, user doesn't want a preconditioner
+    end
+else
+    if ~isempty(M)
+        error( 'M and Minv cannot be specified both' );
+    end
+end
+pass_options=[pass_options {'Minv', Minv}];
+
+
+% needs to become more intelligent
+% pcg needs to pass stats to truncate function
+truncate_func={@tensor_truncate, {'eps', eps}};
+pass_options=[pass_options {'truncate_func', truncate_func}];
 %truncate_options
 %trunc_mode
 %vareps
-if ~isempty(M)
-    warning('blah'); %#ok<WNTAG>
-    keyboard;
-end
+
 
 [X,flag,info,stats]=generalized_solve_pcg( A, F, pass_options{:} );

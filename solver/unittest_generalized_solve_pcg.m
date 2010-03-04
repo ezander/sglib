@@ -1,5 +1,4 @@
 function unittest_generalized_solve_pcg
-if false
 % UNITTEST_GENERALIZED_SOLVE_PCG Test the GENERALIZED_SOLVE_PCG function.
 %
 % Example (<a href="matlab:run_example unittest_generalized_solve_pcg">run</a>)
@@ -42,9 +41,9 @@ A=operator_from_matrix(A);
 [X,flag,info]=generalized_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_linop_flag' );
 assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
-end
 
-rand('seed', 12345 );
+
+%rand('seed', 12345 );
 
 % test the stuff for matrices and linear operators
 [A,M,F]=setup( 5, 3, 3, 2 );
