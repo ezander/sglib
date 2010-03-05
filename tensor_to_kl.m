@@ -1,4 +1,4 @@
-function [r_i_k, r_k_alpha]=tensor_to_kl( R )
+function [r_i_k, r_k_alpha]=tensor_to_kl( R, normalize )
 % TENSOR_TO_KL Unpack a KL expansion from a tensor product.
 %   [R_I_K, R_K_ALPHA]=TENSOR_TO_KL( R ) unpacks a KL expansion
 %   from the tensor product R into R_I_K and R_K_ALPHA. R_I_K
@@ -28,8 +28,18 @@ function [r_i_k, r_k_alpha]=tensor_to_kl( R )
 
 
 % check input arguments
-error( nargchk( 1, 1, nargin ) );
+error( nargchk( 1, 2, nargin ) );
+
+if nargin<2
+    normalize=true;
+end
 
 % extract parts from the tensor (second component is transposed in KL form)
 r_i_k=R{1};
 r_k_alpha=R{2}';
+
+
+if normalize
+    [mu_rs_i, rs_i_k, sigma_rs_k, rs_k_alpha]=kl_pce_to_standard_form(r_i_k, r_k_alpha);
+    [r_i_k, r_k_alpha]=kl_pce_to_compact_form( mu_rs_i, rs_i_k, sigma_rs_k, rs_k_alpha );
+end
