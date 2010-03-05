@@ -42,7 +42,7 @@ m_f=get_param( 'm_f', 2 );
 l_f=get_param( 'l_f', 4 );
 
 % define the distribution
-dist_f=get_param( 'dist_k', {'beta', {4,2}, 0, 1.0 } );
+dist_f=get_param( 'dist_f', {'beta', {4,2}, 0, 1.0 } );
 stdnor_f=@(x)(gendist_stdnor(x,dist_f{:}));
 
 % define 

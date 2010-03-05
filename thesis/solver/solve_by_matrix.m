@@ -13,4 +13,6 @@ ui_mat=reshape( ui_vec, [], M );
 Ui={U_*S_,V_};
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
+U=tensor_truncate( U );
 [u_i_k,u_k_alpha]=tensor_to_kl( U );
+%[un_i_k,un_k_alpha]=tensor_to_kl( U, false );

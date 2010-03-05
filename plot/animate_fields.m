@@ -20,13 +20,17 @@ function animate_fields( pos, els, fields, varargin )
 
 
 options=varargin2options( varargin );
-[rows, options]=get_option( options, 'rows', 1 );
+[rows, options]=get_option( options, 'rows', -1 );
+[cols, options]=get_option( options, 'cols', -1 );
 [renderer, options]=get_option( options, 'renderer', 'zbuffer' );
 [view_mode, options]=get_option( options, 'view_mode', 3 );
 [zrange, options]=get_option( options, 'zrange', [] );
 [dynamicz,options]=get_option( options, 'dynamicz', true );
+[mask,options]=get_option( options, 'mask', [] );
 [titles,options]=get_option( options, 'titles', {} );
 check_unsupported_options( options, mfilename );
+
+fields=fields(:);
 
 if iscell(zrange) && isempty(zrange)
     zrange=cell(length(fields));
@@ -36,30 +40,66 @@ N=200;
 L=500;
 m=size(fields{1}{end},2);
 xi_N=randn(m,N);
-%pp = interp1(linspace(1,L,N),xi_N','spline','pp');
+if ~isempty(mask)
+    imask=~mask;
+    xi_N(imask,:)=repmat(xi_N(imask,1),1,N);
+end
 pp = interp1(linspace(0,1,N),xi_N','spline','pp');
 
-clf;
+
+dynamicsub=false;
+if cols==-1
+    if rows==-1 % F=rows*cols; cols/rows=3/2; F=3/2*rows^2
+        dynamicsub=true;
+    else
+        cols=ceil(length(fields)/rows);
+    end
+elseif rows==-1
+    rows=ceil(length(fields)/cols);
+end
+
+
 animation_control( 'start', gcf );
 set( gcf, 'Renderer', renderer );
-cols=ceil(length(fields)/rows);
 
+set( gcf, 'WindowButtonUpFcn', @stop_animation );
 
-% for i=1:L
-%     xi=ppval(pp,i);
+first=true;
 for t=linspace(0,1,L)
+    if dynamicsub
+        winpos=get(gcf,'Position');
+        ratio=winpos(4)/winpos(3);
+        newrows=floor( sqrt( ratio*length(fields) ) + max(1-ratio/2,0) );
+        newcols=ceil(length(fields)/newrows);
+        if newrows~=rows || newcols~=cols
+            rows=newrows; cols=newcols;
+            first=true;
+        end
+    end
+    if first
+        clf;
+    end
+    
     xi=ppval(pp,t);
-    %xi=(xi-mean(xi))/sqrt(var(xi))+mean(xi);
     for j=1:length(fields)
         field=fields{j};
-        if length(field)==3
-            u=kl_pce_field_realization( field{1:3}, xi );
-        else
-            u=pce_field_realization( field{1:2}, xi );
+        switch length(field)
+            case 3 % kl-pce
+                u=kl_pce_field_realization( field{:}, xi );
+            case 2 % pce
+                u=pce_field_realization( field{:}, xi );
+            case 1 % det field
+                u=field{1};
+            otherwise
+                if first
+                    warning( 'animate_fields:wrong_field', 'Wrong field struct at %d: length %d', j, length(field) );
+                end
         end
         
         subplot(rows,cols,j);
-        plot_field( pos, els, u, 'lighting', 'gouraud', 'view', view_mode );
+        if first || length(field)>1
+            plot_field( pos, els, u, 'lighting', 'gouraud', 'view', view_mode );
+        end
         
         if j<=length(titles)
             title(titles{j});
@@ -89,6 +129,7 @@ for t=linspace(0,1,L)
         disp('quitting...');
         return
     end
+    first=false;
 end
 
 

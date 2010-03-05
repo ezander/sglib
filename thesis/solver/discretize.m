@@ -5,7 +5,9 @@ I_k=multiindex(m_k,p_k);
 I_f=multiindex(m_f,p_f);
 I_g=multiindex(m_g,p_g);
 
-[I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, -1 );
+p_u=get_param('p_u', max([p_k,p_f,p_g]));
+
+[I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, p_u );
 M=size(I_u,1);
 I_RHS=I_u; % for 3way this would be I_k
 I_OP=I_u;  % for 3way this would be combine( I
