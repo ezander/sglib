@@ -25,6 +25,12 @@
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+% Probably it is not nice turnig this off generally, however it is very
+% annoying to warning after warning just because one of sglib's functions
+% has the same name as a function in Simulink (whoever cares for that).
+warning( 'off', 'MATLAB:dispatcher:nameConflict' );
+
+
 % initialize appdata structure
 appdata=struct();
 
