@@ -53,6 +53,31 @@ assert_equals( C_u, C_u_ex, 'cov_matrix_lmax' );
 assert_true( issparse(C_u), 'cov_matrix_lmax_sparse' );
 
 
+
+n=3;
+sig=2.5;
+x=rand(2,n);
+L=1.4;
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+[X,Y]=meshgrid(x(1,:),x(2,:));
+DX=(X-X')/L; DY=(Y-Y')/L;
+C_u_ex=sig^2*exp(-(DX.^2+DY.^2));
+assert_equals( C_u, C_u_ex, 'cov_matrix_2d' );
+
+L=[1.1, 2.1];
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+[X,Y]=meshgrid(x(1,:),x(2,:));
+DX=(X-X')/L(1); DY=(Y-Y')/L(2);
+C_u_ex=sig^2*exp(-(DX.^2+DY.^2));
+assert_equals( C_u, C_u_ex, 'cov_matrix_2d_l2' );
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% here comes old stuff that not only tests the covariance matrix function
+% but also other stuff, need to clean that up
+
 n=20;
 x=linspace(0,1,n);
 
@@ -69,10 +94,19 @@ C_u=covariance_matrix( x, {@gaussian_covariance, {lc, sqrt(sig2)}} );
 C_u_ex=toeplitz(sig2*exp(-x.^2/lc^2));
 assert_equals( C_u, C_u_ex,'cov_matrix' );
 
+
+
+
+
+
 % c) transform and check
 C_gam=transform_covariance_pce( C_u, pcc );
 C_gam_ex=toeplitz(exp(-x.^2/lc^2));
 assert_equals( C_gam, C_gam_ex, 'cov_transform' );
+
+
+
+
 
 
 %% A test from a paper from Phoon and Queck
