@@ -42,5 +42,9 @@ munit_set_function( 'tensor_to_kl' );
 
 R={ r_i_k, r_k_alpha' };
 [r_i_k2,r_k_alpha2]=tensor_to_kl( R );
-assert_equals( r_i_k2, r_i_k, 'r_i' );
-assert_equals( r_k_alpha, r_k_alpha2, 'r_alpha' );
+assert_equals( r_i_k2*r_k_alpha2, r_i_k*r_k_alpha, 'pce' );
+assert_equals( r_k_alpha2(1,:), unitvector(1,M)', 'det_comp1' );
+assert_equals( r_k_alpha2(:,1), unitvector(1,size(r_k_alpha2,1)), 'det_comp2' );
+D=r_i_k2(:,2:end)'*r_i_k2(:,2:end);
+assert_equals( D, diag(diag(D)), 'ortho' );
+

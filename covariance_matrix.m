@@ -68,14 +68,6 @@ else
             C(ind,i)=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
                 pos(:,ind) );
             C(i,ind)=C(ind,i)';
-            
-%             d=sum((repmat(pos(i,:),n-i+1,1)-pos(i:end,:)).^2,2);
-%             ind=i-1+find(d<max_dist^2);
-%             C(ind,i)=funcall( covar_func, repmat(pos(i,:),length(ind),1), ...
-%                 pos(ind,:) );
-%             C(i,ind)=C(ind,i)';
-   
         end
     end
 end
-
