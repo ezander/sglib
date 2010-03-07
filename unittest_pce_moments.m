@@ -66,13 +66,29 @@ assert_equals( [mu,var], [mu_ex,var_ex], 'moments_mult_rand' );
 r_i_alpha=[4, 0.3, 0.2, 0.1];
 I_r=[0; 1; 2; 3];
 
-[mu,var,skew]=pce_moments( r_i_alpha );
+[mu,var,skew,kurt]=pce_moments( r_i_alpha, I_r );
 m0=integrate_central_moment( r_i_alpha, I_r, 0 );
 m1=integrate_central_moment( r_i_alpha, I_r, 1 );
 m2=integrate_central_moment( r_i_alpha, I_r, 2 );
 m3=integrate_central_moment( r_i_alpha, I_r, 3 );
 m4=integrate_central_moment( r_i_alpha, I_r, 4 );
-assert_equals( [mu,var,skew], [m1, m2, m3/m2^(3/2) ], 'moments_onearg' );
+assert_equals( [mu,var,skew,kurt], [m1, m2, m3/m2^(3/2), m4/m2^2-3 ], 'moments_onearg' );
+
+
+
+%% Check consistency between different algorithms
+I_r=multiindex(3,1);
+r_i_alpha=rand(10,size(I_r,1));
+
+[mu1,var1,skew1]=pce_moments( r_i_alpha, I_r );
+[mu2,var2,skew2]=pce_moments( r_i_alpha, I_r, 'algorithm', 'direct' );
+[mu3,var3,skew3]=pce_moments( r_i_alpha, I_r, 'algorithm', 'direct2' );
+[mu4,var4,skew4]=pce_moments( r_i_alpha, I_r, 'algorithm', 'integrate' );
+
+assert_equals( [mu1,var1,skew1], [mu2,var2,skew2], 'consistency12' );
+assert_equals( [mu1,var1,skew1], [mu3,var3,skew3], 'consistency13' );
+assert_equals( [mu1,var1,skew1], [mu4,var4,skew4], 'consistency14' );
+
 
 
 

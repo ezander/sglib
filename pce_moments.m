@@ -1,4 +1,4 @@
-function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r ) %#ok: kurt never assigned
+function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r, varargin )
 % PCE_MOMENTS Calculate the statistical moments of a distribution given as PCE.
 %   [MEAN,VAR,SKEW,KURT]=PCE_MOMENTS( R_I_ALPHA, I_R ) calculate mean, variance,
 %   skewness and kurtosis for a distribution given by the coefficients in
@@ -7,8 +7,7 @@ function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r ) %#ok: kurt never ass
 %   optional and only calculated if required. I_R is optional and contains
 %   the indices of the Hermite polynomials.
 %
-%   Caveat: currently only MEAN, VAR and SKEW are calculated. KURT has
-%   to be implemented yet.
+%   Caveat: Computations of skewness and kurtosis excess may be very slow.
 %
 % Example (<a href="matlab:run_example pce_moments">run</a>)
 %   [r_i_alpha,I_r]=pce_expand_1d( @exp, 12 );
@@ -30,105 +29,127 @@ function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r ) %#ok: kurt never ass
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[algorithm,options]=get_option( options, 'algorithm', 'mixed' );
+check_unsupported_options(options,mfilename);
 
-if nargin==1
+if nargin<2
     p=size(r_i_alpha,2)-1;
-    n=size(r_i_alpha,1);
-
-    % Coefficient a_0 (=r_i_alpha(1)) of H_0 is the mean of the PCE
-    mean = r_i_alpha(:,1);
-
-    % Variance is equal to \sum_{i=1}^\infty i\! a_i^2
-    % (Important: start with 1(2) to exclude mean).
-    % The first part of the expression calculated the squares of the
-    % coefficients, while the seconds part calculates the factorials and
-    % repeats them for all entries.)
-    if nargout>=2
-        var = sum(r_i_alpha(:,2:end).^2.*repmat(factorial(1:p),n,1),2);
-    end
-    if nargout>=3
-        skew=zeros(n,1);
-        for i=1:p
-            for j=1:i
-                for k=1:j
-                    h_ijk=hermite_triple_product(i,j,k);
-                    if h_ijk~=0
-                        % correct for possible permutations (because j and
-                        % k don't run over the full range but only up to
-                        % the enclosing index)
-                        if i>j && j>k
-                            n_perm=6;
-                        elseif i==j && j>k
-                            n_perm=3;
-                        elseif i>j && j==k
-                            n_perm=3;
-                        else % i==j && j==k
-                            n_perm=1;
-                        end
-                        skew=skew+r_i_alpha(:,i+1).*r_i_alpha(:,j+1).*r_i_alpha(:,k+1)*h_ijk*n_perm;
-                    end
-                end
-            end
-        end
-        skew=skew/(var^1.5);
-    end
-else
-    % get the max. order of the pce
-    p=size(r_i_alpha,2)-1;
-    % get the number of coefficient sets (i.e. the number of multivariate
-    % Hermite polynomials)
-    n=size(r_i_alpha,1);
-
-    % the first row in I_R should contain the mean (i.e. all indices have
-    % to be zero)
-    if any(full(I_r(1,:))~=0)
-        error('pce_moments: the first row in argument I_r has to be identical zero!' );
-    end
-
-    mean = r_i_alpha(:,1);
-    if nargout>=2
-        %         var=zeros(1,n);
-        %         for i=1:n
-        %             var(i)=r_i_alpha(i,2:end).^2*multiindex_factorial(I_r(2:end,:));
-        %         end
-        var=r_i_alpha(:,2:end).^2*multiindex_factorial(I_r(2:end,:));
-    end
-    if nargout>=3
-        %TODO: maybe for large multiindex sets the skewness should be
-        % calculated by monte-carlo simulation (or is there another way to
-        % speed things up?)
-
-        skew=zeros(n,1);
-        hermite_triple_fast(max(I_r(:))); % initialize
-        for i=2:p+1
-            for j=2:i
-                for k=2:j
-                    h_abc=hermite_triple_fast(I_r(i,:),I_r(j,:),I_r(k,:));
-                    if h_abc~=0
-                        % correct for possible permutations (because j and
-                        % k don't run over the full range but only up to
-                        % the enclosing index)
-                        if i>j && j>k
-                            n_perm=6;
-                        elseif i==j && j>k
-                            n_perm=3;
-                        elseif i>j && j==k
-                            n_perm=3;
-                        else % i==j && j==k
-                            n_perm=1;
-                        end
-
-                        skew=skew+r_i_alpha(:,i).*r_i_alpha(:,j).*r_i_alpha(:,k)*h_abc*n_perm;
-                    end
-                end
-            end
-        end
-        skew=skew./(var.^1.5);
-    end
+    I_r=multiindex(1,p);
 end
 
-if nargout>=4
-    %TODO: implement computation of kurtosis, will probably be very slow, MC or smolyak?
-    error('Calculation of KURT not yet implemented!');
+% the first row in I_R should contain the mean (i.e. all indices have
+% to be zero)
+if any(full(I_r(1,:))~=0)
+    error('pce_moments: the first row in argument I_r has to be identical zero!' );
+end
+
+switch algorithm
+    case 'mixed'
+        mean=mean_direct( r_i_alpha, I_r );
+        if nargout>=2
+            var=var_direct( r_i_alpha, I_r );
+        end
+        if nargout>=3
+            skew_raw=integrate_central_moment( r_i_alpha, I_r, 3 );
+        end
+        if nargout>=4
+            kurt_raw=integrate_central_moment( r_i_alpha, I_r, 4 );
+        end
+    case {'direct', 'direct2'}
+        mean=mean_direct( r_i_alpha, I_r );
+        if nargout>=2
+            var=var_direct( r_i_alpha, I_r );
+        end
+        if nargout>=3
+            if strcmp(algorithm,'direct')
+                skew_raw=skewness_direct( r_i_alpha, I_r );
+            else
+                skew_raw=skewness_direct2( r_i_alpha, I_r );
+            end
+        end
+    case 'integrate'
+        mean=integrate_central_moment( r_i_alpha, I_r, 1 );
+        if nargout>=2
+            var=integrate_central_moment( r_i_alpha, I_r, 2 );
+        end
+        if nargout>=3
+        skew_raw=integrate_central_moment( r_i_alpha, I_r, 3 );
+        end
+        if nargout>=4
+        kurt_raw=integrate_central_moment( r_i_alpha, I_r, 4 );
+        end
+end
+
+if exist('skew_raw', 'var')
+    skew=skew_raw./(var.^(3/2));
+end
+if exist('kurt_raw', 'var')
+    kurt=kurt_raw./(var.^2)-3;
+end
+
+
+function m=integrate_central_moment( r_i_alpha, I_r, p )
+p_r=max(multiindex_order(I_r));
+if p>=2
+    r_i_alpha(:,1)=0;
+end
+p_int=ceil(p_r*(1+p)/2);
+m=size(I_r,2);
+m=integrate( {@kernel,{p,r_i_alpha,I_r},{1,2,3}}, @gauss_hermite_rule, m, p_int );
+
+
+function val=kernel( p, r_i_alpha, I_r, xi )
+val=pce_evaluate(r_i_alpha,I_r,xi);
+val=val.^p;
+
+
+function mean=mean_direct( r_i_alpha, I_r )
+mean = r_i_alpha(:,1);
+
+function var=var_direct( r_i_alpha, I_r )
+var=r_i_alpha(:,2:end).^2*multiindex_factorial(I_r(2:end,:));
+
+function [skew,var]=skewness_direct( r_i_alpha, I_r )
+r_i_alpha(:,1)=0;
+m=size(I_r,2);
+p=max(I_r(:));
+I_x=multiindex(m,2*p);
+I_y=multiindex(m,3*p);
+x_i_alpha=pce_multiply( r_i_alpha, I_r, r_i_alpha, I_r, I_x );
+var=x_i_alpha(:,1);
+y_i_alpha=pce_multiply( x_i_alpha, I_x, r_i_alpha, I_r, I_y );
+skew=y_i_alpha(:,1);
+
+function skew=skewness_direct2( r_i_alpha, I_r )
+% get the max. degree of the pce in single dimension
+q=max(I_r(:));
+% get the number of multiindices
+n=size(r_i_alpha,1);
+
+skew=zeros(n,1);
+hermite_triple_fast(max(I_r(:))); % initialize
+for i=2:q+1
+    for j=2:i
+        for k=2:j
+            h_abc=hermite_triple_fast(I_r(i,:),I_r(j,:),I_r(k,:));
+            if h_abc~=0
+                % correct for possible permutations (because j and
+                % k don't run over the full range but only up to
+                % the enclosing index)
+                if i>j && j>k
+                    n_perm=6;
+                elseif i==j && j>k
+                    n_perm=3;
+                elseif i>j && j==k
+                    n_perm=3;
+                else % i==j && j==k
+                    n_perm=1;
+                end
+                
+                skew=skew+r_i_alpha(:,i).*r_i_alpha(:,j).*r_i_alpha(:,k)*h_abc*n_perm;
+            end
+        end
+    end
 end
 
