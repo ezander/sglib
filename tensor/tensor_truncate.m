@@ -38,11 +38,11 @@ check_unsupported_options( options, mfilename );
 
 if isnumeric(T)
     [U,S,V]=svd(T,0);
-    [T_k,sigma,k]=tensor_truncate_2( {U*S,V}, G, eps, k_max, relcutoff, p );
+    [T_k,sigma,k]=tensor_truncate_svd( {U*S,V}, G, eps, k_max, relcutoff, p );
     T_k=T_k{1}*T_k{2}';
 elseif iscell(T)
     if length(T)==2
-        [T_k,sigma,k]=tensor_truncate_2( T, G, eps, k_max, relcutoff, p );
+        [T_k,sigma,k]=tensor_truncate_svd( T, G, eps, k_max, relcutoff, p );
     else
         U=ktensor( T );
         OPTS.tol=eps;
@@ -70,40 +70,4 @@ elseif isobject(T)
         end
 else
     error( 'tensor:tensor_truncate:tensor_format', 'Unknown tensor format' );
-end
-
-
-function [T_k,sigma,k]=tensor_truncate_2( T, G, eps, k_max, relcutoff, p )
-if isempty(G); G={[],[]}; end
-[Q1,R1]=qr_internal(T{1},G{1});
-[Q2,R2]=qr_internal(T{2},G{2});
-[U,S,V]=svd(R1*R2',0);
-
-sigma=diag(S);
-k=schattenp_truncate( sigma, eps, relcutoff, p );
-k=min(k,k_max);
-
-U_k=U(:,1:k);
-S_k=S(1:k,1:k);
-V_k=V(:,1:k);
-
-T_k={Q1*U_k*S_k,Q2*V_k};
-
-
-function [Q,R]=qr_internal( A, G )
-if isempty(G)
-    [Q,R]=qr(A,0);
-else
-    [Q,R]=gram_schmidt(A,G,false,1);
-end
-
-function k=schattenp_truncate( sigma, eps, rel, p )
-
-if isfinite(p)
-    csp=cumsum(sigma.^p);
-    if rel; eps=eps*csp(end); end
-    k=find(csp(end)-csp<=eps^p,1,'first');
-else
-    if rel; eps=eps*sigma(end); end
-    k=sum(sigma>=eps);
 end

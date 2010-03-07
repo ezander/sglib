@@ -38,11 +38,6 @@ if nargin<2
     I_r=multiindex(1,p);
 end
 
-% the first row in I_R should contain the mean (i.e. all indices have
-% to be zero)
-if any(full(I_r(1,:))~=0)
-    error('pce_moments: the first row in argument I_r has to be identical zero!' );
-end
 
 switch algorithm
     case 'mixed'
@@ -56,17 +51,18 @@ switch algorithm
         if nargout>=4
             kurt_raw=integrate_central_moment( r_i_alpha, I_r, 4 );
         end
-    case {'direct', 'direct2'}
+    case 'pcemult'
         mean=mean_direct( r_i_alpha, I_r );
         if nargout>=2
             var=var_direct( r_i_alpha, I_r );
         end
+        vals=cell(1,nargout-1);
+        [vals{:}]=pcemult_moments( r_i_alpha, I_r );
         if nargout>=3
-            if strcmp(algorithm,'direct')
-                skew_raw=skewness_direct( r_i_alpha, I_r );
-            else
-                skew_raw=skewness_direct2( r_i_alpha, I_r );
-            end
+            skew_raw=vals{2};
+        end
+        if nargout>=4
+            kurt_raw=vals{3};
         end
     case 'integrate'
         mean=integrate_central_moment( r_i_alpha, I_r, 1 );
@@ -74,10 +70,10 @@ switch algorithm
             var=integrate_central_moment( r_i_alpha, I_r, 2 );
         end
         if nargout>=3
-        skew_raw=integrate_central_moment( r_i_alpha, I_r, 3 );
+            skew_raw=integrate_central_moment( r_i_alpha, I_r, 3 );
         end
         if nargout>=4
-        kurt_raw=integrate_central_moment( r_i_alpha, I_r, 4 );
+            kurt_raw=integrate_central_moment( r_i_alpha, I_r, 4 );
         end
 end
 
@@ -105,51 +101,28 @@ val=val.^p;
 
 
 function mean=mean_direct( r_i_alpha, I_r )
+% the first row in I_R should contain the mean (i.e. all indices have
+% to be zero)
+if any(full(I_r(1,:))~=0)
+    error('pce_moments: the first row in argument I_r has to be identical zero!' );
+end
 mean = r_i_alpha(:,1);
 
 function var=var_direct( r_i_alpha, I_r )
 var=r_i_alpha(:,2:end).^2*multiindex_factorial(I_r(2:end,:));
 
-function [skew,var]=skewness_direct( r_i_alpha, I_r )
+function [var,skew,kurt]=pcemult_moments( r_i_alpha, I_r )
 r_i_alpha(:,1)=0;
 m=size(I_r,2);
 p=max(I_r(:));
 I_x=multiindex(m,2*p);
-I_y=multiindex(m,3*p);
+I_y=multiindex(m,0);
 x_i_alpha=pce_multiply( r_i_alpha, I_r, r_i_alpha, I_r, I_x );
 var=x_i_alpha(:,1);
 y_i_alpha=pce_multiply( x_i_alpha, I_x, r_i_alpha, I_r, I_y );
 skew=y_i_alpha(:,1);
-
-function skew=skewness_direct2( r_i_alpha, I_r )
-% get the max. degree of the pce in single dimension
-q=max(I_r(:));
-% get the number of multiindices
-n=size(r_i_alpha,1);
-
-skew=zeros(n,1);
-hermite_triple_fast(max(I_r(:))); % initialize
-for i=2:q+1
-    for j=2:i
-        for k=2:j
-            h_abc=hermite_triple_fast(I_r(i,:),I_r(j,:),I_r(k,:));
-            if h_abc~=0
-                % correct for possible permutations (because j and
-                % k don't run over the full range but only up to
-                % the enclosing index)
-                if i>j && j>k
-                    n_perm=6;
-                elseif i==j && j>k
-                    n_perm=3;
-                elseif i>j && j==k
-                    n_perm=3;
-                else % i==j && j==k
-                    n_perm=1;
-                end
-                
-                skew=skew+r_i_alpha(:,i).*r_i_alpha(:,j).*r_i_alpha(:,k)*h_abc*n_perm;
-            end
-        end
-    end
+if nargout>=3
+    y_i_alpha=pce_multiply( x_i_alpha, I_x, x_i_alpha, I_x, I_y );
+    kurt=y_i_alpha(:,1);
 end
 

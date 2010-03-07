@@ -37,7 +37,7 @@ G=extend_rhs( G, I_k );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
-Mi=stochastic_preconditioner_deterministic( Ki );
+Mi_inv=stochastic_preconditioner_deterministic( Ki );
 
 %% solve the system via direct solver for comparison
 % create matrix and tensor operators
