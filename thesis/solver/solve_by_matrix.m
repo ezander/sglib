@@ -11,6 +11,8 @@ toc
 ui_mat=reshape( ui_vec, [], M );
 [U_,S_,V_]=svd(ui_mat);
 Ui={U_*S_,V_};
+Ui_true=Ui;
+
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 U=tensor_truncate( U );

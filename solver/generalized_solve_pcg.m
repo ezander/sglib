@@ -6,6 +6,7 @@ options=varargin2options( varargin );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
 [truncate_func,options]=get_option( options, 'truncate_func', @identity );
+[truncate_op_func,options]=get_option( options, 'truncate_op_func', @identity );
 [stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
@@ -27,19 +28,18 @@ initres=gvector_norm( Rc );
 stats=funcall( stats_func, 'init', stats, initres );
 
 while true
-    APc=operator_apply(A,Pc);
+    fprintf( 'Rank X: %d\n', tensor_rank(Xc) );
+    APc=operator_apply(A,Pc,'truncate_func', truncate_op_func);
+    fprintf( 'Rank A: %d\n', tensor_rank(APc) );
     APc=funcall( truncate_func, APc );
+    fprintf( 'Rank A: %d\n', tensor_rank(APc) );
     alpha=gvector_scalar_product( Rc, Zc)/...
         gvector_scalar_product( Pc, APc );
     Xn=gvector_add( Xc, Pc, alpha);
     Rn=gvector_add( Rc, APc, -alpha );
-%     alpha=gvector_scalar_product( Rc, Zc)/...
-%         gvector_scalar_product( Pc, operator_apply(A,Pc) );
-%     Xn=gvector_add( Xc, Pc, alpha);
-%     Rn=gvector_add( Rc, operator_apply(A,Pc), -alpha );
 
-    %Xn=funcall( truncate_func, Xn );
-    %Rn=funcall( truncate_func, Rn );
+    Xn=funcall( truncate_func, Xn, stats );
+    Rn=funcall( truncate_func, Rn );
 
     normres=gvector_norm( Rn );
     relres=normres/initres;
@@ -57,6 +57,7 @@ while true
     if normres<abstol || relres<reltol; break; end
 
     %urc=iter-50;
+    upratio
     if abs(1-upratio)>.2 %&& urc>10
         flag=-1;
         break;
@@ -67,17 +68,10 @@ while true
     Pn=gvector_add(Zn,Pc,beta);
 
     % truncate all iteration variables
-    if false
-        Xc=funcall( truncate_func, Xn );
-        Pc=funcall( truncate_func, Pn );
-        Rc=funcall( truncate_func, Rn );
-        Zc=funcall( truncate_func, Zn );
-    else
-        Xc=funcall( truncate_func, Xn );
-        Pc=funcall( truncate_func, Pn );
-        Rc=funcall( truncate_func, Rn );
-        Zc=funcall( truncate_func, Zn );
-    end
+    Xc=funcall( truncate_func, Xn );
+    Pc=funcall( truncate_func, Pn );
+    Rc=funcall( truncate_func, Rn );
+    Zc=funcall( truncate_func, Zn );
 
     % increment and check iteration counter
 %     disp(iter);

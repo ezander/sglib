@@ -8,12 +8,12 @@ function animate_fields( pos, els, fields, varargin )
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Comuting
-%   $Id$ 
+%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -61,7 +61,6 @@ end
 
 animation_control( 'start', gcf );
 set( gcf, 'Renderer', renderer );
-
 set( gcf, 'WindowButtonUpFcn', @stop_animation );
 
 first=true;
@@ -96,32 +95,21 @@ for t=linspace(0,1,L)
                 end
         end
         
-        subplot(rows,cols,j);
+        h=subplot(rows,cols,j);
+        if first
+            curr_view=view_mode;
+        else
+            curr_view=get(h,'view');
+        end
         if first || length(field)>1
-            plot_field( pos, els, u, 'lighting', 'gouraud', 'view', view_mode );
+            plot_field( pos, els, u, 'lighting', 'gouraud', 'view', curr_view );
         end
         
         if j<=length(titles)
             title(titles{j});
         end
         
-        if iscell(zrange)
-            zr=zrange{j};
-        else
-            zr=zrange;
-        end
-        if dynamicz
-            zr=minmax( [zr, u(:)'] );
-        end
-        if ~isempty(zrange)
-            zlim(zr);
-            caxis(zr);
-        end
-        if iscell(zrange)
-            zrange{j}=zr;
-        else
-            zrange=zr;
-        end
+        zrange=set_and_update_range( zrange, dynamicz, j, u );
     end
     drawnow;
     
@@ -159,6 +147,25 @@ end
 
 function stop_animation(src,evt) %#ok
 set( gcf, 'UserData', [] );
+
+function zrange=set_and_update_range( zrange, dynamicz,  j, u )
+if iscell(zrange)
+    zr=zrange{j};
+else
+    zr=zrange;
+end
+if dynamicz
+    zr=minmax( [zr, u(:)'] );
+end
+if ~isempty(zrange)
+    zlim(zr);
+    caxis(zr);
+end
+if iscell(zrange)
+    zrange{j}=zr;
+else
+    zrange=zr;
+end
 
 function mm=minmax( x )
 mm=[min(x), max(x)];

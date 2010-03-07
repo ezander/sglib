@@ -6,11 +6,12 @@ if ~exist('u_i_k', 'var') || (exist('recompute', 'var') && recompute)
     recompute=false;
 
     geom='lshape';
-    num_refine=1;
+    num_refine=0;
 
     m_f=5;
     p_f=3;
     l_f=40;
+    l_f=10;
     lc_f=0.2;
     cov_f_func=@gaussian_covariance;
     dist_f={'uniform', {-1,1}, 0.0, 1 };
@@ -18,21 +19,28 @@ if ~exist('u_i_k', 'var') || (exist('recompute', 'var') && recompute)
     m_k=5;
     p_k=4;
     l_k=40;
-    lc_k=[0.2 0.01];
+    l_k=10;
+    lc_k=[0.01 0.2];
     cov_k_func=@exponential_covariance;
     dist_k={'beta', {4,2}, 0.1, 1.0 };
     
     p_u=2;
-    
+       
+    underline('build_model');
     build_model;
+    
+    underline('discretize');
     discretize;
-    solve_by_matrix;
+    
+    underline('solve_by_???');
+    %solve_by_matrix;
+    solve_by_tensor2;
 end
 
 modes=1:size(u_i_k,2);
 mask=[];
-mask=any(I_k,1); 
-mask=any(I_f,1); 
+%mask=any(I_k,1); 
+%mask=any(I_f,1); 
 fields={
     {f_i_k, f_k_alpha, I_f}, ...
     {k_i_k, k_k_alpha, I_k}, ...

@@ -20,13 +20,14 @@ stats.res_relacc=[];
 stats.upratio=[1];%#ok
 stats.sol_err=[];
 stats.sol_relerr=[];
-if ~isempty( stats.X_true )
+if has_true_solution( stats )
     stats.X_true_eps=tensor_truncate( stats.X_true, stats.trunc_options );
     stats.sol_err=funcall( norm_func, stats.X_true );
     stats.sol_relerr=[1]; %#ok
     stats.soleps_err=funcall( norm_func, stats.X_true_eps );
     stats.soleps_relerr=[1]; %#ok
 end
+
 
 
 function stats=gather_stats_step( stats, F, A, Xn, Rn, normres, relres, upratio )
@@ -47,7 +48,7 @@ stats.res_accuracy(end+1)=ra;
 stats.res_relacc(end+1)=ra/normres;
 stats.upratio(end+1)=upratio;
 
-if ~isempty( stats.X_true )
+if has_true_solution( stats )
     solerr=funcall( norm_func, tensor_add( Xn, stats.X_true, -1 ) );
     solrelerr=solerr/stats.sol_err(1);
     stats.sol_err(end+1)=solerr;
@@ -64,3 +65,5 @@ fields=intersect( fieldnames(stats), {'X_true', 'X_true_eps', 'G'} );
 stats=rmfield( stats, fields );
 %nothing yet
 
+function bool=has_true_solution( stats )
+bool=isfield( stats, 'X_true' ) && ~isempty( stats.X_true );
