@@ -6,7 +6,8 @@ function [T_k,sigma,k]=tensor_truncate( T, varargin )
 %   parameters.
 %
 % Options:
-%   p: 2
+%   p: 2 (the Schatten p norm, 2 is Frobenius (Hilbert-Schmidt), inf is
+%         induced 2 norm (spectral,Euclidean), 1 is trace norm
 %   k_max: inf
 %   eps: 0
 %   relcutoff: true

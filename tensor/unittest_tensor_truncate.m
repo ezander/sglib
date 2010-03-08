@@ -57,12 +57,9 @@ assert_equals( P1, diag(diag(P1)), 'P1_G_orth' )
 assert_equals( P2, diag(diag(P2)), 'P2_G_orth' )
 
 
-
-
 function n=schatten_norm( A, p )
 if iscell(A)
     A=A{1}*A{2}';
 end
 s=svd(A);
 n=norm(s,p);
-

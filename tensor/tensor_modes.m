@@ -19,6 +19,6 @@ function s=tensor_modes(T)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 [Q1,R1]=qr(T{1},0); % matlab seems to ignore the ,0 so with only one output
-[Q2,R2]=qr(T{2},0); % argument...
+[Q2,R2]=qr(T{2},0); % 
 
 s=svd(R1*R2');
