@@ -4,8 +4,8 @@ underline( 'Tensor product PCG: ' );
 reltol=1e-3;
 
 %% truncation options
-%options.eps=get_param( eps, 1e-4 );
-options.eps=get_param( eps, 0 );
+options.eps=get_param( 'XXeps', 1e-4 );
+%options.eps=get_param( eps, 0 );
 %options.trunc_mode=get_param( trunc_mode, 3 );
 options.trunc_mode=2;
 options.relcutoff=true;
