@@ -27,11 +27,11 @@ munit_set_function( 'smolyak_grid' );
 % test 1: check sizes and simple features
 [xd,wd]=smolyak_grid( 2, 7, @gauss_hermite_rule );
 assert_equals( size(xd), [2,137], 'size_xd_27' );
-assert_equals( size(wd), [1,137], 'size_wd_27' );
+assert_equals( size(wd), [137,1], 'size_wd_27' );
 assert_equals( sum(wd), 1, 'sum_wd_27' );
 [xd,wd]=smolyak_grid( 2, 9, @gauss_hermite_rule );
 assert_equals( size(xd), [2,281], 'size_xd_29' );
-assert_equals( size(wd), [1,281], 'size_wd_29' );
+assert_equals( size(wd), [281,1], 'size_wd_29' );
 assert_equals( sum(wd), 1, 'sum_wd_29' );
 
 

@@ -18,7 +18,7 @@ function unittest_covariance_matrix
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'covariance' );
+munit_set_function( 'covariance_matrix' );
 
 
 n=11;
@@ -26,14 +26,16 @@ x=linspace(0,1,n);
 C_u=covariance_matrix( x, {@gaussian_covariance,{1e-10}} );
 assert_equals( C_u, eye(n), 'identity' );
 
+n=11;
+x=linspace(0,1,n);
+C_u=covariance_matrix( [x; zeros(size(x))]', {@gaussian_covariance,{1}} );
+assert_equals( C_u, [1 exp(-3.85); exp(-3.85) 1], 'identity' );
 
 
-return
-munit_set_function( 'covariance' );
 
 % some initialization stuff
 n=300;
-x=linspace(0,1,n)';
+x=linspace(0,1,n);
 
 % First some test whether the normal generation of the 1-dimensional
 % covariance matrix is correct (2- and 3-dimensional still missing)
@@ -51,8 +53,33 @@ assert_equals( C_u, C_u_ex, 'cov_matrix_lmax' );
 assert_true( issparse(C_u), 'cov_matrix_lmax_sparse' );
 
 
+
+n=3;
+sig=2.5;
+x=rand(2,n);
+L=1.4;
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+[X,Y]=meshgrid(x(1,:),x(2,:));
+DX=(X-X')/L; DY=(Y-Y')/L;
+C_u_ex=sig^2*exp(-(DX.^2+DY.^2));
+assert_equals( C_u, C_u_ex, 'cov_matrix_2d' );
+
+L=[1.1, 2.1];
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+[X,Y]=meshgrid(x(1,:),x(2,:));
+DX=(X-X')/L(1); DY=(Y-Y')/L(2);
+C_u_ex=sig^2*exp(-(DX.^2+DY.^2));
+assert_equals( C_u, C_u_ex, 'cov_matrix_2d_l2' );
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% here comes old stuff that not only tests the covariance matrix function
+% but also other stuff, need to clean that up
+
 n=20;
-x=linspace(0,1,n)';
+x=linspace(0,1,n);
 
 % Then check whether transformation to a non-standard Gaussian works
 % a) Do pce and check moments
@@ -67,10 +94,19 @@ C_u=covariance_matrix( x, {@gaussian_covariance, {lc, sqrt(sig2)}} );
 C_u_ex=toeplitz(sig2*exp(-x.^2/lc^2));
 assert_equals( C_u, C_u_ex,'cov_matrix' );
 
+
+
+
+
+
 % c) transform and check
 C_gam=transform_covariance_pce( C_u, pcc );
 C_gam_ex=toeplitz(exp(-x.^2/lc^2));
 assert_equals( C_gam, C_gam_ex, 'cov_transform' );
+
+
+
+
 
 
 %% A test from a paper from Phoon and Queck
@@ -92,7 +128,7 @@ assert_equals( C_gam, C_gam_ex, 'phoon', 'reltol', 1e-5 );
 %% Testing pce transform multi
 clear;
 n=10;
-x=linspace(0,1,n)';
+x=linspace(0,1,n);
 m_gam=4;
 m_u=5;
 M=[];
@@ -115,7 +151,7 @@ assert_equals( I_u2, I_u1, 'pce_transform_multi_fast' );
 %% Testing covariance matrix from pce
 clear;
 n=10;
-x=linspace(0,1,n)';
+x=linspace(0,1,n);
 m_gam=8;
 p_u=10;
 M=[];

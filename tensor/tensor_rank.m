@@ -21,14 +21,6 @@ function r=tensor_rank(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isfull(T)
-    if ndims(T)>2
-        T=reshape(T,size(T,1),[]);
-    end
-    r=rank(T);
-elseif iscanonical(T)
-    r=size(T{1},2);
-else
-    error( 'tensor:tensor_rank:param_error', ...
-        'input parameter is no recognized tensor format' );
-end
+check_tensor_format( T );
+
+r=size(T{1},2);

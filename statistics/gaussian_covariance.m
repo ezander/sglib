@@ -1,4 +1,4 @@
-function c=gaussian_covariance( x1, x2, l, sigma, smooth )
+function cov=gaussian_covariance( x1, x2, l, sigma, smooth )
 % GAUSSIAN_COVARIANCE  Compute the convariance function of gaussian.
 %   C=GAUSSIAN_COVARIANCE( X1, X2, L, SIGMA ) computes the covariance between
 %   points given in X1 and X2. If X2 is empty it is assumed that X1
@@ -32,33 +32,10 @@ function c=gaussian_covariance( x1, x2, l, sigma, smooth )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if nargin<2
-    x2=[];
-end
-if nargin<3
-    l=1;
-end
-if nargin<4
-    sigma=1;
-end
-if nargin<5
-    smooth=0;
-end
+if nargin<2; x2=[]; end
+if nargin<3; l=1; end
+if nargin<4; sigma=1; end
+if nargin<5; smooth=0; end
 
-if isempty(x2)
-    d=x1;
-else
-    d=x1-x2;
-end
-
-if isscalar(l)
-    ds=sum( d.^2,2)/l^2;
-else
-    ds=d.^2*(1./l(:).^2);
-end
-
-if smooth>0
-    ds=(sqrt(ds+smooth^2)-smooth).^2;
-end
-
-c=sigma^2*exp( -ds );
+dist=scaled_distance(x1, x2, l, smooth);
+cov=sigma^2*exp( -dist.^2 );

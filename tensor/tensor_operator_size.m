@@ -1,4 +1,4 @@
-function S=tensor_operator_size( A, varargin )
+function d=tensor_operator_size( A, contract )
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -12,31 +12,16 @@ function S=tensor_operator_size( A, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options( varargin );
-[optype,options]=get_option( options, 'optype', 'auto' );
-check_unsupported_options( options, mfilename );
+check_tensor_operator_format( A );
 
-if strcmp( optype, 'auto' )
-    if isnumeric(A)
-        optype='revkron';
-    elseif iscell(A)
-        optype='tensor';
-    else
-        error( 'apply_tensor_operator:auto', 'cannot determine tensor operator type (%s)', class(A) );
-    end
+if nargin<2
+    contract=false;
 end
 
+%d=[cellfun('size', A(1,:), 1 ); cellfun('size', A(1,:), 2 )]';
+d=cellfun( @operator_size, A(1,:), 'UniformOutput', false );
+d=cell2mat(d');
 
-switch optype
-    case 'revkron'
-        S=size(A);
-    case 'block'
-        [M1,N1]=size(A);
-        [M2,N2]=linear_operator_size(A{1,1});
-        S=[M1*M2, N1*N2];
-    case 'tensor'
-        [M1,N1]=linear_operator_size(A{1,1});
-        [M2,N2]=linear_operator_size(A{1,2});
-        S=[M1*M2, N1*N2];
+if contract
+    d=prod(d,1);
 end
-

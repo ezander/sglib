@@ -28,6 +28,9 @@ assert_equals( options_act, options_exp, 'list' );
 options_act=varargin2options( {struct( 'foo', 1, 'bar', 'baz' )} );
 assert_equals( options_act, options_exp, 'struct' );
 
+options_act=varargin2options( {{ 'foo', 1, 'bar', 'baz' }} );
+assert_equals( options_act, options_exp, 'struct' );
+
 % test 2 element varargin with repetition for list, cell
 
 options_exp=struct( 'foo', 2, 'bar', 'baz' );

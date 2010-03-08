@@ -57,7 +57,8 @@ switch mode
             fprintf('Warning: %s: %s\n', filename, message );
             stack=dbstack('-completenames');
             for i=(1+depth):length(dbstack)
-                fprintf( '  In <a href="matlab: edit %s">%s at line %d</a>\n', stack(i).file, stack(i).name, stack(i).line );
+                %fprintf( '  In <a href="matlab: edit %s">%s at line %d</a>\n', stack(i).file, stack(i).name, stack(i).line );
+                fprintf( '  In <a href="error:%s,%d,1">%s at line %d</a>\n', stack(i).file, stack(i).line, stack(i).name, stack(i).line );
             end
         else
             warning([filename ':check_failed'], '%s: %s', filename, message );

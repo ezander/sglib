@@ -19,42 +19,32 @@ function unittest_kl_tensor
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% Both functions have become trivial by the global change to KL compact
+% form. To get the "real" KL you need kl_to_standard_form now.
+
+
+N=51;
+M=56;
+L=15;
+
 % Test KL_TO_TENSOR
 munit_set_function( 'kl_to_tensor' );
 
-mu_r_j=(1:5)';
-r_j_i=(6:10)';
-rho_i_alpha=(11:20);
+r_i_k=rand(N,L);
+r_k_alpha=rand(L,M);
 
-R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha );
-R_ex={[1:5;6:10]',[1,zeros(1,9);11:20]'};
-assert_equals( R, R_ex, 'R' );
+R=kl_to_tensor( r_i_k, r_k_alpha );
+assert_equals( R, {r_i_k,r_k_alpha'}, 'R' );
 
 
 % Test TENSOR_TO_KL
 munit_set_function( 'tensor_to_kl' );
 
-R={[1:5;6:10]',[1,zeros(1,9);11:20]'};
-mu_r_j_ex=(1:5)'+11*(6:10)';
-r_j_i_ex=(6:10)';
-rho_i_alpha_ex=[0, 12:20];
+R={ r_i_k, r_k_alpha' };
+[r_i_k2,r_k_alpha2]=tensor_to_kl( R );
+assert_equals( r_i_k2*r_k_alpha2, r_i_k*r_k_alpha, 'pce' );
+assert_equals( r_k_alpha2(1,:), unitvector(1,M)', 'det_comp1' );
+assert_equals( r_k_alpha2(:,1), unitvector(1,size(r_k_alpha2,1)), 'det_comp2' );
+D=r_i_k2(:,2:end)'*r_i_k2(:,2:end);
+assert_equals( D, diag(diag(D)), 'ortho' );
 
-[mu_r_j, r_j_i, rho_i_alpha]=tensor_to_kl( R );
-assert_equals( mu_r_j, mu_r_j_ex, 'mu' );
-assert_equals( r_j_i, r_j_i_ex, 'r_i' );
-assert_equals( rho_i_alpha, rho_i_alpha_ex, 'rho_i' );
-
-
-% Test both KL_TO_TENSOR and TENSOR_TO_KL
-mu_r_j_ex=rand(50,1);
-r_j_i_ex=rand(50,7);
-rho_i_alpha_ex=[zeros(7,1), rand(7,60)];
-
-R_ex=kl_to_tensor( mu_r_j_ex, r_j_i_ex, rho_i_alpha_ex );
-[mu_r_j, r_j_i, rho_i_alpha]=tensor_to_kl( R_ex );
-%R=kl_to_tensor( mu_r_j, r_j_i, rho_i_alpha );
-
-assert_equals( mu_r_j, mu_r_j_ex, 'R2' );
-assert_equals( mu_r_j, mu_r_j_ex, 'mu2' );
-assert_equals( r_j_i, r_j_i_ex, 'r_i2' );
-assert_equals( rho_i_alpha, rho_i_alpha_ex, 'rho_i2' );

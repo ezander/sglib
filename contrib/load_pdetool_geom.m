@@ -1,5 +1,8 @@
-function [els,pos,G,ptdata]=load_pdetool_geom( name, numrefine, showmesh )
+function [pos,els,G,ptdata]=load_pdetool_geom( name, numrefine, showmesh, normalize )
 
+if nargin<2; numrefine=0; end
+if nargin<3; showmesh=false; end
+if nargin<4; normalize=false; end
 
 switch name
     case {'square'}
@@ -20,28 +23,36 @@ switch name
         error( 'load_pdetool_geom:name', 'load_pdetool_geom: unknown geometry: %s', name );
 end
 
-% init the mesh and refine onece
+% init the mesh and refine once is requested
 [p,e,t]=initmesh(geom);
-if nargin>=2
-    for i=1:numrefine
-        [p,e,t]=refinemesh(geom,p,e,t);
-    end
+for i=1:numrefine
+    [p,e,t]=refinemesh(geom,p,e,t);
 end
 
-if nargin>=3 && showmesh
+if showmesh
     % let's look at it
     pdemesh(p,e,t);
     axis equal;
 end
 
-ptdata={p,e,t};
+% extract element and position information
+pos=p;
+els=t(1:3,:);
+
+% normalize to [-1,1]^2
+if normalize
+    pos=pos/max(max(pos)-min(pos))*2;
+    pos=pos-repmat( (max(pos)+min(pos))/2, size(pos,1), 1 );
+end
 
 % extract stiffness matrix and gramian (throw away the former)
-[K,G]=assema(p,t,0,1,0); %#ok
-% extract element and position information in a format suitable for sglib
-els=t(1:3,:)';
-pos=p';
+if nargout>=3
+    [K,G]=assema(p,t,0,1,0); %#ok
+end
 
-%pos=pos/max(max(pos)-min(pos))*2;
-%pos=pos-repmat( (max(pos)+min(pos))/2, size(pos,1), 1 );
 
+% if user to have ptdata structure for further communication with the
+% pde-toolbox
+if nargout>=4
+    ptdata={p,e,t};
+end

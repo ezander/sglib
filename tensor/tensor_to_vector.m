@@ -18,18 +18,18 @@ function t=tensor_to_vector(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(T)
-    t=T(:);
-else
-    t=zeros(prod(cellfun('size',T,1)),1);
-    d=length(T);
-    
-    R=tensor_rank(T);
-    for i=1:R
-        u=1;
-        for k=1:d
-            u=revkron(u,T{k}(:,i));
-        end
-        t=t+u;
-    end
+t=zeros(prod(tensor_size(T)),1);
+
+R=tensor_rank(T);
+for i=1:R
+    u=elementary_tensor_to_vector( T, i );
+    t=t+u;
 end
+
+function u=elementary_tensor_to_vector( T, i )
+d=length(T);
+u=1;
+for k=1:d
+    u=revkron(u,T{k}(:,i));
+end
+

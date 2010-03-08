@@ -20,12 +20,6 @@ function unittest_tensor_add
 
 munit_set_function( 'tensor_add' );
 
-T1=rand(3,4,5);
-T2=rand(3,4,5);
-Z=tensor_add(T1,T2,2);
-assert_equals( Z, T1+2*T2, 'full_sum' )
-
-
 T1={rand(8,2), rand(10,2)};
 T2={rand(8,3), rand(10,3)};
 Z=tensor_add(T1,T2,3);
@@ -38,5 +32,3 @@ T2={rand(8,3), rand(10,3), rand(12,3)};
 Z=tensor_add(T1,T2,3);
 assert_equals( cellfun('size', Z, 1 ), [8,10,12], 'size_dim1' );
 assert_equals( cellfun('size', Z, 2 ), [5,5,5], 'size_dim2' );
-
-

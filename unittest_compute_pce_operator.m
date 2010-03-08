@@ -22,8 +22,8 @@ function unittest_compute_pce_operator
 munit_set_function( 'pce_multiply' );
 
 N=4;
-[els,pos]=create_mesh_1d( N, 0, 1 );
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+[pos,els]=create_mesh_1d( 0, 1, N );
+stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 
 k00=[1;1;1;1];
 k11=[1;2;3;4];
@@ -32,9 +32,9 @@ k32=[7;2;1;3];
 I_k=[0 0; 1 1; 3 2];
 k_i_iota=[ k00 k11 k32 ];
 I_u=I_k;
-K00=stiffness_matrix(els,pos, k00 );
-K11=stiffness_matrix(els,pos, k11 );
-K32=stiffness_matrix(els,pos, k32 );
+K00=stiffness_matrix(pos, els, k00 );
+K11=stiffness_matrix(pos, els, k11 );
+K32=stiffness_matrix(pos, els, k32 );
 
 % test alpha_beta form
 K=compute_pce_operator(  k_i_iota, I_k, I_u, stiffness_func, 'alpha_beta' );

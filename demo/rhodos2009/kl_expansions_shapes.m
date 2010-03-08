@@ -17,7 +17,7 @@ num_refinements=2;
 
 clf;
 set( gcf, 'Renderer', 'painters' );
-[els,pos,G_N]=load_pdetool_geom( geometries{geom_num}, num_refinements, true );
+[pos,els,G_N]=load_pdetool_geom( geometries{geom_num}, num_refinements, true );
 %C=covariance_matrix( pos, cov_func, 'max_dist', 3*lc_r );
 C=covariance_matrix( pos, cov_func );
 
@@ -42,11 +42,11 @@ set( gcf, 'Renderer', 'painters' );
 opts={'shading', 'flat', 'show_mesh', false};
 for k=1:8
     subplot(4,4,k);
-    plot_field( els, pos, r_i_k(:,k), opts{:} );
+    plot_field( pos, els, r_i_k(:,k), opts{:} );
     title(sprintf('KLE: r_{%d}',k));
     
     subplot(4,4,k+8);
-    plot_field( els, pos, r_i_k(:,k), 'view', [30,15], opts{:} );
+    plot_field( pos, els, r_i_k(:,k), 'view', [30,15], opts{:} );
     title(sprintf('KLE: r_{%d}',k));
 end
 print( sprintf( 'shape_%s_kl.eps', geometries{geom_num} ),'-depsc2' );

@@ -1,6 +1,6 @@
-function plot_field( els, pos, u, varargin )
+function plot_field( pos, els, u, varargin )
 % PLOT_FIELD Plots a field given on a triangular mesh.
-%   PLOT_FIELD( ELS, POS, U, VARARGIN ) plots the field given in U on the
+%   PLOT_FIELD( POS, ELS, U, VARARGIN ) plots the field given in U on the
 %   nodes given in POS performing interpolation on the triangles given in
 %   ELS. Certain formatting options can be specified in the remaining
 %   arguments:
@@ -49,9 +49,9 @@ function plot_field( els, pos, u, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-check_boolean( size(els,2)==3, 'elements must be triangles (size(els,2)==3)', mfilename );
-check_range( size(pos,2), 2, 2, 'sizeof(pos,2)', mfilename );
-check_boolean( size(pos,1)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,1))', mfilename );
+check_boolean( size(els,1)==3, 'elements must be triangles (size(els,1)==3)', mfilename );
+check_range( size(pos,1), 2, 2, 'sizeof(pos,2)', mfilename );
+check_boolean( size(pos,2)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,2))', mfilename );
 
 
 options=varargin2options( varargin );
@@ -62,38 +62,29 @@ options=varargin2options( varargin );
 [lighting_mode,options]=get_option( options, 'lighting', 'flat' );
 [map,options]=get_option( options, 'colormap', 'jet' );
 [axis_mode,options]=get_option( options, 'axis', 'square' );
-[draw_now,options]=get_option( options, 'draw_now', true );
-[wait,options]=get_option( options, 'wait', false );
 check_unsupported_options( options, mfilename );
 
 
 if ismatlab()
     if show_mesh
-        %trimesh( els, pos(:,1), pos(:,2), u );
-        trimesh( els, pos(:,1), pos(:,2), u );
+        trimesh( els', pos(1,:), pos(2,:), u );
         if show_surf
             hold on
         end
     end
     if show_surf
-        trisurf( els, pos(:,1), pos(:,2), u );
+        trisurf( els', pos(1,:), pos(2,:), u );
         if show_mesh
             hold off
         end
     end
     view(view_mode);
     axis( axis_mode );
-    xlim([min(pos(:,1)) max(pos(:,1))]);
-    ylim([min(pos(:,2)) max(pos(:,2))]);
+    xlim([min(pos(1,:)) max(pos(1,:))]);
+    ylim([min(pos(2,:)) max(pos(2,:))]);
     shading( shading_mode );
     lighting( lighting_mode );
     colormap( map );
-    if draw_now || wait
-        drawnow;
-    end
-    if wait
-        userwait
-    end
 else
     fprintf('plot_field not yet implemented for octave\n');
 end

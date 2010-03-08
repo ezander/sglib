@@ -53,14 +53,15 @@ if restore
 end
 
 addpath( basepath );
-addpath( [basepath '/munit'] );
 addpath( [basepath '/doc'] );
+addpath( [basepath '/munit'] );
 addpath( [basepath '/plot'] );
-addpath( [basepath '/util'] );
-addpath( [basepath '/tensor'] );
-addpath( [basepath '/simplefem'] );
-addpath( [basepath '/statistics'] );
 addpath( [basepath '/quadrature'] );
+addpath( [basepath '/simplefem'] );
+addpath( [basepath '/solver'] );
+addpath( [basepath '/statistics'] );
+addpath( [basepath '/tensor'] );
+addpath( [basepath '/util'] );
 
 if exist( [basepath '/thesis'], 'dir' )
   addpath( [basepath '/thesis'] )

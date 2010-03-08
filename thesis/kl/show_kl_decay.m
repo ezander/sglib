@@ -3,7 +3,7 @@ function show_kl_decay
 
 m=50;
 
-[els,pos,G_N]=load_pdetool_geom( 'square', 0 ); %#ok<ASGLU>
+[pos,els,G_N]=load_pdetool_geom( 'square', 0 ); %#ok<ASGLU>
 x=linspace(-4,4,201);
 funcs={@gaussian_covariance, @exponential_covariance, @spherical_covariance};
 lc_fs=[2, 1, 0.5];

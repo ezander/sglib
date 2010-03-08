@@ -8,29 +8,30 @@ basename='rf_kl_1d_sfem21';
 % 1D currently, so nothing to plot here
 kl_model_version=1;
 [pos,els,bnd]=load_kl_model( [basename '_k'], kl_model_version, [], {'pos','els','bnd'} );
-N=size(pos,1);
+N=size(pos,2);
 
 %% load the kl variables of the conductivity k
-[mu_k_j,k_j_i,kappa_i_alpha,I_k]=load_kl_model( [basename '_k'], kl_model_version, [], {'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
-subplot(1,2,1); plot(pos,k_j_i); title('KL eigenfunctions');
-subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_k_j, k_j_i, kappa_i_alpha, I_k ); title('mean/var/samples');
+[k_i_k,k_k_alpha,I_k]=load_kl_model( [basename '_k'], kl_model_version, [], {'r_i_k', 'r_k_alpha', 'I_r'} );
+subplot(1,2,1); plot(pos,k_i_k); title('KL eigenfunctions');
+subplot(1,2,2); plot_kl_pce_realizations_1d( pos, k_i_k, k_k_alpha, I_k ); title('mean/var/samples');
 userwait;
 
 %% load the kl variables of the right hand side f
-[mu_f_j,f_j_i,phi_i_alpha,I_f]=load_kl_model( [basename '_f'], kl_model_version, [], {'mu_r_j', 'r_j_i', 'rho_i_alpha', 'I_r'} );
+[f_j_i,phi_i_alpha,I_f]=load_kl_model( [basename '_f'], kl_model_version, [], {'r_i_k', 'r_k_alpha', 'I_r'} );
 subplot(1,2,1); plot(pos,f_j_i); title('KL eigenfunctions');
-subplot(1,2,2); plot_kl_pce_realizations_1d( pos, mu_f_j, f_j_i, phi_i_alpha, I_f ); title('mean/var/samples');
+subplot(1,2,2); plot_kl_pce_realizations_1d( pos, f_j_i, phi_i_alpha, I_f ); title('mean/var/samples');
 userwait;
 
 %% define (deterministic) boundary conditions g
 % this defines the function g(x)=x_1
-select=@(x,n)(x(:,n));
+select=@(x,n)(x(n,:)');
 g_func={ select, {1}, {2} };
-mu_g_j=funcall( g_func, pos);
-% "null" kl expansion of g
+% dummy pce (just the mean)
+g_i_alpha=funcall( g_func, pos);
 I_g=multiindex(0,0);
-g_j_i=zeros(N,0);
-gamma_i_alpha=zeros(0,size(I_g,1));
+% "null" kl expansion of g
+[g_i_k,g_k_alpha]=pce_to_kl( g_i_alpha, I_g, 0 );
+
 
 
 %% combine the multiindices
@@ -40,29 +41,29 @@ M=size(I_u,1); %#ok
 
 %% create the right hand side
 phi_i_beta=compute_pce_rhs( phi_i_alpha, I_f, I_u );
-F=kl_to_tensor( mu_f_j, f_j_i, phi_i_beta );
+F=kl_to_tensor( f_j_i, phi_i_beta );
 f_mat=F{1}*F{2}';
 f_vec=f_mat(:);
 
-gamma_i_beta=compute_pce_rhs( gamma_i_alpha, I_g, I_u );
-G=kl_to_tensor( mu_g_j, g_j_i, gamma_i_beta );
+g_k_beta=compute_pce_rhs( g_k_alpha, I_g, I_u );
+G=kl_to_tensor( g_i_k, g_k_beta );
 g_mat=G{1}*G{2}';
 g_vec=g_mat(:);
 
 
 %% load and create the operators
 kl_operator_version=9;
-stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+stiffness_func={@stiffness_matrix, {pos,els}, {1,2}};
 opt.silent=false;
 opt.show_timings=true;
-K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
-K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, mu_k_j, k_j_i, kappa_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
+K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
+K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
 % create matrix and tensor operators
 K_mat=cell2mat(K_ab);
 
 
 %% apply boundary conditions
-[P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
+[P_I,P_B]=boundary_projectors( bnd, N );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
@@ -89,7 +90,7 @@ fprintf( '(tensor op) %g \n', norm( fi_vec-tensor_operator_apply( Ki_mat, ui_vec
 %% Solve system with Matlab's pcg (must use normal vectors for rep)
 % the preconditioner
 Mi=Ki(1,:);
-Mi_mat=revkron( Mi );
+Mi_mat=tensor_operator_to_matrix( Mi );
 % solve
 tic; [ui_vec2(:,1),flag]=pcg(Ki_mat,fi_vec,[],[],Mi_mat,[],[]); t(1)=toc;
 tic; [ui_vec2(:,2),flag]=pcg(@funcall_funfun,fi_vec,[],[],Mi_mat,[],[],{@tensor_operator_apply,{Ki_mat},{1}}); t(2)=toc;
@@ -108,20 +109,20 @@ fprintf( '\n' );
 
 underline( 'Tensor product PCG: ' );
 
-[Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi );
-ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+[Ui,flag,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi );
+ui_vec3=tensor_to_vector( Ui );
 truncate='none';
-fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d\n', truncate, flag, relres, iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
+fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d\n', truncate, flag, info.relres, info.iter, norm(ui_vec-ui_vec3 )/norm(ui_vec), size(Ui{1},2) );
 
 for tolexp=1:7
     tol=10^-tolexp;
-    [Ui,flag,relres,iter]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
-    ui_vec3=reshape(Ui{1}*Ui{2}',[],1);
+    [Ui,flag,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
+    ui_vec3=tensor_to_vector( Ui );
     truncate=sprintf('eps 10^-%d', tolexp);
-    relerr=norm(ui_vec-ui_vec3 )/norm(ui_vec);
-    k=size(Ui{1},2);
+    relerr=gvector_error( ui_vec3, ui_vec, [], true );
+    k=tensor_rank( Ui );
     R=relerr/tol;
-    fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d, R: %g\n', truncate, flag, relres, iter, relerr, k, R );
+    fprintf( 'truncate: %s:: flag: %d, relres: %g, iter: %d, relerr: %g k: %d, R: %g\n', truncate, flag, info.relres, info.iter, relerr, k, R );
 end
 
 

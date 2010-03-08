@@ -21,10 +21,9 @@ function unittest_kl_solve_evp
 
 munit_set_function( 'kl_solve_evp' );
 
-x=linspace(0,1,11)';
-els=[(1:10)',(2:11)'];
-C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
-M=mass_matrix( els, x );
+[pos,els]=create_mesh_1d(0,1,11);
+C=covariance_matrix( pos, {@gaussian_covariance, {0.3, 2}} );
+M=mass_matrix( pos, els );
 
 [f,s]=kl_solve_evp( C, [], 3 );
 assert_equals( size(f), [11,3] );

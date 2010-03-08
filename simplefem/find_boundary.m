@@ -1,6 +1,10 @@
 function bnd=find_boundary( els, points_only )
 
-d=size(els,2)-1;
+if nargin<2
+    points_only=false;
+end
+
+d=size(els,1)-1;
 switch d
     case 1
         bnd=find_boundary_1d( els );
@@ -12,19 +16,19 @@ end
 
 
 function bnd=find_boundary_1d( els )
-e=sort(els(:));
-asnext=all(e(1:end-1,:)==e(2:end,:),2);
-bndind=~([0;asnext]|[asnext;0]);
-bnd=e(bndind,:);
+edgs=[els(1,:), els(2,:)];
+bnd=find_boundary_from_edges( edgs );
 
 function bnd=find_boundary_2d( els, points_only )
-e=[els(:,1), els(:,2); els(:,1), els(:,3); els(:,2), els(:,3)];
-e=sort(e,2);
-e=sortrows(e);
-
-asnext=all(e(1:end-1,:)==e(2:end,:),2);
-bndind=~([0;asnext]|[asnext;0]);
-bnd=e(bndind,:);
+edgs=[els([1;2],:), els([2,3],:), els([3;1],:)];
+bnd=find_boundary_from_edges( edgs );
 if points_only
-    bnd=unique( bnd(:) );
+    bnd=unique( bnd(:) )';
 end
+
+function bnd=find_boundary_from_edges( edgs )
+edgs=sort(edgs,1);
+edgs=sortrows(edgs')';
+asnext=all(edgs(:,1:end-1)==edgs(:,2:end),1);
+bndind=~([0,asnext]|[asnext,0]);
+bnd=edgs(:,bndind);

@@ -8,11 +8,11 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 %   normal (matrix) as on tensor product equations.
 %
 % Example (<a href="matlab:run_example apply_boundary_conditions_rhs">run</a>)
-%   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%   K=stiffness_matrix( els, pos, ones(size(pos)) );
+%   [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
+%   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   f=sin(pi*pos);
 %   g=2+pos;
-%   [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
+%   [P_I,P_B]=boundary_projectors( bnd, size(pos,2) );
 %   fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B );
 %   fprintf( '%4s  %4s\n', 'f', 'fi', '====', '====' )
 %   fprintf( '%4d  %4d\n', round([ f, [nan; fi; nan ]])' )
@@ -33,17 +33,21 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if ~iscell(K) || size(K,2)<=2
+if isnumeric(K)
     N=size(P_I,2);
-    NM=tensor_operator_size(K);
+    NM=size(K);
     M=NM(1)/N;
-    I_S={speye(M)};
+    I_S=speye(M);
+    P_I_ex=revkron(P_I, I_S);
+    P_B_ex=revkron(P_B'*P_B, I_S);
 else
     r=size(K,2);
     I_S=cell(1,r-1);
     for i=1:r-1
         I_S{1,i}=speye(size(K{1,i+1},1));
     end
+    P_I_ex=[{P_I}, I_S];
+    P_B_ex=[{P_B'*P_B}, I_S];
 end
 
 % this computes the following:
@@ -51,8 +55,8 @@ end
 % to accomodate for tensor product operators the projection operators are
 % extended like P_I => P_I \otimes I_S where I_S is the identity on the
 % "second" space (usually the stochastic one).
-fi=tensor_operator_apply( [{P_I}, I_S], f );
-g=tensor_operator_apply( [{P_B'*P_B}, I_S], g );
-g=tensor_operator_apply( K, g );
-gi=tensor_operator_apply( [{P_I}, I_S], g );
-fi=tensor_add( fi, gi, -1 );
+fi=operator_apply( P_I_ex, f );
+g=operator_apply( P_B_ex, g );
+g=operator_apply( K, g );
+gi=operator_apply( P_I_ex, g );
+fi=gvector_add( fi, gi, -1 );

@@ -22,9 +22,6 @@ function unittest_tensor_scale
 % testing function TENSOR_SCALE
 munit_set_function( 'tensor_scale' );
 
-T=rand(3,4,5);
-assert_equals( tensor_scale(T, 5), 5*T, 'scale_full' )
-
 T={rand(8,2), rand(10,2)};
 S=tensor_scale(T,-3);
 assert_equals( S{1}*S{2}', -3*T{1}*T{2}', 'scale' )

@@ -70,7 +70,7 @@ if passed
     if ~isempty( assert_id )
         assert_name=[assert_name, ' (', assert_id, ')' ];
     end
-    munit_printf( 'assert', 'Passed: %s', {assert_name} );
+    munit_printf( 'assert_pass', 'Passed: %s', {assert_name} );
     return
 end
 
@@ -113,7 +113,7 @@ for i=1:min(num, max_assertion_disp)
     if ~isempty( item_assert_id )
         curr_assert_name=[assert_name, ' (', item_assert_id, ')' ];
     end
-    munit_printf( 'assert', '%s in %s: %s', {fail, curr_assert_name, message} );
+    munit_printf( 'assert_fail', '%s in %s: %s', {fail, curr_assert_name, message} );
 end
 if num>max_assertion_disp
     message='... further output suppressed ...';
@@ -121,19 +121,19 @@ if num>max_assertion_disp
     if ~isempty( assert_id )
         curr_assert_name=[assert_name, ' (', assert_id, ')' ];
     end
-    munit_printf( 'assert', '%s in %s: %s', {fail, curr_assert_name, message} );
+    munit_printf( 'assert_fail', '%s in %s: %s', {fail, curr_assert_name, message} );
 end
 
 
 if debug && ~fuzzy
-    munit_printf( 'assert', '> Debugging is turned on and an assertion has failed' );
+    munit_printf( 'assert_fail', '> Debugging is turned on and an assertion has failed' );
     if ~isempty(caller)
         cmd=repmat( 'dbup;', 1, caller-1 );
-        munit_printf( 'assert', '> use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to', {cmd} );
-        munit_printf( 'assert', '> investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.' );
+        munit_printf( 'assert_fail', '> use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to', {cmd} );
+        munit_printf( 'assert_fail', '> investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.' );
     else
-        munit_printf( 'assert', '> use the stack to get to the place the assertion failed to');
-        munit_printf( 'assert', '> investigate the error. Then press F5 to continue.' )
+        munit_printf( 'assert_fail', '> use the stack to get to the place the assertion failed to');
+        munit_printf( 'assert_fail', '> investigate the error. Then press F5 to continue.' )
     end
     keyboard;
 end

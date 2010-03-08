@@ -111,7 +111,9 @@ end
 if comp_ii_check
     lambda=eig(C_gam);
     if min(lambda)< -1*comp_ii_reltol*max(abs(lambda))
-        warning( 'transform_covariance_pce:negative', 'transformed cov. matrix is not non-negative definite (type II incompatibility between cov. and marg densities)' );
+        warning( 'transform_covariance_pce:negative', ...
+        ['Transformed cov. matrix is not non-negative definite (type II incompatibility between cov. and marg densities)\n', ...
+        'lambda_max: %g, lambda_min: %g size: %d num_negative: %d'], max(lambda), min(lambda), length(lambda), sum(lambda<0));
     end
 end
 

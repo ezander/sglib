@@ -1,22 +1,22 @@
-function [els,pos]=correct_mesh( els, pos )
+function [pos,els]=correct_mesh( pos, els )
 
 ind=unique(sort(els(:)));
 dist=size(ind,1);
 if any(ind~=(1:dist)')
     old2new(ind)=1:dist;
     els=old2new(els);
-    pos=pos(ind,:);
+    pos=pos(:,ind);
 end
 
-T=size(els,1);
+T=size(els,2);
 
 for t=1:T
-    nodes=els(t,:);
-    coords=pos(nodes,:);
+    nodes=els(:,t);
+    coords=pos(:,nodes);
 
-    J=[ones(size(coords,1),1) coords];
+    J=[ones(1,size(coords,2)); coords];
     if det(J)<0
-        els(t,[1,2])=els(t,[2,1]);
+        els([1,2],t)=els([2,1],t);
     end
 end
 

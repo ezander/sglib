@@ -8,30 +8,32 @@ lc_f=0.5; %#ok
 cov_func={@gaussian_covariance,{lc_f,1}}; %#ok
 options.correct_var=true;
 
-%[els,pos,G_N]=load_pdetool_geom( 'circle', 2, true );
-%[els,pos,G_N]=load_pdetool_geom( 'scatter', 2, true );
+%[pos,els,G_N]=load_pdetool_geom( 'circle', 2, true );
+%[pos,els,G_N]=load_pdetool_geom( 'scatter', 2, true );
 
 %% The cardioid
 %% (gramian)
 
-[els,pos,G_N]=load_pdetool_geom( 'circle', 1, true );
-[els,pos,G_N]=load_pdetool_geom( 'scatter', 1, true );
-[els,pos,G_N]=load_pdetool_geom( 'cardioid', 1, true );
-[els,pos,G_N]=load_pdetool_geom( 'circle_segment', 1, true );
-[els,pos,G_N]=load_pdetool_geom( 'crack', 1, true );
-v_f=kl_solve_evp( covariance_matrix( pos, cov_func ), G_N, m, options );
+[pos,els,G_N]=load_pdetool_geom( 'circle', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'scatter', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'circle_segment', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'crack', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
+f_i_k=kl_solve_evp( covariance_matrix( pos, cov_func ), G_N, m, options );
 
 %% KL of the cardioid
 
+ws=warning( 'off', 'MATLAB:Figure:SetPosition' );
 set( gcf, 'Position', [0, 0, 900, 900] );
+warning( ws );
 set( gcf, 'Renderer', 'zbuffer' );
 
-for i=1:8
-    subplot(4,4,i);
-    plot_field( els, pos, v_f(:,i) );
-    title(sprintf('KLE: f_{%d}',i));
+for k=1:8
+    subplot(4,4,k);
+    plot_field( pos, els, f_i_k(:,k) );
+    title(sprintf('KLE: f_{%d}',k));
 
-    subplot(4,4,i+8);
-    plot_field( els, pos, v_f(:,i), { 'view', [30,15] } );
-    title(sprintf('KLE: f_{%d}',i));
+    subplot(4,4,k+8);
+    plot_field( pos, els, f_i_k(:,k), 'view', [30,15] );
+    title(sprintf('KLE: f_{%d}',k));
 end

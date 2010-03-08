@@ -21,7 +21,7 @@ title('KL eigenfunctions of u');
 userwait;
 
 %% Solution and realizations
-plot_kl_pce_realizations_1d( pos, mu_u_i, u_i_k, u_k_alpha, I_u, 'realizations', 50 );
+plot_kl_pce_realizations_1d( pos, u_i_k, u_k_alpha, I_u, 'realizations', 50 );
 save_eps( basename, 'solution' );
 title('Mean, variance and samples of u');
 userwait;

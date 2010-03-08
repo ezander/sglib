@@ -47,30 +47,14 @@ U={U{1}(:,1:end-1),U{2}(:,1:end-1)};
 assert_equals( true, abs(schatten_norm(tensor_add(T,U,-1),2))>eps, 'truncate_0', 'abstol', eps )
 
 
-if exist( 'schattenp_truncate' ) %#ok
-    % copy this function inline to test it
-    munit_set_function( 'schattenp_truncate' );
-
-    s=[5,4,3,2,1];
-    assert_equals( schattenp_truncate( s, 6, false, inf ), 0 );
-    assert_equals( schattenp_truncate( s, 5, false, inf ), 1 );
-    assert_equals( schattenp_truncate( s, 4.5, false, inf ), 1 );
-    assert_equals( schattenp_truncate( s, 4, false, inf ), 2 );
-    assert_equals( schattenp_truncate( s, 1.5, false, inf ), 4 );
-    assert_equals( schattenp_truncate( s, 0.5, false, inf ), 5 );
-    assert_equals( schattenp_truncate( s, 0, false, inf ), 5 );
-
-    assert_equals( schattenp_truncate( s, 4, false, 2 ), 2 );
-    assert_equals( schattenp_truncate( s, sqrt(5), false, 2 ), 3 );
-    assert_equals( schattenp_truncate( s, 2, false, 2 ), 4 );
-    assert_equals( schattenp_truncate( s, 1, false, 2 ), 4 );
-    assert_equals( schattenp_truncate( s, 0, false, 2 ), 5 );
-
-    assert_equals( schattenp_truncate( s, 4, false, 1 ), 3 );
-    assert_equals( schattenp_truncate( s, 3, false, 1 ), 3 );
-    assert_equals( schattenp_truncate( s, 2.5, false, 1 ), 4 );
-end
-
+L1=rand(8,8);
+L2=rand(10,10);
+G={L1*L1',L2*L2'};
+U=tensor_truncate(T,'G',G);
+P1=U{1}'*G{1}*U{1};
+P2=U{2}'*G{2}*U{2};
+assert_equals( P1, diag(diag(P1)), 'P1_G_orth' )
+assert_equals( P2, diag(diag(P2)), 'P2_G_orth' )
 
 
 function n=schatten_norm( A, p )
@@ -79,4 +63,3 @@ if iscell(A)
 end
 s=svd(A);
 n=norm(s,p);
-

@@ -19,12 +19,12 @@ function K=compute_pce_operator( k_i_iota, I_k, I_u, stiffness_func, form )
 %   p_k=3;
 %   m_k=3;
 %   stdnor_k={@beta_stdnor,{4,2}};
-%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-%   G_N=mass_matrix( els, pos );
+%   [pos,els,bnd]=create_mesh_1d( 0, 1, N );
+%   G_N=mass_matrix( pos, els );
 %   lc_k=0.25;
 %   cov_k={@gaussian_covariance,{lc_k,1}};
 %   [k_i_iota, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-%   stiffness_func={@stiffness_matrix, {els, pos}, {1,2}};
+%   stiffness_func={@stiffness_matrix, {pos,els}, {1,2}};
 %   I_u=I_k;
 %   K=compute_pce_operator(  k_i_iota, I_k, I_u, stiffness_func, 'alpha_beta' )
 %   clf; subplot(3,1,1); spy( K{1,1} );

@@ -30,11 +30,10 @@ function [r_i_k,sigma_k]=kl_solve_evp( C, G_N, l, varargin )
 %
 % Example (<a href="matlab:run_example kl_solve_evp">run</a>)
 %   n=10;
-%   x=linspace(0,1,n)';
-%   els=[1:n-1; 2:n]';
-%   C=covariance_matrix( x, {@gaussian_covariance, {0.3, 2}} );
+%   [pos,els]=create_mesh_1d(0,1,n);
+%   C=covariance_matrix( pos, {@gaussian_covariance, {0.3, 2}} );
 %   options.correct_var=true;
-%   G_N=mass_matrix( els, x );
+%   G_N=mass_matrix( pos, els );
 %   r_i_k=kl_solve_evp( C, G_N, 3, options );
 %   [mu,sig2]=pce_moments( [zeros(size(r_i_k,1),1), r_i_k], multiindex(3,1))
 %

@@ -35,33 +35,17 @@ if nargin<3
     alpha=1;
 end
 
-[bool1,format1]=istensor(T1);
-[bool2,format2]=istensor(T2);
+check_tensors_compatible( T1, T2 );
 
-if ~bool1 || ~bool2
-    error( 'tensor:tensor_null:param_error', ...
-        'one input parameter is in no recognized tensor format' );
+if tensor_rank(T1)+tensor_rank(T2)>1000
+    warning( 'tensor:tensor_add:large', 'Your tensor is growing pretty large. Forgotten to truncate?' );
+    keyboard;
 end
-if ~strcmp(format1,format2)
-    error( 'tensor:tensor_null:param_error', ...
-        'input parameter have different tensor formats' );
-end
-
-if isfull(T1)
-    T=T1+alpha*T2;
-elseif iscanonical(T1)
-    if length(T1)~=length(T2)
-        error( 'tensor:tensor_add:order_mismatch', 'Adding tensors of different order' );
-    end
     
-    % Important: apply alpha only to one argument! This guy is a tensor not
-    % a cartesian product.
-    T2{1}=alpha*T2{1};
-    dims=cellfun('size', T1, 1 );
-    T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
-elseif isobject(T1)
-    T=T1+alpha*T2;
-else
-    error( 'tensor:tensor_null:param_error', ...
-        'input parameter is no recognized tensor format' );
-end
+
+% Important: apply alpha only to one argument! This guy is a tensor not
+% a cartesian product.
+% TODO: Maybe a loop if faster than this mat2cell stuff? Check performance
+T2{1}=alpha*T2{1};
+dims=tensor_size(T1);
+T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';

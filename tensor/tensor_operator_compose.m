@@ -12,8 +12,8 @@ function C=tensor_operator_compose( A, B )
 % Example (<a href="matlab:run_example tensor_operator_compose">run</a>)
 %    A1={ [1 2; 3 4], [3 5 1; 6 4 2; 2 3 7 ] };
 %    A2={ [1 1; 2 2], [1 1 1; 2 2 2; 3 3 3 ] };
-%    A1M=revkron( A1 );
-%    A2M=revkron( A2 );
+%    A1M=tensor_operator_to_matrix( A1 );
+%    A2M=tensor_operator_to_matrix( A2 );
 %    x={[1;2], [6;3;2]}; xv=revkron(x);
 %    % in tensor format
 %    A=tensor_operator_compose( A1, A2 )
@@ -26,9 +26,9 @@ function C=tensor_operator_compose( A, B )
 %    % should give all the same
 %    [revkron(y1), revkron(y2), yv1, yv2, AM*xv, A2M*(A1M*xv)]
 %    % should be zero
-%    norm( AM-revkron(A))
+%    norm( AM-tensor_operator_to_matrix(A))
 %
-% See also LINEAR_OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
+% See also OPERATOR_COMPOSE, TENSOR_OPERATOR_APPLY
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
@@ -42,24 +42,20 @@ function C=tensor_operator_compose( A, B )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_tensor_operator_format( A );
+check_tensor_operator_format( B );
+    
 
-if isnumeric(A) && isnumeric(B)
-    C=linear_operator_compose( A, B );
-elseif isnumeric(A)
-    C=linear_operator_compose( A, revkron(B) );
-elseif isnumeric(B)
-    C=linear_operator_compose( revkron(A), B );
-else
-    ka=size(A,1);
-    kb=size(B,1);
-    r=size(A,2); % should be 2 currently
-    C=cell(ka*kb,r);
-    for ia=1:ka
-        for ib=1:kb
-            i=ib+(ia-1)*kb;
-            for j=1:r
-                C{i,j}=linear_operator_compose( A{ia,j}, B{ib,j} );
-            end
+ka=size(A,1);
+kb=size(B,1);
+r=size(A,2);
+C=cell(ka*kb,r);
+for ia=1:ka
+    for ib=1:kb
+        i=ib+(ia-1)*kb;
+        for j=1:r
+            C{i,j}=operator_compose( A{ia,j}, B{ib,j} );
         end
     end
 end
+

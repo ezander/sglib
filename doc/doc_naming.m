@@ -186,21 +186,21 @@
 %     and the sequenced with {:} into the argument list. E.g. the elements
 %     and points for the geometry always appear in this order. So you can
 %     write e.g.
-%       [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%       geom={els,pos};
+%       [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
+%       geom={pos,els};
 %       K=stiffness_matrix( geom{:}, ones(size(pos)) );
 %     You can even place the cell array in the output argument lists:
-%       [geom{1:3}]=create_mesh_1d( 5, 0, 2 );
+%       [geom{1:3}]=create_mesh_1d( 0, 2, 5 );
 %       K=stiffness_matrix( geom{1:2}, ones(size(pos)) );
 %     But as you can see, you are free to include information about
 %     boundary nodes into your struct or not.
 %     You can to the same with the KL e.g. and the PCE: Instead of writing
 %       % snip
 %       [f_i_alpha, I_f]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-%       [mu_f_i,f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
+%       [f_i_k,phi_k_alpha]=pce_to_kl( f_i_alpha, I_f, l_f, G_N );
 %     you can write
 %       [pce_f{1:2}]=expand_field_pce_sg( stdnor_f, cov_f, [], pos, G_N, p_f, m_f );
-%       [kl_f{1:3}]=pce_to_kl( pce_f{:}, l_f, G_N );
+%       [kl_f{1:2}]=pce_to_kl( pce_f{:}, l_f, G_N );
 %     and later:
 %       plot_kl_pce_realizations_1d( pos, kl_f{:}, pce_f{2}, 'realizations', 50 );
 %     Here you see one problem: you have to reference the second field of

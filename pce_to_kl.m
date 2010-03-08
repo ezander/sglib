@@ -1,6 +1,6 @@
-function [r_i_0,r_i_k,r_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, l_r, G_N, G_Phi, varargin )
+function [r_i_k,r_k_alpha,sigma_r_k,relerr]=pce_to_kl( r_i_alpha, I_r, l_r, G_N, G_Phi, varargin )
 % PCE_TO_KL Reduce a pure PCE field into a KL-PCE field.
-%   [R_I_0,R_I_K,R_K_ALPHA,RELERR,SIGMA_K]=PCE_TO_KL( R_I_ALPHA, I_R, L_R,
+%   [R_I_K,R_K_ALPHA,SIGMA_R_K,RELERR]=PCE_TO_KL( R_I_ALPHA, I_R, L_R,
 %   G_N, G_PHI ) computes the KL expansion of the (pointwise) PC expanded
 %   random field R, given by R_I_ALPHA, where the random variables in the
 %   KL are also given in their corresponding PC expanded form. The
@@ -12,8 +12,8 @@ function [r_i_0,r_i_k,r_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, l_r, 
 %
 % Example (<a href="matlab:run_example pce_to_kl">run</a>)
 %   N=51;
-%   [els,pos,bnd]=create_mesh_1d( N, 0, 1 );
-%   G_N=mass_matrix( els, pos );
+%   [pos,els,bnd]=create_mesh_1d( 0, 1, N );
+%   G_N=mass_matrix( pos, els );
 %   p_k=4;
 %   m_k=4;
 %   l_k=12;
@@ -21,7 +21,7 @@ function [r_i_0,r_i_k,r_k_alpha,relerr,sigma_k]=pce_to_kl( r_i_alpha, I_r, l_r, 
 %   stdnor_k={@beta_stdnor,{4,2}};
 %   cov_k={@gaussian_covariance,{lc_k,1}};
 %   [k_i_alpha, I_k]=expand_field_pce_sg( stdnor_k, cov_k, [], pos, G_N, p_k, m_k );
-%   [mu_k_i,k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
+%   [k_i_k,kappa_k_alpha]=pce_to_kl( k_i_alpha, I_k, l_k, G_N );
 %
 % See also EXPAND_FIELD_PCE_SG
 
@@ -58,7 +58,7 @@ check_unsupported_options( options, mfilename );
 
 % Extract the mean of the KL expansion (that's simply the coefficient in
 % the PCE corresponding to the multiindex [0,0,0,...] )
-r_i_0=r_i_alpha(:,1);
+mu_r_i=r_i_alpha(:,1);
 r_i_alpha(:,1)=0;
 
 
@@ -75,6 +75,14 @@ if ~isempty(G_N)
     rn_i_alpha=full(L_N*sparse(rn_i_alpha)); %reasonably fast
 end
 
+% first l_r if it's out the range
+if l_r>min(size(rn_i_alpha))
+    l_r=min(size(rn_i_alpha));
+end
+if sparse_svd && l_r>=min(size(rn_i_alpha))
+    sparse_svd=false;
+end
+
 [U,S,V,relerr]=truncated_svd_internal( rn_i_alpha, l_r, sparse_svd, tol, maxit );
 
 if ~isempty(G_N)
@@ -85,8 +93,9 @@ end
 r_k_alpha=pce_normalize( V', I_r, true );
 
 % scale spatial KL eigenfunction with KL eigenvalues
-r_i_k=U*S;
-sigma_k=diag(S);
+r_i_k=U;
+sigma_r_k=diag(S);
+[r_i_k, r_k_alpha]=kl_pce_to_compact_form(mu_r_i, r_i_k, sigma_r_k, r_k_alpha );
 
 
 function [U,S,V,relerr]=truncated_svd_internal( A, k, sparse_svd, tol, maxit )

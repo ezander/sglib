@@ -13,11 +13,13 @@ end
 m_solver_showmessage = {'never', 'always', 'error', 'nooutputarg'};
 m_shading_types = {'none', 'faceted', 'interp'};
 m_userwaitmodes = {'keyboard','mouse','continue'};
+m_munit_output = {'long','medium','compact'};
 
 setters={};
 setters{end+1}={'list', 'userwaitmode', setuserwaitmode('getmode'), m_userwaitmodes  };
 setters{end+1}={'bool', 'show_greeting', true };
 setters{end+1}={'bool', 'munit_jump_debugger', true };
+setters{end+1}={'list', 'munit_output', 'compact', m_munit_output };
 
 setters{end+1}={'text', 'medit_author', '<author>' };
 setters{end+1}={'text', 'medit_institution', '<institution>' };
@@ -62,9 +64,15 @@ end
 
 
 
-function do_set( settings )
+function do_set( settings, setters )
 setuserwaitmode( settings.userwaitmode );
 munit_set_debug( settings.munit_jump_debugger );
+
+S.type='()';
+S.subs={2};
+ind=find( strcmp( 'munit_output', cellfun( @(x)(subsref(x,S)), setters) ), 1, 'first' );
+oind=find( strcmp( settings.munit_output, setters{ind}{4} ), 1, 'first' )-1;
+munit_options( 'set', 'compact', oind );
 
 settings_file=sglib_get_appdata( 'settings_file' );
 write( settings_file, settings );

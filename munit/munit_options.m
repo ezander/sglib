@@ -60,6 +60,7 @@ options.reltol=1e-8;
 options.max_assertion_disp=10;
 options.prefix='unittest_';
 options.output_func=@display_func;
+options.compact=2;
 
 function display_func( s )
 stdin=1;

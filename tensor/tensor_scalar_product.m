@@ -25,43 +25,17 @@ if nargin<3
     G=[];
 end
 
-[bool1,format1]=istensor(T1);
-[bool2,format2]=istensor(T2);
+check_tensors_compatible( T1, T2 );
 
-if ~bool1 || ~bool2
-    error( 'tensor:tensor_scalar_product:param_error', ...
-        'one input parameter is in no recognized tensor format' );
-end
-if ~strcmp(format1,format2)
-    error( 'tensor:tensor_scalar_product:param_error', ...
-        'input parameter have different tensor formats' );
-end
-
-
-if isfull(T1)
-    if ~isempty(G)
-        error('tensor:tensor_scalar_product:not_implemented', 'not implemented yet' );
+S=ones(tensor_rank(T1),tensor_rank(T2));
+for i=1:length(T1)
+    if isempty(G)
+        S=S.*inner(T1{i},T2{i},[]);
+    else
+        S=S.*inner(T1{i},T2{i},G{i});
     end
-    S=T1.*T2;
-elseif iscanonical(T1)
-    S=ones(tensor_rank(T1),tensor_rank(T2));
-    for i=1:length(T1)
-        if isempty(G)
-            S=S.*inner(T1{i},T2{i},[]);
-        else
-            S=S.*inner(T1{i},T2{i},G{i});
-        end
-    end
-elseif isobject(T1)
-    d=tt_tensor_scalar_product(T1,T2,G);
-    return
-else
-    error( 'tensor:tensor_scalar_product:param_error', ...
-        'input parameter is no recognized tensor format' );
 end
-d=-1i*sum(sort(1i*S(:))); % sum in order of ascending magnitude
-
-
+d=sum(S(:));
 
 
 function S=inner( A, B, G )

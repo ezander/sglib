@@ -71,6 +71,7 @@ end
 
 
 function hasit=test_feature( feature, M )
+I=eye(size(M));
 switch feature
     case {'square', 'quadratic'}
         hasit=size(M,1)==size(M,2);

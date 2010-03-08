@@ -21,33 +21,82 @@ function unittest_pce_moments
 
 munit_set_function( 'pce_moments' );
 
-pcc=[4 0.3 0 0];
-pci=[0 1 2 3]';
+% first do it simple: one random variable (size(r_i_alpha,1) in one
+% independent Gaussian (size(I_r,2))
+r_i_alpha=[4, 0.3, 0, 0];
+I_r=[0; 1; 2; 3];
 
-[mu,sig2,skew]=pce_moments( pcc );
-assert_equals( [mu,sig2,skew], [4,0.09,0], 'moments_onearg' );
+[mu,var,skew]=pce_moments( r_i_alpha );
+assert_equals( [mu,var,skew], [4,0.09,0], 'moments_onearg' );
 
-[mu,sig2,skew]=pce_moments( pcc, pci );
-assert_equals( [mu,sig2,skew], [4,0.09,0], 'moments_twoarg' );
+[mu,var,skew]=pce_moments( r_i_alpha, I_r );
+assert_equals( [mu,var,skew], [4,0.09,0], 'moments_twoarg' );
 
-[mu,sig2,skew]=pce_moments( pcc, [pci zeros(4,1)]);
-assert_equals( [mu,sig2,skew], [4,0.09,0], 'moments_twoarg' );
+% Now in two independent Gaussians ignoring the second
+I_r=[0 0; 1 0; 2 0; 3 0];
+[mu,var,skew]=pce_moments( r_i_alpha, I_r);
+assert_equals( [mu,var,skew], [4,0.09,0], 'moments_two_gauss1' );
+
+% Now in two independent Gaussians ignoring the fist
+I_r=[0 0; 0 1; 0 2; 0 3];
+[mu,var,skew]=pce_moments( r_i_alpha, I_r);
+assert_equals( [mu,var,skew], [4,0.09,0], 'moments_two_gauss2' );
+
+% Now two random vars in one Gaussian
+r_i_alpha=[4, 0.3, 0, 0; 
+    2, 1, 1, 0];
+I_r=multiindex(1,3);
+
+[mu,var,skew]=pce_moments( r_i_alpha, I_r);
+assert_equals( [mu,var,skew], [4,0.09,0;2,3,14/(3*sqrt(3))], 'moments_two_rv' );
 
 
-pcc=[4 0.3 0 0; 2 1 1 0];
-pci=[0 1 2 3]';
+% Now many random vars in many Gaussians
+N=10;
+I_r=multiindex(3,4);
+r_i_alpha=rand(N, multiindex_size(3,4));
+[mu,var]=pce_moments( r_i_alpha, I_r);
+mu_ex=r_i_alpha(:,1);
+S=r_i_alpha.^2*diag(multiindex_factorial(I_r));
+var_ex=sum(S(:,2:end),2);
+assert_equals( [mu,var], [mu_ex,var_ex], 'moments_mult_rand' );
 
-[mu,sig2,skew]=pce_moments( pcc, [pci zeros(4,1)]);
-assert_equals( [mu,sig2,skew], [4,0.09,0;2,3,14/(3*sqrt(3))], 'moments_mult' );
+
+%%
+r_i_alpha=[4, 0.3, 0.2, 0.1];
+I_r=[0; 1; 2; 3];
+
+[mu,var,skew,kurt]=pce_moments( r_i_alpha, I_r );
+m0=integrate_central_moment( r_i_alpha, I_r, 0 );
+m1=integrate_central_moment( r_i_alpha, I_r, 1 );
+m2=integrate_central_moment( r_i_alpha, I_r, 2 );
+m3=integrate_central_moment( r_i_alpha, I_r, 3 );
+m4=integrate_central_moment( r_i_alpha, I_r, 4 );
+assert_equals( [mu,var,skew,kurt], [m1, m2, m3/m2^(3/2), m4/m2^2-3 ], 'moments_onearg' );
 
 
 
-% from old unittest_moments
-mu=-1;
-sigma=1;
-p=9;
-h={@lognormal_stdnor,{mu,sigma}};
-pcc=pce_expand_1d(h,p);
-[me,ve,se]=lognormal_moments( mu, sigma );
-[mp,vp,sp]=pce_moments( pcc );
-assert_equals( [me,ve,se], [mp,vp,sp], 'pce_lognormal', 'abstol', [1e-8,1e-6,2e-3] );
+%% Check consistency between different algorithms
+I_r=multiindex(3,3);
+r_i_alpha=rand(10,size(I_r,1));
+
+[mu1,var1,skew1,kurt1]=pce_moments( r_i_alpha, I_r );
+[mu3,var3,skew3,kurt3]=pce_moments( r_i_alpha, I_r, 'algorithm', 'pcemult' );
+[mu4,var4,skew4,kurt4]=pce_moments( r_i_alpha, I_r, 'algorithm', 'integrate' );
+
+assert_equals( [mu1,var1,skew1,kurt1], [mu3,var3,skew3,kurt3], 'consistency13' );
+assert_equals( [mu1,var1,skew1,kurt1], [mu4,var4,skew4,kurt4], 'consistency14' );
+
+
+
+
+function m=integrate_central_moment( r_i_alpha, I_r, p )
+p_r=max(multiindex_order(I_r));
+if p>=2
+    r_i_alpha(:,1)=0;
+end
+m=integrate_1d( {@kernel,{p,r_i_alpha,I_r},{1,2,3}}, @gauss_hermite_rule, p_r*(1+p) ); 
+
+function val=kernel( p, r_i_alpha, I_r, xi )
+val=pce_evaluate(r_i_alpha,I_r,xi);
+val=val.^p;

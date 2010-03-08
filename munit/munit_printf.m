@@ -25,12 +25,22 @@ switch type
     otherwise
         no_disp=false;
 end
+if nargin<3
+    vars={};
+end
+compact=munit_options( 'get', 'compact' );
 
 if ~no_disp
-    message(end+1:end+2)='\n';    
-    if nargin<3
-        fprintf( message );
+    if compact
+        erase_print( message, vars{:} );
+        newline=true;
+        newline=newline & ~(compact>=1 && strcmp(type,'assert_pass'));
+        newline=newline & ~(compact>=2 && strcmp(type,'file'));
+        if newline
+            erase_print();
+        end
     else
+        message(end+1:end+2)='\n';
         fprintf( message, vars{:} );
     end
 end

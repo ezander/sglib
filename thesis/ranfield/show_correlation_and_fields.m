@@ -5,9 +5,9 @@ function show_correlation_and_fields
 
 % We use the pde toolbox to generate the geometry and the mass matrix
 % (gramian)
-%[els,pos,G_N]=load_pdetool_geom( 'cardioid', 1, true );
-%[els,pos,G_N]=load_pdetool_geom( 'square', 2, true );
-[els,pos,G_N]=load_pdetool_geom( 'square', 0, true );
+%[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
+%[pos,els,G_N]=load_pdetool_geom( 'square', 2, true );
+[pos,els,G_N]=load_pdetool_geom( 'square', 0, true );
 
 %#ok<*NASGU>
 
@@ -40,14 +40,14 @@ for i=1:length(funcs);
             for j=1:4
                 subplot(2,2,j);
                 f_ex=pce_field_realization( pos, f_i_alpha, I_f );
-                plot_field( els, pos, f_ex );
+                plot_field( pos, els, f_ex );
                 title(sprintf('Sample: %d',j));
             end
         else
             clf;
             set( gcf, 'Renderer', 'zbuffer' );
             f_ex=pce_field_realization( pos, f_i_alpha, I_f );
-            plot_field( els, pos, f_ex );
+            plot_field( pos, els, f_ex );
             shading interp;
             zlim([-2,2]);
             colorbar

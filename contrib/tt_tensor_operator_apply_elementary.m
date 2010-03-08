@@ -21,7 +21,7 @@ function U=tt_tensor_operator_apply_elementary(A,T)
 tt_available(true);
 if isa(T,'ktensor')
     lambda=T.lambda;
-    u=cellfun( @linear_operator_apply, A, T.u(:)', 'UniformOutput', false );
+    u=cellfun( @operator_apply, A, T.u(:)', 'UniformOutput', false );
     U=ktensor(lambda,u);
 else
     error( 'contrib:tensor_toolbox:not_supported', 'Unsupported tensor type' );

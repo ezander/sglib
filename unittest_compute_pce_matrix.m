@@ -1,3 +1,4 @@
+function unittest_compute_pce_matrix
 % UNITTEST_COMPUTE_PCE_MATRIX Test the compute_pce_matrix function.
 %
 % Example (<a href="matlab:run_example unittest_compute_pce_matrix">run</a>)

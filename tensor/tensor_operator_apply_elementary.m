@@ -33,14 +33,47 @@ function U=tensor_operator_apply_elementary( A, T )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_tensor_operator_format( A );
 
-if isnumeric(T)
-    % TODO: works only for matrices, not higher order
-    U=A*T;
+if isnumeric(T) 
+    if isvector(T)
+        U=apply_to_vector( A, T );
+    else
+        U=apply_to_array( A, T );
+    end
 elseif iscell(T)
-    U=cellfun( @linear_operator_apply, A, T, 'UniformOutput', false );
+    U=apply_to_tensor( A, T );
 elseif isobject(T)
     U=tt_tensor_operator_apply_elementary( A, T );
 else
     error('unknown tensor type');
 end
+
+function U=apply_to_tensor( A, T )
+U=cellfun( @operator_apply, A, T, 'UniformOutput', false );
+
+function U=apply_to_vector( A, T )
+d=tensor_operator_size( A );
+T=reshape( T, d(:,2)' );
+U=apply_to_array( A, T );
+U=reshape( U, [], 1 );
+
+function U=apply_to_array( A, T )
+n=length(A);
+d=tensor_operator_size( A );
+U=T;
+for i=1:n
+    % the following is a bit tricky: we shift in turn every dimension to
+    % the front, then reshape the array into a matrix and do a matrix
+    % multiplication, replace now in d (first column contains the
+    % dimension of the codomain, second one that of the domain) the
+    % dimension with the new size, then we reshape back to the correct
+    % form, and then shift dimensions (and d accordingsly) by one dimension
+    U=reshape( U, d(1,2), [] );
+    U=operator_apply(A{i},U);
+    d(1,2)=d(1,1);
+    U=reshape(U,d(:,2)');
+    U=permute( U, [2:n, 1] );
+    d=[d(2:n,:); d(1,:)];
+end
+

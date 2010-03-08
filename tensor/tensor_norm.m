@@ -33,5 +33,7 @@ if nargin<2
     G=[];
 end
 
+check_tensor_format( T );
+
 dsqr=max( tensor_scalar_product(T,T,G), 0 );
 d=sqrt( dsqr );

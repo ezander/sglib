@@ -1,14 +1,14 @@
-function u=apply_boundary_conditions_solution( ui, g, P_I, P_B, varargin )
+function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 % APPLY_BOUNDARY_CONDITIONS_SOLUTION Applies boundary conditions to the solution.
 %   U=APPLY_BOUNDARY_CONDITIONS_SOLUTION( UI, G, P_I, P_B ) adds
 %   boundary conditions back to a solution given just on the inner nodes.
 %
 % Example (<a href="matlab:run_example apply_boundary_conditions_solution">run</a>)
-%   [els,pos,bnd]=create_mesh_1d( 5, 0, 2 );
-%   K=stiffness_matrix( els, pos, ones(size(pos)) );
+%   [pos,els,bnd]=create_mesh_1d( 0, 2, 5 );
+%   K=stiffness_matrix( pos, els, ones(size(pos)) );
 %   f=sin(pi*pos);
 %   g=2+pos;
-%   [P_I,P_B]=boundary_projectors( bnd, size(pos,1) );
+%   [P_I,P_B]=boundary_projectors( bnd, size(pos,2) );
 %   Ki=apply_boundary_conditions_operator( K, P_I );
 %   fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B );
 %   ui=Ki\fi;
@@ -33,10 +33,6 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-options=varargin2options( varargin );
-[truncation_options,options]=get_option( options, 'truncation_options', {} );
-check_unsupported_options( options, mfilename );
-
 if iscell(ui)
     M=size(ui{2},1);
 else
@@ -51,7 +47,4 @@ if M>1; I_S=speye(M); else I_S=1; end
 u=tensor_operator_apply( {P_I', I_S}, ui );
 g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
 
-u=tensor_add( u, g );
-if iscell(u)
-    u=tensor_truncate( u, truncation_options{:} );
-end
+u=gvector_add( u, g );

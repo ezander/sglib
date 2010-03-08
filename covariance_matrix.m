@@ -58,16 +58,16 @@ else
     % TODO: maybe this should be vectorized even further
     for i=1:n
         if isinf(max_dist)
-            C(i:end,i)=funcall( covar_func, repmat(pos(:,i),n-i+1,1), ...
+            C(i:end,i)=funcall( covar_func, repmat(pos(:,i),1,n-i+1), ...
                 pos(:,i:end) );
             C(i,i:end)=C(i:end,i)';
         else
-            d=sum((repmat(pos(i,:),n-i+1,1)-pos(:,i:end)).^2,2);
+            
+            d=sum((repmat(pos(:,i),1,n-i+1)-pos(:,i:end)).^2,1);
             ind=i-1+find(d<max_dist^2);
-            C(ind,i)=funcall( covar_func, repmat(pos(:,i),length(ind),1), ...
+            C(ind,i)=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
                 pos(:,ind) );
             C(i,ind)=C(ind,i)';
         end
     end
 end
-

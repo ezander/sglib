@@ -9,9 +9,8 @@ n=21;
 p=5;
 m=5;
 lc=0.3;
-x=linspace(0,1,n)';
-els=[1:n-1; 2:n]';
-M=mass_matrix( els, x );
+[pos,els]=create_mesh_1d(0,1,n);
+M=mass_matrix( pos, els );
 
 h=@(gamma)(beta_stdnor(gamma,4,2));
 [mu,sig2]=beta_moments( 4, 2 );
@@ -19,11 +18,11 @@ h=@(gamma)(beta_stdnor(gamma,4,2));
 cov_u=@(x1,x2)(gaussian_covariance(x1,x2,lc,sqrt(sig2)));
 cov_gam=[];
 
-[u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, x, M, p, m );
-xi=randn(100,m);
-y=pce_field_realization( x, u_alpha, I_u, xi );
-plot(x,y);
-%plot(x(2:end),diff(y,1,1));
+[u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, pos, M, p, m );
+xi=randn(m,100);
+y=pce_field_realization( u_alpha, I_u, xi );
+plot(pos,y);
+%plot(pos(2:end),diff(y,1,1));
 userwait
 
 %% Dependence of autocovariance
@@ -34,9 +33,8 @@ userwait
 clf; %#ok
 n=11;
 lc=0.2*2;
-x=linspace(0,1,n)';
-els=[1:n-1; 2:n]';
-M=mass_matrix( els, x );
+[pos,els]=create_mesh_1d(0,1,n);
+M=mass_matrix( pos, els );
 
 h=@(gamma)(beta_stdnor(gamma,4,2));
 [mu,sig2]=beta_moments( 4, 2 );
@@ -49,7 +47,7 @@ matnorm='fro';
 for m=[1 2 3 4]
     for p=[1 2 3]
         tic;
-        [u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, x, M, p, m );
+        [u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, pos, M, p, m );
         t1(p,m)=toc; %#ok
         tic;
         [mu_1,var_1]=pce_moments( u_alpha, I_u );
@@ -58,10 +56,10 @@ for m=[1 2 3 4]
         fprintf( 'RF params: p: %1d m:%1d -', p, m );
         % fprintf( 'RF params: p: %1d m:%1d t1:%6.4f  t2:%6.4f', p, m, t1(p,m), t2(p,m) );
         C_u2=pce_covariance( u_alpha, I_u );
-        C_u1=covariance_matrix( x, cov_u );
+        C_u1=covariance_matrix( pos, cov_u );
         fprintf( ' cov error:  %- 7.6f\n', norm(C_u2-C_u1,matnorm)/norm(C_u1,matnorm) );
 
-        [X1,X2]=meshgrid(x);
+        [X1,X2]=meshgrid(pos);
         dx=abs(X1-X2);
         dx=round(dx(:)*1e8)/1e8;
         [dxu,i,j]=unique(dx);
@@ -80,7 +78,7 @@ userwait;
 for m=[1,2,3,4,5]
     for p=[1,2,3,4,5]
         tic;
-        [u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, x, M, p, m );
+        [u_alpha, I_u]=expand_field_pce_sg( h, cov_u, cov_gam, pos, M, p, m );
         t1(p,m)=toc; %#ok
         tic;
         [mu_1,var_1]=pce_moments( u_alpha, I_u );
@@ -91,10 +89,10 @@ for m=[1,2,3,4,5]
         fprintf( ' E_mean: %- 10.4e', norm(mu_1-mu_2)/norm(mu_2) );
         fprintf( ' E_var: %- 10.4e', norm(var_1-var_2)/norm(var_2) );
         C_u2=pce_covariance( u_alpha, I_u );
-        C_u1=covariance_matrix( x, cov_u );
+        C_u1=covariance_matrix( pos, cov_u );
         fprintf( ' E_cov: %- 7.5f \n', norm(C_u2-C_u1)/norm(C_u1) );
 
-        [X1,X2]=meshgrid(x);
+        [X1,X2]=meshgrid(pos);
         dx=abs(X1-X2);
         dx=dx(:);
         dxu=unique(dx);

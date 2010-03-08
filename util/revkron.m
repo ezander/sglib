@@ -58,6 +58,7 @@ function K=revkron( A, B )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<2 && iscell( A )
+    warning( 'revrkon:deprecated', 'revkron: use in this form is deprecated. use tensor_operator_to_matrix instead' );
     K=kron( A{1,2}, A{1,1} );
     for i=2:size(A,1)
         K=K+kron( A{i,2}, A{i,1} );

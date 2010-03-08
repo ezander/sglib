@@ -1,4 +1,10 @@
-function plot_kl_pce_realizations_1d( x, mu_u_j, u_j_i, u_i_alpha, I_u, varargin )
+function plot_kl_pce_realizations_1d( pos, r_i_k, r_k_alpha, I_r, varargin )
+
+
+% Hint: The dimensions of the parameters must be such that 
+%    POS * MU_U_I
+%    POS * U_I_K * U_K_ALPHA * I_ALPHA * XI
+%   are well-defined matrix products.
 
 options=varargin2options( varargin );
 [n,options]=get_option( options, 'realizations', 20 );
@@ -12,28 +18,29 @@ if stat>=0
     col=colormap(map);
     colormap(oldmap);
 
-    %[mu_u, var_u]=pce_moments( u_alpha, I_u);
-    [mu_i,var_i]=pce_moments( u_i_alpha, I_u );
-    var_u=u_j_i.^2*var_i;
-    mu_u=u_j_i*mu_i+mu_u_j;
+    mu_u_i=r_i_k*r_k_alpha(:,1);
+    [mu_k,var_k]=pce_moments( r_k_alpha, I_r ); %#ok<ASGLU>
+    var_u_i=r_i_k.^2*var_k;
 
-    std_u=sqrt(var_u);
-    for i=0:stat
-        plot(x, mu_u_j*[1,1]+i*std_u*[-1,1], 'Color', col(1+round(i*size(col,1)/(stat+2)),:) );
+    std_u_i=sqrt(var_u_i);
+    for j=0:stat
+        plot(pos, mu_u_i*[1,1]+j*std_u_i*[-1,1], ...
+	     'Color', col(1+round(j*size(col,1)/(stat+2)),:) );
         hold on;
     end
 end
 
-if isempty(xi)
-    for i=1:n
-        kl_pce_field_realization(x,mu_u_j,u_j_i,u_i_alpha,I_u,[],'plot_options',{'-', 'Color', [0.5,0.5,0.5]} );
-        hold on;
-    end
-else
-    for i=1:size(xi,1)
-        kl_pce_field_realization(x,mu_u_j,u_j_i,u_i_alpha,I_u,xi(i,:),'plot_options',{'-', 'Color', [0.5,0.5,0.5]} );
-        hold on;
-    end
+
+if ~isempty(xi)
+  n=size(xi,2);
+end
+for i=1:n
+  if isempty(xi)
+    u_i=kl_pce_field_realization(r_i_k,r_k_alpha,I_r,[]);
+  else
+    u_i=kl_pce_field_realization(r_i_k,r_k_alpha,I_r,xi(:,i));
+  end
+  plot( pos, u_i, '-', 'Color', [0.5,0.5,0.5] );
+  hold on;
 end
 hold off;
-

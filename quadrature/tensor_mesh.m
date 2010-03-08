@@ -33,9 +33,9 @@ n1 = reshape( cellfun( 'length', x1 ), 1, [] );
 % Total number of points
 nd = prod( n1 );
 
-% Resulting points
-xd    = zeros(d,nd);
-wd    = ones(1,nd);
+% Resulting points and weights
+xd = zeros(d,nd);
+wd = ones(nd,1);
 
 % For every dimension
 for k=1:d
@@ -48,7 +48,7 @@ for k=1:d
     sk=[ones(size(n1)), 1]; sk(k)=n1(k);
     rk=[n1, 1]; rk(k)=1;
     xd(k,:)=reshape( repmat( reshape( x1{k}, sk ), rk ), [1, nd] );
-    wd=wd.*reshape( repmat( reshape( w1{k}, sk ), rk ), [1, nd] );
+    wd=wd.*reshape( repmat( reshape( w1{k}, sk ), rk ), [nd, 1] );
 end
 
 
