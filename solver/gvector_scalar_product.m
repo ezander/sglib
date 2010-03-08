@@ -31,6 +31,9 @@ if isnumeric(T1) && isnumeric(T2)
     elseif isvector(T1)
         d=T1'*G*T2;
         return;
+    elseif ndims(T1)==2
+        S=(T1'*G{1}*T2).*G{2};
+        d=sum(S(:));
     else
         error('vector:gvector_scalar_product:not_implemented', 'not implemented yet' );
     end

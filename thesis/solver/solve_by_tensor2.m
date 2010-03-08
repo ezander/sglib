@@ -14,6 +14,7 @@ options.vareps_threshold=0.1;
 options.vareps_reduce=0.1;
 %options.G={P_I*G_N*P_I', G_X};
 
+
 %% stats stuff
 options.stats_func=@pcg_gather_stats;
 options.stats=struct();
@@ -23,19 +24,35 @@ end
 options.stats.trunc_options=trunc_options;
 options.stats.G={P_I*G_N*P_I', G_X};
 
+
+Fi2=tensor_to_pce(Fi);
+%Fi2=Fi;
+G2=tensor_to_pce(G);
+%G2=G;
+if exist('Ui_true', 'var')
+    options.stats.X_true=tensor_to_pce( Ui_true );
+    Ui_true2=tensor_to_pce(Ui_true);
+    %Ui_true2=Ui_true;
+end
+
 %% call pcg
 opts=struct2options(options);
-[Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
-flag
-info.iter
+[Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi2, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
+fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
+
+[Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi2, 'reltol', reltol, opts{:} );
+fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
 
 
-relerr=tensor_error( Ui, Ui_true, [], true );
-k=tensor_rank(Ui);
+relerr=gvector_error( Ui, Ui_true2, [], true );
+if is_tensor(Ui)
+    k=tensor_rank(Ui);
+end
+
 if eps>0
     R=relerr/eps;
 else
     R=1;
 end
 
-U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
+U=apply_boundary_conditions_solution( Ui, G2, P_I, P_B );

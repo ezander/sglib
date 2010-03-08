@@ -1,11 +1,35 @@
-tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
-Ki_mat=tensor_operator_to_matrix(Ki);
-toc
-fi_vec=tensor_to_vector( Fi );
+if ~exist('Ki_mat')
+    tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
+    Ki_mat=tensor_operator_to_matrix(Ki);
+    toc
+    fi_vec=tensor_to_vector( Fi );
+end
 
+use_pcg=get_param('use_pcg', false );
+tic; 
+if ~use_pcg
+    fprintf( 'Solving (direct): ', prod(tensor_operator_size(Ki)) );
+    ui_vec=Ki_mat\fi_vec;
+else
+    fprintf( 'Solving (pcg): ', prod(tensor_operator_size(Ki)) );
+    %[ui_vec,flag,info.relres,info.iter]=pcg(Ki_mat,fi_vec);
+    disp(' ');
+    maxit=100;
+    reltol=1e-3;
+    tol=reltol*norm(fi_vec);
+    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_mat,fi_vec,tol,maxit);
+    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
 
-tic; fprintf( 'Solving: ', prod(tensor_operator_size(Ki)) );
-ui_vec=Ki_mat\fi_vec;
+    Ki_fun=@(x)(tensor_operator_apply(Ki,x));
+    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_fun,fi_vec,tol,maxit);
+    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
+
+    Mi=stochastic_preconditioner_deterministic(Ki);
+    Mi_fun=@(x)(tensor_operator_apply(Mi,x));
+    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_fun,fi_vec,tol,maxit,Mi_fun);
+    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
+    
+end
 toc
 
 ui_mat=reshape( ui_vec, [], M );

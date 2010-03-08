@@ -60,8 +60,9 @@ while true
 
     if normres<abstol || relres<reltol; break; end
 
+    %fprintf( 'Iter: %2d relres: %g upratio: %g\n', iter, relres, upratio );
+    
     %urc=iter-50;
-    fprintf( 'Iter: %2d relres: %g upratio: %g\n', iter, relres, upratio );
     if abs(1-upratio)>.2 %&& urc>10
         flag=-1;
         break;

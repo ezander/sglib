@@ -20,6 +20,7 @@ function unittest_tensor_operator_apply_elementary
 
 munit_set_function( 'tensor_operator_apply_elementary' );
 
+% test order 2 tensors with matrix and "operator" operators
 T={rand(8,3), rand(10,3)};
 A={rand(8,8), rand(10,10)};
 L1=operator_from_matrix(A{1});
@@ -33,7 +34,21 @@ assert_equals( UA, {A{1}*T{1}, A{2}*T{2}}, 'mat' );
 assert_equals( UB, {A{1}*T{1}, A{2}*T{2}}, 'op' );
 assert_equals( UC, {A{1}*T{1}, A{2}*T{2}}, 'mat_op' );
 
+% test order 2 tensors with full tensors
+
+U_ex=tensor_to_array( UA );
+U=tensor_operator_apply_elementary(A, tensor_to_array( T ));
+assert_equals( U, U_ex, 'full_mat' );
+U=tensor_operator_apply_elementary(B, tensor_to_array( T ));
+assert_equals( U, U_ex, 'full_op' );
+U=tensor_operator_apply_elementary(C, tensor_to_array( T ));
+assert_equals( U, U_ex, 'full_mat_op' );
+
+% test order 4 tensors with matrix operator
 T={rand(8,3), rand(10,3), rand(12,3), rand(13,3)};
 A={rand(8,8), rand(10,10), rand(12,12), rand(13,13)};
 U=tensor_operator_apply_elementary(A, T);
 assert_equals( U, {A{1}*T{1}, A{2}*T{2}, A{3}*T{3}, A{4}*T{4}}, 'ord4' );
+
+
+

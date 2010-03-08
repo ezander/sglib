@@ -1,10 +1,10 @@
-function s=tensor_modes(T,orthogonalize)
-% TENSOR_SV Short description of tensor_sv.
-%   TENSOR_SV Long description of tensor_sv.
+function unittest_tensor_modes
+% UNITTEST_TENSOR_MODES Test the TENSOR_MODES function.
 %
-% Example (<a href="matlab:run_example tensor_sv">run</a>)
+% Example (<a href="matlab:run_example unittest_tensor_modes">run</a>)
+%   unittest_tensor_modes
 %
-% See also
+% See also TENSOR_MODES, TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -18,17 +18,19 @@ function s=tensor_modes(T,orthogonalize)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<2
-    orthogonalize=true;
-end
+munit_set_function( 'tensor_modes' );
 
-if orthogonalize
-    [Q1,R1]=qr(T{1},0); % matlab seems to ignore the ,0 so with only one output
-    [Q2,R2]=qr(T{2},0); %
-    
-    s=svd(R1*R2');
-else
-    s1=sum(T{1}.^2,1);
-    s2=sum(T{2}.^2,1);
-    s=sqrt(s1(:).*s2(:));
-end
+T={rand(8,2), rand(10,2)};
+
+s_ex=[norm(T{1}(:,1))*norm(T{2}(:,1));
+    norm(T{1}(:,2))*norm(T{2}(:,2))];
+assert_equals( tensor_modes( T, false ), s_ex, 'non_orth' );
+
+s_ex=svd( T{1}*T{2}' );
+s_ex=s_ex(1:2);
+assert_equals( tensor_modes( T, true ), s_ex, 'orth' );
+
+
+
+
+

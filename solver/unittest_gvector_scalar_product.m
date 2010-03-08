@@ -40,3 +40,10 @@ assert_equals( s, t1'*revkron(eye(size(M1)),M2)*t2, 'inner_M2' );
 s=gvector_scalar_product(T1,T2,{M1,M2});
 assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2' );
 
+
+
+T1=tensor_to_array(T1);
+T2=tensor_to_array(T2);
+s=gvector_scalar_product(T1,T2,{M1,M2});
+assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2_2' );
+

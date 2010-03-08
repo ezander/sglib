@@ -70,7 +70,7 @@ for i=1:n
     % dimension with the new size, then we reshape back to the correct
     % form, and then shift dimensions (and d accordingsly) by one dimension
     U=reshape( U, d(1,2), [] );
-    U=A{i}*U;
+    U=operator_apply(A{i},U);
     d(1,2)=d(1,1);
     U=reshape(U,d(:,2)');
     U=permute( U, [2:n, 1] );
