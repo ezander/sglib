@@ -51,22 +51,28 @@ if nargin<2
 end
 
 if ~solve
-    A=operator_from_function( {@mtimes, {M}, {1}}, size(M) );
+    A=operator_from_function( {@apply, {M}, {1}}, size(M) );
 elseif ~use_lu
     % solve each time 
-    A=operator_from_function( {@mldivide, {M}, {1}}, size(M') );
+    A=operator_from_function( {@msolve, {M}, {1}}, size(M') );
 else
     % precompute lu decomposition and solve only triangular systems
     [L,U,P]=lu(M);
     [p,j]=find(P'); %#ok
-    A=operator_from_function( {@lu_solve, {L,U,p}}, size(M') );
+    A=operator_from_function( {@lu_solve, {L,U,p}, {1,2,3}}, size(M') );
 end
 
-function x=lu_solve( b, L, U, p )
+function x=apply( M, y, varargin )
+x=M*y;
+
+function x=msolve( M, y, varargin )
+x=M\y;
+
+function x=lu_solve( L, U, p, y, varargin )
 if issparse(L) || issparse(U)
-    x=mldivide(U, mldivide(L,b(p)) );
+    x=mldivide(U, mldivide(L,y(p)) );
 else
     lower.LT=true;
     upper.UT=true;
-    x=linsolve(U, linsolve(L,b(p),lower), upper );
+    x=linsolve(U, linsolve(L,y(p),lower), upper );
 end

@@ -50,21 +50,52 @@ pass_options=[pass_options {'Minv', Minv}];
 %% generate truncation options
 % needs to become more intelligent
 % pcg needs to pass stats to truncate function
-truncate_func={@tensor_truncate_variable, {trunc}, {2}};
-truncate_op_func={@tensor_truncate_zero, {trunc}, {2}};
-pass_options=[pass_options {'truncate_func', truncate_func, 'truncate_op_func', truncate_op_func}];
+if is_tensor(F)
+    switch trunc.trunc_mode
+        case 1 % after preconditioning
+            truncate_operator_func=@tensor_truncate_zero;
+            truncate_before_func=@tensor_truncate_zero;
+            truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
+        case 2 % before preconditioning
+            truncate_operator_func=@tensor_truncate_zero;
+            truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
+            truncate_after_func=@tensor_truncate_zero;
+        case 3 % in the operator
+            truncate_operator_func={@tensor_truncate_variable, {trunc}, {2}};
+            truncate_before_func=@tensor_truncate_zero;
+            truncate_after_func=@tensor_truncate_zero;
+    end
+    %pass_options=[pass_options {'truncate_func', truncate_func}]
+    pass_options=[pass_options {'truncate_operator_func', truncate_operator_func}];
+    pass_options=[pass_options {'truncate_before_func', truncate_before_func}];
+    pass_options=[pass_options {'truncate_after_func', truncate_after_func}];
+    %pass_options=[pass_options {'truncate_zero_func', truncate_zero_func}];
+end
 
 %% call pcg
 [X,flag,info,stats]=generalized_solve_pcg( A, F, pass_options{:} );
 
 
-function U=tensor_truncate_fixed( T, trunc, stats )
-U=tensor_truncate( T, 'eps', trunc.eps, 'k_max' );
+function U=tensor_truncate_variable( T, trunc )
+if trunc.vareps 
+    upratio=get_update_ratio();
+    if abs(upratio-1)>trunc.vareps_threshold
+        trunc.eps=trunc.eps*trunc.vareps_reduce;
+        fprintf('Reducing eps to %g\n',  trunc.eps );
+    end
+end    
+U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
 
-function U=tensor_truncate_variable( T, trunc, stats )
-U=tensor_truncate( T, 'eps', trunc.eps );
+function upratio=get_update_ratio
+global gsolver_stats;
+if isempty(gsolver_stats) || ~isfield(gsolver_stats, 'upratio')
+    upratio=1;
+    warning( 'get_update_ratio:no_update_ratio', 'gsolver_stats does not contain update_ratio' );
+else
+    upratio=gsolver_stats.upratio(end);
+end
 
-function U=tensor_truncate_zero( T, trunc )
+function U=tensor_truncate_zero( T )
 k_max=min(tensor_size(T));
 if tensor_rank(T)>k_max
     U=tensor_truncate( T, 'eps', 0, 'k_max', k_max );

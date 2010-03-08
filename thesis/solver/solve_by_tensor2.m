@@ -4,8 +4,10 @@ underline( 'Tensor product PCG: ' );
 reltol=1e-3;
 
 %% truncation options
-options.eps=get_param( eps, 1e-4 );
-options.trunc_mode=get_param( trunc_mode, 1 );
+%options.eps=get_param( eps, 1e-4 );
+options.eps=get_param( eps, 0 );
+%options.trunc_mode=get_param( trunc_mode, 3 );
+options.trunc_mode=1;
 options.relcutoff=true;
 options.vareps=get_param( vareps, false );
 options.vareps_threshold=0.1;
@@ -24,6 +26,8 @@ options.stats.G={P_I*G_N*P_I', G_X};
 %% call pcg
 opts=struct2options(options);
 [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
+flag
+info.iter
 
 
 relerr=tensor_error( Ui, Ui_true, [], true );

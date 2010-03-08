@@ -1,13 +1,16 @@
-function [X,flag,info,stats]=generalized_solve_pcg( A, F, varargin )
+function [X,flag,info,solver_stats]=generalized_solve_pcg( A, F, varargin )
+
+global gsolver_stats
 
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[truncate_func,options]=get_option( options, 'truncate_func', @identity );
-[truncate_op_func,options]=get_option( options, 'truncate_op_func', @identity );
-[stats,options]=get_option( options, 'stats', struct() );
+[truncate_after_func,options]=get_option( options, 'truncate_after_func', @identity );
+[truncate_before_func,options]=get_option( options, 'truncate_before_func', @identity );
+[truncate_operator_func,options]=get_option( options, 'truncate_operator_func', @identity );
+[gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
@@ -19,27 +22,28 @@ iter=0;
 flag=0;
 
 Xc=gvector_null(F);
-Rc=gvector_add( F, operator_apply( A, Xc ), -1);
+Rc=funcall( truncate_before_func, F );
 Zc=operator_apply( Minv, Rc );
+Zc=funcall( truncate_after_func, F );
 Pc=Zc;
 
 initres=gvector_norm( Rc );
 
-stats=funcall( stats_func, 'init', stats, initres );
+gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 
 while true
-    fprintf( 'Rank X: %d\n', tensor_rank(Xc) );
-    APc=operator_apply(A,Pc,'truncate_func', truncate_op_func);
-    fprintf( 'Rank A: %d\n', tensor_rank(APc) );
-    APc=funcall( truncate_func, APc );
-    fprintf( 'Rank A: %d\n', tensor_rank(APc) );
+    %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
+    APc=operator_apply(A,Pc,'truncate_func', truncate_operator_func);
+    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
+    APc=funcall( truncate_before_func, APc );
+    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
     alpha=gvector_scalar_product( Rc, Zc)/...
         gvector_scalar_product( Pc, APc );
     Xn=gvector_add( Xc, Pc, alpha);
     Rn=gvector_add( Rc, APc, -alpha );
 
-    Xn=funcall( truncate_func, Xn, stats );
-    Rn=funcall( truncate_func, Rn );
+    Xn=funcall( truncate_before_func, Xn );
+    Rn=funcall( truncate_before_func, Rn );
 
     normres=gvector_norm( Rn );
     relres=normres/initres;
@@ -52,12 +56,12 @@ while true
     DX=gvector_add( Xn, Xc, -1 );
     upratio=gvector_scalar_product( DX, DY )/gvector_scalar_product( DY, DY );
 
-    stats=funcall( stats_func, 'step', stats, F, A, Xn, Rn, normres, relres, upratio );
+    gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
 
     if normres<abstol || relres<reltol; break; end
 
     %urc=iter-50;
-    upratio
+    fprintf( 'Iter: %2d relres: %g upratio: %g\n', iter, relres, upratio );
     if abs(1-upratio)>.2 %&& urc>10
         flag=-1;
         break;
@@ -67,11 +71,11 @@ while true
     beta=gvector_scalar_product(Rn,Zn)/gvector_scalar_product(Rc,Zc);
     Pn=gvector_add(Zn,Pc,beta);
 
-    % truncate all iteration variables
-    Xc=funcall( truncate_func, Xn );
-    Pc=funcall( truncate_func, Pn );
-    Rc=funcall( truncate_func, Rn );
-    Zc=funcall( truncate_func, Zn );
+    % set all iteration variables to new state
+    Xc=funcall( truncate_after_func, Xn );
+    Rc=funcall( truncate_after_func, Rn );
+    Pc=funcall( truncate_after_func, Pn );
+    Zc=funcall( truncate_after_func, Zn );
 
     % increment and check iteration counter
 %     disp(iter);
@@ -89,14 +93,16 @@ while true
         keyboard
     end
 end
-X=funcall( truncate_func, Xn );
+X=funcall( truncate_after_func, Xn );
 
-stats=funcall( stats_func, 'finish', stats, X );
+gsolver_stats=funcall( stats_func, 'finish', gsolver_stats, X );
 
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
 info.upratio=upratio;
+
+solver_stats=gsolver_stats;
 
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
