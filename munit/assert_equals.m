@@ -98,11 +98,23 @@ end
 %%
 function result_list=compare_double( actual, expected, assert_id, curr_options, options )
 % ASSERT_EQUALS_DOUBLE Assert equality for doubles.
+p=get_option( curr_options, 'norm', -1 );
+
+if p==-1
+    result_list=compare_double_value( actual, expected, assert_id, curr_options, options );
+else
+    result_list=compare_double_norm( actual, expected, p, assert_id, curr_options, options );
+end
+
+
+function result_list=compare_double_value( actual, expected, assert_id, curr_options, options )
+% ASSERT_EQUALS_DOUBLE_VALUE Assert equality for doubles (value by value).
 result_list={};
 
 % Get abstol and reltol
 abstol=get_option( curr_options, 'abstol', options.abstol );
 reltol=get_option( curr_options, 'reltol', options.reltol );
+
 if ~isscalar(abstol) && any(size(abstol)~=size(actual))
     error( 'assert_equals:options', 'if abstol is a vector then it must have the same size as the value vector' );
 end
@@ -112,7 +124,7 @@ end
 
 % Get the max number of assertions to confront the user with
 max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options.max_assertion_disp );
-
+ 
 % Do actual comparison
 comp = (abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
 if any(~comp(:))
@@ -138,6 +150,24 @@ if any(~comp(:))
             result_list{end+1}={msg, assert_id}; 
         end
     end
+end
+
+function result_list=compare_double_norm( actual, expected, p, assert_id, curr_options, options )
+% ASSERT_EQUALS_DOUBLE_NORM Assert equality for doubles (by norm).
+result_list={};
+
+% Get abstol and reltol
+abstol=get_option( curr_options, 'abstol', options.abstol );
+reltol=get_option( curr_options, 'reltol', options.reltol );
+ 
+% Do actual comparison
+exp_norm=norm( expected, p );
+diff_norm=norm( expected-actual, p );
+
+if diff_norm>max(abstol, reltol*exp_norm )
+    if isnumeric(p); p=num2str(p); end
+    msg=sprintf( 'matrices not equal in %s-norm: diff=%g, max=%g', p, diff_norm, max(abstol, reltol*exp_norm ) );
+    result_list={{msg, assert_id}};
 end
 
 function result_list=compare_logical( actual, expected, assert_id, curr_options, options ) 

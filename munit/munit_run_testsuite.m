@@ -137,15 +137,21 @@ function safe_eval( dir, unittest_cmd, on_error )
 olddir=cd(dir);
 try
     eval( unittest_cmd );
-catch
+catch %#ok<CTCH>
     cd(olddir);
+    err=lasterror;  %#ok<LERR>
+    stack=err.stack;
+    show_cmd=sprintf( '<a href="error:%s,%d,1">%s at line %d</a>', stack(1).file, stack(1).line, stack(1).name, stack(1).line );
     switch on_error
         case 'debug'
-            assert_false( true, sprintf( 'Caught an error in %s:  %s', unittest_cmd, lasterr ) );
+            assert_false( true, sprintf( 'Caught an error in %s (%s):  %s', unittest_cmd, show_cmd, err.message ) );
+            for i=2:length(stack)
+                fprintf( '  in <a href="error:%s,%d,1">%s at line %d</a>\n', stack(i).file, stack(i).line, stack(i).name, stack(i).line );
+            end
             keyboard;
         case 'rethrow'
-            rethrow(lasterror);
+            rethrow(err);
         case 'continue'
-            assert_false( true, sprintf( 'Caught an error in %s:  %s', unittest_cmd, lasterr ) );
+            assert_false( true, sprintf( 'Caught an error in %s (%s):  %s', unittest_cmd, show_cmd, err.message ) );
     end
 end
