@@ -57,7 +57,9 @@ if is_tensor(F)
             truncate_before_func=@tensor_truncate_zero;
             truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
         case 2 % before preconditioning
-            truncate_operator_func=@tensor_truncate_zero;
+            trunc_op.eps=trunc.eps/100;
+            trunc_op.k_max=inf;
+            truncate_operator_func={@tensor_truncate_fixed, {trunc_op}, {2}};;
             truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
             truncate_after_func=@tensor_truncate_zero;
         case 3 % in the operator
@@ -76,7 +78,14 @@ end
 [X,flag,info,stats]=generalized_solve_pcg( A, F, pass_options{:} );
 
 
+function U=tensor_truncate_fixed( T, trunc )
+r1=tensor_rank(T);
+U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
+r2=tensor_rank(U);
+fprintf( 'fixd: %d->%d\n', r1, r2 );
+
 function U=tensor_truncate_variable( T, trunc )
+r1=tensor_rank(T);
 if trunc.vareps 
     upratio=get_update_ratio();
     if abs(upratio-1)>trunc.vareps_threshold
@@ -85,6 +94,8 @@ if trunc.vareps
     end
 end    
 U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
+r2=tensor_rank(U);
+fprintf( 'vari: %d->%d\n', r1, r2 );
 
 function upratio=get_update_ratio
 global gsolver_stats;
@@ -96,11 +107,14 @@ else
 end
 
 function U=tensor_truncate_zero( T )
+r1=tensor_rank(T);
 k_max=min(tensor_size(T));
 if tensor_rank(T)>k_max
     U=tensor_truncate( T, 'eps', 0, 'k_max', k_max );
 else
     U=T;
 end
+r2=tensor_rank(U);
+fprintf( 'zero: %d->%d\n', r1, r2 );
 
 

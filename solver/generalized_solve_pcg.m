@@ -18,20 +18,20 @@ check_unsupported_options( options, mfilename );
 info.abstol=abstol;
 info.reltol=reltol;
 info.maxiter=maxiter;
-iter=0;
-flag=0;
 
 Xc=gvector_null(F);
 Rc=funcall( truncate_before_func, F );
 Zc=operator_apply( Minv, Rc );
-Zc=funcall( truncate_after_func, F );
+%Zc=funcall( truncate_after_func, F );
 Pc=Zc;
 
 initres=gvector_norm( Rc );
+resvec=[initres];
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 
-while true
+flag=1;
+for iter=1:maxiter
     %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
     APc=operator_apply(A,Pc,'truncate_func', truncate_operator_func);
     %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
@@ -47,6 +47,7 @@ while true
 
     normres=gvector_norm( Rn );
     relres=normres/initres;
+    resvec(end+1)=normres; %#ok<AGROW>
 
     % Proposed update is DY=alpha*Pc
     % actual update is DX=T(Xn)-Xc;
@@ -58,7 +59,10 @@ while true
 
     gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
 
-    if normres<abstol || relres<reltol; break; end
+    if normres<abstol || relres<reltol; 
+        flag=0;
+        break; 
+    end
 
     %fprintf( 'Iter: %2d relres: %g upratio: %g\n', iter, relres, upratio );
     
@@ -78,18 +82,11 @@ while true
     Pc=funcall( truncate_after_func, Pn );
     Zc=funcall( truncate_after_func, Zn );
 
-    % increment and check iteration counter
 %     disp(iter);
 %     if iscell(Xn)
 %         disp(tensor_rank(Xn));
 %     end
         
-    iter=iter+1;
-    if iter>maxiter
-        flag=1;
-        break;
-    end
-
     if false && mod(iter,100)==0
         keyboard
     end
@@ -102,6 +99,7 @@ info.flag=flag;
 info.iter=iter;
 info.relres=relres;
 info.upratio=upratio;
+info.resvec=resvec(:);
 
 solver_stats=gsolver_stats;
 

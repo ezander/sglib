@@ -1,36 +1,34 @@
-if ~exist('Ki_mat')
-    tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
-    Ki_mat=tensor_operator_to_matrix(Ki);
-    toc
-    fi_vec=tensor_to_vector( Fi );
-end
+fi_vec=tensor_to_vector( Fi );
 
 use_pcg=get_param('use_pcg', false );
-tic; 
 if ~use_pcg
-    fprintf( 'Solving (direct): ', prod(tensor_operator_size(Ki)) );
+    if ~exist('Ki_mat')
+        tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
+        Ki_mat=tensor_operator_to_matrix(Ki);
+        toc;
+        
+    end
+    tic; fprintf( 'Solving (direct): ' );
     ui_vec=Ki_mat\fi_vec;
+    toc;
 else
-    fprintf( 'Solving (pcg): ', prod(tensor_operator_size(Ki)) );
-    %[ui_vec,flag,info.relres,info.iter]=pcg(Ki_mat,fi_vec);
+
     disp(' ');
     maxit=100;
-    reltol=1e-3;
-    tol=reltol*norm(fi_vec);
-    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_mat,fi_vec,tol,maxit);
-    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
+    reltol=1e-6;
 
     Ki_fun=@(x)(tensor_operator_apply(Ki,x));
-    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_fun,fi_vec,tol,maxit);
-    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
-
-    Mi=stochastic_preconditioner_deterministic(Ki);
-    Mi_fun=@(x)(tensor_operator_apply(Mi,x));
-    [ui_vec,flag,info.relres,info.iter]=pcg(Ki_fun,fi_vec,tol,maxit,Mi_fun);
-    fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
+    Mi_inv=stochastic_preconditioner_deterministic(Ki);
+    Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
     
+    tic; fprintf( 'Solving (pcg): ' );
+    [ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,fi_vec,reltol,maxit,Mi_inv_fun);
+    toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
+
+    tic; fprintf( 'Solving (gpcg): ' );
+    [ui_vec2,flag,info]=generalized_solve_pcg( Ki,fi_vec,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv);
+    toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 end
-toc
 
 ui_mat=reshape( ui_vec, [], M );
 [U_,S_,V_]=svd(ui_mat);
