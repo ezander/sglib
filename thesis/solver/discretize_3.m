@@ -23,7 +23,7 @@ G=kl_to_tensor( g_i_k, g_k_beta );
 %% load and create the operators 
 
 % create tensor operators
-K=compute_kl_pce_operator(k_i_k, k_k_alpha, I_k, I_k, stiffness_func, 'mu_delta');
+K=kl_pce_compute_operator(k_i_k, k_k_alpha, I_k, I_k, stiffness_func, 'tensor');
 
 % extend stuff to third order
 K=extend_kl_operator( K, I_r );

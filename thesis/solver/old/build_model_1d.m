@@ -80,7 +80,7 @@ opt.show_timings=true;
 op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 
 % create tensor operators
-K=compute_kl_pce_operator(k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta');
+K=kl_pce_compute_operator(k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'tensor');
 
 
 % create matrix and tensor operators

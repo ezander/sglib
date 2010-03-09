@@ -14,13 +14,10 @@ if ~reinit && exist( rf_filename, 'file' )
     load( rf_filename )
 else
     tic
-    K_ab=compute_kl_pce_operator( mu_k, v_k, k_i_alpha, I_k, I_u, stiffness_func, 'alpha_beta' );
+    K_ab=kl_pce_compute_operator( mu_k, v_k, k_i_alpha, I_k, I_u, stiffness_func, 'matrix' );
     toc
     tic
-    K_mu_delta=compute_kl_pce_operator( mu_k, v_k, k_i_alpha, I_k, I_u, stiffness_func, 'mu_delta' );
-    toc
-    tic
-    K_mu_iota=compute_kl_pce_operator( mu_k, v_k, k_i_alpha, I_k, I_u, stiffness_func, 'mu_iota' );
+    K_mu_delta=kl_pce_compute_operator( mu_k, v_k, k_i_alpha, I_k, I_u, stiffness_func, 'tensor' );
     toc
     save( rf_filename, 'K_*', '-V6' );
 end

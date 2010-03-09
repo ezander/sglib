@@ -44,23 +44,6 @@ function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffnes
 v_k_i=[mu_k, v_k_i];
 k_i_iota=[eye(1,size(k_i_iota,2)); k_i_iota];
 K_mu_delta=assemble_mu_delta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );
-%K_mu_delta={K_mu_delta{1,1}; K_mu_delta{1,2}; K_mu_delta(2:end,1); K_mu_delta(2:end,2) };
-
-% function K_mu_delta=assemble_mu_delta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
-% K_mu=funcall( stiffness_func, mu_k );
-% m_k=size(v_k_i,2);
-% K_i=cell(m_k,1);
-% Delta_i=cell(m_k,1);
-% m_iota_k=size(k_i_iota,2);
-% for i=1:m_k
-%     erase_print( 'assemble: %d/%d', i, m_k );
-%     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
-%     Delta_i{i}=compute_pce_matrix( k_i_iota(i,:), I_k, I_u );
-% end
-% erase_print();
-% Delta_mu=compute_pce_matrix( [1,zeros(1,m_iota_k-1)], I_k, I_u );
-% K_mu_delta={K_mu; Delta_mu; K_i; Delta_i };
-
 
 
 function K_mu_iota=assemble_mu_iota( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
@@ -124,27 +107,3 @@ K_ab=assemble_alpha_beta2( v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt );
 
 
 
-% function K_ab=assemble_alpha_beta( mu_k, v_k_i, k_i_iota, I_k, I_u, stiffness_func, opt )
-% K_mu=funcall( stiffness_func, mu_k );
-% m_k=size(v_k_i,2);
-% K_i=cell(m_k,1);
-% for i=1:m_k
-%     K_i{i}=funcall( stiffness_func, v_k_i(:,i) );
-% end
-% m_iota_k=size(I_k,1);
-%
-% hermite_triple_fast( max([I_u(:);I_k(:)] ) );
-% m_alpha_u=size(I_u,1);
-% K_ab=cell(m_alpha_u,m_alpha_u);
-% for alpha=1:m_alpha_u
-%     erase_print( '%d/%d %d/%d', alpha*(alpha+1)/2, m_alpha_u*(m_alpha_u+1)/2, alpha, m_alpha_u );
-%     for beta=1:alpha
-%         K_ab{alpha,beta}=hermite_triple_fast(I_u(alpha,:),I_u(beta,:),I_k(1,:))*K_mu;
-%         for i=1:m_k
-%             h_i=k_i_iota(i,:)*squeeze(hermite_triple_fast(I_u(alpha,:),I_u(beta,:),I_k(:,:)));
-%             K_ab{alpha,beta}=K_ab{alpha,beta}+h_i*K_i{i};
-%         end
-%         K_ab{beta,alpha}=K_ab{alpha,beta};
-%     end
-% end
-% erase_print();

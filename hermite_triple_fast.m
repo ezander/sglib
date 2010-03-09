@@ -72,6 +72,50 @@ if nargin==1
     return
 end
 
+%M=multiplication_tensor_1(i,j,k,triples);
+%M=multiplication_tensor_2(i,j,k,triples);
+M=multiplication_tensor_blocked_1(i,j,k,triples);
+
+function M=multiplication_tensor_blocked_1(I_a,I_b,I_c,triples)
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+m=size(I_a,2);
+strides=cumprod(size(triples));
+for i=1:m
+    ind=1+permute( repmat(I_a(:,i),[1 nb nc]), [1 2 3]);
+    ind=ind+strides(1)*permute( repmat(I_b(:,i),[1 na nc]), [2 1 3]);
+    ind=ind+strides(2)*permute( repmat(I_c(:,i),[1 na nb]), [2 3 1]);
+    %ind=reshape( ind, m, [] );
+    Mi=triples(ind);
+    if i==1
+        M=Mi;
+    else
+        M=M.*Mi;
+    end
+end
+M=reshape( M, [na nb nc]);
+
+
+function M=multiplication_tensor_1(I_a,I_b,I_c,triples)
+% This is the implementation I like most, because it's the most
+% symmetric one and doesn't need any reshaping. However, it's 30 to 40
+% percent slower than the current one (above).
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+I=repmat( permute(I_a,[1 3 4 2] ), [1 nb nc 1] );
+J=repmat( permute(I_b,[3 1 4 2] ), [na 1 nc 1] );
+K=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
+strides=cumprod(size(triples));
+ind=1+I+strides(1)*J+strides(2)*K;
+M=prod(triples(ind),4);
+
+function M=multiplication_tensor_2(I_a,I_b,I_c,triples)
+% this is currently the fastest implementation
+% (compared with: not first transposing (10%), first permuting (20%),
+% keeping tensor format (30-40%))
+
 % The purpose of the next few lines is to construct arrays of linear
 % indices to index directly into the triples array without need for loops.
 % We therefore create order 4 tensors where the first dimension is the
@@ -85,36 +129,17 @@ end
 % dimensions are somehow removed to early, causing the ordering of
 % dimensions to become messed up)
 
-% this is currently the fastest implementation
-% (compared with: not first transposing (10%), first permuting (20%),
-% keeping tensor format (30-40%))
-
-ni=size(i,1);
-nj=size(j,1);
-nk=size(k,1);
-nd=size(i,2);
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+m=size(I_a,2);
 strides=cumprod(size(triples));
-ind=1+permute( repmat(i',[1 1 nj nk]), [1 2 3 4]);
-ind=ind+strides(1)*permute( repmat(j',[1 1 ni nk]), [1 3 2 4]);
-ind=ind+strides(2)*permute( repmat(k',[1 1 ni nj]), [1 3 4 2]);
-ind=reshape( ind, nd, [] );
+ind=1+permute( repmat(I_a',[1 1 nb nc]), [1 2 3 4]);
+ind=ind+strides(1)*permute( repmat(I_b',[1 1 na nc]), [1 3 2 4]);
+ind=ind+strides(2)*permute( repmat(I_c',[1 1 na nb]), [1 3 4 2]);
+ind=reshape( ind, m, [] );
 M=prod(triples(ind),1);
-M=reshape( M, [ni nj nk]);
-
-if 0
-    % This is the implementation I like most, because it's the most
-    % symmetric one and doesn't need any reshaping. However, it's 30 to 40
-    % percent slower than the current one (above).
-    ni=size(i,1); %#ok<UNRCH>
-    nj=size(j,1);
-    nk=size(k,1);
-    I=repmat( permute(i,[1 3 4 2] ), [1 nj nk 1] );
-    J=repmat( permute(j,[3 1 4 2] ), [ni 1 nk 1] );
-    K=repmat( permute(k,[3 4 1 2] ), [ni nj 1 1] );
-    strides=cumprod(size(triples));
-    ind=1+I+strides(1)*J+strides(2)*K;
-    c=prod(triples(ind),4); %#ok
-end
+M=reshape( M, [na nb nc]);
 
 
 function M=compute_hermite_triples(p)

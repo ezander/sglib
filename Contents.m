@@ -59,7 +59,6 @@
 %   solver_message                     - TODO: need to rewrite from scratch, so it can be put under GPL (this is a
 %
 % Stochastic Galerkin method
-%   compute_kl_pce_operator            - 
 %   compute_pce_operator               - COMPUTE_PCE_MATRIX Compute the operator that represents multiplication with PC expanded random field.
 %   compute_pce_matrix                 - Compute the matrix that represents multiplication in the Hermite algebra.
 %   compute_pce_rhs                    - Compute the right hand side in a linear equation involving the PCE.

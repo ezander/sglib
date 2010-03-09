@@ -1,4 +1,4 @@
-function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
+function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u, algorithm )
 % COMPUTE_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
 %   DELTA_I=COMPUTE_PCE_MATRIX( K_I_IOTA, I_K, I_U ) computes the matrices
 %   DELTA_I representing multiplication with the random variables
@@ -14,7 +14,7 @@ function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
 %    k_i_iota=rand(2,size(I_k,1));
 %    Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
 %
-% See also COMPUTE_PCE_RHS, COMPUTE_PCE_OPERATOR, COMPUTE_KL_PCE_OPERATOR
+% See also COMPUTE_PCE_RHS, COMPUTE_PCE_OPERATOR, KL_PCE_COMPUTE_OPERATOR
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -31,15 +31,18 @@ function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u )
 check_condition( {k_i_iota,I_k}, 'match', false, {'k_i_iota','I_k'}, mfilename );
 check_condition( {I_u,I_k'}, 'match', false, {'I_u','I_k'''}, mfilename );
 
+if nargin<4
+    algorithm=3;
+end
+
 % initialize hermite_triple function cache
-hermite_triple_fast(max([I_k(:); I_u(:)]));
+%hermite_triple_fast(max([I_k(:); I_u(:)]));
 
 n=size(k_i_iota,1);
 % We have different versions for computing the pce matrix here, with
 % different levels of vectorization. The old versions (1 and 2) are left in
 % to have comparisons when optimizations are performed.
-vect_level=3;
-switch vect_level
+switch algorithm
     case 1
         m_alpha_u=size(I_u,1);
         Delta_i=zeros( m_alpha_u, m_alpha_u, n );
@@ -57,5 +60,9 @@ switch vect_level
             Delta_i(:,alpha,:)=Delta_i(alpha,:,:);
         end
     case 3
-        Delta_i=tensor_multiply( hermite_triple_fast( I_u, I_u, I_k ), k_i_iota, 3, 2 );
+        M=hermite_triple_fast( I_u, I_u, I_k );
+        Delta_i=tensor_multiply( M, k_i_iota, 3, 2 );
+    case 4
+        M=hermite_triple_fast( I_u, I_u, I_k, 'use_sparse', true );
+        Delta_i=tensor_multiply( M, k_i_iota, 3, 2 );
 end
