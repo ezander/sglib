@@ -27,8 +27,6 @@ function [Z_gamma,I_Z]=pce_divide( X_alpha, I_X, Y_beta, I_Y, I_Z )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 if nargin<5
     I_Z=I_X;
 end
@@ -51,16 +49,3 @@ elseif n==m || m==1
 else 
     error('so nich...')
 end
-
-
-% m_X=size(I_X,1);
-% K=zeros(m_X,m_Z);
-% 
-% for j=1:m_X
-%     alpha=I_X(j,:);
-%     for k=1:m_Z;
-%         gamma=I_Z(k,:);
-%         K(j,k)=Y_beta*squeeze(hermite_triple_fast(alpha,gamma,I_Y));
-%     end
-% end
-% Z_gamma=(K\X_alpha_RHS')';

@@ -1,6 +1,6 @@
-function M=hermite_triple_fast(i,j,k)
+function M=hermite_triple_fast(I_A, I_B, I_C, varargin)
 % HERMITE_TRIPLE_FAST Cached computation of the expectation of triple products of Hermite polynomials.
-%   M=HERMITE_TRIPLE_FAST(I,J,K) computes the value of <H_i H_j H_k> where
+%   M=HERMITE_TRIPLE_FAST(I_A,J,K) computes the value of <H_i H_j H_k> where
 %   the H_ijk are the unnormalized (stochastic) Hermite polynomials and the
 %   expectation <.> is over a Gaussian measure i.e. <f(X)>=int_-infty^infty
 %   f(x) exp(-x^2/2)/sqrt(2*pi) dx. The result is a tensor of order 3, thus
@@ -35,6 +35,10 @@ function M=hermite_triple_fast(i,j,k)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options( varargin );
+[algorithm,options]=get_option( options, 'algorithm', 'default' );
+check_unsupported_options( options, mfilename );
+
 
 %TODO: this file should probably be merged with hermit_triple_product and
 %the fastest version selected automatically
@@ -50,9 +54,9 @@ end
 
 % Compute maximum index for triples cache 
 if nargin>=3
-    max_ind_cur=full(max([i(:); j(:); k(:)]));
+    max_ind_cur=full(max([I_A(:); I_B(:); I_C(:)]));
 else
-    max_ind_cur=full(i);
+    max_ind_cur=full(I_A);
 end
 max_ind_cur=max( 15, max_ind_cur );
     
@@ -72,9 +76,115 @@ if nargin==1
     return
 end
 
-%M=multiplication_tensor_1(i,j,k,triples);
-%M=multiplication_tensor_2(i,j,k,triples);
-M=multiplication_tensor_blocked_1(i,j,k,triples);
+switch algorithm
+    case 'vectorized1'
+        M=multiplication_tensor_vectorized1( I_A, I_B, I_C, triples);
+    case 'vectorized2'
+        M=multiplication_tensor_vectorized2( I_A, I_B, I_C, triples);
+    case 'indexed'
+        M=multiplication_tensor_indexed( I_A, I_B, I_C, triples);
+    case 'sparse'
+        M=multiplication_tensor_sparse( I_A, I_B, I_C, triples);
+    case 'sparseb'
+        M=multiplication_tensor_sparse_blocked( I_A, I_B, I_C, triples);
+    case {'blocked1', 'default'}
+        M=multiplication_tensor_blocked_1( I_A, I_B, I_C, triples);
+    otherwise
+        error( 'sglib:hermite_triples_fast:param_error', 'Unknown algorithm: %s', algorithm );
+end
+
+
+function M=multiplication_tensor_sparse_blocked(I_a,I_b,I_c,triples)
+bs=2000000;
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+bsc=floor(bs/(na*nb));
+r=ceil(nc/bsc);
+for i=1:r
+    j1=1+(i-1)*bsc;
+    if i~=r
+        j2=i*bsc;
+    else
+        j2=nc;
+    end
+    I_cb=I_c(j1:j2,:);
+    Mi=multiplication_tensor_sparse(I_a,I_b,I_cb,triples);
+    if i==1
+        M=Mi;
+    else
+        M=[M Mi];
+    end
+end
+
+
+function M=multiplication_tensor_sparse(I_a,I_b,I_c,triples)
+%one16=int16(1);
+one32=int32(1);
+one16=int32(1);
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+m=size(I_a,2);
+strides=cumprod(size(triples));
+nzi=reshape(one32:(na*nb*nc), [], 1);
+nza=reshape( permute( repmat((one16:na)',[1 nb nc]), [1 2 3]), [], 1);
+nzb=reshape( permute( repmat((one16:nb)',[1 na nc]), [2 1 3]), [], 1);
+nzc=reshape( permute( repmat((one16:nc)',[1 na nb]), [2 3 1]), [], 1);
+for i=1:m
+    ind=1+I_a(nza,i)+strides(1)*I_b(nzb,i)+strides(2)*I_c(nzc,i);
+    sel=(triples(ind)~=0);
+    nzi=nzi(sel);
+    nza=nza(sel);
+    nzb=nzb(sel);
+    nzc=nzc(sel);
+end
+for i=1:m
+    ind=1+I_a(nza,i)+strides(1)*I_b(nzb,i)+strides(2)*I_c(nzc,i);
+    if i==1
+        Mi=triples(ind);
+    else
+        Mi=Mi.*triples(ind);
+    end
+end
+%M=zeros(na*nb*nc,1);
+%M(nzi)=Mi;
+
+M=sparse(double(nza+na*(nzb-1)),double(nzc),Mi,na*nb,nc);
+
+%M=sparse(,);
+
+
+
+
+function M=multiplication_tensor_indexed(I_a,I_b,I_c,triples)
+one16=int16(1);
+one32=int32(1);
+na=size(I_a,1);
+nb=size(I_b,1);
+nc=size(I_c,1);
+m=size(I_a,2);
+strides=cumprod(size(triples));
+nzi=reshape(one32:(na*nb*nc), [], 1);
+nza=reshape( permute( repmat((one16:na)',[1 nb nc]), [1 2 3]), [], 1);
+nzb=reshape( permute( repmat((one16:nb)',[1 na nc]), [2 1 3]), [], 1);
+nzc=reshape( permute( repmat((one16:nc)',[1 na nb]), [2 3 1]), [], 1);
+for i=1:m
+    ind=1+I_a(nza,i)+strides(1)*I_b(nzb,i)+strides(2)*I_c(nzc,i);
+    Mi=triples(ind);
+    if i==1
+        M=Mi;
+    else
+        M(nzi)=M(nzi).*Mi;
+    end
+    sel=(Mi~=0);
+    nzi=nzi(sel);
+    nza=nza(sel);
+    nzb=nzb(sel);
+    nzc=nzc(sel);
+end
+M=reshape( M, [na nb nc]);
+
 
 function M=multiplication_tensor_blocked_1(I_a,I_b,I_c,triples)
 na=size(I_a,1);
@@ -97,21 +207,21 @@ end
 M=reshape( M, [na nb nc]);
 
 
-function M=multiplication_tensor_1(I_a,I_b,I_c,triples)
+function M=multiplication_tensor_vectorized1(I_a,I_b,I_c,triples)
 % This is the implementation I like most, because it's the most
 % symmetric one and doesn't need any reshaping. However, it's 30 to 40
-% percent slower than the current one (above).
+% percent slower than the current one (below).
 na=size(I_a,1);
 nb=size(I_b,1);
 nc=size(I_c,1);
-I=repmat( permute(I_a,[1 3 4 2] ), [1 nb nc 1] );
-J=repmat( permute(I_b,[3 1 4 2] ), [na 1 nc 1] );
-K=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
+IA=repmat( permute(I_a,[1 3 4 2] ), [1 nb nc 1] );
+IB=repmat( permute(I_b,[3 1 4 2] ), [na 1 nc 1] );
+IC=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
 strides=cumprod(size(triples));
-ind=1+I+strides(1)*J+strides(2)*K;
+ind=1+IA+strides(1)*IB+strides(2)*IC;
 M=prod(triples(ind),4);
 
-function M=multiplication_tensor_2(I_a,I_b,I_c,triples)
+function M=multiplication_tensor_vectorized2(I_a,I_b,I_c,triples)
 % this is currently the fastest implementation
 % (compared with: not first transposing (10%), first permuting (20%),
 % keeping tensor format (30-40%))

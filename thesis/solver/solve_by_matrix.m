@@ -1,6 +1,6 @@
 fi_vec=tensor_to_vector( Fi );
 
-use_pcg=get_param('use_pcg', false );
+use_pcg=get_param('use_pcg', true );
 if ~use_pcg
     if ~exist('Ki_mat')
         tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
@@ -37,6 +37,6 @@ Ui_true=Ui;
 
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-U=tensor_truncate( U );
+U=tensor_truncate( U, 'eps', 1e-5 );
 [u_i_k,u_k_alpha]=tensor_to_kl( U );
 %[un_i_k,un_k_alpha]=tensor_to_kl( U, false );

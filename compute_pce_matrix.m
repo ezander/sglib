@@ -1,4 +1,4 @@
-function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u, algorithm )
+function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u, varargin )
 % COMPUTE_PCE_MATRIX Compute the matrix that represents multiplication in the Hermite algebra.
 %   DELTA_I=COMPUTE_PCE_MATRIX( K_I_IOTA, I_K, I_U ) computes the matrices
 %   DELTA_I representing multiplication with the random variables
@@ -31,9 +31,9 @@ function Delta_i=compute_pce_matrix( k_i_iota, I_k, I_u, algorithm )
 check_condition( {k_i_iota,I_k}, 'match', false, {'k_i_iota','I_k'}, mfilename );
 check_condition( {I_u,I_k'}, 'match', false, {'I_u','I_k'''}, mfilename );
 
-if nargin<4
-    algorithm=3;
-end
+options=varargin2options( varargin );
+[algorithm,options]=get_option( options, 'algorithm', 3 );
+check_unsupported_options( options, mfilename );
 
 % initialize hermite_triple function cache
 %hermite_triple_fast(max([I_k(:); I_u(:)]));
@@ -63,6 +63,6 @@ switch algorithm
         M=hermite_triple_fast( I_u, I_u, I_k );
         Delta_i=tensor_multiply( M, k_i_iota, 3, 2 );
     case 4
-        M=hermite_triple_fast( I_u, I_u, I_k, 'use_sparse', true );
-        Delta_i=tensor_multiply( M, k_i_iota, 3, 2 );
+        M=hermite_triple_fast( I_u, I_u, I_k, 'algorithm', 'sparse' );
+        Delta_i=M*sparse(k_i_iota');
 end

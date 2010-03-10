@@ -70,3 +70,37 @@ assert_equals( squeeze(hermite_triple_fast([1 2],[4 3],[3 3; 3 4; 3 5])), [864;0
 assert_equals( squeeze(hermite_triple_fast([1 2],[2 2],[3 3; 3 4; 3 5])), [0;144;0], 'multivariate/kvec' );
 assert_equals( squeeze(hermite_triple_fast([1 2],[2 3; 4 3; 2 2],[3 3; 3 4; 3 5])), [216,0,720; 864,0,2880; 0,144,0], 'multivariate/jkvec' );
 assert_equals( squeeze(hermite_triple_fast(1,[2; 4; 2],[3; 3; 3])), [6,6,6; 24,24,24; 6,6,6], 'multivariate/jkvec' );
+
+
+
+I_A=multiindex(2,2);
+I_B=multiindex(2,3);
+I_C=multiindex(2,4);
+Mex=hermite_triple_fast(I_A,I_B,I_C,'algorithm','blocked1');
+M=hermite_triple_fast(I_A,I_B,I_C,'algorithm','indexed');
+Ms=hermite_triple_fast(I_A,I_B,I_C,'algorithm','sparse');
+assert_equals(M(:),Mex(:),'indexed')
+assert_equals(Ms(:),Mex(:),'sparse')
+
+return
+
+I_A=multiindex(8,3); % 165*8
+size(I_A)
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','vectorized1');
+toc
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','vectorized2');
+toc
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','blocked1');
+toc
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','indexed');
+toc
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','sparse');
+toc
+tic
+M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','sparseb');
+toc

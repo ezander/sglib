@@ -40,15 +40,27 @@ n=size(k_i_k,1);
 l_k=size(k_i_k,2);
 K_k=cell(l_k,1);
 Delta_k=cell(l_k,1);
-Delta=compute_pce_matrix( k_k_alpha, I_k, I_u );
+% tic; fprintf( 'comp_mat: ' );
+% Delta=compute_pce_matrix( k_k_alpha, I_k, I_u, 'algorithm', 3 );
+% toc
+% tic; fprintf( 'comp_mat: ' );
+Delta=compute_pce_matrix( k_k_alpha, I_k, I_u, 'algorithm', 4 );
+% toc
+% tic; fprintf( 'assem_stiif: ' );
 for k=1:l_k
     if opt.twoarg_stiffness
         K_k{k}=operator_from_function( {stiffness_func, {k_i_k(:,k)}, {1}}, [n,n] );
     else
         K_k{k}=funcall( stiffness_func, k_i_k(:,k) );
     end
-    Delta_k{k}=sparse(Delta(:,:,k));
 end
+% toc
+% tic; fprintf( 'coll_delta: ' );
+for k=1:l_k
+%    Delta_k{k}=sparse(Delta(:,:,k));
+    Delta_k{k}=reshape(Delta(:,k), size(I_u,1), size(I_u,1) );
+end
+% toc
 K=[K_k,Delta_k];
 
 
