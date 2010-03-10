@@ -9,10 +9,10 @@ if isempty(geom)
 else
     num_refine=get_param( 'num_refine', 1 );
     show_mesh=get_param( 'show_mesh', false );
-    [pos,els,G_N]=load_pdetool_geom( geom, num_refine, show_mesh );
+    [pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
     N=size(pos,2);
     bnd_nodes=find_boundary( els, true );
-    stiffness_func={@stiffness_matrix, {pos, els}, {1,2}}; % could be changed to a pdetool function
+    stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}}; % could be changed to a pdetool function
     d=2;
 end
 
