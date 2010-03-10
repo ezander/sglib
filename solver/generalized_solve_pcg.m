@@ -47,6 +47,15 @@ for iter=1:maxiter
 
     normres=gvector_norm( Rn );
     relres=normres/initres;
+    
+    if normres<abstol || relres<reltol; 
+        AXc=operator_apply(A,Xc,'truncate_func', truncate_operator_func);
+        Rn=gvector_add( F, AXc, -1 );
+        Rn=funcall( truncate_before_func, Rn );
+        normres=gvector_norm( Rn );
+        relres=normres/initres;
+    end
+    
     resvec(end+1)=normres; %#ok<AGROW>
 
     % Proposed update is DY=alpha*Pc
@@ -59,7 +68,7 @@ for iter=1:maxiter
 
     gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
 
-    if normres<abstol || relres<reltol; 
+    if normres<abstol || relres<reltol;
         flag=0;
         break; 
     end
@@ -74,6 +83,7 @@ for iter=1:maxiter
 
     Zn=operator_apply(Minv,Rn);
     beta=gvector_scalar_product(Rn,Zn)/gvector_scalar_product(Rc,Zc);
+    Pc=funcall( truncate_before_func, Pc );
     Pn=gvector_add(Zn,Pc,beta);
 
     % set all iteration variables to new state

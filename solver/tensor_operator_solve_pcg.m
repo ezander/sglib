@@ -13,8 +13,9 @@ options=varargin2options( varargin );
 [trunc.trunc_mode,options]=get_option( options, 'trunc_mode', 2 );
 [trunc.vareps,options]=get_option( options, 'vareps', false );
 [trunc.relcutoff,options]=get_option( options, 'relcutoff', true );
-[trunc.vareps_threshold,options]=get_option( options, 'vareps_threshold', 0.1 );;
-[trunc.vareps_reduce,options]=get_option( options, 'vareps_reduce', 0.1 );;
+[trunc.vareps_threshold,options]=get_option( options, 'vareps_threshold', 0.1 );
+[trunc.vareps_reduce,options]=get_option( options, 'vareps_reduce', 0.1 );
+[trunc.show_reduction,options]=get_option( options, 'show_reduction', false );
 
 [stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', [] );
@@ -53,19 +54,20 @@ pass_options=[pass_options {'Minv', Minv}];
 if is_tensor(F)
     switch trunc.trunc_mode
         case 1 % after preconditioning
-            truncate_operator_func=@tensor_truncate_zero;
-            truncate_before_func=@tensor_truncate_zero;
+            truncate_operator_func={@tensor_truncate_zero, {trunc}, {2}};
+            truncate_before_func={@tensor_truncate_zero, {trunc}, {2}};
             truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
         case 2 % before preconditioning
-            trunc_op.eps=trunc.eps/100;
-            trunc_op.k_max=inf;
+            trunc_op=trunc;
+            trunc_op.eps=trunc.eps/3; %/100;
+            trunc_op.k_max=1.5*trunc.k_max;
             truncate_operator_func={@tensor_truncate_fixed, {trunc_op}, {2}};;
             truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_after_func=@tensor_truncate_zero;
+            truncate_after_func={@tensor_truncate_zero, {trunc}, {2}};
         case 3 % in the operator
             truncate_operator_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_before_func=@tensor_truncate_zero;
-            truncate_after_func=@tensor_truncate_zero;
+            truncate_before_func={@tensor_truncate_zero, {trunc}, {2}};
+            truncate_after_func={@tensor_truncate_zero, {trunc}, {2}};
     end
     %pass_options=[pass_options {'truncate_func', truncate_func}]
     pass_options=[pass_options {'truncate_operator_func', truncate_operator_func}];
@@ -79,13 +81,17 @@ end
 
 
 function U=tensor_truncate_fixed( T, trunc )
-r1=tensor_rank(T);
 U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
-r2=tensor_rank(U);
-fprintf( 'fixd: %d->%d\n', r1, r2 );
+if trunc.show_reduction
+    r1=tensor_rank(T);
+    r2=tensor_rank(U);
+    fprintf( 'fixd: %d->%d\n', r1, r2 );
+    if r1>300
+        keyboard;
+    end
+end
 
 function U=tensor_truncate_variable( T, trunc )
-r1=tensor_rank(T);
 if trunc.vareps 
     upratio=get_update_ratio();
     if abs(upratio-1)>trunc.vareps_threshold
@@ -94,8 +100,11 @@ if trunc.vareps
     end
 end    
 U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
-r2=tensor_rank(U);
-fprintf( 'vari: %d->%d\n', r1, r2 );
+if trunc.show_reduction
+    r1=tensor_rank(T);
+    r2=tensor_rank(U);
+    fprintf( 'vari: %d->%d\n', r1, r2 );
+end
 
 function upratio=get_update_ratio
 global gsolver_stats;
@@ -106,15 +115,17 @@ else
     upratio=gsolver_stats.upratio(end);
 end
 
-function U=tensor_truncate_zero( T )
-r1=tensor_rank(T);
+function U=tensor_truncate_zero( T, trunc )
 k_max=min(tensor_size(T));
 if tensor_rank(T)>k_max
     U=tensor_truncate( T, 'eps', 0, 'k_max', k_max );
 else
     U=T;
 end
-r2=tensor_rank(U);
-fprintf( 'zero: %d->%d\n', r1, r2 );
+if trunc.show_reduction
+    r1=tensor_rank(T);
+    r2=tensor_rank(U);
+    fprintf( 'zero: %d->%d\n', r1, r2 );
+end
 
 

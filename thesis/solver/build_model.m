@@ -34,7 +34,6 @@ cov_k=get_param( 'cov_k', {cov_k_func,{lc_k,1}} );
 % expand the field
 [k_i_k,k_k_alpha,I_k]=expand_field_kl_pce( stdnor_k, cov_k, pos, G_N, p_k, m_k, l_k );
 
-
 %% construct the right hand side random field f 
 % define stochastic expansion parameters
 p_f=get_param( 'p_f', 3 );

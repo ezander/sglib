@@ -1,15 +1,15 @@
-fi_vec=tensor_to_vector( Fi );
+Fi_vec=tensor_to_vector( Fi );
 
 use_pcg=get_param('use_pcg', true );
 if ~use_pcg
-    if ~exist('Ki_mat')
+    if ~exist('Ki_mat', 'var')
         tic; fprintf( 'Creating matrix (%dx%d): ', prod(tensor_operator_size(Ki)) );
         Ki_mat=tensor_operator_to_matrix(Ki);
         toc;
         
     end
     tic; fprintf( 'Solving (direct): ' );
-    ui_vec=Ki_mat\fi_vec;
+    Ui_vec=Ki_mat\Fi_vec;
     toc;
 else
 
@@ -22,21 +22,24 @@ else
     Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
     
     tic; fprintf( 'Solving (pcg): ' );
-    [ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,fi_vec,reltol,maxit,Mi_inv_fun);
+    [Ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxit,Mi_inv_fun);
     toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
     tic; fprintf( 'Solving (gpcg): ' );
-    [ui_vec2,flag,info]=generalized_solve_pcg( Ki,fi_vec,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv);
+    [Ui_vec2,flag,info]=generalized_solve_pcg( Ki,Fi_vec,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv);
     toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 end
 
-ui_mat=reshape( ui_vec, [], M );
-[U_,S_,V_]=svd(ui_mat);
-Ui={U_*S_,V_};
-Ui_true=Ui;
-
+Ui_mat=reshape( Ui_vec, [], M );
+[u_i_k,u_k_alpha]=pce_to_kl( Ui_mat, I_u, inf, [], [] );
+Ui=kl_to_tensor(u_i_k, u_k_alpha);
+Ui=tensor_truncate( Ui, 'eps', 1e-14 );
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-U=tensor_truncate( U, 'eps', 1e-5 );
-[u_i_k,u_k_alpha]=tensor_to_kl( U );
-%[un_i_k,un_k_alpha]=tensor_to_kl( U, false );
+U=tensor_truncate( U, 'eps', 1e-14 );
+
+Ui_true=Ui;
+U_true=U;
+
+%U=tensor_truncate( U, 'eps', 1e-5 );
+%[u_i_k,u_k_alpha]=tensor_to_kl( U );

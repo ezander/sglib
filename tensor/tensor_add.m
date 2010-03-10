@@ -37,8 +37,16 @@ end
 
 check_tensors_compatible( T1, T2 );
 
-if tensor_rank(T1)+tensor_rank(T2)>1000
-    warning( 'tensor:tensor_add:large', 'Your tensor is growing pretty large. Forgotten to truncate?' );
+persistent max_size;
+
+if isempty(max_size)
+    max_size=1000;
+end
+
+if tensor_rank(T1)+tensor_rank(T2)>max_size
+    warning( 'tensor:tensor_add:large', ['Your tensor is growing pretty large. Forgotten to truncate?\n', ... 
+        'max_size is currently %d. You may set it to a higher value by entering e.g. max_size=%d.'], ...
+        max_size, 10*max_size );
     keyboard;
 end
     
