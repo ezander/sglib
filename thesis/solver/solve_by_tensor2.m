@@ -38,9 +38,6 @@ tic; fprintf( 'Solving (tpcg): ' );
 [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
-% [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi2, 'reltol', reltol, opts{:} );
-% fprintf( 'Flag: %d, iter: %d, relres: %g\n', flag, info.iter, info.relres );
-
 R1=gvector_add( Fi, operator_apply( Ki, Ui ), -1 );
 R2=gvector_add( Fi, operator_apply( Ki, Ui_true ), -1 );
 

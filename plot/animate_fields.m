@@ -28,12 +28,14 @@ options=varargin2options( varargin );
 [dynamicz,options]=get_option( options, 'dynamicz', true );
 [mask,options]=get_option( options, 'mask', [] );
 [titles,options]=get_option( options, 'titles', {} );
+[xlabels,options]=get_option( options, 'xlabels', {} );
+[ylabels,options]=get_option( options, 'ylabels', {} );
 check_unsupported_options( options, mfilename );
 
 fields=fields(:);
 
 if iscell(zrange) && isempty(zrange)
-    zrange=cell(length(fields));
+    zrange=cell(length(fields),1);
 end
 
 N=200;
@@ -108,6 +110,16 @@ for t=linspace(0,1,L)
         if j<=length(titles)
             title(titles{j});
         end
+        if iscell(xlabels) && j<=length(xlabels)
+            xlabel(xlabels{j});
+        elseif ischar(xlabels)
+            xlabel(xlabels);
+        end
+        if iscell(ylabels) && j<=length(ylabels)
+            ylabel(ylabels{j});
+        elseif ischar(ylabels)
+            ylabel(ylabels);
+        end
         
         zrange=set_and_update_range( zrange, dynamicz, j, u );
     end
@@ -157,7 +169,7 @@ end
 if dynamicz
     zr=minmax( [zr, u(:)'] );
 end
-if ~isempty(zrange)
+if ~isempty(zrange) && zr(2)>zr(1)
     zlim(zr);
     caxis(zr);
 end

@@ -62,15 +62,26 @@ check_range( size(pos,1), 1, 3, 'sizeof(pos,1)', mfilename );
 check_condition( G_N, 'square', true, 'G_N', mfilename );
 check_condition( {pos, G_N}, 'match', true, {'pos', 'G_N'}, mfilename );
 check_range( p, 1, 10, 'p', mfilename );
-check_range( m_gam, 1, 1000, 'm_gam', mfilename );
+check_range( m_gam, 0, 1000, 'm_gam', mfilename );
 
 % get options
 options=varargin2options( varargin );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 check_unsupported_options( options, mfilename );
 
+
 % Step 1: calculate the rho_k(pos) numerically
 rho_k=pce_expand_1d(rho_stdnor_func,p);
+if m_gam==0
+    r_j_alpha=repmat(rho_k(1), size(pos,2), 1);
+    I_r=multiindex(0,0);
+    C_r=ones(size(pos,2));
+    return
+end
+
+% Step 0: if the number of random variables is zero
+
+
 
 % Step 2: calculate <gam_i gam_j> from <u_i u_j>
 C_r=covariance_matrix( pos, cov_r_func );

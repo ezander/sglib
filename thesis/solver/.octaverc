@@ -1,6 +1,0 @@
-page_screen_output(false);
-curr=pwd;
-cd('../..')
-sglib_startup;
-addpath(fullfile(pwd, 'build') );
-cd(curr);

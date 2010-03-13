@@ -51,19 +51,26 @@ pass_options=[pass_options {'Minv', Minv}];
 %% generate truncation options
 % needs to become more intelligent
 % pcg needs to pass stats to truncate function
+
+
+trunc_med=trunc;
+trunc_med.eps=trunc.eps/3;
+trunc_med.k_max=1.5*trunc.k_max;
+
+truncate_strong={@tensor_truncate_variable, {trunc}, {2}};
+truncate_med={@tensor_truncate_fixed, {trunc_med}, {2}};
+truncate_zero={@tensor_truncate_zero, {trunc}, {2}};
+
 if is_tensor(F)
     switch trunc.trunc_mode
         case 1 % after preconditioning
-            truncate_operator_func={@tensor_truncate_zero, {trunc}, {2}};
-            truncate_before_func={@tensor_truncate_zero, {trunc}, {2}};
-            truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
+            truncate_operator_func=truncate_zero;
+            truncate_before_func=truncate_zero;
+            truncate_after_func=truncate_strong;
         case 2 % before preconditioning
-            trunc_op=trunc;
-            trunc_op.eps=trunc.eps/3; %/100;
-            trunc_op.k_max=1.5*trunc.k_max;
-            truncate_operator_func={@tensor_truncate_fixed, {trunc_op}, {2}};;
-            truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_after_func={@tensor_truncate_zero, {trunc}, {2}};
+            truncate_operator_func=truncate_strong;
+            truncate_before_func=truncate_med;
+            truncate_after_func=truncate_med;
         case 3 % in the operator
             truncate_operator_func={@tensor_truncate_variable, {trunc}, {2}};
             truncate_before_func={@tensor_truncate_zero, {trunc}, {2}};

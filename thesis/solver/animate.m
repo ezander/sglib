@@ -2,26 +2,34 @@
 %#ok<*NASGU>
 %#ok<*AGROW>
 
+%% setup and solve the model
 if ~exist('u_i_k', 'var') || (exist('recompute', 'var') && recompute)
     recompute=false;
 
+    underline('model_large');
     model_large;
+    mean_f_func={@spatial_function, {'0.6*(1-1*(x^2+y^2))'}, {1}};
     %l_f=10;
     %l_k=10;
-    %p_u=3;
-       
-    underline('build_model');
-    build_model;
+    %num_refine=0;
+    %m_k=4;
+    %m_f=4;
+    m_g=2;
+    l_g=2;
+    mean_g_func=make_spatial_function('x+y');
+    is_neumann=make_spatial_function('x>-0.01');
     
-    underline('discretize');
-    discretize;
+    underline('discretize_model');
+    discretize_model;
+        
+    underline('setup_equation');
+    setup_equation;
     
-    underline('solve_by_???');
-    use_pcg=true;
-    %solve_by_matrix;
-    solve_by_tensor2;
+    underline('solve_by_pcg');
+    solve_by_pcg;
 end
 
+%% animate input and output random fields
 modes=1:size(u_i_k,2);
 mask=any(I_f,1); 
 mask=any(I_k,1); 
@@ -38,7 +46,8 @@ for k=1:3:10;
     titles=[titles, {sprintf( 'u_%d', k)} ];
 end 
 
-extra_options={ 'renderer', 'opengl' };
+extra_options={ 'renderer', 'opengl', 'view_mode', [233, 30] };
+extra_options=[extra_options {'xlabels', 'x', 'ylabels', 'y' }];
 
 animate_fields( pos, els, fields, 'rows', -1, 'cols', -1, 'mask', mask, 'zrange', {}, 'titles', titles, extra_options{:} );
 

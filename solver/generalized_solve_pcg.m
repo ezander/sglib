@@ -48,12 +48,19 @@ for iter=1:maxiter
     normres=gvector_norm( Rn );
     relres=normres/initres;
     
-    if normres<abstol || relres<reltol; 
-        AXc=operator_apply(A,Xc,'truncate_func', truncate_operator_func);
-        Rn=gvector_add( F, AXc, -1 );
+    if true && (normres<abstol || relres<reltol)
+        AXn=operator_apply(A,Xn,'truncate_func', truncate_operator_func);
+        Rn=gvector_add( F, AXn, -1 );
         Rn=funcall( truncate_before_func, Rn );
-        normres=gvector_norm( Rn );
-        relres=normres/initres;
+        new_normres=gvector_norm( Rn );
+        new_relres=new_normres/initres;
+        if ~((new_normres<abstol || new_relres<reltol))
+            disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
+            fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
+            keyboard;
+            normres=new_normres;
+            relres=new_relres;
+        end
     end
     
     resvec(end+1)=normres; %#ok<AGROW>

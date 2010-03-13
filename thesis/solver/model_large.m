@@ -18,5 +18,8 @@ l_k=40;
 cov_k_func=@exponential_covariance;
 lc_k=[0.01 0.2];
 
+% dirichlet boundary field
+mean_g_func={@spatial_function, {'30*sin(2*pi*y)*cos(3*pi*x)'}, {1}};
+
 % solution
 p_u=3;
