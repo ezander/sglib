@@ -26,7 +26,9 @@ Zc=operator_apply( Minv, Rc );
 Pc=Zc;
 
 initres=gvector_norm( Rc );
+ltres=initres;
 resvec=[initres];
+releps=reltol; % not correct
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 
@@ -48,18 +50,20 @@ for iter=1:maxiter
     normres=gvector_norm( Rn );
     relres=normres/initres;
     
-    if true && (normres<abstol || relres<reltol)
+    %if true && (normres<abstol || relres<reltol || normres<ltres*sqrt(releps) )
+    if true && normres<ltres*sqrt(releps)
         AXn=operator_apply(A,Xn,'truncate_func', truncate_operator_func);
         Rn=gvector_add( F, AXn, -1 );
         Rn=funcall( truncate_before_func, Rn );
         new_normres=gvector_norm( Rn );
         new_relres=new_normres/initres;
-        if ~((new_normres<abstol || new_relres<reltol))
-            disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
-            fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
-            keyboard;
+        if true %~((new_normres<abstol || new_relres<reltol))
+             disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
+%             fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
+%             keyboard;
             normres=new_normres;
             relres=new_relres;
+            ltres=new_normres;
         end
     end
     

@@ -65,4 +65,5 @@ assert_equals( spatial_function( '1', pos3), ones(size(x)), 'const1' );
 assert_equals( spatial_function( '1.53e2', pos3), 153*ones(size(x)), 'const153' );
 
 
+assert_equals( spatial_function( 'false', pos3), logical(null), 'logical' );
 

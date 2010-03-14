@@ -59,5 +59,6 @@ func_str=strrep( func_str, 'ZZZ', 'z' );
 
 u=eval(func_str)';
 if any(size(u)~=size(null'))
+    % then repmat!!!
     u=u+null';
 end

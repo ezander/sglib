@@ -65,6 +65,7 @@ addpath( [basepath '/util'] );
 
 if exist( [basepath '/thesis'], 'dir' )
   addpath( [basepath '/thesis'] )
+  addpath( [basepath '/thesis/script'] )
 end
 if exist( [basepath '/paramstudy'], 'dir' )
   addpath( [basepath '/paramstudy'] )
