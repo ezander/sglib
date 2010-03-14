@@ -1,0 +1,7 @@
+% some functions to write
+pce_field_expand
+pce_field_expand_gaussian
+pce_field_expand_lognormal?
+kl_pce_field_expand
+kl_pce_field_expand_gaussian
+kl_pce_moments->mean,var
