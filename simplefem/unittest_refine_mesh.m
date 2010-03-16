@@ -20,9 +20,22 @@ function unittest_refine_mesh
 
 munit_set_function( 'refine_mesh' );
 
+% This unit test is bad since it relies on a specific ordering of the new
+% nodes, however doing it right (i.e. checking only necessary geometric
+% properties of the new mesh) is too complicated to pay off. So: if this
+% test fails, check by hand and if its a correct reordering then correct
+% the test!
 [np,ne]=refine_mesh( [-2 0; 0 4; 2 0]', [1 2 3]' );
-assert_equals( np, [-2 0; 0 4; 2 0; -1 2; 1 2; 0 0]', 'new_pos' );
-assert_equals( order_els(ne), order_els([5 4 6; 2 4 5; 5 6 3; 4 1 6]'), 'new_el' );
+assert_equals( np, [-2 0; 0 4; 2 0; -1 2; 0 0; 1 2]', 'new_pos' );
+assert_equals( order_els(ne), order_els([6 4 5; 2 4 6; 6 5 3; 4 1 5]'), 'new_el' );
+
+% check that new points are unique
+pos=[0, 1, 1, 0; 0, 0, 1, 1];
+els=[1,3;2,4;3,1];
+[np,ne]=refine_mesh( pos, els );
+npu=unique(np','rows')';
+assert_equals( size(np), size(npu), 'unique_pos' );
+
 
 
 function els=order_els(els)

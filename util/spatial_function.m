@@ -32,7 +32,7 @@ null=zeros(1,size(pos,2));  %#ok<NASGU>
 xrepl='pos(1,:)';
 yrepl='pos(2,:)';
 zrepl='pos(3,:)';
-d=size(pos,1);
+[d,n]=size(pos);
 switch mode
     case 'zero'
         if d<2; yrepl='null'; end
@@ -58,7 +58,6 @@ func_str=strrep( func_str, 'YYY', 'y' );
 func_str=strrep( func_str, 'ZZZ', 'z' );
 
 u=eval(func_str)';
-if any(size(u)~=size(null'))
-    % then repmat!!!
-    u=u+null';
+if isscalar(u)
+    u=repmat(u,n,1);
 end

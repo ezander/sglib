@@ -7,7 +7,11 @@ last={};
 for i=1:size(build,1)
     script=build{i,1};
     target=build{i,2};
-    extra_deps=build{i,3};
+    if size(build,2)>=3
+        extra_deps=build{i,3};
+    else
+        extra_deps={};
+    end
     mdep=find_deps(script);
     dep={which(script),last{:},mdep{:},extra_deps{:}};
     if needs_update( target, dep )

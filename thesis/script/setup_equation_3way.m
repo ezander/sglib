@@ -1,6 +1,9 @@
 %% combine the multiindices
 % (i.e. build the product sample space $Omega_u=Omega_k \times Omega_f \times
 % Omega_g$ in which the solution lives)
+I_k=multiindex(m_k,p_k);
+I_f=multiindex(m_f,p_f);
+I_g=multiindex(m_g,p_g);
 
 %[I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, -1 );
 [I_f,I_g,I_r]=multiindex_combine( {I_f, I_g}, -1 );

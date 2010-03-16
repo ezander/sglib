@@ -1,8 +1,8 @@
-function func=make_spatial_function(func_str)
-% MAKE_SPATIAL_FUNCTION Short description of make_spatial_function.
-%   MAKE_SPATIAL_FUNCTION Long description of make_spatial_function.
+function func=make_spatial_func(func_str)
+% MAKE_SPATIAL_FUNC Short description of make_spatial_function.
+%   MAKE_SPATIAL_FUNC Long description of make_spatial_function.
 %
-% Example (<a href="matlab:run_example make_spatial_function">run</a>)
+% Example (<a href="matlab:run_example make_spatial_func">run</a>)
 %
 % See also
 

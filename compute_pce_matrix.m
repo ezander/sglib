@@ -63,6 +63,6 @@ switch algorithm
         M=hermite_triple_fast( I_u, I_u, I_k );
         Delta_i=tensor_multiply( M, k_i_iota, 3, 2 );
     case 4
-        M=hermite_triple_fast( I_u, I_u, I_k, 'algorithm', 'sparse' );
+        M=hermite_triple_fast( I_u, I_u, I_k, 'algorithm', 'sparseb' );
         Delta_i=M*sparse(k_i_iota');
 end

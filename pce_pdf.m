@@ -1,6 +1,6 @@
-function y=pce_pdf( x, X_alpha, I_X, varargin )
+function [y,x]=pce_pdf( x, X_alpha, I_X, varargin )
 % PCE_PDF Short description of pce_pdf.
-%   PCE_PDF Long description of pce_pdf.
+%   Y=PCE_PDF( X, X_ALPHA, I_X, VARARGIN ) Long description of pce_pdf.
 %
 % Example (<a href="matlab:run_example pce_pdf">run</a>)
 %
@@ -20,6 +20,7 @@ function y=pce_pdf( x, X_alpha, I_X, varargin )
 
 options=varargin2options(varargin);
 [N,options]=get_option(options,'N',10000);
+[Nout,options]=get_option(options,'Nout',100);
 check_unsupported_options(options,mfilename);
 
 % generate random samples
@@ -50,6 +51,9 @@ pp=interp1(x_c, y_c, 'spline', 'pp');
 pp.coefs=vector_polyder( pp.coefs );
 
 % Finally evaluate on output points.
+if isempty(x)
+    x=linspace(min(x_r(:)),max(x_r(:)),Nout);
+end
 y = ppval(pp,x);
 
 % fix both ends of the distribution

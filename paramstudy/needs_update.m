@@ -1,5 +1,10 @@
 function bool=needs_update( target, dependencies )
 
+bool=false;
+if ~strncmp( fliplr(target), fliplr('.mat'), 4 )
+    target=[target, '.mat'];
+end
+
 if ~exist( target, 'file' )
     bool=true;
     return;
@@ -19,11 +24,10 @@ for i=1:n
     end
 end
 
-bool=false;
 
 function num=filedate( file )
-if ~exist(file)
-    num=0;
+if ~exist(file,'file')
+    num=-inf;
 else
     x=dir( file );
     num=datenum(x.date);

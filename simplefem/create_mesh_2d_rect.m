@@ -1,8 +1,8 @@
-function value=get_param(name, default, ws)
-% GET_PARAM Short description of get_param.
-%   GET_PARAM Long description of get_param.
+function [pos,els]=create_mesh_2d_rect(numrefine)
+% CREATE_MESH_2D_RECT Short description of create_mesh_2d_rect.
+%   CREATE_MESH_2D_RECT Long description of create_mesh_2d_rect.
 %
-% Example (<a href="matlab:run_example get_param">run</a>)
+% Example (<a href="matlab:run_example create_mesh_2d_rect">run</a>)
 %
 % See also
 
@@ -18,13 +18,15 @@ function value=get_param(name, default, ws)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    ws='caller';
+pos=[0, 1, 1, 0; 0, 0, 1, 1];
+els=[1,3;2,4;3,1];
+
+if nargin<1
+    numrefine=3;
 end
 
-try
-    value=evalin( ws, name );
-catch
-    value=default;
+for i=1:numrefine
+    [pos,els]=refine_mesh(pos,els);
 end
+
 

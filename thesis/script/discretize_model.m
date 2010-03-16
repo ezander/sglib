@@ -17,7 +17,7 @@ else
 end
 
 %
-is_neumann=get_param( 'is_neumann', make_spatial_function('false') );
+is_neumann=get_param( 'is_neumann', make_spatial_func('false') );
 
 all_bnd_nodes=bnd_nodes;
 neumann_ind=funcall( is_neumann, pos(:,bnd_nodes) );
