@@ -42,17 +42,7 @@ assert_equals( P, unitvector(3,6), 'match1' );
 
 %%
 [pos,els]=create_mesh_2d_rect( 3 );
-% x=[0.55; 0.42];
-% clf
-% trimesh( els', pos(1,:), pos(2,:), zeros(size(pos(1,:))) );
-% view(2)
-% axis equal
-% line( x([1;1]),  x([2;2]), [0.08;0.08], 'Marker', '+', 'MarkerEdgeColor', 'g');
-% line( x([1;1]),  x([2;2]), [0.08;0.08], 'Marker', 'o', 'MarkerEdgeColor', 'g');
-% hold on; trimesh( els(:,1)', pos(1,:), pos(2,:), 0.04+zeros(size(pos(1,:))) );
-% view(2)
-% hold off;
-
+x=[0.55; 0.42];
 P=point_projector( pos, els, x );
 assert_equals( sum(P), 1, 'sum1' );
 assert_equals( P'*ones(size(pos,2),1), 1, 'const1' );
