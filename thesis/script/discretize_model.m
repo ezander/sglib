@@ -1,29 +1,3 @@
-%% load or create the geomatry
-geom=get_param( 'geom', '' );
-if isempty(geom)
-    N=get_param( 'N', 50 );
-    [pos,els,bnd_nodes]=create_mesh_1d( 0, 1, N );
-    G_N=mass_matrix( pos, els );
-    stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
-    d=1;
-else
-    num_refine=get_param( 'num_refine', 1 );
-    show_mesh=get_param( 'show_mesh', false );
-    [pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
-    N=size(pos,2);
-    bnd_nodes=find_boundary( els, true );
-    stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}}; % could be changed to a pdetool function
-    d=2;
-end
-
-%
-is_neumann=get_param( 'is_neumann', make_spatial_func('false') );
-
-all_bnd_nodes=bnd_nodes;
-neumann_ind=funcall( is_neumann, pos(:,bnd_nodes) );
-neumann_nodes=all_bnd_nodes(neumann_ind);
-bnd_nodes=all_bnd_nodes(~neumann_ind);
-
 %% construct the conductivity random field k
 % define stochastic expansion parameters
 p_k=get_param( 'p_k', 4 );
@@ -34,7 +8,7 @@ eps_k=get_param( 'eps_k', 0 );
 % define the distribution (name, parameters, shift, scale)
 dist_k=get_param( 'dist_k', {'beta', {4,2}, 0.1, 1.0 } );
 mean_k_func=get_param( 'mean_k_func', [] );
-stdnor_k=@(x)(gendist_stdnor(x,dist_k{:}));
+stdnor_k={@gendist_stdnor, dist_k};
 
 % define the covariance of the field
 lc_k=get_param( 'lc_k', 0.3 );
@@ -54,7 +28,7 @@ eps_f=get_param( 'eps_f', 0 );
 % define the distribution
 dist_f=get_param( 'dist_f', {'beta', {4,2}, 0, 1.0 } );
 mean_f_func=get_param( 'mean_f_func', [] );
-stdnor_f=@(x)(gendist_stdnor(x,dist_f{:}));
+stdnor_f={@gendist_stdnor, dist_f};
 
 % define the covariance of the field
 lc_f=get_param( 'lc_f', 0.6 );
@@ -76,7 +50,7 @@ eps_g=get_param( 'eps_g', 0 );
 % define the distribution
 dist_g=get_param( 'dist_g', {'normal', {0,1}, 0, 1.0 } );
 mean_g_func=get_param( 'mean_g_func', [] );
-stdnor_g=@(x)(gendist_stdnor(x,dist_g{:}));
+stdnor_g={@gendist_stdnor, dist_g};
 
 % define the covariance of the field
 lc_g=get_param( 'lc_g', 100 );
@@ -98,7 +72,7 @@ eps_h=get_param( 'eps_h', 0 );
 % define the distribution
 dist_h=get_param( 'dist_h', {'normal', {0,1}, 0, 1.0 } );
 mean_h_func=get_param( 'mean_h_func', [] );
-stdnor_h=@(x)(gendist_stdnor(x,dist_h{:}));
+stdnor_h={@gendist_stdnor, dist_h};
 
 % define the covariance of the field
 lc_h=get_param( 'lc_h', 100 );
