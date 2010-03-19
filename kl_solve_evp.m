@@ -58,6 +58,7 @@ function [r_i_k,sigma_k]=kl_solve_evp( C, G_N, l, varargin )
 
 options=varargin2options( varargin );
 [correct_var,options]=get_option( options, 'correct_var', false );
+[diag_warning_threshold]=get_option( options, 'diag_warning_threshold', 0.5 );
 check_unsupported_options( options, mfilename );
 
 % check that not more eigenvectors are requested than size of C allows
@@ -65,6 +66,17 @@ if l>size(C,1)
     warning('kl_solve_evp:options', 'more kl-eigenvectors requested than matrix size allows: %d (reducing to %d)', ...
         l, size(C,1) );
     l=size(C,1);
+end
+
+% If the covariance matrix is close to diagonal the mesh is usually too
+% coarse to resolve the covariance function good enough. Result is usually
+% pretty bad kl eigenfunctions.
+sd=sum(diag(C));
+sod=sum(C(:))-sd;
+
+fprintf( 'kl prop: %g\n', full(sod/sd) );
+if sod/sd<diag_warning_threshold
+    warning( 'sglib:kl_solve_evp',  'Covariance matrix close to diagonal. Maybe your grid is too coarse for the given covariance length?' );
 end
 
 % calculate discrete covariance matrix W

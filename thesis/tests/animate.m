@@ -17,7 +17,7 @@ mean_g_func=make_spatial_func('x+y');
 %is_neumann=make_spatial_func('x>-0.01');
 
 rebuild=get_param('rebuild', true);
-autoloader( {'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
+autoloader( {'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
 rebuild=false;
 
 %% animate input and output random fields

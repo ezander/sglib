@@ -3,7 +3,7 @@
 %#ok<*AGROW>
 
 rebuild=get_param('rebuild', true);
-autoloader( {'model_large'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
+autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
 rebuild=false;
 
 

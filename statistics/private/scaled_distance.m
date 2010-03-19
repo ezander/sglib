@@ -1,4 +1,4 @@
-function dist=scaled_distance(x1, x2, l, smooth)
+function dist=scaled_distance(x1, x2, l, smooth, sqr)
 % SCALED_DISTANCE Short description of scaled_distance.
 %   SCALED_DISTANCE Long description of scaled_distance.
 %
@@ -18,6 +18,17 @@ function dist=scaled_distance(x1, x2, l, smooth)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin<5
+    sqr=false;
+end
+if nargin<4
+    smooth=0;
+end
+if nargin<3
+    l=1;
+end
+
+
 if isempty(x2)
     dx=x1;
 else
@@ -25,17 +36,28 @@ else
 end
 
 d=size(dx,1);
-if d==1
-    dist=abs(dx/l);
-elseif isscalar(l)
-    dist=sqrt(sum( (dx/l).^2, 1));
+if isscalar(l)
+    dx=dx/l;
 elseif length(l)==d
     invl=diag(1./l);
-    dist=sqrt(sum( (invl*dx).^2, 1));
+    dx=invl*dx;
 else
     error( 'statistics:scaled_distance', 'Size of cov_length vector doesn''t match dimension. Transposed?' );
 end
+dist2=sum( dx.*dx, 1);
 
-if smooth>0
-    dist=sqrt(dist.^2+smooth^2)-smooth;
+if sqr
+    if smooth>0
+        dist=sqrt(dist2+smooth^2)-smooth;
+        dist=dist.*dist;
+    else
+        dist=dist2;
+    end
+else
+    if smooth>0
+        dist=sqrt(dist2+smooth^2)-smooth;
+    else
+        dist=sqrt(dist2);
+    end
 end
+

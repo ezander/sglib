@@ -37,5 +37,5 @@ if nargin<3; l=1; end
 if nargin<4; sigma=1; end
 if nargin<5; smooth=0; end
 
-dist=scaled_distance(x1, x2, l, smooth);
-cov=sigma^2*exp( -dist.^2 );
+dist2=scaled_distance(x1, x2, l, smooth, true);
+cov=sigma^2*exp( -dist2 );

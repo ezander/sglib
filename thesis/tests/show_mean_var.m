@@ -3,30 +3,26 @@ function show_mean_var
 %#ok<*NASGU>
 %#ok<*AGROW>
 
-show_mean_var_without
+show_mean_var_with
 
 function show_mean_var_without
+
 model_large
 m_f=1;
 m_k=1;
 
+num_refine=1;
+show_mesh=false;
+define_geometry
 
-num_refine=get_param( 'num_refine', 1 );
-show_mesh=get_param( 'show_mesh', false );
-[pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
-N=size(pos,2);
-bnd_nodes=find_boundary( els, true );
-stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}}; % could be changed to a pdetool function
-d=2;
-
-f_stdnor_func=@(x)(gendist_stdnor(x,dist_f{:}));
-lc_f=get_param( 'lc_f', 0.6 );
-cov_f_func=get_param( 'cov_f_func', @gaussian_covariance );
-cov_f=get_param( 'cov_f', {cov_f_func,{lc_f,1}} );
+stdnor_f={@gendist_stdnor,dist_f};
+lc_f=0.6;
+cov_f_func=@gaussian_covariance;
+cov_f={cov_f_func,{lc_f,1}};
 
 
-phi_k=pce_expand_1d(f_stdnor_func,4);
-C_f=covariance_matrix( pos, cov_f );
+phi_k=pce_expand_1d(stdnor_f,6);
+C_f=covariance_matrix( pos, cov_f, 'max_dist', 5*lc_f );
 C_gam=transform_covariance_pce( C_f, phi_k );
 
 return
@@ -51,7 +47,7 @@ subplot( 3, 2, 6 ); show_density( pos, els, f_i_k, f_k_alpha, I_f, x_f )
 
 function show_mean_var_with
 rebuild=get_param('rebuild', true, 'base' );
-autoloader( {'model_large'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild, 'caller' );
+autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild, 'caller' );
 assignin( 'base', 'rebuild', false );
 
 

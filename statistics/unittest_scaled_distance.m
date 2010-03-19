@@ -19,16 +19,28 @@ function unittest_scaled_distance
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'private/scaled_distance' );
-assert_equals( scaled_distance( 1, 2, 1, 0 ), 1, 'one' );
-assert_equals( scaled_distance( 0, 3, 0.5, 0 ), 6, 'six' );
-assert_equals( scaled_distance( 1, [], 2, 0 ), 0.5, 'no_x2' );
+assert_equals( scaled_distance( 1, 2, 1, 0, false ), 1, 'one' );
+assert_equals( scaled_distance( 0, 3, 0.5, 0, false ), 6, 'six' );
+assert_equals( scaled_distance( 1, [], 2, 0, false ), 0.5, 'no_x2' );
 
-assert_equals( scaled_distance( 0, 3, 1, 0 ), 3, 'smooth0' );
-assert_equals( scaled_distance( 0, 3, 1, 4 ), 1, 'smooth4' );
+assert_equals( scaled_distance( 0, 3, 1, 0, false ), 3, 'smooth0' );
+assert_equals( scaled_distance( 0, 3, 1, 4, false ), 1, 'smooth4' );
 
-assert_equals( scaled_distance( [3 1], [7 3], 2, 0 ), [2 1], 'n2' );
-assert_equals( scaled_distance( [0 1 2; 6 7 8], [1 2 3; 4 5 6], 2, 0 ), sqrt(5/4)*[1 1 1], 'n3d2' );
-assert_equals( scaled_distance( [0 1 2; 6 7 8], [1 2 3; 4 5 6], [0.5 2], 0 ), sqrt(5)*[1 1 1], 'n3d2l2' );
+assert_equals( scaled_distance( [3 1], [7 3], 2, 0, false ), [2 1], 'n2' );
+assert_equals( scaled_distance( [0 1 2; 6 7 8], [1 2 3; 4 5 6], 2, 0, false ), sqrt(5/4)*[1 1 1], 'n3d2' );
+assert_equals( scaled_distance( [0 1 2; 6 7 8], [1 2 3; 4 5 6], [0.5 2], 0, false ), sqrt(5)*[1 1 1], 'n3d2l2' );
+
+
+x1=rand(3,5);
+x2=rand(3,5);
+sd=scaled_distance(x1, x2, 2, 0, false );
+sd2=scaled_distance(x1, x2, 2, 0, true );
+assert_equals( sd.^2, sd2, 'sqr1' );
+
+sd=scaled_distance(x1, x2, 2, .3, false );
+sd2=scaled_distance(x1, x2, 2, .3, true );
+assert_equals( sd.^2, sd2, 'sqr2' );
+
 
 
 % rest is their own unittests

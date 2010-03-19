@@ -39,18 +39,30 @@ x=linspace(0,1,n);
 
 % First some test whether the normal generation of the 1-dimensional
 % covariance matrix is correct (2- and 3-dimensional still missing)
-L=.3;
+L=.2;
 sig=2;
 C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
 C_u_ex=toeplitz(sig^2*exp(-x.^2/L^2));
 assert_equals( C_u, C_u_ex, 'cov_matrix' );
 
-Lmax=.02;
+Lmax=.4;
 C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}}, 'max_dist', Lmax );
 cmin=sig^2*exp(-Lmax^2/L^2);
 C_u_ex( C_u_ex<cmin ) = 0;
 assert_equals( C_u, C_u_ex, 'cov_matrix_lmax' );
 assert_true( issparse(C_u), 'cov_matrix_lmax_sparse' );
+
+n=1500;
+L=.1; K=5;
+x=linspace(-1,2,n);
+tic
+C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}}, 'max_dist', K*L );
+toc
+tic
+C_u2=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
+toc
+C_u_ex=toeplitz(sig^2*exp(-(x+1).^2/L^2));
+assert_equals( C_u, C_u_ex, 'cov_matrix_4L', 'abstol', sig^2*exp(-K^2) );
 
 
 
@@ -74,6 +86,32 @@ assert_equals( C_u, C_u_ex, 'cov_matrix_2d_l2' );
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % here comes old stuff that not only tests the covariance matrix function
 % but also other stuff, need to clean that up
@@ -93,11 +131,6 @@ lc=0.5;
 C_u=covariance_matrix( x, {@gaussian_covariance, {lc, sqrt(sig2)}} );
 C_u_ex=toeplitz(sig2*exp(-x.^2/lc^2));
 assert_equals( C_u, C_u_ex,'cov_matrix' );
-
-
-
-
-
 
 % c) transform and check
 C_gam=transform_covariance_pce( C_u, pcc );

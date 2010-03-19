@@ -10,9 +10,10 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   points. C is then a NxN matrix.
 %
 % Options:
-%   vectorized: {true}, false
-%     Specifies whether the covariance functions is vectorized with respect
-%     to the position arguments.
+%   max_dist: {inf}
+%     If set to a finite value only values of the covariance function of
+%     point pairs with Euclidean distance smaller or equal max_dist are
+%     computed and the result is returned as a sparse matrix.
 %
 % Example (<a href="matlab:run_example covariance_matrix">run</a>)
 %   x=linspace(0,1,10);
@@ -33,41 +34,99 @@ function C=covariance_matrix( pos, covar_func, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[vectorized,options]=get_option( options, 'vectorized', true );
 [max_dist,options]=get_option( options, 'max_dist', inf );
 check_unsupported_options( options, mfilename );
 
-n=size(pos,2);
 if isinf(max_dist)
-    C=zeros(n,n);
+    C=covariance_matrix_complete( pos, covar_func );
 else
-    C=sparse(n,n);
+    C=covariance_matrix_approx( pos, covar_func, max_dist );
 end
 
-if ~vectorized
-    % maybe this will be needed later for non-vectorized covariance
-    % functions, but it's awfully slow
-    for i=1:n
-        C(i,i)=funcall( covar_func, pos(:,i), pos(:,i) );
-        for j=(i+1):n
-            C(i,j)=funcall( covar_func, pos(:,i), pos(:,j) );
-            C(j,i)=C(i,j);
-        end
-    end
-else
-    % TODO: maybe this should be vectorized even further
-    for i=1:n
-        if isinf(max_dist)
-            C(i:end,i)=funcall( covar_func, repmat(pos(:,i),1,n-i+1), ...
-                pos(:,i:end) );
-            C(i,i:end)=C(i:end,i)';
-        else
-            
-            d=sum((repmat(pos(:,i),1,n-i+1)-pos(:,i:end)).^2,1);
-            ind=i-1+find(d<max_dist^2);
-            C(ind,i)=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
-                pos(:,ind) );
-            C(i,ind)=C(ind,i)';
-        end
-    end
+function C=covariance_matrix_complete( pos, covar_func )
+n=size(pos,2);
+C=zeros(n,n);
+
+for i=1:n
+    C(i:end,i)=funcall( covar_func, repmat(pos(:,i),1,n-i+1), ...
+        pos(:,i:end) );
+    C(i,i:end)=C(i:end,i)';
 end
+
+
+function C=covariance_matrix_approx1( pos, covar_func, max_dist )
+n=size(pos,2);
+C=sparse(n,n);
+
+for i=1:n
+    d=sum((repmat(pos(:,i),1,n-i+1)-pos(:,i:end)).^2,1);
+    ind=i-1+find(d<max_dist^2);
+    C(ind,i)=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
+        pos(:,ind) );
+    C(i,ind)=C(ind,i)';
+end
+
+function C=covariance_matrix_approx2( pos, covar_func, max_dist )
+n=size(pos,2);
+
+ind1=[];
+ind2=[];
+val=[];
+
+for i=1:n
+    d=sum((repmat(pos(:,i),1,n-i+1)-pos(:,i:end)).^2,1);
+    ind=i-1+find(d<max_dist^2);
+    valn=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
+        pos(:,ind) );
+    
+    m=length(ind);
+    indb=repmat(i,1,m);
+    ind1=[ind1, ind, indb(2:end)];
+    ind2=[ind2, indb, ind(2:end)];
+    val=[val, valn, valn(2:end)];
+end
+
+C=sparse( ind1, ind2, val, n, n );
+
+
+function C=covariance_matrix_approx( pos, covar_func, max_dist )
+n=size(pos,2);
+
+alloc=n;
+curr=0;
+ind1=zeros(1,alloc);
+ind2=zeros(1,alloc);
+val=zeros(1,alloc);
+
+for i=1:n
+    %d=sum((repmat(pos(:,i),1,n-i+1)-pos(:,i:end)).^2,1);
+    dx=(repmat(pos(:,i),1,n-i+1)-pos(:,i:end));
+    d=sum(dx.*dx,1);
+    ind=i-1+find(d<max_dist^2);
+     valn=funcall( covar_func, repmat(pos(:,i),1,length(ind)), ...
+         pos(:,ind) );
+%     p=pos(:,ind)-pos(:,i);
+%     valn=funcall( covar_func, p, [] );
+    
+    m=length(ind);
+    while curr+2*m>alloc
+        alloc=alloc*2;
+        ind1(alloc)=0;
+        ind2(alloc)=0;
+        val(alloc)=0;
+    end
+    
+    ind1(curr+1:curr+m)=ind;
+    ind2(curr+1:curr+m)=i;
+    val(curr+1:curr+m)=valn;
+    curr=curr+m;
+
+    ind1(curr+1:curr+m-1)=i;
+    ind2(curr+1:curr+m-1)=ind(2:end);
+    val(curr+1:curr+m-1)=valn(2:end);
+    curr=curr+m-1;
+end
+
+C=sparse( ind1(1:curr), ind2(1:curr), val(1:curr), n, n );
+
+
