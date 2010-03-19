@@ -8,7 +8,7 @@ eps_k=get_param( 'eps_k', 0 );
 % define the distribution (name, parameters, shift, scale)
 dist_k=get_param( 'dist_k', {'beta', {4,2}, 0.1, 1.0 } );
 mean_k_func=get_param( 'mean_k_func', [] );
-stdnor_k=@(x)(gendist_stdnor(x,dist_k{:}));
+stdnor_k={@gendist_stdnor, dist_k};
 
 % define the covariance of the field
 lc_k=get_param( 'lc_k', 0.3 );
@@ -28,7 +28,7 @@ eps_f=get_param( 'eps_f', 0 );
 % define the distribution
 dist_f=get_param( 'dist_f', {'beta', {4,2}, 0, 1.0 } );
 mean_f_func=get_param( 'mean_f_func', [] );
-stdnor_f=@(x)(gendist_stdnor(x,dist_f{:}));
+stdnor_f={@gendist_stdnor, dist_f};
 
 % define the covariance of the field
 lc_f=get_param( 'lc_f', 0.6 );
@@ -50,7 +50,7 @@ eps_g=get_param( 'eps_g', 0 );
 % define the distribution
 dist_g=get_param( 'dist_g', {'normal', {0,1}, 0, 1.0 } );
 mean_g_func=get_param( 'mean_g_func', [] );
-stdnor_g=@(x)(gendist_stdnor(x,dist_g{:}));
+stdnor_g={@gendist_stdnor, dist_g};
 
 % define the covariance of the field
 lc_g=get_param( 'lc_g', 100 );
@@ -72,7 +72,7 @@ eps_h=get_param( 'eps_h', 0 );
 % define the distribution
 dist_h=get_param( 'dist_h', {'normal', {0,1}, 0, 1.0 } );
 mean_h_func=get_param( 'mean_h_func', [] );
-stdnor_h=@(x)(gendist_stdnor(x,dist_h{:}));
+stdnor_h={@gendist_stdnor, dist_h};
 
 % define the covariance of the field
 lc_h=get_param( 'lc_h', 100 );
