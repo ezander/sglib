@@ -35,7 +35,30 @@ els=[1,3;2,4;3,1];
 [np,ne]=refine_mesh( pos, els );
 npu=unique(np','rows')';
 assert_equals( size(np), size(npu), 'unique_pos' );
+% clf
+% plot_mesh( pos, els, 'color', 'k'  );
+% plot_boundary( pos, els, 'color', 'r'  );
+% clf
+% plot_mesh( np, ne, 'color', 'k'  );
+% plot_boundary( np, ne, 'color', 'r'  );
 
+
+
+% This defines a mesh in the shape of a butterfly, refining it with e.g.
+% delaunay gives points outside the boundary and connects points that
+% should not be connected (i.e. points that are very close but not
+% connected in the original mesh). This test only checks it graphically, 
+% since I had no time to correctly code the test algorithmically)
+% pos=[-1 3; 0 0; 1 3; 1 -3; -1 -3]';
+% els=[1 5 2; 2 4 3]';
+% clf
+% plot_mesh( pos, els, 'color', 'k'  );
+% plot_boundary( pos, els, 'color', 'r'  );
+% [npos,nels]=refine_mesh( pos, els );
+% plot_mesh( npos, nels, 'color', 'k'  );
+% plot_boundary( npos, nels, 'color', 'b'  );
+% xlim([-2,2]);
+% ylim([-4,4]);
 
 
 function els=order_els(els)
