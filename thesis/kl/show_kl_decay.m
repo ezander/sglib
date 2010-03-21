@@ -29,7 +29,7 @@ for i=1:length(funcs)
     plot(x,y); 
     legend('L=2.0','L=1.0','L=0.5')
     if ~subfig
-        save_thesis_figure( 'correlation_func_%s', {func2str(func{1})} );
+        save_thesis_figure( 'correlation_func_%s', {func2str(funcs{1})} );
     end
 
     if subfig
@@ -38,13 +38,13 @@ for i=1:length(funcs)
     plot(sigma); 
     legend('L=2.0','L=1.0','L=0.5')
     if ~subfig
-        save_thesis_figure( 'kl_decay_corr_%s', {func2str(func{1})} );
+        save_thesis_figure( 'kl_decay_corr_%s', {func2str(funcs{1})} );
     end
     
     if ~subfig
         plot(log(sigma));
         legend('L=2.0','L=1.0','L=0.5')
-        save_thesis_figure( 'log_kl_decay_corr_%s', {func2str(func{1})} );
+        save_thesis_figure( 'log_kl_decay_corr_%s', {func2str(funcs{1})} );
     end
 end
 
