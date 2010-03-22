@@ -59,6 +59,7 @@ function [r_i_k,sigma_k]=kl_solve_evp( C, G_N, l, varargin )
 options=varargin2options( varargin );
 [correct_var,options]=get_option( options, 'correct_var', false );
 [diag_warning_threshold]=get_option( options, 'diag_warning_threshold', 0.5 );
+[use_sparse,options]=get_option( options, 'use_sparse', true );
 check_unsupported_options( options, mfilename );
 
 % check that not more eigenvectors are requested than size of C allows
@@ -87,7 +88,7 @@ else
 end
 
 % symmetrise W (often slightly unsymmetric causing eigs to complain)
-if issymmetric( C ) && ~issymmetric( G_N ) && ~issymmetric( W )
+if ~issymmetric( W )
     W=0.5*(W+W');
 end
 
@@ -98,15 +99,34 @@ end
 rand_state = rand('state'); %#ok<RAND>
 rand('state', 0); %#ok<RAND>
 eigs_options.disp=0;
-if isempty(G_N)
-    [V,D]=eigs( W, l, 'lm', eigs_options );
+if use_sparse
+    if isempty(G_N)
+        [V,D]=eigs( W, l, 'lm', eigs_options );
+    else
+        [V,D]=eigs( W, G_N, l, 'lm', eigs_options );
+    end
+    d=diag(D);
 else
-    [V,D]=eigs( W, G_N, l, 'lm', eigs_options );
+    if isempty(G_N)
+        [V,D]=eig( W );
+    else
+        [V,D]=eig( W, G_N );
+    end
+    d=diag(D);
+    [d,ind]=sort(d,'descend');
+    V=V(:,ind(1:l));
+    d=d(1:l);
 end
 rand('state',rand_state); %#ok<RAND>
 
+% extract only positive eigenvalues, negative are possibly due to numerical
+% errors. Maybe a warning should be issued here!
+l=sum(imag(d)==0 & d>0);
+V=V(:,1:l);
+d=d(1:l);
+
 % retrieve the sigmas
-sigma_k=reshape( sqrt(diag(D)), 1, [] );
+sigma_k=reshape( sqrt(d), 1, [] );
 % retrieve the r_i's
 r_i_k=V;
 if ~isempty(G_N) && isoctave()
