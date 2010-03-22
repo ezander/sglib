@@ -20,14 +20,14 @@ function [eps,alg_decay,p]=kl_estimate_eps(sigma, alg_decay, p)
 
 sigma=sigma(:)';
 n=length(sigma);
-N=min(3*n, 1000);
+N=max(3*n, 10000);
 
 if nargin<3 || isempty(alg_decay) || isempty(p)
     [alg_decay,p]=kl_best_fit(sigma);
 end
     
 sigma_ex=kl_extrapolate( sigma, N, alg_decay, p );
-eps=kl_eps( sigma, sigma_ex )
+eps=kl_eps( sigma, sigma_ex );
 
 function [best_alg_decay,best_p]=kl_best_fit( sigma )
 n=length(sigma);
@@ -52,8 +52,8 @@ fit_value=sum((sigma(n1:n2)-sigma_ex(n1:n2)).^2);
 function eps=kl_eps( sigma, sigma_ex )
 n=length(sigma);
 N=length(sigma_ex);
-s=sum(sigma.^2);
 S=sum(sigma_ex(n+1:N).^2);
+s=sum(sigma.^2)+S;
 eps=sqrt(S)/sqrt(s);
 
 
@@ -67,16 +67,17 @@ else
     sigma_ex=exp(polyval(q,1:N));
 end
 
-clf
-subplot(3,1,1);
-loglog(sigma); hold on
-loglog(sigma_ex, 'r')
-
-subplot(3,1,2);
-semilogy(sigma); hold on
-semilogy(sigma_ex, 'r')
-
-subplot(3,1,3);
-plot(sigma); hold on
-plot(sigma_ex, 'r')
-
+if false
+    clf
+    subplot(3,1,1);
+    loglog(sigma); hold on
+    loglog(sigma_ex, 'r')
+    
+    subplot(3,1,2);
+    semilogy(sigma); hold on
+    semilogy(sigma_ex, 'r')
+    
+    subplot(3,1,3);
+    plot(sigma); hold on
+    plot(sigma_ex, 'r')
+end
