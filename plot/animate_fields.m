@@ -39,7 +39,7 @@ if iscell(zrange) && isempty(zrange)
 end
 
 N=200;
-L=500;
+L=1500;
 m=size(fields{1}{end},2);
 xi_N=randn(m,N);
 if ~isempty(mask)
