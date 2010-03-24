@@ -11,8 +11,3 @@ Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 tic; fprintf( 'Solving (pcg): ' );
 [Ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxit,Mi_inv_fun);
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
-
-vector_to_tensor;
-
-Ui_true=Ui;
-U_true=U;

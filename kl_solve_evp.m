@@ -74,8 +74,7 @@ end
 % pretty bad kl eigenfunctions.
 sd=sum(diag(C));
 sod=sum(C(:))-sd;
-
-fprintf( 'kl prop: %g\n', full(sod/sd) );
+%fprintf( 'kl prop: %g\n', full(sod/sd) );
 if sod/sd<diag_warning_threshold
     warning( 'sglib:kl_solve_evp',  'Covariance matrix close to diagonal. Maybe your grid is too coarse for the given covariance length?' );
 end

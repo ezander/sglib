@@ -38,7 +38,7 @@ else
     norm_TA=gvector_norm(TA,G);
     norm_TE=gvector_norm(TE,G);
     inner_TAE=gvector_scalar_product( TA, TE, G );
-    err=sqrt(norm_TA^2+norm_TE^2-2*inner_TAE);
+    err=sqrt(abs(norm_TA^2+norm_TE^2-2*inner_TAE));
 end
 
 if relerr

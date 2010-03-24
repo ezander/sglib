@@ -64,4 +64,6 @@ cmd=sprintf('load(''%s'');', filename);
 function cmd=save_ws(filename)
 %underline( ['Saving ', filename]);
 makesavepath( filename );
-cmd=sprintf('save(''%s'', ''-v6'');', filename);
+%cmd=sprintf('save(''%s'', ''-v6'');', filename);
+%cmd=sprintf('save(''%s'', ''-v7.3'');', filename);
+cmd=sprintf('save(''%s'');', filename);
