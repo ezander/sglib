@@ -26,8 +26,17 @@ gvector_norm(R1)
 
 u1=to_tensor( U1 );
 r1=compute_residual_std( f, A, u1 );
+r1b=compute_residual_tensor_std( f, A, u1 );
+r1c=compute_residual_tensor_std( f, A, u1, 0 );
+r1d=compute_residual_tensor_std( f, A, u1, 0.001 );
+r1e=compute_residual_tensor_add1( f, A, u1, 0.001 );
 gvector_error(u1, u, [], true)
 gvector_norm(r1)
+gvector_error( r1, to_tensor(R1), [], false )
+gvector_error( r1b, r1, [], true )
+gvector_error( r1c, r1, [], true )
+gvector_error( r1d, r1, [], true )
+gvector_error( r1e, r1, [], true )
 
 
 
@@ -38,6 +47,41 @@ Ut={U*S,V};
 
 function R=compute_residual_std( F, A, U )
 R=gvector_add( F, operator_apply(A,U), -1 );
+
+
+function R=compute_residual_tensor_std( F, A, U, eps )
+if nargin<4 || isempty(eps)
+    truncate_func=@identity;
+else
+    truncate_func={@tensor_truncate, {'k_max', inf, 'eps', eps}};
+end
+R=size(A,1);
+for i=1:R
+    V=tensor_operator_apply_elementary( A(i,:), U );
+    if i==1
+        Y=V;
+    else
+        Y=gvector_add( Y, V );
+    end
+    Y=funcall( truncate_func, Y );
+end
+R=gvector_add( F, Y, -1 );
+
+function R=compute_residual_tensor_add1( F, A, U, eps )
+if nargin<4 || isempty(eps)
+    truncate_func=@identity;
+else
+    truncate_func={@tensor_truncate, {'k_max', inf, 'eps', eps}};
+end
+R=size(A,1);
+Y=F;
+for i=1:R
+    V=tensor_operator_apply_elementary( A(i,:), U );
+    Y=gvector_add( Y, V, -1 );
+    Y=funcall( truncate_func, Y );
+end
+R=Y;
+
 
 
 function [A, F, U]=setup_system
