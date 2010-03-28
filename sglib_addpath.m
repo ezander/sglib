@@ -62,6 +62,7 @@ addpath( [basepath '/solver'] );
 addpath( [basepath '/statistics'] );
 addpath( [basepath '/tensor'] );
 addpath( [basepath '/util'] );
+addpath( [basepath '/linalg'] );
 
 if exist( [basepath '/thesis'], 'dir' )
   addpath( [basepath '/thesis'] )

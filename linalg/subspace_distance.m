@@ -1,4 +1,4 @@
-function dist=subspace_distance(A1,A2)
+function dist=subspace_distance(A,B)
 % SUBSPACE_DISTANCE Short description of subspace_distance.
 %   SUBSPACE_DISTANCE Long description of subspace_distance.
 %
@@ -18,6 +18,17 @@ function dist=subspace_distance(A1,A2)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[Q1,R1]=qr(A1,0);
-[Q2,R2]=qr(A2,0);
-dist=norm(Q1*Q1'-Q2*Q2',2);
+if ~iscell(A)
+    A=orth(A);
+    B=orth(B);
+    if size(A,2)<size(B,2)
+        dist=norm(A-B*B'*A);
+    else
+        dist=norm(B-A*A'*B);
+    end
+    % should give the same as the sin(subspace(A1,A2)) where subspace is a
+    % matlab buildin for computing angles between subspaces
+else
+    % A={A1,A2}
+    
+end

@@ -26,13 +26,21 @@ e2=unitvector(2,4);
 e3=unitvector(3,4);
 e4=unitvector(4,4);
 
-test([e1, e2], [e1, e1]);
+test([e1, e2], [e1, e2]);
 test([e1, e2], [e1, e3]);
 test([e1, e2], [e3, e4]);
 test([e1, e2], [e1, -e2+e4]);
-test([e1, e2, 0*e1], [e1, e2, e3]);
+
+A=rand(7,5); B=rand(7,5); 
+assert_equals( asin(subspace_distance(A,B)), subspace(A,B) )
+A=[A, A]; B=[B, B];
+assert_equals( asin(subspace_distance(A,B)), subspace(A,B) )
+A=rand(7,5); B=rand(7,3); 
+assert_equals( asin(subspace_distance(A,B)), subspace(A,B) )
+A=rand(7,3); B=rand(7,5); 
+assert_equals( asin(subspace_distance(A,B)), subspace(A,B) )
 
 function test(A1,A2)
 theta=subspace_angle(A1,A2);
 dist=subspace_distance(A1,A2);
-[dist, sin(theta(2))]
+assert_equals( dist, sin(theta(2)) );

@@ -24,4 +24,3 @@ function theta=subspace_angle(A1,A2)
 C=Q1'*Q2;
 s=svd(C);
 theta=acos(s);
-
