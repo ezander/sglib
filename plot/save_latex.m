@@ -19,7 +19,7 @@ function save_latex( handle, name, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if ~ishandle( handle )
-    save_eps( gcf, name, varargin{:} );
+    save_latex( gca, handle, varargin{:} );
     return
 end
 
@@ -42,10 +42,16 @@ if makecopy
     else
         h_workfig=copyobj( handle, 0 );
         h_workaxis=findobj( h_workfig, '-depth', 1, 'type', axes );
+        keyboard;
     end
 else
-    h_workaxis=handle;
-    h_workfig=get(h_workaxis, 'parent' );
+    if strcmp( get(handle,'type'), 'axes' )
+        h_workaxis=handle;
+        h_workfig=get(h_workaxis, 'parent' );
+    else
+        h_workfig=handle;
+        h_workaxis=handle;
+    end
 end
 
 set( h_workfig, 'renderer', 'painters' );

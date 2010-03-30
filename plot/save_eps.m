@@ -1,7 +1,7 @@
 function save_eps( handle, name, varargin )
 
 if ~ishandle( handle )
-    save_eps( gcf, name, varargin{:} );
+    save_eps( gcf, handle, varargin{:} );
     return
 end
 
