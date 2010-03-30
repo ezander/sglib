@@ -25,12 +25,12 @@ label_default.tag_format='??:%s';
 label_default.tex_format='%s';
 %label_default.fontsize='\scriptsize';
 
-xlabel_options=setfields( label_default, 'tag_format', 'xl:%g', 'orient', 'tc' );
-ylabel_options=setfields( label_default, 'tag_format', 'yl:%g', 'orient', 'cr' );
-zlabel_options=setfields( label_default, 'tag_format', 'zl:%g', 'orient', 'cr' );
-title_options =setfields( label_default, 'tag_format', 'tt:%g', 'orient', 'Bc' );
-legend_options=setfields( label_default, 'tag_format', 'lg:%g', 'orient', 'lc', 'fontsize', '\tiny' );
-text_options  =setfields( label_default, 'tag_format', 'tx:%g', 'orient', 'cc' );
+xlabel_options=setfields( label_default, 'tag_format', 'xl:%s', 'orient', 'tc' );
+ylabel_options=setfields( label_default, 'tag_format', 'yl:%s', 'orient', 'cr' );
+zlabel_options=setfields( label_default, 'tag_format', 'zl:%s', 'orient', 'cr' );
+title_options =setfields( label_default, 'tag_format', 'tt:%s', 'orient', 'Bc' );
+legend_options=setfields( label_default, 'tag_format', 'lg:%s', 'orient', 'lc', 'fontsize', '\tiny' );
+text_options  =setfields( label_default, 'tag_format', 'tx:%s', 'orient', 'cc' );
 
 
 xl=format_label( axes_h, 'x', xlabel_options );
@@ -57,7 +57,7 @@ psfrag_info=format_handle( label_h, options );
 function psfrag_info=format_legend( axes_h, options )
 % FORMAT_TEXT Formats all text objects in a legend belonging to an axis object.
 legend_h=legend( axes_h );
-handles=findall(legend_h, 'type', 'text');
+handles=findobj(legend_h, 'type', 'text');
 psfrag_info=format_handles( handles, options );
 
 function psfrag_info=format_text( axes_h, options )
@@ -116,14 +116,14 @@ end
 
 function list=cellappend( list, item )
 % CELLAPPEND Append an item to a cell array.
-if ~isempty(item); list={list{:}, item}; end
+if ~isempty(item); list=[list, {item}]; end
 
 
 function list=celljoin(varargin)
 % CELLJOIN Join an arbitrary number of cell arrays into one.
 list={};
 for i=1:length(varargin)
-    list={list{:}, varargin{i}{:} };
+    list={list{:}, varargin{i}{:} }; %#ok<CCAT>
 end
 
 function obj=setfields( obj, varargin )
@@ -139,10 +139,10 @@ for x=str
     switch x
         case {'{', '}', '$', '\', '&', '%', '^', '_', ' '} % do nothing, ignore
         case '#'
-            estr=[estr 'num-'];
+            estr=[estr 'num-']; %#ok<AGROW>
         case '~'
-            estr=[estr '-'];
+            estr=[estr '-']; %#ok<AGROW>
         otherwise
-            estr=[estr x];
+            estr=[estr x]; %#ok<AGROW>
     end
 end

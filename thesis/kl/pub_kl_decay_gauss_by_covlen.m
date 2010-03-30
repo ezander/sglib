@@ -50,6 +50,15 @@ sigma=abs(sigma);
 
 subplot(1, 3, 1); plot( x, funcall( cov_func, x, [] ) );
 subplot(1, 3, 2); plot( sigma );
-gaussian_decay=@(lc,L,d,k)sqrt( (L/lc).^(k.^(1/d)+2)./gamma(0.5*k.^(1/d)) );
 subplot(1, 3, 3); semilogy( 1:30, sigma, 1:30, gaussian_decay(lc,L,1,1:30) );
+
+%%
+clf
+k=linspace(1,2000,101);
+gaussian_decay=@(lc,L,d,k)sqrt( 1./gamma(1+0.5*k.^(1/d)) );
+gaussian_decay=@(lc,L,d,k)sqrt( (L/lc).^(k.^(1/d)+2)./gamma(1+0.5*k.^(1/d)) );
+gaussian_decay=@(lc,L,d,k)sqrt( (lc/L).^(k.^(1/d)+2)./gamma(1+0.5*k.^(1/d)) );
+%semilogy( k, gaussian_decay(0.3,1,3,k) );
+semilogy( k, gaussian_decay(0.3,1,3,k) );
+
 
