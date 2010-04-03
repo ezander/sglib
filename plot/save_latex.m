@@ -25,54 +25,31 @@ end
 
 
 options=varargin2options( varargin );
-[figdir,options]=get_option( options, 'dir', '.figs' );
+[figdir,options]=get_option( options, 'figdir', '.figs' );
 %[psfrag,options]=get_option( options, 'psfrag', true );
 [standalonetex,options]=get_option( options, 'standalonetex', true );
 [graphicstype,options]=get_option( options, 'graphicstype', 'eps' );
-%[notitle,options]=get_option( options, 'notitle', true );
+[view,options]=get_option( options, 'view', false );
 check_unsupported_options( options, mfilename );
 
-makecopy=false;
-if makecopy
-    if strcmp( get(handle,'type'), 'axes' )
-        h_workfig=figure('Visible','on');
-        h_workaxis=copyobj( handle, h_workfig );
-        legend_h=legend( handle );
-        copyobj( legend_h, h_workfig );
-    else
-        h_workfig=copyobj( handle, 0 );
-        h_workaxis=findobj( h_workfig, '-depth', 1, 'type', axes );
-        keyboard;
-    end
-else
-    if strcmp( get(handle,'type'), 'axes' )
-        h_workaxis=handle;
-        h_workfig=get(h_workaxis, 'parent' );
-    else
-        h_workfig=handle;
-        h_workaxis=handle;
-    end
-end
+h_workaxis=handle;
+h_workfig=get( handle, 'parent' );
 
 set( h_workfig, 'renderer', 'painters' );
 psfrag_list=psfrag_format( h_workaxis );
-save_eps( h_workfig, [name '-psf']  );
+save_eps( h_workfig, [name '-psf'], 'figdir', figdir  );
 
-if makecopy
-    close( h_workfig );
-end
 
 % If requested also save tex file
-texview=true;
 write_tex_include( name, figdir, graphicstype, psfrag_list );
 if standalonetex
     tex_filename=write_tex_standalone( name, figdir );
-    if texview
+    if view
         viewpath='/tmp/';
         texfilebase=tex_filename(1:end-4);  %#ok<NASGU>
         [path,file,ext]=fileparts( tex_filename );
-        fullpath=fullfile( pwd, path );
-        cmd=strvarexpand( 'cd $viewpath$ && TEXINPUTS=$fullpath$: latex $file$ && TEXINPUTS=$fullpath$: dvips $file$ && gv $file$ ' );
+        path=fullpath( path );
+        cmd=strvarexpand( 'cd $viewpath$ && TEXINPUTS=$path$: latex $file$ && TEXINPUTS=$path$: dvips $file$ && gv $file$ ' );
         system( cmd );
     end
 end

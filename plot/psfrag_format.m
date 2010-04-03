@@ -2,15 +2,13 @@ function psfrag_info=psfrag_format( axes_h, varargin )
 
 general_default.replace=false;
 general_default.replace=true;
-general_default.fontsize='\scriptsize';
-general_default.fontsize='\footnotesize';
-general_default.fontsize='\normalsize';
+general_default.fontsize='\psflabelfontsize';
 general_default.orient='cc';
 
 ticks_default=general_default;
 ticks_default.tag_format='??:%g';
 ticks_default.tex_format='%g';
-%ticks_default.fontsize='\tiny';
+ticks_default.fontsize='\psftickfontsize';
 
 xticks_options=setfields( ticks_default, 'tag_format', 'xt:%g', 'orient', 'tc' );
 yticks_options=setfields( ticks_default, 'tag_format', 'yt:%g', 'orient', 'cr' );
@@ -23,14 +21,14 @@ zt=format_ticklabels( axes_h, 'z', zticks_options );
 label_default=general_default;
 label_default.tag_format='??:%s';
 label_default.tex_format='%s';
-%label_default.fontsize='\scriptsize';
+label_default.fontsize='\psflabelfontsize';
 
 xlabel_options=setfields( label_default, 'tag_format', 'xl:%s', 'orient', 'tc' );
 ylabel_options=setfields( label_default, 'tag_format', 'yl:%s', 'orient', 'cr' );
 zlabel_options=setfields( label_default, 'tag_format', 'zl:%s', 'orient', 'cr' );
 title_options =setfields( label_default, 'tag_format', 'tt:%s', 'orient', 'Bc' );
-legend_options=setfields( label_default, 'tag_format', 'lg:%s', 'orient', 'lc', 'fontsize', '\tiny' );
-text_options  =setfields( label_default, 'tag_format', 'tx:%s', 'orient', 'cc' );
+legend_options=setfields( label_default, 'tag_format', 'lg:%s', 'orient', 'lc', 'fontsize', '\psflegendfontsize' );
+text_options  =setfields( label_default, 'tag_format', 'tx:%s', 'orient', 'cc', 'fontsize', '\psftextfontsize' );
 
 
 xl=format_label( axes_h, 'x', xlabel_options );

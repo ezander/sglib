@@ -15,7 +15,7 @@ for i=1:length(psfrag_list)
     %fprintf(fid, '\\PSReplAny{%s}{%s}\n', psfrag_list{i}{1}, psfrag_list{i}{2} );
     fprintf(fid, '\\psfrag{%s}[%s][%s][1][0]{{%s %s}}\n', psfrag_list{i}{1}, psfrag_list{i}{4}, psfrag_list{i}{4}, psfrag_list{i}{3}, psfrag_list{i}{2} );
 end
-fprintf(fid, '\\includegraphics[width=0.8\\textwidth]{%s}\n', eps_filename );
+fprintf(fid, '\\includegraphics[width=\\psfgraphicswidth]{%s}\n', eps_filename );
 fclose(fid);
 
 
