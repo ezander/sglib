@@ -1,4 +1,4 @@
-function plot_field( pos, els, u, varargin )
+function h=plot_field( pos, els, u, varargin )
 % PLOT_FIELD Plots a field given on a triangular mesh.
 %   PLOT_FIELD( POS, ELS, U, VARARGIN ) plots the field given in U on the
 %   nodes given in POS performing interpolation on the triangles given in
@@ -17,7 +17,7 @@ function plot_field( pos, els, u, varargin )
 %    shading: {'interp'}, 'flat', 'faceted'
 %      Sets the shading mode for the surface, other modes are 'flat' and
 %      'faceted' (keese)
-%    lighting: {'flat'}, 'gouraud', 'phong', 'none'
+%    lighting: 'flat', 'gouraud', 'phong', {'none'}
 %      Sets the lighting mode for the surface.
 %    colormap: {'jet'}, 'cool', 'grey', ...
 %      Sets the colormap mode for the surface. The default ranges from
@@ -57,27 +57,15 @@ check_boolean( size(pos,2)==size(u,1), 'number of points must equal number of va
 options=varargin2options( varargin );
 [view_mode,options]=get_option( options, 'view', 2 );
 [show_mesh,options]=get_option( options, 'show_mesh', true );
-[show_surf,options]=get_option( options, 'show_surf', true );
 [shading_mode,options]=get_option( options, 'shading', 'interp' );
-[lighting_mode,options]=get_option( options, 'lighting', 'flat' );
+[lighting_mode,options]=get_option( options, 'lighting', 'none' );
 [map,options]=get_option( options, 'colormap', 'jet' );
 [axis_mode,options]=get_option( options, 'axis', 'square' );
 check_unsupported_options( options, mfilename );
 
 
 if ismatlab()
-    if show_mesh
-        trimesh( els', pos(1,:), pos(2,:), u );
-        if show_surf
-            hold on
-        end
-    end
-    if show_surf
-        trisurf( els', pos(1,:), pos(2,:), u );
-        if show_mesh
-            hold off
-        end
-    end
+    h=trisurf( els', pos(1,:), pos(2,:), u );
     view(view_mode);
     axis( axis_mode );
     xlim([min(pos(1,:)) max(pos(1,:))]);
@@ -85,6 +73,9 @@ if ismatlab()
     shading( shading_mode );
     lighting( lighting_mode );
     colormap( map );
+    if show_mesh
+        set( h, 'Edgecolor', 'k');
+    end
 else
     fprintf('plot_field not yet implemented for octave\n');
 end

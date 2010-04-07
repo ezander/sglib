@@ -20,7 +20,6 @@ function unittest_subspace_angle
 
 munit_set_function( 'subspace_angle' );
 
-clc
 e1=unitvector(1,4);
 e2=unitvector(2,4);
 e3=unitvector(3,4);

@@ -35,6 +35,10 @@ check_unsupported_options( options, mfilename );
 h_workaxis=handle;
 h_workfig=get( handle, 'parent' );
 
+if iscell(name)
+    name=sprintf( name{1}, name{2:end} );
+end
+
 set( h_workfig, 'renderer', 'painters' );
 psfrag_list=psfrag_format( h_workaxis );
 save_eps( h_workfig, [name '-psf'], 'figdir', figdir  );

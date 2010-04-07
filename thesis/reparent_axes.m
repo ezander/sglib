@@ -21,3 +21,5 @@ if ~isempty(lh)
     end
 end
 
+map=colormap( h );
+colormap( hn, map );

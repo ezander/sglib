@@ -1,9 +1,10 @@
+function compare_mc
 % Suppress warnings about not used variables and not preallocated arrays
 %#ok<*NASGU>
 %#ok<*AGROW>
 
 rebuild=get_param('rebuild', true);
-autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
+autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 rebuild=false;
 
 
@@ -24,6 +25,14 @@ ui=Ki\fi;
 u2=apply_boundary_conditions_solution( ui, g, P_I, P_B );
 
 % plot solutions fields and difference
-subplot(3,1,1); plot_field(pos, els, u ); colorbar;
-subplot(3,1,2); plot_field(pos, els, u2 ); colorbar;
-subplot(3,1,3); plot_field(pos, els, u-u2 ); colorbar;
+mh=multiplot_init(3,1);
+opts={'view', 3};
+multiplot(mh,1); plot_field(pos, els, u, opts{:} ); 
+multiplot(mh,2); plot_field(pos, els, u2, opts{:} ); 
+multiplot(mh,3); plot_field(pos, els, u-u2, opts{:} ); 
+same_scaling( mh );
+
+save_thesis_figure( mh(1), 'mc_versus_sg-mc_sol' );
+save_thesis_figure( mh(2), 'mc_versus_sg-sg_sol' );
+save_thesis_figure( mh(3), 'mc_versus_sg-mc_sg_diff' );
+

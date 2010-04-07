@@ -34,6 +34,7 @@ common_params={'figdir', figdir};
 
 check_handle( handle, 'axes' );
 [h_workaxis,h_workfig]=reparent_axes( handle );
+set( h_workfig, 'renderer', 'painters' );
 
 save_eps( h_workfig, name, common_params{:}, eps_params{:} );
 save_png( h_workfig, name, common_params{:}, png_params{:} );

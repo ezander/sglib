@@ -20,8 +20,6 @@ function unittest_makehyperlink
 
 munit_set_function( 'makehyperlink' );
 
-clc
-
 s=makehyperlink( 'run', 'run_example plotnd', 'command' );
 s2='<a href="matlab:run_example plotnd">run</a>';
 assert_equals( rep(s), rep(s2), 'command1' );
