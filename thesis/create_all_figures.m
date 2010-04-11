@@ -1,7 +1,7 @@
 function create_all_figures
 
 root=get_mfile_path;
-file_patterns={'kl/show_kl_*', 'ranfield/show_*'};
+file_patterns={'kl/show_kl_*', 'solution/show_*', 'ranfield/show_*'};
 
 clc
 clf

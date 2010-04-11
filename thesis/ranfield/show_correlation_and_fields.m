@@ -1,27 +1,22 @@
 function show_correlation_and_fields
 
-% DEMO_FIELD_EXPAND_2D Show the expansion of a 2D random field.
+%#ok<*NASGU>
 
 
 % We use the pde toolbox to generate the geometry and the mass matrix
 % (gramian)
 %[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
 %[pos,els,G_N]=load_pdetool_geom( 'square', 2, true );
-[pos,els,G_N]=load_pdetool_geom( 'square', 0, true );
+[pos,els,G_N]=load_pdetool_geom( 'square', 2, true );
 
-%#ok<*NASGU>
 
 % expansion of the right hand side field (f)
-p_f=1;
-m_f=200;
-lc_fs=[0.5 0.05]; 
-lc_f=0.020; 
-h_f={@normal_stdnor,{0,1}};
+m_f=100;
 
 funcs={@gaussian_covariance, @exponential_covariance, @spherical_covariance};
-lc_fs=[0.02,0.2,2,20];
+lc_fs=[0.03,0.1,0.3,1,3];
 
-subfig=false;
+mh=multiplot_init( length(funcs), length(lc_fs));
 
 
 for i=1:length(funcs);
@@ -31,34 +26,19 @@ for i=1:length(funcs);
         cov_gam=cov_func;
         % now expanding field in ...
         disp( 'expanding field, this may take a while ...' );
-        [f_i_alpha, I_f]=expand_field_pce_sg( h_f, cov_f, cov_gam, pos, G_N, p_f, m_f );
+        [f_i_alpha, I_f]=expand_gaussian_field_pce( cov_gam, pos, G_N, m_f );
 
         fprintf( '%s   %g\n', func2str(funcs{i}),lc_fs(j));
-        if subfig
-            h=clf;
-            set( gcf, 'Renderer', 'zbuffer' );
-            for j=1:4
-                subplot(2,2,j);
-                f_ex=pce_field_realization( pos, f_i_alpha, I_f );
-                plot_field( pos, els, f_ex );
-                title(sprintf('Sample: %d',j));
-            end
-        else
-            clf;
-            set( gcf, 'Renderer', 'zbuffer' );
-            f_ex=pce_field_realization( pos, f_i_alpha, I_f );
-            plot_field( pos, els, f_ex );
-            shading interp;
-            zlim([-2,2]);
-            colorbar
-            save_thesis_figure( 'ranfield_%s_l_%g', {func2str(funcs{i}),lc_fs(j)} );
-        end
+        
+        multiplot( mh, i, j );
+        %set( mh(i,j), 'Renderer', 'zbuffer' );
+        f_ex=pce_field_realization( f_i_alpha, I_f );
+        plot_field( pos, els, f_ex );
+        shading interp;
+        zlim([-2,2]);
+        colorbar
     end
 end
-%% plot the whole stuff
-
-disp( 'the first three rows shows the KL eigenfunctions of the field' );
-disp( 'the last row shows some sample realizations' );
-keyboard
+%        save_thesis_figure( 'ranfield_%s_l_%g', {func2str(funcs{i}),lc_fs(j)} );
 
 

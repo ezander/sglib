@@ -67,6 +67,7 @@ check_range( m_gam, 0, 1000, 'm_gam', mfilename );
 % get options
 options=varargin2options( varargin );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
+[kl_options,options]=get_option( options, 'kl_options', struct() );
 check_unsupported_options( options, mfilename );
 
 
@@ -93,8 +94,8 @@ end
 
 % Step 3: Calculate lamda_i and r_i (i.e. do KL expansion)
 % g contains the product sqrt(lambda_i)*g_i of the KL of gamma
-options.correct_var=true;
-g_j_i=kl_solve_evp( C_gam, G_N, m_gam, options );
+kl_options.correct_var=true;
+g_j_i=kl_solve_evp( C_gam, G_N, m_gam, kl_options );
 
 % Step 4: generate gam(pos)
 % this was implicit in step 3

@@ -1,4 +1,4 @@
-function compare_mc
+function show_comparison_mc
 % Suppress warnings about not used variables and not preallocated arrays
 %#ok<*NASGU>
 %#ok<*AGROW>

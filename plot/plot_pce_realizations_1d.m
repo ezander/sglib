@@ -29,9 +29,9 @@ if ~isempty(xi)
 end
 for i=1:n
   if isempty(xi)
-    u_i=pce_field_realization(pos,u_alpha,I_u,[]);
+    u_i=pce_field_realization(u_alpha,I_u,[]);
   else
-    u_i=pce_field_realization(pos,u_alpha,I_u,xi(:,i));
+    u_i=pce_field_realization(u_alpha,I_u,xi(:,i));
   end
   plot( pos, u_i, '-', 'Color', [0.5,0.5,0.5] );
   hold on;

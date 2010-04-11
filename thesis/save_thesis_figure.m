@@ -24,7 +24,7 @@ if ischar(handle) && handle(1)=='$'
     end
 end
 if ~ishandle( handle )
-    save_thesis_figure( gca, handle, varargin{:} );
+    save_thesis_figure( gca, handle, name, eps_params, png_params );
     return
 end
 
