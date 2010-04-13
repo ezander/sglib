@@ -5,16 +5,14 @@ if isempty(geom)
     [pos,els,bnd_nodes]=create_mesh_1d( 0, 1, N );
     G_N=mass_matrix( pos, els );
     stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
-    d=1;
 else
     num_refine=get_param( 'num_refine', 1 );
     show_mesh=get_param( 'show_mesh', false );
     [pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
-    N=size(pos,2);
     bnd_nodes=find_boundary( els, true );
-    stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}}; % could be changed to a pdetool function
-    d=2;
+    stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}};
 end
+[d,N]=size(pos);
 
 %
 is_neumann=get_param( 'is_neumann', make_spatial_func('false') );

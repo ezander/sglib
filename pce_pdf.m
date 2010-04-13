@@ -48,6 +48,7 @@ y_c=y_r(ind);
 
 % ... and take derivate of coarse mesh interpolation
 pp=interp1(x_c, y_c, 'spline', 'pp');
+pp=interp1(x_c, y_c, 'pchip', 'pp');
 pp.coefs=vector_polyder( pp.coefs );
 
 % Finally evaluate on output points.

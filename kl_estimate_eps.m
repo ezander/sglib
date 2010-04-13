@@ -1,4 +1,4 @@
-function [eps,alg_decay,p]=kl_estimate_eps(sigma, alg_decay, p)
+function [eps,alg_decay,sigma_ex]=kl_estimate_eps(sigma, varargin)
 % KL_ESTIMATE_EPS Short description of kl_estimate_eps.
 %   KL_ESTIMATE_EPS Long description of kl_estimate_eps.
 %
@@ -18,16 +18,23 @@ function [eps,alg_decay,p]=kl_estimate_eps(sigma, alg_decay, p)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[alg_decay,options]=get_option(options,'alg_decay',[]);
+[N,options]=get_option(options,'N',max(3*numel(sigma), 10000));
+[Nout,options]=get_option(options,'Nout', min(3*numel(sigma), N));
+check_unsupported_options(options,mfilename);
+
 sigma=sigma(:)';
 n=length(sigma);
-N=max(3*n, 10000);
 
-if nargin<3 || isempty(alg_decay) || isempty(p)
-    [alg_decay,p]=kl_best_fit(sigma);
+if isempty(alg_decay)
+    alg_decay=kl_best_fit(sigma);
 end
     
-sigma_ex=kl_extrapolate( sigma, N, alg_decay, p );
+sigma_ex=kl_extrapolate( sigma, N, alg_decay, 1 );
 eps=kl_eps( sigma, sigma_ex );
+sigma_ex=sigma_ex(1:Nout);
+
 
 function [best_alg_decay,best_p]=kl_best_fit( sigma )
 n=length(sigma);

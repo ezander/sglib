@@ -1,4 +1,4 @@
-function ti=point_range( t, limit, ext )
+function ti=point_range( t, varargin )
 % POINT_RANGE Create points for plotting from node vector.
 %   TI=POINT_RANGE( T, LIMIT ) create a vector of nodes for plotting from
 %   the given node vector. TI includes 100 points from MIN(T) to MAX(T),
@@ -9,19 +9,16 @@ function ti=point_range( t, limit, ext )
 %   range of TI is limited to that of T, otherwise it's T plus/minus the
 %   same delta, so that jumps at the borders can also be seen.
 
-if nargin<2
-    limit=true;
-end
-if nargin<3
-    ext=0;
-end
-n=100;
+options=varargin2options( varargin );
+[ext,options]=get_option( options, 'ext', 0 );
+[limit,options]=get_option( options, 'limit', (ext==0) );
+[N,options]=get_option( options, 'N', 100 );
 
 t1=min(t);
 t2=max(t);
 dt=t2-t1;
 
-ti=linspace(t1-ext*dt, t2+ext*dt, n);
+ti=linspace(t1-ext*dt, t2+ext*dt, N);
 
 del=100*eps*dt;
 ti=unique( [t-del, t, t+del, ti] );

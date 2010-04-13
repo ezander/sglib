@@ -1,4 +1,4 @@
-function y=pce_cdf( x, X_alpha, I_X, varargin )
+function [y,x]=pce_cdf( x, X_alpha, I_X, varargin )
 % PCE_CDF Short description of pce_cdf.
 %   PCE_CDF Long description of pce_cdf.
 %
@@ -20,6 +20,7 @@ function y=pce_cdf( x, X_alpha, I_X, varargin )
 
 options=varargin2options(varargin);
 [N,options]=get_option(options,'N',10000);
+[Nout,options]=get_option(options,'Nout',100);
 check_unsupported_options(options,mfilename);
 
 % generate random samples
@@ -33,6 +34,10 @@ y_r=linspace(0,1,N);
 rmind=(abs(x_r(2:end)-x_r(1:end-1))==0);
 x_r(rmind)=[];
 y_r(rmind)=[];
+
+if isempty(x)
+    x=linspace(min(x_r(:)),max(x_r(:)),Nout);
+end
 
 % interpolate and fix both ends of the distribution
 y=interp1(x_r, y_r, x, 'pchip', NaN );

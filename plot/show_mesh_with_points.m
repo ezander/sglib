@@ -18,7 +18,10 @@ function show_mesh_with_points( pos, els, x, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+was_hold=ishold;
+
 colors='bkrcmyg';
+if ~was_hold; clf; end
 plot_mesh( pos, els, 'color', [0.3,1,0.3] );
 plot_boundary( pos, els );
     
@@ -26,4 +29,3 @@ axis equal
 for i=1:size(x,2)
     line( x([1;1],i),  x([2;2],i), [0.08;0.08], 'Marker', '+', 'MarkerEdgeColor', colors(i));
 end
-hold off;
