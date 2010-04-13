@@ -1,4 +1,4 @@
-function show_comparison_mc
+function show_talk_monte_carlo
 % Suppress warnings about not used variables and not preallocated arrays
 %#ok<*NASGU>
 %#ok<*AGROW>
