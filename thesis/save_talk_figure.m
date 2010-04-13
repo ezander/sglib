@@ -1,18 +1,15 @@
-function save_thesis_figure( handle, name, eps_params, png_params, latex_params )
+function save_talk_figure( handle, name, eps_params, png_params, latex_params )
 
 if nargin<3; eps_params={}; end
 if nargin<4; png_params={}; end
 if nargin<5; latex_params={}; end
 
-if ischar(handle) && handle(1)=='$'
-    error( 'sglib:obsolete', 'this feature is obsolete now' );
-end
 if ~ishandle( handle )
     save_thesis_figure( gca, handle, name, eps_params, png_params );
     return
 end
 
-figdir='/home/ezander/projects/docs/stochastics/thesis/figures/';
+figdir='/home/ezander/projects/docs/presentations/2010_diss_pres/fig2/';
 common_params={'figdir', figdir};
 
 check_handle( handle, 'axes' );

@@ -4,6 +4,35 @@ function show_mean_var
 %#ok<*AGROW>
 
 show_mean_var_with
+%show_mean_var_without
+
+
+function show_mean_var_with
+rebuild=get_param('rebuild', true, 'base' );
+autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
+assignin( 'base', 'rebuild', false );
+
+
+x=[-0.5, -0.4; 0.9, -0.9; 0.2, 0.5]';
+max_f_pos=[-0.0492 -0.8387 0.8455]
+min_f_pos=[0.5649 0.1045 0.3959];
+x_f=[x max_f_pos(1:2)' min_f_pos(1:2)'];
+
+clf
+subplot( 3, 3, 1 ); plot_pce_mean_var( pos, els, k_i_k, k_k_alpha, I_k )
+subplot( 3, 3, 2 ); plot_pce_mean_var( pos, els, f_i_k, f_k_alpha, I_f )
+subplot( 3, 3, 3 ); plot_pce_mean_var( pos, els, u_i_k, u_k_alpha, I_u )
+
+subplot( 3, 3, 4 ); show_mesh_with_points( pos, els, x );
+subplot( 3, 3, 5 ); show_mesh_with_points( pos, els, x_f );
+subplot( 3, 3, 6 ); show_mesh_with_points( pos, els, x );
+
+subplot( 3, 3, 7 ); show_kl_pce_pdf_at( pos, els, k_i_k, k_k_alpha, I_k, x )
+subplot( 3, 3, 8 ); show_kl_pce_pdf_at( pos, els, f_i_k, f_k_alpha, I_f, x_f )
+subplot( 3, 3, 9 ); show_kl_pce_pdf_at( pos, els, u_i_k, u_k_alpha, I_u, x )
+
+
+
 
 function show_mean_var_without
 
@@ -12,7 +41,7 @@ dist_f={'beta', {4,2}, 0, 1.0 };
 dist_f={'uniform', {-1,1}, 0, 1.0 };
 dist_f={'beta', {0.2,0.2}, 0, 1.0 };
 dist_f={'exponential', {5}, 0, 1.0 };
-dist_f={'lognormal', {0,0.2}, 0, 1.0 };
+%dist_f={'lognormal', {0,0.2}, 0, 1.0 };
 m_f=20;
 m_k=1;
 
@@ -108,78 +137,4 @@ subplot( 3, 2, 4 ); show_mesh( pos, els, x_f );
 
 subplot( 3, 2, 5 ); show_density( pos, els, k_i_k, k_k_alpha, I_k, x )
 subplot( 3, 2, 6 ); show_density( pos, els, f_i_k, f_k_alpha, I_f, x_f )
-
-
-function show_mean_var_with
-rebuild=get_param('rebuild', true, 'base' );
-autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild, 'caller' );
-assignin( 'base', 'rebuild', false );
-
-
-x=[-0.5, -0.4; 0.9, -0.9; 0.2, 0.5]';
-max_f_pos=[-0.0492 -0.8387 0.8455]
-min_f_pos=[0.5649 0.1045 0.3959];
-x_f=[x max_f_pos(1:2)' min_f_pos(1:2)'];
-
-clf
-subplot( 3, 3, 1 ); show_field( pos, els, k_i_k, k_k_alpha, I_k )
-subplot( 3, 3, 2 ); show_field( pos, els, f_i_k, f_k_alpha, I_f )
-subplot( 3, 3, 3 ); show_field( pos, els, u_i_k, u_k_alpha, I_u )
-
-subplot( 3, 3, 4 ); show_mesh( pos, els, x );
-subplot( 3, 3, 5 ); show_mesh( pos, els, x_f );
-subplot( 3, 3, 6 ); show_mesh( pos, els, x );
-
-subplot( 3, 3, 7 ); show_density( pos, els, k_i_k, k_k_alpha, I_k, x )
-subplot( 3, 3, 8 ); show_density( pos, els, f_i_k, f_k_alpha, I_f, x_f )
-subplot( 3, 3, 9 ); show_density( pos, els, u_i_k, u_k_alpha, I_u, x )
-
-
-
-
-
-function c=col(n)
-%colors='bgrcmyk';
-colors='bkrcmyg';
-c=colors(n);
-
-function show_mesh( pos, els, x )
-trimesh( els', pos(1,:), pos(2,:), zeros(size(pos(1,:))) );
-%view(2)
-axis equal
-for i=1:size(x,2)
-    line( x([1;1],i),  x([2;2],i), [0.08;0.08], 'Marker', '+', 'MarkerEdgeColor', col(i));
-    %line( x([1;1],i),  x([2;2],i), [0.08;0.08], 'Marker', 'o', 'MarkerEdgeColor', col(i));
-end
-%hold on; trimesh( els(:,1)', pos(1,:), pos(2,:), 0.04+zeros(size(pos(1,:))) );
-%view(2)
-hold off;
-
-function show_density( pos, els, r_i_k, r_k_alpha, I_r, x )
-Px=point_projector( pos, els, x );
-r_x_alpha=((Px'*r_i_k)*r_k_alpha);
-for i=1:size(r_x_alpha,1)
-    [y,x]=pce_pdf( [], r_x_alpha(i,:), I_r, 'N', 1e3);
-    plot(x,y,col(i)); hold on;
-end
-hold off;
-
-
-function show_field( pos, els, r_i_k, r_k_alpha, I_r )
-[mu_r, var_r]=kl_pce_moments( r_i_k, r_k_alpha, I_r );
-plot_field(pos, els, mu_r-sqrt(var_r) ); hold on
-plot_field(pos, els, mu_r ); hold on;
-plot_field(pos, els, mu_r+sqrt(var_r) );hold off;
-view(3)
-
-function show_with_linreg( x, y )
-a=polyfit(x,y,1);
-y2=polyval(a,x);
-if length(x)<100
-    ptype='x';
-else
-    ptype='-';
-end
-plot( x, y, ptype, x, y2, '-' );
-
 
