@@ -11,4 +11,4 @@ for i=1:m
         mh(i,j)=h;
     end
 end
-
+multiplot(mh,m,n);

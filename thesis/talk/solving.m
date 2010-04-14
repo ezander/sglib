@@ -2,7 +2,7 @@ clear
 
 %% 1. Define the geometry
 geom='lshape';
-num_refine=1;
+num_refine=2;
 show_mesh=false;
 [pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
 [d,N]=size(pos);
@@ -40,16 +40,72 @@ userwait;
 %% 2.3 Check the KL convergence
 C_k=covariance_matrix( pos, cov_k_func );
 [k_i_k,sigma_k_k]=kl_solve_evp( C_k, G_N, 40 );
-[kl_rem,~,~,sigma_ex]=kl_estimate_eps( sigma_k_k );
+[kl_rem,params,sigma_ex]=kl_estimate_eps( sigma_k_k, 'Nout', 100, 'full', true );
 
 plot( sigma_k_k/sigma_k_k(1), 'k*-' ); hold all;
-plot( sigma_ex/sigma_ex(1), 'b-' ); hold off;
+plot( sigma_ex/sigma_k_k(1), 'b-' ); hold off;
+legend( 'KL singular values', 'KL estimated' )
+title( 'Step 2.3a: Check KL convergence of $\kappa$' );
 
+%% 
+eps_k=0.05;
+l_k=find(kl_rem<=eps_k,1,'first');
+rem_N=150;
+plot( kl_rem(1:rem_N), '*-' ); hold all;
+plot( 1:rem_N, repmat(eps_k,1,rem_N), '-' ); hold all;
+plot( l_k,kl_rem(l_k), 'r*' ); hold off;
+legend( 'KL remainder', 'threshold', sprintf('l_k=%d',l_k) )
+title( 'Step 2.3b: KL remainder$\kappa$' );
+
+%% look at gaussian random field
+m_k=l_k;
+[u_i_alpha, I_u]=expand_gaussian_field_pce( cov_k_func, pos, G_N, m_k );
+%% show some realizations
+mh=multiplot_init(2,3);
+for i=1:numel(mh)
+    u=pce_field_realization( u_i_alpha, I_u )
+    multiplot;
+    plot_field( pos, els, u, 'view', 3 );
+    view( [135+90 70] )
+    save_talk_figure_raster( mh(i), {'randfield_real_%d', i } );
+end
+
+%% show different approximation quality for mean+var depending on number of
+%% Gaussians
+mh=multiplot_init(2,4);
+
+for m2=[10,30,60,114]
+    u_i_alpha2=u_i_alpha(:,1:m2);
+    I_u2=I_u(1:m2,:);
+    multiplot; 
+    plot_kl_pce_mean_var( pos, els, [], u_i_alpha2, I_u2 );
+    multiplot; 
+    plot_kl_pce_mean_var( pos, els, [], u_i_alpha2, I_u2 );
+    view(45,0);
+end
+same_scaling(mh,'z');
+same_scaling(mh,'c');
+
+
+%%
+[u_mean, u_var]=pce_moments( u_i_alpha, I_u );
+subplot(2,1,1)
+plot_field( pos, els, u_mean, 'view', 3 );
+subplot(2,1,2)
+plot_field( pos, els, u_var, 'view', 3 ); 
+zlim( [0,2] )
+set( gca, 'clim', [0,2] )
+view(2)
+rand
+
+
+
+%%
 stdnor_k={@gendist_stdnor, dist_k};
 m_k=5;
 p_k=4;
 l_k=40;
-eps_k=get_param( 'eps_k', 0 );
+eps_k=get_param( 'eps_k', 0 ); 
 
 % define stochastic expansion parameters
 

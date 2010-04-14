@@ -1,4 +1,4 @@
-function plot_pce_mean_var( pos, els, r_i_k, r_k_alpha, I_r )
+function plot_kl_pce_mean_var( pos, els, r_i_k, r_k_alpha, I_r )
 % PLOT_PCE_MEAN_VAR Short description of plot_pce_mean_var.
 %   PLOT_PCE_MEAN_VAR Long description of plot_pce_mean_var.
 %
@@ -18,8 +18,15 @@ function plot_pce_mean_var( pos, els, r_i_k, r_k_alpha, I_r )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[mu_r, var_r]=kl_pce_moments( r_i_k, r_k_alpha, I_r );
-plot_field(pos, els, mu_r-sqrt(var_r) ); hold on
-plot_field(pos, els, mu_r ); hold on;
-plot_field(pos, els, mu_r+sqrt(var_r) );hold off;
-view(3)
+error( nargchk( 5, 5, nargin ) );
+
+if isempty(r_i_k)
+    [mu_r, var_r]=pce_moments( r_k_alpha, I_r );
+else
+    [mu_r, var_r]=kl_pce_moments( r_i_k, r_k_alpha, I_r );
+end
+options={'view', 3};
+plot_field(pos, els, mu_r-sqrt(var_r), options{:} ); hold all;
+plot_field(pos, els, mu_r, options{:} ); hold all;
+plot_field(pos, els, mu_r+sqrt(var_r), options{:} );hold off;
+set( findobj( gca, 'type', 'patch' ), 'EdgeColor', 'k' );

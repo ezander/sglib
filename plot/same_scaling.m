@@ -3,6 +3,7 @@ function same_scaling( handles, axis )
 if nargin<2
     axis='z';
 end
+handles=handles(:);
 
 %%
 for i=1:length(handles)
