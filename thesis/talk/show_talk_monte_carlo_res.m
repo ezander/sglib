@@ -38,7 +38,7 @@ multiplot(mh,3); show_mesh_with_points( pos, els, x ); view(3);
 multiplot(mh,4); show_pce_pdf_at( pos, els, u_i_alpha, I_u, x )
 
    
-save_talk_figure( mh(1), 'mc_mean_u' );
-save_talk_figure( mh(2), 'mc_std_u' );
+save_talk_figure_raster( mh(1), 'mc_mean_u' );
+save_talk_figure_raster( mh(2), 'mc_std_u' );
 save_talk_figure( mh(3), 'mc_mesh_px' );
 save_talk_figure( mh(4), 'mc_pdf_u_x' );
