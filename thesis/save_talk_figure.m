@@ -18,6 +18,6 @@ set( h_workfig, 'renderer', 'painters' );
 
 save_eps( h_workfig, name, common_params{:}, eps_params{:} );
 save_png( h_workfig, name, common_params{:}, png_params{:} );
-save_latex( h_workaxis, name, common_params{:}, latex_params{:} );
+%save_latex( h_workaxis, name, common_params{:}, latex_params{:} );
 
 close( h_workfig );
