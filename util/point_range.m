@@ -1,6 +1,6 @@
 function ti=point_range( t, varargin )
 % POINT_RANGE Create points for plotting from node vector.
-%   TI=POINT_RANGE( T, LIMIT ) create a vector of nodes for plotting from
+%   TI=POINT_RANGE( T, OPTIONS) create a vector of nodes for plotting from
 %   the given node vector. TI includes 100 points from MIN(T) to MAX(T),
 %   plus each node in T the node itself and two nodes which are a very
 %   small delta to both sides. This is good for plotting non-continuous

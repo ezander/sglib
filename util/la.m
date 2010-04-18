@@ -1,4 +1,4 @@
-function l
+function la
 
 s=dir;
 curr=pwd;
@@ -8,7 +8,7 @@ for dodirs=[true,false];
             continue;
         end
         if s(i).isdir
-            format='<a href="matlab:cd %s; fprintf(''\\n%%s:\\n'',pwd); l">%s/</a>';
+            format='<a href="matlab:cd %s; fprintf(''\\n%%s:\\n'',pwd); la">%s/</a>';
             str=sprintf( format, fullfile(curr,s(i).name), s(i).name );
             
         else

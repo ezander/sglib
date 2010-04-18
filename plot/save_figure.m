@@ -38,7 +38,7 @@ end
 common_params={'figdir', figdir};
 
 if strcmp( get( handle, 'type' ), 'axes' )
-    [newaxis,newfig]=reparent_axes( handle );
+    [newaxis,newfig]=reparent_axes( handle ); %#ok<ASGLU>
     handle=h_workfig;
 else
     newfig=[];
@@ -47,13 +47,38 @@ check_handle( handle, 'figure' );
 
 switch type
     case 'eps'
-        save_eps( handle, name, common_params{:}, eps_params{:} );
+        
+        
     case 'png'
-        save_png( handle, name, common_params{:}, png_params{:} );
-    case 'texeps'
+        epsfilename=make_filename( name, figdir, 'eps' );
+        pngfilename=make_filename( name, figdir, 'png' );
+        % 
+%         'FontMode''scaled', 'fixed'
+%         'FontSize'
+%         'DefaultFixedFontSize'
+%         'FontSizeMin'
+%         'FontSizeMax'
+%         'FontEncoding'
+%         'SeparateText'
+        exportfig( handle, pngfilename, 'format', 'png', 'color', 'rgb', 'resolution', 150 );
+
+        %%
+        pngfilename=make_filename( [name 'a'], figdir, 'png' );
+        epsfilename=make_filename( [name 'a'], figdir, 'eps' );
+        bnds='tight'
+        bnds='loose'
+        exportfig( handle, pngfilename, 'format', 'png', 'color', 'rgb', 'resolution', 150, 'bounds', bnds, 'separatetext', true );
+        [stat,res]=system( ['sam2p -m:dpi:150', pngfilename, ' ', epsfilename ] );
+        
+        epsfilename=make_filename( [name 'b'], figdir, 'eps' );
+        exportfig( handle, epsfilename, 'format', 'eps', 'color', 'rgb', 'resolution', 150, 'bounds', bnds, 'separatetext', true );
+        
+
+    
+    case 'epsrep'
         save_eps( handle, name, common_params{:}, eps_params{:} );
         save_latex( handle, name, common_params{:}, latex_params{:} );
-    case 'texpng'
+    case 'pngrep'
         save_png( handle, name, common_params{:}, png_params{:} );
         save_latex( handle, name, common_params{:}, latex_params{:} );
     otherwise
