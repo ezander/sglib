@@ -1,5 +1,9 @@
 function [k,err]=schattenp_truncate( sigma, eps, rel, p, maxk )
 
+if nargin<5
+    maxk=inf;
+end
+
 sigma=sigma(:);
 if isfinite(p)
     csp=cumsum(flipud(sigma).^p);

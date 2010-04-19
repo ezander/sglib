@@ -49,8 +49,7 @@ e=ones(n2-n1+1,1);
 k=(n1:n2)';
 l=log(k);
 
-abc=[e,l,-k]\s
-s-[e,l,-k]*abc
+abc=[e,l,-k]\s;
 
 a=exp(abc(1));
 b=abc(2);
@@ -58,24 +57,15 @@ c=abc(3);
 
 
 function rem=kl_remainder(sigma,rel)
-rem=sum(sigma.^2)-[0 cumsum(sigma.^2)];
+rem=sqrt([fliplr(cumsum(fliplr(sigma.^2))) 0]);
+%rem=sum(sigma.^2)-[0 cumsum(sigma.^2)];
 if rel
-    rem=rem/sum(sigma.^2);
+    rem=rem/rem(1);
 end
-
-function eps=kl_eps( sigma, sigma_ex )
-n=length(sigma);
-N=length(sigma_ex);
-S=sum(sigma_ex(n+1:N).^2);
-s=sum(sigma.^2)+S;
-eps=sqrt(S)/sqrt(s);
 
 function sigma_ex=kl_extrapolate( sigma, N, a, b, c )
 k=length(sigma)+1:N;
 sigma_ex=[sigma, a*k.^b.*exp(-k*c)];
-
-
-
 
 
 function plot_stuff( sigma, sigma_ex )

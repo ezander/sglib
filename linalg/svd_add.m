@@ -14,10 +14,15 @@ function [Un,Sn,Vn,err]=svd_add(U,S,V,A,B,varargin)
 %     truncation at all (at least if 'rank' is infinite)
 %   pnorm: {inf}
 %     Specifies the Schatten-p norm used for truncation, i.e. the norm that
-%     is used for calculating the tolerance. Default (inf) is the spectral
-%     norm, (2) would be the Frobenius norm. ATTENTION: this is not to be
+%     is used for calculating the tolerance. Default (2) is the Frobenius
+%     norm, (inf) would be the spectral norm. 
+%     ATTENTION: this is not to be
 %     confused with matrix norms induced by the vector p-norms but rather
-%     the p-norm applied to the vector of singular values.
+%     the p-norm applied to the vector of singular values. Here we have the
+%     equivalence that the matrix 2-norm (spectral) is equal to the
+%     Schatten-Infinity norm (largest singular value) and the Frobenius
+%     norm is equal to the Schatten-2 norm. The Frobenius norm is more
+%     natural for tensor products and thus the default here.
 %   rank: {inf} 
 %     The maximum rank of the output SVD. If set to inf and reltol is zero
 %     no truncation will happen. If both rank and reltol are set the
@@ -39,19 +44,17 @@ function [Un,Sn,Vn,err]=svd_add(U,S,V,A,B,varargin)
 
 options=varargin2options(varargin);
 [reltol,options]=get_option(options,'reltol', 0 );
-[pnorm,options]=get_option(options,'pnorm', inf );
+[pnorm,options]=get_option(options,'pnorm', 2 );
 [rank,options]=get_option(options,'rank', inf );
 check_unsupported_options(options);
 
 type=get_svd_type(S);
 [U,S,V]=svd_to_type( U, S, V, 'matrix' );
 
-M=size(A,1);
-N=size(B,1);
 L=size(A,2);
 
-[P,RA]=qr((eye(M)-U*U')*A,0);
-[Q,RB]=qr((eye(N)-V*V')*B,0);
+[P,RA]=qr(A-U*(U'*A),0);
+[Q,RB]=qr(B-V*(V'*B),0);
 
 K=blkdiag(S,zeros(L))+[U'*A; RA]*[V'*B;RB]';
 [Us,Sn,Vs]=svd(K);

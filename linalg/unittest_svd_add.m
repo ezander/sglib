@@ -57,15 +57,15 @@ assert_equals( Un*diag(Sn)*Vn', Xn, 'full_vecS' )
 % no truncate to k (check correct error reporting)
 [Un,Sn,Vn,err]=svd_add( U, S, V, A, B, 'rank', 10 );
 assert_true( size(Un,2)<=10, 'rank' )
-assert_equals( norm(Xn-Un*Sn*Vn',2)/norm(Xn,2), err, 'norm' )
+assert_equals( norm(Xn-Un*Sn*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
 
 [Un,Sn,Vn,err]=svd_add( U*S, [], V, A, B, 'rank', 10 );
 assert_true( size(Un,2)<=10, 'rank' )
-assert_equals( norm(Xn-Un*Vn',2)/norm(Xn,2), err, 'norm' )
+assert_equals( norm(Xn-Un*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
  
 [Un,Sn,Vn,err]=svd_add( U, diag(S), V, A, B, 'rank', 10 );
 assert_true( size(Un,2)<=10, 'rank' )
-assert_equals( norm(Xn-Un*diag(Sn)*Vn',2)/norm(Xn,2), err, 'norm' )
+assert_equals( norm(Xn-Un*diag(Sn)*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
 
 % no truncate to k (check correct error reporting for diff norms)
 [Un,Sn,Vn,err]=svd_add( U, S, V, A, B, 'rank', 12, 'pnorm', 2 );
