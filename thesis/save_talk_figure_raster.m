@@ -21,7 +21,7 @@ save_png( h_workfig, name, common_params{:}, png_params{:} );
 
 epsfilename=make_filename( name, figdir, 'eps' );
 pngfilename=make_filename( name, figdir, 'png' );
-[stat,res]=system( ['sam2p ', pngfilename, ' ', epsfilename ] );
+[stat,res]=system( ['sam2p -m:dpi:150', pngfilename, ' ', epsfilename ] );
 if stat~=0
     disp(res);
     keyboard;
