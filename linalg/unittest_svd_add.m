@@ -55,7 +55,7 @@ assert_equals( Un*diag(Sn)*Vn', Xn, 'full_vecS' )
 
 
 % no truncate to k (check correct error reporting)
-[Un,Sn,Vn,err]=svd_add( U, S, V, A, B, 'rank', 10 );
+[Un,Sn,Vn,err]=svd_add( U, S, V, A, B, 'rank', 10, 'pnorm', 2 );
 assert_true( size(Un,2)<=10, 'rank' )
 assert_equals( norm(Xn-Un*Sn*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
 

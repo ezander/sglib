@@ -1,4 +1,8 @@
-function tex_filename=write_tex_standalone( name, figdir )
+function tex_filename=write_tex_standalone( name, figdir, use_psfrag )
+
+if nargin<3
+    use_psfrag=true;
+end
 
 tex_filename=make_filename( name, figdir, 'tex', '-view' );
 inc_filename=make_filename( name, '', 'tex' ); % filename must be relative
@@ -11,7 +15,9 @@ if fid==-1
 end
 fprintf(fid,'%s\n', '\documentclass{article}');
 fprintf(fid,'%s\n', '\usepackage{graphicx}');
-fprintf(fid,'%s\n', '\usepackage{psfrag}');
+if use_psfrag
+    fprintf(fid,'%s\n', '\usepackage{psfrag}');
+end
 fprintf(fid,'%s\n', '\begin{document}');
 fprintf(fid,'%s\n', '\newdimen\psfgraphicswidth');
 fprintf(fid,'%s\n', '\psfgraphicswidth=0.8\textwidth');

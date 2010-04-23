@@ -1,9 +1,6 @@
 function save_eps( handle, name, varargin )
 
-if ~ishandle( handle )
-    save_eps( gcf, handle, varargin{:} );
-    return
-end
+check_handle( handle, 'figure' );
 
 options=varargin2options( varargin );
 [figdir,options]=get_option( options, 'figdir', '.figs' );

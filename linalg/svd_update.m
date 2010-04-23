@@ -12,7 +12,7 @@ function [Un,Sn,Vn,err]=svd_update(U,S,V,C,varargin)
 %   reltol: {0}
 %     Specifies relative tolerance for truncation. The default (0) means no
 %     truncation at all (at least if 'rank' is infinite)
-%   pnorm: {inf}
+%   pnorm: {2}
 %     Specifies the Schatten-p norm used for truncation, i.e. the norm that
 %     is used for calculating the tolerance. Default (2) is the Frobenius
 %     norm, (inf) would be the spectral norm. 

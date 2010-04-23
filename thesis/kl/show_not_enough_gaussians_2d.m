@@ -50,7 +50,7 @@ title( 'Step 2.3a: Check KL convergence of $\kappa$' );
 %% 
 eps_k=0.05;
 l_k=find(kl_rem<=eps_k,1,'first');
-rem_N=150;
+rem_N=max(2*l_k,150);
 plot( kl_rem(1:rem_N), '*-' ); hold all;
 plot( 1:rem_N, repmat(eps_k,1,rem_N), '-' ); hold all;
 plot( l_k,kl_rem(l_k), 'r*' ); hold off;
@@ -74,7 +74,7 @@ end
 %% Gaussians
 mh=multiplot_init(2,4);
 
-for m2=[10,30,60,114]
+for m2=[10,30,60,214]
     u_i_alpha2=u_i_alpha(:,1:m2);
     I_u2=I_u(1:m2,:);
     multiplot; 

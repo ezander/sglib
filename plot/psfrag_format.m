@@ -1,5 +1,9 @@
 function psfrag_info=psfrag_format( axes_h, varargin )
 
+if strcmp( get(axes_h, 'type' ), 'figure' )
+    axes_h=findobj( axes_h, 'type', 'axes', 'tag', '' );
+end
+
 general_default.replace=false;
 general_default.replace=true;
 general_default.fontsize='\psflabelfontsize';

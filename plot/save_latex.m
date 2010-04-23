@@ -1,4 +1,4 @@
-function save_latex( handle, name, varargin )
+function save_latex( texfilename, epsfilename, varargin );
 % SAVE_LATEX Short description of save_latex.
 %   SAVE_LATEX Long description of save_latex.
 %
@@ -18,35 +18,17 @@ function save_latex( handle, name, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~ishandle( handle )
-    save_latex( gca, handle, varargin{:} );
-    return
-end
-
-
 options=varargin2options( varargin );
 [figdir,options]=get_option( options, 'figdir', '.figs' );
-%[psfrag,options]=get_option( options, 'psfrag', true );
-[standalonetex,options]=get_option( options, 'standalonetex', true );
-[graphicstype,options]=get_option( options, 'graphicstype', 'eps' );
+[psfrag_list,options]=get_option( options, 'psfrag_list', {} );
+[standalone,options]=get_option( options, 'standalone', false );
 [view,options]=get_option( options, 'view', false );
 check_unsupported_options( options, mfilename );
 
-h_workaxis=handle;
-h_workfig=get( handle, 'parent' );
-
-if iscell(name)
-    name=sprintf( name{1}, name{2:end} );
-end
-
-set( h_workfig, 'renderer', 'painters' );
-psfrag_list=psfrag_format( h_workaxis );
-save_eps( h_workfig, [name '-psf'], 'figdir', figdir  );
-
-
 % If requested also save tex file
-write_tex_include( name, figdir, graphicstype, psfrag_list );
-if standalonetex
+write_tex_include( texfilename, epsfilename, psfrag_list );
+
+if standalone
     tex_filename=write_tex_standalone( name, figdir );
     if view
         viewpath='/tmp/';

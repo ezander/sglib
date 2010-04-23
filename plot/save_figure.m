@@ -24,8 +24,10 @@ global sglib_figdir
 options=varargin2options(varargin);
 [eps_params, options]=get_option(options,'eps_params',{});
 [png_params, options]=get_option(options,'png_params',{});
-[tex_params, options]=get_option(options,'tex_params',{});
+[png2eps_params, options]=get_option(options,'png2eps_params',{});
+[latex_params, options]=get_option(options,'latex_params',{});
 [figdir, options]=get_option(options,'figdir',sglib_figdir);
+[use_psfrag, options]=get_option(options,'use_psfrag',false);
 check_unsupported_options(options,mfilename);
 
 if ~ishandle( handle )
@@ -45,44 +47,42 @@ else
 end
 check_handle( handle, 'figure' );
 
-switch type
-    case 'eps'
-        
-        
-    case 'png'
-        epsfilename=make_filename( name, figdir, 'eps' );
-        pngfilename=make_filename( name, figdir, 'png' );
-        % 
-%         'FontMode''scaled', 'fixed'
-%         'FontSize'
-%         'DefaultFixedFontSize'
-%         'FontSizeMin'
-%         'FontSizeMax'
-%         'FontEncoding'
-%         'SeparateText'
-        exportfig( handle, pngfilename, 'format', 'png', 'color', 'rgb', 'resolution', 150 );
-
-        %%
-        pngfilename=make_filename( [name 'a'], figdir, 'png' );
-        epsfilename=make_filename( [name 'a'], figdir, 'eps' );
-        bnds='tight'
-        bnds='loose'
-        exportfig( handle, pngfilename, 'format', 'png', 'color', 'rgb', 'resolution', 150, 'bounds', bnds, 'separatetext', true );
-        [stat,res]=system( ['sam2p -m:dpi:150', pngfilename, ' ', epsfilename ] );
-        
-        epsfilename=make_filename( [name 'b'], figdir, 'eps' );
-        exportfig( handle, epsfilename, 'format', 'eps', 'color', 'rgb', 'resolution', 150, 'bounds', bnds, 'separatetext', true );
-        
-
-    
-    case 'epsrep'
-        save_eps( handle, name, common_params{:}, eps_params{:} );
-        save_latex( handle, name, common_params{:}, latex_params{:} );
-    case 'pngrep'
-        save_png( handle, name, common_params{:}, png_params{:} );
-        save_latex( handle, name, common_params{:}, latex_params{:} );
-    otherwise
-        error( 'sglib:save_figure', 'Unknown figure type: %s', type );
+if use_psfrag
+    psfrag_list=psfrag_format( handle );
+    latex_params=[latex_params, {'psfrag_list', psfrag_list}];
+else
+    latex_format( handle );
+    %disp( 'latex_format figure' );
 end
 
+pngfilename=make_filename( name, figdir, 'png' );
+epsfilename=make_filename( name, figdir, 'eps' );
+texfilename=make_filename( name, figdir, 'tex' );
+
+png_params=[common_params, png_params];
+eps_params=[common_params, eps_params];
+latex_params=[common_params, latex_params];
+
+save_png( handle, name, png_params{:} );
+if strcmp(type,'png')
+    convert_png_eps( pngfilename, png2eps_params{:} );
+else
+    save_eps( handle, name, eps_params{:} );
+end
+save_latex( texfilename, epsfilename, latex_params{:} );
+
 close( newfig );
+
+
+function latex_format( handle )
+h_text  = findall(handle, 'type', 'text');
+h_axes  = findall(handle, 'type', 'axes');
+h_font   = [h_text; h_axes];
+
+set( h_font, 'fontunits', 'points' );
+set( h_axes, 'fontsize', 12 );
+set( h_text, 'fontsize', 16 );
+%set( h_font, 'fontname', 'times new roman' );
+%set( h_font, 'fontname', 'bookman' );
+set( h_font, 'fontname', 'new century schoolbook' );
+set( h_font, 'fontweight', 'normal' );

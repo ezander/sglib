@@ -21,17 +21,17 @@ function unittest_kl_estimate_eps
 munit_set_function( 'kl_estimate_eps' );
 
 N=20;
-r=exp(-2.3);
 r=0.9;
 A=3;
 
 k=0:N;
 sigma=A*r.^k;
-[eps_est,params,sigma_ex]=kl_estimate_eps( sigma );
+[eps_est,params,sigma_ex]=kl_estimate_eps( sigma, 'Nout', 100 );
 eps_true=sqrt(r^(2*(N+1)));
 eps_true2=norm( r.^((N+1):10000) )/norm( r.^(0:10000) );
 assert_equals( eps_est, eps_true, 'exponential' );
 assert_equals( eps_est, eps_true2, 'exponential2' );
+assert_equals( sigma_ex, A*r.^(0:99), 'extrap' );
 assert_equals( params, [A/r, 0, -log(r)], 'exact_params' );
 
 
@@ -41,6 +41,3 @@ sigma=A*k.^-2;
 eps_true2=norm( ((N+1):10000).^-2 )/norm( (1:10000).^-2 );
 assert_equals( eps_est, eps_true2, 'algeb2' );
 assert_equals( params, [A, -2, 0], 'exact_params' );
-
-
-

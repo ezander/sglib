@@ -7,6 +7,7 @@ options=varargin2options(varargin);
 [kl_eps,options]=get_option( options, 'eps', [] );
 check_unsupported_options(options,mfilename);
 
+
 [r_i_alpha, I_r]=expand_field_pce_sg( r_stdnor_func, cov_r_func, cov_gam_func, pos, G_N, p_r, m_r );
 
 if ~isempty(mean_func)
