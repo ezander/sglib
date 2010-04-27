@@ -36,12 +36,15 @@ end
 if isempty(figdir)
     error( 'sglig:save_figure', 'figdir not set set. Set explicitly or via global variable sglib_figdir' );
 end
+if nargin<3
+    type='eps';
+end
 
 common_params={'figdir', figdir};
 
 if strcmp( get( handle, 'type' ), 'axes' )
     [newaxis,newfig]=reparent_axes( handle ); %#ok<ASGLU>
-    handle=h_workfig;
+    handle=newfig;
 else
     newfig=[];
 end

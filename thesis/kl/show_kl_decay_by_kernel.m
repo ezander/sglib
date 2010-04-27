@@ -22,18 +22,18 @@ for i=1:length(funcs)
         multiplot( mh, i, 3 ); plot(sigma);
         multiplot( mh, i, 4 ); plot(sigma);
     end
-    multiplot_legend( mh, i, 1, lc_fs, 'format', '$l_c=%3.1f$' );
-    multiplot_legend( mh, i, 2, lc_fs, 'format', '$l_c=%3.1f$' );
-    multiplot_legend( mh, i, 3, lc_fs, 'format', '$l_c=%3.1f$' );
-    multiplot_legend( mh, i, 4, lc_fs, 'format', '$l_c=%3.1f$' );
+    multiplot_legend( mh, i, 1, lc_fs, 'format', 'l_c=%3.1f' );
+    multiplot_legend( mh, i, 2, lc_fs, 'format', 'l_c=%3.1f' );
+    multiplot_legend( mh, i, 3, lc_fs, 'format', 'l_c=%3.1f' );
+    multiplot_legend( mh, i, 4, lc_fs, 'format', 'l_c=%3.1f' );
     set( mh(i,3), 'xscale', 'log' );
     set( mh(i,4), 'xscale', 'log', 'yscale', 'log' );
     drawnow;
 end
 
 for i=1:length(funcs)
-    save_thesis_figure( mh(i,1), {'kl_by_kernel_cov_%s', func2str(funcs{i})} );
-    save_thesis_figure( mh(i,2), {'kl_by_kernel_eig_%s', func2str(funcs{i})} );
-    save_thesis_figure( mh(i,3), {'kl_by_kernel_logeig_%s', func2str(funcs{i})} );
-    save_thesis_figure( mh(i,4), {'kl_by_kernel_loglogeig_%s', func2str(funcs{i})} );
+    save_figure( mh(i,1), {'kl_by_kernel_cov_%s', func2str(funcs{i})} );
+    save_figure( mh(i,2), {'kl_by_kernel_eig_%s', func2str(funcs{i})} );
+    save_figure( mh(i,3), {'kl_by_kernel_logeig_%s', func2str(funcs{i})} );
+    save_figure( mh(i,4), {'kl_by_kernel_loglogeig_%s', func2str(funcs{i})} );
 end

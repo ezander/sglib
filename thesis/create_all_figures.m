@@ -1,5 +1,9 @@
 function create_all_figures
 
+global sglib_figdir
+
+sglib_figdir=fullfile( getenv('HOME'), 'projects/docs/stochastics/thesis/figures' );
+
 root=get_mfile_path;
 file_patterns={'kl/show_kl_*', 'solution/show_*', 'ranfield/show_*'};
 

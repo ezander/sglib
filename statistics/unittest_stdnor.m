@@ -19,8 +19,9 @@ function unittest_stdnor
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-N=10;
+N=50;
 uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 % normal distribution

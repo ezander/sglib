@@ -1,4 +1,4 @@
-clear
+%clear
 
 %% 1. Define the geometry
 geom='lshape';
@@ -6,116 +6,70 @@ num_refine=2;
 show_mesh=false;
 [pos,els,G_N,ptdata]=load_pdetool_geom( geom, num_refine, show_mesh );
 [d,N]=size(pos);
-bnd_nodes=find_boundary( els, true );
-stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}};
 
-
-show_mesh_with_points( pos, els, [] );
-title( 'Step 1: Define the geometry' );
-userwait;
-
-%% 2. Construct the conductivity random field k
-
-%% 2.1 Define the distribution
-dist_k={'beta', {1.1,4}, 0.1, 1.0 };
-mean_k_func=get_param( 'mean_k_func', [] );
-
-x=point_range( [0,1]+0.1, 'N', 500, 'ext', 0.1 );
-plot( x, gendist_pdf( x, dist_k{:} ) );
-title( 'Step 2.1: Define the distribution of $\kappa$' );
-userwait;
 
 %% 2.2 Define the covariance
 cov_k_handle=@exponential_covariance;
-lc_k=[0.05 0.2];
+lc_k=[0.1 0.4];
 cov_k_func={cov_k_handle, {lc_k,1}};
 
-x=point_range( [-1,0,1], 'N', 200 );
-plot( x, funcall( cov_k_func, [x;0*x], [] ) ); hold all;
-plot( x, funcall( cov_k_func, [0*x;x], [] ) ); hold off;
-legend( 'x-direction', 'y-direction' )
-title( 'Step 2.2: Define the covariance of $\kappa$' );
-userwait;
+% x=point_range( [-1,0,1], 'N', 200 );
+% plot( x, funcall( cov_k_func, [x;0*x], [] ) ); hold all;
+% plot( x, funcall( cov_k_func, [0*x;x], [] ) ); hold off;
+% legend( 'x-direction', 'y-direction' )
+% title( 'Step 2.2: Define the covariance of $\kappa$' );
+% userwait;
 
 %% 2.3 Check the KL convergence
 C_k=covariance_matrix( pos, cov_k_func );
 [k_i_k,sigma_k_k]=kl_solve_evp( C_k, G_N, 40 );
 [kl_rem,params,sigma_ex]=kl_estimate_eps( sigma_k_k, 'Nout', 100, 'full', true );
-
-plot( sigma_k_k/sigma_k_k(1), 'k*-' ); hold all;
-plot( sigma_ex/sigma_k_k(1), 'b-' ); hold off;
-legend( 'KL singular values', 'KL estimated' )
-title( 'Step 2.3a: Check KL convergence of $\kappa$' );
+kl_rem_old=kl_rem;
+sigma_k_k_old=sigma_k_k;
 
 %% 
 eps_k=0.05;
 l_k=find(kl_rem<=eps_k,1,'first');
-rem_N=max(2*l_k,150);
-plot( kl_rem(1:rem_N), '*-' ); hold all;
-plot( 1:rem_N, repmat(eps_k,1,rem_N), '-' ); hold all;
-plot( l_k,kl_rem(l_k), 'r*' ); hold off;
-legend( 'KL remainder', 'threshold', sprintf('l_k=%d',l_k) )
-title( 'Step 2.3b: KL remainder$\kappa$' );
-
-%% look at gaussian random field
 m_k=l_k;
-[u_i_alpha, I_u]=expand_gaussian_field_pce( cov_k_func, pos, G_N, m_k );
-%% show some realizations
-mh=multiplot_init(2,3);
-for i=1:numel(mh)
-    u=pce_field_realization( u_i_alpha, I_u )
-    multiplot;
-    plot_field( pos, els, u, 'view', 3 );
-    view( [135+90 70] )
-    save_talk_figure_raster( mh(i), {'randfield_real_%d', i } );
-end
+[k_i_alpha, I_k]=expand_gaussian_field_pce( cov_k_func, pos, G_N, m_k );
 
 %% show different approximation quality for mean+var depending on number of
 %% Gaussians
 mh=multiplot_init(2,4);
+msel=[20,40,80,m_k];
 
-for m2=[10,30,60,214]
-    u_i_alpha2=u_i_alpha(:,1:m2);
-    I_u2=I_u(1:m2,:);
-    multiplot; 
-    plot_kl_pce_mean_var( pos, els, [], u_i_alpha2, I_u2 );
-    multiplot; 
-    plot_kl_pce_mean_var( pos, els, [], u_i_alpha2, I_u2 );
+for m2=msel
+    k_i_alpha2=k_i_alpha(:,1:m2);
+    I_k2=I_k(1:m2,:);
+    h=multiplot; 
+    plot_kl_pce_mean_var( pos, els, [], k_i_alpha2, I_k2 );
+    h=multiplot; 
+    plot_kl_pce_mean_var( pos, els, [], k_i_alpha2, I_k2 );
     view(45,0);
 end
 same_scaling(mh,'z');
 same_scaling(mh,'c');
 
 
-%%
-[u_mean, u_var]=pce_moments( u_i_alpha, I_u );
-subplot(2,1,1)
-plot_field( pos, els, u_mean, 'view', 3 );
-subplot(2,1,2)
-plot_field( pos, els, u_var, 'view', 3 ); 
-zlim( [0,2] )
-set( gca, 'clim', [0,2] )
-view(2)
-rand
-
-
+for m2=msel
+    h=multiplot; 
+    save_figure( h, {'kl_not_enough_2d_%d', m2}, 'png' );
+    h=multiplot; 
+    save_figure( h, {'kl_not_enough_2d_%d_side', m2}, 'png' );
+end
 
 %%
-stdnor_k={@gendist_stdnor, dist_k};
-m_k=5;
-p_k=4;
-l_k=40;
-eps_k=get_param( 'eps_k', 0 ); 
+[k_i_k,sigma_k_k]=kl_solve_evp( C_k, G_N, 200 );
+[kl_rem,params,sigma_ex]=kl_estimate_eps( sigma_k_k, 'Nout', 200, 'full', true );
 
-% define stochastic expansion parameters
+%%
+multiplot_init(2,1);
+h=multiplot;
+plot( sigma_k_k );
+plot( msel, sigma_k_k(msel), '*' );
+plot( sigma_k_k_old );
+h=multiplot;
+plot( 1:200, kl_rem(1:200) );
+plot( msel, kl_rem(msel), '*' );
+plot( 1:200, kl_rem_old(1:200) );
 
-% define the distribution (name, parameters, shift, scale)
-dist_k=get_param( 'dist_k', {'beta', {4,2}, 0.1, 1.0 } );
-
-% define the covariance of the field
-lc_k=get_param( 'lc_k', 0.3 );
-cov_k_func=get_param( 'cov_k_func', @gaussian_covariance );
-cov_k=get_param( 'cov_k', {cov_k_func,{lc_k,1}} );
-
-% expand the field
-[k_i_k,k_k_alpha,I_k,l_k]=expand_field_kl_pce( stdnor_k, cov_k, pos, G_N, p_k, m_k, l_k, 'eps', eps_k, 'mean_func', mean_k_func );

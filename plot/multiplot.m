@@ -14,7 +14,6 @@ if nargin<2
     i=i+1;
     if i>size(mh,1); i=1; j=j+1; end
     if j>size(mh,2); j=1; end
-    [i,j]
 end
 lmh=mh;
 li=i; lj=j;

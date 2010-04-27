@@ -33,15 +33,15 @@ for fun=1:length(cov_funs)
         semilogy(is, kl_remainder(sigma_all,n)); grid on;
     end
 end
-save_thesis_figure( '$mp:11', 'kl_decay_by_dimen_gauss_eigenvals' );
-save_thesis_figure( '$mp:21', 'kl_decay_by_dimen_gauss_logeigen' );
-save_thesis_figure( '$mp:31', 'kl_decay_by_dimen_gauss_remainder' );
+save_figure( mh(1,1), 'kl_decay_by_dimen_gauss_eigenvals' );
+save_figure( mh(2,1), 'kl_decay_by_dimen_gauss_logeigen' );
+save_figure( mh(3,1), 'kl_decay_by_dimen_gauss_remainder' );
 
-save_thesis_figure( '$mp:12', 'kl_decay_by_dimen_exp_eigenvals' );
-save_thesis_figure( '$mp:22', 'kl_decay_by_dimen_exp_logeigen' );
-save_thesis_figure( '$mp:32', 'kl_decay_by_dimen_exp_remainder' );
+save_figure( mh(1,2), 'kl_decay_by_dimen_exp_eigenvals' );
+save_figure( mh(2,2), 'kl_decay_by_dimen_exp_logeigen' );
+save_figure( mh(3,2), 'kl_decay_by_dimen_exp_remainder' );
 
-save_thesis_figure( '$mp:13', 'kl_decay_by_dimen_spher_eigenvals' );
-save_thesis_figure( '$mp:23', 'kl_decay_by_dimen_spher_logeigen' );
-save_thesis_figure( '$mp:33', 'kl_decay_by_dimen_spher_remainder' );
+save_figure( mh(1,3), 'kl_decay_by_dimen_spher_eigenvals' );
+save_figure( mh(2,3), 'kl_decay_by_dimen_spher_logeigen' );
+save_figure( mh(3,3), 'kl_decay_by_dimen_spher_remainder' );
 

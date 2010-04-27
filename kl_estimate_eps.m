@@ -39,9 +39,13 @@ end
 
 params=[a,b,c];
 sigma_ex=kl_extrapolate( [], Nout, a, b, c );
+sigma_ex=kl_extrapolate( sigma, Nout, a, b, c );
 
 
 function [a,b,c]=kl_best_fit( sigma, skip )
+% we fit sigma to
+%   a*k.^b.*exp(-k*c)
+% and do a least squares fit
 n1=skip+1;
 n2=length(sigma);
 s=log(sigma(n1:n2)');

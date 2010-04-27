@@ -28,5 +28,5 @@ for i=1:12
 end
 
 for i=1:12
-    save_thesis_figure( mh(i), {'kl_eigenfunc_gauss_lshape_%02d', i } );
+    save_figure( mh(i), {'kl_eigenfunc_gauss_lshape_%02d', i }, 'png' );
 end
