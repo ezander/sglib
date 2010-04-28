@@ -17,6 +17,7 @@ funcs={@gaussian_covariance, @exponential_covariance, @spherical_covariance};
 lc_fs=[0.03,0.1,0.3,1,3];
 
 mh=multiplot_init( length(funcs), length(lc_fs));
+set(get(mh(1),'parent'),'renderer','painters')
 
 
 for i=1:length(funcs);
@@ -26,9 +27,9 @@ for i=1:length(funcs);
         cov_gam=cov_func;
         % now expanding field in ...
         disp( 'expanding field, this may take a while ...' );
-        [f_i_alpha, I_f]=expand_gaussian_field_pce( cov_gam, pos, G_N, m_f );
-
         fprintf( '%s   %g\n', func2str(funcs{i}),lc_fs(j));
+        
+        [f_i_alpha, I_f]=expand_gaussian_field_pce( cov_gam, pos, G_N, m_f );
         
         multiplot( mh, i, j );
         %set( mh(i,j), 'Renderer', 'zbuffer' );
@@ -39,6 +40,13 @@ for i=1:length(funcs);
         colorbar
     end
 end
-%        save_thesis_figure( 'ranfield_%s_l_%g', {func2str(funcs{i}),lc_fs(j)} );
+same_scaling( mh, 'c' );
+
+
+for i=1:length(funcs);
+    for j=1:length(lc_fs)
+        save_figure( mh(i,j), {'ranfield_%s_l_%g', func2str(funcs{i}),lc_fs(j)} );
+    end
+end
 
 

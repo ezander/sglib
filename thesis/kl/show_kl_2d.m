@@ -15,8 +15,6 @@ for l_c=[0.02,0.05, 0.2, 0.5, 2]
 
     multiplot( mp, 1, 1 ); plot( pos, funcall(cov_func,pos,[]) );
     multiplot( mp, 2, 1 ); plot( sig/sig(1) );
-    
-    
 end
 
 

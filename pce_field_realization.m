@@ -27,6 +27,7 @@ function [u_i,xi]=pce_field_realization( u_i_alpha, I_alpha, xi )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_match( u_i_alpha, I_alpha, false, 'u_i_alpha', 'I_alpha', mfilename );
 m=size(I_alpha,2);
 
 if nargin<3 || isempty(xi)

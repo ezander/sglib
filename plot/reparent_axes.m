@@ -3,7 +3,7 @@ function [hn, hf]=reparent_axes( h, hf )
 check_handle( h, 'axes' );
 
 if nargin<2 || isempty(hf)
-    hf=figure;
+    hf=figure('visible', 'off');
     set( hf, 'tag', 'tempfig' );
 end
 

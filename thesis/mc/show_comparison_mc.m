@@ -32,7 +32,7 @@ multiplot(mh,2); plot_field(pos, els, u2, opts{:} );
 multiplot(mh,3); plot_field(pos, els, u-u2, opts{:} ); 
 same_scaling( mh );
 
-save_thesis_figure( mh(1), 'mc_versus_sg-mc_sol' );
-save_thesis_figure( mh(2), 'mc_versus_sg-sg_sol' );
-save_thesis_figure( mh(3), 'mc_versus_sg-mc_sg_diff' );
+save_figure( mh(1), 'mc_versus_sg-mc_sol' );
+save_figure( mh(2), 'mc_versus_sg-sg_sol' );
+save_figure( mh(3), 'mc_versus_sg-mc_sg_diff' );
 

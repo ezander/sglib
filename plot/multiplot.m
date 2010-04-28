@@ -25,6 +25,7 @@ else
     h=mh(i,j);
 end
 set( gcf, 'CurrentAxes', h );
+drawnow;
 %[m,n]=size(mh);
 %k=j+n*(i-1);
 %h=subplot(m,n,k); hold all;

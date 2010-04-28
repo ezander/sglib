@@ -2,10 +2,14 @@ function create_all_figures
 
 global sglib_figdir
 
+persistent ran_successful
+
+
+
 sglib_figdir=fullfile( getenv('HOME'), 'projects/docs/stochastics/thesis/figures' );
 
 root=get_mfile_path;
-file_patterns={'kl/show_kl_*', 'solution/show_*', 'ranfield/show_*'};
+file_patterns={'mc/show_*', 'kl/show_*', 'pce/show_*', 'solution/show_*', 'ranfield/show_*'};
 
 clc
 clf
@@ -16,9 +20,19 @@ for i=1:length(file_patterns)
     s=dir(pattern);
     for j=1:length(s)
         filename=fullfile( path, s(j).name );
-        fprintf( 'Running: %s\n', filename );
-        run( filename );
+        if strmatch(filename, ran_successful, 'exact')
+            fprintf( 'Skipping: %s\n', filename );
+            continue;
+        else
+            fprintf( 'Running: %s\n', filename );
+        end
+        
+        try
+            run( filename );
+            ran_successful=[ran_successful {filename}];
+        catch
+            fprintf( '==> Error in %s\n', makehyperlink( filename, filename, 'file' ) );
+        end
         drawnow;
     end
 end
-

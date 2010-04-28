@@ -49,6 +49,7 @@ else
     newfig=[];
 end
 check_handle( handle, 'figure' );
+set( handle, 'renderer', 'painters' );
 
 if use_psfrag
     psfrag_list=psfrag_format( handle );

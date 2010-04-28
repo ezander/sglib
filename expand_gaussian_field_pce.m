@@ -32,6 +32,10 @@ C=covariance_matrix( pos, cov_func );
 
 kl_options.correct_var=true;
 g_i_alpha=kl_solve_evp( C, G_N, m_gam, kl_options );
+if size(g_i_alpha,2)<m_gam
+    warning( 'sglib:expand_gaussian_random_field_pce', 'could not determine enough independent gaussians' );
+    g_i_alpha=[g_i_alpha, zeros(size(g_i_alpha,1),m_gam-size(g_i_alpha,2))];
+end
 
 I_g=multiindex( m_gam, 1 );
 g_i_alpha=[zeros(size(g_i_alpha,1),1), g_i_alpha];

@@ -27,7 +27,7 @@ for i=0:3
         axis tight
         
         title('Hermite polynomials')
-        save_thesis_figure( 'hermite_polynomials_2d-%d_%d', {i,j} );
+        save_figure( gcf, {'hermite_polynomials_2d-%d_%d', i,j} );
         return;
     end
 end

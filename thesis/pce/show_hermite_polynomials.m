@@ -11,7 +11,7 @@ ylabel('y');
 legend('h_0','h_1','h_2','h_3','h_4')
 title('Hermite functions')
 grid on
-save_thesis_figure( 'hermite_functions_1d', {} );
+save_figure( gcf, 'hermite_functions_1d' );
 
 x=linspace(-3,3);
 y=pce_evaluate( eye(5), multiindex(1,4), x )
@@ -23,4 +23,4 @@ legend('H_0','H_1','H_2','H_3','H_4')
 ylim([-10,10])
 grid on
 title('Hermite polynomials')
-save_thesis_figure( 'hermite_polynomials_1d', {} );
+save_figure( gcf, 'hermite_polynomials_1d' );
