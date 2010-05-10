@@ -35,7 +35,7 @@ gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 flag=1;
 for iter=1:maxiter
     %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
-    APc=operator_apply(A,Pc,'truncate_func', truncate_operator_func);
+    APc=operator_apply(A,Pc, 'pass_on', {'truncate_func', truncate_operator_func} );
     %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
     APc=funcall( truncate_before_func, APc );
     %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
@@ -52,7 +52,7 @@ for iter=1:maxiter
     
     %if true && (normres<abstol || relres<reltol || normres<ltres*sqrt(releps) )
     if true && normres<ltres*sqrt(releps)
-        AXn=operator_apply(A,Xn,'truncate_func', truncate_operator_func);
+        AXn=operator_apply(A,Xn, 'pass_on', {'truncate_func', truncate_operator_func} );
         Rn=gvector_add( F, AXn, -1 );
         Rn=funcall( truncate_before_func, Rn );
         new_normres=gvector_norm( Rn );

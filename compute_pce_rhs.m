@@ -28,6 +28,8 @@ function f_j_beta=compute_pce_rhs( f_j_alpha, I_f, I_u )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+check_match( f_j_alpha, I_f, false, 'f_i_alpha', 'I_f', mfilename );
+
 g_j_alpha=row_col_mult( f_j_alpha, multiindex_factorial(I_f)' );
 
 if nargin<3 || isequal(I_u,I_f)

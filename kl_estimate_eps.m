@@ -38,7 +38,7 @@ if ~full
 end
 
 params=[a,b,c];
-sigma_ex=kl_extrapolate( [], Nout, a, b, c );
+sigma_ex=kl_extrapolate( [], Nout, a, b, c ); %#ok<NASGU>
 sigma_ex=kl_extrapolate( sigma, Nout, a, b, c );
 
 
@@ -72,7 +72,7 @@ k=length(sigma)+1:N;
 sigma_ex=[sigma, a*k.^b.*exp(-k*c)];
 
 
-function plot_stuff( sigma, sigma_ex )
+function plot_stuff( sigma, sigma_ex ) %#ok<DEFNU>
 clf
 subplot(3,1,1);
 loglog(sigma); hold on

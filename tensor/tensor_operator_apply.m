@@ -28,6 +28,9 @@ function Y=tensor_operator_apply( A, T, varargin )
 
 options=varargin2options( varargin );
 [truncate_func, options]=get_option( options, 'truncate_func', @identity );
+[residual,options]=get_option(options,'residual', false );
+[reverse,options]=get_option(options,'reverse', residual );
+[b,options]=get_option(options,'b', {} );
 check_unsupported_options( options, mfilename );
 
 check_tensor_operator_format( A );
@@ -40,12 +43,26 @@ end
 
 R=size(A,1);
 for i=1:R
-    V=tensor_operator_apply_elementary( A(i,:), T );
-    if i==1
-        Y=V;
+    if ~reverse
+        V=tensor_operator_apply_elementary( A(i,:), T );
     else
-        Y=gvector_add( Y, V );
+        V=tensor_operator_apply_elementary( A(R-i+1,:), T );
     end
+    
+    if i==1
+        if ~residual
+            Y=gvector_null(V);
+        else
+            Y=b;
+        end
+    end
+        
+    if ~residual
+        Y=gvector_add( Y, V );
+    else
+        Y=gvector_add( Y, V, -1 );
+    end
+    
     Y=funcall( truncate_func, Y );
 end
 

@@ -1,12 +1,12 @@
-function [rat,flag,iter]=simple_iteration_normest( K, Pinv, x0 )
-% SIMPLE_ITERATION_NORMEST Estimate norm for preconditioned simple iteration.
-%   [RAT,FLAG]=SIMPLE_ITERATION_NORMEST( K, PINV, X0 ) computes the norm
+function [rat,flag,iter]=simple_iteration_contractivity( K, Pinv, varargin )
+% SIMPLE_ITERATION_CONTRACTIVITY Estimate norm for preconditioned simple iteration.
+%   [RAT,FLAG]=SIMPLE_ITERATION_CONTRACTIVITY( K, PINV, X0 ) computes the norm
 %   associated with the simple iteration X=X-Pinv*(B-K*X), i.e. the norm of
 %   I-P\K, which has to be smaller 1 for the iteration to converge (ok, its
 %   really the spectral radius, but if we take the 2 norm and K and P are
 %   symmetric, that's the same).
 %
-% Example (<a href="matlab:run_example simple_iteration_normest">run</a>)
+% Example (<a href="matlab:run_example simple_iteration_contractivity">run</a>)
 %
 % See also
 
@@ -22,12 +22,21 @@ function [rat,flag,iter]=simple_iteration_normest( K, Pinv, x0 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[abstol,options]=get_option(options,'abstol',1e-4);
+[maxiter,options]=get_option(options,'maxiter',100);
+check_unsupported_options(options,mfilename);
 
-abstol=1e-4;
-rat=-1;
-maxiter=100;
-r=gvector_norm( x0 );
+MN=operator_size( K, 'domain', false, 'contract', true );
+x0=rand(MN,1);
+
+rat=0;
 flag=1;
+iter=0;
+r=gvector_norm( x0 );
+if r==0; return; end
+
+
 for iter=1:maxiter
     x0=gvector_scale(x0,1/r);
     tmp=operator_apply( K, x0 );
@@ -37,6 +46,7 @@ for iter=1:maxiter
     r=gvector_norm( x0 );
     ratn=r;
 
+    fprintf( 'iter: %d, delta: %g\n', iter, abs(ratn-rat) );
     if abs(ratn-rat)<abstol 
         rat=ratn;
         flag=0;

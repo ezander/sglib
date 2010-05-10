@@ -39,7 +39,6 @@ gvector_error( r1d, r1, [], true )
 gvector_error( r1e, r1, [], true )
 
 
-
 function Ut=to_tensor( T )
 [U,S,V]=svd(T,0);
 Ut={U*S,V};
@@ -67,6 +66,7 @@ for i=1:R
 end
 R=gvector_add( F, Y, -1 );
 
+
 function R=compute_residual_tensor_add1( F, A, U, eps )
 if nargin<4 || isempty(eps)
     truncate_func=@identity;
@@ -81,7 +81,6 @@ for i=1:R
     Y=funcall( truncate_func, Y );
 end
 R=Y;
-
 
 
 function [A, F, U]=setup_system
@@ -127,3 +126,4 @@ U=Ui_vec;
 d=tensor_operator_size(A); d=d(:,1)';
 F=reshape(F,d);
 U=reshape(U,d);
+

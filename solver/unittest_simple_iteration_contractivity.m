@@ -1,10 +1,10 @@
-function unittest_simple_iteration_normest
-% UNITTEST_SIMPLE_ITERATION_NORMEST Test the SIMPLE_ITERATION_NORMEST function.
+function unittest_simple_iteration_contractivity
+% UNITTEST_SIMPLE_ITERATION_CONTRACTIVITY Test the SIMPLE_ITERATION_CONTRACTIVITY function.
 %
-% Example (<a href="matlab:run_example unittest_simple_iteration_normest">run</a>)
-%   unittest_simple_iteration_normest
+% Example (<a href="matlab:run_example unittest_simple_iteration_contractivity">run</a>)
+%   unittest_simple_iteration_contractivity
 %
-% See also SIMPLE_ITERATION_NORMEST, TESTSUITE 
+% See also SIMPLE_ITERATION_CONTRACTIVITY, TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Comuting
@@ -18,7 +18,7 @@ function unittest_simple_iteration_normest
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'simple_iteration_normest' );
+munit_set_function( 'simple_iteration_contractivity' );
 
 rand( 'seed', 754762 );
 randn( 'seed', 754762 );
@@ -30,5 +30,11 @@ Pinv=diag(1./diag(K));
 I=eye(size(K));
 x0=rand(m,1);
 
-[rat,flag,iter]=simple_iteration_normest( K, Pinv, x0 )
-assert_equals( rat, normest( I-Pinv*K ), 'normest', 'abstol', 2e-4 );
+% the following test only holds because Pinv is some constant times the
+% identity matrix and thus Pinv*K is still symmetric
+% if Pinv*K is not symmetric normest will give you the largest singular
+% value, while contractivity will give you the spectral radius of I-Pinv*K
+[rat,flag,iter]=simple_iteration_contractivity( K, Pinv, x0 )
+assert_equals( rat, normest( I-Pinv*K ), 'contractivity', 'abstol', 2e-4 );
+
+

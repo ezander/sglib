@@ -1,8 +1,12 @@
-function create_all_figures
+function create_all_figures( recreate_all )
 
 global sglib_figdir
 
 persistent ran_successful
+
+if nargin>=1 && recreate_all
+    ran_successful={};
+end
 
 
 

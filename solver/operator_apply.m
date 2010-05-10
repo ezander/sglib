@@ -33,19 +33,37 @@ function y=operator_apply( A, x, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[residual,options]=get_option(options,'residual', false );
+[b,options]=get_option(options,'b', {} );
+[pass_on,options]=get_option(options,'pass_on', {} );
+check_unsupported_options(options,mfilename);
+
+if ~residual
+    check_empty( b, 'b', mfilename );
+end
 
 if isempty(A)
     % A is the identity
     y=x;
+    if residual
+        y=gvector_add( b, y, -1 );
+    end
 elseif isnumeric(A)
     % A is a matrix
     y=A*x;
+    if residual
+        y=b-y;
+    end
 elseif is_tensor_operator(A)
-    y=tensor_operator_apply( A, x, varargin{:} );
+    y=tensor_operator_apply( A, x, pass_on{:}, 'residual', residual, 'b', b );
 elseif iscell(A) && isfunction(A{2})
     % A is an operator and secondelement contains function returning the
     % application of the linear operator
-    y=funcall( A{2}, x, varargin{:} );
+    y=funcall( A{2}, x, pass_on{:} );
+    if residual
+        y=gvector_add( b, y, -1 );
+    end
 else
     error( 'operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end

@@ -13,10 +13,10 @@ for i=1:length(psfrag_list)
     [tag,txt,font,pos]=psfrag_list{i}{:};
     txt=correct_tex_strings( txt );
     
-    fprintf(fid, '\\psfrag{%s}[%s][%s][1][0]{{%s %s}}\n', ...
+    fprintf(fid, '\\psfrag{%s}[%s][%s][1][0]{{%s %s}}%%\n', ...
         tag, pos, pos, font, txt );
 end
-fprintf(fid, '\\includegraphics{%s}\n', epsfilename );
+fprintf(fid, '\\includegraphics{%s}%%\n', epsfilename );
 fclose(fid);
 
 

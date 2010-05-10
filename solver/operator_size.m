@@ -1,4 +1,4 @@
-function d=operator_size( A )
+function d=operator_size( A, varargin )
 % OPERATOR_SIZE Return the size of a linear operator.
 %   D=OPERATOR_SIZE( A ) returns the size of the linear operator
 %   A. 
@@ -27,15 +27,28 @@ function d=operator_size( A )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[range,options]=get_option(options,'range',true);
+[domain,options]=get_option(options,'domain',true);
+[contract,options]=get_option(options,'contract',true);
+check_unsupported_options(options,mfilename);
 
 if isnumeric(A)
     % A is a matrix (meaningsless result for identity)
     d=size(A);
 elseif is_tensor_operator(A)
-    d=tensor_operator_size( A, true );
+    d=tensor_operator_size( A, false );
 elseif iscell(A) && isfunction(A{2})
     % A is an operator and first element is the size
     d=A{1};
 else
     error( 'operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end
+
+if contract
+    d=prod(d,1);
+end
+
+select=logical([range, domain]);
+d=d(:,select);
+
