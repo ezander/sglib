@@ -7,3 +7,4 @@ rebuild=false;
 
 [rho,flag]=simple_iteration_contractivity( Ki, Mi_inv,  'abstol', 1e-2 )
 
+solve_by_gsolve_pcg
