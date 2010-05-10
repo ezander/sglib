@@ -33,8 +33,10 @@ if quiet
     extra_params=['-j:quiet ', extra_params]; %#ok<NASGU>
 end
 
-cmd=strvarexpand('sam2p $extra_params$ -m:dpi:$dpi$ -ps:$pslevel$ -- $pngfilename$ $epsfilename$' );
+cmd=strvarexpand('convert $pngfilename$ -trim $pngfilename$' );
+[res,msgs]=system( cmd );
 
+cmd=strvarexpand('sam2p $extra_params$ -m:dpi:$dpi$ -ps:$pslevel$ -- $pngfilename$ $epsfilename$' );
 [res,msgs]=system( cmd );
 if res
     switch res
