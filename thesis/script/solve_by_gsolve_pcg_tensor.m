@@ -38,19 +38,20 @@ tic; fprintf( 'Solving (tpcg): ' );
 [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
-R1=gvector_add( Fi, operator_apply( Ki, Ui ), -1 );
-R2=gvector_add( Fi, operator_apply( Ki, Ui_true ), -1 );
+% R1=gvector_add( Fi, operator_apply( Ki, Ui ), -1 );
+% R2=gvector_add( Fi, operator_apply( Ki, Ui_true ), -1 );
+% 
+% 
+% relerr=gvector_error( Ui, Ui_true, [], true );
+% if is_tensor(Ui)
+%     k=tensor_rank(Ui);
+% end
+% 
+% if eps>0
+%     R=relerr/eps;
+% else
+%     R=1;
+% end
+% 
+% U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 
-
-relerr=gvector_error( Ui, Ui_true, [], true );
-if is_tensor(Ui)
-    k=tensor_rank(Ui);
-end
-
-if eps>0
-    R=relerr/eps;
-else
-    R=1;
-end
-
-U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );

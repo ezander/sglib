@@ -19,15 +19,14 @@ for i=1:length(funcs)
         
         multiplot( mh, i, 1 ); plot(x,y);
         multiplot( mh, i, 2 ); plot(sigma);
-        multiplot( mh, i, 3 ); plot(sigma);
-        multiplot( mh, i, 4 ); plot(sigma);
+        multiplot( mh, i, 3 ); plot(sigma); logaxis( gca, 'x' );
+        multiplot( mh, i, 4 ); plot(sigma); logaxis( gca, 'xy' );
     end
     multiplot_legend( mh, i, 1, lc_fs, 'format', 'l_c=%3.1f' );
     multiplot_legend( mh, i, 2, lc_fs, 'format', 'l_c=%3.1f' );
     multiplot_legend( mh, i, 3, lc_fs, 'format', 'l_c=%3.1f' );
     multiplot_legend( mh, i, 4, lc_fs, 'format', 'l_c=%3.1f' );
-    set( mh(i,3), 'xscale', 'log' );
-    set( mh(i,4), 'xscale', 'log', 'yscale', 'log' );
+    
     drawnow;
 end
 
