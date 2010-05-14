@@ -7,7 +7,7 @@ rebuild=false;
 info_cg=info;
 %[rho,flag]=simple_iteration_contractivity( Ki, Mi_inv,  'abstol', 1e-2 )
 Ui_vec_true=Ui_vec;
-solve_by_gsolve_simple
+solve_by_gsolve_simple_tensor
 
 
 info_si=info;
