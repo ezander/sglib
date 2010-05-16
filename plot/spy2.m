@@ -49,6 +49,9 @@ check_unsupported_options( options, mfilename );
 % get index of nonzero elements
 [x,y]=find(A);
 
+% make sure x and y are column vectors (not true if dim(A,1)==1)
+x=x(:); y=y(:);
+
 % create arrays of rectangle vertices
 h=1/2;
 X=[x-h,x+h,x+h,x-h,x-h]';
@@ -56,14 +59,15 @@ Y=[y-h,y-h,y+h,y+h,y-h]';
 
 % now draw the patches (each column in X and Y represents one patch)
 if ~ishold; cla; end
-patch( X, Y, face_color, 'EdgeColor', edge_color )
+p=patch( X, Y, 'r', 'EdgeColor', edge_color )
+set(p,'FaceColor',face_color);
 
 % make it look nice
 [m,n]=size(A);
 ylim([0, m+1]);
 xlim([0, n+1]);
 set( gca, 'YDir', 'reverse' );
-axis( 'square' );
+axis( 'image' );
 grid( 'off' );
 box( 'on' );
 
