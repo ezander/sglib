@@ -34,14 +34,10 @@ if ~isempty(stats_func)
 end
 
 %% generate tensor prod preconditioner 
-if isempty(Minv)
-    if ~isempty(M)
+if ~isempty(M)
+    if isempty(Minv)
         Minv=stochastic_preconditioner_deterministic( M );
     else
-        % Ok, user doesn't want a preconditioner
-    end
-else
-    if ~isempty(M)
         error( 'M and Minv cannot be specified both' );
     end
 end
