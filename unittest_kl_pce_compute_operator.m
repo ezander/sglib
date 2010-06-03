@@ -50,7 +50,6 @@ u=rand(N*M_u,1);
 assert_equals( tensor_operator_apply( K2, u ), tensor_operator_apply( K, u ), 'same_result' )
 
 Kmat=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'matrix' );
-%Kmat=cell2mat(compute_kl_pce_operator( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'alpha_beta' ));
 assert_equals( size(Kmat), [N*M_u,N*M_u], 'mat_size' );
 assert_equals( Kmat*u, tensor_operator_apply( K, u ), 'mat_same_result' )
 
