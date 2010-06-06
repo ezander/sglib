@@ -12,3 +12,7 @@ for i=1:m
     end
 end
 multiplot(mh,m,n);
+
+if nargout==0
+    clear mh
+end

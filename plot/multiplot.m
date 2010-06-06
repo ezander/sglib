@@ -26,6 +26,10 @@ else
 end
 set( gcf, 'CurrentAxes', h );
 drawnow;
+
+if nargout==0
+    clear('h');
+end
 %[m,n]=size(mh);
 %k=j+n*(i-1);
 %h=subplot(m,n,k); hold all;
