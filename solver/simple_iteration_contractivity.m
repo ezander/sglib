@@ -1,6 +1,6 @@
 function [rat,flag,iter]=simple_iteration_contractivity( K, Pinv, varargin )
 % SIMPLE_ITERATION_CONTRACTIVITY Estimate norm for preconditioned simple iteration.
-%   [RAT,FLAG]=SIMPLE_ITERATION_CONTRACTIVITY( K, PINV, X0 ) computes the norm
+%   [RAT,FLAG]=SIMPLE_ITERATION_CONTRACTIVITY( K, PINV, OPTIONS ) computes the norm
 %   associated with the simple iteration X=X-Pinv*(B-K*X), i.e. the norm of
 %   I-P\K, which has to be smaller 1 for the iteration to converge (ok, its
 %   really the spectral radius, but if we take the 2 norm and K and P are
@@ -25,6 +25,7 @@ function [rat,flag,iter]=simple_iteration_contractivity( K, Pinv, varargin )
 options=varargin2options(varargin);
 [abstol,options]=get_option(options,'abstol',1e-4);
 [maxiter,options]=get_option(options,'maxiter',100);
+[verbosity,options]=get_option(options,'verbosity',0);
 check_unsupported_options(options,mfilename);
 
 MN=operator_size( K, 'domain', false, 'contract', true );
@@ -46,7 +47,9 @@ for iter=1:maxiter
     r=gvector_norm( x0 );
     ratn=r;
 
-    fprintf( 'iter: %d, delta: %g\n', iter, abs(ratn-rat) );
+    if verbosity>1
+        fprintf( 'iter: %d, delta: %g\n', iter, abs(ratn-rat) );
+    end
     if abs(ratn-rat)<abstol 
         rat=ratn;
         flag=0;

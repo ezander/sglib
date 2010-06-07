@@ -34,7 +34,5 @@ x0=rand(m,1);
 % identity matrix and thus Pinv*K is still symmetric
 % if Pinv*K is not symmetric normest will give you the largest singular
 % value, while contractivity will give you the spectral radius of I-Pinv*K
-[rat,flag,iter]=simple_iteration_contractivity( K, Pinv, x0 )
+[rat,flag,iter]=simple_iteration_contractivity( K, Pinv );
 assert_equals( rat, normest( I-Pinv*K ), 'contractivity', 'abstol', 2e-4 );
-
-

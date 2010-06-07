@@ -55,12 +55,12 @@ assert_true( issparse(C_u), 'cov_matrix_lmax_sparse' );
 n=1500;
 L=.1; K=5;
 x=linspace(-1,2,n);
-tic
+%tic
 C_u=covariance_matrix( x, {@gaussian_covariance, {L,sig}}, 'max_dist', K*L );
-toc
-tic
+%toc
+%tic
 C_u2=covariance_matrix( x, {@gaussian_covariance, {L,sig}} );
-toc
+%toc
 C_u_ex=toeplitz(sig^2*exp(-(x+1).^2/L^2));
 assert_equals( C_u, C_u_ex, 'cov_matrix_4L', 'abstol', sig^2*exp(-K^2) );
 
