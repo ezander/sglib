@@ -5,7 +5,11 @@ f_mask=~k_mask;
 [ind2kblock, I_ku]=find_blocks( I_u, k_mask );
 [ind2fblock, I_fu]=find_blocks( I_u, f_mask );
 
-K=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k, I_ku, stiffness_func, form, varargin );
+t=tic;
+K=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k(:,k_mask), I_ku(:,k_mask), stiffness_func, form, varargin );
+fprintf( 'kappa_op: '); toc(t);
+
+t=tic;
 for k=1:size(K,1)
     D=K{k,2};
     S=sparse(size(I_u,1), size(I_u,1));
@@ -20,11 +24,7 @@ for k=1:size(K,1)
     
     K{k,2}=S;
 end
-
-
-
-
-
+fprintf( 'placement: '); toc(t);
 
 
 function [ind2block,I_unique]=find_blocks( I_u, mask )
