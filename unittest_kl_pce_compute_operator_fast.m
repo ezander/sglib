@@ -20,33 +20,25 @@ function unittest_kl_pce_compute_operator_fast
 
 munit_set_function( 'kl_pce_compute_operator_fast' );
 
-multiplot_init(2,2);
-
 m_k=2; p_k=2; m_f=2; p_f=2; p_u=4; lex_sort=true;
 [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort );
 assert_equals( K, K_f );
-multiplot; spy(K{2,2})
 
 m_k=2; p_k=2; m_f=2; p_f=2; p_u=4; lex_sort=false;
 [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort );
 assert_equals( K, K_f );
-multiplot; spy(K{2,2})
 
 m_k=2; p_k=4; m_f=2; p_f=2; p_u=2; lex_sort=false;
 [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort );
 assert_equals( K, K_f );
-multiplot; spy(K{2,2})
 
 m_k=2; p_k=4; m_f=2; p_f=2; p_u=2; lex_sort=true;
 [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort );
 assert_equals( K, K_f );
-multiplot; spy(K{2,2})
 
 m_k=2; p_k=4; m_f=10; p_f=2; p_u=2; lex_sort=true;
 [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort );
 assert_equals( K, K_f );
-multiplot; spy(K{2,2})
-
 
 
 

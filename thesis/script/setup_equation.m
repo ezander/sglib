@@ -29,7 +29,7 @@ G=kl_to_tensor( g_i_k, g_k_beta );
 % create tensor operators
 verbose=get_param( 'verbose', true );
 t_klop=tic;
-K=kl_pce_compute_operator(k_i_k, k_k_alpha, I_k, I_OP, stiffness_func, 'tensor');
+K=kl_pce_compute_operator_fast(k_i_k, k_k_alpha, I_k, I_OP, stiffness_func, 'tensor');
 if verbose; toc(t_klop); end
 
 %% apply boundary conditions

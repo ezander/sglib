@@ -1,10 +1,13 @@
 function d=tensor_size(T)
-% TENSOR_SIZE Short description of tensor_size.
-%   TENSOR_SIZE Long description of tensor_size.
+% TENSOR_SIZE Return the size of the tensor.
+%   D=TENSOR_SIZE(T) Returns the size of the tensor T as an array, i.e. if
+%   T is a I1xI2xI3x... tensor then D=[I1,I2,I3,...].
 %
 % Example (<a href="matlab:run_example tensor_size">run</a>)
+%   T=tensor_null( [3,4,5] );
+%   tensor_size( T )
 %
-% See also
+% See also TENSOR_NULL
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

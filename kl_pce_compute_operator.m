@@ -18,9 +18,6 @@ function K=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-
 options=varargin2options( varargin );
 [opt.silent,options]=get_option( options, 'silent', true );
 [opt.twoarg_stiffness,options]=get_option( options, 'twoarg_stiffness', false );

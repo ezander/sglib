@@ -1,4 +1,4 @@
-function Z=tensor_null( T, is_operator )
+function Z=tensor_null( T )
 % TENSOR_NULL Create a sparse null tensor with correct dimensions.
 %   Z=TENSOR_NULL( T ) create a sparse tensor product with the same
 %   dimensions as the tensor T (which is used as kind of a model). In more
@@ -24,17 +24,11 @@ function Z=tensor_null( T, is_operator )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<2
-    is_operator=false;
-end
-
-if ~is_operator
+if iscell(T)
     check_tensor_format( T );
     dims=tensor_size( T );
 else
-    check_tensor_operator_format( T );
-    dims=tensor_operator_size( T );
-    dims=dims(:,1)';
+    dims=T;
 end
 
 C=zeros(sum(dims),0);

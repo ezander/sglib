@@ -10,7 +10,7 @@ options=varargin2options( varargin );
 
 [trunc.eps,options]=get_option( options, 'eps', 0 );
 [trunc.k_max,options]=get_option( options, 'k_max', 1000 );
-[trunc.trunc_mode,options]=get_option( options, 'trunc_mode', 2 );
+[trunc.trunc_mode,options]=get_option( options, 'trunc_mode', 3 );
 [trunc.vareps,options]=get_option( options, 'vareps', false );
 [trunc.relcutoff,options]=get_option( options, 'relcutoff', true );
 [trunc.vareps_threshold,options]=get_option( options, 'vareps_threshold', 0.1 );
@@ -69,8 +69,8 @@ if is_tensor(F)
             truncate_after_func=truncate_med;
         case 3 % in the operator
             truncate_operator_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_before_func={@tensor_truncate_zero, {trunc}, {2}};
-            truncate_after_func={@tensor_truncate_zero, {trunc}, {2}};
+            truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
+            truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
     end
     %pass_options=[pass_options {'truncate_func', truncate_func}]
     pass_options=[pass_options {'truncate_operator_func', truncate_operator_func}];

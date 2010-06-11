@@ -70,9 +70,9 @@ x=M\y;
 
 function x=lu_solve( L, U, p, y, varargin )
 if issparse(L) || issparse(U)
-    x=mldivide(U, mldivide(L,y(p)) );
+    x=mldivide(U, mldivide(L,y(p,:)) );
 else
     lower.LT=true;
     upper.UT=true;
-    x=linsolve(U, linsolve(L,y(p),lower), upper );
+    x=linsolve(U, linsolve(L,y(p,:),lower), upper );
 end

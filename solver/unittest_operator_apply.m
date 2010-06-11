@@ -20,8 +20,8 @@ function unittest_operator_apply
 
 munit_set_function( 'operator_apply' );
 
-M=rand(5,3);
-x=rand(3,1);
+M=rand(13,11);
+x=rand(11,5);
 y=M*x;
 A1=operator_from_matrix( M );
 A2=operator_from_function( {@mtimes, {M}, {1}}, size(M) );
