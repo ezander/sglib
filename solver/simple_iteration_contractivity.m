@@ -58,3 +58,6 @@ for iter=1:maxiter
     rat=ratn;
 end
     
+if nargout<2 && flag
+    disp( 'simple_iteration_contractivity did not converge' );
+end

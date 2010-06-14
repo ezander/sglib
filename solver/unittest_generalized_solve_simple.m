@@ -137,7 +137,7 @@ for iter=1:maxit
     
     resvec(end+1)=norm(r); %#ok<AGROW>
     if norm(r)<tolb
-        flag=1;
+        flag=0;
         break;
     end
 end

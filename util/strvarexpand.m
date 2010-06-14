@@ -51,7 +51,7 @@ end
 function str=tostring( val, orig )
 if isnumeric(val)
     if isscalar(val)
-        str=num2str(val);
+        str=num2str(val,'%g');
     else
         str='[';
         for i=1:numel(val)
