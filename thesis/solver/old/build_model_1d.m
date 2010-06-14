@@ -75,7 +75,7 @@ g_vec=g_mat(:);
 % since this takes a while we cache the function call
 kl_operator_version=1;
 stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
-opt.silent=false;
+opt.verbosity=0;
 opt.show_timings=true;
 op_filename=sprintf('kl_operator_1d_%d_%d.mat', N, M );
 

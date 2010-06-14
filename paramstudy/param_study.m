@@ -24,7 +24,7 @@ options=varargin2options(varargin);
 check_unsupported_options(options,mfilename);
 
 if cache
-    s=cached_funcall( @param_study_internal, {script, var_params, def_params, ret_names}, 1, cache_file, 1, 'silent', false );
+    s=cached_funcall( @param_study_internal, {script, var_params, def_params, ret_names}, 1, cache_file, 1, 'verbosity', 1 );
 else
     s=param_study_internal( script, var_params, def_params, ret_names );
 end

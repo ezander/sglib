@@ -19,7 +19,7 @@ function K=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[opt.silent,options]=get_option( options, 'silent', true );
+[opt.verbosity,options]=get_option( options, 'verbosity', 0 );
 [opt.twoarg_stiffness,options]=get_option( options, 'twoarg_stiffness', false );
 check_unsupported_options( options, mfilename );
 
@@ -73,7 +73,7 @@ N=size(K_k{1},1);
 M_u=size(I_u,1);
 K=cell(M_u,M_u);
 for alpha=1:M_u
-    if ~opt.silent
+    if opt.verbosity
         erase_print( '%d/%d %d/%d', alpha*(alpha+1)/2, m_alpha_u*(M_u+1)/2, alpha, M_u );
     end
     for beta=1:alpha
@@ -87,7 +87,7 @@ for alpha=1:M_u
         K{beta,alpha}=K{alpha,beta};
     end
 end
-if ~opt.silent
+if opt.verbosity
     erase_print();
 end
 K=cell2mat(K);

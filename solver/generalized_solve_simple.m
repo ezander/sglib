@@ -7,16 +7,17 @@ options=varargin2options( varargin );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[truncate_operator_func,options]=get_option( options, 'truncate_operator_func', @identity );
-[truncate_before_func,options]=get_option( options, 'truncate_before_func', truncate_operator_func );
-[truncate_after_func,options]=get_option( options, 'truncate_after_func', truncate_before_func );
+[trunc,options]=get_option( options, 'trunc', {'eps',0,'k_max',inf} );
+[trunc_mode,options]=get_option( options, 'trunc_mode', 'none' );
+
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
-[debug_level,options]=get_option( options, 'debug_level', 0 );
+[verbosity,options]=get_option( options, 'verbosity', 0 );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
-if ~isequal(truncate_operator_func,@identity)
+[truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+if ~isequal(trunc_mode,'none')
     apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
 end
 
@@ -55,7 +56,7 @@ for iter=1:maxiter
     relres=normres/initres;
     
     resvec(end+1)=normres; %#ok<AGROW>
-    if debug_level>0
+    if verbosity>0
         fprintf('iter: %d  res:%g \n', iter, normres );
     end
     
@@ -111,3 +112,18 @@ function stats=gather_stats_def( what, stats, varargin )
 what; %#ok, ignore
 varargin; %#ok, ignore
 
+
+function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
+tr={@tensor_truncate_fixed, {trunc}, {2}};
+id=@identity;
+switch trunc_mode
+    case 'none'
+        funcs={id,id,id};
+    case 'operator';
+        funcs={tr,tr,tr};
+    case 'before';
+        funcs={id,tr,tr};
+    case 'after'
+        funcs={id,id,tr};
+end
+[trunc_operator_func,trunc_before_func,trunc_after_func]=funcs{:};

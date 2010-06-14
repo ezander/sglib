@@ -16,12 +16,12 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   depending on that number.
 %
 % Options:
-%   silent: {true}, false
+%   verbosity: {0}, 1, 2, 
 %     Show messages if recomputing.
 %   show_timings: true, {false}
 %     Show timings for computation. See also <a href="http://blogs.mathworks.com/loren/2009/01/06/nested-timing/">Nested Timing</a>.
 %   message: {'Recomputing: %s( %s )'}
-%     Message to display when recomputing and silent is false. The
+%     Message to display when recomputing and verbosity is non-zero. The
 %     parameters are replaced by the function name and the stringified
 %     parameters.
 %   extra_params: {{}}
@@ -36,7 +36,7 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %     % newly computed.
 %     filename=[tempname, '.mat'];
 %     ver=1;
-%     options={'silent', false};
+%     options={'verbosity', 1};
 %     % should compute new values only once
 %     x=cached_funcall( @rand, {1,2}, 1, filename, ver, options ); disp(x);
 %     x=cached_funcall( @rand, {1,2}, 1, filename, ver, options ); disp(x);
@@ -66,7 +66,7 @@ function varargout=cached_funcall( func, params, ndata, filename, version, varar
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[silent,options]=get_option( options, 'silent', true );
+[verbosity,options]=get_option( options, 'verbosity', 0 );
 [show_timings,options]=get_option( options, 'show_timings', false );
 [message,options]=get_option( options, 'message', 'Recomputing: %s( %s )' );
 [extra_params,options]=get_option( options, 'extra_params', {} );
@@ -115,7 +115,7 @@ end
 % then recompute
 data=cell(ndata,1);
 
-if ~silent && ~isempty(message)
+if verbosity>0 && ~isempty(message)
     str_func=char(func);
     str_params=strtrim(evalc('disp({params{:},extra_params{:}})'));
     str=sprintf( message, str_func, str_params );

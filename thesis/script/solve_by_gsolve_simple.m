@@ -7,7 +7,7 @@ reltol=1e-6;
 Mi_inv=stochastic_preconditioner_deterministic(Ki);
 
 tic; fprintf( 'Solving (simple): \n' );
-[Ui_vec,flag,info]=generalized_solve_simple( Ki,Fi_vec,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv, 'debug_level', inf);
+[Ui_vec,flag,info]=generalized_solve_simple( Ki,Fi_vec,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv, 'verbosity', inf);
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
 % vector_to_tensor;

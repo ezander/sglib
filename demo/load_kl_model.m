@@ -1,23 +1,23 @@
-function varargout=load_kl_model( name, version, silent, output_vars )
+function varargout=load_kl_model( name, version, verbosity, output_vars )
 % MODEL_KL Load or compute a random field model in KL expanded form.
-%   MODEL_KL( NAME, REINIT, SILENT ) loads the model NAME. If the model
+%   MODEL_KL( NAME, REINIT, VERBOSITY ) loads the model NAME. If the model
 %   does not exist or REINIT is true, the model is recomputed and saved to
-%   the file 'data/<modelname>.mat'. If SILENT is specfied and true, no
+%   the file 'data/<modelname>.mat'. If VERBOSITY is specfied and zero, no
 %   ouput is issued, when the model has to be recomputed (otherwise, you'll
 %   see some output, so that the user knows what's going on).
 % TODO: WRITE STUFF ABOUT VERSION
 %  version=1; % increase to force recomputation, set to rand(1) to always force recomputation
 
-global silent_computation
+global global_verbosity
 
 rf_filename=[name '.mat'];
 if nargin<2
     version=[];
 end
-if nargin<3 || isempty(silent)
-    silent=false;
+if nargin<3 || isempty(verbosity)
+    verbosity=1;
 end
-silent_computation=silent;
+global_verbosity=verbosity;
 
 %% Part 1: Setting up options and params
 
@@ -114,17 +114,17 @@ end
 
 
 function [r_i_k,r_k_alpha,I_r]=compute_random_field( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_r, options_expand_r, l_r )
-global silent_computation
-silent=silent_computation;
+global global_verbosity
+verbosity=global_verbosity;
 % compute the random field
-if ~silent
+if verbosity>0
     fprintf( 'model_kl: expanding field, this may take a while...\n' );
 end
 [r_j_alpha, I_r]=expand_field_pce_sg( stdnor_r, cov_r, cov_gam, pos, G_N, p_r, m_r, options_expand_r{:} );
-if ~silent
+if verbosity>0
     fprintf( 'model_kl: computing kl, this may take a while, too...\n' );
 end
 [r_i_k,r_k_alpha]=pce_to_kl( r_j_alpha, I_r, l_r, G_N );
-if ~silent
+if verbosity
     fprintf( 'model_kl: finished, saving to file...\n' );
 end

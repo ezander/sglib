@@ -54,7 +54,7 @@ g_vec=g_mat(:);
 %% load and create the operators
 kl_operator_version=9;
 stiffness_func={@stiffness_matrix, {pos,els}, {1,2}};
-opt.silent=false;
+opt.verbosity=1;
 opt.show_timings=true;
 K=load_kl_operator( [basename '_op_mu_delta'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'mu_delta', opt );
 K_ab=load_kl_operator( [basename '_op_ab'], kl_operator_version, k_i_k, k_k_alpha, I_k, I_u, stiffness_func, 'alpha_beta', opt );
