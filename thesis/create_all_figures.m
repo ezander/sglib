@@ -40,7 +40,7 @@ for i=1:length(file_patterns)
         if ask
             exec=true;
             while true;
-                ans=lower(input(sprintf( 'Execute %s? [yN]', filename ), 's' ));
+                ans=lower(input(sprintf( 'Execute %s? [yNx]', filename ), 's' ));
                 switch ans
                     case 'y'; exec=true; break;
                     case 'n'; exec=false; break;
