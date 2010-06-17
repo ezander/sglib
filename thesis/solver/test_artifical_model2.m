@@ -27,21 +27,20 @@ trunc.show_reduction=false;
 % test with truncation
 multiplot_init( 2, 2 );
 
-common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'Minv', Minv }
+common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
 for i=1:3
     multiplot;
     leg={};
     fak=1;
     for teps=tol*[0.2, 0.1, 0.05, 0.02]
         trunc.eps=teps;
-        trunc_func={@tensor_truncate_fixed, {trunc}, {2} };
         switch i
             case 1
-                [X,flag,info]=generalized_solve_simple( A, F, common{:}, 'truncate_before_func', trunc_func ); %#ok<ASGLU>
+                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
             case 2
-                [X,flag,info]=generalized_solve_simple( A, F, common{:}, 'truncate_after_func', trunc_func ); %#ok<ASGLU>
+                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   );
             case 3
-                [X,flag,info]=generalized_solve_simple( A, F, common{:}, 'truncate_operator_func', trunc_func ); %#ok<ASGLU>
+                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   );
         end
         norm( x-tensor_to_vector( X ) )
         

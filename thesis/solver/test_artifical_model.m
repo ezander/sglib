@@ -17,6 +17,7 @@ Minv=stochastic_preconditioner_deterministic( A, true );
 % check that the textbook implementation works
 x=Amat\b;
 
+common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'verbosity', 0 };
 trunc.k_max=inf;
 trunc.show_reduction=false;
 
@@ -25,15 +26,15 @@ trunc.show_reduction=false;
 multiplot_init( 2, 2 );
 for teps=tol*[0.1, 0.01, 0.001, 0]
     trunc.eps=teps;
-    trunc_func={@tensor_truncate_fixed, {trunc}, {2} };
-    [X1,flag1,info1]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_before_func', trunc_func ); %#ok<ASGLU>
+    [X1,flag1,info1]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X1 ) )
     
-    [X2,flag2,info2]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_after_func', trunc_func ); %#ok<ASGLU>
+    [X2,flag2,info2]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X2 ) )
-    
-    [X3,flag3,info3]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_operator_func', trunc_func ); %#ok<ASGLU>
+
+    [X3,flag3,info3]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X3 ) )
+    
 
     multiplot;
     logaxis(gca,'y');

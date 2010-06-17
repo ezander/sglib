@@ -6,7 +6,7 @@ if nargin<3
     j=[];
 end
 
-if nargin<1
+if nargin<1 || isempty(mh)
     mh=lmh;
 end
 if nargin<2

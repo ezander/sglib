@@ -63,48 +63,60 @@ assert_equals(info.relres,relres,'relres')
 trunc.eps=0;
 trunc.k_max=100;
 trunc.show_reduction=false;
-trunc_func={@tensor_truncate_fixed, {trunc}, {2} };
 
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_before_func', trunc_func  ); %#ok<ASGLU>
+common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'verbosity', 0 };
+
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   ); %#ok<ASGLU>
 assert_equals(tensor_to_vector(X),x,'sol','reltol', 1e-6);
 assert_equals(info.resvec,resvec,'resvec');
 assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
+assert_equals( flag, 0, 'flag');
 
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_after_func', trunc_func ); %#ok<ASGLU>
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc ); %#ok<ASGLU>
+assert_equals(tensor_to_vector(X),x,'sol','reltol', 1e-6);
+assert_equals(info.resvec,resvec,'resvec');
+assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
+assert_equals( flag, 0, 'flag');
+
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals(tensor_to_vector(X),x,'sol', 'reltol', 1e-6);
 assert_equals(info.resvec(1:10),resvec(1:10),'resvec');
 assert_equals(info.resvec(1:12),resvec(1:12),'resvec');
 assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
+assert_equals( flag, 0, 'flag');
 
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_operator_func', trunc_func  ); %#ok<ASGLU>
-assert_equals(tensor_to_vector(X),x,'sol','reltol', 1e-6);
-assert_equals(info.resvec,resvec,'resvec');
-assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
 
 % test with truncation
 trunc.eps=1e-11;
-trunc_func={@tensor_truncate_fixed, {trunc}, {2} };
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_before_func', trunc_func ); %#ok<ASGLU>
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+assert_equals( flag, 0, 'flag');
 
-[X,flag,info2]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_after_func', trunc_func ); %#ok<ASGLU>
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+assert_equals( flag, 0, 'flag');
 
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_operator_func', trunc_func ); %#ok<ASGLU>
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+assert_equals( flag, 0, 'flag');
 
 
 % test with truncation
 trunc.eps=1e-8;
-trunc_func={@tensor_truncate_fixed, {trunc}, {2} };
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_before_func', trunc_func ); %#ok<ASGLU>
-assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+tol=1e-6;
+common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'verbosity', 0 };
 
-[X,flag,info2]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_after_func', trunc_func ); %#ok<ASGLU>
-assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc  ); %#ok<ASGLU>
+assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'norm', 2, 'reltol', 2*tol );
+assert_equals( flag, 0, 'flag');
 
-[X,flag,info]=generalized_solve_simple( A, F, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'truncate_operator_func', trunc_func ); %#ok<ASGLU>
-assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'abstol', 1e-6 );
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc  ); %#ok<ASGLU>
+assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'norm', 2, 'reltol', 2*tol );
+assert_equals( flag, 0, 'flag');
+
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc  ); %#ok<ASGLU>
+assert_equals( x, tensor_to_vector( X ), 'sol_trunc', 'norm', 2, 'reltol', 2*tol );
+assert_equals( flag, 0, 'flag');
 
 
 

@@ -56,7 +56,7 @@ if isnumeric(val)
         str='[';
         for i=1:numel(val)
             if i>1
-                str=[str, ',']; %#ok<*AGROW>
+                str=[str, ', ']; %#ok<*AGROW>
             end
             str=[str, tostring(val(i))];
         end
@@ -68,7 +68,7 @@ elseif iscell(val)
     str='{';
     for i=1:numel(val)
         if i>1
-            str=[str, ','];
+            str=[str, ', '];
         end
         str=[str, tostring(val{i})];
     end

@@ -21,9 +21,12 @@ if ~isequal(trunc_mode,'none')
     apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
 end
 
+tensor_mode=is_tensor(F);
 info.abstol=abstol;
 info.reltol=reltol;
 info.maxiter=maxiter;
+info.rank_res_before=[];
+info.rank_sol_after=[];
 
 Xc=gvector_null(F);
 Rc=F;
@@ -35,10 +38,16 @@ gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 flag=1;
 for iter=1:maxiter
     % add the preconditioned residuum to X
+    if tensor_mode
+        info.rank_res_before=[info.rank_res_before tensor_rank(Rc)];
+    end
     Z=operator_apply(Minv,Rc);
     Xn=gvector_add( Xc, Z );
     Xn=funcall( truncate_after_func, Xn );
-    if is_tensor(Xn)
+    if tensor_mode
+        info.rank_sol_after=[info.rank_sol_after tensor_rank(Xn)];
+    end
+    if tensor_mode && verbosity>0
         disp( strvarexpand('Ranks($iter$): Xn: $tensor_rank(Xn)$,  Rc:  $tensor_rank(Rc)$ ' ) );
     end
     
@@ -125,5 +134,7 @@ switch trunc_mode
         funcs={id,tr,tr};
     case 'after'
         funcs={id,id,tr};
+    otherwise
+        error( 'sglib:generalized_solve_simple:trunc_mode', 'unknown truncation mode %s', truncmode );
 end
 [trunc_operator_func,trunc_before_func,trunc_after_func]=funcs{:};
