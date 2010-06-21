@@ -40,7 +40,7 @@ check_tensors_compatible( T1, T2 );
 persistent max_size;
 
 if isempty(max_size)
-    max_size=1000;
+    max_size=10000;
 end
 
 if tensor_rank(T1)+tensor_rank(T2)>max_size

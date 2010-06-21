@@ -32,6 +32,8 @@ Xc=gvector_null(F);
 Rc=F;
 Rc=funcall( truncate_before_func, Rc );
 initres=gvector_norm( Rc );
+normres=initres;
+lastnormres=normres;
 resvec=[initres];
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
@@ -52,7 +54,7 @@ for iter=1:maxiter
     end
     
     % compute new residuum
-    if true % false
+    if false
         AXn=operator_apply(A,Xn, apply_operator_options{:} );
         Rn=gvector_add( F, AXn, -1 );
         Rn=funcall( truncate_before_func, Rn );
@@ -61,6 +63,7 @@ for iter=1:maxiter
         Rn=funcall( truncate_before_func, Rn );
     end
     
+    lastnormres=min(lastnormres,normres);
     normres=gvector_norm( Rn );
     relres=normres/initres;
     
@@ -84,6 +87,22 @@ for iter=1:maxiter
         flag=0;
         break;
     end
+    
+    if iter==10
+        rhoest=(normres/initres)^0.1;
+        noconvsteps=0;
+    end
+    if iter>10 
+        if 1-lastnormres/normres<0.02%*(1-rhoest)
+            noconvsteps=noconvsteps+1;
+        else
+            noconvsteps=0;
+        end
+        if noconvsteps>=1000
+            break;
+        end
+    end
+    
     
     %     if abs(1-upratio)>.2 %&& urc>10
     %         flag=-1;
