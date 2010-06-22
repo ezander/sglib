@@ -48,6 +48,11 @@ if lpos<=length(str)
     exstr=[exstr part];
 end
 
+if nargout<1
+    disp(exstr);
+    clear exstr;
+end
+
 function str=tostring( val, orig )
 if isnumeric(val)
     if isscalar(val)
