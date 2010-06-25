@@ -5,19 +5,20 @@ trunc.show_reduction=false;
 % test with truncation
 mh=multiplot_init( 3, 3 );
 fast=false;
+fast=false;
 
 if fast
     modes={'before'};
-    epsvals=10.^-[0:2:18];
+    epsvals=10.^-[0:2:14];
 else
     modes={'operator', 'before', 'after'};
-    epsvals=10.^-[0:0.5:18];
+    epsvals=10.^-[0:0.5:14];
 end
 
 for xxx=1:length(modes)
     mode=modes{xxx};
     
-    common={'maxiter', 60, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 0 };
+    common={'maxiter', 100, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
     leg={};
     err=[];
     res=[];
@@ -47,7 +48,7 @@ for xxx=1:length(modes)
         ep=[ep eps];
         
         multiplot([],1);
-        plot( info.resvec );
+        plot( info.resvec, '-+' );
         %legend( leg );
         
         multiplot([],7);

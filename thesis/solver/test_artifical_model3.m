@@ -1,4 +1,4 @@
-function test_artifical_model2
+function test_artifical_model3
 
 rand('seed', 12345 ); %#ok<RAND>
 randn('seed', 12345 ); %#ok<RAND>

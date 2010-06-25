@@ -34,6 +34,7 @@ Rc=funcall( truncate_before_func, Rc );
 initres=gvector_norm( Rc );
 normres=initres;
 lastnormres=normres;
+noconvsteps=0;
 resvec=[initres];
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
@@ -90,15 +91,17 @@ for iter=1:maxiter
     
     if iter==10
         rhoest=(normres/initres)^0.1;
-        noconvsteps=0;
     end
-    if iter>10 
-        if 1-lastnormres/normres<0.02%*(1-rhoest)
+    if iter>1.0 
+        if verbosity>0
+            strvarexpand('reduct: $1-normres/lastnormres$  ($iter$/$noconvsteps$)');
+        end
+        if normres/lastnormres>1-0.1%*(1-rhoest)
             noconvsteps=noconvsteps+1;
         else
             noconvsteps=0;
         end
-        if noconvsteps>=1000
+        if noconvsteps>=5*100
             break;
         end
     end
