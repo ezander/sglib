@@ -51,6 +51,7 @@ end
 if nargout<1
     disp(exstr);
     clear exstr;
+    stop_check;
 end
 
 function str=tostring( val, orig )

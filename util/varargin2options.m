@@ -35,6 +35,8 @@ function options=varargin2options( args )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+stop_check;
+
 % we need a cell array (don't pass varargin{:} any more, always pass
 % varargin itself)
 if ~iscell(args)
