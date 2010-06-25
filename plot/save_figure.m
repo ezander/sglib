@@ -34,7 +34,8 @@ if ~ishandle( handle )
     error( 'sglib:save_figure', 'First argument  must be a handle' );
 end
 if isempty(figdir)
-    error( 'sglig:save_figure', 'figdir not set set. Set explicitly or via global variable sglib_figdir' );
+    warning( 'sglig:save_figure', 'figdir not set set. Set explicitly or via global variable sglib_figdir' );
+    sglib_figdir=[getenv('HOME') '/projects/docs/stochastics/thesis/figures'];
 end
 if nargin<3
     type='eps';
