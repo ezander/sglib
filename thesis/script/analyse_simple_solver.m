@@ -9,10 +9,10 @@ fast=false;
 
 if fast
     modes={'before'};
-    epsvals=10.^-[0:2:14];
+    epsvals=10.^-(0:2:14);
 else
     modes={'operator', 'before', 'after'};
-    epsvals=10.^-[0:0.5:14];
+    epsvals=10.^-(0:0.5:14);
 end
 
 for xxx=1:length(modes)

@@ -73,12 +73,15 @@ ind=ones(1,n_var_params);
 for n=1:num_ind
     % get current parameters
     for i=1:n_var_params
+        if ~iscell(var_params.(var_param_names{i}))
+            var_params.(var_param_names{i})=num2cell(var_params.(var_param_names{i}));
+        end
         params.(var_param_names{i})=var_params.(var_param_names{i}){ind(i)};
     end
     
     % 
     fprintf('Param study: %d/%d\n', n, num_ind );
-    pack;
+    %pack;
     evalin( 'base', 'clear' );
     for i=1:length(param_names)
         name=param_names{i};
