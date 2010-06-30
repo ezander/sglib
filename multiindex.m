@@ -15,6 +15,8 @@ function I_mp=multiindex(m,p,combine,varargin)
 %     Returns the result in lexicographical ordering (like e.g. A. Keese) instead
 %     of ordering by degree first (this option is obviously ignored if COMBINE is
 %     false)
+%   full: true, {false}
+%     Return the full tensor product multiindex set.
 %
 % Example (<a href="matlab:run_example multiindex">run</a>)
 %   % To generate the polynomial chaos for 2 random variables up to
@@ -54,8 +56,54 @@ end
 options=varargin2options( varargin );
 [use_sparse,options]=get_option( options, 'use_sparse', false );
 [lex_ordering,options]=get_option( options, 'lex_ordering', false );
+[full,options]=get_option( options, 'full', false );
 check_unsupported_options( options, mfilename );
 
+if full
+    I_mp=multiindex_full(m,p,use_sparse);
+else
+    I_mp=multiindex_complete(m,p,use_sparse);
+end
+
+if combine
+    I_mp=cell2mat( I_mp(:) );
+    if lex_ordering
+        I_mp=sortrows(I_mp,m:-1:1);
+    end
+end
+
+
+function I_kp=multiindex_full(m,p,use_sparse)
+I_kp=cell(1,m*p+1);
+for q=0:m*p
+    if use_sparse
+        I_kp{q+1}=sparse(q==0,0);
+    else
+        I_kp{q+1}=zeros(q==0,0);
+    end
+end
+
+% Now iterate over the number of random variables.
+for k=1:m
+    % Backup the old multiindex set for later use.
+    I_k1p=I_kp;
+
+    for q=0:k*p
+        if use_sparse
+            I_kp{q+1}=sparse(0,k);
+        else
+            I_kp{q+1}=zeros(0,k);
+        end
+    end
+    for q=0:(k-1)*p
+        for r=0:p
+            I_kp{q+r+1}=[I_kp{q+r+1}; [I_k1p{q+1}, r*ones(size(I_k1p{q+1},1),1)]];
+        end
+    end
+end
+
+
+function I_kp=multiindex_complete(m,p,use_sparse)
 % The (old) idea of the algorithm is the following:
 % We do a recursion on the number of random variables, not on the order (in
 % my opinion its easier and faster that way). For just one random variable
@@ -73,7 +121,6 @@ check_unsupported_options( options, mfilename );
 % more random variable each time. (BTW: the reason for this change was that
 % for large number of random variable, i.e. about 100 or more, the matlab stack
 % was exhausted by the recursive algorithm).
-
 
 % Note: algorithm has been changed to start from m=0
 % Start with one random variable. Create a cell array like this
@@ -120,16 +167,6 @@ for k=1:m
     end
 end
 
-if combine
-    I_kp=cell2mat( I_kp(:) );
-    if lex_ordering
-        I_kp=sortrows(I_kp,k:-1:1);
-    end
-%    I_kp=catmat(I_kp{:});
-end
-I_mp=I_kp;
-
-
 function [count,nonzero]=multiindex_stats(m,p)
 % MULTIINDEX_STATS Compute number of multiindices and of non-zero exponents.
 count=ones(1,p+1);
@@ -141,6 +178,7 @@ for k=2:m
         nonzero(q+1)=sum(nonzero(1:(q+1))) + sum(count(1:q));
     end
 end
+
 
 function A=catmat( varargin )
 % CATMAT Concatenate multiindices from a cell array into one.

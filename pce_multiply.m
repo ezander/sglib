@@ -45,6 +45,11 @@ function [z_k_gamma,I_z]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, varar
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin==0
+    unittest_pce_multiply;
+    return;
+end
+
 % check number of arguments
 error( nargchk( 3, inf, nargin ) );
 
@@ -98,11 +103,14 @@ if vectorized || full
     % tmp=M x Y: [Mx,My,Mz]x[Ny,My] & (contract on 2,2) => [Mx,Mz,Ny]
     % Z=X x tmp: [Nx,Mx]x[Mx,Mz,Ny] & (contract 2,1 ) => [Nx,Mz,Ny]
     % permute Z from [Nx,Mz,Ny] to [Nx,Ny,Mz] or [Mz,Nx,Ny]
-    z_i_gamma_j=tensor_multiply( x_i_alpha, tensor_multiply( M, y_j_beta, 2, 2 ), 2, 1 );
     if full
+        z_i_gamma_j=tensor_multiply( x_i_alpha, tensor_multiply( M, y_j_beta, 2, 2 ), 2, 1 );
         z_i_j_gamma=permute( z_i_gamma_j, [1 3 2] );
         z_k_gamma=reshape( z_i_j_gamma, [], size(I_z,1) );
     else
+        y_i_gamma_j=tensor_multiply( M, y_j_beta, 2, 2 );
+        
+        z_i_gamma_j=tensor_multiply( x_i_alpha, tensor_multiply( M, y_j_beta, 2, 2 ), 2, 1 );
         z_gamma_i_j=permute( z_i_gamma_j, [2 1 3] );
         ind=sub2ind( [n, n], 1:n, 1:n );
         z_k_gamma=z_gamma_i_j(:,ind)';
