@@ -4,3 +4,4 @@ sglib.settings
 *.mat
 *~
 *.log
+.*
