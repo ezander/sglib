@@ -27,4 +27,4 @@ L1=rand(4,4);
 L2=rand(5,5);
 G={L1*L1', L2*L2'};
 assert_equals( tensor_error(TA, TE), tensor_norm(DT), 'canon' );
-assert_equals( tensor_error(TA, TE, G), tensor_norm(DT, G), 'canonG' );
+assert_equals( tensor_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );

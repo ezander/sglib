@@ -1,4 +1,4 @@
-function err=tensor_error(TA, TE, G, relerr)
+function err=tensor_error(TA, TE, varargin)
 % TENSOR_ERROR Short description of tensor_error.
 %   TENSOR_ERROR Long description of tensor_error.
 %
@@ -18,28 +18,14 @@ function err=tensor_error(TA, TE, G, relerr)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    G=[];
-end
-if nargin<4
-    relerr=false;
-end
+options=varargin2options( varargin );
+[G,options]=get_option(options,'G',[]);
+[relerr,options]=get_option(options,'relerr',false);
+check_unsupported_options(options);
 
-% For normal vectors the following is pretty inefficient, for separated
-% representations, however it is more efficient. Note that we cannot write
-% TA-TE since minus is not necessarily defined for the tensor type, and
-% taking the norm of tensor_add( TA, TE, -1 ) takes more time than the
-% following lines.
-if false
-    norm_TA=tensor_norm(TA,G);
-    norm_TE=tensor_norm(TE,G);
-    inner_TAE=tensor_scalar_product( TA, TE, G );
-    err=sqrt(max(norm_TA^2+norm_TE^2-2*inner_TAE),0);
-else
-    norm_TE=tensor_norm(TE,G);
-    DT=tensor_add(TA,TE,-1);
-    err=tensor_norm(DT,G);
-end
+norm_TE=tensor_norm(TE,G);
+DT=tensor_add(TA,TE,-1);
+err=tensor_norm(DT,G);
 
 if relerr
     err=err/norm_TE;

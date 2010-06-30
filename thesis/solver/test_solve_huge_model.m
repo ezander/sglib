@@ -36,8 +36,8 @@ toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres 
 
 %%
 
-gvector_error( Ui_vec_pcg2, Ui_vec_pcg6, [], true )
-gvector_error( Ui_vec_tens, Ui_vec_pcg6, [], true )
+gvector_error( Ui_vec_pcg2, Ui_vec_pcg6, 'relerr', true )
+gvector_error( Ui_vec_tens, Ui_vec_pcg6, 'relerr', true )
 %%
 R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );
 gvector_norm( R_vec_pcg6 )/gvector_norm(Fi_vec)

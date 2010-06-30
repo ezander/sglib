@@ -1,4 +1,4 @@
-function err=gvector_error(TA, TE, G, relerr)
+function err=gvector_error(TA, TE, varargin )
 % GVECTOR_ERROR Short description of gvector_error.
 %   GVECTOR_ERROR Long description of gvector_error.
 %
@@ -18,28 +18,15 @@ function err=gvector_error(TA, TE, G, relerr)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<3
-    G=[];
-end
-if nargin<4
-    relerr=false;
-end
+options=varargin2options( varargin );
+[G,options]=get_option(options,'G',[]);
+[relerr,options]=get_option(options,'relerr',false);
+check_unsupported_options(options);
 
-% For normal vectors the following is pretty inefficient, for separated
-% representations, however it is more efficient. Note that we cannot write
-% TA-TE since minus is not necessarily defined for the gvector type, and
-% taking the norm of gvector_add( TA, TE, -1 ) takes more time than the
-% following lines.
-if isnumeric(TA) && isempty(G)
-    norm_TE=gvector_norm(TE);
-    err=gvector_norm(TA-TE,G);
-    gvector_scalar_product( TA, TE, G );
-else
-    norm_TA=gvector_norm(TA,G);
-    norm_TE=gvector_norm(TE,G);
-    inner_TAE=gvector_scalar_product( TA, TE, G );
-    err=sqrt(abs(norm_TA^2+norm_TE^2-2*inner_TAE));
-end
+
+norm_TE=gvector_norm(TE,G);
+DT=gvector_add(TA,TE,-1);
+err=gvector_norm(DT,G);
 
 if relerr
     err=err/norm_TE;

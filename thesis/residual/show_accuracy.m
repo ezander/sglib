@@ -1,11 +1,64 @@
 function show_accuracy
 
+sd=12346;
+rand('seed', sd);
+randn('seed', sd);
+
+[A, P, F, U]=setup_test_system( 53, 47, 3, 1.0, 0.5, 0.2 );
+multiplot_init(2,2);
+
+multiplot;
+plot( tensor_modes( F ) ); legend_add( '$\sigma_F$' );
+plot( tensor_modes( U ) ); legend_add( '$\sigma_U$' );
+logaxis( gca, 'y' );
+
+
+clc
+F2=operator_apply( A, U );
+gvector_error( F, F2, 'relerr', true )
+gvector_error( tensor_to_vector(F), tensor_to_vector(F2), 'relerr', true )
+
+% gvector_error( F, F, 'relerr', true )
+% gvector_error( F2, F2, 'relerr', true )
+%gvector_error( F, F2, 'relerr', true )
+
+DF=gvector_add( F, F2, -1 );
+%DF=gvector_add( F2, F2, -1 );
+M1=(DF{1}'*DF{1}).*(DF{2}'*DF{2});
+sqrt(sum1(M1(:)))/gvector_norm(F)
+sqrt(sum2(M1(:)))/gvector_norm(F)
+
+M2=(DF{1}*DF{2}').*(DF{1}*DF{2}');
+sqrt(sum(M2(:)))/gvector_norm(F)
+
+M3a=tensor_to_array(DF);
+M3=M3a.*M3a;
+sqrt(sum(M3(:)))/gvector_norm(F)
+
+DF=gvector_add( F, F2, -1 );
+[QA,RA]=qr(DF{1},0);
+[QB,RB]=qr(DF{2},0);
+norm(RA*RB','fro')
+
+
+function y=sum1( x )
+y=sum(x);
+
+function y=sum2( x )
+xp=x(x>0);
+xn=-x(x<0);
+yp=sum(sort(xp));
+yn=sum(sort(xn));
+y=yp-yn;
+
+function show_accuracy_old
+
 clc;
 [A, F, U]=setup_system();
 f=to_tensor( F );
-gvector_error( tensor_to_array( f ), F, [], true )
+gvector_error( tensor_to_array( f ), F, 'relerr', true )
 u=to_tensor( U );
-gvector_error( tensor_to_array( u ), U, [], true )
+gvector_error( tensor_to_array( u ), U, 'relerr', true )
 
 R=compute_residual_std( F, A, U );
 gvector_norm(R)
@@ -13,15 +66,15 @@ r=compute_residual_std( f, A, u );
 r=tensor_truncate( r );
 gvector_norm(r)
 
-gvector_error( tensor_to_array( r ), R, [], false )
-gvector_error( r, to_tensor(R), [], false )
-% gvector_error( R, tensor_to_array( to_tensor(R)), [], false )
-% gvector_error( r, to_tensor(tensor_to_array(r)), [], false )
+gvector_error( tensor_to_array( r ), R, 'relerr', false )
+gvector_error( r, to_tensor(R), 'relerr', false )
+% gvector_error( R, tensor_to_array( to_tensor(R)), 'relerr', false )
+% gvector_error( r, to_tensor(tensor_to_array(r)), 'relerr', false )
 
 
 U1=tensor_truncate( U, 'k_max', inf, 'eps', 0.001 );
 R1=compute_residual_std( F, A, U1 );
-gvector_error(U1, U, [], true)
+gvector_error(U1, U, 'relerr', true)
 gvector_norm(R1)
 
 u1=to_tensor( U1 );
@@ -30,13 +83,13 @@ r1b=compute_residual_tensor_std( f, A, u1 );
 r1c=compute_residual_tensor_std( f, A, u1, 0 );
 r1d=compute_residual_tensor_std( f, A, u1, 0.001 );
 r1e=compute_residual_tensor_add1( f, A, u1, 0.001 );
-gvector_error(u1, u, [], true)
+gvector_error(u1, u, 'relerr', true)
 gvector_norm(r1)
-gvector_error( r1, to_tensor(R1), [], false )
-gvector_error( r1b, r1, [], true )
-gvector_error( r1c, r1, [], true )
-gvector_error( r1d, r1, [], true )
-gvector_error( r1e, r1, [], true )
+gvector_error( r1, to_tensor(R1), 'relerr', false )
+gvector_error( r1b, r1, 'relerr', true )
+gvector_error( r1c, r1, 'relerr', true )
+gvector_error( r1d, r1, 'relerr', true )
+gvector_error( r1e, r1, 'relerr', true )
 
 
 function Ut=to_tensor( T )

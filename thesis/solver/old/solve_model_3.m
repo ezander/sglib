@@ -28,7 +28,7 @@ reltol=1e-4;
 Fi=tt_ktensor(Fi);
 [Ui3,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', trunc_options, 'vareps', vareps, 'trunc_mode', trunc_mode, 'stats_gatherer', stats_gatherer, 'stats', stats );
 [Ui2,I_u]=combine_dimensions( Ui3, I_k, I_r )
-relerr=tensor_error( Ui2, Ui, [], true );
+relerr=tensor_error( Ui2, Ui, 'relerr', true );
 
 k=tensor_rank(Ui2);
 if eps>0

@@ -17,7 +17,7 @@ for i=1:length(exponents)
         truncate=sprintf('eps 10^-%d', tolexp);
     end
     [Ui2,flag,relres,iter,info]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'reltol', reltol, 'truncate_options', {'eps',tol, 'relcutoff', true}, 'true_sol', Ui );
-    relerr=tensor_error( Ui2, Ui, [], true );
+    relerr=tensor_error( Ui2, Ui, 'relerr', true );
     k=tensor_rank( Ui2 );
     if tol>0
         R=relerr/tol;

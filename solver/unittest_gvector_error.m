@@ -25,14 +25,13 @@ TA=rand(4,1);
 TE=rand(4,1);
 DT=TE-TA;
 assert_equals( gvector_error(TA, TE), norm(DT,2), 'norm2' );
-assert_equals( gvector_error(TA, TE, []), norm(DT,2), 'norm2b' );
-assert_equals( gvector_error(TA, TE, [], true), norm(DT,2)/norm(TE,2), 'relnorm2' );
+assert_equals( gvector_error(TA, TE, 'relerr', true), norm(DT,2)/norm(TE,2), 'relnorm2' );
 
 
 L=rand(4,4);
 G=L*L';
-assert_equals( gvector_error(TA, TE, G), sqrt(DT'*G*DT), 'normG' );
-assert_equals( gvector_error(TA, TE, G, true), sqrt(DT'*G*DT)/sqrt(TE'*G*TE), 'relnormG' );
+assert_equals( gvector_error(TA, TE, 'G', G), sqrt(DT'*G*DT), 'normG' );
+assert_equals( gvector_error(TA, TE, 'G', G, 'relerr', true), sqrt(DT'*G*DT)/sqrt(TE'*G*TE), 'relnormG' );
 
 % Separated
 TA={rand(4,2), rand(5,2)};
@@ -42,4 +41,4 @@ L1=rand(4,4);
 L2=rand(5,5);
 G={L1*L1', L2*L2'};
 assert_equals( gvector_error(TA, TE), tensor_norm(DT), 'canon' );
-assert_equals( gvector_error(TA, TE, G), tensor_norm(DT, G), 'canonG' );
+assert_equals( gvector_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );
