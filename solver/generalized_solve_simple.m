@@ -27,6 +27,8 @@ info.reltol=reltol;
 info.maxiter=maxiter;
 info.rank_res_before=[];
 info.rank_sol_after=[];
+info.timevec=[];
+info.resvec=[];
 
 Xc=gvector_null(F);
 Rc=F;
@@ -35,7 +37,9 @@ initres=gvector_norm( Rc );
 normres=initres;
 lastnormres=normres;
 noconvsteps=0;
-resvec=[initres];
+info.resvec(end+1)=initres;
+start_tic=tic;
+prev_tic=start_tic;
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 flag=1;
@@ -68,7 +72,10 @@ for iter=1:maxiter
     normres=gvector_norm( Rn );
     relres=normres/initres;
     
-    resvec(end+1)=normres; %#ok<AGROW>
+    info.resvec(end+1)=normres; %#ok<AGROW>
+    info.timevec(end+1)=toc(prev_tic);
+    prev_tic=tic;
+    
     if verbosity>0
         fprintf('iter: %d  res:%g \n', iter, normres );
     end
@@ -129,7 +136,7 @@ info.flag=flag;
 info.iter=iter;
 info.relres=relres;
 %info.upratio=upratio;
-info.resvec=resvec(:);
+info.time=toc(start_tic);
 
 solver_stats=gsolver_stats;
 

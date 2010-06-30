@@ -4,7 +4,7 @@ function show_comparison_mc
 %#ok<*AGROW>
 
 rebuild=get_param('rebuild', false);
-autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
+autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_standard_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 rebuild=false;
 
 
@@ -25,7 +25,7 @@ ui=Ki\fi;
 u2=apply_boundary_conditions_solution( ui, g, P_I, P_B );
 
 % plot solutions fields and difference
-mh=multiplot_init(3,1);
+mh=multiplot_init(2,2);
 opts={'view', 3};
 multiplot(mh,1); plot_field(pos, els, u, opts{:} ); 
 multiplot(mh,2); plot_field(pos, els, u2, opts{:} ); 

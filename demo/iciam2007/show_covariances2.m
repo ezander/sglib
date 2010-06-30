@@ -16,7 +16,7 @@ subplot(4,3,9); show_pce_covariance( x, u_alpha, I_u, 'eigfuns' );
 
 
 function show_pce_covariance( x, r_alpha, I_r, type, varargin )
-options=varargin2options( varargin{:} );
+options=varargin2options( varargin );
 [m,options]=get_option( options, 'numeigs', 6 );
 [corr_coeff,options]=get_option( options, 'corr_coeff', false );
 [cov_func,options]=get_option( options, 'cov_func', [] );
