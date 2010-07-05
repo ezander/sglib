@@ -1,5 +1,6 @@
 %% construct the conductivity random field k
 % define stochastic expansion parameters
+
 p_k=get_param( 'p_k', 4 );
 m_k=get_param( 'm_k', 4 );
 l_k=get_param( 'l_k', 4 );

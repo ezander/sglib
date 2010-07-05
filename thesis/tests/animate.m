@@ -17,14 +17,17 @@ mean_g_func=make_spatial_func('x+y');
 %is_neumann=make_spatial_func('x>-0.01');
 
 rebuild=get_param('rebuild', true);
-autoloader( {'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
+autoloader( {'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_standard_pcg'}, rebuild );
 rebuild=false;
+
+U=apply_boundary_conditions_solution( Ui, tensor_to_array( G ), P_I, P_B );
+[u_i_k, u_k_alpha]=pce_to_kl( U, I_u, 20, [], [] );
 
 %% animate input and output random fields
 modes=1:size(u_i_k,2);
-mask=any(I_k,1); 
-mask=any(I_g,1); 
 mask=[];
+mask=any(I_k,1); 
+mask=any(I_f,1); 
 fields={
     {f_i_k, f_k_alpha, I_f}, ...
     {k_i_k, k_k_alpha, I_k}, ...
@@ -40,9 +43,9 @@ end
 extra_options={ 'renderer', 'opengl', 'view_mode', [233, 30] };
 %extra_options={ 'renderer', 'opengl', 'view_mode', 2 };
 extra_options=[extra_options {'xlabels', 'x', 'ylabels', 'y' }];
-fields={
-    {k_i_k, k_k_alpha, I_k}
-    };
+% fields={
+%     {k_i_k, k_k_alpha, I_k}
+%     };
 animate_fields( pos, els, fields, 'rows', -1, 'cols', -1, 'mask', mask, 'zrange', {}, 'titles', titles, extra_options{:} );
 
 
