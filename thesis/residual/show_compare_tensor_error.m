@@ -26,7 +26,7 @@ sqrt(sum(M2(:)))/gvector_norm(F)
 
 M3a=tensor_to_array(DF);
 M3=M3a.*M3a;
-sqrt(sum(M3(:)))/gvector_norm(F)
+sqrt(mysum(M3(:)))/gvector_norm(F)
 
 DF=gvector_add( F, F2, -1 );
 [QA,RA]=qr(DF{1},0);

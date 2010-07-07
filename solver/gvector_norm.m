@@ -33,5 +33,9 @@ if nargin<2
     G=[];
 end
 
-dsqr=max( gvector_scalar_product(T,T,G), 0 );
-d=sqrt( dsqr );
+if is_tensor(T)
+    d=tensor_norm(T,G);
+else
+    dsqr=max( gvector_scalar_product(T,T,G), 0 );
+    d=sqrt( dsqr );
+end

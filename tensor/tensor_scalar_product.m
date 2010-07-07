@@ -26,7 +26,25 @@ if nargin<3
 end
 
 check_tensors_compatible( T1, T2 );
+%d=compute_inner1( T1, T2, G );
+d=compute_inner2( T1, T2, G );
 
+function d=compute_inner2( T1, T2, G )
+for i=1:tensor_order(T1)
+    if isempty(G) || isempty(G{i})
+        Q=orth( [T1{i}, T2{i}] );
+    else
+        Q=gram_schmidt( [T1{i}, T2{i}], G{i} );
+    end
+    T1{i}=Q'*T1{i};
+    T2{i}=Q'*T2{i};
+end
+t1=tensor_to_vector( T1 );
+t2=tensor_to_vector( T2 );
+d=t1'*t2;
+
+
+function d=compute_inner1( T1, T2, G )
 S=ones(tensor_rank(T1),tensor_rank(T2));
 for i=1:length(T1)
     if isempty(G)

@@ -28,3 +28,17 @@ L2=rand(5,5);
 G={L1*L1', L2*L2'};
 assert_equals( tensor_error(TA, TE), tensor_norm(DT), 'canon' );
 assert_equals( tensor_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );
+
+%
+M=53;
+N=47;
+R=13;
+randn('seed', 1018663534 );
+%format short g
+for d=10.^(-3:-1:-10)
+    T1=create_test_tensor( M, N, R );
+    T2=perturb_test_tensor( T1, d );
+    T1mat=tensor_to_array(T1);
+    T2mat=tensor_to_array(T2);
+    assert_equals( tensor_error( T1, T2 ), gvector_error( T1mat, T2mat ), 'small_err', 'abstol', 1e-14 );
+end
