@@ -6,7 +6,8 @@ R2=17;
 
 clc
 %randn('seed')
-randn('seed', 1018663534 );
+%randn('seed', 1018663534 );
+randn('seed', 1776363387 );
 
 T1={randn(M,R1), randn(N,R1)};
 T2={randn(M,R2), randn(N,R2)};

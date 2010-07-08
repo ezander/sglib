@@ -26,14 +26,19 @@ if nargin<3
 end
 
 check_tensors_compatible( T1, T2 );
-%d=compute_inner1( T1, T2, G );
-d=compute_inner2( T1, T2, G );
+if isempty(G)
+    d=compute_inner2( T1, T2, G );
+else
+    d=compute_inner1( T1, T2, G );
+end
 
 function d=compute_inner2( T1, T2, G )
+% Computes inner product between tensors with high accuracy
 for i=1:tensor_order(T1)
     if isempty(G) || isempty(G{i})
         Q=orth( [T1{i}, T2{i}] );
     else
+        error( 'this does not work that way, anybody with a good idea please stand forth' );
         Q=gram_schmidt( [T1{i}, T2{i}], G{i} );
     end
     T1{i}=Q'*T1{i};
@@ -45,6 +50,7 @@ d=t1'*t2;
 
 
 function d=compute_inner1( T1, T2, G )
+% Computes inner product between tensors with not quite so high accuracy
 S=ones(tensor_rank(T1),tensor_rank(T2));
 for i=1:length(T1)
     if isempty(G)

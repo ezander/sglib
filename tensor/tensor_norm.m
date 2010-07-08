@@ -35,7 +35,7 @@ end
 
 check_tensor_format( T );
 
-d=gvector_norm( tensor_to_array( T ) );
+%d=gvector_norm( tensor_to_array( T ) );
 
 dsqr=max( tensor_scalar_product(T,T,G), 0 );
 d=sqrt( dsqr );
