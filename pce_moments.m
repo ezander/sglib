@@ -92,7 +92,7 @@ if p>=2
 end
 p_int=ceil(p_r*(1+p)/2);
 m=size(I_r,2);
-m=integrate( {@kernel,{p,r_i_alpha,I_r},{1,2,3}}, @gauss_hermite_rule, m, p_int );
+m=integrate_nd( {@kernel,{p,r_i_alpha,I_r},{1,2,3}}, @gauss_hermite_rule, m, p_int );
 
 
 function val=kernel( p, r_i_alpha, I_r, xi )

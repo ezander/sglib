@@ -1,9 +1,9 @@
-function int=integrate(func, rule_func, m, p, varargin )
-% INTEGRATE Integrate a multivariate function.
-%    INT=INTEGRATE(FUNC, RULE_FUNC, M, P, OPTIONS ) integrates the function
+function int=integrate_nd(func, rule_func, m, p, varargin )
+% INTEGRATE_ND Integrate a multivariate function.
+%    INT=INTEGRATE_ND(FUNC, RULE_FUNC, M, P, OPTIONS ) integrates the function
 %    FUNC using Smolyak quadrature based on the 1d integration rule
-%    RULE_FUNC in M variables using P stages. For example please refer to
-%    the unit test (UNITTEST_INTEGRATE). Instead of Smolyak also full
+%    RULE_FUNC in M variables using P stages. For examples please refer to
+%    the unit test (UNITTEST_INTEGRATE_ND). Instead of Smolyak also full
 %    tensor product quadrature can be used (see options section).
 %
 % Options:
@@ -22,11 +22,11 @@ function int=integrate(func, rule_func, m, p, varargin )
 %      returning a valid multivariate integration grid and adhering to the
 %      interface of SMOLYAK_GRID and FULL_TENSOR_GRID can be used.
 %
-% Example (<a href="matlab:run_example integrate">run</a>)
+% Example (<a href="matlab:run_example integrate_nd">run</a>)
 %    % Integrate EXP(X+Y+Z) on R^3 with Gaussian measure using a full
 %    % tensor product grid based on Gauss Hermite quadrature of order 8
 %    % (i.e. exact up to degree 15)
-%    integrate( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule, 3, 8, 'grid', 'tensor' )
+%    integrate_nd( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule, 3, 8, 'grid', 'tensor' )
 %    % this is the analytical result for the former integral
 %    exp(1/2)
 %
@@ -44,11 +44,6 @@ function int=integrate(func, rule_func, m, p, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-if nargin==0
-    unittest_integrate;
-    return
-end
 
 options=varargin2options( varargin );
 [vectorized,options]=get_option( options, 'vectorized', true );

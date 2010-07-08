@@ -1,6 +1,6 @@
 function int=integrate_1d(func, rule_func, p, varargin )
 % INTEGRATE_1D Integrate a univariate function.
-%    INT=INTEGRATE(FUNC, RULE_FUNC, P, OPTIONS ) integrates the function
+%    INT=INTEGRATE_1D(FUNC, RULE_FUNC, P, OPTIONS ) integrates the function
 %    FUNC using the 1d integration rule RULE_FUNC using P stages. 
 %
 % Options:
@@ -20,7 +20,7 @@ function int=integrate_1d(func, rule_func, p, varargin )
 %   disp('Moments of the Gaussian distribution N(0,1):' );
 %   disp( round(int') );
 %
-% See also INTEGRATE, GAUSS_HERMITE_RULE, GAUSS_LEGENDRE_RULE
+% See also INTEGRATE_ND, GAUSS_HERMITE_RULE, GAUSS_LEGENDRE_RULE
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -33,11 +33,6 @@ function int=integrate_1d(func, rule_func, p, varargin )
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-
-if nargin==0
-    unittest_integrate_1d;
-    return
-end
 
 options=varargin2options( varargin );
 [vectorized,options]=get_option( options, 'vectorized', true );
