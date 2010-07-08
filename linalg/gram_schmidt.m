@@ -58,8 +58,8 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if nargin<2
-    B=[];
+if nargin<2 || isempty(B)
+    B=speye(size(A,1));
 end
 if nargin<3 || isempty(mod)
     mod=false;
@@ -68,49 +68,34 @@ if nargin<4 || isempty(reorth) || reorth<0
     reorth=1;
 end
 
-if isempty(B)
-    [Q,R]=gs( A, mod, reorth );
-else
-    [Q,R]=cgs( A, B, mod, reorth );
-end
-
-
-
-function [Q,R]=gs( A, mod, reorth )
-% GS Perform the normal Gram-Schmidt process.
-Q=zeros(size(A));
-for i=1:size(A,2)
-    a=A(:,i);
-    for k=1:(reorth+1)
-        if mod
-            for j=1:(i-1)
-                a=a-Q(:,j)*(Q(:,j)'*a);
-            end
-        else
-            a=a-Q*(Q'*a);
-        end
-    end
-    a=a/sqrt(a'*a);
-    Q(:,i)=a;
-end
-R=Q'*A;
-
-
-function [Q,R]=cgs( A, B, mod, reorth )
 % GS Perform the conjugate Gram-Schmidt process.
-Q=zeros(size(A));
+threshold=1e-10;
+n=min(size(A));
+Q=zeros(size(A,1),n);
+j=0;
 for i=1:size(A,2)
     a=A(:,i);
-    for k=1:(reorth+1)
+    anorm=norm(a);
+    for r=1:(reorth+1)
         if mod
-            for j=1:(i-1)
-                a=a-Q(:,j)*(Q(:,j)'*B*a);
+            for k=1:j
+                a=a-Q(:,k)*(Q(:,k)'*B*a);
             end
         else
             a=a-Q*(Q'*B*a);
         end
     end
+    enorm=norm(a);
+    if enorm/anorm<threshold
+        continue;
+    end
+    
     a=a/sqrt(a'*B*a);
-    Q(:,i)=a;
+    j=j+1;
+    Q(:,j)=a;
 end
+if j<n
+    Q=Q(:,1:j);
+end
+    
 R=Q'*B*A;
