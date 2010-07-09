@@ -1,8 +1,16 @@
-function value=get_param(name, default, ws)
-% GET_PARAM Short description of get_param.
-%   GET_PARAM Long description of get_param.
+function value=get_base_param(name, default, ws)
+% GET_BASE_PARAM Get parameter from base workspace or default.
+%   VALUE=GET_BASE_PARAM(NAME, DEFAULT) returns in VALUE the value that the
+%   variable NAME had in the base workspace or DEFAULT if it was not set.
+%   This makes it easy for a user to override values that are used for
+%   parameters in a function or script, without passing everything
+%   explicity.
+%   VALUE=GET_BASE_PARAM(NAME, DEFAULT, 'caller') looks for NAME in the
+%   workspace the function or script is executing in.
 %
 % Example (<a href="matlab:run_example get_param">run</a>)
+%   reltol=get_base_param( 'reltol', 1e-6 );
+%   disp(reltol);
 %
 % See also
 
@@ -19,7 +27,7 @@ function value=get_param(name, default, ws)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<3
-    ws='caller';
+    ws='base';
 end
 
 try
