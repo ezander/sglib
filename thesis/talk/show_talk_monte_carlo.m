@@ -4,7 +4,7 @@ function show_talk_monte_carlo
 %#ok<*AGROW>
 
 rebuild=false;
-rebuild=get_param('rebuild', true);
+rebuild=get_base_param('rebuild', true);
 autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 rebuild=false;
 

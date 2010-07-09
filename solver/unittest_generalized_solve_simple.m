@@ -132,9 +132,9 @@ F={rand(n,kf),  rand(m,kf) };
 
 
 function [x,flag,relres,iter,resvec]=textbook_simple_iter( A, b, tol, maxit, M )
-tol=get_param_default('tol', 1e-6 );
-maxit=get_param_default('maxit', 100 );
-M=get_param_default('M', speye(size(A)) );
+tol=get_base_param('tol', 1e-6, 'caller' );
+maxit=get_base_param('maxit', 100, 'caller' );
+M=get_base_param('M', speye(size(A)), 'caller' );
 
 x=zeros(size(b));
 r=b;
@@ -155,11 +155,3 @@ for iter=1:maxit
 end
 relres=norm(r)/norm_r0;
 resvec=resvec(:);
-
-function value=get_param_default( name, default )
-try
-    value=evalin( 'caller', name );
-catch
-    value=default;
-end
-

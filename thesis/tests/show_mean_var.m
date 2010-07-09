@@ -8,7 +8,7 @@ show_mean_var_with
 
 
 function show_mean_var_with
-rebuild=get_param('rebuild', true, 'base' );
+rebuild=get_base_param('rebuild', true, 'base' );
 autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 assignin( 'base', 'rebuild', false );
 

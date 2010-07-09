@@ -19,7 +19,7 @@ legend( 'X', 'R', 'P', 'Z' );
 % I_k=multiindex(m_k,p_k);
 % I_f=multiindex(m_f,p_f);
 % I_g=multiindex(m_g,p_g);
-% p_u=get_param('p_u', max([p_k,p_f,p_g]));
+% p_u=get_base_param('p_u', max([p_k,p_f,p_g]));
 % [I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, p_u );
 % 
 % k_i_iota=rand(5, size(I_k,1));

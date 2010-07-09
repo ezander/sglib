@@ -8,7 +8,7 @@ function value=get_base_param(name, default, ws)
 %   VALUE=GET_BASE_PARAM(NAME, DEFAULT, 'caller') looks for NAME in the
 %   workspace the function or script is executing in.
 %
-% Example (<a href="matlab:run_example get_param">run</a>)
+% Example (<a href="matlab:run_example get_base_param">run</a>)
 %   reltol=get_base_param( 'reltol', 1e-6 );
 %   disp(reltol);
 %

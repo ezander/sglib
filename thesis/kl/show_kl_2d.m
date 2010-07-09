@@ -1,7 +1,7 @@
 function show_kl_2d
 % Elmar Zander, March 2010
 
-savefigs=get_param('savefigs', true );
+savefigs=get_base_param('savefigs', true );
 mp=multiplot_init( 2, 1 );
 
 %% Preliminary: Load geometry and model data

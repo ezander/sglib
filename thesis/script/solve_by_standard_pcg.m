@@ -3,8 +3,8 @@ Ki_fun=@(x)(tensor_operator_apply(Ki,x));
 Mi_inv=stochastic_preconditioner_deterministic(Ki);
 Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 
-maxit=get_param( 'maxit', 100 );
-reltol=get_param( 'reltol', 1e-6 );
+maxit=get_base_param( 'maxit', 100 );
+reltol=get_base_param( 'reltol', 1e-6 );
 
 
 tic; fprintf( 'Solving (pcg): ' );

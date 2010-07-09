@@ -4,7 +4,7 @@ format compact
 format short g
 
 
-rebuild=get_param('rebuild', false);
+rebuild=get_base_param('rebuild', false);
 autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'do_solve_huge_model_simple'}, rebuild, 'caller' );
 rebuild=false;
 

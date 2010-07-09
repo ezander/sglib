@@ -46,7 +46,7 @@ function [K,K_f]=compute_operators( m_k, p_k, m_f, p_f, p_u, lex_sort )
 
 % geometry and probability distributions will be will be the same for all
 % test cases since it doesn't matter much
-N=get_param( 'N', 50 );
+N=50;
 [pos,els,bnd_nodes]=create_mesh_1d( 0, 1, N );
 G_N=mass_matrix( pos, els );
 stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};

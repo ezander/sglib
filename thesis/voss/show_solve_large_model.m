@@ -1,5 +1,5 @@
 
-rebuild=get_param('rebuild', false);
+rebuild=get_base_param('rebuild', false);
 %autoloader( {'model_1d_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 autoloader( {'model_1d_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_gsolve_pcg' }, rebuild, 'caller' );
 rebuild=false;

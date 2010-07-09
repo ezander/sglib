@@ -2,7 +2,7 @@
 %#ok<*NASGU>
 %#ok<*AGROW>
 
-rebuild=get_param('rebuild', true);
+rebuild=get_base_param('rebuild', true);
 autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'}, rebuild );
 rebuild=false;
 

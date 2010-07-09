@@ -4,13 +4,13 @@ underline( 'Tensor product PCG: ' );
 reltol=1e-3;
 
 %% truncation options
-options.eps=get_param( 'XXeps', 1e-4 );
+options.eps=get_base_param( 'XXeps', 1e-4 );
 options.k_max=80;
-%options.eps=get_param( eps, 0 );
-%options.trunc_mode=get_param( trunc_mode, 3 );
+%options.eps=get_base_param( eps, 0 );
+%options.trunc_mode=get_base_param( trunc_mode, 3 );
 options.trunc_mode=2;
 options.relcutoff=true;
-options.vareps=get_param( 'vareps', false );
+options.vareps=get_base_param( 'vareps', false );
 options.vareps_threshold=0.1;
 options.vareps_reduce=0.1;
 %options.G={P_I*G_N*P_I', G_X};

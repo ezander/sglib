@@ -1,6 +1,18 @@
-global lastr F X A M Minv rho x sigma_X sigma_F cmptime
+global last F X A M Minv rho x sigma_X sigma_F cmptime
 
-if isempty(lastr) || lastr~=r
+N=get_base_param( 'N', 151 );
+M=get_base_param( 'M', 173 );
+r=get_base_param( 'r', 0.002 );
+
+eps=get_base_param( 'eps', 0 );
+k_max=get_base_param( 'k_max', inf );
+mode=get_base_param( 'mode', 'operator' );
+
+tol=get_base_param( 'tol', 1e-6 );
+maxiter=get_base_param( 'maxiter', 100 );
+
+    
+if isempty(last) || last.r~=r || last.N~=N || last.M~=M
     rand('seed', 12345 ); %#ok<RAND>
     randn('seed', 12345 ); %#ok<RAND>
     [A,M,F,X]=setup_test_system( 151, 173, 22, 20, r, 0.6 );
@@ -11,8 +23,6 @@ if isempty(lastr) || lastr~=r
     Minv=stochastic_preconditioner_deterministic( A, true );
     
     sigma_F=svd(reshape(b,tensor_size(F))); %#ok<NASGU>
-    %disp(strvarexpand('sigma_F: $sigma_F(sigma_F>1e-14)$' ));
-    %disp(strvarexpand('log(sigma_F): $log10(sigma_F(sigma_F>1e-14))$' ));
     
     rho=simple_iteration_contractivity( A, Minv );
     disp(rho);
@@ -26,20 +36,19 @@ if isempty(lastr) || lastr~=r
     cmptime=toc(t);
     
     sigma_X=svd(reshape(x,tensor_size(F))); %#ok<NASGU>
-    lastr=r;
+    last.r=r;
+    last.N=N;
+    last.M=M;
 else
     disp( 'reusing model' );
 
 end
 
-%analyse_simple_solver
-
-tol=1e-16; % much too small, thus solver goes into stagnation
 trunc.eps=eps;
 trunc.k_max=inf;
 trunc.show_reduction=false;
 
-common={'maxiter', 100, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
+common={'maxiter', maxiter, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
 
 t=tic;
 [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );
@@ -47,5 +56,5 @@ tt=toc(t);
 if exist('x','var') && ~isempty(x)
     curr_err=norm( x-tensor_to_vector( X ) )/gvector_norm(x);
 else
-    curr_err=1;
+    curr_err=nan;
 end

@@ -5,7 +5,7 @@ I_k=multiindex(m_k,p_k);
 I_f=multiindex(m_f,p_f);
 I_g=multiindex(m_g,p_g);
 
-p_u=get_param('p_u', max([p_k,p_f,p_g]));
+p_u=get_base_param('p_u', max([p_k,p_f,p_g]));
 
 [I_k,I_f,I_g,I_u]=multiindex_combine( {I_k, I_f, I_g}, p_u );
 M=size(I_u,1);
@@ -27,7 +27,7 @@ G=kl_to_tensor( g_i_k, g_k_beta );
 %% load and create the operators 
 
 % create tensor operators
-verbose=get_param( 'verbose', true );
+verbose=get_base_param( 'verbose', true );
 t_klop=tic;
 K=kl_pce_compute_operator_fast(k_i_k, k_k_alpha, I_k, I_OP, stiffness_func, 'tensor');
 if verbose; toc(t_klop); end

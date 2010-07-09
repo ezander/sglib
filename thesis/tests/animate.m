@@ -16,7 +16,7 @@ lc_g=.3;
 mean_g_func=make_spatial_func('x+y');
 %is_neumann=make_spatial_func('x>-0.01');
 
-rebuild=get_param('rebuild', true);
+rebuild=get_base_param('rebuild', true);
 autoloader( {'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_standard_pcg'}, rebuild );
 rebuild=false;
 
