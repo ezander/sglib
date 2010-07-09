@@ -45,6 +45,7 @@ function s=param_study( script, var_params, def_params, ret_names, varargin )
 options=varargin2options(varargin);
 [cache,options]=get_option( options, 'cache', true );
 [cache_file,options]=get_option( options, 'cache_file', 'dummy' );
+[cache_partial,options]=get_option( options, 'cache_partial', true );
 [verbosity,options]=get_option( options, 'verbosity', 1 );
 check_unsupported_options(options,mfilename);
 
@@ -68,9 +69,9 @@ ret_names=check_ret_names( ret_names, var_params );
 if cache
     s=cached_funcall( @param_study_internal, {script, var_params, def_params, ret_names}, ...
         1, cache_file, 1, ...
-        'verbosity', verbosity, 'extra_params', {verbosity} );
+        'verbosity', verbosity, 'extra_params', {verbosity, cache_partial} );
 else
-    s=param_study_internal( script, var_params, def_params, ret_names, verbosity );
+    s=param_study_internal( script, var_params, def_params, ret_names, verbosity, cache_partial );
 end
 
 % check that variable parameters are in correct position
@@ -131,7 +132,7 @@ for i=1:length(ret_names)
 end
 
 
-function s=param_study_internal( script, var_params, def_params, ret_names, verbosity )
+function s=param_study_internal( script, var_params, def_params, ret_names, verbosity, cache_partial )
 
 % parameter looping stuff
 % what we get here is: the names of all variables parameters, for each
@@ -173,9 +174,23 @@ for n=1:num_ind
         fprintf('Param study: %d/%d', n, num_ind );
         fprintf(' {%s}\n', assign(1:end-2) );
     end
+
+    if cache_partial
+        filename=generate_unique_filename();
+    end
     
-    % Now evaluate the script in base workspace
-    evalin('base', script );
+    if ~isempty(filename) && exist([filename '.mat'],'file' )
+        if verbosity>0
+            fprintf( ' => loading: %s\n', filename );
+        end
+        evalin( 'base', ['load ' filename] );
+    else
+        % Now evaluate the script in base workspace
+        evalin( 'base', script );
+        if ~isempty(filename)
+            evalin( 'base', ['save ' filename] );
+        end
+    end
     
     % Lastly, retrieve return values from base workspace
     for i=1:length(ret_names)
@@ -211,4 +226,14 @@ for i=1:n_var_params
     if ~all(res(:))
         error('param_study:var_params', 'mismatch between input and output variable parameters' );
     end
+end
+
+function filename=generate_unique_filename()
+evalin( 'base', 'save .cache/xxx' )
+[status, result]=system('cat .cache/xxx.mat | hexdump -C | sed "1,6 d" | sha1sum');
+delete( '.cache/xxx.mat' );
+if ~status
+    filename=fullfile( '.cache', result(1:40) );
+else
+    filename='';
 end

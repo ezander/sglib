@@ -20,7 +20,7 @@ function unittest_param_study
 clc
 munit_set_function( 'param_study' );
 
-%clear_funcall_cache( 'pattern', mfilename, 'verbosity', 1 );
+clear_funcall_cache( 'pattern', mfilename, 'verbosity', 1 );
 ps_options={'cache', true, 'cache_file', mfilename, 'verbosity', 1 };
 
 clear var_params def_params
