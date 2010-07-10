@@ -44,7 +44,7 @@ function s=param_study( script, var_params, def_params, ret_names, varargin )
 
 options=varargin2options(varargin);
 [cache,options]=get_option( options, 'cache', true );
-[cache_file,options]=get_option( options, 'cache_file', 'dummy' );
+[cache_file,options]=get_option( options, 'cache_file', '' );
 [cache_partial,options]=get_option( options, 'cache_partial', true );
 [verbosity,options]=get_option( options, 'verbosity', 1 );
 check_unsupported_options(options,mfilename);
@@ -64,6 +64,10 @@ end
 var_params=check_var_params( var_params );
 def_params=check_def_params( def_params );
 ret_names=check_ret_names( ret_names, var_params );
+
+if cache && isempty(cache_file)
+    cache_file=generate_cache_filename( script, {var_params, def_params, ret_names} );
+end
 
 % here comes the main work 
 if cache
@@ -146,7 +150,7 @@ num_ind=prod(max_ind);
 % initialize the struct for return return values
 for i=1:length(ret_names)
     name=ret_names{i};
-    s.(name{1})=cell(max_ind);
+    s.(name{1})=cell([max_ind, 1]); % [,1] necessary, if only one var param
 end
 
 % initialize vars for the parameter loop
@@ -175,8 +179,10 @@ for n=1:num_ind
         fprintf(' {%s}\n', assign(1:end-2) );
     end
 
+    filename='';
+    cache_partial=true;
     if cache_partial
-        filename=generate_unique_filename();
+        filename=generate_cache_filename( script, params );
     end
     
     if ~isempty(filename) && exist([filename '.mat'],'file' )
@@ -228,12 +234,3 @@ for i=1:n_var_params
     end
 end
 
-function filename=generate_unique_filename()
-evalin( 'base', 'save .cache/xxx' )
-[status, result]=system('cat .cache/xxx.mat | hexdump -C | sed "1,6 d" | sha1sum');
-delete( '.cache/xxx.mat' );
-if ~status
-    filename=fullfile( '.cache', result(1:40) );
-else
-    filename='';
-end

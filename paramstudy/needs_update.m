@@ -25,10 +25,3 @@ for i=1:n
 end
 
 
-function num=filedate( file )
-if ~exist(file,'file')
-    num=-inf;
-else
-    x=dir( file );
-    num=datenum(x.date);
-end

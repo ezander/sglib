@@ -20,8 +20,10 @@ function unittest_param_study
 clc
 munit_set_function( 'param_study' );
 
-clear_funcall_cache( 'pattern', mfilename, 'verbosity', 1 );
-ps_options={'cache', true, 'cache_file', mfilename, 'verbosity', 1 };
+%clear_funcall_cache( 'pattern', mfilename, 'verbosity', 1 );
+%ps_options={'cache', false, 'cache_file', mfilename, 'verbosity', 1, 'cache_partial', false };
+%ps_options={'cache', true, 'verbosity', 1, 'cache_partial', true };
+ps_options={'cache', false, 'verbosity', 0, 'cache_partial', false };
 
 clear var_params def_params
 var_params.a=[1,2,3];
@@ -43,3 +45,15 @@ assert_equals( s.a{2,1,4}, var_params.a(2), 'a(2)' );
 assert_equals( s.x{2,1,4}, var_params.x{1}, 'x(1)' ); % not the def value
 assert_equals( s.z{3,2,4}(1), var_params.x{2}^var_params.a(3), 'z(3,2,4)(1)' ); % not the def value
 assert_equals( s.info{2,1,4}.st, 'y4', 'str2_y4' );
+
+
+clear var_params def_params
+var_params.a=[1,2,3];
+def_params.b=4;
+def_params.x=4.5;
+def_params.x=1.2;
+def_params.y=pi;
+def_params.str1='x1';
+def_params.str2='y1';
+s=param_study( 'param_study_unittest_script', var_params, def_params, ret_names, ps_options{:} );
+assert_equals( size(s.a), [3,1], 'size1' );
