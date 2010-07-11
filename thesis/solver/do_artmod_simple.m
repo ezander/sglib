@@ -1,4 +1,4 @@
-global last F X A M Minv rho x sigma_X sigma_F cmptime
+global last F X A P Pinv rho x sigma_X sigma_F cmptime
 
 N=get_base_param( 'N', 151 );
 M=get_base_param( 'M', 173 );
@@ -15,22 +15,22 @@ maxiter=get_base_param( 'maxiter', 100 );
 if isempty(last) || last.r~=r || last.N~=N || last.M~=M
     rand('seed', 12345 ); %#ok<RAND>
     randn('seed', 12345 ); %#ok<RAND>
-    [A,M,F,X]=setup_test_system( 151, 173, 22, 20, r, 0.6 );
+    [A,P,F,X]=setup_test_system( 151, 173, 22, 20, r, 0.6 );
     F=X;
     
     F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
     b=tensor_to_vector(F);
-    Minv=stochastic_preconditioner_deterministic( A, true );
+    Pinv=stochastic_preconditioner_deterministic( A, true );
     
     sigma_F=svd(reshape(b,tensor_size(F))); %#ok<NASGU>
     
-    rho=simple_iteration_contractivity( A, Minv );
+    rho=simple_iteration_contractivity( A, Pinv );
     disp(rho);
     
     % solve by standard pcg
     A_fun=@(x)(tensor_operator_apply(A,x));
-    Minv_fun=@(x)(tensor_operator_apply(Minv,x));
-    [x,flag,info.relres,info.iter,resvec]=pcg(A_fun,b,1e-12,100,Minv_fun);
+    Pinv_fun=@(x)(tensor_operator_apply(Pinv,x));
+    [x,flag,info.relres,info.iter,resvec]=pcg(A_fun,b,1e-12,100,Pinv_fun);
     t=tic;
     fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
     cmptime=toc(t);
@@ -48,11 +48,17 @@ trunc.eps=eps;
 trunc.k_max=inf;
 trunc.show_reduction=false;
 
-common={'maxiter', maxiter, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
+common={'maxiter', maxiter, 'reltol', tol, 'abstol', tol, 'Minv', Pinv, 'verbosity', 1 };
 
 t=tic;
-[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );
+%Fvec=tensor_to_array( F ); mode='none';
+%mode='operator';
+%common=[common { 'contract_limit', 1-(1-rho)/2, 'dynamic_eps', true }];
+%eps=0.01;
+%trunc.eps=eps;
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Pinv, common{:}, 'trunc_mode', mode, 'trunc', trunc, 'solution', x   );
 tt=toc(t);
+
 if exist('x','var') && ~isempty(x)
     curr_err=norm( x-tensor_to_vector( X ) )/gvector_norm(x);
 else

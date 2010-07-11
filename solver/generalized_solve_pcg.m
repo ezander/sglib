@@ -14,10 +14,18 @@ options=varargin2options( varargin );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
-
+tensor_mode=is_tensor(F);
 info.abstol=abstol;
 info.reltol=reltol;
 info.maxiter=maxiter;
+info.rank_res_before=[];
+info.rank_sol_after=[];
+info.timevec=[];
+info.resvec=[];
+info.epsvec=[];
+info.errvec=[];
+info.updvec=[];
+
 
 Xc=gvector_null(F);
 Rc=funcall( truncate_before_func, F );
@@ -29,9 +37,10 @@ initres=gvector_norm( Rc );
 ltres=initres;
 resvec=[initres];
 releps=reltol; % not correct
+start_tic=tic;
+prev_tic=start_tic;
 
 gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
-
 flag=1;
 for iter=1:maxiter
     %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
@@ -121,6 +130,7 @@ info.iter=iter;
 info.relres=relres;
 info.upratio=upratio;
 info.resvec=resvec(:);
+info.time=toc(start_tic);
 
 solver_stats=gsolver_stats;
 

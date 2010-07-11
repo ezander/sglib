@@ -9,7 +9,7 @@ Amat=tensor_operator_to_matrix(A);
 Mmat=tensor_operator_to_matrix(M);
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
-tol=1e-6; maxit=100; 
+tol=1e-6; maxiter=100; 
 Minv=stochastic_preconditioner_deterministic( A, true );
 %B=tensor_to_array(F);
 
@@ -55,9 +55,9 @@ M=A(1,:);
 F={rand(n,kf),  rand(m,kf) };
 
 
-function [x,flag,relres,iter,resvec]=textbook_simple_iter( A, b, tol, maxit, M )
+function [x,flag,relres,iter,resvec]=textbook_simple_iter( A, b, tol, maxiter, M )
 tol=get_base_param('tol', 1e-6, 'caller' );
-maxit=get_base_param('maxit', 100, 'caller' );
+maxiter=get_base_param('maxiter', 100, 'caller' );
 M=get_base_param('M', speye(size(A)), 'caller' );
 
 x=zeros(size(b));
@@ -67,7 +67,7 @@ resvec=[norm_r0];
 
 flag=1;
 tolb=tol*norm_r0;
-for iter=1:maxit
+for iter=1:maxiter
     x=x+M\r;
     r=b-A*x;
     

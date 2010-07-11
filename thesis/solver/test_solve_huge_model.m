@@ -1,53 +1,62 @@
-%function test_solve_huge_model
-clc
-format compact
-format short g
+function test_solve_huge_model
+
+[U_mat_true, Ui_mat_true]=compute_by_pcg_accurate;
+
+[U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( Ui_mat_true );
+pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true )
+
+eps=pcg_err/1.5;
+scale=10^(floor(log10(eps)))/10;
+eps=roundat( eps, scale );
+
+[U, Ui, info_tp]=compute_by_tensor_simple( Ui_mat_true, eps );
+tp_err=gvector_error( U, U_mat_true, 'relerr', true )
+
+%%
+close
+multiplot_init(2,2)
+multiplot
+plot( info_tp.resvec, 'x-' ); legend_add( 'residual' );
+plot( info_tp.errvec, 'x-' ); legend_add( 'error' );
+plot( info_tp.updvec, 'x-' ); legend_add( 'update' );
+logaxis( gca, 'y' )
+
+multiplot;
+plot( info_tp.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
+plot( info_tp.rank_sol_after, 'x-' ); legend_add( 'rank (after prec)' );
+
+keyboard
+
+% R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );
+% R_vec_pcg2=operator_apply( Ki, Ui_vec_pcg2, 'residual', true, 'b', Fi_vec );
+% gvector_norm( R_vec_pcg2 )/gvector_norm(Fi_vec)
 
 
-rebuild=get_base_param('rebuild', false);
-autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'do_solve_huge_model_simple'}, rebuild, 'caller' );
+function [U_mat, Ui_mat, info]=compute_by_pcg_accurate
+
 rebuild=false;
+autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+reltol=1e-12;
+cache_script solve_by_gsolve_pcg;
+
+function [U_mat, Ui_mat, info]=compute_by_pcg_approx( Ui_true )
+
+rebuild=false;
+autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+reltol=1e-3;
+cache_script solve_by_gsolve_pcg;
+
+function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps )
+
+rebuild=false;
+autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+reltol=1e-16;
+abstol=1e-16;
+maxiter=3;
+%eps=3e-5;
+cache_script solve_by_gsolve_simple_tensor;
 
 
-%%
-prod(tensor_size(Fi))
-Ui_vec_tens=tensor_to_vector(X);
-Fi_vec=tensor_to_vector( Fi );
 
-%%
-Ki_fun=@(x)(tensor_operator_apply(Ki,x));
-Mi_inv=stochastic_preconditioner_deterministic(Ki);
-Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 
-maxit=100;
-reltol=1e-6;
-
-tic; fprintf( 'Solving (pcg): ' );
-[Ui_vec_pcg6,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxit,Mi_inv_fun);
-toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
-
-%%
-maxit=100;
-reltol=1e-2;
-
-tic; fprintf( 'Solving (pcg): ' );
-[Ui_vec_pcg2,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxit,Mi_inv_fun);
-toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
-
-%%
-
-gvector_error( Ui_vec_pcg2, Ui_vec_pcg6, 'relerr', true )
-gvector_error( Ui_vec_tens, Ui_vec_pcg6, 'relerr', true )
-%%
-R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );
-gvector_norm( R_vec_pcg6 )/gvector_norm(Fi_vec)
-
-R_vec_pcg2=operator_apply( Ki, Ui_vec_pcg2, 'residual', true, 'b', Fi_vec );
-gvector_norm( R_vec_pcg2 )/gvector_norm(Fi_vec)
-
-%%
-tic
-R_vec_tens=operator_apply( Ki, Ui_vec_tens, 'residual', true, 'b', Fi_vec );
-gvector_norm( R_vec_tens )/gvector_norm(Fi_vec)
-toc
 

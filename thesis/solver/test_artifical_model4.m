@@ -16,7 +16,7 @@ F=X;
 
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
-tol=1e-3; maxit=100;
+tol=1e-3; maxiter=100;
 Minv=stochastic_preconditioner_deterministic( A, true );
 
 sigma_F=svd(reshape(b,tensor_size(F))); %#ok<NASGU>
@@ -28,7 +28,7 @@ disp(rho);
 
 
 % check that the textbook implementation works
-common={'maxiter', maxit, 'reltol', tol/1000, 'abstol', tol/1000, 'Minv', Minv };
+common={'maxiter', maxiter, 'reltol', tol/1000, 'abstol', tol/1000, 'Minv', Minv };
 [x,flag,info]=generalized_solve_simple( A, b, common{:} );
 if flag
     info %#ok<NOPRT>

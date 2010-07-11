@@ -30,6 +30,9 @@ options=varargin2options(varargin);
 [use_psfrag, options]=get_option(options,'use_psfrag',false);
 check_unsupported_options(options,mfilename);
 
+if isempty( handle )
+    handle=gca;
+end
 if ~ishandle( handle )
     error( 'sglib:save_figure', 'First argument  must be a handle' );
 end
@@ -84,6 +87,7 @@ h_text  = findall(handle, 'type', 'text');
 h_axes  = findall(handle, 'type', 'axes');
 h_font   = [h_text; h_axes];
 
+set( h_text, 'interpreter', 'latex' );
 set( h_font, 'fontunits', 'points' );
 set( h_axes, 'fontsize', 12 );
 set( h_text, 'fontsize', 16 );
@@ -91,3 +95,4 @@ set( h_text, 'fontsize', 16 );
 %set( h_font, 'fontname', 'bookman' );
 set( h_font, 'fontname', 'new century schoolbook' );
 set( h_font, 'fontweight', 'normal' );
+

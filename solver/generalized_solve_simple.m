@@ -7,12 +7,16 @@ options=varargin2options( varargin );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
-[trunc,options]=get_option( options, 'trunc', {'eps',0,'k_max',inf} );
+[trunc,options]=get_option( options, 'trunc', struct('eps',0,'k_max',inf) );
 [trunc_mode,options]=get_option( options, 'trunc_mode', 'none' );
+
+[contract_limit,options]=get_option( options, 'contract_limit', 0.99 );
+[dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
+[X_true,options]=get_option( options, 'solution', [] );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
@@ -29,6 +33,9 @@ info.rank_res_before=[];
 info.rank_sol_after=[];
 info.timevec=[];
 info.resvec=[];
+info.epsvec=[];
+info.errvec=[];
+info.updvec=[];
 
 Xc=gvector_null(F);
 Rc=F;
@@ -46,27 +53,39 @@ flag=1;
 for iter=1:maxiter
     % add the preconditioned residuum to X
     if tensor_mode
-        info.rank_res_before=[info.rank_res_before tensor_rank(Rc)];
+        info.rank_res_before(end+1)=tensor_rank(Rc);
+        info.epsvec(end+1)=trunc.eps;
     end
-    Z=operator_apply(Minv,Rc);
-    Xn=gvector_add( Xc, Z );
+    DX=operator_apply(Minv,Rc);
+    Xn=gvector_add( Xc, DX );
+    
     Xn=funcall( truncate_after_func, Xn );
+    
+    % log rank if in tensor mode
     if tensor_mode
-        info.rank_sol_after=[info.rank_sol_after tensor_rank(Xn)];
+        info.rank_sol_after(end+1)=tensor_rank(Xn);
+        if verbosity>0
+            strvarexpand('iter: $iter$  ranks:  Xn: $tensor_rank(Xn)$,  Rc:  $tensor_rank(Rc)$ ' );
+        end
     end
-    if tensor_mode && verbosity>0
-        disp( strvarexpand('Ranks($iter$): Xn: $tensor_rank(Xn)$,  Rc:  $tensor_rank(Rc)$ ' ) );
+    
+    % log rel error if given
+    if ~isempty(X_true)
+        curr_err=gvector_error( Xn, X_true, 'relerr', true );
+        if verbosity>0 && ~isempty(X_true)
+            strvarexpand('iter: $iter$  relerr: $curr_err$ ' );
+        end
+        info.errvec(end+1)=curr_err;
     end
     
     % compute new residuum
     if false
         AXn=operator_apply(A,Xn, apply_operator_options{:} );
         Rn=gvector_add( F, AXn, -1 );
-        Rn=funcall( truncate_before_func, Rn );
     else
         Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
-        Rn=funcall( truncate_before_func, Rn );
     end
+    Rn=funcall( truncate_before_func, Rn );
     
     lastnormres=min(lastnormres,normres);
     normres=gvector_norm( Rn );
@@ -77,7 +96,7 @@ for iter=1:maxiter
     prev_tic=tic;
     
     if verbosity>0
-        fprintf('iter: %d  res:%g \n', iter, normres );
+        strvarexpand('iter: $iter$  res: $normres$  relres: $relres$' );
     end
     
     % Proposed update is DY=alpha*Pc
@@ -85,30 +104,33 @@ for iter=1:maxiter
     % update ratio is (DX,DY)/(DY,DY) should be near one
     % no progress if near 0
     
-    %     DY=gvector_scale( Pc, alpha );
-    %     DX=gvector_add( Xn, Xc, -1 );
-    %     upratio=gvector_scalar_product( DX, DY )/gvector_scalar_product( DY, DY );
-    %
-    %     gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
+    DY=gvector_add( Xn, Xc, -1 );
+    upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
+    info.updvec(end+1)=upratio;
     
     if normres<abstol || relres<reltol;
         flag=0;
         break;
     end
     
-    if iter==10
-        rhoest=(normres/initres)^0.1;
+    if iter==4
+        rhoest=(normres/initres)^(1/4);
     end
-    if iter>1.0 
+    if iter>1.0
         if verbosity>0
-            strvarexpand('reduct: $1-normres/lastnormres$  ($iter$/$noconvsteps$)');
+            strvarexpand('iter: $iter$  contract: $normres/lastnormres$  (noconv: $noconvsteps$)');
         end
-        if normres/lastnormres>1-0.1%*(1-rhoest)
+        if abs(upratio-1)>0.1
             noconvsteps=noconvsteps+1;
+            if dynamic_eps
+                trunc.eps=trunc.eps/10;
+                [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+            end
         else
             noconvsteps=0;
         end
-        if noconvsteps>=5*100
+        if noconvsteps>=10
+            flag=2;
             break;
         end
     end

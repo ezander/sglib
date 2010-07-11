@@ -1,5 +1,7 @@
 underline( 'Tensor product PCG: ' );
 
+warning( 'THIS NEEDS SOME WORK!!!!' );
+
 %% general options
 reltol=1e-3;
 
@@ -38,4 +40,4 @@ tic; fprintf( 'Solving (tpcg): ' );
 [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'Minv', Mi_inv, 'reltol', reltol, opts{:} );
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
-% U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
+U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );

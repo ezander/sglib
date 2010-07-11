@@ -9,7 +9,7 @@ F=X;
 
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
-tol=1e-3; maxit=100;
+tol=1e-3; maxiter=100;
 Minv=stochastic_preconditioner_deterministic( A, true );
 
 rho=simple_iteration_contractivity( A, Minv );

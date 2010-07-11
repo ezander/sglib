@@ -23,6 +23,13 @@ options=varargin2options( varargin );
 [relerr,options]=get_option(options,'relerr',false);
 check_unsupported_options(options);
 
+if ~is_tensor(TE) && is_tensor(TA)
+    if isvector(TE)
+        TA=tensor_to_vector(TA);
+    else
+        TA=tensor_to_array(TA);
+    end
+end
 
 norm_TE=gvector_norm(TE,G);
 DT=gvector_add(TA,TE,-1);
