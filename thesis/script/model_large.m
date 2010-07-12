@@ -1,3 +1,6 @@
+% identification
+model=mfilename;
+
 % geometry
 geom='lshape';
 num_refine=1;

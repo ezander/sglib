@@ -1,6 +1,7 @@
 function test_solve_huge_model
 
-rebuild_scripts
+% clc
+% rebuild_scripts
 
 [U_mat_true, Ui_mat_true]=compute_by_pcg_accurate;
 
@@ -44,13 +45,13 @@ cache_script solve_by_gsolve_pcg;
 
 function [U_mat, Ui_mat, info]=compute_by_pcg_approx( Ui_true )
 
-autoloader( loader_scripts, true, 'caller' );
+autoloader( loader_scripts, false, 'caller' );
 reltol=1e-3;
 cache_script solve_by_gsolve_pcg;
 
 function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps )
 
-autoloader( loader_scripts, true, 'caller' );
+autoloader( loader_scripts, false, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
 maxiter=3;
@@ -59,6 +60,13 @@ cache_script solve_by_gsolve_simple_tensor;
 
 
 function scripts=loader_scripts
-scripts={'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' };
-scripts={'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation' };
+model='model_huge';
+model='model_large';
+scripts={model; 'define_geometry'; 'discretize_model'; 'setup_equation' };
+
+prefix=['.cache/' mfilename '_' model '_'];
+for i=1:size(scripts,1)
+    target=[prefix, scripts{i,1}, '.mat'];
+    scripts{i,2}=target;
+end
 

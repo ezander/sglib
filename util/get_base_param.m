@@ -27,7 +27,7 @@ function value=get_base_param(name, default, ws)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<3
-    ws='base';
+    ws='caller';
 end
 
 try

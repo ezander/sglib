@@ -1,3 +1,6 @@
+% identification
+model=mfilename;
+
 % geometry
 geom='';
 N=200;
