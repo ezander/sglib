@@ -27,10 +27,10 @@ G=kl_to_tensor( g_i_k, g_k_beta );
 %% load and create the operators 
 
 % create tensor operators
-verbose=get_base_param( 'verbose', true );
+verbosity=get_base_param( 'verbosity', 1 );
 t_klop=tic;
 K=kl_pce_compute_operator_fast(k_i_k, k_k_alpha, I_k, I_OP, stiffness_func, 'tensor');
-if verbose; toc(t_klop); end
+if verbosity>0; toc(t_klop); end
 
 %% apply boundary conditions
 [P_I,P_B]=boundary_projectors( bnd_nodes, size(pos,2) );

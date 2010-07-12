@@ -54,14 +54,21 @@ function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps )
 autoloader( loader_scripts, false, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
-maxiter=3;
+%maxiter=3;
+k_max=100;
+if numel(Ui_true)>1e6
+    clear Ui_true
+end
 %eps=3e-5;
-cache_script solve_by_gsolve_simple_tensor;
-
+%cache_script solve_by_gsolve_simple_tensor;
+profile on
+solve_by_gsolve_simple_tensor;
+profile viewer
+keyboard
 
 function scripts=loader_scripts
 model='model_huge';
-model='model_large';
+%model='model_large';
 scripts={model; 'define_geometry'; 'discretize_model'; 'setup_equation' };
 
 prefix=['.cache/' mfilename '_' model '_'];
