@@ -55,15 +55,15 @@ autoloader( loader_scripts, false, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
 %maxiter=3;
-k_max=100;
+%k_max=100;
 if numel(Ui_true)>1e6
     clear Ui_true
 end
 %eps=3e-5;
 %cache_script solve_by_gsolve_simple_tensor;
-profile on
+%profile on
 solve_by_gsolve_simple_tensor;
-profile viewer
+%profile viewer
 keyboard
 
 function scripts=loader_scripts
