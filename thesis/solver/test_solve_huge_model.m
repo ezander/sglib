@@ -1,5 +1,7 @@
 function test_solve_huge_model
 
+rebuild_scripts
+
 [U_mat_true, Ui_mat_true]=compute_by_pcg_accurate;
 
 [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( Ui_mat_true );
@@ -31,25 +33,24 @@ keyboard
 % R_vec_pcg2=operator_apply( Ki, Ui_vec_pcg2, 'residual', true, 'b', Fi_vec );
 % gvector_norm( R_vec_pcg2 )/gvector_norm(Fi_vec)
 
+function rebuild_scripts
+autoloader( loader_scripts, true, 'caller' );
 
 function [U_mat, Ui_mat, info]=compute_by_pcg_accurate
 
-rebuild=false;
-autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+autoloader( loader_scripts, false, 'caller' );
 reltol=1e-12;
 cache_script solve_by_gsolve_pcg;
 
 function [U_mat, Ui_mat, info]=compute_by_pcg_approx( Ui_true )
 
-rebuild=false;
-autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+autoloader( loader_scripts, true, 'caller' );
 reltol=1e-3;
 cache_script solve_by_gsolve_pcg;
 
 function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps )
 
-rebuild=false;
-autoloader( {'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' }, rebuild, 'caller' );
+autoloader( loader_scripts, true, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
 maxiter=3;
@@ -57,6 +58,7 @@ maxiter=3;
 cache_script solve_by_gsolve_simple_tensor;
 
 
-
-
+function scripts=loader_scripts
+scripts={'model_huge'; 'define_geometry'; 'discretize_model'; 'setup_equation' };
+scripts={'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation' };
 
