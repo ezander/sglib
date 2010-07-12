@@ -1,5 +1,6 @@
-model=get_base_param( 'model', 'unknown' );
-strvarexpand( 'discretizing: $model$' );
+% identification
+model=get_base_param( 'model', '<unknown>' );
+strvarexpand( 'discretising: $model$' );
 
 %% construct the conductivity random field k
 % define stochastic expansion parameters

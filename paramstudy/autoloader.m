@@ -1,4 +1,4 @@
-function autoloader( build, rebuild, ws )
+function autoloader( build, rebuild, ws, prefix )
 
 if nargin==0
     warning( 'autoloader should be called as a function now; using build-var from base workspace' );

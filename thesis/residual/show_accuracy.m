@@ -147,7 +147,7 @@ l_k=10;
 p_f=2;
 p_k=4;
 p_u=2;
-verbose=false;
+verbosity=0;
 define_geometry
 discretize_model
 setup_equation

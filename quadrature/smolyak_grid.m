@@ -13,8 +13,8 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %   stages is implied by the length of the cell array.
 %
 % Options:
-%   verbose: true, {false}
-%      Shows statistics at the end of the run.
+%   verbosity: 0
+%      Shows statistics at the end of the run if verbosity > 0.
 %   make_unique: {true}, false
 %      Returns only unique points in XD. Needs additional sorting of XD and
 %      adding up of weights in WD at the end, saves in the integration
@@ -54,7 +54,7 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[verbose,options]=get_option( options, 'verbose', false );
+[verbosity,options]=get_option( options, 'verbosity', 0 );
 [make_unique,options]=get_option( options, 'make_unique', true );
 check_unsupported_options( options, mfilename );
 
@@ -127,7 +127,7 @@ if make_unique
     wd=accumarray(j,wd);
 end
 
-if verbose
+if verbosity>0
     fprintf( 'Smolyak:\n')
     fprintf( 'type          = %s\n', func2str(oned_rule_func{1}))
     fprintf( 'dimension   d = %d\n', d)

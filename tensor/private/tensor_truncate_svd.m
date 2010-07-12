@@ -1,8 +1,18 @@
 function [T_k,sigma,k]=tensor_truncate_svd( T, G, eps, k_max, relcutoff, p )
+global max_numel_svd num_calls
+
 if isempty(G); G={[],[]}; end
 [Q1,R1]=qr_internal(T{1},G{1});
 [Q2,R2]=qr_internal(T{2},G{2});
-[U,S,V]=svd(R1*R2',0);
+R=R1*R2';
+[U,S,V]=svd(R,0);
+
+if isempty(max_numel_svd) || max_numel_svd<numel(R)
+    max_numel_svd=numel(R);
+end
+if isempty(num_calls); num_calls=0; end
+num_calls=num_calls+1;
+
 
 sigma=diag(S);
 k=schattenp_truncate( sigma, eps, relcutoff, p );
