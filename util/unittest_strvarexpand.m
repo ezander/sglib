@@ -34,8 +34,8 @@ assert_equals( strvarexpand('XX$a$'), 'XX10', 'mixed1' );
 assert_equals( strvarexpand('$a$YY'), '10YY', 'mixed2' );
 assert_equals( strvarexpand('a+1=$a+1$ cell={$cell{1}$,$cell{2}$} test=$test$'), 'a+1=11 cell={10,abc} test=1234', 'mixed3' );
 
-assert_equals( strvarexpand('$[1+1,2*3]$'), '[2,6]', 'arr' );
-assert_equals( strvarexpand('${''abc'',2^3}$'), '{abc,8}', 'cell' );
+assert_equals( strvarexpand('$[1+1,2*3]$'), '[2, 6]', 'arr' );
+assert_equals( strvarexpand('${''abc'',2^3}$'), '{abc, 8}', 'cell' );
 
 warning( 'off', 'strvarexpand:type' );
 assert_equals( strvarexpand('$struct()$'), '$struct()$', 'struct_fail' );

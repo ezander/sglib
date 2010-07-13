@@ -24,10 +24,10 @@ store.dep_dates=cellfun( @filedate, store.deps );
 
 tmp_name=[tempname '.mat'];
 save( tmp_name, 'store' );
-[status, result]=system(['cat ' tmp_name ' | hexdump -C | sed "1,6 d" | sha1sum']);
+[status, hash]=hash_matfile( tmp_name );
 delete( tmp_name );
 if ~status
-    filename=fullfile( '.cache', result(1:40) );
+    filename=fullfile( '.cache', hash );
 else
     warning( 'Could not create unique cache filename. ' );
     filename='';

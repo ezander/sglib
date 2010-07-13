@@ -194,6 +194,7 @@ for n=1:num_ind
         % Now evaluate the script in base workspace
         evalin( 'base', script );
         if ~isempty(filename)
+            makesavepath( filename );
             evalin( 'base', ['save ' filename] );
         end
     end

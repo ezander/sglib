@@ -96,7 +96,8 @@ for iter=1:maxiter
     prev_tic=tic;
     
     if verbosity>0
-        strvarexpand('iter: $iter$  res: $normres$  relres: $relres$' );
+        strvarexpand('iter: $iter$  residual: $normres$  relres: $relres$' );
+        strvarexpand('iter: $iter$  time: $toc(prev_tic)$' );
     end
     
     % Proposed update is DY=alpha*Pc
@@ -118,7 +119,7 @@ for iter=1:maxiter
     end
     if iter>1.0
         if verbosity>0
-            strvarexpand('iter: $iter$  contract: $normres/lastnormres$  (noconv: $noconvsteps$)');
+            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (noconv: $noconvsteps$)');
         end
         if abs(upratio-1)>0.1
             noconvsteps=noconvsteps+1;
@@ -129,7 +130,7 @@ for iter=1:maxiter
         else
             noconvsteps=0;
         end
-        if noconvsteps>=10
+        if noconvsteps>=5
             flag=2;
             break;
         end

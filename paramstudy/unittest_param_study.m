@@ -17,7 +17,6 @@ function unittest_param_study
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-clc
 munit_set_function( 'param_study' );
 
 %clear_funcall_cache( 'pattern', mfilename, 'verbosity', 1 );

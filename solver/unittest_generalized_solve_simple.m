@@ -139,7 +139,8 @@ M=get_base_param('M', speye(size(A)), 'caller' );
 x=zeros(size(b));
 r=b;
 norm_r0=norm(b);
-resvec=[norm_r0];
+resvec=[];
+resvec(end+1)=norm_r0;
 
 flag=1;
 tolb=tol*norm_r0;
@@ -154,4 +155,3 @@ for iter=1:maxit
     end
 end
 relres=norm(r)/norm_r0;
-resvec=resvec(:);

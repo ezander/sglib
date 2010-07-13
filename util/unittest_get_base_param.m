@@ -31,9 +31,9 @@ assert_equals( r, 20, 'default2' );
 
 
 assignin( 'base', 'xyz', 1.2 );
-r=get_base_param( 'xyz', 3.4 );
+r=get_base_param( 'xyz', 3.4, 'base' );
 assert_equals( r, 1.2, 'baseval' );
 
 evalin( 'base', 'clear xyz');
-r=get_base_param( 'xyz', 3.4 );
+r=get_base_param( 'xyz', 3.4, 'base' );
 assert_equals( r, 3.4, 'basedef' );

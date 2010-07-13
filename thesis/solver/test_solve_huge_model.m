@@ -7,6 +7,7 @@ function test_solve_huge_model
 
 [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( Ui_mat_true );
 pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true )
+pcg_err=1e-3;
 
 eps=pcg_err/1.5;
 scale=10^(floor(log10(eps)))/10;
@@ -39,7 +40,19 @@ autoloader( loader_scripts, true, 'caller' );
 
 function [U_mat, Ui_mat, info]=compute_by_pcg_accurate
 
-autoloader( loader_scripts, false, 'caller' );
+autoloader( loader_scripts, true, 'caller' );
+
+[mu_fs_i,fs_i_k,sigma_fs_k,fs_k_alpha]=kl_pce_to_standard_form(f_i_k,f_k_alpha);
+sigma_fs_k
+C_f=covariance_matrix( pos, cov_f );
+[r_i_k,sigma_f]=kl_solve_evp( C_f, G_N, 30 );
+sigma_F=tensor_modes(F);
+close
+hold all
+plot( sigma_f/sigma_f(1) )
+plot( sigma_fs_k/sigma_fs_k(1) )
+plot( sigma_F/sigma_F(1) )
+
 reltol=1e-12;
 cache_script solve_by_gsolve_pcg;
 
@@ -56,18 +69,20 @@ reltol=1e-16;
 abstol=1e-16;
 %maxiter=3;
 %k_max=100;
-if numel(Ui_true)>1e6
+%trunc_mode='before';
+if prod(gvector_size(Fi))>1e6
     clear Ui_true
 end
 %eps=3e-5;
-%cache_script solve_by_gsolve_simple_tensor;
-%profile on
-solve_by_gsolve_simple_tensor;
-%profile viewer
-keyboard
+cache_script solve_by_gsolve_simple_tensor;
+% profile on
+% solve_by_gsolve_simple_tensor;
+% profile viewer
+% keyboard
 
 function scripts=loader_scripts
-model='model_huge';
+%model='model_huge';
+model='model_huge_easy';
 %model='model_large';
 scripts={model; 'define_geometry'; 'discretize_model'; 'setup_equation' };
 

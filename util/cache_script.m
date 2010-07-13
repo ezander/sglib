@@ -13,10 +13,12 @@ assignin( ws, 'really_long_and_strange_varname_493875ksdjfh', store );
 
 tmp_name=[tempname '.mat'];
 evalin( ws, strvarexpand( 'save $tmp_name$' ) );
-[status, result]=system(['cat ' tmp_name ' | hexdump -C | sed "1,6 d" | sha1sum']);
+[status, hash]=hash_matfile( tmp_name );
+
+
 delete( tmp_name );
 if ~status
-    filename=fullfile( '.cache', result(1:40) );
+    filename=fullfile( '.cache',  hash );
 else
     filename='';
 end
