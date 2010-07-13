@@ -1,8 +1,8 @@
 function study_simple_solver_artmod
 
 %study_cmp_high_and_low_contract
-study_cmp_err_ratio_diff_contract
-%study_trace_into_problem
+%study_cmp_err_ratio_diff_contract
+study_trace_into_problem
 
 function study_trace_into_problem
 % compare ratio of error to truncation for different contractivities
@@ -17,9 +17,10 @@ fields=get_ret_fields();
 % set parameters
 defaults=get_defaults();
 defaults.tol=1e-16;
+defaults.stag_steps=15;
 variable.eps={10.^-6, 10.^-8, 10.^-10};
-defaults.mode='operator';
-%defaults.mode='after';
+defaults.trunc_mode='operator';
+%defaults.trunc_mode='after';
 variable.r=0.00331;
 
 % run parameter study
@@ -35,11 +36,12 @@ multiplot_init(2,2)
 for i=1:3
     multiplot;
     info=ps_results.info(i);
-    plot( info.resvec, 'x-' );
-    plot( info.errvec, 'x-' );
-    plot( info.updvec, 'x-' );
+    plot( info.resvec/info.resvec(1), 'x-' ); legend_add( 'rel. residual' );
+    plot( info.errvec, 'o-' ); legend_add(  'rel. error' );
+    plot( info.updvec, '*-' ); legend_add( 'update ratio' );
+    %plot( 0.9+0*info.updvec, '-' ); legend_add( 'ur limit' );
     logaxis( gca, 'y' );
-    legend( 'residual', 'error', 'update ratio' );
+    ylim_extend( gca, 1.1 )
 end
 
 for i=1:3
@@ -61,7 +63,7 @@ defaults=get_defaults();
 defaults.tol=1e-16;
 defaults.maxiter=500;
 defaults.eps=10.^-6 ;
-defaults.mode='operator';
+defaults.trunc_mode='operator';
 variable.r=0.0023:0.0001:0.0037;
 %variable.r=[0.0023:0.00005:0.0037]; % 0.004];
 
@@ -128,7 +130,7 @@ global ps_results
 last=[];
 
 % variable.eps=10.^-(0:0.5:14);
-% variable.mode={'operator', 'before', 'after'};
+% variable.trunc_mode={'operator', 'before', 'after'};
 % variable.r={0.00237, 0.00274, 0.00307, 0.00335, 0.00362, 0.00387 };
 
 
@@ -230,4 +232,4 @@ defaults.maxiter=60;
 defaults.tol=1e-4;
 defaults.eps=10^-6;
 defaults.r=0.0027;
-defaults.mode='operator';
+defaults.trunc_mode='operator';

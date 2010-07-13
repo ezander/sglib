@@ -10,8 +10,10 @@ options=varargin2options( varargin );
 [trunc,options]=get_option( options, 'trunc', struct('eps',0,'k_max',inf) );
 [trunc_mode,options]=get_option( options, 'trunc_mode', 'none' );
 
-[contract_limit,options]=get_option( options, 'contract_limit', 0.99 );
+%[contract_limit,options]=get_option( options, 'contract_limit', 0.99 );
 [dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
+[stag_steps,options]=get_option( options, 'stag_steps', 5 );
+[upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
@@ -119,9 +121,9 @@ for iter=1:maxiter
     end
     if iter>1.0
         if verbosity>0
-            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (noconv: $noconvsteps$)');
+            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');
         end
-        if abs(upratio-1)>0.1
+        if abs(upratio-1)>upratio_delta
             noconvsteps=noconvsteps+1;
             if dynamic_eps
                 trunc.eps=trunc.eps/10;
@@ -130,7 +132,7 @@ for iter=1:maxiter
         else
             noconvsteps=0;
         end
-        if noconvsteps>=5
+        if noconvsteps>=stag_steps
             flag=2;
             break;
         end

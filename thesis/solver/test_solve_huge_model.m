@@ -29,6 +29,10 @@ multiplot;
 plot( info_tp.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
 plot( info_tp.rank_sol_after, 'x-' ); legend_add( 'rank (after prec)' );
 
+multiplot;
+plot( tensor_modes( Ui ) )
+%logaxis( gca, 'y' )
+
 keyboard
 
 % R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );

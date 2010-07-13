@@ -6,9 +6,14 @@ r=get_base_param( 'r', 0.002 );
 
 eps=get_base_param( 'eps', 0 );
 k_max=get_base_param( 'k_max', inf );
-mode=get_base_param( 'mode', 'operator' );
+trunc_mode=get_base_param( 'trunc_mode', 'operator' );
+stag_steps=get_base_param( 'stag_steps', 5 );
+upratio_delta=get_base_param( 'upratio_delta', 0.1 );
+dynamic_eps=get_base_param( 'dynamic_eps', false );
 
 tol=get_base_param( 'tol', 1e-6 );
+abstol=get_base_param( 'abstol', tol );
+reltol=get_base_param( 'reltol', tol );
 maxiter=get_base_param( 'maxiter', 100 );
 
     
@@ -48,15 +53,12 @@ trunc.eps=eps;
 trunc.k_max=inf;
 trunc.show_reduction=false;
 
-common={'maxiter', maxiter, 'reltol', tol, 'abstol', tol, 'Minv', Pinv, 'verbosity', 1 };
+options={'reltol', reltol,'maxiter', maxiter, 'abstol', abstol, 'verbosity', inf };
+options=[options, {'trunc', trunc, 'trunc_mode', trunc_mode}];
+options=[options, {'stag_steps', stag_steps, 'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
 
 t=tic;
-%Fvec=tensor_to_array( F ); mode='none';
-%mode='operator';
-%common=[common { 'contract_limit', 1-(1-rho)/2, 'dynamic_eps', true }];
-%eps=0.01;
-%trunc.eps=eps;
-[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Pinv, common{:}, 'trunc_mode', mode, 'trunc', trunc, 'solution', x   );
+[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Pinv, options{:}, 'solution', x   );
 tt=toc(t);
 
 if exist('x','var') && ~isempty(x)
