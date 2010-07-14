@@ -1,6 +1,6 @@
 Fi_vec=tensor_to_vector( Fi );
 Ki_fun=@(x)(tensor_operator_apply(Ki,x));
-Mi_inv=stochastic_preconditioner_deterministic(Ki);
+Mi_inv=stochastic_precond_mean_based(Ki);
 Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 
 maxit=get_base_param( 'maxit', 100 );

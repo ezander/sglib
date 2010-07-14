@@ -25,7 +25,7 @@ if isempty(last) || last.r~=r || last.N~=N || last.M~=M
     
     F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
     b=tensor_to_vector(F);
-    Pinv=stochastic_preconditioner_deterministic( A, true );
+    Pinv=stochastic_precond_mean_based( A );
     
     sigma_F=svd(reshape(b,tensor_size(F))); %#ok<NASGU>
     

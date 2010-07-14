@@ -21,7 +21,7 @@ for ratio=0.1:0.05:1.5
     setup_equation
     
     S=operator_size(Ki);
-    Pi_inv=stochastic_preconditioner_deterministic(Ki);
+    Pi_inv=stochastic_precond_mean_based(Ki);
     
     x0=rand(S(1),1);
     [rat,flag,iter]=simple_iteration_normest( Ki, Pi_inv, x0 );

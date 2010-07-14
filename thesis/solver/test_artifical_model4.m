@@ -17,7 +17,7 @@ F=X;
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
 tol=1e-3; maxiter=100;
-Minv=stochastic_preconditioner_deterministic( A, true );
+Minv=stochastic_precond_mean_based( A );
 
 sigma_F=svd(reshape(b,tensor_size(F))); %#ok<NASGU>
 disp(strvarexpand('sigma_F: $sigma_F(sigma_F>1e-14)$' ));

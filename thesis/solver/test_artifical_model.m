@@ -10,7 +10,7 @@ Mmat=tensor_operator_to_matrix(M);
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
 tol=1e-6; maxiter=100; 
-Minv=stochastic_preconditioner_deterministic( A, true );
+Minv=stochastic_precond_mean_based( A );
 %B=tensor_to_array(F);
 
 

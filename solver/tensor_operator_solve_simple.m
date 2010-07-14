@@ -36,7 +36,7 @@ end
 %% generate tensor prod preconditioner 
 if ~isempty(M)
     if isempty(Minv)
-        Minv=stochastic_preconditioner_deterministic( M );
+        Minv=stochastic_precond_mean_based( M );
     else
         error( 'M and Minv cannot be specified both' );
     end

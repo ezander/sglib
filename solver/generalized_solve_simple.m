@@ -22,6 +22,10 @@ options=varargin2options( varargin );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
+if dynamic_eps
+    min_eps=trunc.eps;
+    trunc.eps=0.1;
+end
 [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
 if ~isequal(trunc_mode,'none')
     apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
@@ -99,7 +103,7 @@ for iter=1:maxiter
     
     if verbosity>0
         strvarexpand('iter: $iter$  residual: $normres$  relres: $relres$' );
-        strvarexpand('iter: $iter$  time: $toc(prev_tic)$' );
+        strvarexpand('iter: $iter$  time: $info.timevec(end)$' );
     end
     
     % Proposed update is DY=alpha*Pc
@@ -126,8 +130,11 @@ for iter=1:maxiter
         if abs(upratio-1)>upratio_delta
             noconvsteps=noconvsteps+1;
             if dynamic_eps
-                trunc.eps=trunc.eps/10;
+                trunc.eps=max( min_eps, trunc.eps/10 );
                 [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+                if ~isequal(trunc_mode,'none')
+                    apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
+                end
             end
         else
             noconvsteps=0;

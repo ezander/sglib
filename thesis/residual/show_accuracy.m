@@ -160,7 +160,7 @@ maxit=100;
 reltol=1e-6;
 
 Ki_fun=@(x)(tensor_operator_apply(Ki,x));
-Mi_inv=stochastic_preconditioner_deterministic(Ki);
+Mi_inv=stochastic_precond_mean_based(Ki);
 Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 
 

@@ -2,7 +2,7 @@ if ~exist( 'Fi_mat', 'var' )
     Fi_mat=tensor_to_array( Fi );
 end
 if ~exist( 'Mi_inv', 'var' )
-    Mi_inv=stochastic_preconditioner_deterministic(Ki);
+    Mi_inv=stochastic_precond_mean_based(Ki);
 end
 
 maxiter=get_base_param( 'maxiter', 100, 'caller' );

@@ -89,7 +89,7 @@ assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
-Minv=stochastic_preconditioner_deterministic( A );
+Minv=stochastic_precond_mean_based( A );
 [X,flag,info]=generalized_solve_pcg( A, F, 'truncate_before_func', truncate_func, 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);

@@ -50,7 +50,7 @@ assert_equals(info.iter,iter,'iter')
 assert_equals(info.relres,relres,'relres')
 
 % compare kronecker x matrix mode with textbook implementation
-Minv=stochastic_preconditioner_deterministic( A, true );
+Minv=stochastic_precond_mean_based( A );
 B=tensor_to_array(F);
 [X,flag,info]=generalized_solve_simple( A, B, 'reltol', tol, 'abstol', tol, 'Minv', Minv ); %#ok<ASGLU>
 assert_equals(X(:),x,'sol')
