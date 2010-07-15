@@ -34,7 +34,7 @@ tol=1e-6; maxit=100;
 assert_equals(x,x2,'pre_x')
 assert_equals(iter,iter2,'pre_iter')
 assert_equals(relres,relres2,'pre_relres')
-assert_equals(resvec,resvec2,'pre_resvec')
+assert_equals(resvec(:),resvec2(:),'pre_resvec')
 
 [X,flag,info]=generalized_solve_pcg( A, b, 'reltol', tol ); %#ok<ASGLU>
 assert_equals(X,x2,'x')
@@ -45,7 +45,7 @@ assert_equals(info.resvec,resvec,'resvec');
 [x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxit, M ); %#ok<NASGU>
 [X,flag,info]=generalized_solve_pcg( A, b, 'reltol', tol, 'Minv', inv(M) ); %#ok<ASGLU>
 assert_equals(x,x2,'pre_x')
-assert_equals(resvec,resvec2,'pre_resvec')
+assert_equals(resvec(:),resvec2(:),'pre_resvec')
 assert_equals(X,x2,'x')
 assert_equals(info.resvec,resvec,'resvec');
 assert_equals(info.iter,iter,'pre_iter')
@@ -142,7 +142,6 @@ for iter=1:maxit
     rho_old=rho;
 end
 relres=norm(r)/norm_r0;
-resvec=resvec(:);
 
 
 

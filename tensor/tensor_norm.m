@@ -1,4 +1,4 @@
-function [d,dsqr]=tensor_norm( T, G )
+function [d,dsqr]=tensor_norm( T, G, varargin )
 % TENSOR_NORM Compute the norm of a sparse tensor.
 %   D=TENSOR_NORM( T, G ) computes the norm of the sparse tensor product
 %   T with respect to scalar product defined by the matrices given in G. G
@@ -32,11 +32,24 @@ function [d,dsqr]=tensor_norm( T, G )
 if nargin<2
     G=[];
 end
+options=varargin2options(varargin);
+[orth,options]=get_option(options,'orth',true);
+check_unsupported_options(options,mfilename);
 
 check_tensor_format( T );
 
 %d=gvector_norm( tensor_to_array( T ) );
 
-dsqr=max( tensor_scalar_product(T,T,G), 0 );
-d=sqrt( dsqr );
+if tensor_order(T)==2 && isempty(G)
+    d=orth_norm( T );
+else
+    dsqr=max( tensor_scalar_product(T,T,G,varargin{:}), 0 );
+    d=sqrt( dsqr );
+end
 
+
+
+function s=orth_norm( T )
+[QA,RA]=qr(T{1},0);
+[QB,RB]=qr(T{2},0);
+s=norm(RA*RB','fro');

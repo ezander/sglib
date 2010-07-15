@@ -41,7 +41,9 @@ if any(da(:,2)~=dt(:)) && ~(isvector(T) && prod(dt)==prod(da(:,2)))
     error( 'tensor:tensor_operator_apply:mismatch', 'tensor operator and gvector dimension mismatch' );
 end
 
+
 R=size(A,1);
+orth_columns=0;
 for i=1:R
     if ~reverse
         V=tensor_operator_apply_elementary( A(i,:), T );
@@ -55,6 +57,8 @@ for i=1:R
         else
             Y=b;
         end
+    elseif is_tensor(Y)
+        orth_columns=tensor_rank(Y);
     end
         
     if ~residual
@@ -63,6 +67,6 @@ for i=1:R
         Y=gvector_add( Y, V, -1 );
     end
     
-    Y=funcall( truncate_func, Y );
+    Y=funcall( truncate_func, Y, 'orth_columns', orth_columns );
 end
 

@@ -1,4 +1,4 @@
-function d=tensor_scalar_product( T1, T2, G )
+function d=tensor_scalar_product( T1, T2, G, varargin )
 % TENSOR_SCALAR_PRODUCT Compute the scalar product of two sparse tensors.
 %   D=TENSOR_SCALAR_PRODUCT( T1, T2 ) computes the scalar product of the
 %   two sparse tensors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1,
@@ -24,9 +24,12 @@ function d=tensor_scalar_product( T1, T2, G )
 if nargin<3
     G=[];
 end
+options=varargin2options(varargin);
+[orth,options]=get_option(options,'orth',true);
+check_unsupported_options(options,mfilename);
 
 check_tensors_compatible( T1, T2 );
-if isempty(G)
+if orth && isempty(G)
     d=compute_inner2( T1, T2, G );
 else
     d=compute_inner1( T1, T2, G );

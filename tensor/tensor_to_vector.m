@@ -18,12 +18,17 @@ function t=tensor_to_vector(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-t=zeros(prod(tensor_size(T)),1);
-
-R=tensor_rank(T);
-for i=1:R
-    u=elementary_tensor_to_vector( T, i );
-    t=t+u;
+if tensor_order(T)==2
+    t=T{1}*T{2}';
+    t=t(:);
+else
+    t=zeros(prod(tensor_size(T)),1);
+    
+    R=tensor_rank(T);
+    for i=1:R
+        u=elementary_tensor_to_vector( T, i );
+        t=t+u;
+    end
 end
 
 function u=elementary_tensor_to_vector( T, i )

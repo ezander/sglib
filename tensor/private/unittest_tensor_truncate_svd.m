@@ -68,3 +68,22 @@ assert_equals( U{1}*U{2}', T{1}*T{2}', 'best_spectral_abs', 'norm', 2, 'abstol',
 [U,sigma,k]=tensor_truncate_svd( T, G, releps, inf, true, inf );
 assert_equals( k, k_ex, 'k' );
 assert_equals( U{1}*U{2}', T{1}*T{2}', 'best_spectral_rel', 'norm', 2, 'reltol', releps );
+
+
+
+
+
+
+
+% check that truncation with orthogonal columns works
+N=110;
+M=80;
+L1=60;
+L2=30;
+L=L1+L2;
+
+T={[orth(rand(N,L1)), rand(N,L2)], [orth(rand(M,L1)), rand(M,L2)]};
+
+
+U=tensor_truncate_svd( T, G, 0, inf, true, 2, L1 );
+assert_equals( U{1}*U{2}', T{1}*T{2}', 'reproduce' );

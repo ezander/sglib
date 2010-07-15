@@ -35,15 +35,16 @@ options=varargin2options( varargin );
 [k_max,options]=get_option( options, 'k_max', inf );
 [eps,options]=get_option( options, 'eps', 0 );
 [relcutoff,options]=get_option( options, 'relcutoff', true );
+[orth_columns,options]=get_option( options, 'orth_columns', 0 );
 check_unsupported_options( options, mfilename );
 
 if isnumeric(T)
     [U,S,V]=svd(T,0);
-    [T_k,sigma,k]=tensor_truncate_svd( {U*S,V}, G, eps, k_max, relcutoff, p );
+    [T_k,sigma,k]=tensor_truncate_svd( {U*S,V}, G, eps, k_max, relcutoff, p, min(size(T)) );
     T_k=T_k{1}*T_k{2}';
 elseif iscell(T)
     if length(T)==2
-        [T_k,sigma,k]=tensor_truncate_svd( T, G, eps, k_max, relcutoff, p );
+        [T_k,sigma,k]=tensor_truncate_svd( T, G, eps, k_max, relcutoff, p, orth_columns );
     else
         U=ktensor( T );
         OPTS.tol=eps;

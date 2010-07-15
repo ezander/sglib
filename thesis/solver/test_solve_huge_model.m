@@ -26,13 +26,15 @@ underline( 'approximate pcg' );
 pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true )
 eps=eps_from_error( pcg_err );
 
-underline( 'approximate prec pcg' );
-[U_mat2, Ui_mat2, info_pcg2]=compute_by_pcg_approx( Ui_mat_true, pcg_err, true );
-pcg_err2=gvector_error( U_mat2, U_mat_true, 'relerr', true ) 
-eps=eps_from_error( pcg_err2 );
+% underline( 'approximate prec pcg' );
+% [U_mat2, Ui_mat2, info_pcg2]=compute_by_pcg_approx( Ui_mat_true, pcg_err, true );
+% pcg_err2=gvector_error( U_mat2, U_mat_true, 'relerr', true ) 
 
 underline( 'normal tensor solver' );
+eps=eps*(1+rand(1)/100000);
+profile on
 [U, Ui, info_tp]=compute_by_tensor_simple( Ui_mat_true, eps, false, false );
+profile viewer
 tp_err=gvector_error( U, U_mat_true, 'relerr', true )
 
 underline( 'dynamic tensor solver' );
@@ -40,17 +42,17 @@ underline( 'dynamic tensor solver' );
 tp_err2=gvector_error( U2, U_mat_true, 'relerr', true )
 
 underline( 'dynamic prec tensor solver' );
-[U3, Ui3, info_tp3]=compute_by_tensor_simple( Ui_mat_true, eps, true, true );
+[U3, Ui3, info_tp3]=compute_by_tensor_simple( Ui_mat_true, eps/3, true, true );
 tp_err3=gvector_error( U3, U_mat_true, 'relerr', true )
 
 underline( 'prec tensor solver' );
-[U4, Ui4, info_tp4]=compute_by_tensor_simple( Ui_mat_true, eps, true, false );
+[U4, Ui4, info_tp4]=compute_by_tensor_simple( Ui_mat_true, eps/3, true, false );
 tp_err4=gvector_error( U4, U_mat_true, 'relerr', true )
 
 pcg_err
 info_pcg.time
-pcg_err2
-info_pcg2.time
+%pcg_err2
+%info_pcg2.time
 tp_err
 info_tp.time
 tp_err2
@@ -129,7 +131,7 @@ function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps, prec, dyn )
 autoloader( loader_scripts, false, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
-if prod(gvector_size(Fi))>1e6
+if prod(gvector_size(Fi))>1e10
     clear Ui_true
 end
 dynamic_eps=dyn;

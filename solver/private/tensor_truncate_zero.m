@@ -1,7 +1,7 @@
-function U=tensor_truncate_zero( T, trunc )
+function U=tensor_truncate_zero( T, trunc, varargin )
 k_max=min(tensor_size(T));
 if tensor_rank(T)>k_max
-    U=tensor_truncate( T, 'eps', 0, 'k_max', k_max );
+    U=tensor_truncate( T, 'eps', 0, 'k_max', k_max, varargin{:} );
 else
     U=T;
 end

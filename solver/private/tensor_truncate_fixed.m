@@ -1,6 +1,6 @@
-function U=tensor_truncate_fixed( T, trunc )
+function U=tensor_truncate_fixed( T, trunc, varargin )
 
-U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max );
+U=tensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max, varargin{:} );
 %gvector_error( T, U, 'relerr', true )
 
 if get_option( trunc, 'show_reduction', false )

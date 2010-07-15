@@ -1,4 +1,4 @@
-function d=gvector_scalar_product( T1, T2, G )
+function d=gvector_scalar_product( T1, T2, G, varargin )
 % GVECTOR_SCALAR_PRODUCT Compute the scalar product of two sparse vectors.
 %   D=GVECTOR_SCALAR_PRODUCT( T1, T2 ) computes the scalar product of the
 %   two sparse vectors T1 and T2. In the form D=GVECTOR_SCALAR_PRODUCT( T1,
@@ -38,7 +38,7 @@ if isnumeric(T1) && isnumeric(T2)
         error('vector:gvector_scalar_product:not_implemented', 'not implemented yet' );
     end
 elseif is_tensor(T1) && is_tensor(T2)
-    d=tensor_scalar_product(T1,T2,G);
+    d=tensor_scalar_product(T1,T2,G,varargin{:});
 elseif isobject(T1) && isobject(T2)
     d=tt_tensor_scalar_product(T1,T2,G);
 else

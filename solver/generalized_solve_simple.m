@@ -16,9 +16,9 @@ options=varargin2options( varargin );
 [upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
-[gsolver_stats,options]=get_option( options, 'stats', struct() );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 [X_true,options]=get_option( options, 'solution', [] );
+[gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
 
@@ -112,7 +112,8 @@ for iter=1:maxiter
     % no progress if near 0
     
     DY=gvector_add( Xn, Xc, -1 );
-    upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
+    %upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
+    upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/gvector_norm( DX )^2;
     info.updvec(end+1)=upratio;
     
     if normres<abstol || relres<reltol;

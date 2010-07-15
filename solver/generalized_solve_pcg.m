@@ -7,9 +7,12 @@ options=varargin2options( varargin );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
+
 [truncate_after_func,options]=get_option( options, 'truncate_after_func', @identity );
 [truncate_before_func,options]=get_option( options, 'truncate_before_func', @identity );
 [truncate_operator_func,options]=get_option( options, 'truncate_operator_func', @identity );
+[verbosity,options]=get_option( options, 'verbosity', 0 );
+[X_true,options]=get_option( options, 'solution', [] );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
@@ -35,7 +38,7 @@ Pc=Zc;
 
 initres=gvector_norm( Rc );
 ltres=initres;
-resvec=[initres];
+info.resvec(end+1)=initres;
 releps=reltol; % not correct
 start_tic=tic;
 prev_tic=start_tic;
@@ -76,7 +79,14 @@ for iter=1:maxiter
         end
     end
     
-    resvec(end+1)=normres; %#ok<AGROW>
+    info.resvec(end+1)=normres; %#ok<AGROW>
+    info.timevec(end+1)=toc(prev_tic);
+    prev_tic=tic;
+
+    if verbosity>0
+        strvarexpand('iter: $iter$  residual: $normres$  relres: $relres$' );
+        strvarexpand('iter: $iter$  time: $info.timevec(end)$' );
+    end
 
     % Proposed update is DY=alpha*Pc
     % actual update is DX=T(Xn)-Xc;
@@ -129,7 +139,6 @@ info.flag=flag;
 info.iter=iter;
 info.relres=relres;
 info.upratio=upratio;
-info.resvec=resvec(:);
 info.time=toc(start_tic);
 
 solver_stats=gsolver_stats;
