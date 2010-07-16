@@ -40,15 +40,17 @@ if r==0; return; end
 
 for iter=1:maxiter
     x0=gvector_scale(x0,1/r);
+    ttt=tic;
     tmp=operator_apply( K, x0 );
     tmp=operator_apply( Pinv, tmp );
+    ttt=toc(ttt);
     x0=gvector_add( x0, tmp, -1 );
     
     r=gvector_norm( x0 );
     ratn=r;
 
-    if verbosity>1
-        fprintf( 'iter: %d, delta: %g\n', iter, abs(ratn-rat) );
+    if verbosity>0
+        fprintf( 'iter: %d, rho: %g delta: %g (time: %g)\n', iter, ratn, abs(ratn-rat), ttt );
     end
     if abs(ratn-rat)<abstol 
         rat=ratn;

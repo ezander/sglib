@@ -20,10 +20,15 @@ if exist( 'Ui_true' )
 end
 
 th=tic; 
-if verbosity>0; fprintf( 'Solving (simple_tp): \n' ); end
+if verbosity>0; 
+    fprintf( 'Solving (simple_tp): \n' ); 
+end
 
 [Ui,flag,info]=generalized_solve_simple( Ki, Fi, options{:});
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 info.solve_time=toc(th);
 
-toc(th); fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
+if verbosity>0; 
+    toc(th); 
+    fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
+end

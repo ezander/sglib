@@ -57,7 +57,11 @@ end
 function str=tostring( val, orig )
 if isnumeric(val)
     if isscalar(val)
-        str=num2str(val,'%g');
+        if round(val)==val
+            str=num2str(val,'%d');
+        else
+            str=num2str(val,'%g');
+        end
     else
         str='[';
         for i=1:numel(val)
@@ -70,13 +74,15 @@ if isnumeric(val)
     end
 elseif ischar(val)
     str=reshape( val, 1, []);
+elseif isa(val, 'function_handle')
+    str=['@', func2str(val)];
 elseif iscell(val)
     str='{';
     for i=1:numel(val)
         if i>1
             str=[str, ', '];
         end
-        str=[str, tostring(val{i})];
+        str=[str, tostring(val{i},val{i})];
     end
     str=[str, '}'];
 else

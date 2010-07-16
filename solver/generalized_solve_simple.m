@@ -14,6 +14,7 @@ options=varargin2options( varargin );
 [dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
 [stag_steps,options]=get_option( options, 'stag_steps', 5 );
 [upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
+[dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.1 );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
@@ -21,6 +22,8 @@ options=varargin2options( varargin );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 check_unsupported_options( options, mfilename );
+
+
 
 if dynamic_eps
     min_eps=trunc.eps;
@@ -64,8 +67,45 @@ for iter=1:maxiter
     end
     DX=operator_apply(Minv,Rc);
     Xn=gvector_add( Xc, DX );
-    
     Xn=funcall( truncate_after_func, Xn );
+    
+    % check update ratio
+    % Proposed update is DY=alpha*Pc
+    % actual update is DX=T(Xn)-Xc;
+    % update ratio is (DX,DY)/(DY,DY) should be near one
+    % no progress if near 0
+    
+    DY=gvector_add( Xn, Xc, -1 );
+    %upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
+    upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/gvector_norm( DX )^2;
+    info.updvec(end+1)=upratio;
+    
+    if verbosity>0
+        strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');
+    end
+    if abs(upratio-1)>upratio_delta
+        noconvsteps=noconvsteps+1;
+        if noconvsteps>=stag_steps
+            flag=2;
+            break;
+        end
+        if dynamic_eps
+            trunc.eps=max( min_eps, trunc.eps*dyneps_factor );
+            if verbosity>0
+                strvarexpand('iter: $iter$  Reducing eps to $trunc.eps$');
+            end
+            [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+            if ~isequal(trunc_mode,'none')
+                apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
+            end
+            % retry with new epsilon (don't throw away precious
+            % information!)
+            Xn=gvector_add( Xc, DX );
+            Xn=funcall( truncate_after_func, Xn );
+        end
+    else
+        noconvsteps=0;
+    end
     
     % log rank if in tensor mode
     if tensor_mode
@@ -105,52 +145,15 @@ for iter=1:maxiter
         strvarexpand('iter: $iter$  residual: $normres$  relres: $relres$' );
         strvarexpand('iter: $iter$  time: $info.timevec(end)$' );
     end
+
     
-    % Proposed update is DY=alpha*Pc
-    % actual update is DX=T(Xn)-Xc;
-    % update ratio is (DX,DY)/(DY,DY) should be near one
-    % no progress if near 0
-    
-    DY=gvector_add( Xn, Xc, -1 );
-    %upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
-    upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/gvector_norm( DX )^2;
-    info.updvec(end+1)=upratio;
-    
+    % check residual for meeting tolerance
     if normres<abstol || relres<reltol;
         flag=0;
         break;
     end
     
-    if iter==4
-        rhoest=(normres/initres)^(1/4);
-    end
-    if iter>1.0
-        if verbosity>0
-            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');
-        end
-        if abs(upratio-1)>upratio_delta
-            noconvsteps=noconvsteps+1;
-            if dynamic_eps
-                trunc.eps=max( min_eps, trunc.eps/10 );
-                [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
-                if ~isequal(trunc_mode,'none')
-                    apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
-                end
-            end
-        else
-            noconvsteps=0;
-        end
-        if noconvsteps>=stag_steps
-            flag=2;
-            break;
-        end
-    end
     
-    
-    %     if abs(1-upratio)>.2 %&& urc>10
-    %         flag=-1;
-    %         break;
-    %     end
     
     % set all iteration variables to new state
     Xc=Xn;
@@ -186,12 +189,14 @@ varargin; %#ok, ignore
 
 function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
 tr={@tensor_truncate_fixed, {trunc}, {2}};
+trunc_op=trunc; trunc_op.eps=trunc.eps/3;
+to={@tensor_truncate_fixed, {trunc_op}, {2}};
 id=@identity;
 switch trunc_mode
     case 'none'
         funcs={id,id,id};
     case 'operator';
-        funcs={tr,tr,tr};
+        funcs={to,tr,tr};
     case 'before';
         funcs={id,tr,tr};
     case 'after'

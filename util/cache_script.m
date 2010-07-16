@@ -15,6 +15,9 @@ tmp_name=[tempname '.mat'];
 evalin( ws, strvarexpand( 'save $tmp_name$' ) );
 [status, hash]=hash_matfile( tmp_name );
 
+if isa(script, 'function_handle')
+    script=func2str(script);
+end
 
 delete( tmp_name );
 if ~status
