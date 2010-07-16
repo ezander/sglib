@@ -107,22 +107,11 @@ autoloader( loader_scripts, true, 'caller' );
 
 function show_model_data
 autoloader( loader_scripts, false, 'caller' );
+pos(2,:)=-pos(2,:); % invert y axis for display
 
 %%
-strvarexpand( 'm_f: $m_f$, p_f: $p_f$, l_f: $l_f$ M_f: $multiindex_size( m_f, p_f )$' );
-strvarexpand( 'm_g: $m_g$, p_g: $p_g$, l_g: $l_g$ M_g: $multiindex_size( m_g, p_g )$' );
-strvarexpand( 'm_k: $m_k$, p_k: $p_k$, l_k: $l_k$ M_k: $multiindex_size( m_k, p_k )$' );
-m_u=m_f+m_g+m_k+m_h; l_u=nan;
-strvarexpand( 'm_u: $m_u$, p_u: $p_u$, l_u: $l_u$ M_u: $multiindex_size( m_u, p_u )$' );
-nodes=size(pos,2);
-bnd=size(bnd_nodes,2);
-inner=nodes-bnd;
-M_u=multiindex_size( m_u, p_u );
-strvarexpand( 'name: $geom$ nodes: $nodes$ inner: $inner$ bnd: $bnd$' );
-strvarexpand( 'full-size: $inner$x$M_u$=$inner*M_u$' );
+display_model_details
 
-
-1;
 
 function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate 
 

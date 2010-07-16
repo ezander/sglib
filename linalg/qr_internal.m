@@ -7,6 +7,18 @@ if nargin<3
     orth_columns=0;
 end
 
+if isdiag(G)
+    % if G is diagonal this is way faster than using the conjugate Gram
+    % Schmidt algorithm
+    S=sqrt(diag(G));
+    SA=diag(S)*A;
+    [SQ,R]=qr_internal( SA, [], orth_columns );
+    %Q=diags(1./S)*SQ;
+    Q=row_col_mult(SQ,1./S);
+    return
+end
+
+
 if isempty(G)
     if orth_columns>0
         n=orth_columns;
@@ -24,3 +36,8 @@ if isempty(G)
 else
     [Q,R]=gram_schmidt(A,G,false,1);
 end
+
+
+function bool=isdiag(G)
+[r,c]=find( G );
+bool=all(r==c) && ~isempty(G);

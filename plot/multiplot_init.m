@@ -1,4 +1,15 @@
 function mh=multiplot_init( m, n )
+switch nargin
+    case 0
+        m=1;
+        n=1;
+    case 1
+        p=m;
+        m=round( sqrt(p) );
+        n=ceil( p/m-0.0001 );
+end
+        
+
 fh=clf;
 set( fh, 'defaulttextinterpreter', 'none' );
 mh=zeros(m,n);

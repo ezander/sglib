@@ -1,5 +1,5 @@
-function [mean,var,skew,kurt]=pce_moments( r_i_k, r_k_alpha, I_r, varargin )
-%
+function [mean,var,skew,kurt]=kl_pce_moments( r_i_k, r_k_alpha, I_r, varargin )
+% KL_PCE_MOMENTS no true documentation written so far.
 
 % PCE_MOMENTS Calculate the statistical moments of a distribution given as PCE.
 %   [MEAN,VAR,SKEW,KURT]=PCE_MOMENTS( R_I_ALPHA, I_R ) calculate mean, variance,
@@ -43,9 +43,12 @@ function [mean,var,skew,kurt]=pce_moments( r_i_k, r_k_alpha, I_r, varargin )
 % structure. However, I need something working quick now.
 switch nargout
     case 1
-        mean=pce_moments( r_i_k*r_k_alpha, I_r, varargin{:} );
+        mean=r_i_k*r_k_alpha(:,1);
     case 2
-        [mean,var]=pce_moments( r_i_k*r_k_alpha, I_r, varargin{:} );
+        [mu_r_i,r_i_k,sigma_r_k,r_k_alpha]=kl_pce_to_standard_form(r_i_k,r_k_alpha,I_r);
+        r_k_alpha(:,1)=0;
+        mean=mu_r_i;
+        var=(r_i_k.^2)*((sigma_r_k.^2).*((r_k_alpha.^2)*multiindex_factorial(I_r)));
     otherwise
         error( 'not yet implemented' );
 end

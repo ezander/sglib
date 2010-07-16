@@ -1,16 +1,17 @@
 function str=disp_func( func )
 
-% make_string( {@testtest, {'a', 'd', 'r'}, {3,2,5}} )
-% make_string( {@testtest, {'a', 'd', 'r'}} )
-% make_string( {{@testtest, {'a', 'd', 'r'}, {3,2,5}}, {'a', 'd', 'r'}} )
 
 if nargin==0
     disp_func( {{@testtest, {'a', 'd', 'r'}, {3,2,5}}, {'a', 'd', 'r'}} )
     return;
 end
 
-[handle,args]=collect_args( func );
-str=[ handle2str( handle ), '(', args2str(args), ')'];
+if isempty( func ) 
+    str='<none>';
+else
+    [handle,args]=collect_args( func );
+    str=[ handle2str( handle ), '(', args2str(args), ')'];
+end
 
 function s=handle2str( handle )
 if isa( handle, 'function_handle' )

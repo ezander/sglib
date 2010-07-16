@@ -70,9 +70,11 @@ for iter=1:maxiter
         new_normres=gvector_norm( Rn );
         new_relres=new_normres/initres;
         if true %~((new_normres<abstol || new_relres<reltol))
-             disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
-%             fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
-%             keyboard;
+            if verbosity>0
+                disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
+                % fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
+                % keyboard;
+            end
             normres=new_normres;
             relres=new_relres;
             ltres=new_normres;
@@ -122,14 +124,6 @@ for iter=1:maxiter
     Pc=funcall( truncate_after_func, Pn );
     Zc=funcall( truncate_after_func, Zn );
 
-%     disp(iter);
-%     if iscell(Xn)
-%         disp(tensor_rank(Xn));
-%     end
-        
-    if false && mod(iter,100)==0
-        keyboard
-    end
 end
 X=funcall( truncate_after_func, Xn );
 

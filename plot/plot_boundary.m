@@ -1,5 +1,18 @@
 function plot_boundary( pos, els, varargin )
+% PLOT_BOUNDARY Plots the boundary of a triangular 2D mesh.
+%   PLOT_BOUNDARY( POS, ELS, VARARGIN ) plots boundary of the mesh
+%   specified by the node data in POS (2XNUM_NODES) and element data ELS
+%   (2xNUM_ELEMS). The boundary is automatically determined as the lines
+%   which appear only once in the element data.
 %
+% Options:
+%   zpos: {0}
+%     The z position where the lines are drawn. If some field is overlayed
+%     it may make sense to move the drawing of the boundary away from 0.
+%   color: {'k'}
+%     The color of the boundary lines.
+%   width: {1}
+%     The line width of the boundary lines.
 %
 % Example (<a href="matlab:run_example plot_boundary">run</a>)
 %

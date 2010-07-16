@@ -1,5 +1,9 @@
 function K=kl_pce_compute_operator_fast( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, form, varargin )
 
+options=varargin2options( varargin );
+[verbosity,options]=get_option( options, 'verbosity', 0 );
+check_unsupported_options( options, mfilename );
+
 k_mask=any(I_k,1);
 f_mask=~k_mask;
 [ind2kblock, I_ku]=find_blocks( I_u, k_mask );
@@ -7,12 +11,14 @@ f_mask=~k_mask;
 
 t=tic;
 K_k=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k(:,k_mask), I_ku(:,k_mask), stiffness_func, form, varargin );
-fprintf( 'kappa_op: '); toc(t);
+if verbosity>1
+    fprintf( 'kappa_op: '); toc(t);
+end
 
 %K=map_blocks_slow( K_k, I_u, ind2fblock, ind2kblock, I_fu );
-K=map_blocks( K_k, I_u, ind2fblock, ind2kblock, I_fu );
+K=map_blocks( K_k, I_u, ind2fblock, ind2kblock, I_fu, verbosity );
 
-function K=map_blocks( K, I_u, ind2fblock, ind2kblock, I_fu )
+function K=map_blocks( K, I_u, ind2fblock, ind2kblock, I_fu, verbosity )
 n=size(I_u,1);
 t=tic;
 i=zeros(5*n,1);
@@ -38,7 +44,9 @@ for k=1:size(K,1)
     end
     K{k,2}=sparse(i(1:c),j(1:c),s(1:c),n,n);
 end
-fprintf( 'placement: '); toc(t);
+if verbosity>1
+    fprintf( 'placement: '); toc(t);
+end
 
 
 function K=map_blocks_slow( K, I_u, ind2fblock, ind2kblock, I_fu )
@@ -59,7 +67,9 @@ for k=1:size(K,1)
     K{k,2}=S;
     nnz_est=nnz(S);
 end
-fprintf( 'placement: '); toc(t);
+if verbosity>1
+    fprintf( 'placement: '); toc(t);
+end
 
 
 function [ind2block,I_unique]=find_blocks( I_u, mask )

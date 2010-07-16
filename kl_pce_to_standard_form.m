@@ -1,4 +1,4 @@
-function [mu_rs_i,rs_i_k,sigma_rs_k,rs_k_alpha]=kl_pce_to_standard_form(rc_i_k,rc_k_alpha)
+function [mu_rs_i,rs_i_k,sigma_rs_k,rs_k_alpha]=kl_pce_to_standard_form(rc_i_k,rc_k_alpha,I_rc)
 % KL_PCE_TO_STANDARD_FORM Short description of kl_pce_to_standard_form.
 %   KL_PCE_TO_STANDARD_FORM Long description of kl_pce_to_standard_form.
 %
@@ -22,7 +22,11 @@ N=size(rc_i_k,1);
 M=size(rc_k_alpha,2);
 L=size(rc_i_k,2);
 G_N=speye(N);
-G_X=speye(M);
+if nargin<3
+    G_X=speye(M);
+else
+    G_X=spdiags(multiindex_factorial(I_rc), 0, M, M);
+end
 
 % extract mean into mu_rs_i and remove from pce variable
 mu_rs_i=rc_i_k*rc_k_alpha(:,1);
@@ -42,8 +46,8 @@ ind=(sum(abs(T1),1)~=0)&(sum(abs(T2),1)~=0);
 T1=T1(:,ind);
 T2=T2(:,ind);
 
-[Q1,R1]=gram_schmidt(T1,G1,false,1);
-[Q2,R2]=gram_schmidt(T2,G2,false,1);
+[Q1,R1]=qr_internal(T1,G1,0);
+[Q2,R2]=qr_internal(T2,G2,0);
 [V1,S,V2]=svd(R1*R2',0);
 sigma=diag(S);
 U1=Q1*V1;

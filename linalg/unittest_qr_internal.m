@@ -27,14 +27,20 @@ F=rand(n,n);
 M=F'*F;
 
 [Q,R]=qr_internal( A );
-assert_equals( R, triu(R), 'qr_triu_R' );
-assert_equals( Q'*Q, eye(k), 'qr_orth_Q' );
+assert_matrix( Q, {'unitary'}, 'qr_orth_Q' );
+assert_matrix( R, {'upper triangular', 'square'}, 'qr_triu_R' );
 assert_equals( A, Q*R, 'qr_eq_A_QR' );
 
 [Q,R]=qr_internal( A, M );
-assert_equals( R, triu(R), 'cqr_triu_R' );
-assert_equals( Q'*M*Q, eye(k), 'cqr_M_orth_Q' );
+assert_matrix( Q'*M*Q, 'identity', 'cqr_orth_Q' );
+assert_matrix( R, {'upper triangular', 'square'}, 'cqr_triu_R' );
 assert_equals( A, Q*R, 'cqr_eq_A_QR' );
+
+M=diag(diag(M));
+[Q,R]=qr_internal( A, M );
+assert_matrix( Q'*M*Q, 'identity', 'dqr_orth_Q' );
+assert_matrix( R, {'upper triangular', 'square'}, 'dqr_triu_R', 'exact', true );
+assert_equals( A, Q*R, 'dqr_eq_A_QR' );
 
 %%
 k2=30;
@@ -45,7 +51,7 @@ k=size(A,2);
 korth=size(Q,2);
 
 [Q,R]=qr_internal( A, [], korth );
-assert_equals( R, triu(R), 'qroc_triu_R' );
-assert_equals( Q'*Q, eye(k), 'qroc_orth_Q' );
+assert_matrix( Q, {'unitary'}, 'qroc_orth_Q' );
+assert_matrix( R, {'upper triangular', 'square'}, 'qroc_triu_R' );
 assert_equals( A, Q*R, 'qroc_eq_A_QR' );
 
