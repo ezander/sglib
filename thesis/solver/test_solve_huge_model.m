@@ -29,13 +29,16 @@ else
     info_pcg.time=nan;
     eps=1e-4;
 end
+info_pcg.rho=rho;
+info_pcg.norm_U=gvector_norm(Ui_mat);
 
 % underline( 'approximate prec pcg' );
 % [U_mat2, Ui_mat2, info_pcg2]=compute_by_pcg_approx( Ui_mat_true, pcg_err, true );
 % pcg_err2=gvector_error( U_mat2, U_mat_true, 'relerr', true ) 
 
-U={}; Ui={}; info_tp={};
-for i=1:4
+U={}; Ui={}; info_tp={}; tp_err={};
+num=1;
+for i=1:num
     switch i
         case 1
             underline( 'normal tensor solver' );
@@ -55,8 +58,11 @@ for i=1:4
             descr='dyna prec';
     end
     
-    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( Ui_mat_true, eps, prec, dyn );
+    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( Ui_mat_true, eps, prec, dyn ); %#ok<*AGROW>
     info_tp{i}.descr=descr;
+    info_tp{i}.rho=rho;
+    info_tp{i}.norm_U=gvector_norm(Ui{i});
+
     if ~isempty(U_mat_true)
         tp_err{i}=gvector_error( U{i}, U_mat_true, 'relerr', true );
     else
@@ -65,34 +71,48 @@ for i=1:4
 end
 
 strvarexpand( 'meth: pcg time: $info_pcg.time$ err: $pcg_err$' );
-for i=1:4
+for i=1:numel(tp_err)
     strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
 end
 
+info=info_tp{1};
+display_tensor_solver_details;
+plot_solution_overview(info_tp{1})
+plot_solution_comparison(info_tp)
+
+function plot_solution_comparison(infos)
+%%
 close
+num=length(infos);
 marker={'-x','-*','-o','-+'};
 multiplot_init(2,3)
-multiplot; field='errvec'; title( 'rel. error' );  logax='y'; for i=1:4; plot( info_tp{i}.(field), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-multiplot; field='resvec'; title( 'rel. residual' );  logax='y'; for i=1:4; plot( info_tp{i}.(field)/info_tp{i}.(field)(1), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-multiplot; field='updvec'; title( 'update ratio' );  logax=''; for i=1:4; plot( info_tp{i}.(field), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-multiplot; field='epsvec'; title( 'epsilon' );  logax='y'; for i=1:4; plot( info_tp{i}.(field), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-multiplot; field='rank_res_before'; title( 'rank residual' );  logax=''; for i=1:4; plot( info_tp{i}.(field), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-multiplot; field='rank_sol_after'; title( 'rank solution' );  logax=''; for i=1:4; plot( info_tp{i}.(field), marker{i} ); legend_add( info_tp{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-keyboard
+multiplot; field='errvec'; title( 'rel. error' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+multiplot; field='resvec'; title( 'rel. residual' );  logax='y'; for i=1:num; plot( infos{i}.(field)/infos{i}.(field)(1), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+multiplot; field='updvec'; title( 'update ratio' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+multiplot; field='epsvec'; title( 'epsilon' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+multiplot; field='rank_res_before'; title( 'rank residual' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+multiplot; field='rank_sol_after'; title( 'rank solution' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 
+function plot_solution_overview(info)
+%%
+close
 multiplot_init(2,2)
 multiplot
-plot( info_tp.resvec, 'x-' ); legend_add( 'residual' );
-plot( info_tp.errvec, 'x-' ); legend_add( 'error' );
-plot( info_tp.updvec, 'x-' ); legend_add( 'update' );
+rho=info.rho;
+errest=rho/(1-rho)*info.updnormvec/info.norm_U+info.epsvec;
+
+plot( info.errvec, 'x-' ); legend_add( 'rel. error' );
+plot( errest, '*-' ); legend_add( 'error est.' );
+plot( info.resvec/info.resvec(1), 'o-' ); legend_add( 'rel. residual' );
+plot( info.updvec, 'd-' ); legend_add( 'update ratio' );
 logaxis( gca, 'y' )
 
 multiplot;
-plot( info_tp.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
-plot( info_tp.rank_sol_after, 'x-' ); legend_add( 'rank (after prec)' );
+plot( info.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
+plot( info.rank_sol_after, 'x-' ); legend_add( 'rank (after prec)' );
 
 multiplot;
-plot( tensor_modes( Ui ) )
+%plot( tensor_modes( Ui ) )
 %logaxis( gca, 'y' )
 %keyboard
 % R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );
@@ -156,6 +176,7 @@ if prec
     [Mi_inv, Ki, Fi]=precond_operator( Mi_inv, Ki, Fi );
 end
 cache_script solve_by_gsolve_pcg;
+info.rank_K=size(Ki,1);
 
 
 
@@ -175,7 +196,7 @@ if prec
 end
 
 cache_script solve_by_gsolve_simple_tensor;
-
+info.rank_K=size(Ki,1);
 
 
 

@@ -45,6 +45,7 @@ info.resvec=[];
 info.epsvec=[];
 info.errvec=[];
 info.updvec=[];
+info.updnormvec=[];
 
 Xc=gvector_null(F);
 Rc=F;
@@ -77,8 +78,10 @@ for iter=1:maxiter
     
     DY=gvector_add( Xn, Xc, -1 );
     %upratio=gvector_scalar_product( DY, DX )/gvector_scalar_product( DX, DX );
-    upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/gvector_norm( DX )^2;
+    updnorm=gvector_norm( DX );
+    upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
     info.updvec(end+1)=upratio;
+    info.updnormvec(end+1)=updnorm;
     
     if verbosity>0
         strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');

@@ -12,7 +12,7 @@ m_f=20;
 p_f=3;
 l_f=20;
 cov_f_func=@gaussian_covariance;
-lc_f=0.7;
+lc_f=0.5;
 
 % coefficient field
 [a,b]=beta_find_ratio( 0.4 );

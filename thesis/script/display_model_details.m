@@ -19,7 +19,9 @@ bnd=size(bnd_nodes,2);
 inner=nodes-bnd;
 M_u=multiindex_size( m_u, p_u );
 underline( 'Geometry and system size' );
-strvarexpand( 'name: $geom$ nodes: $nodes$ inner: $inner$ bnd: $bnd$' );
+strvarexpand( 'name: $geom$ ' );
+strvarexpand( 'nodes: $nodes$ inner: $inner$ bnd: $bnd$' );
+strvarexpand( 'elements: $size(els,2)$' );
 strvarexpand(' ')
 
 strvarexpand( 'full-size: $nodes$x$M_u$=$nodes*M_u$' );
@@ -35,15 +37,15 @@ end
 %%
 %profile on
 %randn('seed',100)
-randn('seed')
-randn('seed',1173063571)
+strvarexpand( 'randn seed: $randn(''seed'')$' );
+randn('seed',1173063571); %#ok<RAND>
 multiplot_init
-plot_mesh( pos, els, 'zpos', -1, 'bndcolor', 'r' );
+plot_mesh( pos, els, 'zpos', 1-1, 'bndcolor', 'r' );
 axis equal
 %plot_field( pos, els, kl_pce_field_realization(k_i_k, k_k_alpha,I_k), 'show_mesh', false );
 plot_field( pos, els, kl_pce_field_realization(f_i_k, f_k_alpha,I_f), 'show_mesh', false );
 view(3);
-
+save_figure( gca, 'mesh_and_sample_rhs_huge_model', 'png' );
 %plot_kl_pce_mean_var( pos, els, f_i_k, f_k_alpha, I_f, 'show_mesh', false );
 
 
