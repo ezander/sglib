@@ -34,18 +34,5 @@ if isunix
     fprintf( 'mem: ' ); system( 'cat /proc/meminfo | grep "MemTotal" ' );
 end
 
-%%
-%profile on
-%randn('seed',100)
-strvarexpand( 'randn seed: $randn(''seed'')$' );
-randn('seed',1173063571); %#ok<RAND>
-multiplot_init
-plot_mesh( pos, els, 'zpos', 1-1, 'bndcolor', 'r' );
-axis equal
-%plot_field( pos, els, kl_pce_field_realization(k_i_k, k_k_alpha,I_k), 'show_mesh', false );
-plot_field( pos, els, kl_pce_field_realization(f_i_k, f_k_alpha,I_f), 'show_mesh', false );
-view(3);
-save_figure( gca, 'mesh_and_sample_rhs_huge_model', 'png' );
-%plot_kl_pce_mean_var( pos, els, f_i_k, f_k_alpha, I_f, 'show_mesh', false );
 
 

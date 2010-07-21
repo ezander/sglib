@@ -42,7 +42,7 @@ function [mean,var,skew,kurt]=kl_pce_moments( r_i_k, r_k_alpha, I_r, varargin )
 % TODO: this is very primitive as yet and should use the tensor product
 % structure. However, I need something working quick now.
 switch nargout
-    case 1
+    case {0,1}
         mean=r_i_k*r_k_alpha(:,1);
     case 2
         [mu_r_i,r_i_k,sigma_r_k,r_k_alpha]=kl_pce_to_standard_form(r_i_k,r_k_alpha,I_r);

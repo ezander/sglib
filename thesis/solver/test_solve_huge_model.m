@@ -80,6 +80,23 @@ display_tensor_solver_details;
 plot_solution_overview(info_tp{1})
 plot_solution_comparison(info_tp)
 
+function show_mesh_and_sample( pos, els, f_i_k, f_k_alpha, I_f )
+%%
+strvarexpand( 'randn seed: $randn(''seed'')$' );
+%1919081000
+randn('seed',1296810479); %#ok<RAND>
+randn('seed',1919081000); %#ok<RAND>
+randn('seed',1484588618); %#ok<RAND>
+
+multiplot_init
+plot_mesh( pos, els, 'zpos', 1-1, 'bndcolor', 'r' );
+axis equal
+%plot_field( pos, els, kl_pce_field_realization(k_i_k, k_k_alpha,I_k), 'show_mesh', false );
+plot_field( pos, els, kl_pce_field_realization(f_i_k, f_k_alpha,I_f), 'show_mesh', false );
+view(3);
+save_figure( gca, 'mesh_and_sample_rhs_huge_model', 'png' );
+%plot_kl_pce_mean_var( pos, els, f_i_k, f_k_alpha, I_f, 'show_mesh', false );
+
 function plot_solution_comparison(infos)
 %%
 close
@@ -101,11 +118,17 @@ multiplot
 rho=info.rho;
 errest=rho/(1-rho)*info.updnormvec/info.norm_U+info.epsvec;
 
+% Achtung: fieser hack here
+while length(info.errvec)<length(info.resvec)
+    info.errvec(end+1)=info.errvec(end);
+end
+
 plot( info.errvec, 'x-' ); legend_add( 'rel. error' );
 plot( errest, '*-' ); legend_add( 'error est.' );
 plot( info.resvec/info.resvec(1), 'o-' ); legend_add( 'rel. residual' );
 plot( info.updvec, 'd-' ); legend_add( 'update ratio' );
 logaxis( gca, 'y' )
+save_figure( gca, 'update_ratio_error_and_residual_huge_model' );
 
 multiplot;
 plot( info.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
@@ -131,6 +154,7 @@ pos(2,:)=-pos(2,:); % invert y axis for display
 
 %%
 display_model_details
+show_mesh_and_sample( pos, els, f_i_k, f_k_alpha, I_f )
 
 
 function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate 
