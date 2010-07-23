@@ -37,28 +37,45 @@ info_pcg.norm_U=gvector_norm(Ui_mat);
 % pcg_err2=gvector_error( U_mat2, U_mat_true, 'relerr', true ) 
 
 U={}; Ui={}; info_tp={}; tp_err={};
-num=1;
+num=4;
+mult=10;
 for i=1:num
-    switch i
+    switch mult*i
         case 1
             underline( 'normal tensor solver' );
-            prec=false; dyn=false;
+            prec=false; dyn=false; trunc_mode='operator';
             descr='normal';
         case 2
             underline( 'dynamic tensor solver' );
-            prec=false; dyn=true;
+            prec=false; dyn=true; trunc_mode='operator';
             descr='dyna';
         case 3
             underline( 'prec tensor solver' );
-            prec=true; dyn=false;
+            prec=true; dyn=false; trunc_mode='operator';
             descr='prec';
         case 4
             underline( 'dynamic prec tensor solver' );
-            prec=true; dyn=true;
+            prec=true; dyn=true; trunc_mode='operator';
             descr='dyna prec';
+        case 10
+            underline( 'tensor solver: after trunc' );
+            prec=false; dyn=false; trunc_mode='after';
+            descr='after';
+        case 20
+            underline( 'tensor solver: before trunc' );
+            prec=false; dyn=false; trunc_mode='before';
+            descr='before';
+        case 30
+            underline( 'tensor solver: in operator trunc' );
+            prec=false; dyn=false; trunc_mode='operator';
+            descr='operator';
+        case 40
+            underline( 'dynamic tensor solver' );
+            prec=false; dyn=true; trunc_mode='operator';
+            descr='dynamic';
     end
     
-    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( Ui_mat_true, eps, prec, dyn ); %#ok<*AGROW>
+    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( Ui_mat_true, eps, prec, dyn, trunc_mode ); %#ok<*AGROW>
     info_tp{i}.descr=descr;
     info_tp{i}.rho=rho;
     info_tp{i}.norm_U=gvector_norm(Ui{i});
@@ -75,9 +92,14 @@ for i=1:numel(tp_err)
     strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
 end
 
-info=info_tp{1};
-display_tensor_solver_details;
+for i=1:num
+    info=info_tp{i};
+    display_tensor_solver_details;
+end
 plot_solution_overview(info_tp{1})
+if strcmp(info_tp{2}.descr,'before')
+    info_tp(2)=[];
+end
 plot_solution_comparison(info_tp)
 
 function show_mesh_and_sample( pos, els, f_i_k, f_k_alpha, I_f )
@@ -99,15 +121,19 @@ save_figure( gca, 'mesh_and_sample_rhs_huge_model', 'png' );
 
 function plot_solution_comparison(infos)
 %%
+saveit=length(infos)>=3 && strcmp(infos{3}.descr,'dynamic');
+
 close
 num=length(infos);
 marker={'-x','-*','-o','-+'};
 multiplot_init(2,3)
 multiplot; field='errvec'; title( 'rel. error' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+if saveit; save_figure( gca, 'compare_rel_err_by_trunc_mode_huge_model' ); end
 multiplot; field='resvec'; title( 'rel. residual' );  logax='y'; for i=1:num; plot( infos{i}.(field)/infos{i}.(field)(1), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='updvec'; title( 'update ratio' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='epsvec'; title( 'epsilon' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='rank_res_before'; title( 'rank residual' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
+if saveit; save_figure( gca, 'compare_res_rank_by_trunc_mode_huge_model' ); end
 multiplot; field='rank_sol_after'; title( 'rank solution' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 
 function plot_solution_overview(info)
@@ -131,8 +157,9 @@ logaxis( gca, 'y' )
 save_figure( gca, 'update_ratio_error_and_residual_huge_model' );
 
 multiplot;
-plot( info.rank_res_before, 'x-' ); legend_add( 'rank (before prec)' );
-plot( info.rank_sol_after, 'x-' ); legend_add( 'rank (after prec)' );
+plot( info.rank_res_before, 'x-' ); legend_add( 'rank residuum' );
+plot( info.rank_sol_after, 'x-' ); legend_add( 'rank solution' );
+save_figure( gca, 'ranks_res_and_sol_huge_model' );
 
 multiplot;
 %plot( tensor_modes( Ui ) )
@@ -205,7 +232,7 @@ info.rank_K=size(Ki,1);
 
 
 
-function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps, prec, dyn )
+function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps, prec, dyn, trunc_mode )
 
 autoloader( loader_scripts, false, 'caller' );
 reltol=1e-16;
@@ -218,7 +245,9 @@ if prec
     [Mi_inv, Ki, Fi]=precond_operator( Mi_inv, Ki, Fi );
     eps=eps/2;
 end
-
+if ~exist('trunc_mode', 'var')
+    trunc_mode='operator';
+end
 cache_script solve_by_gsolve_simple_tensor;
 info.rank_K=size(Ki,1);
 
