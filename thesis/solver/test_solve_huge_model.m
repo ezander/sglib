@@ -4,9 +4,18 @@ function test_solve_huge_model
 %#ok<*NOPRT>
 %#ok<*DEFNU>
 %#ok<*ASGLU>
+%#ok<*AGROW>
 %#ok<*STOUT>
 %#ok<*INUSL>
 %#ok<*NODEF>
+
+do_compare( 'model_giant_easy', 1, 2 )
+% do_compare( 'model_huge_easy', 1, 2 )
+% do_compare( 'model_huge_easy', 10, 4 )
+% do_compare( 'model_large_easy', 1, 4 )
+%do_compare( 'model_large_easy', 10, 4 )
+
+function do_compare( model, mult, num )
  
 global U_mat_true Ui_mat_true
 global U_mat Ui_mat info_pcg pcg_err eps
@@ -14,14 +23,14 @@ global U Ui info_tp tp_err
 
 clc
 % rebuild_scripts
-show_model_data
+show_model_data( model )
 
 underline( 'accurate pcg' );
-[U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate;
+[U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model );
 
 if numel(U_mat_true)
     underline( 'approximate pcg' );
-    [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( Ui_mat_true, 1e-3, false );
+    [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, 1e-3, false );
     pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
     eps=eps_from_error( pcg_err, rho );
 else
@@ -32,13 +41,7 @@ end
 info_pcg.rho=rho;
 info_pcg.norm_U=gvector_norm(Ui_mat);
 
-% underline( 'approximate prec pcg' );
-% [U_mat2, Ui_mat2, info_pcg2]=compute_by_pcg_approx( Ui_mat_true, pcg_err, true );
-% pcg_err2=gvector_error( U_mat2, U_mat_true, 'relerr', true ) 
-
 U={}; Ui={}; info_tp={}; tp_err={};
-num=4;
-mult=10;
 for i=1:num
     switch mult*i
         case 1
@@ -75,7 +78,7 @@ for i=1:num
             descr='dynamic';
     end
     
-    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( Ui_mat_true, eps, prec, dyn, trunc_mode ); %#ok<*AGROW>
+    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
     info_tp{i}.descr=descr;
     info_tp{i}.rho=rho;
     info_tp{i}.norm_U=gvector_norm(Ui{i});
@@ -96,13 +99,13 @@ for i=1:num
     info=info_tp{i};
     display_tensor_solver_details;
 end
-plot_solution_overview(info_tp{1})
-if strcmp(info_tp{2}.descr,'before')
-    info_tp(2)=[];
-end
-plot_solution_comparison(info_tp)
+plot_solution_overview(model, info_tp{1})
+% if strcmp(info_tp{2}.descr,'before')
+%     info_tp(2)=[];
+% end
+plot_solution_comparison(model, info_tp)
 
-function show_mesh_and_sample( pos, els, f_i_k, f_k_alpha, I_f )
+function show_mesh_and_sample( model, pos, els, f_i_k, f_k_alpha, I_f )
 %%
 strvarexpand( 'randn seed: $randn(''seed'')$' );
 %1919081000
@@ -116,28 +119,26 @@ axis equal
 %plot_field( pos, els, kl_pce_field_realization(k_i_k, k_k_alpha,I_k), 'show_mesh', false );
 plot_field( pos, els, kl_pce_field_realization(f_i_k, f_k_alpha,I_f), 'show_mesh', false );
 view(3);
-save_figure( gca, 'mesh_and_sample_rhs_huge_model', 'png' );
+save_figure( gca, {'mesh_and_sample_rhs_%s', model}, 'png' );
 %plot_kl_pce_mean_var( pos, els, f_i_k, f_k_alpha, I_f, 'show_mesh', false );
 
-function plot_solution_comparison(infos)
-%%
-saveit=length(infos)>=3 && strcmp(infos{3}.descr,'dynamic');
+function plot_solution_comparison(model, infos)
+saveit=strcmp(infos{end}.descr,'dynamic');
 
 close
 num=length(infos);
 marker={'-x','-*','-o','-+'};
 multiplot_init(2,3)
 multiplot; field='errvec'; title( 'rel. error' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-if saveit; save_figure( gca, 'compare_rel_err_by_trunc_mode_huge_model' ); end
+if saveit; save_figure( gca, {'compare_rel_err_by_trunc_mode_%', model} ); end
 multiplot; field='resvec'; title( 'rel. residual' );  logax='y'; for i=1:num; plot( infos{i}.(field)/infos{i}.(field)(1), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='updvec'; title( 'update ratio' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='epsvec'; title( 'epsilon' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='rank_res_before'; title( 'rank residual' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-if saveit; save_figure( gca, 'compare_res_rank_by_trunc_mode_huge_model' ); end
+if saveit; save_figure( gca, {'compare_res_rank_by_trunc_mode_%s', model} ); end
 multiplot; field='rank_sol_after'; title( 'rank solution' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 
-function plot_solution_overview(info)
-%%
+function plot_solution_overview(model, info)
 close
 multiplot_init(2,2)
 multiplot
@@ -154,39 +155,28 @@ plot( errest, '*-' ); legend_add( 'error est.' );
 plot( info.resvec/info.resvec(1), 'o-' ); legend_add( 'rel. residual' );
 plot( info.updvec, 'd-' ); legend_add( 'update ratio' );
 logaxis( gca, 'y' )
-save_figure( gca, 'update_ratio_error_and_residual_huge_model' );
+save_figure( gca, {'update_ratio_error_and_residual_%s', model} );
 
 multiplot;
 plot( info.rank_res_before, 'x-' ); legend_add( 'rank residuum' );
 plot( info.rank_sol_after, 'x-' ); legend_add( 'rank solution' );
-save_figure( gca, 'ranks_res_and_sol_huge_model' );
-
-multiplot;
-%plot( tensor_modes( Ui ) )
-%logaxis( gca, 'y' )
-%keyboard
-% R_vec_pcg6=operator_apply( Ki, Ui_vec_pcg6, 'residual', true, 'b', Fi_vec );
-% R_vec_pcg2=operator_apply( Ki, Ui_vec_pcg2, 'residual', true, 'b', Fi_vec );
-% gvector_norm( R_vec_pcg2 )/gvector_norm(Fi_vec)
+save_figure( gca, {'ranks_res_and_sol_%s', model} );
 
 
+function rebuild_scripts( model )
+autoloader( loader_scripts( model ), true, 'caller' );
 
-function rebuild_scripts 
-autoloader( loader_scripts, true, 'caller' );
 
-
-function show_model_data
-autoloader( loader_scripts, false, 'caller' );
+function show_model_data( model )
+autoloader( loader_scripts( model ), false, 'caller' );
 pos(2,:)=-pos(2,:); % invert y axis for display
-
-%%
 display_model_details
-show_mesh_and_sample( pos, els, f_i_k, f_k_alpha, I_f )
+show_mesh_and_sample( model, pos, els, f_i_k, f_k_alpha, I_f )
 
 
-function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate 
+function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate( model )
 
-autoloader( loader_scripts, false, 'caller' );
+autoloader( loader_scripts( model ), false, 'caller' );
 
 show_modes( f_i_k,f_k_alpha, pos, cov_f, G_N, F )
 if prod(tensor_size(Fi))<=3e7
@@ -218,9 +208,9 @@ drawnow;
 
 
 
-function [U_mat, Ui_mat, info]=compute_by_pcg_approx( Ui_true, tol, prec ) 
+function [U_mat, Ui_mat, info]=compute_by_pcg_approx( model, Ui_true, tol, prec ) 
 
-autoloader( loader_scripts, false, 'caller' );
+autoloader( loader_scripts( model ), false, 'caller' );
 reltol=tol;
 abstol=tol;
 if prec
@@ -232,9 +222,9 @@ info.rank_K=size(Ki,1);
 
 
 
-function [U, Ui, info]=compute_by_tensor_simple( Ui_true, eps, prec, dyn, trunc_mode )
-
-autoloader( loader_scripts, false, 'caller' );
+function [U, Ui, info]=compute_by_tensor_simple( model, Ui_true, eps, prec, dyn, trunc_mode )
+swallow( trunc_mode );
+autoloader( loader_scripts( model ), false, 'caller' );
 reltol=1e-16;
 abstol=1e-16;
 if prod(gvector_size(Fi))>1e10
@@ -253,12 +243,7 @@ info.rank_K=size(Ki,1);
 
 
 
-function scripts=loader_scripts
-%model='model_huge';
-model='model_huge_easy';
-%model='model_large';
-%model='model_large_easy';
-%model='model_giant_easy';
+function scripts=loader_scripts( model )
 scripts={model; 'define_geometry'; 'discretize_model'; 'setup_equation' };
 
 prefix=['.cache/' mfilename '_' model '_'];
