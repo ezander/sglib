@@ -12,10 +12,14 @@ function test_solve_huge_model
 clc
 do_compare( 'model_giant_easy', 1, 2 );
 disp( ' ' );
-do_compare( 'model_huge_easy', 1, 2 );
-disp( ' ' );
-do_compare( 'model_huge_easy', 10, 4 );
-disp( ' ' );
+%do_compare( 'model_huge_easy', 10, 4 );
+%disp( ' ' );
+
+
+% do_compare( 'model_huge_easy', 1, 2 );
+% disp( ' ' );
+
+
 % do_compare( 'model_large_easy', 1, 4 )
 %do_compare( 'model_large_easy', 10, 4 )
 
@@ -135,7 +139,7 @@ num=length(infos);
 marker={'-x','-*','-o','-+'};
 multiplot_init(2,3)
 multiplot; field='errvec'; title( 'rel. error' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
-if saveit; save_figure( gca, {'compare_rel_err_by_trunc_mode_%', model} ); end
+if saveit; save_figure( gca, {'compare_rel_err_by_trunc_mode_%s', model} ); end
 multiplot; field='resvec'; title( 'rel. residual' );  logax='y'; for i=1:num; plot( infos{i}.(field)/infos{i}.(field)(1), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='updvec'; title( 'update ratio' );  logax=''; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
 multiplot; field='epsvec'; title( 'epsilon' );  logax='y'; for i=1:num; plot( infos{i}.(field), marker{i} ); legend_add( infos{i}.descr ); end;  logaxis( gca, logax ); legend( legend, 'location', 'best' );
