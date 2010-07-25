@@ -9,9 +9,13 @@ function test_solve_huge_model
 %#ok<*INUSL>
 %#ok<*NODEF>
 
-do_compare( 'model_giant_easy', 1, 2 )
-% do_compare( 'model_huge_easy', 1, 2 )
-% do_compare( 'model_huge_easy', 10, 4 )
+clc
+do_compare( 'model_giant_easy', 1, 2 );
+disp( ' ' );
+do_compare( 'model_huge_easy', 1, 2 );
+disp( ' ' );
+do_compare( 'model_huge_easy', 10, 4 );
+disp( ' ' );
 % do_compare( 'model_large_easy', 1, 4 )
 %do_compare( 'model_large_easy', 10, 4 )
 
@@ -21,7 +25,6 @@ global U_mat_true Ui_mat_true
 global U_mat Ui_mat info_pcg pcg_err eps
 global U Ui info_tp tp_err
 
-clc
 % rebuild_scripts
 show_model_data( model )
 
@@ -99,11 +102,13 @@ for i=1:num
     info=info_tp{i};
     display_tensor_solver_details;
 end
-plot_solution_overview(model, info_tp{1})
-% if strcmp(info_tp{2}.descr,'before')
-%     info_tp(2)=[];
-% end
-plot_solution_comparison(model, info_tp)
+if ~strcmp( model, 'model_giant_easy' ) 
+    plot_solution_overview(model, info_tp{1})
+    % if strcmp(info_tp{2}.descr,'before')
+    %     info_tp(2)=[];
+    % end
+    plot_solution_comparison(model, info_tp)
+end
 
 function show_mesh_and_sample( model, pos, els, f_i_k, f_k_alpha, I_f )
 %%
