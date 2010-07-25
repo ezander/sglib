@@ -16,3 +16,8 @@ if isfield( info, 'rank_K' )
     strvarexpand( 'apps per rank: $sum(info.rank_sol_after)$' )
     strvarexpand( 'op applications: $info.rank_K*sum(info.rank_sol_after)$' )
 end
+
+strvarexpand( 'max. res rank: $max(info.rank_res_before)$' )
+strvarexpand( 'last res rank: $info.rank_res_before(end)$' )
+strvarexpand( 'max. sol rank: $max(info.rank_sol_after)$' )
+strvarexpand( 'last sol rank: $info.rank_sol_after(end)$' )
