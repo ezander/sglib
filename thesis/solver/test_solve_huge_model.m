@@ -10,12 +10,12 @@ function test_solve_huge_model
 %#ok<*NODEF>
 
 clc
-do_compare( 'model_giant_easy', 1, 2 );
+% do_compare( 'model_giant_easy', 1, 2 );
+% disp( ' ' );
+do_compare( 'model_huge_easy', 1, 4 );
 disp( ' ' );
-do_compare( 'model_huge_easy', 1, 2 );
-disp( ' ' );
-do_compare( 'model_huge_easy', 10, 4 );
-disp( ' ' );
+% do_compare( 'model_huge_easy', 10, 4 );
+% disp( ' ' );
 % do_compare( 'model_large_easy', 1, 4 )
 %do_compare( 'model_large_easy', 10, 4 )
 
@@ -267,6 +267,19 @@ eps=roundat( eps, scale );
 
 
 function [PMi_inv, PKi, PFi]=precond_operator( Mi_inv, Ki, Fi )
-PKi=tensor_operator_compose( Mi_inv, Ki );
-PMi_inv={speye(size(Ki{1,1})),speye(size(Ki{1,2}))};
-PFi=tensor_operator_apply( Mi_inv, Fi );
+old=false;
+if old
+    PKi=tensor_operator_compose( Mi_inv, Ki );
+    PMi_inv={speye(size(Ki{1,1})),speye(size(Ki{1,2}))};
+    PFi=tensor_operator_apply( Mi_inv, Fi );
+else
+    
+    Mi2_inv={operator_from_matrix_solve(Ki{1,1}, 'ilu'), ...
+        operator_from_matrix_solve(Ki{1,2}, 'ilu')};
+    Mi2={operator_from_matrix_solve(Ki{1,1}, 'ilu', 'apply', true), ...
+        operator_from_matrix_solve(Ki{1,2}, 'ilu', 'apply', true)};
+
+    PKi=tensor_operator_compose( Mi2_inv, Ki );
+    PMi_inv=tensor_operator_compose( Mi_inv, Mi2 );
+    PFi=tensor_operator_apply( Mi2_inv, Fi );
+end
