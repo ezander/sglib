@@ -1,4 +1,4 @@
-function A=operator_from_matrix_solve( M, solver_type, varargin )
+function [Ainv,A,info]=operator_from_matrix_solve( M, solver_type, varargin )
 % OPERATOR_FROM_MATRIX_SOLVE Creates  a linear operator structure from a matrix.
 %   ???? A=OPERATOR_FROM_MATRIX_SOLVE( M ) constructs a linear operator, i.e. a cell array
 %   containing information about its size and application to a vector and
@@ -43,49 +43,52 @@ function A=operator_from_matrix_solve( M, solver_type, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[apply,options]=get_option( options, 'apply', false );
+[decomp_options,options]=get_option( options, 'decomp_options', {} );
 check_unsupported_options( options, mfilename );
 
 if nargin<2
     solver_type='';
 end
 
-
+N=size(M,1);
 switch solver_type
     case ''
         % solve each time
-        A=operator_from_function( {@msolve, {M,apply}, {1,2}}, size(M') );
+        Ainv=operator_from_function( {@msolve, {M,false}, {1,2}}, size(M') );
+        A=operator_from_function( {@msolve, {M,true}, {1,2}}, size(M') );
+        info=struct( 'L', M, 'U', speye(N), 'p', 1:N );
     case 'lu'
         % precompute lu decomposition and solve only triangular systems
-        [L,U,P]=lu(M);
-        [p,j]=find(P'); %#ok
-        A=operator_from_function( {@lu_solve, {L,U,p,apply}, {1,2,3,4}}, size(M') );
-        p
+        [L,U,p]=lu(M,'vector',decomp_options{:});
+        Ainv=operator_from_function( {@lu_solve, {L,U,p,false}, {1,2,3,4}}, size(M') );
+        A=operator_from_function( {@lu_solve, {L,U,p,true}, {1,2,3,4}}, size(M') );
+        info=struct( 'L', L, 'U', U, 'p', p );
     case 'chol'
         % precompute choleski decomposition and solve only triangular systems
-        L=chol(M,'lower');
+        L=chol(M,'lower',decomp_options{:});
         p=1:size(L,1); %#ok
-        A=operator_from_function( {@lu_solve, {L,L',p,apply}, {1,2,3,4}}, size(M') );
+        Ainv=operator_from_function( {@lu_solve, {L,L',p,false}, {1,2,3,4}}, size(M') );
+        A=operator_from_function( {@lu_solve, {L,L',p,true}, {1,2,3,4}}, size(M') );
+        info=struct( 'L', L, 'U', L', 'p', p );
     case 'ilu'
         % precompute lu decomposition and solve only triangular systems
-        %setup.type='nofill';
-        %setup.type='ilutp';
-        setup.droptol=1e-1;
-        setup.milu='off';
-        setup.udiag=0;
-        setup.thresh=1;
+        if isempty(decomp_options)
+            setup=struct();
+        elseif iscell(decomp_options)
+            setup=struct(decomp_options{:});
+        elseif isstruct(decomp_options)
+            setup=decomp_options;
+        end
         [L,U,P]=ilu(M,setup); % note: ilu is preferred over luinc
         [p,j]=find(P'); %#ok
-        A=operator_from_function( {@lu_solve, {L,U,p,apply}, {1,2,3,4}}, size(M') );
+        Ainv=operator_from_function( {@lu_solve, {L,U,p,false}, {1,2,3,4}}, size(M') );
+        A=operator_from_function( {@lu_solve, {L,U,p,true}, {1,2,3,4}}, size(M') );
+        info=struct( 'L', L, 'U', U, 'p', p );
 end
-
-multiplot_init(2,1);
-multiplot; spy(M);
-multiplot; spy(L);
 
 function x=msolve( M, apply, y, varargin )
 if apply
-    x=M*x;
+    x=M*y;
 else
     x=M\y;
 end

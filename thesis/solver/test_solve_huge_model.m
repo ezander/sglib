@@ -273,11 +273,23 @@ if old
     PMi_inv={speye(size(Ki{1,1})),speye(size(Ki{1,2}))};
     PFi=tensor_operator_apply( Mi_inv, Fi );
 else
+            %setup.type='nofill';
+        %setup.type='ilutp';
+%         setup.droptol=2e-2;
+%         setup.milu='off';
+%         setup.udiag=0;
+%         setup.thresh=1;
+    ilu_setup=struct( 'type', 'nofill', 'milu', 'row', 'droptol', 2e-2 );
+    ilu_setup=struct( 'type', 'ilutp', 'milu', 'row', 'droptol', 2e-2 );
+
     
-    Mi2_inv={operator_from_matrix_solve(Ki{1,1}, 'ilu'), ...
-        operator_from_matrix_solve(Ki{1,2}, 'ilu')};
-    Mi2={operator_from_matrix_solve(Ki{1,1}, 'ilu', 'apply', true), ...
-        operator_from_matrix_solve(Ki{1,2}, 'ilu', 'apply', true)};
+    prec_options1={'lu'};
+    prec_options2={};
+    prec_options1={'ilu'};
+    prec_options2={'ilu'};
+    
+    [Mi2_inv{1,1},Mi2{1,1}]=operator_from_matrix_solve(Ki{1,1}, prec_options1{:});
+    [Mi2_inv{1,2},Mi2{1,2}]=operator_from_matrix_solve(Ki{1,2}, prec_options2{:});
 
     PKi=tensor_operator_compose( Mi2_inv, Ki );
     PMi_inv=tensor_operator_compose( Mi_inv, Mi2 );

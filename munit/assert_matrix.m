@@ -49,6 +49,8 @@ for i=1:length(properties)
         case 'identity'; h={@isidentity, {abstol,reltol}};
         case 'lower triangular'; h={@islowertri, {abstol,reltol}};
         case 'upper triangular'; h={@isuppertri, {abstol,reltol}};
+        otherwise
+            error( 'sglib:assert_matrix', 'Unknown matrix property: %s', property );
     end
     
     if ~funcall(h,A)

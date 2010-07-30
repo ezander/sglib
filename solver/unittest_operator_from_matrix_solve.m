@@ -20,34 +20,78 @@ function unittest_operator_from_matrix_solve
 
 munit_set_function( 'operator_from_matrix_solve' );
 
-M=[1, 2, 3; 3, 4, 6; 5, 10, 8];
-M=sparse(M);
-M=M'*M;
 
+rand( 'seed', 1234567 );
+
+% create sparse positive definite symmetric matrix
 N=30;
+X=rand(N);
+
+M=mk_any(N,0.1,1e-3);
+[Ainv,A,info]=operator_from_matrix_solve(M);
+assert_equals( operator_size( A ), [N,N], 'dir_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'dir_ident' );
+assert_equals( operator_apply( A, X ), M*X, 'dir_apply' );
+assert_equals( operator_apply( Ainv, X ), M\X, 'dir_solve' );
+assert_equals( size(info), [1,1], 'dir_info_size' );
+assert_equals( info.L*info.U, M, 'dir_fake_lu' );
+
+M=mk_any(N,0.1,1e-3);
+[Ainv,A,info]=operator_from_matrix_solve(M, 'lu');
+assert_equals( operator_size( A ), [N,N], 'lu_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'lu_ident' );
+assert_equals( operator_apply( A, X ), M*X, 'lu_apply' );
+assert_equals( operator_apply( Ainv, X ), M\X, 'lu_solve' );
+assert_matrix( info.L, 'lower triangular', 'lu_l_lower' );
+assert_matrix( info.U, 'upper triangular', 'lu_u_upper' );
+
+
+M=mk_spd(N,0.1,1e-3);
+[Ainv,A]=operator_from_matrix_solve(M, 'chol');
+assert_equals( operator_size( A ), [N,N], 'chol_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'chol_ident' );
+assert_equals( operator_apply( A, X ), M*X, 'chol_apply' );
+assert_equals( operator_apply( Ainv, X ), M\X, 'chol_solve' );
+assert_matrix( info.L, 'lower triangular', 'chol_l_lower' );
+assert_matrix( info.U, 'upper triangular', 'chol_u_upper' );
+
+
+M=mk_any(N,0.1,1e-3);
+[Ainv,A,info]=operator_from_matrix_solve(M, 'ilu'); % that's exact like exact lu
+assert_equals( operator_size( A ), [N,N], 'ilu_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'ilu_ident' );
+assert_equals( operator_apply( A, X ), M*X, 'ilu_apply' );
+assert_equals( operator_apply( Ainv, X ), M\X, 'ilu_solve' );
+
+M=mk_any(N,0.1,1e-1);
+[Ainv,A,info]=operator_from_matrix_solve(M, 'ilu', 'decomp_options', {'type', 'nofill'}); % that's exact
+assert_equals( operator_size( A ), [N,N], 'ilu0_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'ilu0_ident' );
+assert_equals( (info.L+info.U)~=0, (M~=0), 'ilu0_nofill' );
+assert_matrix( info.L, 'lower triangular', 'ilu0_l_lower' );
+assert_matrix( info.U, 'upper triangular', 'ilu0_u_upper' );
+
+M=mk_any(N,0.1,1e-1);
+[Ainv,A,info]=operator_from_matrix_solve(M, 'ilu', 'decomp_options', {'type', 'ilutp', 'droptol', 1e-2, 'milu', 'row'}); % that's exact
+assert_equals( operator_size( A ), [N,N], 'ilutp_size' );
+assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'ilutp_ident' );
+assert_matrix( info.L, 'lower triangular', 'ilutp_l_lower' );
+assert_matrix( info.U, 'upper triangular', 'ilutp_u_upper' );
+
+
+
+function M=mk_spd( N, fill, shift)
 M=rand(N);
-M(M<0.9)=0;
+M(M>fill)=0;
 M=M'*M;
-% [V,D]=eig(M);
-% D=diag(diag(D)+1e-13); %-10*min(diag(D)));
-% M=V*D*V';
-M=2*eye(size(M))+M;
+M=shift*eye(size(M))+M;
 M=sparse(M);
 
+function M=mk_any( N, fill, shift )
 M=rand(N);
-M(M<0.7)=0;
+M(M>fill)=0;
+M=shift*eye(size(M))+M;
+M=sparse(M);
 
-solver=operator_from_matrix_solve(M, 'lu');
-applier=operator_from_matrix_solve(M, 'lu', 'apply', true );
 %solver=operator_from_matrix_solve(M, 'chol');
 %solver=operator_from_matrix_solve(M, 'ilu');
-d=operator_size( solver );
-
-x=ones(d(1),1);
-%y=M*x;
-y=operator_apply( applier, x );
-x2=operator_apply( solver, y );
-disp( ' ' );
-%disp(round([x,x2, y]));
-disp(norm(x-x2));
-
