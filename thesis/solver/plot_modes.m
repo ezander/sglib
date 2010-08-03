@@ -1,4 +1,4 @@
-function show_modes( f_i_k,f_k_alpha, pos, cov_f, G_N, F )
+function plot_modes( f_i_k,f_k_alpha, pos, cov_f, G_N, F )
 if size(f_i_k,1)>3000; return; end
 
 [mu_fs_i,fs_i_k,sigma_fs_k,fs_k_alpha]=kl_pce_to_standard_form(f_i_k,f_k_alpha); 

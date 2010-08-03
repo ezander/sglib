@@ -27,7 +27,7 @@ function [Minv,M,info]=stochastic_precond_mean_based( A, varargin)
 
 options=varargin2options(varargin);
 [decomp_type,options]=get_option(options,'decomp_type','lu');
-[decomp_options,options]=get_option(options,'decomp_type',{});
+[decomp_options,options]=get_option(options,'decomp_options',{});
 check_unsupported_options(options,mfilename);
 
 R=tensor_operator_order( A );
@@ -38,5 +38,5 @@ for i=1:R
     if ~isnumeric( A{1,i} )
         error( 'sglib:preconditioner', 'Elements of stochastic operator must be matrices for this function' );
     end
-    [Minv{i},M{i},info{i}]=operator_from_matrix_solve( A{1,i}, decomp_type, decomp_options{:} );
+    [Minv{i},M{i},info{i}]=operator_from_matrix_solve( A{1,i}, decomp_type, 'decomp_options', decomp_options );
 end

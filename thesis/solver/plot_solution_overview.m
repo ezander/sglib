@@ -1,4 +1,4 @@
-function show_solution_overview(model, info)
+function plot_solution_overview(model, info)
 close
 multiplot_init(2,2)
 multiplot

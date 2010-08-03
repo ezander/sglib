@@ -1,4 +1,4 @@
-function show_mesh_and_sample( model, pos, els, f_i_k, f_k_alpha, I_f )
+function plot_mesh_and_sample( model, pos, els, f_i_k, f_k_alpha, I_f )
 %%
 strvarexpand( 'randn seed: $randn(''seed'')$' );
 %1919081000
