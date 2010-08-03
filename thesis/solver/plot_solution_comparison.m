@@ -14,7 +14,8 @@ if saveit; save_figure( gca, {'compare_res_rank_by_trunc_mode_%s', model} ); end
 plot_vectors( 'rank_sol_after', 'rank solution', '', infos );
 
 function plot_vectors( field, title_str, logax, infos )
-marker={'-x','-*','-o','-+', '-s', '-^', '-d', '-v', '-p'};
+marker={'-x','-*','-o','-+', '-s', '-^', '-d', '-v', '-p', ...
+        '-.x','-.*','-.o','-.+', '-.s', '-.^', '-.d', '-.v', '-.p'};
 multiplot; 
 title( title_str );  
 num=length(infos);
