@@ -8,9 +8,9 @@ end
 if toc(last_check)>=1
     filename=fullfile( getenv('HOME'), 'sglib_stop' );
     if exist( filename, 'file' )
+        delete(filename);
         disp('Stopping matlab, entering debugger, press F5 to continue' );
         keyboard;
-        delete(filename);
     end
     last_check=tic;
 end

@@ -1,5 +1,3 @@
-%%
-% 
 C_f=covariance_matrix( pos_s, cov_f );
 [v_i_k, sigma_f_k]=kl_solve_evp( C_f, G_N_s, 200 );
 percent_var_f=roundat( 100*sum(sigma_f_k(1:l_f))/sum(sigma_f_k), 0.1 );

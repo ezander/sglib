@@ -15,13 +15,14 @@ examine number of iterations as function of prec type
 % 
 implement neumann bc
 
-%
-implement richardson, look at contractivity
-
 % 
 for cg: add tracking of res accuracy
     
 %
-comparison with monte carlo
+comparison with monte carlo (partly done)
 l2 norm diff with smolyak
+
+% parameter stuff
+get_param % whick workspace? separate functions? integration with autoloader; cache_script
+
 

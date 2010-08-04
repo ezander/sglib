@@ -1,4 +1,4 @@
-function Minv=stochastic_precond_mean_based( A, varargin)
+function [Minv,M,info]=stochastic_precond_mean_based( A, varargin)
 % STOCHASTIC_PRECOND_MEAN_BASED Create the mean based preconditioner from a stochastic operator.
 %   MINV=STOCHASTIC_PRECOND_MEAN_BASED( A, USE_LU ) creates the mean based
 %   preconditioner MINV from the stochastic operator A in that MINV
@@ -26,14 +26,17 @@ function Minv=stochastic_precond_mean_based( A, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
-[use_lu,options]=get_option(options,'use_lu',true);
+[decomp_type,options]=get_option(options,'decomp_type','lu');
+[decomp_options,options]=get_option(options,'decomp_options',{});
 check_unsupported_options(options,mfilename);
 
 R=tensor_operator_order( A );
 Minv=cell( 1, R );
+M=cell( 1, R );
+info=cell( 1, R );
 for i=1:R
     if ~isnumeric( A{1,i} )
         error( 'sglib:preconditioner', 'Elements of stochastic operator must be matrices for this function' );
     end
-    Minv{i}=operator_from_matrix( A{1,i}, true, 'use_lu', use_lu );
+    [Minv{i},M{i},info{i}]=operator_from_matrix_solve( A{1,i}, decomp_type, 'decomp_options', decomp_options );
 end
