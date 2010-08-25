@@ -67,6 +67,11 @@ for i=1:R
         Y=gvector_add( Y, V, -1 );
     end
     
-    Y=funcall( truncate_func, Y, 'orth_columns', orth_columns );
+    Y1=funcall( truncate_func, Y, 'orth_columns', orth_columns );
+    Y2=funcall( truncate_func, Y, 'orth_columns', 0 );
+    if is_tensor(Y) && tensor_rank(Y1)~=tensor_rank(Y2)
+        keyboard
+    end
+    Y=Y1;
 end
 

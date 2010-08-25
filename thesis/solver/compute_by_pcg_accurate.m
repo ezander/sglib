@@ -5,6 +5,7 @@ autoloader( loader_scripts( model ), false, 'caller' );
 if prod(tensor_size(Fi))<=3e7
     cache_script( @compute_contractivity );
     reltol=1e-12;
+    abstol=1e-12;
     cache_script( @solve_by_gsolve_pcg );
 else
     rho=0.7;

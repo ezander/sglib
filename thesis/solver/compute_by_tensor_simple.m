@@ -7,10 +7,7 @@ if prod(gvector_size(Fi))>1e10
     clear Ui_true
 end
 dynamic_eps=dyn;
-%if prec
-    [Mi_inv, Ki, Fi]=precondition_system( Mi_inv, Ki, Fi, prec{:} );
-%    eps=eps/2;
-%end
+[Mi_inv, Ki, Fi]=precondition_system( Mi_inv, Ki, Fi, prec{:} );
 if ~exist('trunc_mode', 'var')
     trunc_mode='operator';
 end

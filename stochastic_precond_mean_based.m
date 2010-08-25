@@ -1,9 +1,9 @@
-function [Minv,M,info]=stochastic_precond_mean_based( A, varargin)
+function [Pinv,P,info]=stochastic_precond_mean_based( A, varargin)
 % STOCHASTIC_PRECOND_MEAN_BASED Create the mean based preconditioner from a stochastic operator.
-%   MINV=STOCHASTIC_PRECOND_MEAN_BASED( A, USE_LU ) creates the mean based
-%   preconditioner MINV from the stochastic operator A in that MINV
+%   PINV=STOCHASTIC_PRECOND_MEAN_BASED( A, USE_LU ) creates the mean based
+%   preconditioner PINV from the stochastic operator A in that MINV
 %   approximates the inverse of A, or rather
-%      OPERATOR_APPLY(MINV,OPERATOR_APPLY(A{1,:},X)==X 
+%      OPERATOR_APPLY(PINV,OPERATOR_APPLY(A{1,:},X)==X 
 %   for any vector or tensor X. If USE_LU the LU decompositions of the
 %   matrices are precomputed and result in faster solve times later on.
 %   Otherwise application of MINV result in solving with A{1,:} (of course
@@ -26,17 +26,53 @@ function [Minv,M,info]=stochastic_precond_mean_based( A, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
+[precond_type,options]=get_option(options,'precond_type',0);
 [decomp_type,options]=get_option(options,'decomp_type','lu');
 [decomp_options,options]=get_option(options,'decomp_options',{});
 check_unsupported_options(options,mfilename);
 
 R=tensor_operator_order( A );
-Minv=cell( 1, R );
-M=cell( 1, R );
+Pinv=cell( 1, R );
+P=cell( 1, R );
 info=cell( 1, R );
+
+switch precond_type
+    case 0 % mean based
+        M=A(1,:);
+    case 1 % kronecker
+        % see van Loan & Pitsianis, Ullmann
+        M=A(1,:);
+        M=optimise( M, A, 1 );
+    case 2 % kronecker iterative
+        % see van Loan & Pitsianis, Ullmann
+        M=A(1,:);
+        for i=1:3
+            for j=1:R
+                M=optimise( M, A, j );
+            end
+        end
+    otherwise
+        error( 'sglib:stochastic_precond', 'unknown preconditioner type: %d', precond_type );
+end
+
 for i=1:R
-    if ~isnumeric( A{1,i} )
+    if ~isnumeric( M{i} )
         error( 'sglib:preconditioner', 'Elements of stochastic operator must be matrices for this function' );
     end
-    [Minv{i},M{i},info{i}]=operator_from_matrix_solve( A{1,i}, decomp_type, 'decomp_options', decomp_options );
+    [Pinv{i},P{i},info{i}]=operator_from_matrix_solve( M{i}, decomp_type, 'decomp_options', decomp_options );
+end
+
+function M=optimise( M, A, j )
+a0=frobenius_inner(M{j},M{j});
+R=size(A,2);
+for i=1:R
+    if i==j; continue; end
+    M{i}=0*M{i};
+end
+for k=1:size(A,1)
+    ak=frobenius_inner(M{j},A{k,j});
+    for i=1:R
+        if i==j; continue; end
+        M{i}=M{i}+ak/a0*A{k,i};
+    end
 end

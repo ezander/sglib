@@ -5,18 +5,18 @@ model=mfilename;
 model_continuous_easy
 
 % geometry discretisation
-num_refine=2;
+num_refine=0;
 num_refine_after=0;
 
 % right hand side
-m_f=20;
-p_f=3;
-l_f=20;
+m_f=4;
+p_f=2;
+l_f=4;
 
 % coefficient field
-m_k=10;
-p_k=3;
-l_k=10;
+m_k=3;
+p_k=2;
+l_k=3;
 
 % solution
-p_u=3;
+p_u=2;

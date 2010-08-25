@@ -84,6 +84,8 @@ switch solver_type
         Ainv=operator_from_function( {@lu_solve, {L,U,p,false}, {1,2,3,4}}, size(M') );
         A=operator_from_function( {@lu_solve, {L,U,p,true}, {1,2,3,4}}, size(M') );
         info=struct( 'L', L, 'U', U, 'p', p );
+    otherwise
+        error( 'sglib:operator_from_matrix_solve', 'Unknown solver type: %s', solver_type );
 end
 
 function x=msolve( M, apply, y, varargin )

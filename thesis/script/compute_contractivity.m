@@ -1,8 +1,8 @@
-maxiter=get_base_param( 'maxiter', 7 );
-abstol=get_base_param( 'abstol', 1e-2 );
-verbosity=get_base_param( 'verbosity', 1 );
+contr_maxiter=get_base_param( 'contr_maxiter', 7 );
+contr_abstol=get_base_param( 'contr_abstol', 1e-2 );
+contr_verbosity=get_base_param( 'contr_verbosity', 1 );
 
-options={'maxiter', maxiter, 'abstol', abstol, 'verbosity', verbosity };
+options={'maxiter', contr_maxiter, 'abstol', contr_abstol, 'verbosity', contr_verbosity };
 
 th=tic; 
 if verbosity>0; 
