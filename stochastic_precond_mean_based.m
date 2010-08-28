@@ -51,6 +51,10 @@ switch precond_type
                 M=optimise( M, A, j );
             end
         end
+    case 3 % kronecker
+        % see van Loan & Pitsianis, Ullmann
+        M=A(1,:);
+        M=optimise2( M, A );
     otherwise
         error( 'sglib:stochastic_precond', 'unknown preconditioner type: %d', precond_type );
 end
@@ -76,3 +80,23 @@ for k=1:size(A,1)
         M{i}=M{i}+ak/a0*A{k,i};
     end
 end
+
+
+function M=optimise2( M, A )
+U=inv(M{1});
+V=0*M{2};
+
+H=V;
+K=V;
+for i=1:size(A,1)
+    ai=trace(U*A{i,1});
+    K=K+ai*A{i,2}';
+    for j=1:size(A,1)
+        aij=trace(U'*A{i,1}'*A{j,1}*U);
+        H=H+aij*(A{i,2}'*A{j,2});%+A{j,2}'*A{i,2});
+    end
+end
+V=(H'\K')';
+%Minv={U,V};
+V=0.5*(V+V'); % TODO: ???
+M{2}=inv(V);
