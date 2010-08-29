@@ -120,7 +120,11 @@ rand('state',rand_state); %#ok<RAND>
 
 % extract only positive eigenvalues, negative are possibly due to numerical
 % errors. Maybe a warning should be issued here!
-l=sum(imag(d)==0 & d>0);
+nl=sum(imag(d)==0 & d>0);
+if nl<l
+    warning( 'sglib:kl_solve_evp:negative', 'Not enough positive eigenvalues in KL eigenvalue problem reducing from %d to %d', l, nl);
+    l=nl;
+end
 V=V(:,1:l);
 d=d(1:l);
 

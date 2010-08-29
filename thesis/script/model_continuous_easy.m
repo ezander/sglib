@@ -7,7 +7,7 @@ geom='lshape';
 % right hand side
 dist_f={'uniform', {-1,1}, 0.0, 1 };
 cov_f_func=@gaussian_covariance;
-lc_f=0.9;
+lc_f=0.8;
 
 % coefficient field
 [a,b]=beta_find_ratio( 0.2 );

@@ -68,11 +68,12 @@ check_range( m_gam, 0, 1000, 'm_gam', mfilename );
 options=varargin2options( varargin );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 [kl_options,options]=get_option( options, 'kl_options', struct() );
+[p_trans,options]=get_option( options, 'p_trans', min(p,7) );
 check_unsupported_options( options, mfilename );
 
 
 % Step 1: calculate the rho_k(pos) numerically
-rho_k=pce_expand_1d(rho_stdnor_func,p);
+rho_k=pce_expand_1d(rho_stdnor_func,p_trans);
 if m_gam==0
     r_j_alpha=repmat(rho_k(1), size(pos,2), 1);
     I_r=multiindex(0,0);
