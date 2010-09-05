@@ -19,7 +19,7 @@ setup_equation
 %%
 A=tensor_operator_to_matrix( Ki );
 F=tensor_to_array(Fi);
-F=F+rand(size(F))*3;
+%F=F+rand(size(F))*3;
 
 %%
 for pkind=1:3

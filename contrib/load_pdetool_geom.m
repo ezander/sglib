@@ -4,6 +4,7 @@ if nargin<2; numrefine=0; end
 if nargin<3; showmesh=false; end
 if nargin<4; normalize=false; end
 
+T=1; % point transformation matrix (see below)
 switch name
     case {'square'}
         geom='squareg'; % a square
@@ -13,6 +14,7 @@ switch name
         geom='cirsg'; % circle with missing 90deg segment
     case {'lshape'}
         geom='lshapeg'; % an lshape with 3 segments (upper left missing)
+        T=[1 0; 0 -1]; % now it's the lower left that's missing
     case {'circle'}
         geom='circleg'; % cirlce
     case {'scatter'}
@@ -28,6 +30,9 @@ end
 for i=1:numrefine
     [p,e,t]=refinemesh(geom,p,e,t);
 end
+
+% rotate or scale the points
+p=T*p;
 
 if showmesh
     % let's look at it
