@@ -4,7 +4,7 @@ function show_comparison_mc
 %#ok<*AGROW>
 
 rebuild=get_base_param('rebuild', false);
-autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_standard_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
+autoloader( {'model_medium'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_standard_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
 rebuild=false;
 
 

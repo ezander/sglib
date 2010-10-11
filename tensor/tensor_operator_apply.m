@@ -68,10 +68,10 @@ for i=1:R
     end
     
     Y1=funcall( truncate_func, Y, 'orth_columns', orth_columns );
-    Y2=funcall( truncate_func, Y, 'orth_columns', 0 );
-    if is_tensor(Y) && tensor_rank(Y1)~=tensor_rank(Y2)
-        keyboard
-    end
+%      Y2=funcall( truncate_func, Y, 'orth_columns', 0 ); %%
+%      if is_tensor(Y) && tensor_rank(Y1)>tensor_rank(Y2) %%
+%          keyboard
+%      end
     Y=Y1;
 end
 

@@ -13,11 +13,12 @@ end
 
 last={};
 toload='';
+path=cache_file_base();
 
 for i=1:size(build,1)
     script=build{i,1};
     if size(build,2)<2
-        target=['.cache/', script, '.mat'];
+        target=[path, script, '.mat'];
     else
         target=build{i,2};
     end

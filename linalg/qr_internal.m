@@ -22,14 +22,36 @@ end
 if isempty(G)
     if orth_columns>0
         n=orth_columns;
+        % extract orthogonal columns and normalize
         Q1=A(:,1:n);
         s1=sqrt(sum(Q1.^2,1));
         Q1=Q1*spdiags(1./s1(:),0,n,n);
+        
+        % extract non-orthogonal columns and subtract components
+        % from span(Q1) (two times)
         B=A(:,n+1:end);
-        P=B-Q1*(Q1'*B);
-        [Q2,R2]=qr(P,0);
-        R=[diag(s1), Q1'*B; zeros(size(R2,1),n), R2 ];
+        RB=Q1'*B;
+        P=B-Q1*RB;
+        P=P-Q1*(Q1'*P);
+        
+        % select only columns from B that are above the noise level and
+        % orthogonalize
+        ind=sqrt(sum(P.^2,1)./sum(B.^2,1))>1e-14;
+        [Q2,Rdummy]=qr(P(:,ind),0);
+        
+        % reorthogonalize after subtracting components from span(Q1) that
+        % are still left over (sometimes destroying orthogonality)
+        % Note: this time we use orth due to its higher accuracy and
+        % killing of non-essential components)
+        Q2=Q2-Q1*(Q1'*Q2);
+        Q2=orth(Q2);
+
+        % combine Q matrix
         Q=[Q1, Q2];
+        
+        % combine R matrix
+        R2=Q2'*P;
+        R=[diag(s1), RB; zeros(size(R2,1),n), R2 ];
     else
         [Q,R]=qr(A,0);
     end

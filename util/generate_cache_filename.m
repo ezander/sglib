@@ -27,7 +27,9 @@ save( tmp_name, 'store' );
 [status, hash]=hash_matfile( tmp_name );
 delete( tmp_name );
 if ~status
-    filename=fullfile( '.cache', hash );
+    path=cache_file_base();
+    filename=fullfile( path, hash );
+    makesavepath( filename );
 else
     warning( 'Could not create unique cache filename. ' );
     filename='';

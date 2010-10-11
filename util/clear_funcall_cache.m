@@ -20,7 +20,7 @@ function clear_funcall_cache(varargin)
 
 options=varargin2options( varargin );
 [pattern,options]=get_option( options, 'pattern', '' );
-[path,options]=get_option( options, 'path', '.cache' );
+[path,options]=get_option( options, 'path', cache_file_base() );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 check_unsupported_options( options, mfilename );
 
@@ -42,4 +42,3 @@ for i=1:length(files)
     end
     delete( file );
 end
-    

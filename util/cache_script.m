@@ -21,7 +21,8 @@ end
 
 delete( tmp_name );
 if ~status
-    filename=fullfile( '.cache',  hash );
+    path=cache_file_base();
+    filename=fullfile( path,  hash );
 else
     filename='';
 end

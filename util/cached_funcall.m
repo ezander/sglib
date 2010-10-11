@@ -70,7 +70,7 @@ options=varargin2options( varargin );
 [show_timings,options]=get_option( options, 'show_timings', false );
 [message,options]=get_option( options, 'message', 'Recomputing: %s( %s )' );
 [extra_params,options]=get_option( options, 'extra_params', {} );
-[path,options]=get_option( options, 'path', '.cache' );
+[path,options]=get_option( options, 'path', cache_file_base() );
 check_unsupported_options( options, mfilename );
 
 % check that number output arguments match
