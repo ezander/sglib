@@ -157,7 +157,7 @@ for tolexp=1:8
     end
     [Ui,flag,info,stats]=tensor_operator_solve_pcg( Ki, Fi, 'M', Mi, 'truncate_options', {'eps',tol, 'relcutoff', true} );
     ui_vec3=tensor_to_vector(Ui);
-    relerr=gvector_error( ui_vec3, ui_vec, 'relerr', true );
+    relerr=gvector_error( ui_vec3, Ui_vec, 'relerr', true );
     k=size(Ui{1},2);
     if tol>0
         R=relerr/tol;
