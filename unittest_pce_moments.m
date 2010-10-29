@@ -26,8 +26,11 @@ munit_set_function( 'pce_moments' );
 r_i_alpha=[4, 0.3, 0, 0];
 I_r=[0; 1; 2; 3];
 
-[mu,var,skew]=pce_moments( r_i_alpha );
-assert_equals( [mu,var,skew], [4,0.09,0], 'moments_onearg' );
+% this is not supported any more, since this can lead to 
+% severe mistakes if the user just forgets to pass this parameter
+%
+% [mu,var,skew]=pce_moments( r_i_alpha );
+% assert_equals( [mu,var,skew], [4,0.09,0], 'moments_onearg' );
 
 [mu,var,skew]=pce_moments( r_i_alpha, I_r );
 assert_equals( [mu,var,skew], [4,0.09,0], 'moments_twoarg' );

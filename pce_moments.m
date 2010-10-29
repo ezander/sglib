@@ -4,14 +4,13 @@ function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r, varargin )
 %   skewness and kurtosis for a distribution given by the coefficients in
 %   R_I_ALPHA. R_I_ALPHA can also be a field of PC expansions where R_I_ALPHA(i,:) is the
 %   expansion at point x_i. The output arguments VAR, SKEW and KURT are
-%   optional and only calculated if required. I_R is optional and contains
-%   the indices of the Hermite polynomials.
+%   optional and only calculated if required. I_R contains
+%   the (multi-) indices of the Hermite polynomials.
 %
 %   Caveat: Computations of skewness and kurtosis excess may be very slow.
 %
 % Example (<a href="matlab:run_example pce_moments">run</a>)
 %   [r_i_alpha,I_r]=pce_expand_1d( @exp, 12 );
-%   [mean,var,skew]=pce_moments( r_i_alpha );
 %   [mean,var,skew]=pce_moments( r_i_alpha, I_r );
 %   [mean,var,skew]=lognormal_moments( 0, 1);
 %
@@ -32,12 +31,6 @@ function [mean,var,skew,kurt]=pce_moments( r_i_alpha, I_r, varargin )
 options=varargin2options(varargin);
 [algorithm,options]=get_option( options, 'algorithm', 'mixed' );
 check_unsupported_options(options,mfilename);
-
-if nargin<2
-    p=size(r_i_alpha,2)-1;
-    I_r=multiindex(1,p);
-end
-
 
 switch algorithm
     case 'mixed'
