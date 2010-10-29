@@ -84,3 +84,14 @@ ZZ=reshape( ( permute( tensor_multiply(X,Y), [1,3,2,4] ) ), [121, 100] );
 ZZ=ZZ(:,1:11:100);
 assert_equals( Z, ZZ, 'vec_rand_multi_full' );
 
+
+
+% test returning of the multiplication tensor
+N=11; m=3; p_X=2; p_Y=4;
+I_X=multiindex(m,p_X); X_alpha=rand(N,size(I_X,1)); 
+I_Y=multiindex(m,p_Y); Y_beta=rand(N,size(I_Y,1)); 
+[Z_gamma,I_Z,M]=pce_multiply( X_alpha, I_X, Y_beta, I_Y );
+[Z_gamma2,I_Z]=pce_multiply( X_alpha, I_X, Y_beta, I_Y, [], 'M', M );
+assert_equals( Z_gamma2, Z_gamma, 'mult_tensor' )
+
+

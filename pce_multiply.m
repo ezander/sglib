@@ -1,4 +1,4 @@
-function [z_k_gamma,I_z]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, varargin )
+function [z_k_gamma,I_z,M]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, varargin )
 % PCE_MULTIPLY Multiply two PC expanded random variables.
 %   [Z_K_GAMMA,I_Z]=PCE_MULTIPLY( X_I_ALPHA, I_X, Y_J_BETA, I_Y ) multiplies
 %   X_I_ALPHA (with corresponding multiindex set I_X) and Y_J_BETA (with
@@ -24,6 +24,9 @@ function [z_k_gamma,I_z]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, varar
 %      first of X_I_ALPHA and Y_J_BETA (i.e. size(I_X,1)) is small, but
 %      wastes quite some memory. This algorithm first computes the full
 %      product, and then takes only the diagonal of that.
+%   'M': Pass in the multiplication tensor M, maybe previously returned
+%      from the first call to this function, saving time for recomputing M.
+%      M is only checked for dimensional consistency.
 %  
 % Example (<a href="matlab:run_example pce_multiply">run</a>)
 %   N=10; m=3; p_X=2; p_Y=4;
@@ -57,6 +60,7 @@ error( nargchk( 3, inf, nargin ) );
 options=varargin2options( varargin );
 [vectorized,options]=get_option( options, 'vectorized', false );
 [full,options]=get_option( options, 'full', false );
+[M,options]=get_option( options, 'M', [] );
 check_unsupported_options( options, mfilename );
 
 % assume arguments
@@ -93,7 +97,13 @@ end
 % which can be written as some tensor multiplication / contraction with the
 % order 3 tensor M of triple products
 
-M=hermite_triple_fast( I_x, I_y, I_z );
+if isempty( M )
+    M=hermite_triple_fast( I_x, I_y, I_z );
+else
+    if size(M,1)~=size(I_x,1) || size(M,2)~=size(I_y,1) || size(M,3)~=size(I_z,1) 
+        error( 'sglib:pce_multiply:mismatch', 'Dimension mismatch: multiplication tensor does not match the given multiindex sets' );
+    end
+end
 n=size(x_i_alpha,1);
 
 
