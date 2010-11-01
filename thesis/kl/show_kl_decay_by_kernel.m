@@ -4,7 +4,7 @@ mh=multiplot_init( 3, 4);
 
 
 m=50;
-[pos,els,G_N]=load_pdetool_geom( 'lshape', 1 ); %#ok<ASGLU>
+[pos,els,G_N]=load_pdetool_geom( 'lshape', 'numrefine', 1 ); %#ok<ASGLU>
 x=linspace(-4,4,201);
 funcs={@gaussian_covariance, @exponential_covariance, @spherical_covariance};
 lc_fs=[5, 2, 1, 0.5, 0.2];

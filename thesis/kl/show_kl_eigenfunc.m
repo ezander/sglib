@@ -6,7 +6,7 @@ mh=multiplot_init( 3, 4);
 rand('seed', 12345 ); %#ok<RAND>
 
 m=50;
-[pos,els,G_N]=load_pdetool_geom( 'lshape', 1 );
+[pos,els,G_N]=load_pdetool_geom( 'lshape', 'numrefine', 1 );
 
 funcs={@gaussian_covariance, @exponential_covariance, @spherical_covariance};
 l_c=0.3;

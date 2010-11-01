@@ -5,9 +5,9 @@ function show_correlation_and_fields
 
 % We use the pde toolbox to generate the geometry and the mass matrix
 % (gramian)
-%[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
-%[pos,els,G_N]=load_pdetool_geom( 'square', 2, true );
-[pos,els,G_N]=load_pdetool_geom( 'square', 2, true );
+%[pos,els,G_N]=load_pdetool_geom( 'cardioid', 'numrefine', 1 );
+%[pos,els,G_N]=load_pdetool_geom( 'square', 'numrefine', 2 );
+[pos,els,G_N]=load_pdetool_geom( 'square', 'numrefine', 2 );
 
 
 % expansion of the right hand side field (f)

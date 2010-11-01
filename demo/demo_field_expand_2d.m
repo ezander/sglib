@@ -5,7 +5,7 @@ function demo_field_expand_2d
 %% Initialization stuff
 % We use the pde toolbox to generate the geometry and the mass matrix
 % (gramian)
-[pos,els,G_N]=load_pdetool_geom( 'cardioid', 1, true );
+[pos,els,G_N]=load_pdetool_geom( 'cardioid', 'numrefine', 1 );
 
 
 % expansion of the right hand side field (f)
