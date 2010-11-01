@@ -61,5 +61,5 @@ for i=0:p
 end
 
 if nargout>=2
-    pce_ind=0:p;
+    pce_ind=multiindex(1,p);
 end

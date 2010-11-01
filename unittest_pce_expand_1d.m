@@ -60,7 +60,7 @@ lambda=3;
 p=12;
 Exp_h={@exponential_stdnor,{lambda},{2}};
 Exp_alpha=pce_expand_1d(Exp_h,p);
-[mu_pce, var_pce]=pce_moments( Exp_alpha );
+[mu_pce, var_pce]=pce_moments( Exp_alpha, [] );
 [mu_ex, var_ex]=exponential_moments( lambda );
 assert_equals( mu_pce, mu_ex, 'exp_mean' );
 assert_equals( var_pce, var_ex, 'exp_variance' );

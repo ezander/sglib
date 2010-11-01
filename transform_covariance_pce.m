@@ -71,7 +71,7 @@ if correct_var
         error( 'transform_covariance_pce:instationary', ...
 	      'correction of C_u not possible for instationary fields' );
     end
-    [mu,sig2]=pce_moments( pcc_u );
+    [mu,sig2]=pce_moments( pcc_u, [] );
     mu; %#ok: mu unused
     C_u=C_u*sig2;
 end

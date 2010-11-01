@@ -1,21 +1,17 @@
 function [mean,var,skew,kurt]=kl_pce_moments( r_i_k, r_k_alpha, I_r, varargin )
 % KL_PCE_MOMENTS no true documentation written so far.
 
-% PCE_MOMENTS Calculate the statistical moments of a distribution given as PCE.
-%   [MEAN,VAR,SKEW,KURT]=PCE_MOMENTS( R_I_ALPHA, I_R ) calculate mean, variance,
+% KL_PCE_MOMENTS Calculate the statistical moments of a distribution given as PCE.
+%   [MEAN,VAR,SKEW,KURT]=KL_PCE_MOMENTS( R_I_ALPHA, I_R ) calculate mean, variance,
 %   skewness and kurtosis for a distribution given by the coefficients in
 %   R_I_ALPHA. R_I_ALPHA can also be a field of PC expansions where R_I_ALPHA(i,:) is the
 %   expansion at point x_i. The output arguments VAR, SKEW and KURT are
-%   optional and only calculated if required. I_R is optional and contains
+%   optional and only calculated if required. I_R and contains
 %   the indices of the Hermite polynomials.
 %
 %   Caveat: Computations of skewness and kurtosis excess may be very slow.
 %
-% Example (<a href="matlab:run_example pce_moments">run</a>)
-%   [r_i_alpha,I_r]=pce_expand_1d( @exp, 12 );
-%   [mean,var,skew]=pce_moments( r_i_alpha );
-%   [mean,var,skew]=pce_moments( r_i_alpha, I_r );
-%   [mean,var,skew]=lognormal_moments( 0, 1);
+% Example (<a href="matlab:run_example kl_pce_moments">run</a>)
 %
 % See also PCE_EXPAND_1D, DATA_MOMENTS
 
@@ -35,9 +31,6 @@ function [mean,var,skew,kurt]=kl_pce_moments( r_i_k, r_k_alpha, I_r, varargin )
 % [algorithm,options]=get_option( options, 'algorithm', 'mixed' );
 % check_unsupported_options(options,mfilename);
 
-
-%mu_r_k=pce_moments( mu
-%function 
 
 % TODO: this is very primitive as yet and should use the tensor product
 % structure. However, I need something working quick now.

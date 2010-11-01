@@ -32,6 +32,15 @@ options=varargin2options(varargin);
 [algorithm,options]=get_option( options, 'algorithm', 'mixed' );
 check_unsupported_options(options,mfilename);
 
+% changed: formerly it was possible to call this function with just one
+% parameter, leading to subtle errors, because people just forgot to pass
+% the second parameter, thinking it unncessary. Now, if the default (1d
+% pce) shall be used, an empty array has to passed, making this choice
+% explicit.
+if isempty(I_r)
+    I_r=multiindex( 1, size(r_i_alpha,2)-1 );
+end
+
 switch algorithm
     case 'mixed'
         mean=mean_direct( r_i_alpha, I_r );

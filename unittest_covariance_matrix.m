@@ -168,7 +168,7 @@ M=[];
 
 h_u=@(x)(lognormal_stdnor( x, 2, 0.5) );
 u_i=pce_expand_1d(h_u,m_u);
-[mean_u,var_u]=pce_moments( u_i );
+[mean_u,var_u]=pce_moments( u_i, [] );
 mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 
@@ -191,7 +191,7 @@ M=[];
 
 h_u=@(x)(lognormal_stdnor( x, 2, 0.5) );
 u_i=pce_expand_1d(h_u,p_u);
-[mean_u,var_u]=pce_moments( u_i );
+[mean_u,var_u]=pce_moments( u_i, [] );
 mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 

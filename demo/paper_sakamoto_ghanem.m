@@ -70,7 +70,7 @@ h=@(gamma)(beta_stdnor(gamma,4,2));
 pcc=pce_expand_1d(h,p);
 [mu,sig2,skew]=beta_moments( 4, 2 );
 disp(sprintf('Orig: Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
-[mu,sig2,skew]=pce_moments( pcc );
+[mu,sig2,skew]=pce_moments( pcc, [] );
 disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
 
 % Step 2: calculate <gam_i gam_j> from <u_i u_j>
@@ -131,7 +131,7 @@ skew=NaN*sig2;
 for i=1:n; disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu(i), sig2(i), skew(i) ) ); end;
 %omu=mu;
 %osig2=sig2;
-[mu,sig2,skew]=pce_moments( pcc );
+[mu,sig2,skew]=pce_moments( pcc, [] );
 disp(sprintf('PCE:  Mean: %8.5f  Var: %8.5f  Skew: %8.5f  ', mu, sig2, skew ) );
 %[omu(:)/mu osig2(:)/sig2]
 

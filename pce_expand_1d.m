@@ -45,7 +45,7 @@ if nargin==0
     return
 end
 
-I=(0:p)';
+I=multiindex(1,p);
 order=2*max(p,1)+2;
 
 vectorized_polys=(1==1);
