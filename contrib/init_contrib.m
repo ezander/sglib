@@ -20,25 +20,9 @@ function init_contrib
 
 [available,tt_path]=tt_available();
 if available
-    fprintf( 'Contrib: Tensor toolbox found. Adding path\n' );
+    fprintf( 'Contrib: Tensor toolbox found. Adding to path\n' );
     addpath( tt_path );
     addpath( fullfile( tt_path, 'algorithms') );
 else
     fprintf( 'Contrib: Tensor toolbox not found. Disabled.\n' );
 end
-
-
-p=toolboxdir('');
-s=dir(p);
-for i=3:length(s)
-    switch s(i).name
-        case {'matlab', 'pde', 'shared', 'local', 'stats' }
-            % pass
-        otherwise
-            state=warning( 'off', 'MATLAB:rmpath:DirNotFound' );
-            rmpath( genpath( fullfile( p, s(i).name ) ) );
-            warning(state);
-    end
-end
-
-

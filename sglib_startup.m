@@ -60,12 +60,20 @@ appdata.settings=sglib_settings( 'load' );
 % show greeting if user wants that
 if appdata.settings.show_greeting
     fprintf( '\nSGLIB v0.9\n' );
-    fprintf( 'Type SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
-    fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n' );
-    fprintf( 'Type SGLIB_TESTSUITE to run the <a href="matlab:sglib_testsuite">unit tests</a>.\n\n' );
+    fprintf( '\nChecking toolboxes:\n' );
 end
+
+% disable unused toolboxes
+disable_toolboxes
 
 % init contrib if it exists
 if exist( 'init_contrib', 'file' )
     init_contrib;
+end
+
+
+if appdata.settings.show_greeting
+    fprintf( '\nType SGLIB_HELP to get <a href="matlab:sglib_help">help</a>.\n' );
+    fprintf( 'Type SGLIB_SETTINGS for changing the <a href="matlab:sglib_settings">settings</a>.\n' );
+    fprintf( 'Type SGLIB_TESTSUITE to run the <a href="matlab:sglib_testsuite">unit tests</a>.\n\n' );
 end
