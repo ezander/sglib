@@ -32,7 +32,7 @@ p=toolboxdir('');
 s=dir(p);
 for i=3:length(s)
     switch s(i).name
-        case {'matlab', 'pde', 'shared', 'local' }
+        case {'matlab', 'pde', 'shared', 'local', 'stats' }
             % pass
         otherwise
             state=warning( 'off', 'MATLAB:rmpath:DirNotFound' );
