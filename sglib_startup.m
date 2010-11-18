@@ -64,7 +64,7 @@ if appdata.settings.show_greeting
 end
 
 % disable unused toolboxes
-disable_toolboxes
+% disable_toolboxes
 
 % init contrib if it exists
 if exist( 'init_contrib', 'file' )
