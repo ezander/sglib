@@ -31,7 +31,8 @@ sglib_startup;
 % If exists run user startup.m file. Do after sglib startup since otherwise
 % user pathdefs might be resetted.
 userdir=getenv('HOME');
-if ~strcmp(userdir, pwd) && exist( fullfile( userdir, 'startup.m'), 'file')
+
+if ~strcmp(userdir, '') && ~strcmp(userdir, pwd) && exist( fullfile( userdir, 'startup.m'), 'file')
     %fprintf('Running user startup.m ...\n')
     run(fullfile( userdir, 'startup.m') );
 end
