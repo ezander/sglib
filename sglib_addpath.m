@@ -53,35 +53,35 @@ if restore
 end
 
 addpath( basepath );
-addpath( [basepath '/doc'] );
-addpath( [basepath '/munit'] );
-addpath( [basepath '/plot'] );
-addpath( [basepath '/quadrature'] );
-addpath( [basepath '/simplefem'] );
-addpath( [basepath '/solver'] );
-addpath( [basepath '/statistics'] );
-addpath( [basepath '/tensor'] );
-addpath( [basepath '/util'] );
-addpath( [basepath '/linalg'] );
+addpath( fullfile( basepath, 'doc') );
+addpath( fullfile( basepath, 'munit') );
+addpath( fullfile( basepath, 'plot') );
+addpath( fullfile( basepath, 'quadrature') );
+addpath( fullfile( basepath, 'simplefem') );
+addpath( fullfile( basepath, 'solver') );
+addpath( fullfile( basepath, 'statistics') );
+addpath( fullfile( basepath, 'tensor') );
+addpath( fullfile( basepath, 'util') );
+addpath( fullfile( basepath, 'linalg') );
 
-if exist( [basepath '/thesis'], 'dir' )
-  addpath( [basepath '/thesis'] )
-  addpath( [basepath '/thesis/script'] )
+if exist( fullfile( basepath, 'thesis'), 'dir' )
+  addpath( fullfile( basepath, 'thesis') )
+  addpath( fullfile( basepath, 'thesis', 'script') )
 end
-if exist( [basepath '/paramstudy'], 'dir' )
-  addpath( [basepath '/paramstudy'] )
+if exist( fullfile( basepath, 'paramstudy'), 'dir' )
+  addpath( fullfile( basepath, 'paramstudy') )
 end
-if exist( [basepath '/contrib'], 'dir' )
-  addpath( [basepath '/contrib'] )
+if exist( fullfile( basepath, 'contrib'), 'dir' )
+  addpath( fullfile( basepath, 'contrib') )
 end
 
 
 if add_octave_path
-    addpath( [basepath '/octcompat'] );
+    addpath( fullfile( basepath, 'octcompat') );
 end
 
 if add_experimental_path
-    addpath( [basepath '/experimental'] );
+    addpath( fullfile( basepath, 'experimental') );
 end
 
 rehash;

@@ -84,11 +84,11 @@ end
 use_cputime=1==0;
 
 % if path is given and filename is not absolute => create path
-if ~isempty( path ) && filename(1)~='/'
+if ~isempty( path ) && filename(1)~=filesep
     if ~exist( path, 'dir' )
         mkdir( path );
     end
-    filename=[path '/' filename];
+    filename=fullfile( path, filename);
 end
 
 % load saved structure from file if possible

@@ -36,6 +36,6 @@ helplink( path, 'Demonstration scripts', 'demo' );
 
 
 function helplink( path, descr, dir )
-file=[path '/' dir '/Contents.m'];
+file=fullfile( path, dir, 'Contents.m');
 % fprintf( '%s: <a href="matlab:help %s">Contents</a>\n', descr, file );
 fprintf( ' * <a href="matlab:help %s">%s</a>\n', file, descr );

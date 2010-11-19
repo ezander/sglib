@@ -5,7 +5,7 @@ function makesavepath( file )
 %
 % Example (<a href="matlab:run_example msave">run</a>)
 %   % the following should create the directory 'foo'
-%   makesavepath( 'foo/bar.mat' )
+%   makesavepath( fullfile( 'foo', 'bar.mat' ) )
 % 
 % See also MKDIR, SAVE
 

@@ -23,3 +23,6 @@ function path=cache_file_base()
 
 USER=getenv( 'USER' );
 path=['/tmp/.sglib-cache/' USER '/'];
+if ~isunix
+    warning( 'sglib:caching', 'Caching probably doesn''t work on non-unix systems' );
+end

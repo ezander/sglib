@@ -102,7 +102,7 @@ for i=1:length(files)
     test_cmd=files(i).name(1:end-2);
     munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
 
-    slash_pos=find(test_cmd=='/');
+    slash_pos=find(test_cmd==filesep);
     if ~isempty(slash_pos)
         test_cmd=test_cmd( slash_pos(end)+1:end );
     end
@@ -118,7 +118,7 @@ munit_stats('pop' );
 % need to end profiling if we have started
 if coverage
     profile('off');
-    if curr_dir(1)=='/'
+    if curr_dir(1)==filesep
         full_dir=curr_dir;
     else
         full_dir=fullfile(pwd,curr_dir);

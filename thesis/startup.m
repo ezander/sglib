@@ -27,8 +27,8 @@ function startup
 % We do the real startup in a file with a special name (SGLIB_STARTUP) so
 % the user can run it individually without any startup on the path
 % interfering with this one
-run( '../sglib_startup' );
+run( fullfile( '..', 'sglib_startup' ) );
 
-addpath( '../paramstudy' );
+addpath( fullfile( '..', 'paramstudy' ) );
 
 dbstop if error

@@ -31,11 +31,15 @@ write_tex_include( texfilename, epsfilename, psfrag_list );
 if standalone
     tex_filename=write_tex_standalone( name, figdir );
     if view
-        viewpath='/tmp/';
-        texfilebase=tex_filename(1:end-4);  %#ok<NASGU>
-        [path,file,ext]=fileparts( tex_filename );
-        path=fullpath( path );
-        cmd=strvarexpand( 'cd $viewpath$ && TEXINPUTS=$path$: latex $file$ && TEXINPUTS=$path$: dvips $file$ && gv $file$ ' );
-        system( cmd );
+        if isunix
+            viewpath='/tmp/';
+            texfilebase=tex_filename(1:end-4);  %#ok<NASGU>
+            [path,file,ext]=fileparts( tex_filename );
+            path=fullpath( path );
+            cmd=strvarexpand( 'cd $viewpath$ && TEXINPUTS=$path$: latex $file$ && TEXINPUTS=$path$: dvips $file$ && gv $file$ ' );
+            system( cmd );
+        else
+            warning( 'sglib:view_latex', 'viewing not supported on non-unix systems' );
+        end
     end
 end

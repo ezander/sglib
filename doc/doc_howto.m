@@ -9,7 +9,7 @@
 %
 % Dann startup.m anlegen mit Inhalt
 %
-% run('sglib/sglib_startup.m')
+% run( fullfile( 'sglib', 'sglib_startup.m') )
 %
 % Fertig (matlab starten!).
 %

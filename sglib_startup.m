@@ -6,7 +6,7 @@
 %   the path.
 %
 % Note: This mfile is intentionally a script and no function, so it can be
-%   run via RUN. E.g. run('../sglib_startup');
+%   run via RUN. E.g. run( fullfile( '..', 'sglib_startup') );
 %
 % Example (<a href="matlab:run_example sglib_startup">run</a>)
 %   sglib_startup
@@ -45,7 +45,7 @@ sglib_addpath( basepath, false, inc_experimental, is_octave );
 
 % put stuff in appdata
 appdata.basepath=basepath;
-appdata.settings_file=[basepath '/sglib.settings' ];
+appdata.settings_file=fullfile( basepath, 'sglib.settings' );
 sglib_set_appdata( appdata );
 
 % do some init stuff depending on matlab/octave version
@@ -59,12 +59,12 @@ appdata.settings=sglib_settings( 'load' );
 
 % show greeting if user wants that
 if appdata.settings.show_greeting
-    fprintf( '\nSGLIB v0.9\n' );
+    fprintf( '\nSGLIB v0.9.1\n' );
     fprintf( '\nChecking toolboxes:\n' );
 end
 
 % disable unused toolboxes
-disable_toolboxes
+% disable_toolboxes
 
 % init contrib if it exists
 if exist( 'init_contrib', 'file' )

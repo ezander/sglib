@@ -1,8 +1,8 @@
 %function demo_iciam
 
-disp( 'warning doesn't work any more' );
+disp( 'warning doesn''t work any more' );
 
-addpath '../'
+addpath( '..' )
 init_demos
 clf
 clear
