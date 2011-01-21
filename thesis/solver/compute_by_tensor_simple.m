@@ -1,6 +1,9 @@
 function [U, Ui, info]=compute_by_tensor_simple( model, Ui_true, eps, prec, dyn, trunc_mode )
 swallow( trunc_mode );
-autoloader( loader_scripts( model ), false, 'caller' );
+
+filename=cache_model( model );
+load( filename );
+
 reltol=1e-16;
 abstol=1e-16;
 if prod(gvector_size(Fi))>1e10

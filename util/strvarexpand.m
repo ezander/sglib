@@ -36,7 +36,11 @@ for i=pos
     part=str(lpos:i-1);
     if doeval
         orig=part;
-        part=evalin( 'caller', part );
+        try
+            part=evalin( 'caller', part );
+        catch
+            part='<error>';
+        end
         part=tostring( part, orig );
     end
     exstr=[exstr part]; %#ok<AGROW> 

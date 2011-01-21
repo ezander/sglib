@@ -1,9 +1,11 @@
-function [U_mat, Ui_mat, info]=compute_by_pcg_approx( model, Ui_true, tol, prec ) 
+function [U_mat, Ui_mat, info]=compute_by_pcg_approx( model, Ui_true, tol, precond_op ) 
 
-autoloader( loader_scripts( model ), false, 'caller' );
+filename=cache_model( model );
+load( filename );
+
 reltol=tol;
 abstol=tol;
-if prec
+if precond_op
     [Mi_inv, Ki, Fi]=precond_operator( Mi_inv, Ki, Fi );
 end
 cache_script solve_by_gsolve_pcg;

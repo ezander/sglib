@@ -9,9 +9,12 @@ disp_model_data( model )
 %return
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+% solve with pcg accurately
 underline( 'accurate pcg' );
 [U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model );
 
+% solve with pcg accurately
 if numel(U_mat_true)
     underline( 'approximate pcg' );
     [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, 1e-3, false );
@@ -24,6 +27,10 @@ else
 end
 info_pcg.rho=rho;
 info_pcg.norm_U=gvector_norm(Ui_mat);
+
+info=info_pcg;
+display_tensor_solver_details;
+
 
 num=length(solve_options);
 
@@ -57,6 +64,16 @@ end
 for i=1:num
     info=info_tp{i};
     display_tensor_solver_details;
+end
+disp( '=================================================' );
+info=info_pcg;
+strvarexpand( 'model: $model$' )
+strvarexpand( 'description: $info.descr$' )
+strvarexpand( 'time: $info.time$' )
+for i=1:num
+    info=info_tp{i};
+    strvarexpand( 'description: $info.descr$' )
+    strvarexpand( 'time: $info.time$' )
 end
 if ~strcmp( model, 'model_giant_easy' ) 
     plot_solution_overview(model, info_tp{1})

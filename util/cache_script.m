@@ -1,4 +1,4 @@
-function filename=cache_script( script, varargin )
+function [filename,hash]=cache_script( script, varargin )
 
 
 options=varargin2options(varargin);
@@ -39,7 +39,9 @@ else
         fprintf( '%s => recomputing\n', script );
     end
     
-    evalin( ws, script );
+    if ~isempty(script)
+        evalin( ws, script );
+    end
     makesavepath( filename );
     if ~isempty(filename)
         evalin( ws, ['save ' filename] );

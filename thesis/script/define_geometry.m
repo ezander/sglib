@@ -25,6 +25,13 @@ else
     bnd_nodes=find_boundary( els, true );
     stiffness_func={@pdetool_stiffness_matrix, {ptdata}, {1}};
 end
+if ~exist( 'pos_s', 'var' )
+    pos_s=pos;
+    els_s=els;
+    G_N_s=G_N;
+    P_s=speye(size(pos_s,2));
+end
+
 [d,N]=size(pos);
 
 %

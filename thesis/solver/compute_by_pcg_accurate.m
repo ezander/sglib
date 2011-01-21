@@ -1,6 +1,7 @@
 function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate( model )
 
-autoloader( loader_scripts( model ), false, 'caller' );
+filename=cache_model( model );
+load( filename );
 
 if prod(tensor_size(Fi))<=3e7
     cache_script( @compute_contractivity );

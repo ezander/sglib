@@ -8,7 +8,7 @@ strvarexpand( 'relative res.: $info.relres$' )
 if ~isempty(info.errvec)
     strvarexpand( 'relative error: $info.errvec(end)$' )
 end
-if isfield( info, 'rho' )
+if isfield( info, 'rho' ) && isfield( info, 'updnormvec' ) && isfield( info, 'epsvec' )
     rho=info.rho;
     errest=rho/(1-rho)*info.updnormvec/info.norm_U+info.epsvec;
     strvarexpand( 'error est.: $errest(end)$' )

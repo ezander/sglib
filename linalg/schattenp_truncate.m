@@ -3,6 +3,11 @@ function [k,err]=schattenp_truncate( sigma, eps, rel, p, maxk )
 if nargin<5
     maxk=inf;
 end
+if length(sigma)==0
+    k=0;
+    err=0;
+    return;
+end
 
 sigma=sigma(:);
 if isfinite(p)
