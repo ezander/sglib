@@ -7,7 +7,9 @@ cov_f_func=@gaussian_covariance;
 lc_f=0.5;
 
 % coefficient field
-[a,b]=beta_find_ratio( 0.4 );
+%[a,b]=beta_find_ratio( 0.4 );
+a=2.4;
+b=0.3;
 dist_k={'beta', {a,b}, 0.001, 1.0 };
 cov_k_func=@exponential_covariance;
 lc_k=0.7;

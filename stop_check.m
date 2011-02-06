@@ -6,6 +6,7 @@ if isempty(last_check)
 end
 
 if toc(last_check)>=1
+    log_flush();
     filename=fullfile( getenv('HOME'), 'sglib_stop' );
     if exist( filename, 'file' )
         delete(filename);

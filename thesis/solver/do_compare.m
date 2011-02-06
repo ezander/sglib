@@ -17,7 +17,8 @@ underline( 'accurate pcg' );
 % solve with pcg accurately
 if numel(U_mat_true)
     underline( 'approximate pcg' );
-    [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, 1e-3, false );
+    pcg_tol=0.3e-2;
+    [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, false );
     pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
     eps=eps_from_error( pcg_err, rho );
 else
@@ -30,6 +31,12 @@ info_pcg.norm_U=gvector_norm(Ui_mat);
 
 info=info_pcg;
 display_tensor_solver_details;
+
+underline( 'Computing truncation eps' )
+fprintf( 'pcg_tol:       tol=%g \n', pcg_tol );
+fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
+fprintf( 'Contractivity: rho=%g \n', rho );
+fprintf( 'Tensor_eps:    eps=%g \n', eps );
 
 
 num=length(solve_options);
@@ -75,7 +82,7 @@ for i=1:num
     strvarexpand( 'description: $info.descr$' )
     strvarexpand( 'time: $info.time$' )
 end
-if ~strcmp( model, 'model_giant_easy' ) 
+if false && ~strcmp( model, 'model_giant_easy' ) 
     plot_solution_overview(model, info_tp{1})
     plot_solution_comparison(model, info_tp)
 end

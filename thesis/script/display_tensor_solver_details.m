@@ -27,3 +27,9 @@ strvarexpand( 'max. res rank: $max(info.rank_res_before)$' )
 strvarexpand( 'last res rank: $info.rank_res_before(end)$' )
 strvarexpand( 'max. sol rank: $max(info.rank_sol_after)$' )
 strvarexpand( 'last sol rank: $info.rank_sol_after(end)$' )
+
+if isfield( info, 'memorig' )
+    strvarexpand( 'VmSize: $(info.memmax.VmSize-info.memorig.VmSize)/1024/1024$ MB' )
+    strvarexpand( 'VmRSS:  $(info.memmax.VmRSS-info.memorig.VmRSS)/1024/1024$ MB' )
+    strvarexpand( 'VmData: $(info.memmax.VmData-info.memorig.VmData)/1024/1024$ MB' )
+end

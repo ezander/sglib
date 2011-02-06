@@ -21,9 +21,13 @@ options=varargin2options( varargin );
 [X_true,options]=get_option( options, 'solution', [] );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
+[memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
 
-
+if memtrace
+    memorig=memstats();
+    memmax=memorig;
+end
 
 if dynamic_eps
     min_eps=trunc.eps;
@@ -149,14 +153,15 @@ for iter=1:maxiter
         strvarexpand('iter: $iter$  time: $info.timevec(end)$' );
     end
 
+    if memtrace
+        memmax=memstats( 'mem', memmax, 'append', false );
+    end
     
     % check residual for meeting tolerance
     if normres<abstol || relres<reltol;
         flag=0;
         break;
     end
-    
-    
     
     % set all iteration variables to new state
     Xc=Xn;
@@ -176,6 +181,10 @@ info.iter=iter;
 info.relres=relres;
 %info.upratio=upratio;
 info.time=toc(start_tic);
+if memtrace
+    info.memorig=memorig;
+    info.memmax=memmax;
+end
 
 solver_stats=gsolver_stats;
 

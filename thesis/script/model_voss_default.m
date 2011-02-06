@@ -22,10 +22,10 @@ p_u=3;
 
 
 
-
+%===
 if false
 % geometry
-num_refine=0;
+num_refine=1;
 num_refine_after=0;
 
 % right hand side
@@ -39,5 +39,5 @@ p_k=1;
 l_k=5;
 
 % solution
-p_u=1;
+p_u=2;
 end;

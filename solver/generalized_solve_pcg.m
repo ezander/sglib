@@ -15,7 +15,13 @@ options=varargin2options( varargin );
 [X_true,options]=get_option( options, 'solution', [] );
 [gsolver_stats,options]=get_option( options, 'stats', struct() );
 [stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
+[memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
+
+if memtrace
+    memorig=memstats();
+    memmax=memorig;
+end
 
 tensor_mode=is_tensor(F);
 info.abstol=abstol;
@@ -100,6 +106,10 @@ for iter=1:maxiter
 
     gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
 
+    if memtrace
+        memmax=memstats( 'mem', memmax, 'append', false );
+    end
+    
     if normres<abstol || relres<reltol;
         flag=0;
         break; 
@@ -134,6 +144,10 @@ info.iter=iter;
 info.relres=relres;
 info.upratio=upratio;
 info.time=toc(start_tic);
+if memtrace
+    info.memorig=memorig;
+    info.memmax=memmax;
+end
 
 solver_stats=gsolver_stats;
 
