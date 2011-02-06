@@ -17,7 +17,7 @@ underline( 'accurate pcg' );
 % solve with pcg accurately
 if numel(U_mat_true)
     underline( 'approximate pcg' );
-    pcg_tol=0.3e-2;
+    pcg_tol=1e-3;
     [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, false );
     pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
     eps=eps_from_error( pcg_err, rho );
@@ -28,6 +28,7 @@ else
 end
 info_pcg.rho=rho;
 info_pcg.norm_U=gvector_norm(Ui_mat);
+info_pcg.descr='pcg';
 
 info=info_pcg;
 display_tensor_solver_details;
@@ -63,16 +64,22 @@ for i=1:num
     end
 end
 
+fprintf( '\n============ TIME =====================================\n' );
 strvarexpand( 'meth: pcg time: $info_pcg.time$ err: $pcg_err$' );
 for i=1:numel(tp_err)
     strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
 end
 
+fprintf( '\n============ STATS =====================================\n' );
+info=info_pcg;
+display_tensor_solver_details;
 for i=1:num
     info=info_tp{i};
     display_tensor_solver_details;
 end
-disp( '=================================================' );
+
+
+fprintf( '\n============ TIME =====================================\n' );
 info=info_pcg;
 strvarexpand( 'model: $model$' )
 strvarexpand( 'description: $info.descr$' )
@@ -82,7 +89,9 @@ for i=1:num
     strvarexpand( 'description: $info.descr$' )
     strvarexpand( 'time: $info.time$' )
 end
-if false && ~strcmp( model, 'model_giant_easy' ) 
+
+% display graphics
+if false && ~strcmp( model, 'model_giant_easy' )
     plot_solution_overview(model, info_tp{1})
     plot_solution_comparison(model, info_tp)
 end

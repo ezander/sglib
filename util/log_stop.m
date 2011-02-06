@@ -1,4 +1,4 @@
-function log_stop()
+function logfile=log_stop()
 % LOG_STOP Short description of log_stop.
 %   LOG_STOP Long description of log_stop.
 %
@@ -19,3 +19,9 @@ function log_stop()
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 diary( 'off' );
+filename=get( 0, 'DiaryFile' );
+if nargout>0
+    logfile=filename;
+else
+    fprintf( 'Stopped logging to file: %s\n', filename );
+end
