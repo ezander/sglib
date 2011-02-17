@@ -52,7 +52,7 @@ switch precond_type
             end
         end
     case 3 % kronecker
-        % see van Loan & Pitsianis, Ullmann
+        % this is my own rather complicated own, usually not 
         M=A(1,:);
         M=optimise2( M, A );
     otherwise
