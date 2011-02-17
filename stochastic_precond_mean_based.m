@@ -98,5 +98,5 @@ for i=1:size(A,1)
 end
 V=(H'\K')';
 %Minv={U,V};
-V=0.5*(V+V'); % TODO: ???
+%V=0.5*(V+V'); % TODO: ???
 M{2}=inv(V);

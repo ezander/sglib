@@ -19,11 +19,12 @@ setup_equation
 %%
 A=tensor_operator_to_matrix( Ki );
 F=tensor_to_array(Fi);
-%F=F+rand(size(F))*3;
+F=F+rand(size(F))*3;
 
 %%
 for pkind=1:3
     tic
+    strvarexpand( '($pkind$) setting up preconditioner...' );
     switch pkind
         case 1
             [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',0,'decomp_type','');
@@ -35,6 +36,9 @@ for pkind=1:3
     toc
     PP={P{1}{2}{2}{1},P{2}{2}{2}{1}};
     P=tensor_operator_to_matrix( PP );
+
+    strvarexpand( '($pkind$) norm(P-P^T)/norm(P): $norm(full(PP{1}-PP{1}'')/norm(full(PP(2))))$' );
+    strvarexpand( '($pkind$) norm(Q-Q^T)/norm(Q): $norm(full(PP{2}-PP{2}'')/norm(full(PP(2))))$' );
 
     %%
     norm( A-P, 'fro' );
