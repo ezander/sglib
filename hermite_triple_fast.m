@@ -100,21 +100,17 @@ na=size(I_a,1);
 nb=size(I_b,1);
 nc=size(I_c,1);
 bsc=max(floor(bs/(na*nb)),1);
-r=ceil(nc/bsc);
-for i=1:r
-    j1=1+(i-1)*bsc;
-    if i~=r
-        j2=i*bsc;
-    else
-        j2=nc;
-    end
+j1=1;
+while j1<=nc
+    j2=min(j1+bsc-1,nc);
     I_cb=I_c(j1:j2,:);
     Mi=multiplication_tensor_sparse(I_a,I_b,I_cb,triples);
-    if i==1
+    if j1==1
         M=Mi;
     else
         M=[M Mi];
     end
+    j1=j2+1;
 end
 
 
@@ -147,13 +143,7 @@ for i=1:m
         Mi=Mi.*triples(ind);
     end
 end
-%M=zeros(na*nb*nc,1);
-%M(nzi)=Mi;
-
 M=sparse(double(nza+na*(nzb-1)),double(nzc),Mi,na*nb,nc);
-
-%M=sparse(,);
-
 
 
 

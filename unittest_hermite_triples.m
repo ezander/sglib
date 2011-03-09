@@ -82,25 +82,31 @@ Ms=hermite_triple_fast(I_A,I_B,I_C,'algorithm','sparse');
 assert_equals(M(:),Mex(:),'indexed')
 assert_equals(Ms(:),Mex(:),'sparse')
 
-return
+%return
 
 I_A=multiindex(8,3); % 165*8
 size(I_A)
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','vectorized1');
+Mex=M;
 toc
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','vectorized2');
 toc
+assert_equals(M(:),Mex(:),'vectorized2')
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','blocked1');
 toc
+assert_equals(M(:),Mex(:),'blocked1')
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','indexed');
 toc
+assert_equals(M(:),Mex(:),'indexed')
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','sparse');
 toc
+assert_equals(M(:),Mex(:),'sparse')
 tic
 M=hermite_triple_fast(I_A,I_A,I_A,'algorithm','sparseb');
 toc
+assert_equals(M(:),Mex(:),'sparseb')
