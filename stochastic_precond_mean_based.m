@@ -10,7 +10,7 @@ function [Pinv,P,info]=stochastic_precond_mean_based( A, varargin)
 %   no inversion of the matrices is done here!). 
 %
 % Example (<a href="matlab:run_example stochastic_precond_mean_based">run</a>)
-%   
+%
 % See also
 
 %   Elmar Zander
@@ -51,8 +51,8 @@ switch precond_type
                 M=optimise( M, A, j );
             end
         end
-    case 3 % kronecker
-        % this is my own rather complicated own, usually not 
+    case 3 % kronecker this is my own rather complicated one,
+        % converges fast but takes LOOONG to construct
         M=A(1,:);
         M=optimise2( M, A );
     otherwise
