@@ -20,6 +20,7 @@ cov_f={@exponential_covariance,{lc_f,1}}; %#ok
 cov_f={@spherical_covariance,{lc_f,1}}; %#ok
 cov_f={@gaussian_covariance,{lc_f,1}}; %#ok
 cov_gam={@gaussian_covariance,{lc_f,1}};
+cov_gam=[];
 options_expand_f.transform.correct_var=true;
 
 %% now expanding field in ...

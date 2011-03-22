@@ -90,6 +90,9 @@ C_r=covariance_matrix( pos, cov_r_func );
 if ~isempty( cov_gam_func )
     C_gam=covariance_matrix( pos, cov_gam_func );
 else
+    if isstruct(transform_options)
+        transform_options=struct2options(transform_options);
+    end
     C_gam=transform_covariance_pce( C_r, rho_k, transform_options{:} );
 end
 
