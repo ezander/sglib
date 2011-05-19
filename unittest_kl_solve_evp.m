@@ -21,8 +21,6 @@ function unittest_kl_solve_evp
 
 munit_set_function( 'kl_solve_evp' );
 
-if false
-
 [pos,els]=create_mesh_1d(0,1,11);
 C=covariance_matrix( pos, {@gaussian_covariance, {0.3, 2}} );
 M=mass_matrix( pos, els );
@@ -46,21 +44,20 @@ assert_equals( size(fs), [11,5] );
 assert_equals( diag(fs*fs'), diag(C) );
 
 
-end
 
-
-[pos,els]=create_mesh_1d(-3,3,100);
-C=covariance_matrix( pos, {@exponential_covariance, {0.3, 1}} );
+% check against values for the exponential covariance taken from 
+% ghanem & spanos, implemented in kl_solve_1d_exp
+a=3;
+c=0.7;
+[pos,els]=create_mesh_1d(-a,a,200);
+C=covariance_matrix( pos, {@exponential_covariance, {c, 1}} );
 M=mass_matrix( pos, els );
-[v,sig]=kl_solve_evp( C, M, 10 ) %, 'correct_var', true )
-%[v,sig2]=kl_solve_evp( C, M, 10 ) %, 'correct_var', true )
-%sigex=kl_solve_1d_exp( 3, 1/0.3, 20 )
-sigex=kl_solve_1d_exp( 1, 1, 20 )
+[v,sig]=kl_solve_evp( C, M, 10 );
+sigex=kl_solve_1d_exp( -a, a, c, 10 );
+
+assert_equals( sig(:), sigex(:), 'exp_cov_1d', 'abstol', 1e-3 );
 
 
-
-1;
-
-
-
+[v,sig]=kl_solve_evp( C, M, 199 );
+assert_equals( sum(sig.^2), 2*a, 'sum_sig2', 'abstol', 1e-1 );
 
