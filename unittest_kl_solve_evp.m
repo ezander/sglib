@@ -21,6 +21,8 @@ function unittest_kl_solve_evp
 
 munit_set_function( 'kl_solve_evp' );
 
+if false
+
 [pos,els]=create_mesh_1d(0,1,11);
 C=covariance_matrix( pos, {@gaussian_covariance, {0.3, 2}} );
 M=mass_matrix( pos, els );
@@ -42,3 +44,23 @@ assert_equals( diag(fs*fs'), diag(C) );
 fs=kl_solve_evp( C, M, 5, 'correct_var', true );
 assert_equals( size(fs), [11,5] );
 assert_equals( diag(fs*fs'), diag(C) );
+
+
+end
+
+
+[pos,els]=create_mesh_1d(-3,3,100);
+C=covariance_matrix( pos, {@exponential_covariance, {0.3, 1}} );
+M=mass_matrix( pos, els );
+[v,sig]=kl_solve_evp( C, M, 10 ) %, 'correct_var', true )
+%[v,sig2]=kl_solve_evp( C, M, 10 ) %, 'correct_var', true )
+%sigex=kl_solve_1d_exp( 3, 1/0.3, 20 )
+sigex=kl_solve_1d_exp( 1, 1, 20 )
+
+
+
+1;
+
+
+
+

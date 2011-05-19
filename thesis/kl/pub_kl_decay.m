@@ -6,7 +6,7 @@
 clear; clf;
 model_large
 geom='scatter'
-num_refine=1;
+num_refine=0;
 
 define_geometry
 
