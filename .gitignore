@@ -1,7 +1,11 @@
 sglib.settings
 .cache
-*.eps
 *.mat
 *~
 *.log
 .*
+*.eps
+*.png
+*.pdf
+*.tex
+*.ps
