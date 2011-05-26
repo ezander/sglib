@@ -17,7 +17,6 @@ fields=get_ret_fields();
 % set parameters
 defaults=get_defaults();
 defaults.tol=1e-16;
-defaults.stag_steps=15;
 variable.eps={10.^-6, 10.^-8, 10.^-10};
 defaults.trunc_mode='operator';
 %defaults.trunc_mode='after';

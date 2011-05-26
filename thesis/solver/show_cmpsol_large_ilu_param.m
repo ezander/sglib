@@ -6,7 +6,7 @@ function show_cmpsol_large_ilu_param
 clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
-do_compare( 'model_large_easy', get_solve_options )
+compare_solvers_pcg( 'model_large_easy', get_solve_options )
 log_stop();
 
 function opts=get_solve_options

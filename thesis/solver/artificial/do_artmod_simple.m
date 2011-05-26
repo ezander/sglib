@@ -7,7 +7,6 @@ r=get_base_param( 'r', 0.002 );
 eps=get_base_param( 'eps', 0 );
 k_max=get_base_param( 'k_max', inf );
 trunc_mode=get_base_param( 'trunc_mode', 'operator' );
-stag_steps=get_base_param( 'stag_steps', 5 );
 upratio_delta=get_base_param( 'upratio_delta', 0.1 );
 dynamic_eps=get_base_param( 'dynamic_eps', false );
 
@@ -55,7 +54,7 @@ trunc.show_reduction=false;
 
 options={'reltol', reltol,'maxiter', maxiter, 'abstol', abstol, 'verbosity', inf };
 options=[options, {'trunc', trunc, 'trunc_mode', trunc_mode}];
-options=[options, {'stag_steps', stag_steps, 'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
+options=[options, {'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
 
 t=tic;
 [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Pinv, options{:}, 'solution', x   );
