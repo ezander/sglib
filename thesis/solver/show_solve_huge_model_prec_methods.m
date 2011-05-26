@@ -1,8 +1,9 @@
 function show_solve_huge_model_prec_methods
 
 clc
-do_compare( 'model_large_easy', get_solve_options )
+%do_compare( 'model_large_easy', get_solve_options )
 %do_compare( 'model_medium_easy', get_solve_options )
+do_compare( 'model_small_easy', get_solve_options )
 
 
 

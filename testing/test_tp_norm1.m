@@ -52,3 +52,14 @@ for i=1:K
     est=est+norm(U(:,i),t1)*norm(V(:,i),t2);
 end
 
+
+
+function est=norm_hs( U, V )
+M=size(U,1);
+N=size(V,1);
+K=size(V,2);
+
+est=0;
+for i=1:K
+    est=est+norm(U(:,i),t1)*norm(V(:,i),t2);
+end

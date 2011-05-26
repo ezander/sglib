@@ -1,6 +1,4 @@
-function [X,flag,info,solver_stats]=generalized_solve_simple( A, F, varargin )
-
-global gsolver_stats
+function [X,flag,info]=generalized_solve_simple( A, F, varargin )
 
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
@@ -19,8 +17,6 @@ options=varargin2options( varargin );
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 [X_true,options]=get_option( options, 'solution', [] );
-[gsolver_stats,options]=get_option( options, 'stats', struct() );
-[stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
 
@@ -62,7 +58,6 @@ info.resvec(end+1)=initres;
 start_tic=tic;
 prev_tic=start_tic;
 
-gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 flag=1;
 for iter=1:maxiter
     % add the preconditioned residuum to X
@@ -174,30 +169,20 @@ for iter=1:maxiter
 end
 X=funcall( truncate_after_func, Xn );
 
-%gsolver_stats=funcall( stats_func, 'finish', gsolver_stats, X );
-
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
-%info.upratio=upratio;
 info.time=toc(start_tic);
 if memtrace
     info.memorig=memorig;
     info.memmax=memmax;
 end
 
-solver_stats=gsolver_stats;
-
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
 if flag && nargout<2
     solver_message( 'generalized_simple_iter', flag, info )
 end
-
-function stats=gather_stats_def( what, stats, varargin )
-what; %#ok, ignore
-varargin; %#ok, ignore
-
 
 function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
 tr={@tensor_truncate_fixed, {trunc}, {2}};
