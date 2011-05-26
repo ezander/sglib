@@ -29,7 +29,7 @@ if any( pattern==filesep )
     error( 'sglib:clear_funcall_cache', 'Pattern may not contain a directory specification.' );
 end
 
-spec=fullfile( path, [pattern '*.mat'] );
+spec=fullfile( path, [pattern, '*.mat'] );
 files=dir( spec ); % 'ls' include the path in the return values (in contrast to 'dir')
 if verbosity>0
     disp( 'Removing cache files: ' );

@@ -9,6 +9,7 @@ if prod(tensor_size(Fi))<=3e7
     abstol=1e-12;
     cache_script( @solve_by_gsolve_pcg );
 else
+    keyboard; % should not get here, or we should need some other treatment of this case
     rho=0.7;
     U_mat=[];
     Ui_mat=[];

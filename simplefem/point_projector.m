@@ -36,6 +36,13 @@ for i=1:n
     end
 end
 
+
+% do some simple plausibility check
+if sum(sum(P,1)-1)>0.001
+    warning( 'point_projector:incorrect_mesh', 'point_projector did not work correctly. Maybe some elements in your mesh are misoriented' );
+end
+
+
 function [posind,val]=point_projector_1d( pos, els, x )
 elsind=find(pos(els(1,:))<=x & pos(els(2,:))>=x,1,'first');
 posind=reshape( els(:,elsind), 1, []);

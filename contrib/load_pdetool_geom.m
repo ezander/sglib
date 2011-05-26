@@ -57,6 +57,7 @@ end
 % extract element and position information
 pos=p;
 els=t(1:3,:);
+[pos,els]=correct_mesh( pos, els );
 
 % normalize to [-1,1]^2
 if normalize
@@ -75,3 +76,4 @@ end
 if nargout>=4
     ptdata={p,e,t};
 end
+

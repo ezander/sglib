@@ -5,7 +5,7 @@ end
 strvarexpand( 'time: $info.time$' )
 strvarexpand( 'iterations: $info.iter$' )
 strvarexpand( 'relative res.: $info.relres$' )
-if ~isempty(info.errvec)
+if isfield( info, 'errvec' ) && ~isempty(info.errvec)
     strvarexpand( 'relative error: $info.errvec(end)$' )
 end
 if isfield( info, 'rho' ) && isfield( info, 'updnormvec' ) && isfield( info, 'epsvec' )

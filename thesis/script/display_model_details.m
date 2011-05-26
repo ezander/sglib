@@ -1,10 +1,15 @@
-C_f=covariance_matrix( pos_s, cov_f );
-[v_i_k, sigma_f_k]=kl_solve_evp( C_f, G_N_s, 200 );
-percent_var_f=roundat( 100*sum(sigma_f_k(1:l_f))/sum(sigma_f_k), 0.1 );
+area=full(sum(G_N(:)));
 
 C_k=covariance_matrix( pos_s, cov_k );
-[v_i_k, sigma_k_k]=kl_solve_evp( C_k, G_N_s, 200 );
-percent_var_k=roundat( 100*sum(sigma_k_k(1:l_k))/sum(sigma_k_k), 0.1 )
+[k_i_k, sigma_k_k]=kl_solve_evp( C_k, G_N_s, l_k );
+var_k=mean(diag(C_k));
+percent_var_k=roundat( 100*sum(sigma_k_k(1:l_k).^2)/(area*var_k), 0.1 );
+
+C_f=covariance_matrix( pos_s, cov_f );
+[f_i_k, sigma_f_k]=kl_solve_evp( C_f, G_N_s, l_f );
+var_f=mean(diag(C_f));
+percent_var_f=roundat( 100*sum(sigma_f_k(1:l_f).^2)/(area*var_f), 0.1 );
+
 
 
 underline( 'Random fields' );

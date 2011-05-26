@@ -18,7 +18,7 @@ path=cache_file_base();
 for i=1:size(build,1)
     script=build{i,1};
     if size(build,2)<2
-        target=[path, script, '.mat'];
+        target=fullfile(path, [script, '.mat'] );
     else
         target=build{i,2};
     end

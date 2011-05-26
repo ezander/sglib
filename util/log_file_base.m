@@ -1,11 +1,10 @@
-function path=cache_file_base()
-% CACHE_FILE_BASE Returns the base path where cache files are stored.
-%   CACHE_FILE_BASE Returns the base path where cache files are stored.
+function path=log_file_base()
+% LOG_FILE_BASE Returns the base path where log files are stored.
+%   LOG_FILE_BASE Returns the base path where log files are stored.
 %
-% Example (<a href="matlab:run_example cache_file_base">run</a>)
-%   path=cache_file_base();
-%   filename=fullfile( path,  'foobar.mat' );
-%   save( filename );
+% Example (<a href="matlab:run_example log_file_base">run</a>)
+%   log_start( fullfile( log_file_base(), mfilename ) );
+%   log_stop();
 %
 % See also
 
@@ -22,4 +21,4 @@ function path=cache_file_base()
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 USER=getenv( 'USER' );
-path=fullfile( tempdir, ['sglib-' USER], 'cache' );
+path=fullfile( tempdir, ['sglib-' USER], 'log' );

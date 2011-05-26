@@ -9,9 +9,9 @@ num_refine=2;
 num_refine_after=1;
 
 % right hand side
-m_f=25;
+m_f=30;
 p_f=3;
-l_f=25;
+l_f=30;
 
 % coefficient field
 m_k=15;

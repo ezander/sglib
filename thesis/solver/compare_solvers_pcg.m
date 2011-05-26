@@ -1,44 +1,54 @@
-function do_compare( model, solve_options )
- 
+function compare_solvers_pcg( model, solve_options, varargin )
+
 global U_mat_true Ui_mat_true
 global U_mat Ui_mat info_pcg pcg_err eps
 global U Ui info_tp tp_err
 
+options=varargin2options( varargin );
+[accurate,options]=get_option( options, 'accurate', true );
+[pcgcmp,options]=get_option( options, 'pcgcmp', accurate );
+[eps,options]=get_option( options, 'eps', 1e-4 );
+check_unsupported_options( options, mfilename );
+
+
+
 %rebuild_scripts( model );
 disp_model_data( model )
-%return
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% solve with pcg accurately
-underline( 'accurate pcg' );
-[U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model );
 
-% solve with pcg accurately
-if numel(U_mat_true)
-    underline( 'approximate pcg' );
-    pcg_tol=1e-3;
-    [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, false );
-    pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
-    eps=eps_from_error( pcg_err, rho );
+% solve with pcg accurately for error estimates
+if accurate
+    underline( 'accurate pcg' );
+    [U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model );
 else
-    pcg_err=nan;
-    info_pcg.time=nan;
-    eps=1e-4;
+    U_mat_true=[]; 
+    Ui_mat_true=[];
+    rho=0.8;
 end
-info_pcg.rho=rho;
-info_pcg.norm_U=gvector_norm(Ui_mat);
-info_pcg.descr='pcg';
 
-info=info_pcg;
-display_tensor_solver_details;
-
-underline( 'Computing truncation eps' )
-fprintf( 'pcg_tol:       tol=%g \n', pcg_tol );
-fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
-fprintf( 'Contractivity: rho=%g \n', rho );
-fprintf( 'Tensor_eps:    eps=%g \n', eps );
-
+% solve with pcg approximately for performance comparison
+if pcgcmp
+    if numel(U_mat_true)
+        underline( 'approximate pcg' );
+        pcg_tol=1e-3;
+        [U_mat, Ui_mat, info_pcg]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, false );
+        pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
+        eps=eps_from_error( pcg_err, rho );
+    end
+    info_pcg.rho=rho;
+    info_pcg.norm_U=gvector_norm(Ui_mat);
+    info_pcg.descr='pcg';
+    
+    info=info_pcg;
+    display_tensor_solver_details;
+    
+    underline( 'Computing truncation eps' )
+    fprintf( 'pcg_tol:       tol=%g \n', pcg_tol );
+    fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
+    fprintf( 'Contractivity: rho=%g \n', rho );
+    fprintf( 'Tensor_eps:    eps=%g \n', eps );
+end
 
 num=length(solve_options);
 

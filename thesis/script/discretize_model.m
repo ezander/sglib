@@ -23,14 +23,7 @@ cov_k=get_base_param( 'cov_k', {cov_k_func,{lc_k,1}} );
 
 % expand the field
 [k_i_k,k_k_alpha,I_k,l_k]=expand_field_kl_pce( stdnor_k, cov_k, pos_s, G_N_s, p_k, m_k, l_k, 'eps', eps_k, 'mean_func', mean_k_func );
-% multiplot_init(2,1);
-% multiplot;
-% [kr1,xi]= kl_pce_field_realization( k_i_k, k_k_alpha, I_k );
-% plot_field( pos_s, els_s, kr1 );
 k_i_k=P_s*k_i_k;
-% multiplot;
-% [kr2]= kl_pce_field_realization( k_i_k, k_k_alpha, I_k, xi );
-% plot_field( pos, els, kr2 );
 
 %% construct the right hand side random field f 
 % define stochastic expansion parameters

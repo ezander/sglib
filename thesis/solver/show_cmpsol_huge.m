@@ -1,10 +1,16 @@
-function show_solve_giant_model
-% show results for solving the giant model
+function show_cmpsol_huge
+% show results for solving the huge model
 
 clc
-do_compare( 'model_giant_easy', get_solve_options )
+log_start( fullfile( log_file_base(), mfilename ) );
+compare_solvers_pcg( 'model_huge_easy', get_solve_options, 'accurate', false )
+log_stop();
 
 function opts=get_solve_options
 opts={};
 opts{end+1}=struct( 'longdescr', 'normal tensor solver', 'descr', 'normal');
 opts{end+1}=struct( 'longdescr', 'dynamic tensor solver', 'dyn', true, 'descr', 'dynamic');
+
+ilu_setup={'type', 'ilutp', 'droptol', 2e-2, 'milu', 'row', 'udiag', 1 };
+opts{end+1}=varargin2options( {'longdescr', 'ilutp 2 row prec tensor solver', ...
+    'dyn', true, 'prec', {'ilu', ilu_setup}, 'descr', 'dynilutp'} );
