@@ -1,8 +1,8 @@
 function show_solve_giant_model
+% show results for solving the giant model
 
 clc
-do_compare( 'model_large_easy', get_solve_options )
-%do_compare( 'model_giant_easy', get_solve_options )
+do_compare( 'model_giant_easy', get_solve_options )
 
 function opts=get_solve_options
 opts={};
