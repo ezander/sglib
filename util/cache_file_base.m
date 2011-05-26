@@ -22,7 +22,7 @@ function path=cache_file_base()
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 USER=getenv( 'USER' );
-path=['/tmp/.sglib-cache/' USER '/'];
+path=['/tmp/' USER '-sglib/'];
 if ~isunix
     warning( 'sglib:caching', 'Caching probably doesn''t work on non-unix systems' );
 end
