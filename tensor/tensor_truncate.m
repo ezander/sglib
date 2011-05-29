@@ -38,6 +38,8 @@ options=varargin2options( varargin );
 [orth_columns,options]=get_option( options, 'orth_columns', 0 );
 check_unsupported_options( options, mfilename );
 
+timers( 'start', mfilename );
+
 if isnumeric(T)
     [U,S,V]=svd(T,0);
     [T_k,sigma,k]=tensor_truncate_svd( {U*S,V}, G, eps, k_max, relcutoff, p, min(size(T)) );
@@ -73,3 +75,5 @@ elseif isobject(T)
 else
     error( 'tensor:tensor_truncate:tensor_format', 'Unknown tensor format' );
 end
+
+timers( 'stop', mfilename );

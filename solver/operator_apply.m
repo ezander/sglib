@@ -43,6 +43,8 @@ if ~residual
     check_empty( b, 'b', mfilename );
 end
 
+timers( 'start', 'operator_apply' );
+
 if isempty(A)
     % A is the identity
     y=x;
@@ -67,3 +69,5 @@ elseif iscell(A) && isfunction(A{2})
 else
     error( 'operator_size:type', 'linear operator is neither a matrix nor a cell array' );
 end
+
+timers( 'stop', 'operator_apply' );

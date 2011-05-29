@@ -23,44 +23,72 @@ munit_set_function( 'timers' );
 % the following sequence is tested:
 % t0, [timer started], t1, [timer stopped], t2==t3, [timer restarted], t4,
 % [timer reset], t0==0
-timers( 'xx1', 'reset' );
-t0=timers( 'xx1', 'get' );
+timers( 'reset', 'xx1' );
+t0=timers( 'get', 'xx1' );
 assert_true( 0==t0, 'timer reset', 'reset1' );
-timers( 'xx1', 'start' );
-t1=timers( 'xx1', 'get' );
+timers( 'start', 'xx1' );
+t1=timers( 'get', 'xx1' );
 assert_true( 0<t1, 'timer running', 'run1' );
-timers( 'xx1', 'stop' );
-t2=timers( 'xx1', 'get' );
+timers( 'stop', 'xx1' );
+t2=timers( 'get', 'xx1' );
 assert_true( t1<t2, 'timer running', 'run2' );
-t3=timers( 'xx1', 'get' );
+t3=timers( 'get', 'xx1' );
 assert_true( t2==t3, 'timer not running', 'not run1' );
-timers( 'xx1', 'start' );
-t4=timers( 'xx1', 'get' );
+timers( 'start', 'xx1' );
+t4=timers( 'get', 'xx1' );
 assert_true( t3<t4, 'timer running', 'run3' );
-timers( 'xx1', 'reset' );
-t0=timers( 'xx1', 'get' );
+timers( 'reset', 'xx1' );
+t0=timers( 'get', 'xx1' );
 assert_true( 0==t0, 'timer reset', 'reset1' );
 
+
 % interleave; check that two timers run independently
-timers( 'xx1', 'reset' );
-timers( 'xx2', 'reset' );
-timers( 'xx1', 'start' );
-timers( 'xx2', 'start' );
-timers( 'xx2', 'stop' );
-timers( 'xx1', 'stop' );
-t1=timers( 'xx1', 'get' );
-t2=timers( 'xx2', 'get' );
+timers( 'reset', 'xx1' );
+timers( 'reset', 'xx2' );
+timers( 'start', 'xx1' );
+timers( 'start', 'xx2' );
+timers( 'stop', 'xx2' );
+timers( 'stop', 'xx1' );
+t1=timers( 'get', 'xx1' );
+t2=timers( 'get', 'xx2' );
 assert_true( t1>t2, 't1 runs longer ', 'longer' );
-timers( 'xx1', 'start' );
-timers( 'xx1', 'stop' );
-t3=timers( 'xx1', 'get' );
-t4=timers( 'xx2', 'get' );
+timers( 'start', 'xx1' );
+timers( 'stop', 'xx1' );
+t3=timers( 'get', 'xx1' );
+t4=timers( 'get', 'xx2' );
 assert_true( t3>t1, 't1 runs', 't1r' );
 assert_true( t4==t2, 't2 stops', 't2s' );
-timers( 'xx2', 'start' );
-timers( 'xx2', 'stop' );
-t5=timers( 'xx1', 'get' );
-t6=timers( 'xx2', 'get' );
+timers( 'start', 'xx2' );
+timers( 'stop', 'xx2' );
+t5=timers( 'get', 'xx1' );
+t6=timers( 'get', 'xx2' );
 assert_true( t5==t3, 't1 stops', 't1s' );
 assert_true( t6>t4, 't2 runs', 't2r' );
+
+% multiple starting and stopping
+timers( 'reset', 'xx1' );
+timers( 'start', 'xx1' );
+timers( 'start', 'xx1' );
+timers( 'stop', 'xx1' );
+t1=timers( 'get', 'xx1' );
+timers( 'stop', 'xx1' );
+t2=timers( 'get', 'xx1' );
+t3=timers( 'get', 'xx1' );
+assert_true( t2>t1, 'still running', 'stillrun1' );
+assert_true( t3==t2, 'not running', 'notrun1' );
+
+% multiple starting and stopping
+k=1.00;
+t1=k*0.23; t2=k*0.05; tw=k*0.1;
+timers( 'reset', 'xx1' );
+timers( 'start', 'xx1' );
+t=tic; while toc(t)<t1; end
+timers( 'stop', 'xx1' );
+t=tic; while toc(t)<tw; end
+timers( 'start', 'xx1' );
+t=tic; while toc(t)<t2; end
+timers( 'start', 'xx1' );
+ts=timers( 'get', 'xx1' );
+[ts,t1+t2]
+assert_equals( ts, t1+t2, 'exact', 'abstol', 0.003 );
 

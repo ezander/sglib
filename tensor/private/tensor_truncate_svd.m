@@ -7,14 +7,12 @@ if nargin<7
 end
 
 if isempty(G); G={[],[]}; end
-tqr=tic;
 [Q1,R1]=qr_internal(T{1},G{1},orth_columns);
 [Q2,R2]=qr_internal(T{2},G{2},orth_columns);
-tqr=toc(tqr);
 R=R1*R2';
-tsvd=tic;
+timers( 'start', [mfilename '__svd']);
 [U,S,V]=svd(R,0);
-tsvd=toc(tsvd);
+timers( 'stop', [mfilename '__svd']);
 
 if isempty(max_numel_svd) || max_numel_svd<numel(R)
     max_numel_svd=numel(R);

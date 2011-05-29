@@ -1,6 +1,21 @@
-function t=timers(timer,action)
-% TIMERS Short description of timers.
-%   TIMERS Long description of timers.
+function t=timers(action,timer)
+% TIMERS Allows starting and stopping of timers for performance measurements.
+%   TIMERS( ACTION, TIMER ) performs the action ACTION on the timer
+%   identified TIMER by the string TIMER, which must be a valid matlab
+%   identifier. Actions are strings but have also a numerical equivalent.
+%   Valid actions are: 
+%     'reset', 0: reset the timer to 0 and stops it
+%     'start', 1: starts the timer, if stopped, otherwise does nothing
+%     'stop',  2: stops the timer if running
+%     'get',   3: returns the currently elapsed time for this timer
+%   This function tries to be nice to the user and does not enforce, e.g.
+%   to use 'stop' before you can call 'start' again, or use 'reset' before
+%   you can use the timer. You can even use 'get' without having ever used
+%   the timer, in which case it just returns 0.
+%
+%   Further, actions that are not specific for one timer are: 
+%     'getall', 4: returns the complete timer struct
+%     'resetall', 5: resets all timers
 %
 % Example (<a href="matlab:run_example timers">run</a>)
 %
@@ -20,29 +35,51 @@ function t=timers(timer,action)
 
 persistent ts
 
-if ~isfield(ts,timer)
-    ts.(timer).time=0;
-    ts.(timer).tic=-1;
+if isempty(ts)
+    ts=struct();
+end
+
+if exist( 'timer', 'var' )
+    if ~isfield(ts,timer)
+        ts.(timer).time=0;
+        ts.(timer).tic=-1;
+        ts.(timer).run=0;
+    end
 end
 
 switch action
     case {0,'reset'}
         ts.(timer).time=0;
         ts.(timer).tic=-1;
+        ts.(timer).run=0;
     case {1,'start'}
-        if ts.(timer).tic==-1
+        if ts.(timer).run==0
             ts.(timer).tic=tic;
         end
+        ts.(timer).run=ts.(timer).run+1;
     case {2,'stop'}
-        if ts.(timer).tic~=-1
-            add=toc(ts.(timer).tic);
-            ts.(timer).time=ts.(timer).time+add;
+        if ts.(timer).run>0
+            ts.(timer).run=ts.(timer).run-1;
+            if ts.(timer).run==0
+                add=toc(ts.(timer).tic);
+                ts.(timer).time=ts.(timer).time+add;
+            end
         end
-        ts.(timer).tic=-1;
     case {3,'get'}
         add=0;
-        if ts.(timer).tic~=-1
+        if ts.(timer).run>0
             add=toc(ts.(timer).tic);
         end
         t=ts.(timer).time+add;
+    case {4,'getall'}
+        t=struct();
+        names=sort( fieldnames(ts) );
+        for i=1:length(names)
+            timer=names{i};
+            t.(timer)=timers( 'get', timer );
+        end
+    case {5,'resetall'}
+        ts=struct();
+    otherwise
+        error( 'timers:wrong_param', 'Unknown action for timers: %s', action );
 end

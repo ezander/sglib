@@ -1,5 +1,6 @@
 function [X,flag,info]=generalized_solve_simple( A, F, varargin )
 
+
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
@@ -18,6 +19,8 @@ options=varargin2options( varargin );
 [X_true,options]=get_option( options, 'solution', [] );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
+
+timers( 'start', 'gen_solver_simple' );
 
 if memtrace
     memorig=memstats();
@@ -64,7 +67,9 @@ for iter=1:maxiter
         info.rank_res_before(iter)=tensor_rank(Rc);
         info.epsvec(iter)=trunc.eps;
     end
+    timers( 'start', 'gss_prec_apply' );
     DX=operator_apply(Minv,Rc);
+    timers( 'stop', 'gss_prec_apply' );
     
     abort=false;
     while true
@@ -132,7 +137,9 @@ for iter=1:maxiter
         AXn=operator_apply(A,Xn, apply_operator_options{:} );
         Rn=gvector_add( F, AXn, -1 );
     else
+        timers( 'start', 'gss_oper_apply' );
         Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
+        timers( 'stop', 'gss_oper_apply' );
     end
     Rn=funcall( truncate_before_func, Rn );
     
@@ -183,6 +190,9 @@ end
 if flag && nargout<2
     solver_message( 'generalized_simple_iter', flag, info )
 end
+
+timers( 'stop', 'gen_solver_simple' );
+
 
 function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
 tr={@tensor_truncate_fixed, {trunc}, {2}};

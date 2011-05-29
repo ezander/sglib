@@ -1,5 +1,7 @@
 function [Q,R]=qr_internal( A, G, orth_columns )
 
+timers( 'start', 'qr_internal' );
+
 if nargin<2
     G=[];
 end
@@ -15,6 +17,7 @@ if isdiag(G)
     [SQ,R]=qr_internal( SA, [], orth_columns );
     %Q=diags(1./S)*SQ;
     Q=row_col_mult(SQ,1./S);
+    timers( 'stop', 'qr_internal' );
     return
 end
 
@@ -58,6 +61,7 @@ if isempty(G)
 else
     [Q,R]=gram_schmidt(A,G,false,1);
 end
+timers( 'stop', 'qr_internal' );
 
 
 function bool=isdiag(G)

@@ -39,6 +39,7 @@ end
 if isempty(figdir)
     warning( 'sglig:save_figure', 'figdir not set set. Set explicitly or via global variable sglib_figdir' );
     sglib_figdir=fullfile( getenv('HOME'), 'projects', 'docs', 'stochastics', 'thesis', 'figures');
+    figdir=sglib_figdir;
 end
 if nargin<3
     type='eps';

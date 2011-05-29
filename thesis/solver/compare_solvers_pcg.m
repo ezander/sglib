@@ -62,7 +62,13 @@ for i=1:num
     longdescr=get_option( solve_options{i}, 'longdescr', '?' );
     underline( longdescr );
     
+    timers( 'resetall' );
+    profile( 'on' )
     [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
+    info_tp{i}.timers=timers( 'getall' );
+    profile( 'off' )
+    info_tp{i}.prof=profile('info');
+
     info_tp{i}.descr=descr;
     info_tp{i}.rho=rho;
     info_tp{i}.norm_U=gvector_norm(Ui{i});
@@ -78,6 +84,9 @@ fprintf( '\n============ TIME =====================================\n' );
 strvarexpand( 'meth: pcg time: $info_pcg.time$ err: $pcg_err$' );
 for i=1:numel(tp_err)
     strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
+    if isfield( info_tp{i}, 'timers' )
+        disp( info_tp{i}.timers );
+    end
 end
 
 fprintf( '\n============ STATS =====================================\n' );

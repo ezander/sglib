@@ -35,6 +35,8 @@ function U=tensor_operator_apply_elementary( A, T )
 
 check_tensor_operator_format( A );
 
+timers( 'start', 'tensor_operator_apply_elementary' );
+
 if isnumeric(T) 
     if isvector(T)
         U=apply_to_vector( A, T );
@@ -48,6 +50,8 @@ elseif isobject(T)
 else
     error('unknown tensor type');
 end
+
+timers( 'stop', 'tensor_operator_apply_elementary' );
 
 function U=apply_to_tensor( A, T )
 U=cellfun( @operator_apply, A, T, 'UniformOutput', false );
