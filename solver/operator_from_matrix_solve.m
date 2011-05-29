@@ -92,13 +92,16 @@ function x=msolve( M, apply, y, varargin )
 if apply
     x=M*y;
 else
+    timers( 'start', 'operator_msolve' );
     x=M\y;
+    timers( 'stop', 'operator_msolve' );
 end
 
 function x=lu_solve( L, U, p, apply, y, varargin )
 if apply
     x(p,:)=L*(U*y);
 else
+    timers( 'start', 'operator_lusolve' );
     if issparse(L) || issparse(U)
         x=mldivide(U, mldivide(L,y(p,:)) );
     else
@@ -106,4 +109,5 @@ else
         upper.UT=true;
         x=linsolve(U, linsolve(L,y(p,:),lower), upper );
     end
+    timers( 'stop', 'operator_lusolve' );
 end

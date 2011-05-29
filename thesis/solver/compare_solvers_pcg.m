@@ -28,6 +28,8 @@ else
 end
 
 % solve with pcg approximately for performance comparison
+info_pcg=struct();
+info_pcg.descr='pcg';
 if pcgcmp
     if numel(U_mat_true)
         underline( 'approximate pcg' );
@@ -85,8 +87,9 @@ strvarexpand( 'meth: pcg time: $info_pcg.time$ err: $pcg_err$' );
 for i=1:numel(tp_err)
     strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
     if isfield( info_tp{i}, 'timers' )
-        disp( info_tp{i}.timers );
+        display_timing_details( info_tp{i}.timers )
     end
+    fprintf('\n');
 end
 
 fprintf( '\n============ STATS =====================================\n' );
@@ -99,8 +102,9 @@ end
 
 
 fprintf( '\n============ TIME =====================================\n' );
-info=info_pcg;
 strvarexpand( 'model: $model$' )
+
+info=info_pcg;
 strvarexpand( 'description: $info.descr$' )
 strvarexpand( 'time: $info.time$' )
 for i=1:num
