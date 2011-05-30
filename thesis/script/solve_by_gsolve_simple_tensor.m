@@ -18,12 +18,22 @@ if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];
 end
 
-th=tic; 
+th=tic;
+timers( 'resetall' );
+profile( 'on' )
+
 if verbosity>0; 
     fprintf( 'Solving (simple_tp): \n' ); 
 end
+
 [Ui,flag,info]=generalized_solve_simple( Ki, Fi, options{:});
+
 info.solve_time=toc(th);
+info.rank_K=size(Ki,1);
+info.timers=timers( 'getall' );
+profile( 'off' )
+info.prof=profile('info');
+
 
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 

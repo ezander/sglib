@@ -14,5 +14,5 @@ dynamic_eps=dyn;
 if ~exist('trunc_mode', 'var')
     trunc_mode='operator';
 end
+
 cache_script solve_by_gsolve_simple_tensor;
-info.rank_K=size(Ki,1);

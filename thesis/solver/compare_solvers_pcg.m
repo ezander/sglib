@@ -64,12 +64,7 @@ for i=1:num
     longdescr=get_option( solve_options{i}, 'longdescr', '?' );
     underline( longdescr );
     
-    timers( 'resetall' );
-    profile( 'on' )
     [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
-    info_tp{i}.timers=timers( 'getall' );
-    profile( 'off' )
-    info_tp{i}.prof=profile('info');
 
     info_tp{i}.descr=descr;
     info_tp{i}.rho=rho;
