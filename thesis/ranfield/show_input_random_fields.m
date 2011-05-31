@@ -21,16 +21,16 @@ multiplot
 ex=kl_pce_field_realization( k_i_k, k_k_alpha, I_k );
 zpos=min(ex)-0.2*(max(ex)-min(ex));
 plot_field( pos, els, ex, opts );
-plot_field_contour( pos, els, ex, 'zpos', zpos );
-plot_boundary(pos,els, 'zpos', zpos, 'color', 'r');
+plot_field_contour( pos, els, ex, 'zpos', zpos, 'color', 'auto' );
+plot_boundary(pos,els, 'zpos', zpos, 'color', 'k');
 
 multiplot
 ex=kl_pce_field_realization( f_i_k, f_k_alpha, I_f );
 zpos=min(ex)-0.2*(max(ex)-min(ex));
 plot_field( pos, els, ex, opts );
-plot_field_contour( pos, els, ex, 'zpos', zpos );
-plot_boundary(pos,els, 'zpos', zpos, 'color', 'r');
+plot_field_contour( pos, els, ex, 'zpos', zpos, 'color', 'auto' );
+plot_boundary(pos,els, 'zpos', zpos, 'color', 'k');
     
 
-save_figure( mh(1), 'input_field_kappa' );
-save_figure( mh(2), 'input_field_f' );
+save_figure( mh(1), 'input_field_kappa', 'type', 'raster' );
+save_figure( mh(2), 'input_field_f', 'type', 'raster' );

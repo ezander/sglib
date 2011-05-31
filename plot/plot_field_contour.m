@@ -31,6 +31,7 @@ els=els';
 
 options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 'min' );
+[color,options]=get_option( options, 'color', 'k' );
 check_unsupported_options( options, mfilename );
 
 zmin=min(u);
@@ -80,7 +81,15 @@ for i=1:nlev
     end
     PP(1:3:end,3)=Z;
     PP(2:3:end,3)=Z;
-    line( PP(:,1), PP(:,2), PP(:,3), 'color', 'k');
+    if strcmp(color,'auto')
+        cm=colormap;
+        cind=round(1+(i-1)/(nlev-1)*size(colormap,1));
+        cind=max(1,min(size(colormap,1),cind));
+        c=cm(cind,:);
+    else
+        c=color;
+    end
+    line( PP(:,1), PP(:,2), PP(:,3), 'color', c);
      %'Parent',ax,...
      %       'color',contc,'Erasemode','normal');
 
