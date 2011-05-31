@@ -10,5 +10,5 @@ for p_k=[1,2,4,5]
     
     multiplot;
     spy2(S,'display','none');
-    save_figure( gca, {'sparsity_keese_%d', p_k}, 'png' );
+    save_figure( gca, {'sparsity_keese_%d', p_k}, 'type', 'raster' );
 end

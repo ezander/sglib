@@ -1,4 +1,4 @@
-function save_figure( handle, name, type, varargin )
+function save_figure( handle, name, varargin )
 % SAVE_FIGURE Short description of save_figure.
 %   SAVE_FIGURE Long description of save_figure.
 %
@@ -23,11 +23,14 @@ global sglib_figdir
 
 options=varargin2options(varargin);
 [eps_params, options]=get_option(options,'eps_params',{});
+[pdf_params, options]=get_option(options,'pdf_params',{});
 [png_params, options]=get_option(options,'png_params',{});
 [png2eps_params, options]=get_option(options,'png2eps_params',{});
 [latex_params, options]=get_option(options,'latex_params',{});
 [figdir, options]=get_option(options,'figdir',sglib_figdir);
+[type, options]=get_option(options,'type','vector');
 [use_psfrag, options]=get_option(options,'use_psfrag',false);
+[afterreparent, options]=get_option(options,'afterreparent',[]);
 check_unsupported_options(options,mfilename);
 
 if isempty( handle )
@@ -41,9 +44,6 @@ if isempty(figdir)
     sglib_figdir=fullfile( getenv('HOME'), 'projects', 'docs', 'stochastics', 'thesis', 'figures');
     figdir=sglib_figdir;
 end
-if nargin<3
-    type='eps';
-end
 
 common_params={'figdir', figdir};
 
@@ -56,6 +56,10 @@ end
 check_handle( handle, 'figure' );
 set( handle, 'renderer', 'painters' );
 
+if ~isempty(afterreparent)
+    funcall( afterreparent, newaxis, newfig );
+end
+
 if use_psfrag
     psfrag_list=psfrag_format( handle );
     latex_params=[latex_params, {'psfrag_list', psfrag_list}];
@@ -66,18 +70,29 @@ end
 
 pngfilename=make_filename( name, figdir, 'png' );
 epsfilename=make_filename( name, figdir, 'eps' );
+pdffilename=make_filename( name, figdir, 'pdf' );
 texfilename=make_filename( name, figdir, 'tex' );
 
 png_params=[common_params, png_params];
 eps_params=[common_params, eps_params];
+pdf_params=[common_params, pdf_params];
 latex_params=[common_params, latex_params];
 
+% save the png anyway
 save_png( handle, name, png_params{:} );
-if strcmp(type,'png')
-    convert_png_eps( pngfilename, png2eps_params{:} );
-else
-    save_eps( handle, name, eps_params{:} );
+
+switch type
+    case 'raster'
+        % for raster type we need only convert to eps, since pdflatex can
+        % use the png file
+        convert_png_eps( pngfilename, png2eps_params{:} );
+    case 'vector'
+        % for vector graphics also the pdf file needs to be created, so
+        % that pdflatex does not use the png (however, the order for
+        % graphicx needs to be set correctly)
+        save_eps( handle, name, eps_params{:} );
 end
+convert_eps_pdf( epsfilename );
 save_latex( texfilename, epsfilename, latex_params{:} );
 
 close( newfig );

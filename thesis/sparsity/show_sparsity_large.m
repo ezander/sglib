@@ -17,14 +17,14 @@ spy2(S, 'display', 'none' );
 line( [1,1,400,400,1], [1,400,400,1,1], 'Color', 'r' );
 line( [1,1,1000,1000,1], [1,1000,1000,1,1], 'Color', 'r' );
 line( [810,810,940,940,810], [810,940,940,810,810], 'Color', 'r' );
-save_figure( gca, 'sparsity_large_1', 'png'  );
+save_figure( gca, 'sparsity_large_1', 'type', 'raster'  );
 
                         
 multiplot; spy2(S, 'display', 'none' ); xlim([1,400]); ylim([1,400]);
-save_figure( gca, 'sparsity_large_2', 'png' );
+save_figure( gca, 'sparsity_large_2', 'type', 'raster' );
 
 multiplot; spy2(S, 'display', 'none' ); xlim([1,1000]); ylim([1,1000]);
-save_figure( gca, 'sparsity_large_3', 'png' );
+save_figure( gca, 'sparsity_large_3', 'type', 'raster' );
 
 multiplot; spy2(S, 'display', 'none' ); xlim([810,940]); ylim([810,940]);
-save_figure( gca, 'sparsity_large_4', 'png' );
+save_figure( gca, 'sparsity_large_4', 'type', 'raster' );

@@ -47,7 +47,7 @@ same_scaling(mh,'c');
 
 for m2=msel
     h=multiplot; 
-    save_figure( h, {'kl_not_enough_2d_%d', m2}, 'png' );
+    save_figure( h, {'kl_not_enough_2d_%d', m2}, 'type', 'raster' );
     h=multiplot; 
-    save_figure( h, {'kl_not_enough_2d_%d_side', m2}, 'png' );
+    save_figure( h, {'kl_not_enough_2d_%d_side', m2}, 'type', 'raster' );
 end
