@@ -4,8 +4,8 @@ function show_cmpsol_huge
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_huge_easy', get_solve_options, 'accurate', false )
+show_tex_table;
 log_stop();
-show_tex_table
 
 
 function opts=get_solve_options
