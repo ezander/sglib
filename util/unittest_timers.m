@@ -89,6 +89,5 @@ timers( 'start', 'xx1' );
 t=tic; while toc(t)<t2; end
 timers( 'start', 'xx1' );
 ts=timers( 'get', 'xx1' );
-[ts,t1+t2]
 assert_equals( ts, t1+t2, 'exact', 'abstol', 0.003 );
 

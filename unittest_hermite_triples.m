@@ -82,7 +82,7 @@ Ms=hermite_triple_fast(I_A,I_B,I_C,'algorithm','sparse');
 assert_equals(M(:),Mex(:),'indexed')
 assert_equals(Ms(:),Mex(:),'sparse')
 
-%return
+return
 
 I_A=multiindex(8,3); % 165*8
 size(I_A)

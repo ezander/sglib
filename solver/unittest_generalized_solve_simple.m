@@ -31,7 +31,7 @@ Amat=tensor_operator_to_matrix(A);
 Mmat=tensor_operator_to_matrix(M);
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
-tol=1e-9; maxit=100; 
+tol=1e-6; maxit=100; 
 
 % rho=simple_iteration_contractivity( A, inv(Mmat) );
 % disp(rho);
@@ -40,7 +40,7 @@ tol=1e-9; maxit=100;
 % check that the textbook implementation works
 [x,flag,relres,iter,resvec]=textbook_simple_iter( Amat, b, tol, maxit, Mmat ); %#ok<ASGLU>
 assert_equals(x,Amat\b,'textbook', 'abstol', 1e-4);
-assert_equals(Amat*x-b, zeros(size(b)), 'textbook_res', 'norm', 2 );
+assert_equals(Amat*x-b, zeros(size(b)), 'textbook_res', 'norm', 2, 'abstol',  1e-5 );
 
 % compare normal (matrix x vector) mode with textbook implementation
 [X,flag,info]=generalized_solve_simple( Amat, b, 'reltol', tol, 'abstol', tol, 'Minv', inv(Mmat) ); %#ok<ASGLU>
@@ -78,10 +78,11 @@ assert_equals(info.resvec,resvec,'resvec');
 assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
 assert_equals( flag, 0, 'flag');
 
+%tol=1e-6;
+%common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'verbosity', 0 };
 [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals(tensor_to_vector(X),x,'sol', 'reltol', 1e-6);
 assert_equals(info.resvec(1:10),resvec(1:10),'resvec');
-assert_equals(info.resvec(1:12),resvec(1:12),'resvec');
 assert_true(tensor_rank( X )<=min(tensor_size(X)),'rank must be smaller/equal than min dimen','rank');
 assert_equals( flag, 0, 'flag');
 

@@ -106,7 +106,7 @@ for iter=1:maxiter
                 apply_operator_options=[base_apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
             end
         else
-            flag=true;
+            flag=3;
             abort=true;
             break;
         end
