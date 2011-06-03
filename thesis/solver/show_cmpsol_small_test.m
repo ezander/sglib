@@ -4,7 +4,7 @@ function show_cmpsol_small_test
 
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
-compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', true )
+compare_solvers_pcg( 'model_small_easy', get_solve_options, 'accurate', true )
 log_stop();
 
 function opts=get_solve_options

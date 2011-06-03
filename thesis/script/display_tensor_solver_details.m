@@ -14,6 +14,9 @@ if isfield( info, 'rho' ) && isfield( info, 'updnormvec' ) && isfield( info, 'ep
     strvarexpand( 'error est.: $errest(end)$' )
 end
 
+strvarexpand( 'error mc l2: $info.errest_l2$' )
+strvarexpand( 'error mc L2: $info.errest_L2$' )
+
 strvarexpand( 'epsilon: $info.epsvec(end)$' )
 
 strvarexpand( 'precond calls: $sum(info.rank_res_before)$' )
