@@ -33,7 +33,7 @@ end
 
 % make column vector
 p=size(pce_coeff,2);
-if p==1 && ~isscalar(pce_coeff)
+if false && p==1 && ~isscalar(pce_coeff)
     warning('hermite_val_multi:improper_arguments', 'pce_coeff should be a row vector')
     pce_coeff=reshape( pce_coeff, 1, [] );
     p=size(pce_coeff,2);
