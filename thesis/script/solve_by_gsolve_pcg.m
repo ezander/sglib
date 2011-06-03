@@ -15,14 +15,23 @@ if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];
 end
 
+th=tic;
+timers( 'resetall' );
+profile( 'on' )
+
 th=tic; 
 if verbosity>0; 
     fprintf( 'Solving (gpcg): ' ); 
 end
 
 [Ui_mat,flag,info]=generalized_solve_pcg( Ki, Fi_mat, options{:});
-U_mat=apply_boundary_conditions_solution( Ui_mat, tensor_to_array(G), P_I, P_B );
+
 info.solve_time=toc(th);
+info.timers=timers( 'getall' );
+profile( 'off' )
+info.prof=profile('info');
+
+U_mat=apply_boundary_conditions_solution( Ui_mat, tensor_to_array(G), P_I, P_B );
 
 if verbosity>0
     toc(th); 
