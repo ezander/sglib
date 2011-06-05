@@ -59,7 +59,13 @@ for i=1:num
             [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
             currUi=Ui{i};
         case 'tpcg'
-            error( 'not yet implemented' );
+            eps=get_option( solve_options{i}, 'eps', eps );
+            prec=get_option( solve_options{i}, 'prec', {'none'} );
+            dyn=get_option( solve_options{i}, 'dyn', false );
+            trunc_mode=get_option( solve_options{i}, 'trunc_mode', 'operator' );
+            
+            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_pcg( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
+            currUi=Ui{i};
         otherwise
             error( 'unknown' );
     end

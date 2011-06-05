@@ -10,7 +10,8 @@ if isfield( info, 'errvec' ) && ~isempty(info.errvec)
 end
 if isfield( info, 'rho' ) && isfield( info, 'updnormvec' ) && isfield( info, 'epsvec' )
     rho=info.rho;
-    errest=rho/(1-rho)*info.updnormvec/info.norm_U+info.epsvec;
+    mind=min(length(info.updnormvec),length(info.norm_U+info.epsvec));
+    errest=rho/(1-rho)*info.updnormvec(1:mind)/info.norm_U+info.epsvec(1:mind);
     strvarexpand( 'error est.: $errest(end)$' )
 end
 

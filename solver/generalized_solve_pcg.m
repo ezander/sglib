@@ -18,7 +18,7 @@ options=varargin2options( varargin );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
 
-timers( 'start', 'gen_solver_pcg' );
+timers( 'start', 'gen_solver_simple' );
 
 if memtrace
     memorig=memstats();
@@ -55,104 +55,142 @@ lastnormres=normres;
 info.resvec(1)=initres;
 start_tic=tic;
 prev_tic=start_tic;
-
-Zc=operator_apply( Minv, Rc );
-%Zc=funcall( truncate_after_func, F );
-Pc=Zc;
-
-releps=reltol; % not correct
-start_tic=tic;
-prev_tic=start_tic;
+base_apply_operator_options=apply_operator_options;
 
 flag=1;
 for iter=1:maxiter
-    %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
-    APc=operator_apply(A,Pc, 'pass_on', {'truncate_func', truncate_operator_func} );
-    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
-    APc=funcall( truncate_before_func, APc );
-    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
-    alpha=gvector_scalar_product( Rc, Zc)/...
-        gvector_scalar_product( Pc, APc );
-    Xn=gvector_add( Xc, Pc, alpha);
-    Rn=gvector_add( Rc, APc, -alpha );
-
-    Xn=funcall( truncate_before_func, Xn );
-    Rn=funcall( truncate_before_func, Rn );
-
-    normres=gvector_norm( Rn );
-    relres=normres/initres;
+    % add the preconditioned residuum to X
+    if tensor_mode
+        info.rank_res_before(iter)=tensor_rank(Rc);
+        info.epsvec(iter)=trunc.eps;
+    end
+    timers( 'start', 'gss_prec_apply' );
+    Z=operator_apply(Minv,Rc);
+    Z=funcall( truncate_after_func, Z );
+    timers( 'stop', 'gss_prec_apply' );
+    rho_n=gvector_scalar_product( Rc, Z );
+    if iter==1
+        P=Z;
+    else
+        beta=rho_n/rho_c;
+        % P=Z+beta*P;
+        P=gvector_scale( P, beta );
+        P=gvector_add( Z, P );
+        P=funcall( truncate_after_func, P );
+    end
     
-    %if true && (normres<abstol || relres<reltol || normres<ltres*sqrt(releps) )
-    if true && normres<lastnormres*sqrt(releps)
-        AXn=operator_apply(A,Xn, 'pass_on', {'truncate_func', truncate_operator_func} );
-        Rn=gvector_add( F, AXn, -1 );
-        Rn=funcall( truncate_before_func, Rn );
-        new_normres=gvector_norm( Rn );
-        new_relres=new_normres/initres;
-        if true %~((new_normres<abstol || new_relres<reltol))
+%     q=A*p;
+%     alpha=rho/(p'*q);
+%     x=x+alpha*p;
+%     r=r-alpha*q;
+    Q=operator_apply(A,P, 'residual', false, apply_operator_options{:} );
+    Q=funcall( truncate_after_func, Q );
+    alpha=rho_n/gvector_scalar_product( P, Q );
+    DX=gvector_scale( P, alpha );
+    
+    abort=false;
+    while true
+        % add update and truncate
+        Xn=gvector_add( Xc, DX );
+        Xn=funcall( truncate_after_func, Xn );
+        
+        % compute update ratio
+        DY=gvector_add( Xn, Xc, -1 );
+        updnorm=gvector_norm( DX );
+        upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
+        info.updvec(iter)=upratio;
+        info.updnormvec(iter)=updnorm;
+        
+        % show new stats
+        if verbosity>0
+            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');
+        end
+        
+        
+        % check update ratio
+        if abs(upratio-1)<=upratio_delta
+            break
+        end;
+        
+        % reduce epsilon if possible
+        if dynamic_eps && trunc.eps>min_eps
+            trunc.eps=max( min_eps, trunc.eps*dyneps_factor );
             if verbosity>0
-                disp( 'Normres and relres were grossly wrong. Continuing with iteration!')
-                % fprintf( 'normres: %g=>%g, relres: %g=>%g\n', normres, new_normres, relres, new_relres );
-                % keyboard;
+                strvarexpand('iter: $iter$  Reducing eps to $trunc.eps$');
             end
-            normres=new_normres;
-            relres=new_relres;
-            lastnormres=new_normres;
+            [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+            if ~isequal(trunc_mode,'none')
+                apply_operator_options=[base_apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
+            end
+        else
+            flag=3;
+            abort=true;
+            break;
+        end
+    end
+    if abort
+        break;
+    end
+    
+    % log rank if in tensor mode
+    if tensor_mode
+        info.rank_sol_after(iter)=tensor_rank(Xn);
+        if verbosity>0
+            strvarexpand('iter: $iter$  ranks:  Xn: $tensor_rank(Xn)$,  Rc:  $tensor_rank(Rc)$ ' );
         end
     end
     
-    info.resvec(end+1)=normres; %#ok<AGROW>
-    info.timevec(end+1)=toc(prev_tic);
+    % log rel error if given
+    if ~isempty(X_true)
+        curr_err=gvector_error( Xn, X_true, 'relerr', true );
+        if verbosity>0 && ~isempty(X_true)
+            strvarexpand('iter: $iter$  relerr: $curr_err$ ' );
+        end
+        info.errvec(iter)=curr_err;
+    end
+    
+    % compute new residuum
+    timers( 'start', 'gss_oper_apply' );
+    Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
+    timers( 'stop', 'gss_oper_apply' );
+    Rn=funcall( truncate_before_func, Rn );
+    
+    % compute norm of residuum
+    lastnormres=min(lastnormres,normres);
+    normres=gvector_norm( Rn );
+    relres=normres/initres;
+    info.resvec(iter+1)=normres;
+    
+    % store time used for this step 
+    info.timevec(iter)=toc(prev_tic);
     prev_tic=tic;
-
+    
     if verbosity>0
         strvarexpand('iter: $iter$  residual: $normres$  relres: $relres$' );
         strvarexpand('iter: $iter$  time: $info.timevec(end)$' );
     end
 
-    % Proposed update is DY=alpha*Pc
-    % actual update is DX=T(Xn)-Xc;
-    % update ratio is (DX,DY)/(DY,DY) should be near one
-    % no progress if near 0
-    DY=gvector_scale( Pc, alpha );
-    DX=gvector_add( Xn, Xc, -1 );
-    upratio=gvector_scalar_product( DX, DY )/gvector_scalar_product( DY, DY );
-
+    % check memory
     if memtrace
         memmax=memstats( 'mem', memmax, 'append', false );
     end
     
+    % check residual for meeting tolerance
     if normres<abstol || relres<reltol;
         flag=0;
-        break; 
-    end
-
-    %fprintf( 'Iter: %2d relres: %g upratio: %g\n', iter, relres, upratio );
-    
-    %urc=iter-50;
-    if abs(1-upratio)>.2 %&& urc>10
-        flag=-1;
         break;
     end
-
-    Zn=operator_apply(Minv,Rn);
-    beta=gvector_scalar_product(Rn,Zn)/gvector_scalar_product(Rc,Zc);
-    Pc=funcall( truncate_before_func, Pc );
-    Pn=gvector_add(Zn,Pc,beta);
-
+    
     % set all iteration variables to new state
-    Xc=funcall( truncate_after_func, Xn );
-    Rc=funcall( truncate_after_func, Rn );
-    Pc=funcall( truncate_after_func, Pn );
-    Zc=funcall( truncate_after_func, Zn );
-
+    Xc=Xn;
+    Rc=Rn;
+    rho_c=rho_n;
 end
 X=funcall( truncate_after_func, Xn );
 
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
-info.upratio=upratio;
 info.time=toc(start_tic);
 if memtrace
     info.memorig=memorig;
@@ -162,7 +200,7 @@ end
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
 if flag && nargout<2
-    solver_message( 'generalized_pcg', flag, info )
+    solver_message( 'generalized_simple_iter', flag, info )
 end
 
-timers( 'start', 'gen_solver_pcg' );
+timers( 'stop', 'gen_solver_simple' );

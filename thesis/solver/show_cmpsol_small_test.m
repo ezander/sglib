@@ -10,12 +10,15 @@ log_stop();
 function opts=get_solve_options
 opts={};
 opts{end+1}=struct( 'longdescr', 'PCG', 'descr', 'PCG', 'type', 'pcg');
+opts{end+1}=struct( 'longdescr', 'pcg tensor solver', 'descr', 'tpcg', 'type','tpcg');
 opts{end+1}=struct( 'longdescr', 'normal tensor solver', 'descr', 'normal');
+
+
 opts{end+1}=struct( 'longdescr', 'dynamic tensor solver', 'dyn', true, 'descr', 'dynamic');
 
 ilu_setup={'type', 'ilutp', 'droptol', 2e-2, 'milu', 'row', 'udiag', 1 };
 opts{end+1}=varargin2options( {'longdescr', 'ilutp 2 row prec tensor solver', ...
     'dyn', true, 'prec', {'ilu', ilu_setup}, 'descr', 'dynilutp'} );
 
-opts=opts(1:2);
+opts=opts(1:3);
 
