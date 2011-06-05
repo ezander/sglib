@@ -83,14 +83,14 @@ assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 Xex=tensor_operator_to_matrix(A)\tensor_to_vector(F);
 %A=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
 tol=1e-5;
-truncate_func={@tensor_truncate, {'eps', 0}};
-[X,flag,info]=generalized_solve_pcg( A, F, 'truncate_before_func', truncate_func );
+trunc=struct('eps',0,'k_max',inf);
+[X,flag,info]=generalized_solve_pcg( A, F, 'trunc_mode', 'before', 'trunc', trunc );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
 Minv=stochastic_precond_mean_based( A );
-[X,flag,info]=generalized_solve_pcg( A, F, 'truncate_before_func', truncate_func, 'Minv', Minv );
+[X,flag,info]=generalized_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
@@ -106,44 +106,4 @@ for i=1:kA
 end
 M=A(1,:);
 F={rand(n,kf),  rand(m,kf) };
-
-
-function [x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxit, M )
-tol=get_base_param('tol', 1e-6, 'caller' );
-maxit=get_base_param('maxit', 100, 'caller' );
-M=get_base_param('M', speye(size(A)), 'caller' );
-x=zeros(size(b));
-
-norm_r0=norm(b);
-tolb=tol*norm_r0;
-r=b-A*x;
-flag=1;
-resvec=[norm_r0];
-for iter=1:maxit
-    z=M\r;
-    rho=r'*z;
-    if iter==1
-        p=z;
-    else
-        beta=rho/rho_old;
-        p=z+beta*p;
-    end
-    q=A*p;
-    alpha=rho/(p'*q);
-    x=x+alpha*p;
-    r=r-alpha*q;
-    
-    resvec(end+1)=norm(r); %#ok<AGROW>
-    if norm(r)<tolb
-        flag=0;
-        break;
-    end
-    
-    rho_old=rho;
-end
-relres=norm(r)/norm_r0;
-
-
-
-
 

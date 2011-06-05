@@ -1,6 +1,5 @@
 function [X,flag,info]=generalized_solve_simple( A, F, varargin )
 
-
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
@@ -9,7 +8,6 @@ options=varargin2options( varargin );
 [trunc,options]=get_option( options, 'trunc', struct('eps',0,'k_max',inf) );
 [trunc_mode,options]=get_option( options, 'trunc_mode', 'none' );
 
-%[contract_limit,options]=get_option( options, 'contract_limit', 0.99 );
 [dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
 [upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
 [dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.1 );
@@ -50,8 +48,7 @@ info.updvec=[];
 info.updnormvec=[];
 
 Xc=gvector_null(F);
-Rc=F;
-Rc=funcall( truncate_before_func, Rc );
+Rc=funcall( truncate_before_func, F );
 initres=gvector_norm( Rc );
 normres=initres;
 lastnormres=normres;
@@ -192,23 +189,3 @@ if flag && nargout<2
 end
 
 timers( 'stop', 'gen_solver_simple' );
-
-
-function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
-tr={@tensor_truncate_fixed, {trunc}, {2}};
-trunc_op=trunc; trunc_op.eps=trunc.eps/3;
-to={@tensor_truncate_fixed, {trunc_op}, {2}};
-id=@identity;
-switch trunc_mode
-    case 'none'
-        funcs={id,id,id};
-    case 'operator';
-        funcs={to,tr,tr};
-    case 'before';
-        funcs={id,tr,tr};
-    case 'after'
-        funcs={id,id,tr};
-    otherwise
-        error( 'sglib:generalized_solve_simple:trunc_mode', 'unknown truncation mode %s', truncmode );
-end
-[trunc_operator_func,trunc_before_func,trunc_after_func]=funcs{:};

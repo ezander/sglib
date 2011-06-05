@@ -1,26 +1,37 @@
-function [X,flag,info,solver_stats]=generalized_solve_pcg( A, F, varargin )
-
-global gsolver_stats
+function [X,flag,info]=generalized_solve_pcg( A, F, varargin )
 
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
 [abstol,options]=get_option( options, 'abstol', 1e-6 );
 [reltol,options]=get_option( options, 'reltol', 1e-6 );
 [maxiter,options]=get_option( options, 'maxiter', 100 );
+[trunc,options]=get_option( options, 'trunc', struct('eps',0,'k_max',inf) );
+[trunc_mode,options]=get_option( options, 'trunc_mode', 'none' );
 
-[truncate_after_func,options]=get_option( options, 'truncate_after_func', @identity );
-[truncate_before_func,options]=get_option( options, 'truncate_before_func', @identity );
-[truncate_operator_func,options]=get_option( options, 'truncate_operator_func', @identity );
+[dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
+[upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
+[dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.1 );
+
+[apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 [X_true,options]=get_option( options, 'solution', [] );
-[gsolver_stats,options]=get_option( options, 'stats', struct() );
-[stats_func,options]=get_option( options, 'stats_func', @gather_stats_def );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
 check_unsupported_options( options, mfilename );
+
+timers( 'start', 'gen_solver_pcg' );
 
 if memtrace
     memorig=memstats();
     memmax=memorig;
+end
+
+if dynamic_eps
+    min_eps=trunc.eps;
+    trunc.eps=0.1;
+end
+[truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+if ~isequal(trunc_mode,'none')
+    apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
 end
 
 tensor_mode=is_tensor(F);
@@ -34,22 +45,25 @@ info.resvec=[];
 info.epsvec=[];
 info.errvec=[];
 info.updvec=[];
-
+info.updnormvec=[];
 
 Xc=gvector_null(F);
 Rc=funcall( truncate_before_func, F );
+initres=gvector_norm( Rc );
+normres=initres;
+lastnormres=normres;
+info.resvec(1)=initres;
+start_tic=tic;
+prev_tic=start_tic;
+
 Zc=operator_apply( Minv, Rc );
 %Zc=funcall( truncate_after_func, F );
 Pc=Zc;
 
-initres=gvector_norm( Rc );
-ltres=initres;
-info.resvec(end+1)=initres;
 releps=reltol; % not correct
 start_tic=tic;
 prev_tic=start_tic;
 
-gsolver_stats=funcall( stats_func, 'init', gsolver_stats, initres );
 flag=1;
 for iter=1:maxiter
     %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
@@ -69,7 +83,7 @@ for iter=1:maxiter
     relres=normres/initres;
     
     %if true && (normres<abstol || relres<reltol || normres<ltres*sqrt(releps) )
-    if true && normres<ltres*sqrt(releps)
+    if true && normres<lastnormres*sqrt(releps)
         AXn=operator_apply(A,Xn, 'pass_on', {'truncate_func', truncate_operator_func} );
         Rn=gvector_add( F, AXn, -1 );
         Rn=funcall( truncate_before_func, Rn );
@@ -83,7 +97,7 @@ for iter=1:maxiter
             end
             normres=new_normres;
             relres=new_relres;
-            ltres=new_normres;
+            lastnormres=new_normres;
         end
     end
     
@@ -103,8 +117,6 @@ for iter=1:maxiter
     DY=gvector_scale( Pc, alpha );
     DX=gvector_add( Xn, Xc, -1 );
     upratio=gvector_scalar_product( DX, DY )/gvector_scalar_product( DY, DY );
-
-    gsolver_stats=funcall( stats_func, 'step', gsolver_stats, F, A, Xn, Rn, normres, relres, upratio );
 
     if memtrace
         memmax=memstats( 'mem', memmax, 'append', false );
@@ -137,8 +149,6 @@ for iter=1:maxiter
 end
 X=funcall( truncate_after_func, Xn );
 
-gsolver_stats=funcall( stats_func, 'finish', gsolver_stats, X );
-
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
@@ -149,15 +159,10 @@ if memtrace
     info.memmax=memmax;
 end
 
-solver_stats=gsolver_stats;
-
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
 if flag && nargout<2
     solver_message( 'generalized_pcg', flag, info )
 end
 
-function stats=gather_stats_def( what, stats, varargin )
-what; %#ok, ignore
-varargin; %#ok, ignore
-
+timers( 'start', 'gen_solver_pcg' );
