@@ -50,21 +50,19 @@ for i=1:num
             fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
             fprintf( 'Contractivity: rho=%g \n', rho );
             fprintf( 'Tensor_eps:    eps=%g \n', eps );
-        case 'tensor'
+        case {'tensor', 'tpcg' }
             eps=get_option( solve_options{i}, 'eps', eps );
             prec=get_option( solve_options{i}, 'prec', {'none'} );
             dyn=get_option( solve_options{i}, 'dyn', false );
+            solve=get_option( solve_options{i}, 'solve', {} );
             trunc_mode=get_option( solve_options{i}, 'trunc_mode', 'operator' );
             
-            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
-            currUi=Ui{i};
-        case 'tpcg'
-            eps=get_option( solve_options{i}, 'eps', eps );
-            prec=get_option( solve_options{i}, 'prec', {'none'} );
-            dyn=get_option( solve_options{i}, 'dyn', false );
-            trunc_mode=get_option( solve_options{i}, 'trunc_mode', 'operator' );
-            
-            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_pcg( model, Ui_mat_true, eps, prec, dyn, trunc_mode );
+            switch  type
+                case 'tensor'
+                    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
+                case 'tpcg'
+                    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_pcg( model, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
+            end
             currUi=Ui{i};
         otherwise
             error( 'unknown' );
@@ -111,6 +109,3 @@ if false && ~strcmp( model, 'model_giant_easy' )
     plot_solution_overview(model, info_tp{1})
     plot_solution_comparison(model, info_tp)
 end
-
-
-

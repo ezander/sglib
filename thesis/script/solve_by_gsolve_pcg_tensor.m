@@ -13,6 +13,7 @@ trunc.k_max=k_max;
 options={'reltol', reltol,'maxiter', maxiter, 'abstol', abstol, 'Minv', Mi_inv, 'verbosity', inf };
 options=[options, {'trunc', trunc, 'trunc_mode', trunc_mode}];
 options=[options, {'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
+options=[options, solve_opts{:}];
 
 if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];

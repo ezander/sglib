@@ -1,6 +1,6 @@
 function show_tex_table(n)
 global info_tp
-global info_pcg
+%global info_pcg
 
 switch n
     case 1

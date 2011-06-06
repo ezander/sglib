@@ -103,7 +103,7 @@ for iter=1:maxiter
         
         % show new stats
         if verbosity>0
-            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$  (stagstep: $noconvsteps$)');
+            strvarexpand('iter: $iter$  upratio: $upratio$ res contract: $normres/lastnormres$');
         end
         
         

@@ -1,4 +1,4 @@
-function [U, Ui, info]=compute_by_tensor_simple( model, Ui_true, eps, prec, dyn, trunc_mode )
+function [U, Ui, info]=compute_by_tensor_pcg( model, Ui_true, eps, prec, dyn, trunc_mode, solve_opts )
 swallow( trunc_mode );
 
 filename=cache_model( model );
