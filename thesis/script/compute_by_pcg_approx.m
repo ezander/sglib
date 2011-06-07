@@ -8,5 +8,7 @@ modify_system
 reltol=tol;
 abstol=tol;
 
-cache_script solve_by_gsolve_pcg;
-info.rank_K=size(Ki,1);
+solver_name='gpcg';
+vector_type='matrix';
+
+cache_script( @solve_by_gsolve );

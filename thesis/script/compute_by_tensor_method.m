@@ -18,4 +18,4 @@ end
 vector_type='tensor';
 modify_system
 
-cache_script solve_by_gsolve_pcg_tensor;
+cache_script( @solve_by_gsolve_pcg_tensor );
