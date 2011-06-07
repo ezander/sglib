@@ -10,7 +10,7 @@ log_stop();
 function opts=get_solve_options
 opts={};
 opts{end+1}=struct( 'longdescr', 'PCG', 'descr', 'PCG', 'type', 'pcg');
-opts{end+1}=struct( 'longdescr', 'pcg tensor solver', 'descr', 'tpcg', 'type','tpcg');
+opts{end+1}=struct( 'longdescr', 'pcg tensor solver', 'descr', 'tpcg', 'type','gpcg');
 opts{end+1}=struct( 'longdescr', 'normal tensor solver', 'descr', 'normal');
 
 

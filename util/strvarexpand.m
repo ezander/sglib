@@ -59,6 +59,11 @@ if nargout<1
 end
 
 function str=tostring( val, orig )
+maxarr=10;
+maxcell=50;
+if islogical(val)
+    val=double(val);
+end
 if isnumeric(val)
     if isscalar(val)
         if round(val)==val
@@ -68,11 +73,14 @@ if isnumeric(val)
         end
     else
         str='[';
-        for i=1:numel(val)
+        for i=1:min(maxarr,numel(val))
             if i>1
                 str=[str, ', ']; %#ok<*AGROW>
             end
-            str=[str, tostring(val(i))];
+            str=[str, tostring(val(i),sprintf('%s[%d]',orig,i))];
+        end
+        if maxarr<numel(val)
+            str=[str, ', ...']; %#ok<*AGROW>
         end
         str=[str, ']'];
     end
@@ -82,11 +90,14 @@ elseif isa(val, 'function_handle')
     str=['@', func2str(val)];
 elseif iscell(val)
     str='{';
-    for i=1:numel(val)
+    for i=1:min(maxcell,numel(val))
         if i>1
             str=[str, ', '];
         end
-        str=[str, tostring(val{i},val{i})];
+        str=[str, tostring(val{i},sprintf('%s{%d}',orig,i))];
+    end
+    if maxcell<numel(val)
+        str=[str, ', ...']; %#ok<*AGROW>
     end
     str=[str, '}'];
 else

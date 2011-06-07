@@ -5,11 +5,12 @@ if ~exist('Ki_mat', 'var')
     Ki_mat=tensor_operator_to_matrix(Ki);
     toc;
 end
-tic; fprintf( 'Solving (direct): ' );
+solver_stats_start
 Ui_vec=Ki_mat\Fi_vec;
-toc;
+solver_stats_end
 
-vector_to_tensor;
+solution_vec2mat;
+solution_mat2ten;
 
 Ui_true=Ui;
 U_true=U;

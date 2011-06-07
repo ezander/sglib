@@ -9,7 +9,9 @@ if prod(tensor_size(Fi))<=3e7
     cache_script( @compute_contractivity );
     reltol=1e-12;
     abstol=1e-12;
-    cache_script( @solve_by_gsolve_pcg );
+    solver_name='gpcg'; 
+    vector_type='matrix';
+    cache_script( @solve_by_gsolve );
 else
     keyboard; % should not get here, or we should need some other treatment of this case
 end

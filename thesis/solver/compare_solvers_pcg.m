@@ -28,7 +28,7 @@ num=length(solve_options);
 
 U={}; Ui={}; info_tp={}; tp_err={};
 for i=1:num
-    type=get_option( solve_options{i}, 'type', 'tensor' );
+    type=get_option( solve_options{i}, 'type', 'gss' );
     descr=get_option( solve_options{i}, 'descr', '?' );
     longdescr=get_option( solve_options{i}, 'longdescr', '?' );
     underline( longdescr );
@@ -50,7 +50,7 @@ for i=1:num
             fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
             fprintf( 'Contractivity: rho=%g \n', rho );
             fprintf( 'Tensor_eps:    eps=%g \n', eps );
-        case {'tensor', 'tpcg' }
+        case {'gss', 'gpcg' }
             eps=get_option( solve_options{i}, 'eps', eps );
             prec=get_option( solve_options{i}, 'prec', {'none'} );
             dyn=get_option( solve_options{i}, 'dyn', false );
