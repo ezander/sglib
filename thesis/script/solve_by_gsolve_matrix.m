@@ -15,12 +15,21 @@ if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];
 end
 
-solver_name='gpcg'; vector_type='tensor';
+vector_type='matrix';
 solver_stats_start
 
-[Ui_mat,flag,info]=generalized_solve_pcg( Ki, Fi_mat, options{:});
+switch solver_name
+    case 'gss'
+        [Ui_mat,flag,info]=generalized_solve_simple( Ki, Fi_mat, options{:});
+    case 'gpcg'
+        [Ui_mat,flag,info]=generalized_solve_pcg( Ki, Fi_mat, options{:});
+    otherwise
+        % unknown solver
+        keyboard
+end
+
 U_mat=apply_boundary_conditions_solution( Ui_mat, tensor_to_array(G), P_I, P_B );
 
 solver_stats_end
-compute_error_matrix
+compute_error
 
