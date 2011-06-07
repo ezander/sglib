@@ -96,6 +96,7 @@ strvarexpand( 'model: $model$' )
 for i=1:num
     info=info_tp{i};
     strvarexpand( 'description: $info.descr$' )
+    strvarexpand( 'time: $info.solve_options$' )
     strvarexpand( 'time: $info.time$' )
 end
 

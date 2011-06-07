@@ -100,6 +100,17 @@ elseif iscell(val)
         str=[str, ', ...']; %#ok<*AGROW>
     end
     str=[str, '}'];
+elseif isstruct(val)
+    str='(';
+    names=fieldnames(val);
+    for i=1:length(names)
+        name=names{i};
+        if i>1
+            str=[str, ', '];
+        end
+        str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name))];
+    end
+    str=[str, ')'];
 else
     warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );
     str=['$', orig, '$'];
