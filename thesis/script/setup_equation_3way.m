@@ -41,26 +41,3 @@ G=extend_rhs( G, I_k );
 Ki=apply_boundary_conditions_operator( K, P_I );
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
 Mi_inv=stochastic_precond_mean_based( Ki );
-
-%% solve the system via direct solver for comparison
-% create matrix and tensor operators
-if false
-    K_mat=tensor_operator_to_matrix(K);
-    %Ki_mat=apply_boundary_conditions_operator( K_mat, P_I );
-    %fi_vec=apply_boundary_conditions_rhs( K_mat, f_vec, g_vec, P_I, P_B );
-    %fi_vec2=apply_boundary_conditions_rhs( K, f_vec, g_vec, P_I, P_B );
-    f_vec=tensor_to_vector( F );
-    g_vec=tensor_to_vector( G );
-    
-    %ui_vec=Ki_mat\fi_vec;
-    %ui_mat=reshape( ui_vec, [], M );
-    %[U_,S_,V_]=svd(ui_mat);
-    %Ui={U_*S_,V_};
-    
-    U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
-    u_i_alpha=apply_boundary_conditions_solution( ui_mat, g_mat, P_I, P_B );
-    l_u=min(size(u_i_alpha));
-    [u_i_k,u_k_alpha]=pce_to_kl( u_i_alpha, I_u, l_u, G_N );
-    %[u_i_k,u_k_alpha]=tensor_to_kl( U );
-end
-    
