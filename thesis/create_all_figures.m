@@ -1,5 +1,7 @@
 function create_all_figures( file_patterns, varargin )
 
+error( nargchk( 1, inf, nargin ) );
+
 global sglib_figdir
 
 persistent ran_successful

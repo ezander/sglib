@@ -36,7 +36,7 @@ for i=1:num
     switch  type
         case 'pcg'
             pcg_tol=get_option( solve_options{i}, 'tol', 1e-3 );
-            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, false );
+            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol );
             if numel(U_mat_true)
                 pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
                 eps=eps_from_error( pcg_err, rho );
@@ -57,12 +57,7 @@ for i=1:num
             solve=get_option( solve_options{i}, 'solve', {} );
             trunc_mode=get_option( solve_options{i}, 'trunc_mode', 'operator' );
             
-            switch  type
-                case 'tensor'
-                    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_simple( model, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
-                case 'tpcg'
-                    [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_pcg( model, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
-            end
+            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, type, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
             currUi=Ui{i};
         otherwise
             error( 'unknown' );
