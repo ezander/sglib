@@ -1,4 +1,4 @@
-function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate( model )
+function [U_mat, Ui_mat, info, rho]=compute_by_pcg_accurate( model, solve_opts, mod_opts )
 
 filename=cache_model( model );
 load( filename );

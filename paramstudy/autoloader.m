@@ -33,11 +33,17 @@ for i=1:size(build,1)
 
         if isa(script, 'function_handle')
             cmd=func2str(script);
+            fs=functions(script);
+            cmdpath=fileparts(fs.file);
         else
             cmd=script;
+            cmdpath='.';
         end
+        currpath=pwd;
+        
         underline( ['Computing ', target, ' (by ', cmd, ')' ]);
-        evalin( ws, cmd );
+        evalin( ws, ['cd ', cmdpath, '; ', cmd ] );
+        cd( currpath );
         
         savecmd=save_ws( target );
         evalin(ws,savecmd);

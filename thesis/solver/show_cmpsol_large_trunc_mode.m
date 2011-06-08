@@ -1,7 +1,6 @@
 function show_cmpsol_large_trunc_mode
 
 clc
-
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_large_easy', get_solve_options )
 log_stop();
@@ -19,8 +18,8 @@ opts{end+1}=varargin2options( {'longdescr', 'ilutp 2 row prec tensor solver', ..
 
 for i=1:length(opts)
     o=opts{i};
-    o.type='tpcg';
-    o.descr=[o.descr ' pcg'];
-    o.longdescr=[o.longdescr ' pcg'];
+    o.type='gpcg';
+    o.descr=['gpcg ', o.descr];
+    o.longdescr=['gpcg ', o.longdescr];
     opts(end+1)={o};
 end

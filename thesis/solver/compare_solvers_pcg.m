@@ -1,4 +1,4 @@
-function compare_solvers_pcg( model, solve_options, varargin )
+function compare_solvers_pcg( model, all_options, varargin )
 
 global U_mat_true Ui_mat_true
 global U_mat Ui_mat pcg_err eps
@@ -15,7 +15,9 @@ disp_model_data( model )
 % solve with pcg accurately for error estimates
 if accurate
     underline( 'accurate pcg' );
-    [U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model );
+    solve_opts={};
+    mod_opts={};
+    [U_mat_true, Ui_mat_true, info_acc, rho]=compute_by_pcg_accurate( model, solve_opts, mod_opts );
 else
     U_mat_true=[]; 
     Ui_mat_true=[];
@@ -24,19 +26,21 @@ end
 
 % solve with pcg approximately for performance comparison
 
-num=length(solve_options);
+num=length(all_options);
 
 U={}; Ui={}; info_tp={}; tp_err={};
 for i=1:num
-    type=get_option( solve_options{i}, 'type', 'gss' );
-    descr=get_option( solve_options{i}, 'descr', '?' );
-    longdescr=get_option( solve_options{i}, 'longdescr', '?' );
+    type=get_option( all_options{i}, 'type', 'gss' );
+    descr=get_option( all_options{i}, 'descr', '?' );
+    longdescr=get_option( all_options{i}, 'longdescr', '?' );
+    solve_opts=get_option( all_options{i}, 'solve_opts', {} );
+    mod_opts=get_option( all_options{i}, 'mod_opts', {} );
     underline( longdescr );
     
     switch  type
         case 'pcg'
-            pcg_tol=get_option( solve_options{i}, 'tol', 1e-3 );
-            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol );
+            pcg_tol=get_option( all_options{i}, 'tol', 1e-3 );
+            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, solve_opts, mod_opts );
             if numel(U_mat_true)
                 pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
                 eps=eps_from_error( pcg_err, rho );
@@ -51,13 +55,13 @@ for i=1:num
             fprintf( 'Contractivity: rho=%g \n', rho );
             fprintf( 'Tensor_eps:    eps=%g \n', eps );
         case {'gss', 'gpcg' }
-            eps=get_option( solve_options{i}, 'eps', eps );
-            prec=get_option( solve_options{i}, 'prec', {'none'} );
-            dyn=get_option( solve_options{i}, 'dyn', false );
-            solve=get_option( solve_options{i}, 'solve', {} );
-            trunc_mode=get_option( solve_options{i}, 'trunc_mode', 'operator' );
+            eps=get_option( all_options{i}, 'eps', eps );
+            prec=get_option( all_options{i}, 'prec', {'none'} );
+            dyn=get_option( all_options{i}, 'dyn', false );
+            trunc_mode=get_option( all_options{i}, 'trunc_mode', 'operator' );
+            tol=get_option( all_options{i}, 'tol', 1e-4 );
             
-            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, type, Ui_mat_true, eps, prec, dyn, trunc_mode, solve );
+            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, type, Ui_mat_true, tol, eps, prec, dyn, trunc_mode, solve_opts, mod_opts );
             currUi=Ui{i};
         otherwise
             error( 'unknown' );
@@ -97,7 +101,7 @@ for i=1:num
     info=info_tp{i};
     strvarexpand( 'description: $info.descr$' )
     strvarexpand( 'time: $info.time$' )
-    strvarexpand( 'opts: $info.solve_options$' )
+    strvarexpand( 'opts: $info.all_options$' )
     strvarexpand( 'resv: $info.resvec$' )
 end
 
