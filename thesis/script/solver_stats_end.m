@@ -8,5 +8,5 @@ info.solve_options=options;
 
 if verbosity>0
     toc(solver_start_tic); 
-    fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
+    strvarexpand( 'Flag: $flag$, iter: $info.iter$, relres: $info.relres$' );
 end

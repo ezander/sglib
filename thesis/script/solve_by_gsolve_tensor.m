@@ -1,20 +1,23 @@
 ws='caller';
-maxiter=get_base_param( 'maxiter', 100, ws );
-reltol=get_base_param( 'reltol', 1e-6, ws );
 abstol=get_base_param( 'abstol', 1e-6, ws );
-verbosity=get_base_param( 'verbosity', 1, ws );
+reltol=get_base_param( 'reltol', 1e-6, ws );
+maxiter=get_base_param( 'maxiter', 100, ws );
+verbosity=get_base_param( 'verbosity', inf, ws );
 trunc_mode=get_base_param( 'trunc_mode', 'operator', ws );
 eps=get_base_param( 'eps', 1e-6, ws );
 k_max=get_base_param( 'k_max', inf, ws );
 upratio_delta=get_base_param( 'upratio_delta', 0.1, ws );
 dynamic_eps=get_base_param( 'dynamic_eps', false, ws );
+dyneps_factor=get_base_param( 'dyneps_factor', 0.1, ws );
 
 trunc.eps=eps;
 trunc.k_max=k_max;
-options={'reltol', reltol,'maxiter', maxiter, 'abstol', abstol, 'Minv', Mi_inv, 'verbosity', inf };
-options=[options, {'trunc', trunc, 'trunc_mode', trunc_mode}];
-options=[options, {'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
+options={};
+options=[options, {'abstol', abstol, 'reltol', reltol,'maxiter', maxiter }];
+options=[options, {'trunc_mode', trunc_mode, 'trunc', trunc}];
+options=[options, {'dynamic_eps', dynamic_eps, 'upratio_delta', upratio_delta, 'dyneps_factor', dyneps_factor}];
 options=[options, solve_opts{:}];
+options=[options, {'verbosity', verbosity, 'Minv', Mi_inv }];
 
 if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];

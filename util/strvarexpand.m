@@ -39,7 +39,7 @@ for i=pos
         try
             part=evalin( 'caller', part );
         catch
-            part='<error>';
+            part=['<err:' part '>'];
         end
         part=tostring( part, orig );
     end

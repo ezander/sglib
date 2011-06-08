@@ -74,14 +74,7 @@ for i=1:num
     info_tp{i}.relerr2=tp_err{i};
 end
 
-fprintf( '\n============ TIME =====================================\n' );
-for i=1:num
-    strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
-    if isfield( info_tp{i}, 'timers' )
-        display_timing_details( info_tp{i}.timers )
-    end
-    fprintf('\n');
-end
+
 
 fprintf( '\n============ STATS =====================================\n' );
 for i=1:num
@@ -90,15 +83,33 @@ for i=1:num
 end
 
 
-fprintf( '\n============ TIME =====================================\n' );
-strvarexpand( 'model: $model$' )
+fprintf( '\n============ DETAILED TIMINGS ==========================\n' );
+for i=1:num
+    strvarexpand( 'meth: $info_tp{i}.descr$ time: $info_tp{i}.time$ err: $tp_err{i}$' );
+    if isfield( info_tp{i}, 'timers' )
+        display_timing_details( info_tp{i}.timers )
+    end
+    fprintf('\n');
+end
 
+fprintf( '\n============ TIME, RES, OPTS============================\n' );
 for i=1:num
     info=info_tp{i};
     strvarexpand( 'description: $info.descr$' )
-    strvarexpand( 'time: $info.solve_options$' )
+    strvarexpand( 'time: $info.time$' )
+    strvarexpand( 'opts: $info.solve_options$' )
+    strvarexpand( 'resv: $info.resvec$' )
+end
+
+
+fprintf( '\n============ TIME =====================================\n' );
+strvarexpand( 'model: $model$' )
+for i=1:num
+    info=info_tp{i};
+    strvarexpand( 'description: $info.descr$' )
     strvarexpand( 'time: $info.time$' )
 end
+
 
 % display graphics
 if false && ~strcmp( model, 'model_giant_easy' )

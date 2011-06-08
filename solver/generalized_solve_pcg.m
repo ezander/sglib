@@ -58,6 +58,7 @@ prev_tic=start_tic;
 base_apply_operator_options=apply_operator_options;
 
 flag=1;
+restart=true;
 for iter=1:maxiter
     % add the preconditioned residuum to X
     if tensor_mode
@@ -69,8 +70,9 @@ for iter=1:maxiter
     Z=funcall( truncate_after_func, Z );
     timers( 'stop', 'gss_prec_apply' );
     rho_n=gvector_scalar_product( Rc, Z );
-    if iter==1
+    if restart
         P=Z;
+        restart=false;
     else
         beta=rho_n/rho_c;
         % P=Z+beta*P;
@@ -122,6 +124,7 @@ for iter=1:maxiter
             if ~isequal(trunc_mode,'none')
                 apply_operator_options=[base_apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
             end
+            restart=true;
         else
             flag=3;
             abort=true;

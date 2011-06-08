@@ -1,5 +1,6 @@
 if verbosity>0; 
-    fprintf( 'Solving (%s,%s): ', solver_name, vector_type ); 
+    strvarexpand( 'Solving ($solver_name$,$vector_type$): ' ); 
+    strvarexpand( 'Options: $options$' ); 
 end
 
 timers( 'resetall' );
