@@ -8,3 +8,9 @@ if ~isempty( l_k )
     Ki=Ki(1:l_k,:);
     K=K(1:l_k,:);
 end
+
+
+if isempty(prec)
+   prec='mean'; 
+end
+Mi_inv=stochastic_precond_mean_based( Ki, 'precond_type', prec );

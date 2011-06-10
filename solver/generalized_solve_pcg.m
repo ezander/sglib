@@ -65,10 +65,10 @@ for iter=1:maxiter
         info.rank_res_before(iter)=tensor_rank(Rc);
         info.epsvec(iter)=trunc.eps;
     end
-    timers( 'start', 'gss_prec_apply' );
+    timers( 'start', 'gsolve_prec_apply' );
     Z=operator_apply(Minv,Rc);
     Z=funcall( truncate_after_func, Z );
-    timers( 'stop', 'gss_prec_apply' );
+    timers( 'stop', 'gsolve_prec_apply' );
     rho_n=gvector_scalar_product( Rc, Z );
     if restart
         P=Z;
@@ -153,9 +153,9 @@ for iter=1:maxiter
     end
     
     % compute new residuum
-    timers( 'start', 'gss_oper_apply' );
+    timers( 'start', 'gsolve_oper_apply' );
     Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
-    timers( 'stop', 'gss_oper_apply' );
+    timers( 'stop', 'gsolve_oper_apply' );
     Rn=funcall( truncate_before_func, Rn );
     
     % compute norm of residuum

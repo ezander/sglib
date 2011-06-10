@@ -1,6 +1,5 @@
 function show_tex_table(n)
 global info_tp
-%global info_pcg
 
 switch n
     case 1
@@ -27,11 +26,7 @@ switch n
     otherwise
         error( 'foobar' );
 end
-infos={};
-%infos={infos{:}, info_pcg{:}};
-infos={infos{:}, info_tp{:}};
-
-maketable( infos, entries, true, rft, rfm )
+maketable( info_tp, entries, true, rft, rfm )
 
 function maketable( infos, entries, trans, rft, rfm )
 fprintf( '\n');

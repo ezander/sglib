@@ -37,24 +37,24 @@ P=cell( 1, R );
 info=cell( 1, R );
 
 switch precond_type
-    case 0 % mean based
+    case {0, 'mean'} % mean based
         M=A(1,:);
-    case 1 % kronecker
+    case {1, 'kron'} % kronecker
         % see van Loan & Pitsianis, Ullmann
         M=A(1,:);
-        M=optimise( M, A, 1 );
+        M=minimise_kron( M, A, 1 );
     case 2 % kronecker iterative
         % see van Loan & Pitsianis, Ullmann
         M=A(1,:);
         for i=1:3
             for j=1:R
-                M=optimise( M, A, j );
+                M=minimise_kron( M, A, j );
             end
         end
-    case 3 % kronecker this is my own rather complicated one,
+    case {3, 'ikron'} % kronecker this is my own rather complicated one,
         % converges fast but takes LOOONG to construct
         M=A(1,:);
-        M=optimise2( M, A );
+        M=minimise_ikron( M, A );
     otherwise
         error( 'sglib:stochastic_precond', 'unknown preconditioner type: %d', precond_type );
 end
@@ -66,7 +66,7 @@ for i=1:R
     [Pinv{i},P{i},info{i}]=operator_from_matrix_solve( M{i}, decomp_type, 'decomp_options', decomp_options );
 end
 
-function M=optimise( M, A, j )
+function M=minimise_kron( M, A, j )
 a0=frobenius_inner(M{j},M{j});
 R=size(A,2);
 for i=1:R
@@ -82,7 +82,7 @@ for k=1:size(A,1)
 end
 
 
-function M=optimise2( M, A )
+function M=minimise_ikron( M, A )
 U=inv(M{1});
 V=0*M{2};
 

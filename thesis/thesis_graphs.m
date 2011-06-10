@@ -13,4 +13,7 @@ file_patterns={
     };
 
 
-create_all_figures( file_patterns, 'recreate_all', false, 'ask', true, 'default_exec', true );
+ask=get_base_param( 'ask', true );
+recreate_all=get_base_param( 'recreate_all', false );
+default_exec=get_base_param( 'default_exec', true );
+create_all_figures( file_patterns, 'recreate_all', recreate_all, 'ask', ask, 'default_exec', default_exec );

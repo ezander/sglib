@@ -19,7 +19,7 @@ vector_type='matrix';
 solver_stats_start
 
 switch solver_name
-    case 'gss'
+    case 'gsi'
         [Ui_mat,flag,info]=generalized_solve_simple( Ki, Fi_mat, options{:});
     case 'gpcg'
         [Ui_mat,flag,info]=generalized_solve_pcg( Ki, Fi_mat, options{:});

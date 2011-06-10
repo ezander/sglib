@@ -64,9 +64,9 @@ for iter=1:maxiter
         info.rank_res_before(iter)=tensor_rank(Rc);
         info.epsvec(iter)=trunc.eps;
     end
-    timers( 'start', 'gss_prec_apply' );
+    timers( 'start', 'gsolve_prec_apply' );
     DX=operator_apply(Minv,Rc);
-    timers( 'stop', 'gss_prec_apply' );
+    timers( 'stop', 'gsolve_prec_apply' );
     
     abort=false;
     while true
@@ -134,9 +134,9 @@ for iter=1:maxiter
         AXn=operator_apply(A,Xn, apply_operator_options{:} );
         Rn=gvector_add( F, AXn, -1 );
     else
-        timers( 'start', 'gss_oper_apply' );
+        timers( 'start', 'gsolve_oper_apply' );
         Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
-        timers( 'stop', 'gss_oper_apply' );
+        timers( 'stop', 'gsolve_oper_apply' );
     end
     Rn=funcall( truncate_before_func, Rn );
     

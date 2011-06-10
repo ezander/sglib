@@ -27,7 +27,7 @@ vector_type='tensor';
 solver_stats_start
 
 switch solver_name
-    case 'gss'
+    case 'gsi'
         [Ui,flag,info]=generalized_solve_simple( Ki, Fi, options{:});
     case 'gpcg'
         [Ui,flag,info]=generalized_solve_pcg( Ki, Fi, options{:});

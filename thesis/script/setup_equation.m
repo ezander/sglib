@@ -37,4 +37,7 @@ if verbosity>0; toc(t_klop); end
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
-Mi_inv=stochastic_precond_mean_based( Ki );
+
+%% setup preconditioner
+prec=get_base_param( 'prec', 'mean' );
+Mi_inv=stochastic_precond_mean_based( Ki, 'precond_type', prec );

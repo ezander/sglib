@@ -30,7 +30,7 @@ num=length(all_options);
 
 U={}; Ui={}; info_tp={}; tp_err={};
 for i=1:num
-    type=get_option( all_options{i}, 'type', 'gss' );
+    type=get_option( all_options{i}, 'type', 'gsi' );
     descr=get_option( all_options{i}, 'descr', '?' );
     longdescr=get_option( all_options{i}, 'longdescr', '?' );
     solve_opts=get_option( all_options{i}, 'solve_opts', {} );
@@ -40,7 +40,8 @@ for i=1:num
     switch  type
         case 'pcg'
             pcg_tol=get_option( all_options{i}, 'tol', 1e-3 );
-            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, Ui_mat_true, pcg_tol, solve_opts, mod_opts );
+            prec=get_option( all_options{i}, 'prec', 'mean' );
+            [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, prec, Ui_mat_true, pcg_tol, solve_opts, mod_opts );
             if numel(U_mat_true)
                 pcg_err=gvector_error( U_mat, U_mat_true, 'relerr', true );
                 eps=eps_from_error( pcg_err, rho );
@@ -54,14 +55,15 @@ for i=1:num
             fprintf( 'PCG_ERR:       e_p=%g \n', pcg_err );
             fprintf( 'Contractivity: rho=%g \n', rho );
             fprintf( 'Tensor_eps:    eps=%g \n', eps );
-        case {'gss', 'gpcg' }
+        case {'gsi', 'gpcg' }
             eps=get_option( all_options{i}, 'eps', eps );
-            prec=get_option( all_options{i}, 'prec', {'none'} );
+            prec_strat=get_option( all_options{i}, 'prec_strat', {'none'} );
             dyn=get_option( all_options{i}, 'dyn', false );
             trunc_mode=get_option( all_options{i}, 'trunc_mode', 'operator' );
             tol=get_option( all_options{i}, 'tol', 1e-4 );
+            prec=get_option( all_options{i}, 'prec', 'mean' );
             
-            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, type, Ui_mat_true, tol, eps, prec, dyn, trunc_mode, solve_opts, mod_opts );
+            [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, prec, type, Ui_mat_true, tol, eps, prec_strat, dyn, trunc_mode, solve_opts, mod_opts );
             currUi=Ui{i};
         otherwise
             error( 'unknown' );
