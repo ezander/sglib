@@ -10,15 +10,26 @@ switch n
         rfh=@(x)(x);
         rfv=@(x)(x);
         rfe=@(x)(roundat(x,1));
+    case 2
+        hfield='abstol';
+        vfield='descr';
+        %efield='time';
+        efield='flag';
+        efield='relres';
+        %efield='relerr';
+        %efield='time';
+        rfh=@(x)(x);
+        rfv=@(x)(x);
+        rfe=@(x)(x);%roundat(x,1));
     otherwise
         error( 'foobar' );
 end
 maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
 
 function maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
-hskip=0;
-vskip=0;
 num=numel(infos);
+hskip=num;
+vskip=num;
 for i=2:num; 
     if iseq( infos{1}.(hfield), infos{i}.(hfield) )
         vskip=i-1;
@@ -46,6 +57,9 @@ for i=0:vnum
         if j>0
             if i>0
                 entry=strvarexpand( '$rfe(infos{curr}.(efield))$' );
+                if infos{curr}.flag~=0
+                    entry=[entry strvarexpand( '($infos{curr}.flag$)' )];
+                end
                 curr=curr+hskip;
                 if curr>num; curr=curr-num; end
             else
@@ -79,24 +93,6 @@ if ischar(a)
 else
     eq=a==b;
 end
-        
-
-% fprintf( '\n');
-% if trans
-%     for j=1:length(entries)
-%         for i=0:length(infos)
-%             printentry( infos, entries, i, j, i==length(infos), rft, rfm );
-%         end
-%         fprintf( '\n');
-%     end
-% else
-%     for i=0:length(infos)
-%         for j=1:length(entries)
-%             printentry( infos, entries, i, j, j==length(entries), rft, rfm );
-%         end
-%         fprintf( '\n');
-%     end
-% end
 
 function printentry( infos, entries, i, j, atend, rft, rfm )
 mode=entries{j,1};

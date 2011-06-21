@@ -61,6 +61,9 @@ else
     info=infos{i};
     t=info.timers;
     entry=strvarexpand( entries{j,3} );
+    if info.flag~=0
+        entry=[entry strvarexpand( '($info.flag$)' )];
+    end
 end
 del='& ';
 if atend

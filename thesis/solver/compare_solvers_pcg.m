@@ -39,7 +39,7 @@ for i=1:num
     
     switch  type
         case 'pcg'
-            pcg_tol=get_option( all_options{i}, 'tol', 1e-3 );
+            pcg_tol=get_option( all_options{i}, 'tol', 1e-4 );
             prec=get_option( all_options{i}, 'prec', 'mean' );
             [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, prec, Ui_mat_true, pcg_tol, solve_opts, mod_opts );
             if numel(U_mat_true)
