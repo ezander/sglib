@@ -6,7 +6,7 @@ function show_cmpsol_large_op_klterms
 clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
-compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', false )
+compare_solvers_pcg( 'model_large_easy_lk40', get_solve_options, 'accurate', false )
 show_tex_table_2d(1);
 log_stop();
 
@@ -50,8 +50,9 @@ pcg_kron_opts={...
     'type', 'pcg', ...
     'prec', 'kron' };
 
+lk_set=round(linspace( sqrt(2), sqrt(40), 15 )'.^2);
 
-for l_k=2:10
+for l_k=lkset
     for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
 % for l_k=2:2
 %     for def_opts={pcg_mean_opts,pcg_kron_opts}
