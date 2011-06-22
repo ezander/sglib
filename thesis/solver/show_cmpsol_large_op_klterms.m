@@ -52,7 +52,7 @@ pcg_kron_opts={...
 
 lk_set=round(linspace( sqrt(2), sqrt(40), 15 )'.^2);
 
-for l_k=lkset
+for l_k=lk_set
     for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
 % for l_k=2:2
 %     for def_opts={pcg_mean_opts,pcg_kron_opts}
