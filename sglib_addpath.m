@@ -67,6 +67,7 @@ addpath( fullfile( basepath, 'linalg') );
 if exist( fullfile( basepath, 'thesis'), 'dir' )
   addpath( fullfile( basepath, 'thesis') )
   addpath( fullfile( basepath, 'thesis', 'script') )
+  addpath( fullfile( basepath, 'thesis', 'models') )
 end
 if exist( fullfile( basepath, 'paramstudy'), 'dir' )
   addpath( fullfile( basepath, 'paramstudy') )
