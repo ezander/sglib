@@ -53,6 +53,7 @@ initres=gvector_norm( Rc );
 normres=initres;
 lastnormres=normres;
 info.resvec(1)=initres;
+start_cputime=cputime();
 start_tic=tic;
 prev_tic=start_tic;
 base_apply_operator_options=apply_operator_options;
@@ -81,10 +82,9 @@ for iter=1:maxiter
         P=funcall( truncate_after_func, P );
     end
     
-%     q=A*p;
-%     alpha=rho/(p'*q);
-%     x=x+alpha*p;
-%     r=r-alpha*q;
+    %     q=A*p;
+    %     alpha=rho/(p'*q);
+    %     x=x+alpha*p;
     Q=operator_apply(A,P, 'residual', false, apply_operator_options{:} );
     Q=funcall( truncate_after_func, Q );
     alpha=rho_n/gvector_scalar_product( P, Q );
@@ -153,10 +153,16 @@ for iter=1:maxiter
     end
     
     % compute new residuum
-    timers( 'start', 'gsolve_oper_apply' );
-    Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
-    timers( 'stop', 'gsolve_oper_apply' );
-    Rn=funcall( truncate_before_func, Rn );
+    if tensor_mode
+        timers( 'start', 'gsolve_oper_apply' );
+        Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
+        timers( 'stop', 'gsolve_oper_apply' );
+        Rn=funcall( truncate_before_func, Rn );
+    else
+        %     r=r-alpha*q;
+        Rn=gvector_add( Rc, gvector_scale( -alpha, Q ) );
+    end
+
     
     % compute norm of residuum
     lastnormres=min(lastnormres,normres);
@@ -194,6 +200,7 @@ X=funcall( truncate_after_func, Xn );
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
+info.cputime=cputime()-start_cputime;
 info.time=toc(start_tic);
 if memtrace
     info.memorig=memorig;

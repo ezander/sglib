@@ -53,6 +53,7 @@ initres=gvector_norm( Rc );
 normres=initres;
 lastnormres=normres;
 info.resvec(1)=initres;
+start_cputime=cputime();
 start_tic=tic;
 prev_tic=start_tic;
 base_apply_operator_options=apply_operator_options;
@@ -176,6 +177,7 @@ X=funcall( truncate_after_func, Xn );
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
+info.cputime=cputime()-start_cputime;
 info.time=toc(start_tic);
 if memtrace
     info.memorig=memorig;
