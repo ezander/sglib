@@ -2,41 +2,42 @@ function show_tex_table_2d(n)
 global info_tp
 
 infos=info_tp;
+rfh=@(x)(x);
+rfv=@(x)(x);
+rfe=@(x)(x);
 switch n
     case 1
         hfield='rank_K';
         vfield='descr';
         efield='time';
-        rfh=@(x)(x);
-        rfv=@(x)(x);
-        rfe=@(x)(roundat(x,1));
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
     case 2
         hfield='abstol';
+        rfh=@(x)(10000*x);
         vfield='descr';
-        %efield='time';
-        efield='flag';
+        rfv=@(x)(['\kwf{', x, '}']);
+        
+        efield='time';
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
+        
         efield='relres';
-        %efield='relerr';
-        %efield='time';
-        rfh=@(x)(x);
-        rfv=@(x)(x);
-        rfe=@(x)(x);%roundat(x,1));
+        rfe=@(x)(10000*x);
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
     otherwise
         error( 'foobar' );
 end
-maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
 
 function maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
 num=numel(infos);
 hskip=num;
 vskip=num;
-for i=2:num; 
+for i=2:num;
     if iseq( infos{1}.(hfield), infos{i}.(hfield) )
         vskip=i-1;
         break;
     end
 end
-for i=2:num; 
+for i=2:num;
     if iseq( infos{1}.(vfield), infos{i}.(vfield) )
         hskip=i-1;
         break;
@@ -63,11 +64,11 @@ for i=0:vnum
                 curr=curr+hskip;
                 if curr>num; curr=curr-num; end
             else
-                entry=strvarexpand( '$rfv(infos{(j-1)*hskip+1}.(hfield))$' );
+                entry=strvarexpand( '$rfh(infos{(j-1)*hskip+1}.(hfield))$' );
             end
         else
             if i>0
-                entry=strvarexpand( '$rfh(infos{(i-1)*vskip+1}.(vfield))$' );
+                entry=strvarexpand( '$rfv(infos{(i-1)*vskip+1}.(vfield))$' );
             else
                 entry='';
             end
@@ -84,6 +85,9 @@ for i=0:vnum
         if curr>num; curr=curr-num; end
     end
     fprintf( '\n');
+    if i==0
+        fprintf( '\\hline\n');
+    end
 end
 
 
