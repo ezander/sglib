@@ -84,13 +84,14 @@ for iter=1:maxiter
     
     %     q=A*p;
     Qc=operator_apply(A,P, 'residual', false, apply_operator_options{:} );
+    Qn=Qc;
     
     abort=false;
     while true
     %     alpha=rho/(p'*q);
     %     x=x+alpha*p;
-        Qn=funcall( truncate_after_func, Qn );
-        alpha=rho_n/gvector_scalar_product( P, Qn );
+        Qn=funcall( truncate_after_func, Qc );
+        alpha=rho_n/gvector_scalar_product( P, Qc );
         DX=gvector_scale( P, alpha );
         
         % add update and truncate
@@ -161,7 +162,7 @@ for iter=1:maxiter
         Rn=funcall( truncate_before_func, Rn );
     else
         %     r=r-alpha*q;
-        Rn=gvector_add( Rc, gvector_scale( -alpha, Q ) );
+        Rn=gvector_add( Rc, gvector_scale( -alpha, Qn ) );
     end
 
     

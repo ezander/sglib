@@ -1,16 +1,24 @@
-function show_tex_table_2d(n)
+function show_tex_table_2d(n,varargin)
 global info_tp
+
+options=varargin2options(varargin);
+[indent,options]=get_option( options, 'indent', 4 );
+[hl,options]=get_option( options, 'hl', [] );
+check_unsupported_options(options,mfilename);
+
 
 infos=info_tp;
 rfh=@(x)(x);
 rfv=@(x)(x);
 rfe=@(x)(x);
+indstr=repmat(' ',1,indent);
+
 switch n
     case 1
         hfield='rank_K';
         vfield='descr';
         efield='time';
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
     case 2
         hfield='abstol';
         rfh=@(x)(10000*x);
@@ -18,16 +26,16 @@ switch n
         rfv=@(x)(['\kwf{', x, '}']);
         
         efield='time';
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
         
         efield='relres';
         rfe=@(x)(10000*x);
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
+        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
     otherwise
         error( 'foobar' );
 end
 
-function maketable( infos, hfield, vfield, efield, rfh, rfv, rfe )
+function maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
 num=numel(infos);
 hskip=num;
 vskip=num;
@@ -51,7 +59,8 @@ else
     vnum=num/hnum;
 end
 
-fprintf('\n\n');
+fprintf('\n\n%s\\hline', indstr);
+fprintf('\n%s', indstr);
 curr=1;
 for i=0:vnum
     for j=0:hnum
@@ -59,7 +68,7 @@ for i=0:vnum
             if i>0
                 entry=strvarexpand( '$rfe(infos{curr}.(efield))$' );
                 if infos{curr}.flag~=0
-                    entry=[entry strvarexpand( '($infos{curr}.flag$)' )];
+                    entry=[strvarexpand( '{\rccmt{($infos{curr}.flag$)}}') entry];
                 end
                 curr=curr+hskip;
                 if curr>num; curr=curr-num; end
@@ -84,11 +93,12 @@ for i=0:vnum
         curr=curr+vskip;
         if curr>num; curr=curr-num; end
     end
-    fprintf( '\n');
-    if i==0
-        fprintf( '\\hline\n');
+    fprintf( '\n%s', indstr );
+    if i==0 || any(hl==i)
+        fprintf( '\\hline\n%s', indstr);
     end
 end
+fprintf('\\hline\n' );
 
 
 function eq=iseq( a, b )
