@@ -23,17 +23,3 @@ if nargin==2
 end
 
 y=exp( linspace(log(d1),log(d2),n) );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
