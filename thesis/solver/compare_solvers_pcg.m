@@ -35,7 +35,9 @@ for i=1:num
     longdescr=get_option( all_options{i}, 'longdescr', '?' );
     solve_opts=get_option( all_options{i}, 'solve_opts', {} );
     mod_opts=get_option( all_options{i}, 'mod_opts', {} );
+    
     underline( longdescr );
+    strvarexpand( 'options: $all_options{i}$' )
     
     switch  type
         case 'pcg'
