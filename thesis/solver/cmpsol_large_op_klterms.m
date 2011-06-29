@@ -1,4 +1,4 @@
-function show_cmpsol_large_op_klterms
+function cmpsol_large_op_klterms
 
 % compares performance for the two stage preconditioner for different
 % settings of the ILU preconditioner
@@ -7,7 +7,6 @@ clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_large_easy_lk40', get_solve_options, 'accurate', false )
-%compare_solvers_pcg( 'model_small_easy', get_solve_options, 'accurate', false )
 show_tex_table_2d(1,'hl',[]);
 log_stop();
 

@@ -9,6 +9,11 @@ options=varargin2options( varargin );
 [eps,options]=get_option( options, 'eps', 1e-4 );
 check_unsupported_options( options, mfilename );
 
+if fasttest('get')
+    model='model_small_easy';
+    fprintf( 'FASTTEST enabled; using small model\n' );
+end
+
 %rebuild_scripts( model );
 disp_model_data( model )
 
