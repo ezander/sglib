@@ -29,6 +29,10 @@ Y=[pos(2,edges(1,:)); pos(2,edges(2,:)); nan*ones(1,n)];
 if size(pos,1)>=3
     Z=[pos(3,edges(1,:)); pos(3,edges(2,:)); nan*ones(1,n)];
 else
-    Z=zpos*ones(size(X));
+    if isscalar(zpos)
+        Z=zpos*ones(size(X));
+    else
+        Z=[zpos(edges(1,:)); zpos(edges(2,:)); nan*ones(1,n)];
+    end
 end
 line('xdata', X(:), 'ydata', Y(:), 'zdata', Z(:), line_opts{:} );
