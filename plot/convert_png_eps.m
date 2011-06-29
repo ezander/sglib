@@ -19,7 +19,7 @@ function [res,epsfilename,msgs]=convert_png_eps(inoutfilename, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
-[dpi,options]=get_option(options,'dpi',72); %#ok<ASGLU>
+[dpi,options]=get_option(options,'dpi',300); %#ok<ASGLU>
 [pslevel,options]=get_option(options,'pslevel','2'); %#ok<ASGLU>
 [quiet,options]=get_option(options,'quiet',false);
 [extra_params,options]=get_option(options,'extra_params','');
@@ -27,6 +27,9 @@ check_unsupported_options(options,mfilename);
 
 [path,filename]=fileparts(inoutfilename);
 pngfilename=fullfile(path,[filename,'.png']); %#ok<NASGU>
+% TODO: mean hack since sam2p currently does not work for me with 
+% png images
+pngfilename=fullfile(path,[filename,'.bmp']); %#ok<NASGU>
 epsfilename=fullfile(path,[filename,'.eps']);
 
 if quiet

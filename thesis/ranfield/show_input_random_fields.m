@@ -10,7 +10,6 @@ mh=multiplot_init( 1, 2 );
 set(get(mh(1),'parent'),'renderer','painters')
 
 %rand( 'state' )
-randn( 'state' )
 randn( 'seed', 12346  )
 
 opts.view=3;

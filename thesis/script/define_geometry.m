@@ -38,6 +38,6 @@ end
 is_neumann=get_base_param( 'is_neumann', make_spatial_func('false') );
 
 all_bnd_nodes=bnd_nodes;
-neumann_ind=funcall( is_neumann, pos(:,bnd_nodes) );
+neumann_ind=funcall( is_neumann, pos(:,all_bnd_nodes) );
 neumann_nodes=all_bnd_nodes(neumann_ind);
 bnd_nodes=all_bnd_nodes(~neumann_ind);

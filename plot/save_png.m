@@ -15,3 +15,7 @@ if notitle; title(''); end
 filename=make_filename( name, figdir, 'png' );
 makesavepath( filename );
 print( handle, filename, '-dpng', sprintf( '-r%d', res ) );
+
+% TODO: this is a hack since sam2p is currently not working for me
+filename=make_filename( name, figdir, 'bmp' );
+print( handle, filename, '-dbmp', sprintf( '-r%d', res ) );

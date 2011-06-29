@@ -7,6 +7,7 @@ if ~exist('Ki_mat', 'var')
 end
 solver_stats_start
 Ui_vec=Ki_mat\Fi_vec;
+U_vec=apply_boundary_conditions_solution( Ui_vec, G, P_I, P_B );
 solver_stats_end
 
 solution_vec2mat;

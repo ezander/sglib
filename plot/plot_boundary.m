@@ -38,8 +38,11 @@ options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 0 );
 [color,options]=get_option( options, 'color', 'k' );
 [width,options]=get_option( options, 'width', 1 );
+[bnd,options]=get_option( options, 'bndedges', '' );
 check_unsupported_options( options, mfilename );
 
-bnd=find_boundary( els, false );
+if isempty(bnd) && ischar(bnd)
+    bnd=find_boundary( els, false );
+end
 
 plot_lines(pos,bnd,'zpos', zpos, 'line_opts', {'color', color, 'linewidth', width} );
