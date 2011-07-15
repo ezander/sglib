@@ -16,6 +16,9 @@ options=varargin2options( varargin );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 [X_true,options]=get_option( options, 'solution', [] );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
+
+[beta_formula,options]=get_option( options, 'beta_formula', 'PR' );
+
 check_unsupported_options( options, mfilename );
 
 timers( 'start', 'gen_solver_simple' );
@@ -58,6 +61,16 @@ start_tic=tic;
 prev_tic=start_tic;
 base_apply_operator_options=apply_operator_options;
 
+switch lower(beta_formula)
+    case {'fr', 'fletcher-reeves', 0}; beta_formula=0;
+    case {'pr', 'polak-ribiere', 1}; beta_formula=1;
+    case {'hs', 'hestenes-stiefel', 2}; beta_formula=2;
+    otherwise; error( 'sglib:generalised_solve_pcg', 'unknown beta_formula' );
+end
+if beta_formula
+    DR=Rc;
+end
+
 flag=1;
 restart=true;
 for iter=1:maxiter
@@ -71,11 +84,19 @@ for iter=1:maxiter
     Z=funcall( truncate_after_func, Z );
     timers( 'stop', 'gsolve_prec_apply' );
     rho_n=gvector_scalar_product( Rc, Z );
+    if beta_formula
+        rhod_n=gvector_scalar_product( DR, Z );
+    end
     if restart
         P=Z;
         restart=false;
     else
-        beta=rho_n/rho_c;
+        switch beta_formula
+            case 0; beta=rho_n/rho_c;
+            case 1; beta=rhod_n/rho_c;
+            case 2; beta=rhod_n/rhod_c;
+        end
+        beta=max(beta,0);
         % P=Z+beta*P;
         P=gvector_scale( P, beta );
         P=gvector_add( Z, P );
@@ -192,6 +213,12 @@ for iter=1:maxiter
         break;
     end
     
+    % keep difference in residual for Polak-Ribiere and Hestenes-Stiefel
+    if beta_formula
+        DR=gvector_add( Rn, Rc, -1 );
+        rhod_c=rhod_n;
+    end
+        
     % set all iteration variables to new state
     Xc=Xn;
     Rc=Rn;

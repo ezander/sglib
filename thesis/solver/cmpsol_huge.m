@@ -1,4 +1,4 @@
-function show_cmpsol_huge
+function cmpsol_huge
 % show results for solving the huge model
 
 clc

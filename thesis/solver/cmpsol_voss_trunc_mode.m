@@ -1,4 +1,4 @@
-function show_cmpsol_voss_trunc_mode
+function cmpsol_voss_trunc_mode
 
 clc
 

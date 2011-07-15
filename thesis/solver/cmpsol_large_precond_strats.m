@@ -1,4 +1,4 @@
-function show_cmpsol_large_precond_strats
+function cmpsol_large_precond_strats
 
 % compares performance for the two stage preconditioner for different
 % settings of the ILU preconditioner

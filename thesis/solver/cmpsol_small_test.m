@@ -1,4 +1,4 @@
-function show_cmpsol_small_test
+function cmpsol_small_test
 % only for testing whether all runs as it should using the small model so
 % that its fast
 

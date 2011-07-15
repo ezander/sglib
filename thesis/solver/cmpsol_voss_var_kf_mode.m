@@ -1,4 +1,4 @@
-function show_cmpsol_voss_var_kf_mode
+function cmpsol_voss_var_kf_mode
 
 clc
 

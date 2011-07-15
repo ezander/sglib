@@ -1,4 +1,4 @@
-function show_cmpsol_large_rel_res
+function cmpsol_large_rel_res
 
 % compares performance of the gsi and pcg for different values of the
 % target relative residual
@@ -6,8 +6,7 @@ function show_cmpsol_large_rel_res
 clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
-compare_solvers_pcg( 'model_medium_easy', get_solve_options, 'accurate', true )
-%compare_solvers_pcg( 'model_medium_easy', get_solve_options, 'accurate', false )
+compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', true )
 show_tex_table_2d(2, 'hl',[3]););
 log_stop();
 

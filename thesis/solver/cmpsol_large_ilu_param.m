@@ -1,4 +1,4 @@
-function show_cmpsol_large_ilu_param
+function cmpsol_large_ilu_param
 
 % compares performance for the two stage preconditioner for different
 % settings of the ILU preconditioner
