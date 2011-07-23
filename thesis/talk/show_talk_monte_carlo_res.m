@@ -3,10 +3,14 @@ function show_talk_monte_carlo
 %#ok<*NASGU>
 %#ok<*AGROW>
 
-rebuild=false;
-rebuild=get_base_param('rebuild', true);
-autoloader( {'model_large'; 'define_geometry'; 'discretize_model'; 'setup_equation'; 'solve_by_pcg'; 'vector_to_tensor'}, rebuild, 'caller' );
-rebuild=false;
+model_medium
+cache_script define_geometry
+cache_script discretize_model
+cache_script setup_equation
+solver_name='gpcg';
+cache_script solve_by_gsolve_matrix
+cache_script solution_mat2ten
+
 
 u_i_alpha=u_i_k*u_k_alpha;
 u_i_alpha(:,2:end)=0.05*u_i_alpha(:,2:end);
@@ -15,16 +19,17 @@ u_i_alpha(:,2:end)=0.05*u_i_alpha(:,2:end);
 u_sig=sqrt(u_var);
 
 
-x=[-0.5, -0.4; 0.9, -0.9; 0.2, 0.5]';
-max_f_pos=[-0.0492 -0.8387 0.8455]
-min_f_pos=[0.5649 0.1045 0.3959];
-x=[x max_f_pos(1:2)' min_f_pos(1:2)'];
+x=[0.5, -0.4; 0.9, -0.9; 0.2, 0.5]';
+% max_f_pos=[-0.0492 -0.8387 0.8455]
+% min_f_pos=[0.5649 0.1045 0.3959];
+% x=[x max_f_pos(1:2)' min_f_pos(1:2)'];
 
 
 P=point_projector( pos, els, x );
 [u_P_mean, u_P_var]=pce_moments( P'*u_i_alpha, I_u );
 [u_P_mean, sqrt(u_P_var)]
-xi=randn(10,10000);
+m_u=size(I_u,2);
+xi=randn(m_u,10000);
 xv=pce_field_realization( P'*u_i_alpha, I_u, xi );
 [mean(xv,2), std(xv,[], 2)]
 

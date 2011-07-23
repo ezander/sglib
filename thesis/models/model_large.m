@@ -4,7 +4,7 @@ model=mfilename;
 % geometry
 geom='lshape';
 num_refine=2;
-num_refine_after=1;
+num_refine_after=0;
 
 % right hand side
 dist_f={'uniform', {-1,1}, 0.0, 1 };

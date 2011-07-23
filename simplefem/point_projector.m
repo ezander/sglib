@@ -34,6 +34,9 @@ for i=1:n
         otherwise
             error( 'point_projector:wrong_param', 'Not implemented or pos is transposed' );
     end
+    if isempty(posind)
+        warning( 'point_projector:not_found', 'Point no. %d not found (%s)', i, strvarexpand('$x(:,i)$') );
+    end
 end
 
 

@@ -57,3 +57,39 @@ assert_equals( Xn, Un*Sn*Vn', 'eps1', 'norm', 'fro', 'reltol', 0.01 );
 assert_true( size(Un,2)<=30, 'rank' )
 assert_equals( Un*Sn*Vn', Xn, 'eps1', 'norm', 'fro', 'reltol', err*1.001 );
 
+
+
+
+
+
+%%
+M=100;
+N=200;
+
+% first create a data matrix X of size MxN to begin with
+X=rand(M,N);
+[U,S,V]=svd(X,'econ');
+
+% reduce that to rank K in Xn (components are U,s,V)
+K=20;
+l2err=S(K+1,K+1);
+U=U(:,1:K);
+V=V(:,1:K);
+S=S(1:K,1:K);
+X=U*S*V';
+
+
+U=orth(rand(M,K));
+V=orth(rand(N,K));
+S=1:K;
+X=U*S*V';
+
+L=50;
+C=rand(M,L);
+Xn=[X C];
+
+% no truncation
+[Un,Sn,Vn]=svd_update(U,S,V,C);
+assert_equals( Xn, Un*Sn*Vn', 'full' )
+norm( Xn - Un*Sn*Vn', 'fro' )
+

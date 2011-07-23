@@ -15,7 +15,12 @@ if nargin<2
     if i>size(mh,1); i=1; j=j+1; end
     if j>size(mh,2); j=1; end
 end
-lmh=mh;
+if ~isempty(mh) && all(all(ishandle(mh)))
+    lmh=mh;
+else
+    warning( 'no valid handle' );
+    return
+end
 li=i; lj=j;
 
 

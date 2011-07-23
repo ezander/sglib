@@ -7,6 +7,10 @@ check_unsupported_options(options,mfilename);
 
 ws='caller';
 
+if ~exist( script, 'file' )
+    error( 'sglib:cache_script', 'Script ''%s'' does not exist or is not on the path', script );
+end
+
 store.deps=find_deps( script );
 store.dep_dates=cellfun( @filedate, store.deps );
 assignin( ws, 'really_long_and_strange_varname_493875ksdjfh', store );
