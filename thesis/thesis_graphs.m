@@ -4,6 +4,8 @@ file_patterns={
     % Chapter 1: Introduction
     % Section 1.1: Summary
     'ranfield/show_mesh_and_sample'; ...
+    % Chapter 5:
+    'figures/ranks_res_and_solution'; ...
     % Chapter 6: Results
     % Section 6.1: Models
     %  - plot input random fields 

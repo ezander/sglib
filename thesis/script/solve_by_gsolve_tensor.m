@@ -9,6 +9,8 @@ k_max=get_base_param( 'k_max', inf, ws );
 upratio_delta=get_base_param( 'upratio_delta', 0.1, ws );
 dynamic_eps=get_base_param( 'dynamic_eps', false, ws );
 dyneps_factor=get_base_param( 'dyneps_factor', 0.1, ws );
+solve_opts=get_base_param( 'solve_opts', {}, ws );
+solver_name=get_base_param( 'solver_name', 'gsi', ws );
 
 trunc.eps=eps;
 trunc.k_max=k_max;
