@@ -10,7 +10,7 @@ define_geometry
 cache_script discretize_model
 cache_script setup_equation
 cache_script compute_contractivity
-info.rho=rho
+info.rho=rho;
 
 reltol=1e-12;
 abstol=1e-12;
@@ -21,6 +21,7 @@ Ui_true=Ui_mat;
 reltol=1e-3;
 abstol=1e-3;
 solver_name='gsi';
+eps=1e-4;
 
 cache_script solve_by_gsolve_tensor
 info.norm_U=gvector_norm(Ui);
