@@ -27,5 +27,5 @@ if ~exist(file,'file')
     num=-inf;
 else
     x=dir( file );
-    num=datenum(x.date);
+    num=x.datenum;
 end
