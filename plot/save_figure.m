@@ -31,6 +31,7 @@ options=varargin2options(varargin);
 [type, options]=get_option(options,'type','vector');
 [use_psfrag, options]=get_option(options,'use_psfrag',false);
 [afterreparent, options]=get_option(options,'afterreparent',[]);
+[debug_fig, options]=get_option(options,'debug_fig',false);
 check_unsupported_options(options,mfilename);
 
 if isempty( handle )
@@ -50,6 +51,9 @@ common_params={'figdir', figdir};
 if strcmp( get( handle, 'type' ), 'axes' )
     [newaxis,newfig]=reparent_axes( handle ); %#ok<ASGLU>
     handle=newfig;
+    if debug_fig
+        set(newfig,'visible', 'on');
+    end
 else
     newfig=[];
 end
@@ -104,11 +108,16 @@ h_axes  = findall(handle, 'type', 'axes');
 h_font   = [h_text; h_axes];
 
 set( h_text, 'interpreter', 'latex' );
+%set( h_text, 'interpreter', 'none' );
 set( h_font, 'fontunits', 'points' );
-set( h_axes, 'fontsize', 12 );
+set( h_axes, 'fontsize', 16 );
 set( h_text, 'fontsize', 16 );
 %set( h_font, 'fontname', 'times new roman' );
 %set( h_font, 'fontname', 'bookman' );
-set( h_font, 'fontname', 'new century schoolbook' );
+set( h_axes, 'fontname', 'new century schoolbook' );
+%set( h_font, 'fontname', 'new century schoolbook' );
 set( h_font, 'fontweight', 'normal' );
+
+
+%set( h_text, 'edgecolor', 'red' );
 

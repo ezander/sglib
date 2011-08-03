@@ -3,9 +3,13 @@ function show_model_bcs_and_solution
 %#ok<*NASGU>
 %#ok<*AGROW>
 
-%model_medium
-model_large
-m_f=10;
+if fasttest('get')
+    model_medium_easy
+else
+    model_large_easy
+end
+
+m_f=min(m_f,10);
 num_refine_after=0;
 define_geometry
 cache_script discretize_model

@@ -40,6 +40,10 @@ else
     scaling='linear';
 end    
 
+if isempty(ha)
+    ha=gca;
+end
+
 for i=1:length(which)
     c=which(i);
     switch lower(c)

@@ -23,5 +23,8 @@ lc_k=0.8;
 mean_g_func=make_spatial_func('0');
 %mean_g_func=make_spatial_func('sin(pi*y/2)*cos(pi*x/3)');
 
+mean_g_func=make_spatial_func('x*(1-y^2)');
+is_neumann=make_spatial_func('x<0');
+
 % solution
 p_u=3;
