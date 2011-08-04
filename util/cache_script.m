@@ -7,7 +7,7 @@ check_unsupported_options(options,mfilename);
 
 ws='caller';
 
-if ~exist( script, 'file' )
+if ischar(script) && ~exist( script, 'file' )
     error( 'sglib:cache_script', 'Script ''%s'' does not exist or is not on the path', script );
 end
 

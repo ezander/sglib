@@ -3,7 +3,7 @@ function cmpsol_voss_trunc_mode
 clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
-do_compare( 'model_voss_default', get_solve_options )
+compare_solvers_pcg( 'model_voss_default', get_solve_options )
 log_stop();
 
 function opts=get_solve_options

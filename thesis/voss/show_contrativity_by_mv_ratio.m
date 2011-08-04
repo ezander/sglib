@@ -1,4 +1,4 @@
-% determine: how is contractivity determined by update ratio
+% determine: how is contractivity determined by coefficient of variation (ratio)
 clear
 model_1d_small
 N=100;

@@ -64,7 +64,7 @@ for i=1:num
             fprintf( 'Tensor_eps:    eps=%g \n', eps );
         case {'gsi', 'gpcg' }
             eps=get_option( all_options{i}, 'eps', eps );
-            prec_strat=get_option( all_options{i}, 'prec_strat', {'none'} );
+            prec_strat=get_option( all_options{i}, 'prec_strat', {'basic'} );
             dyn=get_option( all_options{i}, 'dyn', false );
             trunc_mode=get_option( all_options{i}, 'trunc_mode', 'operator' );
             tol=get_option( all_options{i}, 'tol', 1e-4 );

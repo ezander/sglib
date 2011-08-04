@@ -50,7 +50,7 @@ for k=1:4
 
     so=get_option( o, 'solve_opts', {} );
     de=get_option( o, 'descr', '' );
-    o.prec_strat={'same'};
+    o.prec_strat={'inside'};
     o.solve_opts=[so, {'beta_formula', 'PR'}];
     o.descr=[de, ' pr'];
     opts{i}=o;

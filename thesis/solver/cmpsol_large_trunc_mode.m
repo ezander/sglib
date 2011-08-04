@@ -14,7 +14,7 @@ opts{end+1}=struct( 'longdescr', 'dynamic tensor solver', 'dyn', true, 'trunc_mo
 
 ilu_setup={'type', 'ilutp', 'droptol', 2e-2, 'milu', 'row', 'udiag', 1 };
 opts{end+1}=varargin2options( {'longdescr', 'ilutp 2 row prec tensor solver', ...
-    'dyn', true, 'prec', {'ilu', ilu_setup}, 'descr', 'ilutp 2e-2 row'} );
+    'dyn', true, 'prec_strat', {'ilu', ilu_setup}, 'descr', 'ilutp 2e-2 row'} );
 
 for i=1:length(opts)
     o=opts{i};
