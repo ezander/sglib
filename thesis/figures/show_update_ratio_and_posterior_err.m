@@ -3,7 +3,8 @@ function show_update_ratio_and_posterior_err
 if fasttest('get')
     model_medium_easy
 else
-    model_large_easy
+    %model_large_easy
+    model_medium_easy
 end
 
 define_geometry
@@ -22,11 +23,21 @@ reltol=1e-3;
 abstol=1e-3;
 solver_name='gsi';
 eps=1e-4;
+maxiter=20;
+upratio_delta=1;
 
 cache_script solve_by_gsolve_tensor
 info.norm_U=gvector_norm(Ui);
 info.rho=rho
-plot_solution_overview( 'basic', info )
+plot_solution_overview( 'gsi_basic', info )
+%return
+
+
+solver_name='gpcg';
+cache_script solve_by_gsolve_tensor
+info.norm_U=gvector_norm(Ui);
+info.rho=rho
+plot_solution_overview( 'gpcg_basic', info )
 
 
 

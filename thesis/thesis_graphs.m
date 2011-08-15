@@ -4,6 +4,9 @@ file_patterns={
     % Chapter 1: Introduction
     % Section 1.1: Summary
     'ranfield/show_mesh_and_sample'; ...
+    % Chapter 3
+    % Section 
+    'figures/show_svd_vs_kl_error';...
     % Chapter 5:
     'figures/show_ranks_res_and_solution'; ...
     % Chapter 6: Results

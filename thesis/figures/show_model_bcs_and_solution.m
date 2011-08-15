@@ -39,7 +39,7 @@ multiplot(mh,5); hold off; plot_field(pos, els, sqrt(k_var), opts{:} );
 
 %%
 save_figure( mh(1), 'solution_mean', 'type', 'raster' );
-save_figure( mh(2), 'solution_var', 'type', 'raster' );
+save_figure( mh(2), 'solution_stddev', 'type', 'raster' );
 save_figure( mh(3), 'boundary_conds', 'type', 'raster' );
 
 

@@ -103,6 +103,9 @@ close( newfig );
 
 
 function latex_format( handle )
+global dvi_spacing
+dvi_spacing=130000;
+
 h_text  = findall(handle, 'type', 'text');
 h_axes  = findall(handle, 'type', 'axes');
 h_font   = [h_text; h_axes];
