@@ -26,12 +26,16 @@ check_boolean( size(els,1)==3, 'elements must be triangles (size(els,1)==3)', mf
 check_range( size(pos,1), 2, 2, 'sizeof(pos,1)', mfilename );
 check_boolean( size(pos,2)==size(u,1), 'number of points must equal number of values (size(u,1)==size(pos,2))', mfilename );
 
+orig_pos=pos;
+orig_els=els;
 pos=pos';
 els=els';
 
 options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 'min' );
-[color,options]=get_option( options, 'color', 'k' );
+[color,options]=get_option( options, 'color', 'auto' );
+[bnd_zpos,options]=get_option( options, 'bnd_zpos', 'same' );
+[bnd_color,options]=get_option( options, 'bnd_color', 'k' );
 check_unsupported_options( options, mfilename );
 
 zmin=min(u);
@@ -95,4 +99,11 @@ for i=1:nlev
 
 end
 
+
+pos=orig_pos;
+els=orig_els;
+if strcmp( bnd_zpos, 'same' )
+    bnd_zpos=Z;
+end
+plot_boundary( pos, els, 'zpos', bnd_zpos, 'color', bnd_color );
 
