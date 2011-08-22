@@ -45,8 +45,10 @@ for k=2:5
     u_i_k(:,k)=u_i_k(:,k)+1e-10;
     
     multiplot
+    %set(gca,'ZTickLabelMode','manual')
     plot_field( pos, els, u_i_k(:,k), 'view', 3, 'show_mesh', true );
     plot_field_contour( pos, els, u_i_k(:,k), 'color', 'auto' );
+    %change_tick_mode( [], 'z', [] );
 end
 
 
