@@ -4,6 +4,8 @@ function show_compare_modes
 %#ok<*NASGU>
 %#ok<*AGROW>
 
+format short g
+
 multiplot_init(4,3)
 
 [pos,els,u_i_k,u_k_alpha,I_u]=get_accurate_sol;
@@ -52,7 +54,8 @@ function [pos,els,u_i_k,u_k_alpha,I_u]=get_accurate_sol
 if fasttest('get')
     model_medium_easy
 else
-    model_large_easy
+    %model_large_easy
+    model_medium_easy
 end
 
 define_geometry
@@ -67,13 +70,14 @@ function [pos,els,u_i_k,u_k_alpha,I_u]=get_tensor_sol
 if fasttest('get')
     model_medium_easy
 else
-    model_large_easy
+    %model_large_easy
+    model_medium_easy
 end
 
 define_geometry
 cache_script discretize_model
 cache_script setup_equation
-tol=1e-1;
+tol=1e-2;
 abstol=tol;
 reltol=tol;
 eps=1e-8;

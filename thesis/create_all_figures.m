@@ -24,7 +24,7 @@ for i=1:length(file_patterns)
     if ~strcmp(pattern(end),'*') && ~strcmp(pattern(end-1:end),'.m')
         pattern=[pattern, '.m'];
     end
-    fprintf( 'Pattern: %s\n', pattern );
+    fprintf( '\nPattern: %s\n', pattern );
     pattern=fullfile(root,pattern);
     path=fileparts(pattern);
     s=dir(pattern);
@@ -71,6 +71,9 @@ for i=1:length(file_patterns)
             ran_successful=[ran_successful {filename}];
         catch
             fprintf( '==> Error in %s\n', makehyperlink( filename, filename, 'file' ) );
+            if ask
+                ans=input('Press enter to continue.' );
+            end
         end
         drawnow;
     end

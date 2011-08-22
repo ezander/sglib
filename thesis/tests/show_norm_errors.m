@@ -4,7 +4,7 @@ N=3*47;
 R1=13;
 R2=17;
 
-clc
+%clc
 %randn('seed')
 %randn('seed', 1018663534 );
 randn('seed', 1776363387 );
