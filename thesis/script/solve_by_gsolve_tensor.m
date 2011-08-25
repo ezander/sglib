@@ -40,4 +40,6 @@ end
 U=apply_boundary_conditions_solution( Ui, G, P_I, P_B );
 
 solver_stats_end
-compute_error
+if ~(iscell(U) && length(U)>2)
+    compute_error
+end

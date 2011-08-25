@@ -48,32 +48,25 @@ elseif iscell(T)
     if length(T)==2
         [T_k,sigma,k]=tensor_truncate_svd( T, G, eps, k_max, relcutoff, p, orth_columns );
     else
-        U=ktensor( T );
-        OPTS.tol=eps;
-        OPTS.maxiters=50;
-        OPTS.dimorder=1:length(T);
-        OPTS.init='random';
-        OPTS.printitn=10;
-        U_k=cp_als( U, k_max, OPTS );
+        U_k=call_cp_als( ktensor( T ), k_max, eps, 'random' );
         lambda=U_k.lambda(:);
         T_k=U_k.u';
         T_k{1}=row_col_mult( T_k{1}, lambda' );
-        if any(isnan(double(U_k)))
-            keyboard;
-        end
     end
 elseif isobject(T)
-        OPTS.tol=eps;
-        OPTS.maxiters=50;
-        %OPTS.dimorder=1:length(T);
-        OPTS.init='random';
-        OPTS.printitn=10;
-        T_k=cp_als( T, k_max, OPTS );
-        if any(isnan(double(T_k)))
-            keyboard;
-        end
+        T_k=call_cp_als( T, k_max, eps, 'random' );
 else
     error( 'tensor:tensor_truncate:tensor_format', 'Unknown tensor format' );
 end
 
 timers( 'stop', mfilename );
+
+function T_k=call_cp_als(T,k_max,eps,init)
+OPTS.tol=eps;
+OPTS.maxiters=50;
+OPTS.init=init;
+OPTS.printitn=0;
+T_k=cp_als( T, k_max, OPTS );
+if any(isnan(double(T_k)))
+    keyboard;
+end

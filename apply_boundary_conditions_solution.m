@@ -34,17 +34,17 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 
 
 if iscell(ui)
-    M=size(ui{2},1);
+    I_S=cell(1,length(ui)-1);
 else
     Ni=size(P_I,1);
     NiM=numel(ui);
     M=NiM/Ni;
+    if M>1; I_S={speye(M)}; else I_S={1}; end
 end
-if M>1; I_S=speye(M); else I_S=1; end
 
 % Computes:
 %   u=P_I'*ui+P_B'*gb (with gb=P_B*g)
-u=tensor_operator_apply( {P_I', I_S}, ui );
-g=tensor_operator_apply( {P_B'*P_B, I_S}, g );
+u=tensor_operator_apply( {P_I', I_S{:}}, ui );
+g=tensor_operator_apply( {P_B'*P_B, I_S{:}}, g );
 
 u=gvector_add( u, g );
