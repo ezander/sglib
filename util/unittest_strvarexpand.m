@@ -26,6 +26,8 @@ test='1234'; %#ok
 s.a=a;
 s.cell=cell;
 
+
+
 assert_equals( strvarexpand(''), '', 'empty' );
 assert_equals( strvarexpand('foo'), 'foo', 'str' );
 assert_equals( strvarexpand('$test$'), '1234', 'var' );
@@ -51,6 +53,10 @@ assert_equals( strvarexpand('$s$'), '(a=10, cell={10, abc})', 'struct' );
 
 assert_equals( strvarexpand('$not_defined$'), '<err:not_defined>', 'err' );
 assert_equals( strvarexpand('$xxx$'), '<err:xxx>', 'err' );
+
+assert_equals( strvarexpand('\$xxx\$'), '$xxx$', 'escaped' );
+assert_equals( strvarexpand('$1+2$ \$x\axx\$ $1+1$ \b \$'), '3 $x\axx$ 2 \b $', 'escaped2' );
+
 
 
 % warning( 'off', 'strvarexpand:type' );

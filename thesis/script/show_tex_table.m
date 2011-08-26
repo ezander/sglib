@@ -1,5 +1,9 @@
-function show_tex_table(n)
+function show_tex_table(n,infos)
 global info_tp
+
+if nargin<2 || isempty(infos)
+    infos=into_tp;
+end
 
 switch n
     case 1
@@ -23,10 +27,32 @@ switch n
             };
         rft=@(x)(roundat(x,0.1));
         rfm=@(x)(roundat(x,0.01));
+    case 2
+        entries={
+            -1, '','';
+            0, 'Preconditioner',             '$\kwf{info.name}$';
+            -1, '','';
+            0,  'Setup time (s)',               '$info.setup_time$';
+            -1, '','';
+            0,  '\$\rho{\D}\$',         '$info.diff_rho$';
+            0,  '\$\opnorm[2]{\D}\$',         '$info.diff_norm_2$';
+            0,  '\$\opnorm[F]{\D}\$',         '$info.diff_norm_fro$';
+            -1, '','';
+            0,  '\$\rho{\P^{-1}\D}\$',      '$info.idiff_rho$';
+            0,  '\$\\opnorm[2]{\P^{-1}\D}\$',      '$info.idiff_norm_2$';
+            -1, '','';
+            0,  '\$n_{\kwf{pcg}}$',      '$info.npcg$';
+            0,  '\$n_{\kwf{gsi}}$',      '$info.ngsi$';
+            -1, '','';
+            %    'Time',             '$info.time$';
+            };
+        rft=@(x)(roundat(x,0.1));
+        rfm=@(x)(roundat(x,0.01));
+        
     otherwise
         error( 'foobar' );
 end
-maketable( info_tp, entries, true, rft, rfm )
+maketable( infos, entries, true, rft, rfm )
 
 function maketable( infos, entries, trans, rft, rfm )
 fprintf( '\n');
@@ -58,10 +84,14 @@ if i==0
         entry=sprintf( '\\hspace*{%dem}%s', mode, entry);
     end
 else
-    info=infos{i};
-    t=info.timers;
+    if iscell(infos)
+        info=infos{i};
+    else
+        info=infos(i);
+    end
     entry=strvarexpand( entries{j,3} );
-    if info.flag~=0
+    
+    if isfield(info,'flag') && info.flag~=0
         entry=[entry strvarexpand( '($info.flag$)' )];
     end
 end

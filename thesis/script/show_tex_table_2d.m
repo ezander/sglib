@@ -1,5 +1,9 @@
-function show_tex_table_2d(n,varargin)
+function show_tex_table_2d(n,info,varargin)
 global info_tp
+
+if nargin<2 || isempty(info)
+    infos=into_tp;
+end
 
 options=varargin2options(varargin);
 [indent,options]=get_option( options, 'indent', 4 );
@@ -7,7 +11,6 @@ options=varargin2options(varargin);
 check_unsupported_options(options,mfilename);
 
 
-infos=info_tp;
 rfh=@(x)(x);
 rfv=@(x)(x);
 rfe=@(x)(x);

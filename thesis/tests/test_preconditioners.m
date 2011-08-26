@@ -8,6 +8,7 @@ model_medium_easy;
 define_geometry; 
 discretize_model; 
 display_model_details; 
+discretize_model; 
 strvarexpand( '%var_f: $percent_var_f$' );
 strvarexpand( '%var_k: $percent_var_k$' );
 

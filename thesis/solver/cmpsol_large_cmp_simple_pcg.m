@@ -6,7 +6,7 @@ clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_large_easy', get_solve_options )
-show_tex_table(1);
+show_tex_table(1,[]);
 log_stop();
 
 function opts=get_solve_options

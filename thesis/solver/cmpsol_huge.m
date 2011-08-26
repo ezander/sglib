@@ -4,7 +4,7 @@ function cmpsol_huge
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_huge_easy', get_solve_options, 'accurate', false )
-show_tex_table(1);
+show_tex_table(1,[]);
 log_stop();
 
 

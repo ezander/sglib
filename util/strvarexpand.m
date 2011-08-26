@@ -30,7 +30,7 @@ function exstr=strvarexpand( str )
 
 exstr='';
 lpos=1;
-pos = strfind(str, '$');
+[pos,str]=finddollars( str );
 doeval=false;
 for i=pos
     part=str(lpos:i-1);
@@ -114,5 +114,22 @@ elseif isstruct(val)
 else
     warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );
     str=['$', orig, '$'];
+end
+
+
+function [pos,str]=finddollars( str )
+pos1 = strfind(str, '\');
+pos2 = strfind(str, '$');
+% find the escaped $'s (i.e. \$)
+esc = intersect( pos1+1, pos2 );
+if isempty(esc)
+    pos=pos2;
+else
+    ustr=str;
+    ustr( esc ) = 0; % save escaped dollars
+    ustr( esc-1 ) = [];
+    pos = strfind(ustr, '$');
+    ustr(strfind(ustr, 0))='$'; % restore them
+    str=ustr;
 end
 
