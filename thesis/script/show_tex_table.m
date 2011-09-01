@@ -30,19 +30,22 @@ switch n
     case 2
         entries={
             -1, '','';
-            0, 'Preconditioner',             '$\kwf{info.name}$';
+            0, 'Preconditioner',             '\kwf{$info.name$}';
             -1, '','';
             0,  'Setup time (s)',               '$info.setup_time$';
             -1, '','';
-            0,  '\$\rho{\D}\$',         '$info.diff_rho$';
+            0,  '\$\rho(\D)\$',               '$info.diff_rho$';
             0,  '\$\opnorm[2]{\D}\$',         '$info.diff_norm_2$';
             0,  '\$\opnorm[F]{\D}\$',         '$info.diff_norm_fro$';
             -1, '','';
-            0,  '\$\rho{\P^{-1}\D}\$',      '$info.idiff_rho$';
-            0,  '\$\\opnorm[2]{\P^{-1}\D}\$',      '$info.idiff_norm_2$';
+            0,  '\$\rho(\PD)\$',            '$info.idiff_rho$';
+            0,  '\$\opnorm[2]{\PD}\$',      '$info.idiff_norm_2$';
+            0,  '\$\opnorm[F]{\PD}\$',      '$info.idiff_norm_fro$';
             -1, '','';
-            0,  '\$n_{\kwf{pcg}}$',      '$info.npcg$';
-            0,  '\$n_{\kwf{gsi}}$',      '$info.ngsi$';
+            0,  '\$q\$',                 '$info.contract$';
+            -1, '','';
+            0,  '\$n_{\kwf{pcg}}\$',      '$info.npcg$';
+            0,  '\$n_{\kwf{gsi}}\$',      '$info.ngsi$';
             -1, '','';
             %    'Time',             '$info.time$';
             };
@@ -56,6 +59,7 @@ maketable( infos, entries, true, rft, rfm )
 
 function maketable( infos, entries, trans, rft, rfm )
 fprintf( '\n');
+fprintf( '%% ---BEGIN SGLIB GENERATED---\n');
 if trans
     for j=1:length(entries)
         for i=0:length(infos)
@@ -71,6 +75,7 @@ else
         fprintf( '\n');
     end
 end
+fprintf( '%% ---END SGLIB GENERATED---\n');
 
 function printentry( infos, entries, i, j, atend, rft, rfm )
 mode=entries{j,1};
