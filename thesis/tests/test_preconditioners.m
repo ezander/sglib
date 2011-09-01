@@ -1,6 +1,9 @@
 function test_precond
 %%
 
+%test_norms
+
+
 rand('seed',12353);
 randn('seed',12353);
 if fasttest('get')
@@ -10,6 +13,7 @@ else
 end
 mean_g_func=make_spatial_func('0');
 [a,b]=beta_find_ratio( 0.25 );
+%a=4; b=2;
 dist_k={'beta', {a,b}, 0.001, 1.0 };
 
 define_geometry; 
@@ -64,25 +68,15 @@ for pkind=1:3
     PPinvT={PPinv{1}',PPinv{2}'};
     PD=tensor_operator_compose( PPinv, DT );
 
-    iterop=@(x)(x-tensor_operator_apply(PPinv,tensor_operator_apply(Ki,x)) );
-    iteropT=@(x)(x-tensor_operator_apply(Ki,tensor_operator_apply(PPinvT,x)) );
-    iteropTop=@(x)(iteropT(iterop(x)));
-
-    op=@(x)(tensor_operator_apply(PP,x)-tensor_operator_apply(Ki,x) );
-    opT=@(x)(tensor_operator_apply(PPT,x)-tensor_operator_apply(Ki,x) );
-    opTop=@(x)(opT(op(x)));
+%     iterop=@(x)(x-tensor_operator_apply(PPinv,tensor_operator_apply(Ki,x)) );
+%     iteropT=@(x)(x-tensor_operator_apply(Ki,tensor_operator_apply(PPinvT,x)) );
+%     iteropTop=@(x)(iteropT(iterop(x)));
+% 
+%     op=@(x)(tensor_operator_apply(PP,x)-tensor_operator_apply(Ki,x) );
+%     opT=@(x)(tensor_operator_apply(PPT,x)-tensor_operator_apply(Ki,x) );
+%     opTop=@(x)(opT(op(x)));
     
     
-    %A=tensor_operator_to_matrix( Ki );
-    %P=tensor_operator_to_matrix( PP );
-    %D=A-P;
-    
-    %fro1=frobenius_norm( A )
-    %fro2=frobenius_norm( Ki )
-    %fro3=frobenius_norm( D  )
-    %fro4=frobenius_norm( DT )
-    %fro5=frobenius_norm( PD )
-    %keyboard
     
     
     %%
@@ -93,12 +87,12 @@ for pkind=1:3
     
 %     stats.diff_norm_2=spectral_norm( A-P );
 %     strvarexpand( '($pkind$) diff spectral norm: $stats.diff_norm_2$' );
-    stats.diff_norm_2=spectral_norm( opTop, n );
+    stats.diff_norm_2=spectral_norm( DT );
     strvarexpand( '($pkind$) diff spectral norm: $stats.diff_norm_2$' );
 
 %     stats.diff_rho=spectral_radius( A-P );
 %     strvarexpand( '($pkind$) diff spectral radius: $stats.diff_rho$' );
-    stats.diff_rho=spectral_radius( DT, n );
+    stats.diff_rho=spectral_radius( DT );
     strvarexpand( '($pkind$) diff spectral radius: $stats.diff_rho$' );
     
     
@@ -106,10 +100,10 @@ for pkind=1:3
     stats.idiff_norm_fro=frobenius_norm( PD ); %sqrt( abs( eigs( op3, n, 1) ) );
     strvarexpand( '($pkind$) iterop frob: $stats.idiff_norm_fro$' );
 
-    stats.idiff_norm_2=sqrt( abs( eigs( opTop, n, 1) ) );
+    stats.idiff_norm_2=spectral_norm( PD );
     strvarexpand( '($pkind$) iterop spectral norm: $stats.idiff_norm_2$' );
 
-    stats.idiff_rho=spectral_radius( op, n );
+    stats.idiff_rho=spectral_radius( PD );
     strvarexpand( '($pkind$) iterop rho: $stats.idiff_rho$' );
 
     stats.contract=simple_iteration_contractivity( Ki, Pinv );
@@ -119,10 +113,16 @@ for pkind=1:3
     if true
         [X,flag,info]=generalized_solve_pcg( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
         info.iter;
+        if flag
+            info.iter='$\infty$';
+        end
         strvarexpand( '($pkind$) pcg solve steps: $ans$ (rr: $info.relres$)' );
         stats.npcg=info.iter;
         [X,flag,info]=generalized_solve_simple( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
         info.iter;
+        if flag
+            info.iter='$\infty$';
+        end
         strvarexpand( '($pkind$) simple solve steps: $ans$ (rr: $info.relres$)' );
         stats.ngsi=info.iter;
     end
@@ -139,14 +139,30 @@ assignin( 'base', 'all_stats', all_stats );
 show_tex_table( 2, all_stats )
 
 
-function s=spectral_norm( D, n )
-if nargin>=2
-    if iscell(D)
-        D=@(x)(tensor_operator_apply(D,x));
-        keyboard
-    end
-    %s=abs(eigs( D, n, 1, 'lm' ));
-    s=sqrt( abs( eigs( D, n, 1) ) );
+
+
+
+function n=get_size(D)
+sz=tensor_operator_size(D,1);
+n=sz(1);
+
+function DT=ten_transpose(D)
+DT=D;
+for i=1:numel(DT)
+    DT{i}=DT{i}';
+end
+
+
+function s=spectral_norm( D )
+if iscell(D)
+    n=get_size(D);
+    op=@(x)(tensor_operator_apply(D,x));
+    DT=ten_transpose(D);
+    opT=@(x)(tensor_operator_apply(DT,x));
+    opTop=@(x)(opT(op(x)));
+    tic
+    s=sqrt( abs( eigs( opTop, n, 1) ) );
+    toc
 else
     s=svds( D, 1 );
 end
@@ -170,13 +186,42 @@ else
 end
 
 
-function s=spectral_radius(D,n)
-if nargin>=2
-    if iscell(D)
-        D=@(x)(tensor_operator_apply(D,x));
-    end
-    s=abs(eigs( D, n, 1, 'lm' ));
+function s=spectral_radius(D)
+if iscell(D)
+    n=get_size(D);
+    op=@(x)(tensor_operator_apply(D,x));
+    tic
+    s=abs(eigs( op, n, 1, 'lm' ));
+    toc
 else
     s=abs(eigs( D, 1, 'lm' ));
 end
+
+function test_norms
+N=3;
+M=4;
+A1=rand(N);
+A2=rand(N);
+B1=rand(M);
+B2=rand(M);
+K={A1 B1; A2 B2};
+A=tensor_operator_to_matrix(K);
+
+assert_equals( revkron(A1,B1)+revkron(A2,B2), A, 'just_testing' )
+
+rho=max(abs(eig(A)));
+n2=norm(A,2);
+nf=norm(A,'fro');
+
+assert_equals( spectral_radius(A), rho, 'mat_rho' );
+assert_equals( spectral_radius(K), rho, 'ten_rho' );
+
+assert_equals( spectral_norm(A), n2, 'mat_2' );
+assert_equals( spectral_norm(K), n2, 'ten_2' );
+
+assert_equals( frobenius_norm(A), nf, 'mat_f' );
+assert_equals( frobenius_norm(K), nf, 'ten_f' );
+
+
+
 
