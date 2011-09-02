@@ -30,7 +30,7 @@ switch n
     case 2
         entries={
             -1, '','';
-            0, 'Preconditioner',             '\kwf{$info.name$}';
+            0, 'Preconditioner',             '\$\P_{\kwf{$info.name$}}\$';
             -1, '','';
             0,  'Setup time (s)',               '$info.setup_time$';
             -1, '','';

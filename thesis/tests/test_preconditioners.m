@@ -1,8 +1,10 @@
 function test_precond
 %%
 
-%test_norms
-
+if false
+    test_norms
+    return
+end
 
 rand('seed',12353);
 randn('seed',12353);
@@ -20,10 +22,10 @@ define_geometry;
 discretize_model; 
 if false
     display_model_details;
+    strvarexpand( '%var_f: $percent_var_f$' );
+    strvarexpand( '%var_k: $percent_var_k$' );
     discretize_model;
 end
-strvarexpand( '%var_f: $percent_var_f$' );
-strvarexpand( '%var_k: $percent_var_k$' );
 
 %return
 %%
@@ -39,9 +41,10 @@ n=sz(1);
 %%
 
 
-for pkind=1:3
+for pkind=1:4
     stats=struct();
     tic
+    fprintf('\n');
     strvarexpand( '($pkind$) setting up preconditioner...' );
     switch pkind
         case 1
@@ -53,9 +56,12 @@ for pkind=1:3
         case 3
             [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',3,'decomp_type','');
             stats.name='ikron';
+        case 4
+            [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',2,'decomp_type','');
+            stats.name='kron-3';
     end
     stats.setup_time=toc;
-    strvarexpand( '($pkind$) setup time: $stats.setup_time$ sec.' );
+    strvarexpand( '($pkind$) setup time: $stats.setup_time$ sec. (P_$stats.name$)' );
 
     PP={P{1}{2}{2}{1},P{2}{2}{2}{1}};
     PPT={PP{1}',PP{2}'};
@@ -68,18 +74,6 @@ for pkind=1:3
     PPinvT={PPinv{1}',PPinv{2}'};
     PD=tensor_operator_compose( PPinv, DT );
 
-%     iterop=@(x)(x-tensor_operator_apply(PPinv,tensor_operator_apply(Ki,x)) );
-%     iteropT=@(x)(x-tensor_operator_apply(Ki,tensor_operator_apply(PPinvT,x)) );
-%     iteropTop=@(x)(iteropT(iterop(x)));
-% 
-%     op=@(x)(tensor_operator_apply(PP,x)-tensor_operator_apply(Ki,x) );
-%     opT=@(x)(tensor_operator_apply(PPT,x)-tensor_operator_apply(Ki,x) );
-%     opTop=@(x)(opT(op(x)));
-    
-    
-    
-    
-    %%
 %     stats.diff_norm_fro=frobenius_norm( A-P );
 %     strvarexpand( '($pkind$) diff frob: $stats.diff_norm_fro$' );
     stats.diff_norm_fro=frobenius_norm( DT );
@@ -160,9 +154,9 @@ if iscell(D)
     DT=ten_transpose(D);
     opT=@(x)(tensor_operator_apply(DT,x));
     opTop=@(x)(opT(op(x)));
-    tic
+    %tic
     s=sqrt( abs( eigs( opTop, n, 1) ) );
-    toc
+    %toc
 else
     s=svds( D, 1 );
 end
@@ -190,9 +184,9 @@ function s=spectral_radius(D)
 if iscell(D)
     n=get_size(D);
     op=@(x)(tensor_operator_apply(D,x));
-    tic
+    %tic
     s=abs(eigs( op, n, 1, 'lm' ));
-    toc
+    %toc
 else
     s=abs(eigs( D, 1, 'lm' ));
 end
