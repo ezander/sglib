@@ -25,6 +25,14 @@ lc_k=0.05;
 % dirichlet boundary field
 mean_g_func=make_spatial_func('sin(pi*y/2)*cos(pi*x/3)');
 
+m_g=0;
+p_g=1;
+l_g=0;
+
+m_h=0;
+p_h=1;
+l_h=0;
+
 % solution
 p_u=2;
 

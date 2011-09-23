@@ -26,5 +26,16 @@ lc_k=[0.05 0.2];
 % dirichlet boundary field
 mean_g_func=make_spatial_func('0');
 
+% dirirchlet boundary conditions
+m_g=0;
+p_g=1;
+l_g=0;
+
+% neumann boundary conditions
+m_h=0;
+p_h=1;
+l_h=0;
+
+
 % solution
 p_u=3;

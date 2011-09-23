@@ -16,3 +16,4 @@ lc_k=0.7;
 
 % dirichlet boundary field
 mean_g_func=make_spatial_func('0');
+

@@ -25,6 +25,13 @@ mean_g_func=make_spatial_func('0');
 
 mean_g_func=make_spatial_func('x*(1-y^2)');
 is_neumann=make_spatial_func('x<0');
+m_g=0;
+p_g=1;
+l_g=0;
+
+m_h=0;
+p_h=1;
+l_h=0;
 
 % solution
 p_u=3;

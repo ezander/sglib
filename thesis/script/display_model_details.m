@@ -1,16 +1,17 @@
-area=full(sum(G_N(:)));
+if ~exist('pos', 'var')
+    define_geometry;
+end
 
-C_k=covariance_matrix( pos_s, cov_k );
-[k_i_k, sigma_k_k]=kl_solve_evp( C_k, G_N_s, l_k );
-var_k=mean(diag(C_k));
-percent_var_k=roundat( 100*sum(sigma_k_k(1:l_k).^2)/(area*var_k), 0.1 );
+cov_k=get_base_param( 'cov_k', {cov_k_func,{lc_k,1}} );
+cov_f=get_base_param( 'cov_f', {cov_f_func,{lc_f,1}} );
 
-C_f=covariance_matrix( pos_s, cov_f );
-[f_i_k, sigma_f_k]=kl_solve_evp( C_f, G_N_s, l_f );
-var_f=mean(diag(C_f));
-percent_var_f=roundat( 100*sum(sigma_f_k(1:l_f).^2)/(area*var_f), 0.1 );
-
-
+if exist( 'G_N_s', 'var' )
+    percent_var_k=kl_percent_variance( l_k, cov_k, pos_s, G_N_s );
+    percent_var_f=kl_percent_variance( l_f, cov_f, pos_s, G_N_s );
+else
+    percent_var_k='?';
+    percent_var_f='?';
+end
 
 underline( 'Random fields' );
 strvarexpand( 'dist_k: $dist_k$  cov_k: $disp_func( cov_k )$' )
