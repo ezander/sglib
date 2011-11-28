@@ -2,7 +2,7 @@ function show_tex_table(n,infos)
 global info_tp
 
 if nargin<2 || isempty(infos)
-    infos=into_tp;
+    infos=info_tp;
 end
 
 switch n

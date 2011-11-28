@@ -8,6 +8,7 @@ clc
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', true )
 show_tex_table_2d(2, [], 'hl',[3]);
+show_tex_table_2d(3, [], 'hl',[3]);
 log_stop();
 
 function opts=get_solve_options

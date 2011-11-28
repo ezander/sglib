@@ -2,7 +2,7 @@ function show_tex_table_2d(n,info,varargin)
 global info_tp
 
 if nargin<2 || isempty(info)
-    infos=into_tp;
+    infos=info_tp;
 end
 
 options=varargin2options(varargin);
@@ -21,22 +21,23 @@ switch n
         hfield='rank_K';
         vfield='descr';
         efield='time';
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
     case 2
         hfield='abstol';
         rfh=@(x)(10000*x);
         vfield='descr';
         rfv=@(x)(['\kwf{', x, '}']);
-        
         efield='time';
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
-        
+    case 3
+        hfield='abstol';
+        rfh=@(x)(10000*x);
+        vfield='descr';
+        rfv=@(x)(['\kwf{', x, '}']);
         efield='relres';
         rfe=@(x)(10000*x);
-        maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
     otherwise
         error( 'foobar' );
 end
+maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
 
 function maketable( infos, hfield, vfield, efield, rfh, rfv, rfe, indstr, hl )
 num=numel(infos);
@@ -62,7 +63,9 @@ else
     vnum=num/hnum;
 end
 
-fprintf('\n\n%s\\hline', indstr);
+fprintf( '\n\n');
+fprintf( [indstr '%% ---BEGIN SGLIB GENERATED---\n']);
+fprintf('%s\\hline', indstr);
 fprintf('\n%s', indstr);
 curr=1;
 for i=0:vnum
@@ -102,6 +105,7 @@ for i=0:vnum
     end
 end
 fprintf('\\hline\n' );
+fprintf( [indstr '%% ---END SGLIB GENERATED---\n']);
 
 
 function eq=iseq( a, b )

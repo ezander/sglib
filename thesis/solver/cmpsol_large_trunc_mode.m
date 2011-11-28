@@ -1,4 +1,4 @@
-function show_cmpsol_large_trunc_mode
+function cmpsol_large_trunc_mode
 
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
