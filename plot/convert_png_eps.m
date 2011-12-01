@@ -29,7 +29,8 @@ check_unsupported_options(options,mfilename);
 pngfilename=fullfile(path,[filename,'.png']); %#ok<NASGU>
 % TODO: mean hack since sam2p currently does not work for me with 
 % png images
-pngfilename=fullfile(path,[filename,'.bmp']); %#ok<NASGU>
+bmpfilename=fullfile(path,[filename,'.bmp']); %#ok<NASGU>
+pngfilename=bmpfilename;
 epsfilename=fullfile(path,[filename,'.eps']);
 
 if quiet
@@ -50,3 +51,4 @@ if res
     disp( msgs );
     warning( 'sglib:convert_png_eps:syserr', 'Error executing command: %s\nCause: %s', cmd, cause );
 end
+delete(bmpfilename)
