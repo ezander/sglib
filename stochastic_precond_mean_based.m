@@ -55,6 +55,17 @@ switch precond_type
         % converges fast but takes LOOONG to construct
         M=A(1,:);
         M=minimise_ikron( M, A );
+    case {4, 'two'}
+        error('not tested')
+        A1=A(1,:);
+        A2=A(2,:);
+        A1inv=cell( 1, R );
+        for i=1:R
+            A1inv{i}=operator_from_matrix_solve( A1{i}, decomp_type, 'decomp_options', decomp_options );
+        end
+        func=@(x)(preconditioner_two_apply(A1inv, A2, x));
+        size=operator_size(A1);
+        Pinv=operator_from_function(func, size);
     otherwise
         error( 'sglib:stochastic_precond', 'unknown preconditioner type: %d', precond_type );
 end
@@ -100,3 +111,11 @@ V=(H'\K')';
 %Minv={U,V};
 %V=0.5*(V+V'); % TODO: ???
 M{2}=inv(V);
+
+
+function y=preconditioner_two_apply(A1inv, A2, x)
+y1=operator_apply(A1inv,x)
+z=operator_apply(A2,y1)
+y2=operator_apply(A1inv,z)
+y=y1-y2
+
