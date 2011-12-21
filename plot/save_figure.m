@@ -32,6 +32,8 @@ options=varargin2options(varargin);
 [use_psfrag, options]=get_option(options,'use_psfrag',false);
 [afterreparent, options]=get_option(options,'afterreparent',[]);
 [debug_fig, options]=get_option(options,'debug_fig',false);
+[fontsize, options]=get_option(options,'fontsize',24);
+[text_interpreter, options]=get_option(options,'text_interpreter','none');
 check_unsupported_options(options,mfilename);
 
 if isempty( handle )
@@ -68,7 +70,7 @@ if use_psfrag
     psfrag_list=psfrag_format( handle );
     latex_params=[latex_params, {'psfrag_list', psfrag_list}];
 else
-    latex_format( handle );
+    latex_format( handle, fontsize, text_interpreter );
     %disp( 'latex_format figure' );
 end
 
@@ -99,10 +101,12 @@ end
 convert_eps_pdf( epsfilename );
 save_latex( texfilename, epsfilename, latex_params{:} );
 
-close( newfig );
+if ~debug_fig
+    close( newfig );
+end
 
 
-function latex_format( handle )
+function latex_format( handle, fontsize, text_interpreter )
 global dvi_spacing
 dvi_spacing=130000;
 
@@ -110,14 +114,13 @@ h_text  = findall(handle, 'type', 'text');
 h_axes  = findall(handle, 'type', 'axes');
 h_font   = [h_text; h_axes];
 
-set( h_text, 'interpreter', 'latex' );
-%set( h_text, 'interpreter', 'none' );
+%set( h_text, 'interpreter', 'latex' );
+set( h_text, 'interpreter', text_interpreter );
 set( h_font, 'fontunits', 'points' );
-set( h_axes, 'fontsize', 16 );
-set( h_text, 'fontsize', 16 );
+set( h_font, 'fontsize', fontsize );
 %set( h_font, 'fontname', 'times new roman' );
 %set( h_font, 'fontname', 'bookman' );
-set( h_axes, 'fontname', 'new century schoolbook' );
+set( h_font, 'fontname', 'new century schoolbook' );
 %set( h_font, 'fontname', 'new century schoolbook' );
 set( h_font, 'fontweight', 'normal' );
 

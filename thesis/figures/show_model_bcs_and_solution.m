@@ -1,4 +1,5 @@
 function show_model_bcs_and_solution
+
 % Suppress warnings about not used variables and not preallocated arrays
 %#ok<*NASGU>
 %#ok<*AGROW>
@@ -18,16 +19,17 @@ cache_script solve_by_standard_pcg
 solution_vec2mat
 
 
-
+global mh
 mh=multiplot_init(2,3);
 opts={'view', 3};
 [u_mean,u_var]=pce_moments( U_mat, I_u );
 
-multiplot(mh,1); plot_field(pos, els, u_mean, opts{:}, 'show_mesh', true ); 
-multiplot(mh,2); plot_field(pos, els, sqrt(u_var), opts{:} ); 
+multiplot(mh,1); plot_field(pos, els, u_mean, opts{:}, 'show_mesh', true ); xlabel('x'); ylabel('y');
+multiplot(mh,2); plot_field(pos, els, sqrt(u_var), opts{:} ); xlabel('x'); ylabel('y');
 
 multiplot(mh,3); 
 plot_boundary_conds( pos, els, 'zpos', g_i_k(:,1)', 'neumann_nodes', neumann_nodes, 'bndwidth', 2 )
+xlabel('x'); ylabel('y');
 axis tight
 
 
@@ -40,6 +42,6 @@ multiplot(mh,5); hold off; plot_field(pos, els, sqrt(k_var), opts{:} );
 %%
 save_figure( mh(1), 'solution_mean', 'type', 'raster' );
 save_figure( mh(2), 'solution_stddev', 'type', 'raster' );
-save_figure( mh(3), 'boundary_conds', 'type', 'raster' );
+save_figure( mh(3), 'boundary_conds', 'type', 'raster');
 
 
