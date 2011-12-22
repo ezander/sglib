@@ -10,7 +10,7 @@ options=varargin2options( varargin );
 
 [dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
 [upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
-[dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.1 );
+[dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.5 );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
