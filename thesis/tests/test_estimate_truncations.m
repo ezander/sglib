@@ -19,65 +19,74 @@ clc
 X0 = Fi;
 D=operator_apply(Ki(1,:),X0);
 X = tensor_add(X0,D,tensor_norm(X0)*10*trunc.eps/tensor_norm(D));
-%D = tensor_add(X,X0, -1);
-%disp(tensor_norm(X,[],'orth',false))
-%disp(tensor_norm(D,[],'orth',false))
 
 
-
+% apply without truncation
 Y1 = operator_apply(Ki, X);
-DX1=operator_apply(Mi_inv,Y1);
 
-
-
-
+% apply reverse with truncation
 options={'pass_on', {'truncate_func', tr_func, 'reverse', true}};
 Y2 = operator_apply(Ki, X, options{:});
-DX2=operator_apply(Mi_inv,Y2);
+
+% apply forward with truncation
 options={'pass_on', {'truncate_func', tr_func, 'reverse', false}};
 Y3 = operator_apply(Ki, X, options{:});
 
-disp(trunc.eps)
+fprintf('eps=%g\n', trunc.eps)
 Xt=funcall(tr_func, X);
-disp(tensor_error(X,Xt, 'relerr', false))
-disp(tensor_error(X,Xt, 'relerr', true))
+abserrX=tensor_error(X,Xt, 'relerr', false);
+relerrX=tensor_error(X,Xt, 'relerr', true);
+fprintf('|X-Xt|: abs=%g, rel=%g\n', abserrX, relerrX)
 
-tensor_error(Y1,Y2, 'relerr', false)
-tensor_error(Y1,Y3, 'relerr', false)
 
 L=size(Ki,1);
 eps_fak=trunc.eps*(1+trunc.eps)^(L-1);
-disp(eps_fak)
+%disp(eps_fak)
 
+% reverse evaluation of operator
+abserrrev = tensor_error(Y1,Y2, 'relerr', false);
+fprintf('|AX-A_epsX|: rev=%g\n', abserrrev)
 
 f=0;
 for i=1:L
    f=f+i*norm(full(Ki{i,1}),2)*norm(full(Ki{i,2}),2) ;
 end
 epsadd=f*eps_fak;
-disp([epsadd, epsadd*tensor_norm(X),epsadd*tensor_norm(X)/tensor_error(Y1,Y2, 'relerr', false)])
+abserrrevest=epsadd*tensor_norm(X);
+%disp([epsadd, abserrrevest, abserrrevest/abserrrev])
+fprintf('|AX-A_epsX|: revest=%g, overest=%g\n', abserrrevest, abserrrevest/abserrrev)
+
+
+
+% forward evaluation of operator
+abserrfor = tensor_error(Y1,Y3, 'relerr', false);
+fprintf('|AX-A_epsX|: for=%g\n', abserrfor)
 
 f=0;
 for i=1:L
    f=f+i*norm(full(Ki{L+1-i,1}),2)*norm(full(Ki{L+1-i,2}),2) ;
 end
 epsadd=f*eps_fak;
-disp([epsadd, epsadd*tensor_norm(X),epsadd*tensor_norm(X)/tensor_error(Y1,Y3, 'relerr', false)])
+abserrforest=epsadd*tensor_norm(X);
+%disp([epsadd, abserrforest, abserrforest/abserrfor])
+fprintf('|AX-A_epsX|: forest=%g, overest=%g\n', abserrforest, abserrforest/abserrfor)
 
 
-
+% application of preconditioner
 A=Ki;
 Mi_inv={inv(A{1,1}),inv(A{1,2})};
-%DX3=operator_apply(Mi_inv,Y2);
+DX1=operator_apply(Mi_inv,Y1);
+DX2=operator_apply(Mi_inv,Y2);
 
-tensor_error(DX1,DX2, 'relerr', false)
+f=norm(full(Mi_inv{1,1}),2)*norm(full(Mi_inv{1,2}),2);
+abserrY=tensor_error(Y1,Y2, 'relerr', false);
+abserrXest=f*abserrY;
+abserrX=tensor_error(DX1,DX2, 'relerr', false);
+fprintf('|Y1-Y2|: rev=%g\n', abserrY)
+fprintf('|X1-X2|: rev=%g\n', abserrX)
+fprintf('|X1-X2|: est=%g overest=%g\n', abserrXest, abserrXest/abserrX)
 
-f=norm(full(Mi_inv{1,1}),2)*norm(full(Mi_inv{1,2}),2) ;
-disp(tensor_error(DX1,DX2, 'relerr', false))
-disp(f*tensor_error(Y1,Y2, 'relerr', false))
-disp(f*tensor_error(Y1,Y2, 'relerr', false)/tensor_error(DX1,DX2, 'relerr', false))
-
-keyboard
+%keyboard
 
 
 
