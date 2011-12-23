@@ -34,6 +34,13 @@ switch n
         rfv=@(x)(['\kwf{', x, '}']);
         efield='relres';
         rfe=@(x)(10000*x);
+    case 4
+        hfield='abstol';
+        rfh=@(x)(10000*x);
+        vfield='descr';
+        rfv=@(x)(['\kwf{', x, '}']);
+        efield='relerr2';
+        rfe=@(x)(10000*x);
     otherwise
         error( 'foobar' );
 end

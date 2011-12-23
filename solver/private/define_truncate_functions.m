@@ -19,16 +19,16 @@ function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_trunc
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 tr={@tensor_truncate_fixed, {trunc}, {2}};
-trunc_op=trunc; trunc_op.eps=trunc.eps/3;
+trunc_op=trunc; trunc_op.eps=trunc.eps/5;
 to={@tensor_truncate_fixed, {trunc_op}, {2}};
 id=@identity;
 switch trunc_mode
     case 'none'
         funcs={id,id,id};
     case 'operator';
-        funcs={to,tr,tr};
+        funcs={to,to,tr};
     case 'before';
-        funcs={id,tr,tr};
+        funcs={id,to,tr};
     case 'after'
         funcs={id,id,tr};
     otherwise
