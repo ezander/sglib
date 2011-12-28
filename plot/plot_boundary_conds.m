@@ -25,7 +25,9 @@ options=varargin2options( varargin );
 [zpos,options]=get_option( options, 'zpos', 0 );
 [meshcolor,options]=get_option( options, 'meshcolor', 'k' );
 [dircolor,options]=get_option( options, 'dircolor', 'r' );
+[dirstyle,options]=get_option( options, 'dirstyle', '-' );
 [neucolor,options]=get_option( options, 'neucolor', 'b' );
+[neustyle,options]=get_option( options, 'neustyle', '-.' );
 [meshwidth,options]=get_option( options, 'meshwidth', 1 );
 [bndwidth,options]=get_option( options, 'bndwidth', 2 );
 [neumann_nodes,options]=get_option( options, 'neumann_nodes', [] );
@@ -41,7 +43,7 @@ nodemap(neumann_nodes)=false;
 dirichlet_edges=edges(:,any(nodemap(edges), 1));
 
 plot_mesh( pos, els, 'color', meshcolor, 'width', meshwidth, 'zpos', zpos )
-plot_boundary( pos, els, 'color', dircolor, 'zpos', zpos, 'bndedges', dirichlet_edges, 'width', bndwidth )
-plot_boundary( pos, els, 'color', neucolor, 'zpos', zpos, 'bndedges', neumann_edges, 'width', bndwidth )
+plot_boundary( pos, els, 'color', neucolor, 'linestyle', neustyle, 'zpos', zpos, 'bndedges', neumann_edges, 'width', bndwidth )
+plot_boundary( pos, els, 'color', dircolor, 'linestyle', dirstyle, 'zpos', zpos, 'bndedges', dirichlet_edges, 'width', bndwidth )
 axis equal
 view(3)
