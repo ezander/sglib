@@ -1,4 +1,4 @@
-function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc )
+function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_truncate_functions( trunc_mode, trunc, div_b, div_op )
 % DEFINE_TRUNCATE_FUNCTIONS Short description of define_truncate_functions.
 %   DEFINE_TRUNCATE_FUNCTIONS Long description of define_truncate_functions.
 %
@@ -18,19 +18,21 @@ function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_trunc
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-tr={@tensor_truncate_fixed, {trunc}, {2}};
-trunc_op=trunc; trunc_op.eps=trunc.eps/5;
+ta={@tensor_truncate_fixed, {trunc}, {2}};
+trunc_op=trunc; trunc_op.eps=trunc.eps/div_op;
 to={@tensor_truncate_fixed, {trunc_op}, {2}};
+trunc_b=trunc; trunc_op.eps=trunc.eps/div_b;
+tb={@tensor_truncate_fixed, {trunc_b}, {2}};
 id=@identity;
 switch trunc_mode
     case 'none'
         funcs={id,id,id};
     case 'operator';
-        funcs={to,to,tr};
+        funcs={to,tb,ta};
     case 'before';
-        funcs={id,to,tr};
+        funcs={id,tb,ta};
     case 'after'
-        funcs={id,id,tr};
+        funcs={id,id,ta};
     otherwise
         error( 'sglib:generalized_solve_simple:trunc_mode', 'unknown truncation mode %s', truncmode );
 end

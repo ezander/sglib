@@ -11,6 +11,8 @@ options=varargin2options( varargin );
 [dynamic_eps,options]=get_option( options, 'dynamic_eps', false );
 [upratio_delta,options]=get_option( options, 'upratio_delta', 0.1 );
 [dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.5 );
+[div_b,options]=get_option( options, 'div_b', 1 );
+[div_op,options]=get_option( options, 'div_op', 3 );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
@@ -32,7 +34,7 @@ if dynamic_eps
     min_eps=trunc.eps;
     trunc.eps=0.1;
 end
-[truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc );
+[truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc, div_b, div_op );
 if ~isequal(trunc_mode,'none')
     apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
 end
