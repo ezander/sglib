@@ -25,6 +25,7 @@ mean_g_func=make_spatial_func('0');
 
 mean_g_func=make_spatial_func('x*(1-y^2)');
 is_neumann=make_spatial_func('x<0');
+is_neumann=make_spatial_func('x<=-1');
 m_g=0;
 p_g=1;
 l_g=0;

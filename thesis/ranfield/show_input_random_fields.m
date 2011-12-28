@@ -2,6 +2,7 @@ function show_input_random_fields
 % Show samples of the input random fields kappa and f
 
 cache_script model_large_easy
+num_refine=1;
 cache_script define_geometry
 cache_script discretize_model
 
