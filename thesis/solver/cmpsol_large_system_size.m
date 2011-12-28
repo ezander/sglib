@@ -5,8 +5,8 @@ function cmpsol_large_system_size
 clc
 
 log_start( fullfile( log_file_base(), mfilename ) );
-compare_solvers_pcg( 'model_large_easy_lk40', get_solve_options, 'accurate', false )
-show_tex_table_2d(1, [], 'hl',[]);
+compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', false )
+show_tex_table_2d(5, [], 'hl',[]);
 log_stop();
 
 function opts=get_solve_options
@@ -51,11 +51,11 @@ pcg_kron_opts={...
     'prec', 'kron' };
 
 %Mu_set=round(sqrspace(10^5,10^7,10));
-Mu_set=round(sqrspace(10,310,10));
+Mu_set=round(sqrspace(5,50,10));
 
 for M_u=Mu_set
-%    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
-    for def_opts={gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
+    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts}%,pcg_kron_opts}
+    %for def_opts={gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
         opts{end+1}=varargin2options( [def_opts{1} {'mod_opts', {'M_u',M_u}}] ); 
     end
 end
