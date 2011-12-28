@@ -50,8 +50,12 @@ pcg_kron_opts={...
     'type', 'pcg', ...
     'prec', 'kron' };
 
-%Mu_set=round(sqrspace(10^5,10^7,10));
-Mu_set=round(sqrspace(5,50,10));
+
+if fasttest('get')
+    Mu_set=round(sqrspace(5,50,10));
+else
+    Mu_set=round(sqrspace(10^5,10^7,10));
+end
 
 for M_u=Mu_set
     for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts}%,pcg_kron_opts}
