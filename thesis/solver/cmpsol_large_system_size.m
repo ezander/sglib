@@ -1,7 +1,6 @@
-function cmpsol_large_op_klterms
+function cmpsol_large_system_size
 
-% compares performance for the two stage preconditioner for different
-% settings of the ILU preconditioner
+% compares performance of the solver for different system sizes defined 
 
 clc
 
@@ -34,7 +33,8 @@ gsi_ilu_opts={...
     'longdescr', 'gsi dyn ilu', ...
     'prec_strat', {'ilu', ilu_options}, ...
     'dyn', true, ...
-    'eps', 1e-8
+    'eps', 1e-8, ...
+    'check', true
     };
 
 
@@ -50,12 +50,13 @@ pcg_kron_opts={...
     'type', 'pcg', ...
     'prec', 'kron' };
 
-lk_set=round(sqrspace(2,40,10));
+%Mu_set=round(sqrspace(10^5,10^7,10));
+Mu_set=round(sqrspace(10,310,10));
 
-for l_k=lk_set
+for M_u=Mu_set
 %    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
     for def_opts={gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
-        opts{end+1}=varargin2options( [def_opts{1} {'mod_opts', {'l_k',l_k}}] ); 
+        opts{end+1}=varargin2options( [def_opts{1} {'mod_opts', {'M_u',M_u}}] ); 
     end
 end
 

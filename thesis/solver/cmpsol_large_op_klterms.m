@@ -1,7 +1,6 @@
 function cmpsol_large_op_klterms
 
-% compares performance for the two stage preconditioner for different
-% settings of the ILU preconditioner
+% compares performance different numbers of KL terms in the operator
 
 clc
 
@@ -34,7 +33,8 @@ gsi_ilu_opts={...
     'longdescr', 'gsi dyn ilu', ...
     'prec_strat', {'ilu', ilu_options}, ...
     'dyn', true, ...
-    'eps', 1e-8
+    'eps', 1e-8,
+    'check', true
     };
 
 
