@@ -52,14 +52,16 @@ pcg_kron_opts={...
 
 
 if fasttest('get')
-    Mu_set=round(sqrspace(5,50,10));
+    Mu_set=round(sqrspace(4,40,10));
+    optlist = {gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts};
 else
-    Mu_set=round(sqrspace(10^5,10^7,10));
+    Mu_set=round(sqrspace(50,5000,10));
+    optlist = {gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts};
+    %,pcg_kron_opts};
 end
 
 for M_u=Mu_set
-    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts}%,pcg_kron_opts}
-    %for def_opts={gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
+    for def_opts=optlist
         opts{end+1}=varargin2options( [def_opts{1} {'mod_opts', {'M_u',M_u}}] ); 
     end
 end

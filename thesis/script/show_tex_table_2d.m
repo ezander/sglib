@@ -43,7 +43,7 @@ switch n
         rfe=@(x)(10000*x);
     case 5
         for i=1:length(infos)
-            Minv=get_option(varargin2options(infos{i}.solve_options),'Minv',[])
+            Minv=get_option(varargin2options(infos{i}.solve_options),'Minv',[]);
             infos{i}.M_u=Minv{2}{1}(1);
         end
         
