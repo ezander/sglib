@@ -50,11 +50,19 @@ pcg_kron_opts={...
     'type', 'pcg', ...
     'prec', 'kron' };
 
-lk_set=round(sqrspace(2,40,10));
+if fasttest('get')
+    lk_set=1:3;
+    optlist = {gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts};
+else
+    lk_set=round(sqrspace(2,40,10));
+    optlist = {gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts};
+    %,pcg_kron_opts};
+end
+
 
 for l_k=lk_set
 %    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
-    for def_opts={gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts}
+    for def_opts=optlist
         opts{end+1}=varargin2options( [def_opts{1} {'mod_opts', {'l_k',l_k}}] ); 
     end
 end
