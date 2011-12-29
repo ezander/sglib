@@ -83,6 +83,7 @@ end
 
 fprintf( '\n\n');
 fprintf( [indstr '%% ---BEGIN SGLIB GENERATED---\n']);
+fprintf( [indstr '%% h=%s, v=%s, e=%s\n'], hfield, vfield, efield);
 fprintf('%s\\hline', indstr);
 fprintf('\n%s', indstr);
 curr=1;
