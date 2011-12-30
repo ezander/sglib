@@ -14,6 +14,7 @@ else
     model_medium_easy;
 end
 mean_g_func=make_spatial_func('0');
+is_neumann=make_spatial_func('x<x');
 [a,b]=beta_find_ratio( 0.25 );
 %a=4; b=2;
 dist_k={'beta', {a,b}, 0.001, 1.0 };
