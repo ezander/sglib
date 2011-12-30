@@ -46,6 +46,7 @@ switch n
             -1, '','';
             0,  '\$n_{\kwf{pcg}}\$',      '$info.npcg$';
             0,  '\$n_{\kwf{gsi}}\$',      '$info.ngsi$';
+            0,  '\$k_{10}\$',      '$info.k10$';
             -1, '','';
             %    'Time',             '$info.time$';
             };

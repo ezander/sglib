@@ -54,11 +54,11 @@ for pkind=1:4
             [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',1,'decomp_type','');
             stats.name='kron';
         case 3
-            [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',3,'decomp_type','');
-            stats.name='ikron';
-        case 4
             [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',2,'decomp_type','');
             stats.name='kron-3';
+        case 4
+            [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',3,'decomp_type','');
+            stats.name='ikron';
     end
     stats.setup_time=toc;
     strvarexpand( '($pkind$) setup time: $stats.setup_time$ sec. (P_$stats.name$)' );
@@ -109,18 +109,16 @@ for pkind=1:4
     %%
     if true
         [X,flag,info]=generalized_solve_pcg( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
-        info.iter;
         if flag
             info.iter='$\infty$';
         end
-        strvarexpand( '($pkind$) pcg solve steps: $ans$ (rr: $info.relres$)' );
+        strvarexpand( '($pkind$) pcg solve steps: $info.iter$ (rr: $info.relres$)' );
         stats.npcg=info.iter;
-        [X,flag,info]=generalized_solve_simple( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
-        info.iter;
+        [X,flag,info]=generalized_solve_simple( Ki, F(:), 'Minv', Pinv, 'verbosity', 0, 'maxiter', 300 );
         if flag
             info.iter='$\infty$';
         end
-        strvarexpand( '($pkind$) simple solve steps: $ans$ (rr: $info.relres$)' );
+        strvarexpand( '($pkind$) simple solve steps: $info.iter$ (rr: $info.relres$)' );
         stats.ngsi=info.iter;
     end
     
