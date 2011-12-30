@@ -1,14 +1,14 @@
 ws='caller';
-abstol=get_base_param( 'abstol', 1e-6, ws );
-reltol=get_base_param( 'reltol', 1e-6, ws );
+abstol=get_base_param( 'abstol', 1e-4, ws );
+reltol=get_base_param( 'reltol', 1e-4, ws );
 maxiter=get_base_param( 'maxiter', 100, ws );
 verbosity=get_base_param( 'verbosity', inf, ws );
 trunc_mode=get_base_param( 'trunc_mode', 'operator', ws );
 eps=get_base_param( 'eps', 1e-6, ws );
 k_max=get_base_param( 'k_max', inf, ws );
-upratio_delta=get_base_param( 'upratio_delta', 0.1, ws );
 dynamic_eps=get_base_param( 'dynamic_eps', false, ws );
-dyneps_factor=get_base_param( 'dyneps_factor', 0.1, ws );
+upratio_delta=get_base_param( 'upratio_delta', 0.1, ws );
+dyneps_factor=get_base_param( 'dyneps_factor', 0.5, ws );
 solve_opts=get_base_param( 'solve_opts', {}, ws );
 solver_name=get_base_param( 'solver_name', 'gsi', ws );
 
