@@ -40,12 +40,13 @@ n=sz(1);
 
 %%
 
+[Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',0,'decomp_type','');
 
 for pkind=1:4
     stats=struct();
-    tic
     fprintf('\n');
     strvarexpand( '($pkind$) setting up preconditioner...' );
+    tic
     switch pkind
         case 1
             [Pinv,P,info]=stochastic_precond_mean_based( Ki, 'precond_type',0,'decomp_type','');
@@ -62,6 +63,7 @@ for pkind=1:4
     end
     stats.setup_time=toc;
     strvarexpand( '($pkind$) setup time: $stats.setup_time$ sec. (P_$stats.name$)' );
+continue
 
     PP={P{1}{2}{2}{1},P{2}{2}{2}{1}};
     PPT={PP{1}',PP{2}'};
@@ -107,7 +109,7 @@ for pkind=1:4
     strvarexpand( '($pkind$) k1/10: $stats.k10$' );
 
     %%
-    if true
+    if false & true
         [X,flag,info]=generalized_solve_pcg( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
         if flag
             info.iter='$\infty$';
