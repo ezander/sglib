@@ -102,6 +102,9 @@ for pkind=1:4
 
     stats.contract=simple_iteration_contractivity( Ki, Pinv );
     strvarexpand( '($pkind$) contractivity: $stats.contract$' );
+    
+    stats.k10 = log(0.1)/log(stats.idiff_rho);
+    strvarexpand( '($pkind$) k1/10: $stats.k10$' );
 
     %%
     if true
