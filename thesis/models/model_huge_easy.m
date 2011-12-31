@@ -3,6 +3,7 @@ model=mfilename;
 
 % load continuous model
 model_continuous_easy
+is_neumann=make_spatial_func('x<x');
 
 % geometry discretisation
 num_refine=2;
