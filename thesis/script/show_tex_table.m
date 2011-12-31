@@ -14,12 +14,12 @@ switch n
             0,  'Mean rank res.',   '$round(mean(info.rank_res_before))$';
             0,  'Mean rank sol.',   '$round(mean(info.rank_sol_after))$';
             -1, '','';
-            0,  'Runtime',          '$rft(t.gen_solver_simple)$';
-            1,  'Truncations',      '$rft(t.tensor_truncate)$';
-            2,  'QR',               '$rft(t.qr_internal)$';
-            2,  'SVD',              '$rft(t.tensor_truncate_svd__svd)$';
-            1,  'Operator',         '$rft(t.tensor_operator_apply_elementary)$';
-            2,  'Preconditioner',   '$rft(t.operator_lusolve)$';
+            0,  'Runtime',          '$rft(timer.gen_solver_simple)$';
+            1,  'Truncations',      '$rft(timer.tensor_truncate)$';
+            2,  'QR',               '$rft(timer.qr_internal)$';
+            2,  'SVD',              '$rft(timer.tensor_truncate_svd__svd)$';
+            1,  'Operator',         '$rft(timer.tensor_operator_apply_elementary)$';
+            2,  'Preconditioner',   '$rft(timer.operator_lusolve)$';
             -1, '','';
             0,  'Memory (MiB)',     '$rfm((info.memmax.VmSize-info.memorig.VmSize)/1024/1024)$';
             -1, '','';
@@ -94,6 +94,9 @@ else
         info=infos{i};
     else
         info=infos(i);
+    end
+    if isfield(info,'timers')
+        timer=info.timers;
     end
     entry=strvarexpand( entries{j,3} );
     
