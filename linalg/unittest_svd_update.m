@@ -81,7 +81,7 @@ X=U*S*V';
 
 U=orth(rand(M,K));
 V=orth(rand(N,K));
-S=1:K;
+S=diag(1:K);
 X=U*S*V';
 
 L=50;
@@ -91,5 +91,5 @@ Xn=[X C];
 % no truncation
 [Un,Sn,Vn]=svd_update(U,S,V,C);
 assert_equals( Xn, Un*Sn*Vn', 'full' )
-norm( Xn - Un*Sn*Vn', 'fro' )
+%norm( Xn - Un*Sn*Vn', 'fro' )
 
