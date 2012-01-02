@@ -4,6 +4,7 @@ function cmpsol_huge
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
 compare_solvers_pcg( 'model_huge_easy', get_solve_options, 'accurate', false )
+%compare_solvers_pcg( 'model_medium_easy', get_solve_options, 'accurate', false )
 show_tex_table(1,[]);
 log_stop();
 
@@ -14,7 +15,7 @@ function opts=get_solve_options
 gsi_std_opts={...
     'descr', 'gsi', ...
     'longdescr', 'gsi', ...
-    'eps', 1e-6};
+    'eps', 1e-4};
 
 % struct( 'longdescr', 'dynamic tensor solver', 'dyn', true, 'descr', 'dynamic');
 gsi_dyn_opts={...

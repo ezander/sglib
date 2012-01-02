@@ -1,8 +1,6 @@
 ws='caller';
-abstol=get_base_param( 'abstol', 1e-4, ws );
-reltol=get_base_param( 'reltol', 1e-4, ws );
-maxiter=get_base_param( 'maxiter', 100, ws );
-verbosity=get_base_param( 'verbosity', inf, ws );
+solver_common_opts;
+
 trunc_mode=get_base_param( 'trunc_mode', 'operator', ws );
 eps=get_base_param( 'eps', 1e-6, ws );
 k_max=get_base_param( 'k_max', inf, ws );

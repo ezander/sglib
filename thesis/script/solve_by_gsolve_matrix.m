@@ -5,11 +5,8 @@ if ~exist( 'Mi_inv', 'var' )
     Mi_inv=stochastic_precond_mean_based(Ki);
 end
 
-maxiter=get_base_param( 'maxiter', 100, 'caller' );
-reltol=get_base_param( 'reltol', 1e-4, 'caller' );
-abstol=get_base_param( 'abstol', 1e-4, 'caller' );
-verbosity=get_base_param( 'verbosity', 1, 'caller' );
-
+ws='caller';
+solver_common_opts;
 options={'reltol', reltol, 'maxiter', maxiter, 'abstol', abstol, 'Minv', Mi_inv, 'verbosity', inf};
 if exist( 'Ui_true' )
     options=[options, {'solution', Ui_true}];
