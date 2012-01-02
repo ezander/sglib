@@ -48,7 +48,7 @@ for i=1:num
     
     switch  type
         case 'pcg'
-            pcg_tol=get_option( all_options{i}, 'tol', 1e-4 );
+            pcg_tol=get_option( all_options{i}, 'tol', 1e-3 );
             prec=get_option( all_options{i}, 'prec', 'mean' );
             [U_mat, Ui_mat, info_tp{i}]=compute_by_pcg_approx( model, prec, Ui_mat_true, pcg_tol, solve_opts, mod_opts );
             if numel(U_mat_true)
@@ -69,7 +69,7 @@ for i=1:num
             prec_strat=get_option( all_options{i}, 'prec_strat', {'basic'} );
             dyn=get_option( all_options{i}, 'dyn', false );
             trunc_mode=get_option( all_options{i}, 'trunc_mode', 'operator' );
-            tol=get_option( all_options{i}, 'tol', 1e-4 );
+            tol=get_option( all_options{i}, 'tol', 1e-3 );
             prec=get_option( all_options{i}, 'prec', 'mean' );
             
             [U{i}, Ui{i}, info_tp{i}]=compute_by_tensor_method( model, prec, type, Ui_mat_true, tol, eps, prec_strat, dyn, trunc_mode, solve_opts, mod_opts );
