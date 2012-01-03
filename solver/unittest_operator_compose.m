@@ -21,7 +21,6 @@ function unittest_operator_compose
 munit_set_function( 'operator_compose' );
 
 % test the operator composition (not directly by all that follows)
-munit_set_function( 'operator_compose' );
 
 M1=rand(12,10);
 M2=rand(10,7);
@@ -58,3 +57,22 @@ assert_equals( operator_apply( CIM, x ), y, 'CIM' );
 
 assert_equals( CMI, M2, 'CMI_M2' );
 assert_equals( CIM, M2, 'CIM_M2' );
+
+
+% tensor operator stuff
+
+M1={rand(12,10), rand(13,11)};
+M2={rand(10,7), rand(11, 8)};
+x={rand(7,2), rand(8,2)};
+y=operator_apply(M2, x);
+zex=operator_apply(M1, y);
+
+M=operator_compose(M1, M2);
+z=operator_apply(M, x);
+assert_equals( z, zex, 'tensor')
+assert_equals( size(M{1}), [12, 7], 'tensor_sz')
+
+M=operator_compose(M1, M2, 'tensor_sum', false);
+z=operator_apply(M, x);
+assert_equals( z, zex, 'tensor')
+assert_equals( M{3}, 'op_marker', 'tensor_op')

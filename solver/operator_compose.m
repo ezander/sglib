@@ -1,4 +1,4 @@
-function C=operator_compose( A, B )
+function C=operator_compose( A, B, varargin )
 % OPERATOR_COMPOSE Return the composition of two linear operators.
 %   C=OPERATOR_COMPOSE( A, B ) returns the composition C of the
 %   linear operators A and B such that C(X)=A(B(X))).
@@ -25,6 +25,11 @@ function C=operator_compose( A, B )
 
 check_match( A, B, true, 'A', 'B', mfilename );
 
+options = varargin2options(varargin);
+[tensor_sum, options] = get_option(options, 'tensor_sum', true);
+check_unsupported_options(options);
+
+
 if isempty(A)
     C=B;
 elseif isempty(B)
@@ -32,7 +37,7 @@ elseif isempty(B)
 elseif isnumeric(A) && isnumeric(B)
     % A and B are matrices
     C=A*B;
-elseif is_tensor_operator(A) && is_tensor_operator(B)
+elseif tensor_sum && is_tensor_operator(A) && is_tensor_operator(B)
     C=tensor_operator_compose( A, B );
 else
     sa=operator_size(A);
@@ -40,6 +45,6 @@ else
     C=operator_from_function( {@comp_apply, {A,B}, {1,2}}, [sa(:,1), sb(:,2)] );
 end
 
-function z=comp_apply( A, B, x )
-y=operator_apply( B, x );
-z=operator_apply( A, y );
+function z=comp_apply( A, B, x, varargin )
+y=operator_apply( B, x, varargin{:} );
+z=operator_apply( A, y, varargin{:} );
