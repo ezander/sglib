@@ -25,7 +25,10 @@ switch n
             -1, '','';
             0,  'Memory (MiB)',     '$rfm((info.memmax.VmSize-info.memorig.VmSize)/1024/1024)$';
             -1, '','';
-            %    'Time',             '$info.time$';
+            0,    'Time',             '$info.time$';
+            0,    'Relerr',             '$info.relerr2$';
+            0,    'Flag',             '$info.flag$';
+            0,    'Relres',             '$info.relres(end)$';
             };
         rft=@(x)(roundat(x,0.1));
         rfm=@(x)(roundat(x,0.01));
