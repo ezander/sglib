@@ -46,7 +46,7 @@ fprintf('\n\n===================================================================
 %solve_method=6;
 solve_method=1;
 solve_method=7;
-tol=1e-4; maxit=50;
+tol=1e-4; maxiter=50;
 
 m=size(f_beta,2);
 [P_B,P_I]=boundary_projectors( [1,n], n );
@@ -66,13 +66,13 @@ switch solve_method
         itermethod='direct solver'; iter=1; relres=0; flag=0;
     case 2 % pcg with matrices
         M=tkron( K_ab_mat(1:n,1:n), spdiags(multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)) );
-        [u_alpha,flag,relres,iter]=pcg( K_ab_mat, f_beta(:), tol, maxit, M );
+        [u_alpha,flag,relres,iter]=pcg( K_ab_mat, f_beta(:), tol, maxiter, M );
         itermethod='pcg(mat)';
     case 3 % use pcg on flat system
         Minv=tkron( spdiags(1./multiindex_factorial(I_u),0,size(I_u,1),size(I_u,1)), inv(K_ab{1,1}) );
         A_func=@(x)(K_ab_mat*x);
         Minv_func=@(x)(Minv*x);
-        [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxit, Minv_func );
+        [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxiter, Minv_func );
         itermethod='pcg(funcs,flat)';
     case 4 % 
         %Minv=tkron( inv(K_mu_delta{1}), inv(sparse(K_mu_delta{2})) );
@@ -82,14 +82,14 @@ switch solve_method
         Minv_func=@(x)(apply_flat(Minv_op,x,shape));
         %A_func=@(x)(apply_flat(K_mu_delta,x,shape));
         A_func={@apply_flat,{K_mu_delta,shape},{1,3}};
-        [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxit, Minv_func );
+        [u_alpha,flag,relres,iter]=pcg( A_func, f_beta(:), tol, maxiter, Minv_func );
         itermethod='pcg(funcs,mu_delta)';
     case 5
         options.method='gs';
         options.omega=1;
         options.abstol=tol;
         options.reltol=tol;
-        options.maxiter=maxit;
+        options.maxiter=maxiter;
         [u_alpha,flag,relres,iter]=solve_stat( K_ab_mat, f_beta(:), options );
         itermethod='mat_decomp(mat)';
     case 6
@@ -97,7 +97,7 @@ switch solve_method
         options.omega=1;
         options.abstol=tol;
         options.reltol=tol;
-        options.maxiter=maxit;
+        options.maxiter=maxiter;
         options.maxiter=10; % check for divergence(!!)
         
         [u_alpha,flag,relres,iter]=solve_mat_decomp_block( K_ab, f_beta, options );
@@ -109,12 +109,12 @@ switch solve_method
         options.reltol=tol;
         options.trunc_eps=0.0001;
 
-        maxit=100;
+        maxiter=100;
         options.abstol=0.0001;
         options.reltol=0.0001;
         options.trunc_eps=0.000001;
         options.trunc_k=20;
-        options.maxiter=maxit;
+        options.maxiter=maxiter;
         options.relax=1;
         options.algorithm=2;
         
@@ -136,7 +136,7 @@ switch solve_method
     case 99 % statements saved for later use
 end
 
-solver_message(itermethod,tol,maxit,flag,iter,relres);
+solver_message(itermethod,tol,maxiter,flag,iter,relres);
 
 if isvector(u_alpha)
     u_alpha=reshape( u_alpha, size(f_beta) );   

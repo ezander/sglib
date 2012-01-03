@@ -51,7 +51,7 @@ check_condition( G_Phi, 'square', true, 'G_Phi', mfilename );
 options=varargin2options( varargin );
 [sparse_svd,options]=get_option( options, 'sparse_svd', false );
 [tol,options]=get_option( options, 'tol', 1e-7 );
-[maxit,options]=get_option( options, 'maxit', 30 );
+[maxiter,options]=get_option( options, 'maxiter', 30 );
 check_unsupported_options( options, mfilename );
 
 
@@ -83,7 +83,7 @@ if sparse_svd && l_r>=min(size(rn_i_alpha))
     sparse_svd=false;
 end
 
-[U,S,V,relerr]=truncated_svd_internal( rn_i_alpha, l_r, sparse_svd, tol, maxit );
+[U,S,V,relerr]=truncated_svd_internal( rn_i_alpha, l_r, sparse_svd, tol, maxiter );
 
 if ~isempty(G_N)
     U=L_N\U;
@@ -98,15 +98,15 @@ sigma_r_k=diag(S);
 [r_i_k, r_k_alpha]=kl_pce_to_compact_form(mu_r_i, r_i_k, sigma_r_k, r_k_alpha );
 
 
-function [U,S,V,relerr]=truncated_svd_internal( A, k, sparse_svd, tol, maxit )
+function [U,S,V,relerr]=truncated_svd_internal( A, k, sparse_svd, tol, maxiter )
 % TRUNCATED_SVD_INTERNAL Compute the truncated SVD of size k.
 if sparse_svd
     options.tol=tol;
-    options.maxit=maxit;
+    options.maxiter=maxiter;
     options.disp=0;
     [U,S,V,flag]=svds( A, k, 'L', options );
     if flag
-        fprintf('warning: svds did not converge to the desired tolerance %g within %d iterations', tol, maxit );
+        fprintf('warning: svds did not converge to the desired tolerance %g within %d iterations', tol, maxiter );
     end
     relerr=0;
 else

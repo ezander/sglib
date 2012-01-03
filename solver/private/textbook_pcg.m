@@ -1,6 +1,6 @@
-function [x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxit, M )
+function [x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxiter, M )
 tol=get_base_param('tol', 1e-6, 'caller' );
-maxit=get_base_param('maxit', 100, 'caller' );
+maxiter=get_base_param('maxiter', 100, 'caller' );
 M=get_base_param('M', speye(size(A)), 'caller' );
 x=zeros(size(b));
 
@@ -9,7 +9,7 @@ tolb=tol*norm_r0;
 r=b-A*x;
 flag=1;
 resvec=[norm_r0];
-for iter=1:maxit
+for iter=1:maxiter
     z=M\r;
     rho=r'*z;
     if iter==1

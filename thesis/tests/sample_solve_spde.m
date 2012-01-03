@@ -124,11 +124,11 @@ Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
 Fi_mat=tensor_to_array( Fi );
 Mi_inv=stochastic_precond_mean_based( Ki );
 
-maxit=100;
+maxiter=100;
 reltol=1e-6;
 
 tic; fprintf( 'Solving (gpcg): ' );
-[Ui_mat,flag,info]=generalized_solve_pcg( Ki,Fi_mat,'reltol', reltol,'maxiter', maxit, 'Minv', Mi_inv);
+[Ui_mat,flag,info]=generalized_solve_pcg( Ki,Fi_mat,'reltol', reltol,'maxiter', maxiter, 'Minv', Mi_inv);
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
 %% 

@@ -27,10 +27,10 @@ A=tensor_operator_to_matrix(A);
 M=tensor_operator_to_matrix(M);
 b=tensor_to_vector(F);
 b=b/norm(b)*2; % makes reltol more significant than abstol
-tol=1e-6; maxit=100; 
+tol=1e-6; maxiter=100; 
 
-[x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxit ); %#ok<ASGLU>
-[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxit ); %#ok<ASGLU>
+[x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxiter ); %#ok<ASGLU>
+[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxiter ); %#ok<ASGLU>
 assert_equals(x,x2,'pre_x')
 assert_equals(iter,iter2,'pre_iter')
 assert_equals(relres,relres2,'pre_relres')
@@ -41,8 +41,8 @@ assert_equals(X,x2,'x')
 assert_equals(info.resvec,resvec,'resvec');
 
 
-[x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxit, M ); %#ok<ASGLU>
-[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxit, M ); %#ok<NASGU>
+[x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxiter, M ); %#ok<ASGLU>
+[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxiter, M ); %#ok<NASGU>
 [X,flag,info]=generalized_solve_pcg( A, b, 'reltol', tol, 'Minv', inv(M) ); %#ok<ASGLU>
 assert_equals(x,x2,'pre_x')
 assert_equals(resvec(:),resvec2(:),'pre_resvec')

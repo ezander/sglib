@@ -156,7 +156,7 @@ setup_equation
 Fi_vec=tensor_to_vector( Fi );
 
 disp(' ');
-maxit=100;
+maxiter=100;
 reltol=1e-6;
 
 Ki_fun=@(x)(tensor_operator_apply(Ki,x));
@@ -164,11 +164,11 @@ Mi_inv=stochastic_precond_mean_based(Ki);
 Mi_inv_fun=@(x)(tensor_operator_apply(Mi_inv,x));
 
 
-[Ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxit,Mi_inv_fun); %#ok<*ASGLU>
+[Ui_vec,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,Fi_vec,reltol,maxiter,Mi_inv_fun); %#ok<*ASGLU>
 
 for i=1:2
     R_vec=gvector_add( Fi_vec, operator_apply(Ki,Ui_vec), -1 );
-    [Ui_vec_delta,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,R_vec,reltol,maxit,Mi_inv_fun);
+    [Ui_vec_delta,flag,info.relres,info.iter,resvec]=pcg(Ki_fun,R_vec,reltol,maxiter,Mi_inv_fun);
     Ui_vec=Ui_vec+Ui_vec_delta;
 end
 

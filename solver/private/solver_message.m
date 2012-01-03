@@ -1,4 +1,4 @@
-function os = solver_message( method, tol, maxit, flag, iter, relres )
+function os = solver_message( method, tol, maxiter, flag, iter, relres )
 
 % TODO: need to rewrite from scratch, so it can be put under GPL (this is a
 % copy from the MathWorks code which can't be directly accessed.)
@@ -31,7 +31,7 @@ switch(flag)
         os = [os sprintf('\nbecause the update ratio (%d) deviated too much from 1.', ratio)];
        
     case 1
-        os = [os sprintf('\nbecause the maximum number of iterations (%d) was reached.', maxit)];
+        os = [os sprintf('\nbecause the maximum number of iterations (%d) was reached.', maxiter)];
     case 2
         os = [os sprintf(['\nbecause the system involving the' ...
             ' preconditioner was ill conditioned.'])];

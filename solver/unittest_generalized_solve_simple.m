@@ -31,14 +31,14 @@ Amat=tensor_operator_to_matrix(A);
 Mmat=tensor_operator_to_matrix(M);
 F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
 b=tensor_to_vector(F);
-tol=1e-6; maxit=100; 
+tol=1e-6; maxiter=100; 
 
 % rho=simple_iteration_contractivity( A, inv(Mmat) );
 % disp(rho);
 
 
 % check that the textbook implementation works
-[x,flag,relres,iter,resvec]=textbook_simple_iter( Amat, b, tol, maxit, Mmat ); %#ok<ASGLU>
+[x,flag,relres,iter,resvec]=textbook_simple_iter( Amat, b, tol, maxiter, Mmat ); %#ok<ASGLU>
 assert_equals(x,Amat\b,'textbook', 'abstol', 1e-4);
 assert_equals(Amat*x-b, zeros(size(b)), 'textbook_res', 'norm', 2, 'abstol',  1e-5 );
 
