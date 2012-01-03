@@ -12,6 +12,6 @@ vector_type='tensor';
 
 prec=xprec;
 modify_system
-[Mi_inv, Ki, Fi]=precondition_system( Mi_inv, Ki, Fi, prec_strat{:} );
+[Mi_inv, Ki, Fi]=precondition_system( Mi, Mi_inv, Ki, Fi, prec_strat{:} );
 
 cache_script( @solve_by_gsolve );

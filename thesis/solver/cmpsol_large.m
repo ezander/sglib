@@ -1,9 +1,9 @@
-function cmpsol_huge
+function cmpsol_large
 % show results for solving the huge model
 
 clc
 log_start( fullfile( log_file_base(), mfilename ) );
-compare_solvers_pcg( 'model_large_easy', get_solve_options, 'accurate', true )
+compare_solvers_pcg( 'model_medium_easy', get_solve_options, 'accurate', true )
 show_tex_table(1,[]);
 log_stop();
 

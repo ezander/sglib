@@ -32,4 +32,4 @@ end
 if isempty(prec)
    prec='mean'; 
 end
-Mi_inv=stochastic_precond_mean_based( Ki, 'precond_type', prec );
+[Mi_inv, Mi]=stochastic_precond_mean_based( Ki, 'precond_type', prec );

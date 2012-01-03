@@ -10,7 +10,7 @@ reltol=1e-16;
 abstol=1e-16;
 dynamic_eps=dyn;
 
-[Mi_inv, Ki, Fi]=precondition_system( Mi_inv, Ki, Fi, prec_strat{:} );
+[Mi_inv, Ki, Fi]=precondition_system( Mi, Mi_inv, Ki, Fi, prec_strat{:} );
 
 if ~exist('trunc_mode', 'var')
     trunc_mode='operator';

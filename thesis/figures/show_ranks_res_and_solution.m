@@ -32,7 +32,7 @@ info.rho=rho
 plot_solution_overview( 'basic', info )
 
 
-[Mi_inv, Ki, Fi]=precondition_system( Mi_inv, Ki, Fi, 'inside' )
+[Mi_inv, Ki, Fi]=precondition_system( Mi, Mi_inv, Ki, Fi, 'inside' )
 cache_script solve_by_gsolve_tensor
 info.norm_U=gvector_norm(Ui);
 plot_solution_overview( 'inside', info )

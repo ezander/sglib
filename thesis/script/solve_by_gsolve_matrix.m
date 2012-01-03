@@ -2,7 +2,7 @@ if ~exist( 'Fi_mat', 'var' )
     Fi_mat=tensor_to_array( Fi );
 end
 if ~exist( 'Mi_inv', 'var' )
-    Mi_inv=stochastic_precond_mean_based(Ki);
+    [Mi_inv, Mi]=stochastic_precond_mean_based(Ki);
 end
 
 ws='caller';

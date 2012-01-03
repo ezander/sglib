@@ -40,4 +40,4 @@ G=extend_rhs( G, I_k );
 
 Ki=apply_boundary_conditions_operator( K, P_I );
 Fi=apply_boundary_conditions_rhs( K, F, G, P_I, P_B );
-Mi_inv=stochastic_precond_mean_based( Ki );
+[Mi_inv, Mi]=stochastic_precond_mean_based( Ki );
