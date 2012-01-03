@@ -17,7 +17,7 @@ switch prec_strat
         PKi=operator_compose( Mi, PKi, 'tensor_sum', false );
         PMi_inv=Mi_inv;
         PFi=Fi;
-    case 'inside2'
+    case 'inside_res'
         PKi=operator_compose( Mi_inv, Ki );
         PMi_inv={speye(size(Ki{1,1})),speye(size(Ki{1,2}))};
         PFi=operator_apply( Mi_inv, Fi );
@@ -27,7 +27,7 @@ switch prec_strat
         PKi=operator_compose( MiC, PKi, 'tensor_sum', false );
         PMi_inv=Mi_inv;
         PFi=Fi;
-    case 'ilu2'
+    case 'ilu_res'
         [MiC_inv,MiC,info]=stochastic_precond_mean_based( Ki, 'decomp_type', 'ilu', 'decomp_options', prec_options );
         PKi=operator_compose( MiC_inv, Ki );
         PMi_inv=operator_compose( Mi_inv, MiC );

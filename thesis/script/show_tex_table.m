@@ -13,8 +13,12 @@ switch n
             -1, '','';
             0,  'Mean rank res.',   '$round(mean(info.rank_res_before))$';
             0,  'Mean rank sol.',   '$round(mean(info.rank_sol_after))$';
+            0,  'Ssqr rank res.',   '$round(sum(info.rank_res_before.^2))$';
+            0,  'Ssqr rank sol.',   '$round(sum(info.rank_sol_after.^2))$';
             0,  'Final rank res.',  '$round(info.rank_res_before(end))$';
             0,  'Final rank sol.',  '$round(info.rank_sol_after(end))$';
+            -1, '','';
+            0,  'Iterations',       '$round(info.iter)$';
             -1, '','';
             0,  'Runtime',          '$rft(timer.gen_solver_simple)$';
             1,  'Truncations',      '$rft(timer.tensor_truncate)$';
