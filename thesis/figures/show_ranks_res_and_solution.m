@@ -45,6 +45,7 @@ rs=info.rank_sol_after;
 l=min(length(rr),length(rs));
 rr=rr(1:l);
 rs=rs(1:l);
+re = log(info.errvec(1:l))*10+120;
 
 close
 multiplot_init(1,1)
@@ -52,6 +53,7 @@ multiplot_init(1,1)
 multiplot;
 plot( rr, 'x-' ); legend_add( 'rank residual' );
 plot( rs, 'o-.' ); legend_add( 'rank solution' );
+plot( re, '+-.' ); legend_add( 'log rel. error' );
 xlabel('iteration')
 ylabel('rank')
 ylim([0, 200])

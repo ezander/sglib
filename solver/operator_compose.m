@@ -46,5 +46,5 @@ else
 end
 
 function z=comp_apply( A, B, x, varargin )
-y=operator_apply( B, x, varargin{:} );
-z=operator_apply( A, y, varargin{:} );
+y=operator_apply( B, x, 'pass_on', varargin );
+z=operator_apply( A, y, 'pass_on', varargin );
