@@ -28,9 +28,9 @@ function Y=tensor_operator_apply( A, T, varargin )
 
 options=varargin2options( varargin );
 [truncate_func, options]=get_option( options, 'truncate_func', @identity );
-[residual,options]=get_option(options,'residual', false );
-[reverse,options]=get_option(options,'reverse', residual );
 [b,options]=get_option(options,'b', {} );
+[residual,options]=get_option(options,'residual', ~isempty(b) );
+[reverse,options]=get_option(options,'reverse', ~residual );
 check_unsupported_options( options, mfilename );
 
 check_tensor_operator_format( A );

@@ -34,8 +34,8 @@ function y=operator_apply( A, x, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
-[residual,options]=get_option(options,'residual', false );
 [b,options]=get_option(options,'b', {} );
+[residual,options]=get_option(options,'residual', ~isempty(b) );
 [pass_on,options]=get_option(options,'pass_on', {} );
 check_unsupported_options(options,mfilename);
 
