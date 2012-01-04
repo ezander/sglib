@@ -9,4 +9,4 @@ Minv=stochastic_precond_mean_based( Ki );
 
 common={'maxiter', 100, 'reltol', tol, 'abstol', tol, 'Minv', Minv, 'verbosity', 1 };
 
-[X,flag,info]=generalized_solve_simple( Ki, Fi, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );
+[X,flag,info]=generalised_solve_simple( Ki, Fi, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );

@@ -85,16 +85,16 @@ eigs( B3, 1)
 %%
 if true
     F=tensor_to_array(Fi);
-    [X,flag,info1]=generalized_solve_pcg( A, F(:), 'Minv', Pinv1, 'verbosity', 0 );
-    [X,flag,info2]=generalized_solve_pcg( A, F(:), 'Minv', Pinv2, 'verbosity', 0 );
-    [X,flag,info3]=generalized_solve_pcg( A, F(:), 'Minv', Pinv3, 'verbosity', 0 );
+    [X,flag,info1]=generalised_solve_pcg( A, F(:), 'Minv', Pinv1, 'verbosity', 0 );
+    [X,flag,info2]=generalised_solve_pcg( A, F(:), 'Minv', Pinv2, 'verbosity', 0 );
+    [X,flag,info3]=generalised_solve_pcg( A, F(:), 'Minv', Pinv3, 'verbosity', 0 );
     disp('pcg solve steps')
     info1.iter
     info2.iter
     info3.iter
-    [X,flag,info1]=generalized_solve_simple( A, F(:), 'Minv', Pinv1, 'verbosity', 0 );
-    [X,flag,info2]=generalized_solve_simple( A, F(:), 'Minv', Pinv2, 'verbosity', 0 );
-    [X,flag,info3]=generalized_solve_simple( A, F(:), 'Minv', Pinv3, 'verbosity', 0 );
+    [X,flag,info1]=generalised_solve_simple( A, F(:), 'Minv', Pinv1, 'verbosity', 0 );
+    [X,flag,info2]=generalised_solve_simple( A, F(:), 'Minv', Pinv2, 'verbosity', 0 );
+    [X,flag,info3]=generalised_solve_simple( A, F(:), 'Minv', Pinv3, 'verbosity', 0 );
     disp('simple solve steps')
     info1.iter
     info2.iter

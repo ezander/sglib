@@ -33,9 +33,9 @@ for xxx=1:length(modes)
         trunc.eps=eps;
         leg=[leg {strvarexpand('$eps$')}]; %#ok<AGROW>
         
-        %[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
+        %[X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
         t=tic;
-        [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );
+        [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', mode, 'trunc', trunc   );
         tt=toc(t);
         if exist('x','var') && ~isempty(x)
             curr_err=norm( x-tensor_to_vector( X ) )/gvector_norm(x);

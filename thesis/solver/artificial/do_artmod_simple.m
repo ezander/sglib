@@ -57,7 +57,7 @@ options=[options, {'trunc', trunc, 'trunc_mode', trunc_mode}];
 options=[options, {'upratio_delta', upratio_delta, 'dynamic_eps', dynamic_eps}];
 
 t=tic;
-[X,flag,info]=generalized_solve_simple( A, F, 'Minv', Pinv, options{:}, 'solution', x   );
+[X,flag,info]=generalised_solve_simple( A, F, 'Minv', Pinv, options{:}, 'solution', x   );
 tt=toc(t);
 
 if exist('x','var') && ~isempty(x)

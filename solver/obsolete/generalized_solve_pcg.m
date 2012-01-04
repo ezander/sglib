@@ -1,4 +1,4 @@
-function [X,flag,info]=generalized_solve_pcg( A, F, varargin )
+function [X,flag,info]=generalised_solve_pcg( A, F, varargin )
 
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );

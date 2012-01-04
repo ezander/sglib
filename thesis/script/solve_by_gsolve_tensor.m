@@ -28,9 +28,9 @@ solver_stats_start
 
 switch solver_name
     case 'gsi'
-        [Ui,flag,info]=generalized_solve_simple( Ki, Fi, options{:});
+        [Ui,flag,info]=generalised_solve_simple( Ki, Fi, options{:});
     case 'gpcg'
-        [Ui,flag,info]=generalized_solve_pcg( Ki, Fi, options{:});
+        [Ui,flag,info]=generalised_solve_pcg( Ki, Fi, options{:});
     otherwise
         % unknown solver
         keyboard

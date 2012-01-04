@@ -80,6 +80,6 @@ if is_tensor(F)
 end
 
 %% call pcg
-[X,flag,info,stats]=generalized_solve_simple( A, F, pass_options{:} );
+[X,flag,info,stats]=generalised_solve_simple( A, F, pass_options{:} );
 
 

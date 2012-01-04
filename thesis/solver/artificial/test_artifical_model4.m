@@ -29,7 +29,7 @@ disp(rho);
 
 % check that the textbook implementation works
 common={'maxiter', maxiter, 'reltol', tol/1000, 'abstol', tol/1000, 'Minv', Minv };
-[x,flag,info]=generalized_solve_simple( A, b, common{:} );
+[x,flag,info]=generalised_solve_simple( A, b, common{:} );
 if flag
     info %#ok<NOPRT>
     keyboard
@@ -55,7 +55,7 @@ for km=[3 7 10 15 20 25 30]
     trunc.k_max=km;
     leg=[leg {strvarexpand('$km$')}]; %#ok<AGROW>
 
-    [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
+    [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
     if flag
         info %#ok<NOPRT>
         %keyboard;

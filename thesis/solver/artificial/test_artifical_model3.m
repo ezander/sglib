@@ -18,7 +18,7 @@ disp(rho);
 
 % check that the textbook implementation works
 common={'maxiter', 100, 'reltol', tol/100, 'abstol', tol/100, 'Minv', Minv }
-[x,flag,info]=generalized_solve_simple( A, b, common{:} );
+[x,flag,info]=generalised_solve_simple( A, b, common{:} );
 assert_equals(operator_apply(A,x)-b, zeros(size(b)), 'textbook_res', 'norm', 2, 'abstol', 2*tol );
 
 trunc.k_max=inf;
@@ -34,7 +34,7 @@ for teps=tol*[0.2, 0.1, 0.05, 0.02]
     trunc.eps=teps;
     leg=[leg {strvarexpand('$teps/tol$')}];
 
-    [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
+    [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
     norm( x-tensor_to_vector( X ) )
     
     multiplot;

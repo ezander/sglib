@@ -128,7 +128,7 @@ maxiter=100;
 reltol=1e-6;
 
 tic; fprintf( 'Solving (gpcg): ' );
-[Ui_mat,flag,info]=generalized_solve_pcg( Ki,Fi_mat,'reltol', reltol,'maxiter', maxiter, 'Minv', Mi_inv);
+[Ui_mat,flag,info]=generalised_solve_pcg( Ki,Fi_mat,'reltol', reltol,'maxiter', maxiter, 'Minv', Mi_inv);
 toc; fprintf( 'Flag: %d, iter: %d, relres: %g \n', flag, info.iter, info.relres );
 
 %% 

@@ -18,7 +18,7 @@ disp(rho);
 
 % check that the textbook implementation works
 common={'maxiter', 100, 'reltol', tol/100, 'abstol', tol/100, 'Minv', Minv }
-[x,flag,info]=generalized_solve_simple( A, b, common{:} );
+[x,flag,info]=generalised_solve_simple( A, b, common{:} );
 assert_equals(operator_apply(A,x)-b, zeros(size(b)), 'textbook_res', 'norm', 2, 'abstol', 2*tol );
 
 trunc.k_max=inf;
@@ -36,11 +36,11 @@ for i=1:3
         trunc.eps=teps;
         switch i
             case 1
-                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
+                [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
             case 2
-                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   );
+                [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   );
             case 3
-                [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   );
+                [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   );
         end
         norm( x-tensor_to_vector( X ) )
         

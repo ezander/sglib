@@ -112,13 +112,13 @@ for pkind=1:4
 
     %%
     if true
-        [X,flag,info]=generalized_solve_pcg( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
+        [X,flag,info]=generalised_solve_pcg( Ki, F(:), 'Minv', Pinv, 'verbosity', 0 );
         if flag
             info.iter='$\infty$';
         end
         strvarexpand( '($pkind$) pcg solve steps: $info.iter$ (rr: $info.relres$)' );
         stats.npcg=info.iter;
-        [X,flag,info]=generalized_solve_simple( Ki, F(:), 'Minv', Pinv, 'verbosity', 0, 'maxiter', 300 );
+        [X,flag,info]=generalised_solve_simple( Ki, F(:), 'Minv', Pinv, 'verbosity', 0, 'maxiter', 300 );
         if flag
             info.iter='$\infty$';
         end

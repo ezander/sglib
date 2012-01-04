@@ -23,7 +23,7 @@ defaults.trunc_mode='operator';
 variable.r=0.00331;
 
 % run parameter study
-%dbstop in generalized_solve_simple at 48
+%dbstop in generalised_solve_simple at 48
 ps_results=param_study( 'do_artmod_simple', variable, defaults, fields, 'cache', true, 'cache_partial', true );
 ps_results=cell2mat_all( ps_results );
 show_update_ratio_error_and_residual

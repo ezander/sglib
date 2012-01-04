@@ -26,13 +26,13 @@ trunc.show_reduction=false;
 multiplot_init( 2, 2 );
 for teps=tol*[0.1, 0.01, 0.001, 0]
     trunc.eps=teps;
-    [X1,flag1,info1]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   ); 
+    [X1,flag1,info1]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X1 ) )
     
-    [X2,flag2,info2]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   ); 
+    [X2,flag2,info2]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'before', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X2 ) )
 
-    [X3,flag3,info3]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   ); 
+    [X3,flag3,info3]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc   ); 
     norm( x-tensor_to_vector( X3 ) )
     
 

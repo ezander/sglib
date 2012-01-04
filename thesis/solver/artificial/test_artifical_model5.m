@@ -49,7 +49,7 @@ for km=1:2:30
     trunc.k_max=km;
     leg=[leg {strvarexpand('$km$')}]; %#ok<AGROW>
 
-    [X,flag,info]=generalized_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
+    [X,flag,info]=generalised_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'operator', 'trunc', trunc   );
     err=[err norm( x-tensor_to_vector( X ) )]
     k=[k km];
 end
