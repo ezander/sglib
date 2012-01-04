@@ -80,6 +80,8 @@ for i=1:num
     
     info_tp{i}.rho=rho;
     info_tp{i}.descr=descr;
+    info_tp{i}.longdescr=longdescr;
+    info_tp{i}.all_options=all_options{i};
     info_tp{i}.norm_U=gvector_norm(currUi);
     if ~isempty(Ui_mat_true)
         tp_err{i}=gvector_error( currUi, Ui_mat_true, 'relerr', true );

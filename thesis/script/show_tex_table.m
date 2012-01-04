@@ -9,7 +9,7 @@ switch n
     case 1
         entries={
             -1, '','';
-            0, 'Mode',             '$\kwf{info.longdescr}$';
+            0, 'Mode',             '\kwf{$info.longdescr$}';
             -1, '','';
             0,  'Mean rank res.',   '$round(mean(info.rank_res_before))$';
             0,  'Mean rank sol.',   '$round(mean(info.rank_sol_after))$';
