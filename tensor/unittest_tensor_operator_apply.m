@@ -47,9 +47,10 @@ Bmat=tensor_to_array(B);
 Bvec=tensor_to_vector(B);
 
 
-assert_equals( tensor_operator_apply( A, X ), B, 'tensor/tensor' );
+assert_equals( tensor_operator_apply( A, X, 'reverse', false ), B, 'tensor/tensor' );
+assert_equals( tensor_to_array(tensor_operator_apply( A, X)), Bmat, 'tensor/tensor' );
 assert_equals( tensor_operator_apply( A, Xvec ), Bvec, 'tensor/vect' );
 assert_equals( tensor_operator_apply( A, Xmat ), Bmat, 'tensor/mat' );
 
-assert_equals( tensor_operator_apply( Alin, X ), B, 'lin_op_tensor/tensor' );
+assert_equals( tensor_operator_apply( Alin, X, 'reverse', false ), B, 'lin_op_tensor/tensor' );
 

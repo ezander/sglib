@@ -24,7 +24,6 @@ end
 
 if isempty(G)
     if orth_columns>0
-        fprintf( 'orth_columns: %d\n', orth_columns );
         n=orth_columns;
         % extract orthogonal columns and normalize
         Q1=A(:,1:n);
