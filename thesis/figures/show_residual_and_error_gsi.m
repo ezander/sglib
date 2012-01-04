@@ -44,6 +44,8 @@ for i=1:length(resvecs)
 end
 logaxis(gca,'y')
 xlim([1,30])
+xlabel( 'iteration' )
+ylabel( 'residual' )
 save_figure( mh(1), 'residual_by_iteration_gsi' );
 
 multiplot;
@@ -51,6 +53,8 @@ for i=1:length(errvecs)
     plot(errvecs{i},'x-');
 end
 logaxis(gca,'y')
+xlabel( 'iteration' )
+ylabel( 'error' )
 save_figure( mh(2), 'error_by_iteration_gsi' );
 
 %plot_solution_overview( 'basic', info )
