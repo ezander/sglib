@@ -13,6 +13,7 @@ options=varargin2options( varargin );
 [dyneps_factor,options]=get_option( options, 'dyneps_factor', 0.5 );
 [div_b,options]=get_option( options, 'div_b', 1 );
 [div_op,options]=get_option( options, 'div_op', 3 );
+[fast_qr,options]=get_option( options, 'fast_qr', false );
 
 [apply_operator_options,options]=get_option( options, 'apply_operator_options', {} );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
@@ -33,7 +34,8 @@ if dynamic_eps
 end
 [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc, div_b, div_op );
 if ~isequal(trunc_mode,'none')
-    apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
+    apply_operator_options=[apply_operator_options, ...
+        {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}];
 end
 
 tensor_mode=is_tensor(F);
@@ -103,7 +105,8 @@ for iter=1:maxiter
             end
             [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc, div_b, div_op );
             if ~isequal(trunc_mode,'none')
-                apply_operator_options=[base_apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
+                apply_operator_options=[apply_operator_options, ...
+                    {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}];
             end
         else
             flag=3;

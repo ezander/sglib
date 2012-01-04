@@ -31,6 +31,7 @@ options=varargin2options( varargin );
 [b,options]=get_option(options,'b', {} );
 [residual,options]=get_option(options,'residual', ~isempty(b) );
 [reverse,options]=get_option(options,'reverse', ~residual );
+[fast_qr,options]=get_option(options,'fast_qr', false );
 check_unsupported_options( options, mfilename );
 
 check_tensor_operator_format( A );
@@ -58,7 +59,9 @@ for i=1:R
             Y=b;
         end
     elseif is_tensor(Y)
-        orth_columns=tensor_rank(Y);
+        if fast_qr
+            orth_columns=tensor_rank(Y);
+        end
     end
         
     if ~residual
@@ -67,11 +70,6 @@ for i=1:R
         Y=gvector_add( Y, V, -1 );
     end
     
-    Y1=funcall( truncate_func, Y, 'orth_columns', orth_columns );
-%      Y2=funcall( truncate_func, Y, 'orth_columns', 0 ); %%
-%      if is_tensor(Y) && tensor_rank(Y1)>tensor_rank(Y2) %%
-%          keyboard
-%      end
-    Y=Y1;
+    Y=funcall( truncate_func, Y, 'orth_columns', orth_columns );
 end
 
