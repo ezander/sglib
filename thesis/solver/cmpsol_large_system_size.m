@@ -38,7 +38,7 @@ gsi_ilu_opts={...
     'solve_opts', {'div_b', 10, 'div_op', 10}, ...
     'dyn', true, ...
     'eps', 1e-8, ...
-    'check', true
+    'check', false
     };
 
 
@@ -82,11 +82,12 @@ pcg_kron_opts={...
 
 if fasttest('get')
     Mu_set=round(sqrspace(4,40,10));
-    optlist = {gsi_ilu_opts,pcg_mean_opts,pcg_kron_opts};
+    optlist = {gsi_ilu_opts, gpcg_ilu_opts, pcg_mean_opts};
 else
     Mu_set=round(sqrspace(50,5000,10));
-    optlist = {gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,gpcg_std_opts,gpcg_dyn_opts,gpcg_ilu_opts,pcg_mean_opts};
-    %,pcg_kron_opts};
+    optlist = {gsi_std_opts, gsi_dyn_opts, gsi_ilu_opts, ...
+        gpcg_std_opts, gpcg_dyn_opts, gpcg_ilu_opts, ...
+        pcg_mean_opts};
 end
 
 for M_u=Mu_set

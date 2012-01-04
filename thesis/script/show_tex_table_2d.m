@@ -18,6 +18,12 @@ indstr=repmat(' ',1,indent);
 
 switch n
     case 1
+        % thanks to precondition_system rank_K information in the info
+        % struct is generally not correct
+        for i=1:length(infos)
+            rankK=get_option(varargin2options(infos{i}.all_options.mod_opts),'l_k',0);
+            if rankK; infos{i}.rank_K = rankK; end
+        end
         hfield='rank_K';
         vfield='descr';
         efield='time';

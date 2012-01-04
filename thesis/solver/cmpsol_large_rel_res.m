@@ -38,7 +38,7 @@ gsi_ilu_opts={...
     'dyn', true, ...
     'eps', 1e-8, ...
     'solve_opts', {'div_b', 10, 'div_op', 10}, ...
-    'check', true };
+    'check', false };
 
 
 
@@ -79,16 +79,23 @@ pcg_kron_opts={...
     'prec', 'kron' };
 
 
-for tol=[ 1e-4, 3e-4, 1e-3, 3e-3, 1e-2]
-%for tol=[ 3e-3, 1e-2]
-    i=1;
-    for def_opts={gsi_std_opts,gsi_dyn_opts,gsi_ilu_opts,gpcg_std_opts,gpcg_dyn_opts,gpcg_ilu_opts,pcg_mean_opts,pcg_kron_opts}
+if fasttest('get')
+    tol_set=[ 1e-3, 1e-2];
+    optlist = {gsi_ilu_opts,gpcg_ilu_opts,pcg_mean_opts};
+else
+    tol_set=[ 1e-4, 3e-4, 1e-3, 3e-3, 1e-2];
+    optlist = {gsi_std_opts, gsi_dyn_opts, gsi_ilu_opts,...
+        gpcg_std_opts, gpcg_dyn_opts, gpcg_ilu_opts,...
+        pcg_mean_opts};
+end
+
+for tol=tol_set
+    for def_opts=optlist
         opt=varargin2options( [def_opts{1}, {'tol',tol}] ); 
         if ~get_option(opt, 'dyn', false)
             opt.eps=opt.tol * 5e-3;
         end
         opts{end+1}=opt; 
-        i=i+1;
     end
 end
 
