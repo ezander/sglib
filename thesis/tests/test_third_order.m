@@ -5,7 +5,7 @@ clc
 model_name='model_medium_easy';
 model_name='model_small_easy';
 tol=1e-3;
-k_max=100;
+k_max=40;
 eps=1e-5;
 
 solve_2way( model_name, tol, eps, k_max )
