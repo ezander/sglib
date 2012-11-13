@@ -12,8 +12,7 @@ function num=filedate( file )
 % See also DIR, DATENUM, NEEDS_UPDATE
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2010, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

@@ -7,8 +7,7 @@ function err=pce_error_mc(pce_func1, pce_func2, m, varargin)
 % See also
 
 %   Elmar Zander
-%   Copyright 2011, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2011, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

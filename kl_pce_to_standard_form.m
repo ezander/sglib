@@ -7,8 +7,7 @@ function [mu_rs_i,rs_i_k,sigma_rs_k,rs_k_alpha]=kl_pce_to_standard_form(rc_i_k,r
 % See also
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2010, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

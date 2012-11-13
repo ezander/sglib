@@ -7,8 +7,7 @@ function unittest_kl_pce_to_standard_form
 % See also KL_PCE_TO_STANDARD_FORM, TESTSUITE 
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2010, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

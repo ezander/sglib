@@ -53,12 +53,7 @@ end
 
 
 function [pos,els,u_i_k,u_k_alpha,I_u]=get_accurate_sol
-if fasttest('get')
-    model_medium_easy
-else
-    %model_large_easy
-    model_medium_easy
-end
+model_medium_easy
 
 define_geometry
 cache_script discretize_model
@@ -69,12 +64,7 @@ cache_script solve_by_standard_pcg
 cache_script solution_vec2kl
 
 function [pos,els,u_i_k,u_k_alpha,I_u]=get_tensor_sol
-if fasttest('get')
-    model_medium_easy
-else
-    %model_large_easy
-    model_medium_easy
-end
+model_medium_easy
 
 define_geometry
 cache_script discretize_model

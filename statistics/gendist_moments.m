@@ -7,8 +7,7 @@ function [mean,var,skew,kurt]=gendist_moments(dist, params, shift, scale)
 % See also
 
 %   Elmar Zander
-%   Copyright 2009, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2009, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

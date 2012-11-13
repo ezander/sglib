@@ -1,11 +1,6 @@
 function show_update_ratio_and_posterior_err
 
-if fasttest('get')
-    model_medium_easy
-else
-    %model_large_easy
-    model_medium_easy
-end
+model_medium_easy
 
 define_geometry
 cache_script discretize_model
@@ -59,6 +54,7 @@ end
 plot( info.updvec, 'd-' ); legend_add( 'update ratio' );
 
 logaxis( gca, 'y' )
+xlabel('iteration')
 
 if delta
     stop=find(abs(1-info.updvec)>delta, 1)
@@ -66,7 +62,7 @@ if delta
     plot([stop,stop], yl, 'k--')
     xl=xlim;
     plot(xl, [1-delta, 1-delta], 'k--')
-    xlabel('k')
+    xlabel('iteration')
 end
 
 save_figure( gca, {'update_ratio_error_and_residual_%s', model} );

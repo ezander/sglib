@@ -7,7 +7,7 @@ function unittest_gpc_evaluate
 % See also GPC_EVALUATE, TESTSUITE 
 
 %   Elmar Zander
-%   Copyright 2012, Inst. of Scientific Computing
+%   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

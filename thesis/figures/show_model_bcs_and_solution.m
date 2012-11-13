@@ -4,11 +4,7 @@ function show_model_bcs_and_solution
 %#ok<*NASGU>
 %#ok<*AGROW>
 
-if fasttest('get')
-    model_medium_easy
-else
-    model_large_easy
-end
+model_medium_easy
 
 m_f=min(m_f,10);
 num_refine_after=0;
@@ -24,12 +20,20 @@ mh=multiplot_init(2,3);
 opts={'view', 3};
 [u_mean,u_var]=pce_moments( U_mat, I_u );
 
-multiplot(mh,1); plot_field(pos, els, u_mean, opts{:}, 'show_mesh', true ); xlabel('x'); ylabel('y');
-multiplot(mh,2); plot_field(pos, els, sqrt(u_var), opts{:} ); xlabel('x'); ylabel('y');
+multiplot(mh,1); 
+plot_field(pos, els, u_mean, opts{:}, 'show_mesh', true ); 
+xlabel('x'); 
+ylabel('y');
+
+multiplot(mh,2); 
+plot_field(pos, els, sqrt(u_var), opts{:} ); 
+xlabel('x'); 
+ylabel('y');
 
 multiplot(mh,3); 
 plot_boundary_conds( pos, els, 'zpos', g_i_k(:,1)', 'neumann_nodes', neumann_nodes, 'bndwidth', 2 )
-xlabel('x'); ylabel('y');
+xlabel('x'); 
+ylabel('y');
 axis tight
 
 

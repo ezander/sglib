@@ -68,6 +68,8 @@ y(y==0)=1e-18;
 plot( deltas, y, 'x-' );
 logaxis(gca,'xy');
 legend('full tensor','inner product','orth. inner product','orth. (core) full tensor')
+%xlabel( 'true difference' );
+%xlabel( 'computed difference' );
 grid on
 save_figure( gca, 'tensor_inner_product_methods' );
 

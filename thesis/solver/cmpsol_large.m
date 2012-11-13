@@ -94,8 +94,8 @@ gpcg_ilu_opts={...
     'eps', 1e-8};
 
 
-optlist={gsi_std_opts1, gsi_dyn_opts, gsi_inside_opts, gsi_ilu_opts, ...
-    gpcg_std_opts1, gpcg_dyn_opts, gpcg_inside_opts, gpcg_ilu_opts};
+optlist={gsi_std_opts1, gsi_dyn_opts, gsi_inside_opts, gsi_ilu_opts}%, ...
+    %gpcg_std_opts1, gpcg_dyn_opts, gpcg_inside_opts, gpcg_ilu_opts};
 opts={};
 for def_opts=optlist
     opts{end+1}=varargin2options( def_opts{1} );

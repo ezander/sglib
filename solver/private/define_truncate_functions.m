@@ -7,8 +7,7 @@ function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_trunc
 % See also
 
 %   Elmar Zander
-%   Copyright 2011, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2011, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

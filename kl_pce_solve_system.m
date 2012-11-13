@@ -7,8 +7,7 @@ function u=kl_pce_solve_system( k_i_k, k_k_alpha, I_k, f_i_k, f_k_alpha, I_f, g_
 % See also
 
 %   Elmar Zander
-%   Copyright 2011, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2011, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

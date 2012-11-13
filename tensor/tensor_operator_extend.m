@@ -7,8 +7,7 @@ function A=tensor_operator_extend( A, I, n )
 % See also
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Comuting
-%   $Id$ 
+%   Copyright 2010, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
