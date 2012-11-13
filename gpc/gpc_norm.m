@@ -18,7 +18,6 @@ function norm_I=gpc_norm( V )
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -58,6 +57,6 @@ switch sys
     case {'Hn', 'Ln'}
         nrm = ones(size(n));
     otherwise
-        error('Unknown polynomials system: %s', sys);
+        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
 

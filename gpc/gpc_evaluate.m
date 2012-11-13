@@ -1,6 +1,6 @@
 function a_i=gpc_evaluate( a_i_alpha, V_a, xi )
-% GPC_EVALUATE Evaluate a GPC random variable at a given sample point.
-%   A_I=GPC_EVALUATE( A_I_ALPHA, I_A, XI ) computes a realization of
+% GPC_EVALUATE Evaluate a GPC at a given number of sample points.
+%   A_I=GPC_EVALUATE( A_I_ALPHA, V_A, XI ) computes a realization of
 %   the GPC expansion given by the coefficients in A_I_ALPHA w.r.t.
 %   multiindex I_A at the sample point(s) given by XI.
 % 
@@ -15,15 +15,15 @@ function a_i=gpc_evaluate( a_i_alpha, V_a, xi )
 %
 % Example (<a href="matlab:run_example gpc_evaluate">run</a>)
 %   I_a=multiindex( 2, 3 );           % m=2, M=10
+%   V_a={{'Hn', 'Ln'}, I_a};
 %   a_i_alpha=cumsum(ones( 5, 10 ));  % N=5
-%   xi=randn(2, 7);                   % k=7
-%   gpc_evaluate( a_i_alpha, I_a, xi )
+%   xi=gpc_sample(V_a, 7);            % k=7
+%   gpc_evaluate( a_i_alpha, V_a, xi )
 %
-% See also 
+% See also GPC_SAMPLE
 
 %   Elmar Zander
-%   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
+%   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -42,13 +42,8 @@ m = size(I_a, 2);
 k = size(xi, 2);
 deg = max(max(I_a));
 
-if size(xi,1)~=m
-    error( 'random vector "xi" and gpc index vector "I_a" don''t match' );
-end
-if size(a_i_alpha,2)~=M
-    error( 'gpc coeff "a_i_alpha" and gpc index vector "I_a" don''t match' );
-end
-
+check_match(a_i_alpha, I_a, false, 'a_i_alpha', 'I_a', mfilename);
+check_match(I_a, xi, false, 'I_a', 'xi', mfilename);
 
 % p has dimension
 %   m x k x deg
@@ -56,13 +51,22 @@ end
 % It is evaluated by the recurrence relation
 %   p_{n + 1}(x) = (a_n + x b_n) p_n(x) - c_n p_{n - 1}(x)
 % here: a_n = r(n,1), b_n = r(n,2), c_n = r(n,3)
-% TODO: for mixed gpc we need to do that separately for each column
 p = zeros(m, k, deg);
 p(:,:,1) = zeros(size(xi));
 p(:,:,2) = ones(size(xi));
-r = poly_recur_coeff(sys, deg);
-for d=1:deg
-    p(:,:,d+2) = (r(d,1) + xi * r(d, 2)) .* p(:,:,d+1) - r(d,3) * p(:,:,d);
+if iscell(sys)
+    for j=1:m
+        % TODO: not very efficient for mixed gpc
+        r = poly_recur_coeff(sys{j}, deg);
+        for d=1:deg
+            p(j,:,d+2) = (r(d,1) + xi(j,:) * r(d, 2)) .* p(j,:,d+1) - r(d,3) * p(j,:,d);
+        end
+    end
+else
+    r = poly_recur_coeff(sys, deg);
+    for d=1:deg
+        p(:,:,d+2) = (r(d,1) + xi * r(d, 2)) .* p(:,:,d+1) - r(d,3) * p(:,:,d);
+    end
 end
 
 % q has dimension
@@ -88,12 +92,11 @@ switch sys
         normalise = 'H';
     case 'L'
         r = [zeros(size(n)), (2*n+1)./(n+1), n ./ (n+1)];
-        disp(3);
     case 'Ln'
         r = [zeros(size(n)), (2*n+1)./(n+1), n ./ (n+1)];
         normalise = 'L';
     otherwise
-        error('Unknown polynomials system: %s', sys);
+        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
 if normalise
     z = [0; gpc_norm( {normalise, (0:deg)'})];
@@ -104,6 +107,3 @@ if normalise
          r(:,2) .* z(n+2) ./ z(n+3), ...
          r(:,3) .* z(n+1) ./ z(n+3)];
 end
-%disp(r)
-
-

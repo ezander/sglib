@@ -6,9 +6,8 @@ function unittest_gpc_evaluate
 %
 % See also GPC_EVALUATE, TESTSUITE 
 
-%   <author>
-%   Copyright 2012, <institution>
-%   $Id$ 
+%   Elmar Zander
+%   Copyright 2012, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -21,63 +20,36 @@ function unittest_gpc_evaluate
 munit_set_function( 'gpc_evaluate' );
 
 
-I_a = multiindex(1, 5);
-a_i_alpha = eye(6);
+% Test orthogonality
+N = 5;
+I_a = multiindex(1, N);
+a_i_alpha = eye(N+1);
 
-xi = linspace(-1,1,10000);
-a=gpc_evaluate(a_i_alpha, {'Ln', I_a}, xi);
-for i=1:6
-    for j=1:6
-        h = (xi(2)-xi(1));
-        D(i,j) = h * sum(0.5 * a(i,:) .* a(j,:));
-    end
-end
-D
+% ... for Hermite
+[xi, w] = gauss_hermite_rule(N+1);
+a=gpc_evaluate(a_i_alpha, {'H', I_a}, xi);
+D = a * diag(w) * a';
+assert_matrix(D, 'diagonal', 'H_ortho')
 
-
-xi = linspace(-4,4,100000);
 a=gpc_evaluate(a_i_alpha, {'Hn', I_a}, xi);
-for i=1:6
-    for j=1:6
-        h = (xi(2)-xi(1));
-        D(i,j) = h * sum(1/sqrt(2*pi) * exp(-xi.^2/2) .* a(i,:) .* a(j,:));
-    end
-end
-D
+D = a * diag(w) * a';
+assert_matrix(D, 'identity', 'Hn_orthonormal')
 
-return 
+% ... for Legendre
 
-I_a = multiindex(1, 5);
-xi = linspace(-1,1,100);
-a_i_alpha = eye(6);
+[xi, w] = gauss_legendre_rule(N+1);
+w = 0.5 * w;
 
 a=gpc_evaluate(a_i_alpha, {'L', I_a}, xi);
-subplot(2,2,1)
-plot(xi,a)
-grid on
+D = a * diag(w) * a';
+assert_matrix(D, 'diagonal', 'L_ortho')
 
 a=gpc_evaluate(a_i_alpha, {'Ln', I_a}, xi);
-subplot(2,2,2)
-plot(xi,a)
-grid on
-
-a=gpc_evaluate(a_i_alpha, {'H', I_a}, xi);
-subplot(2,2,3)
-plot(xi,a)
-grid on
-
-a=gpc_evaluate(a_i_alpha, {'Hn', I_a}, xi);
-subplot(2,2,4)
-plot(xi,a)
-grid on
+D = a * diag(w) * a';
+assert_matrix(D, 'identity', 'Ln_orthonormal')
 
 
-
-return
-
-
-
-
+% Test one precomputed example
 I_a=multiindex( 2, 3 );
 a_i_alpha=cumsum(ones( 5, 10 ));
 xi=reshape( linspace( -1, 1, 14 ), 2, [] );
@@ -88,7 +60,53 @@ expect=[
   11.79790623577606   8.66272189349112   3.03686845698680  -2.98224852071006  -7.29722348657260  -7.81065088757396  -2.42512517068730
   15.73054164770141  11.55029585798816   4.04915794264907  -3.97633136094675  -9.72963131543013 -10.41420118343195  -3.23350022758306
   19.66317705962676  14.43786982248521   5.06144742831133  -4.97041420118343 -12.16203914428766 -13.01775147928994  -4.04187528447883];
-actual=gpc_evaluate( a_i_alpha, {'L', I_a}, xi );
-%actual=pce_evaluate( a_i_alpha, I_a, xi );
-assert_equals( actual, expect, '' );
+actual=gpc_evaluate( a_i_alpha, {'H', I_a}, xi );
+assert_equals( actual, expect, 'H_val' );
 
+
+% Test one non-mixed example with Legendre
+I_a=multiindex( 2, 3 );
+a_i_alpha=eye(size(I_a,1));
+V_a = {'L', I_a};
+xi=gpc_sample(V_a, 7);
+a12 = gpc_evaluate(a_i_alpha, V_a, xi);
+a1 = gpc_evaluate(a_i_alpha, {'L', I_a(:,1)}, xi(1,:));
+a2 = gpc_evaluate(a_i_alpha, {'L', I_a(:,2)}, xi(2,:));
+assert_equals(a12, a1 .* a2, 'non-mixed');
+
+% Test one mixed example with Legendre and Hermite
+I_a=multiindex( 2, 3 );
+a_i_alpha=eye(size(I_a,1));
+V_a = {{'Hn', 'Ln'}, I_a};
+xi=gpc_sample(V_a, 7);
+a12 = gpc_evaluate(a_i_alpha, V_a, xi);
+a1 = gpc_evaluate(a_i_alpha, {'Hn', I_a(:,1)}, xi(1,:));
+a2 = gpc_evaluate(a_i_alpha, {'Ln', I_a(:,2)}, xi(2,:));
+assert_equals(a12, a1 .* a2, 'mixed');
+
+
+
+
+% I_a = multiindex(1, 5);
+% xi = linspace(-1,1,100);
+% a_i_alpha = eye(6);
+% 
+% a=gpc_evaluate(a_i_alpha, {'L', I_a}, xi);
+% subplot(2,2,1)
+% plot(xi,a)
+% grid on
+% 
+% a=gpc_evaluate(a_i_alpha, {'Ln', I_a}, xi);
+% subplot(2,2,2)
+% plot(xi,a)
+% grid on
+% 
+% a=gpc_evaluate(a_i_alpha, {'H', I_a}, xi);
+% subplot(2,2,3)
+% plot(xi,a)
+% grid on
+% 
+% a=gpc_evaluate(a_i_alpha, {'Hn', I_a}, xi);
+% subplot(2,2,4)
+% plot(xi,a)
+% grid on
