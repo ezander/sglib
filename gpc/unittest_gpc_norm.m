@@ -25,20 +25,20 @@ assert_equals(gpc_norm({'H', [1; 1; 1]}), [1;1;1]);
 
 
 I = multiindex(2, 3);
-V = {'L', I};
+V = {'P', I};
 assert_equals(gpc_norm(V).^2, 1./[1,3,3,5,9,5,7,15,15,7]');
 
-V = {'Ln', I};
+V = {'p', I};
 assert_equals(gpc_norm(V).^2, ones(10,1));
 
 V = {'H', I};
 assert_equals(gpc_norm(V).^2, [1,1,1,2,1,2,6,2,2,6]');
 
-V = {'Hn', I};
+V = {'h', I};
 assert_equals(gpc_norm(V).^2, ones(10,1));
 
 % Later
 
-V = {{'L', 'L', 'H', 'H'}, [I, I]};
+V = {'PPHH', [I, I]};
 assert_equals(gpc_norm(V).^2, (1./[1,3,3,5,9,5,7,15,15,7] .* [1,1,1,2,1,2,6,2,2,6])');
 

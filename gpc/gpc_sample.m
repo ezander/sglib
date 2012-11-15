@@ -8,12 +8,12 @@ function xi = gpc_sample(V, n)
 %    I = multiindex(3,2);
 %    V = {'H', I};
 %    xi = gpc_sample(V, 5)
-%    V = {{'L', 'H', 'Ln'}, I};
+%    V = {'PHp', I};
 %    xi = gpc_sample(V, 3000);
 %    plot(xi(1,:), xi(2,:), '.')
 %    xlabel('Uniform'); ylabel('Gauss');
 %
-% See also RAND, RANDN, GPC_EVALUATE
+% See also GPC, GPC_EVALUATE
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig.
@@ -29,26 +29,27 @@ function xi = gpc_sample(V, n)
 sys = V{1};
 I = V{2};
 m = size(I,2);
+assert(length(sys)==1 || length(sys)==m)
 
 if nargin<2
     n = 1;
 end
 
-if iscell(sys)
+if length(sys)==1
+    xi = rv_sample(sys, m, n);
+else
     check_range(length(sys), m, m, 'len(sys)==m', mfilename);
     xi = zeros(m, n);
     for j = 1:m
-        xi(j,:) = rv_sample(sys{j}, 1, n);
+        xi(j,:) = rv_sample(sys(j), 1, n);
     end
-else
-    xi = rv_sample(sys, m, n);
 end
 
 function xi = rv_sample(sys, m, n)
-switch sys
-    case {'H', 'Hn'}
+switch upper(sys)
+    case 'H'
         xi = randn(m, n);
-    case {'L', 'Ln'}
+    case 'P'
         xi = 2 * rand(m, n) - 1;
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);

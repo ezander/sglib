@@ -31,22 +31,22 @@ a=gpc_evaluate(a_i_alpha, {'H', I_a}, xi);
 D = a * diag(w) * a';
 assert_matrix(D, 'diagonal', 'H_ortho')
 
-a=gpc_evaluate(a_i_alpha, {'Hn', I_a}, xi);
+a=gpc_evaluate(a_i_alpha, {'h', I_a}, xi);
 D = a * diag(w) * a';
-assert_matrix(D, 'identity', 'Hn_orthonormal')
+assert_matrix(D, 'identity', 'h_orthonormal')
 
 % ... for Legendre
 
 [xi, w] = gauss_legendre_rule(N+1);
 w = 0.5 * w;
 
-a=gpc_evaluate(a_i_alpha, {'L', I_a}, xi);
+a=gpc_evaluate(a_i_alpha, {'P', I_a}, xi);
 D = a * diag(w) * a';
-assert_matrix(D, 'diagonal', 'L_ortho')
+assert_matrix(D, 'diagonal', 'P_ortho')
 
-a=gpc_evaluate(a_i_alpha, {'Ln', I_a}, xi);
+a=gpc_evaluate(a_i_alpha, {'p', I_a}, xi);
 D = a * diag(w) * a';
-assert_matrix(D, 'identity', 'Ln_orthonormal')
+assert_matrix(D, 'identity', 'p_orthonormal')
 
 
 % Test one precomputed example
@@ -67,21 +67,21 @@ assert_equals( actual, expect, 'H_val' );
 % Test one non-mixed example with Legendre
 I_a=multiindex( 2, 3 );
 a_i_alpha=eye(size(I_a,1));
-V_a = {'L', I_a};
+V_a = {'P', I_a};
 xi=gpc_sample(V_a, 7);
 a12 = gpc_evaluate(a_i_alpha, V_a, xi);
-a1 = gpc_evaluate(a_i_alpha, {'L', I_a(:,1)}, xi(1,:));
-a2 = gpc_evaluate(a_i_alpha, {'L', I_a(:,2)}, xi(2,:));
+a1 = gpc_evaluate(a_i_alpha, {'P', I_a(:,1)}, xi(1,:));
+a2 = gpc_evaluate(a_i_alpha, {'P', I_a(:,2)}, xi(2,:));
 assert_equals(a12, a1 .* a2, 'non-mixed');
 
 % Test one mixed example with Legendre and Hermite
 I_a=multiindex( 2, 3 );
 a_i_alpha=eye(size(I_a,1));
-V_a = {{'Hn', 'Ln'}, I_a};
+V_a = {'hp', I_a};
 xi=gpc_sample(V_a, 7);
 a12 = gpc_evaluate(a_i_alpha, V_a, xi);
-a1 = gpc_evaluate(a_i_alpha, {'Hn', I_a(:,1)}, xi(1,:));
-a2 = gpc_evaluate(a_i_alpha, {'Ln', I_a(:,2)}, xi(2,:));
+a1 = gpc_evaluate(a_i_alpha, {'h', I_a(:,1)}, xi(1,:));
+a2 = gpc_evaluate(a_i_alpha, {'p', I_a(:,2)}, xi(2,:));
 assert_equals(a12, a1 .* a2, 'mixed');
 
 
