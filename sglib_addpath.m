@@ -63,6 +63,7 @@ addpath( fullfile( basepath, 'statistics') );
 addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'util') );
 addpath( fullfile( basepath, 'linalg') );
+addpath( fullfile( basepath, 'gpc') );
 
 if exist( fullfile( basepath, 'thesis'), 'dir' )
   addpath( fullfile( basepath, 'thesis') )

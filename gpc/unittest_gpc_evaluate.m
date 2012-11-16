@@ -91,12 +91,12 @@ assert_equals(a12, a1 .* a2, 'mixed');
 % xi = linspace(-1,1,100);
 % a_i_alpha = eye(6);
 % 
-% a=gpc_evaluate(a_i_alpha, {'L', I_a}, xi);
+% a=gpc_evaluate(a_i_alpha, {'P', I_a}, xi);
 % subplot(2,2,1)
 % plot(xi,a)
 % grid on
 % 
-% a=gpc_evaluate(a_i_alpha, {'Ln', I_a}, xi);
+% a=gpc_evaluate(a_i_alpha, {'p', I_a}, xi);
 % subplot(2,2,2)
 % plot(xi,a)
 % grid on
@@ -106,7 +106,7 @@ assert_equals(a12, a1 .* a2, 'mixed');
 % plot(xi,a)
 % grid on
 % 
-% a=gpc_evaluate(a_i_alpha, {'Hn', I_a}, xi);
+% a=gpc_evaluate(a_i_alpha, {'h', I_a}, xi);
 % subplot(2,2,4)
 % plot(xi,a)
 % grid on

@@ -56,14 +56,14 @@ p = zeros(m, k, deg);
 p(:,:,1) = zeros(size(xi));
 p(:,:,2) = ones(size(xi));
 if length(sys)==1
-    r = poly_recur_coeff(sys, deg);
+    r = polysys_recur_coeff(sys, deg);
     for d=1:deg
         p(:,:,d+2) = (r(d,1) + xi * r(d, 2)) .* p(:,:,d+1) - r(d,3) * p(:,:,d);
     end
 else
     for j=1:m
         % TODO: not very efficient for mixed gpc
-        r = poly_recur_coeff(sys(j), deg);
+        r = polysys_recur_coeff(sys(j), deg);
         for d=1:deg
             p(j,:,d+2) = (r(d,1) + xi(j,:) * r(d, 2)) .* p(j,:,d+1) - r(d,3) * p(j,:,d);
         end
@@ -80,24 +80,3 @@ end
 
 % N x M : (N x M) * (M x k)
 a_i = a_i_alpha * q;
-
-    
-function r = poly_recur_coeff(sys, deg)
-n = (0:deg-1)';
-switch upper(sys)
-    case 'H'
-        r = [zeros(size(n)), ones(size(n)), n];
-    case 'P'
-        r = [zeros(size(n)), (2*n+1)./(n+1), n ./ (n+1)];
-    otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-end
-if sys == lower(sys) % lower case signifies normalised polynomials
-    z = [0; gpc_norm( {upper(sys), (0:deg)'})];
-    % row n: p_n  = (a_n- + x b_n-) p_n-1 + c_n p_n-2
-    % row n: z_n q_n  = (a_n- + x b_n-) z_n-1 q_n-1 + c_n z_n-2 p_n-2
-    % row n: q_n  = (a_n- + x b_n-) z_n-1/z_n q_n-1 + c_n z_n-2/z_n p_n-2
-    r = [r(:,1) .* z(n+2) ./ z(n+3), ...
-         r(:,2) .* z(n+2) ./ z(n+3), ...
-         r(:,3) .* z(n+1) ./ z(n+3)];
-end

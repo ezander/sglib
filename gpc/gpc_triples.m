@@ -60,19 +60,19 @@ IC=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
 strides=[(p+1), (p+1)^2];
 ind=1+IA+(p+1)*IB+strides(2)*IC;
 if m==1
-    triples=poly_triples_by_order(sys, p);
+    triples=polysys_triples_by_order(sys, p);
     M=prod(triples(ind),4);
 else
     M = ones(na, nb, nc);
     for j=1:m
-        triples=poly_triples_by_order(sys(j), p);
+        triples=polysys_triples_by_order(sys(j), p);
         M=M.*triples(ind(:,:,:,j));
     end
 end
 
 
 
-function M=poly_triples_by_order(sys, p)
+function M=polysys_triples_by_order(sys, p)
 [I,J,K]=meshgrid(0:p);
 T=I+J+K;
 S=T/2;
@@ -88,10 +88,10 @@ switch upper(sys)
 end
 
 M=zeros(size(S));
-M(ind) = poly_triples_by_index(sys, p, I(ind), J(ind), K(ind), S(ind));
+M(ind) = polysys_triples_by_index(sys, p, I(ind), J(ind), K(ind), S(ind));
 
 
-function M = poly_triples_by_index(sys, p, I, J, K, S)
+function M = polysys_triples_by_index(sys, p, I, J, K, S)
 switch upper(sys)
     case 'H'
         % This version is approx. 10% slower than the one, with just one
@@ -108,15 +108,11 @@ switch upper(sys)
         A = [1,  cumprod(1:2:(4*p-1)) ./ cumprod(1:(2*p))]';
         M = 1 ./ (2*S+1) .* ...
             A(S-I+1) .* A(S-J+1) .* A(S-K+1) ./ A(S+1);
-        
-        if isequal(sys, 'Ln')
-            normalise = 'L';
-        end
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
 
 if sys == lower(sys) % lower case signifies normalised polynomials
-    z = 1 ./ gpc_norm( {upper(sys), (0:p)'});
+    z = 1 ./ sqrt(polysys_sqnorm(upper(sys), 0:p))';
     M = M .* z(I+1) .* z(J+1) .* z(K+1);
 end

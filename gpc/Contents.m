@@ -1,4 +1,3 @@
-function gpc(varargin)
 % GPC Description of the gpc functions.
 %   Basically the GPC functions work just like PCE functions with one small
 %   difference: where for the PCE it was enough to specify a multiindex
@@ -48,7 +47,16 @@ function gpc(varargin)
 %     * implement integration rules for the different types of polys
 %     * extract polynomial/random var method and test them separately
 %
-% See also
+% Files
+%   gpc                   - Description of the gpc functions.
+%   gpc_evaluate          - Evaluate a GPC at a given number of sample points.
+%   gpc_norm              - Compute the norm of the system of GPC polynomials.
+%   gpc_sample            - Draw samples from a GPC.
+%   gpc_triples           - Computation of the expectation of triple products of gpc polynomials.
+%   unittest_gpc_evaluate - Test the GPC_EVALUATE function.
+%   unittest_gpc_norm     - Test the GPC_NORM function.
+%   unittest_gpc_sample   - Test the GPC_SAMPLE function.
+%   unittest_gpc_triples  - Test the GPC_TRIPLES function.
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.

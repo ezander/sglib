@@ -32,7 +32,7 @@ xi = gpc_sample({'P', I}, 500);
 assert_equals(size(xi), [3, 500], 'size');
 assert_equals(all(xi(:)<1), true, 'uniform all<1', {'fuzzy', true});
 
-xi = gpc_sample({{'P', 'H', 'p'}, I}, 1500);
+xi = gpc_sample({'PHp', I}, 1500);
 assert_equals(size(xi), [3, 1500], 'size');
 assert_equals(all(xi(1,:)<1), true, 'xi1<1', {'fuzzy', true});
 assert_equals(any(xi(2,:)>1), true, 'xi2>1', {'fuzzy', true});

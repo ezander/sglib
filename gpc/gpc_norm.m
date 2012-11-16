@@ -34,31 +34,17 @@ assert(length(sys)==1 || length(sys)==m)
 
 if length(sys)==1
     N = max(max(I));
-    nrm = poly_norm(sys, 0:N);
+    nrm = polysys_sqnorm(sys, 0:N);
     % Note: the reshape in the next line is necessary, as otherwise, if I
     % is just a column vector it would be transformed into a row vector
     norm_I=sqrt(prod(reshape(nrm(I+1), size(I)), 2));
 else
-    norm_I = ones(size(I,1), 1);
+    norm2_I = ones(size(I,1), 1);
     for j = 1:m
         N = max(max(I(:,j)));
-        nrm = poly_norm(sys(j), (0:N)');
-        norm_I=norm_I .* nrm(I(:,j)+1);
+        nrm2 = polysys_sqnorm(sys(j), (0:N)');
+        norm2_I=norm2_I .* nrm2(I(:,j)+1);
     end
-    norm_I = sqrt(norm_I);
-end
-
-
-function nrm = poly_norm(sys, n)
-switch sys
-    case 'H'
-        nrm = factorial(n);
-    case 'P'
-        % Note: the U(-1,1) measure is used here, not the Lebesgue measure
-        nrm = 1 ./ (2*n + 1);
-    case {'h', 'p'}
-        nrm = ones(size(n));
-    otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+    norm_I = sqrt(norm2_I);
 end
 
