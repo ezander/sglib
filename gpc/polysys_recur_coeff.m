@@ -22,11 +22,20 @@ function r = polysys_recur_coeff(sys, deg)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 n = (0:deg-1)';
+one = ones(size(n));
+zero = zeros(size(n));
 switch upper(sys)
     case 'H'
-        r = [zeros(size(n)), ones(size(n)), n];
+        r = [zero, one, n];
     case 'P'
-        r = [zeros(size(n)), (2*n+1)./(n+1), n ./ (n+1)];
+        r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
+    case 'T'
+        r = [zero, 2*one, one];
+        r(1,2) = 1;
+    case 'U'
+        r = [zero, 2*one, one];
+    case 'L'
+        r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end

@@ -18,7 +18,28 @@ function a_i=gpc_evaluate( a_i_alpha, V_a, xi )
 %   V_a={'hp', I_a};
 %   a_i_alpha=cumsum(ones( 5, 10 ));  % N=5
 %   xi=gpc_sample(V_a, 7);            % k=7
-%   gpc_evaluate( a_i_alpha, V_a, xi )
+%   ai=gpc_evaluate( a_i_alpha, V_a, xi );
+%   
+%   subplot(3,2,1)
+%   xi = linspace(-3,3);
+%   plot(xi, gpc_evaluate( eye(6), {'H', (0:5)'}, xi));
+%   title('Hermite (stoch.)'); ylim([-10, 10]); grid on;
+%   subplot(3,2,2)
+%   xi = linspace(-1,1);
+%   plot(xi, gpc_evaluate( eye(6), {'P', (0:5)'}, xi));
+%   title('Legendre'); grid on;
+%   subplot(3,2,3)
+%   xi = linspace(-1,1);
+%   plot(xi, gpc_evaluate( eye(6), {'T', (0:5)'}, xi));
+%   title('Chebyshev 1st'); grid on;
+%   subplot(3,2,4)
+%   xi = linspace(-1,1);
+%   plot(xi, gpc_evaluate( eye(6), {'U', (0:5)'}, xi));
+%   title('Chebyshev 2nd'); ylim([-1.5, 1.5]); grid on;
+%   subplot(3,2,5)
+%   xi = linspace(-5,20);
+%   plot(xi, gpc_evaluate( eye(6), {'L', (0:5)'}, xi));
+%   title('Laguerre'); ylim([-10, 20]); grid on;
 %
 % See also GPC, GPC_SAMPLE
 
