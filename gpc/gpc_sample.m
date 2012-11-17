@@ -36,21 +36,13 @@ if nargin<2
 end
 
 if length(sys)==1
-    xi = rv_sample(sys, m, n);
+    xi = polysys_sample_rv(sys, m, n);
 else
     check_range(length(sys), m, m, 'len(sys)==m', mfilename);
     xi = zeros(m, n);
     for j = 1:m
-        xi(j,:) = rv_sample(sys(j), 1, n);
+        xi(j,:) = polysys_sample_rv(sys(j), 1, n);
     end
 end
 
-function xi = rv_sample(sys, m, n)
-switch upper(sys)
-    case 'H'
-        xi = randn(m, n);
-    case 'P'
-        xi = 2 * rand(m, n) - 1;
-    otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-end
+
