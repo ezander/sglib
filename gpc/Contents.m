@@ -31,13 +31,13 @@
 %     N(0,1):   standard normal, i.e. mean 0, variance 1
 %     U(-1, 1): uniform on (-1,1)
 %     Exp(1):   exponential distribution with parameter 1
-%     AS:       shifted Arcsine distribution?
+%     AS:       shifted Arcsine distribution on [-1, 1]
 %     W(1):     Wigner semicircle distribution, 2*Beta(3/2,3/2)-1
 %
 % Todo:
 %     * probably the random variables should rather have variance 1 all,
-%       otherise strange mistakes can occur
-%     * implement Laguerre and Chbyshev
+%       otherise strange mistakes can occur (or not?)
+%     * implement Laguerre and Chebyshev (nearly done)
 %     * gpc_add and gpc_multiply needs to be implemented
 %     * need functions to manipulate the {polysys, multiindex} pairs (call
 %       them polyspace?)
@@ -48,15 +48,24 @@
 %     * extract polynomial/random var method and test them separately
 %
 % Files
-%   gpc                   - Description of the gpc functions.
-%   gpc_evaluate          - Evaluate a GPC at a given number of sample points.
-%   gpc_norm              - Compute the norm of the system of GPC polynomials.
-%   gpc_sample            - Draw samples from a GPC.
-%   gpc_triples           - Computation of the expectation of triple products of gpc polynomials.
-%   unittest_gpc_evaluate - Test the GPC_EVALUATE function.
-%   unittest_gpc_norm     - Test the GPC_NORM function.
-%   unittest_gpc_sample   - Test the GPC_SAMPLE function.
-%   unittest_gpc_triples  - Test the GPC_TRIPLES function.
+% GPC functions (high level)
+%   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
+%   gpc_norm                     - Compute the norm of the system of GPC polynomials.
+%   gpc_sample                   - Draw samples from a GPC.
+%   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
+%   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
+%   unittest_gpc_norm            - Test the GPC_NORM function.
+%   unittest_gpc_sample          - Test the GPC_SAMPLE function.
+%   unittest_gpc_triples         - Test the GPC_TRIPLES function.
+% 
+% Polysys functions (low level)
+%   polysys_int_rule             - Short description of polysys_int_rule.
+%   polysys_rc2coeffs            - Generate polynomial coefficients from recurrence.
+%   polysys_recur_coeff          - Compute recurrence coefficient of orthogonal polynomials.
+%   polysys_sample_rv            - Sample from a probability distribution.
+%   polysys_sqnorm               - POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+%   unittest_polysys_recur_coeff - Test the POLYSYS_RECUR_COEFF function.
+%   unittest_polysys_sqnorm      - UNITTEST_POLYSYS_NORM Test the POLYSYS_NORM function.
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.

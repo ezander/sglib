@@ -30,7 +30,7 @@ assert_equals(polysys_recur_coeff('h', 5), ...
     [0,1,3]/4;
     [0,1,4]/5]), 'h_rc')
 
-assert_equals(poly_coeff(polysys_recur_coeff('H', 5)), [
+assert_equals(polysys_rc2coeffs(polysys_recur_coeff('H', 5)), [
     [0, 0, 0, 0, 0, 1]; [0, 0, 0, 0, 1, 0];
     [0, 0, 0, 1, 0, -1]; [0, 0, 1, 0, -3, 0];
     [0, 1, 0, -6, 0, 3]; [1, 0, -10, 0, 15, 0]], 'H_poly')
@@ -39,7 +39,7 @@ assert_equals(poly_coeff(polysys_recur_coeff('H', 5)), [
 assert_equals(polysys_recur_coeff('P', 5), ...
     [[0,1,0]; [0,3,1]/2; [0,5,2]/3; [0,7,3]/4; [0,9,4]/5],'P_rc');
 
-assert_equals(poly_coeff(polysys_recur_coeff('P', 5)), [
+assert_equals(polysys_rc2coeffs(polysys_recur_coeff('P', 5)), [
     [0, 0, 0, 0, 0, 1]; [0, 0, 0, 0, 1, 0];
     [0, 0, 0, 3/2, 0, -1/2]; [0, 0, 5/2, 0, -3/2, 0];
     [0, 35/8, 0, -15/4, 0, 3/8]; [63/8, 0, -35/4, 0, 15/8, 0]], 'P_poly')
@@ -48,7 +48,7 @@ assert_equals(poly_coeff(polysys_recur_coeff('P', 5)), [
 assert_equals(polysys_recur_coeff('T', 5), ...
     [[0,1,1]; [0,2,1]; [0,2,1]; [0,2,1]; [0,2,1]],'T_rc');
 
-assert_equals(poly_coeff(polysys_recur_coeff('T', 5)), [
+assert_equals(polysys_rc2coeffs(polysys_recur_coeff('T', 5)), [
     [0, 0, 0, 0, 0, 1]; [0, 0, 0, 0, 1, 0];
     [0, 0, 0, 2, 0, -1]; [0, 0, 4, 0, -3, 0];
     [0, 8, 0, -8, 0, 1]; [16, 0, -20, 0, 5, 0]], 'T_poly')
@@ -57,7 +57,7 @@ assert_equals(poly_coeff(polysys_recur_coeff('T', 5)), [
 assert_equals(polysys_recur_coeff('U', 5), ...
     [[0,2,1]; [0,2,1]; [0,2,1]; [0,2,1]; [0,2,1]],'U_rc');
 
-assert_equals(poly_coeff(polysys_recur_coeff('U', 5)), [
+assert_equals(polysys_rc2coeffs(polysys_recur_coeff('U', 5)), [
     [0, 0, 0, 0, 0, 1]; [0, 0, 0, 0, 2, 0];
     [0, 0, 0, 4, 0, -1]; [0, 0, 8, 0, -4, 0];
     [0, 16, 0, -12, 0, 1]; [32, 0, -32, 0, 6, 0]], 'U_poly')
@@ -66,23 +66,12 @@ assert_equals(poly_coeff(polysys_recur_coeff('U', 5)), [
 assert_equals(polysys_recur_coeff('L', 5), ...
     [[1,-1,0]; [3,-1,1]/2; [5,-1,2]/3; [7,-1,3]/4; [9,-1,4]/5],'L_rc');
 
-assert_equals(poly_coeff(polysys_recur_coeff('L', 5)), [
+assert_equals(polysys_rc2coeffs(polysys_recur_coeff('L', 5)), [
     [0, 0, 0, 0, 0, 1]; [0, 0, 0, 0, -1, 1];
     [0, 0, 0, 1/2, -2, 1]; [0, 0, -1/6, 3/2, -3, 1];
     [0, 1/24, -2/3, 3, -4, 1]; [-1/120, 5/24, -5/3, 5, -5, 1]], 'L_poly')
 
 
-%p=poly_coeff(polysys_recur_coeff('L', 5));
+%p=polysys_rc2coeffs(polysys_recur_coeff('L', 5));
 %rats2(p);
 %disp(' ');
-
-
-function p=poly_coeff(r)
-n = size(r,1) + 1;
-p = [zeros(1, n);
-    zeros(1, n-1), 1];
-
-for k=1:n-1
-    p(k+2,:) = r(k,2) * [p(k+1,2:end), 0] + r(k,1) * p(k+1,:) - r(k,3) * p(k,:);
-end
-p = p(2:end,:);
