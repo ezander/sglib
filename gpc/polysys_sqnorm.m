@@ -32,8 +32,21 @@ switch sys
     case 'P'
         % Note: the U(-1,1) measure is used here, not the Lebesgue measure
         nrm2 = 1 ./ (2*n + 1);
-    case {'h', 'p'}
+    case 'T'
+        nrm2 = polysys_sqnorm_by_quad(sys, n);
+    case 'U'
+        nrm2 = polysys_sqnorm_by_quad(sys, n);
+    case 'L'
+        nrm2 = polysys_sqnorm_by_quad(sys, n);
+    case {'h', 'p', 't', 'u', 'v'}
         nrm2 = ones(size(n));
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
+
+function nrm2 = polysys_sqnorm_by_quad(sys, n)
+m = max(n(:));
+[x,w] = polysys_int_rule(sys, m+1);
+y = gpc_evaluate(eye(m+1), {sys, (0:m)'}, x');
+nrm2 = (y.*y)*w';
+nrm2 = reshape(nrm2(n+1), size(n));

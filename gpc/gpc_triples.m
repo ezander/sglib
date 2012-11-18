@@ -29,6 +29,7 @@ function M=gpc_triples(V_a, V_b, V_c, varargin)
 
 options=varargin2options( varargin );
 [algorithm,options]=get_option( options, 'algorithm', 'default' );
+[by_quadrature,options]=get_option( options, 'by_quadrature', false );
 check_unsupported_options( options, mfilename );
 
 sys = V_a{1};
@@ -41,10 +42,11 @@ assert(isequal(sys, V_c{1}))
 assert(length(sys)==1 || length(sys)==size(I_a,2))
 assert(size(I_a,2)==size(I_b,2) && size(I_b,2)==size(I_c,2))
 
-M=multiplication_tensor(sys, I_a, I_b, I_c);
+triple_opts = {by_quadrature};
+M=multiplication_tensor(sys, I_a, I_b, I_c, triple_opts);
 
 
-function M=multiplication_tensor(sys, I_a, I_b, I_c)
+function M=multiplication_tensor(sys, I_a, I_b, I_c, triple_opts)
 
 % This is the implementation I like most, because it's the most
 % symmetric one and doesn't need any reshaping. However, it's 30 to 40
@@ -60,27 +62,34 @@ IC=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
 strides=[(p+1), (p+1)^2];
 ind=1+IA+(p+1)*IB+strides(2)*IC;
 if m==1
-    triples=polysys_triples_by_order(sys, p);
+    triples=polysys_triples_by_order(sys, p, triple_opts{:});
     M=prod(triples(ind),4);
 else
     M = ones(na, nb, nc);
     for j=1:m
-        triples=polysys_triples_by_order(sys(j), p);
+        triples=polysys_triples_by_order(sys(j), p, triple_opts{:});
         M=M.*triples(ind(:,:,:,j));
     end
 end
 
 
 
-function M=polysys_triples_by_order(sys, p)
+function M=polysys_triples_by_order(sys, p, by_quadrature)
 [I,J,K]=meshgrid(0:p);
+if by_quadrature
+    ind=I<=J+K & J<=K+I & K<=I+J;
+    M=zeros(size(I));
+    M(ind) = polysys_triples_by_quadrature(sys, p, I(ind), J(ind), K(ind), 1e-10);
+    return
+end
+
 T=I+J+K;
 S=T/2;
 switch upper(sys)
-    case {'H', 'P'}
+    case {'H', 'P', 'T', 'U'}
         % symmetrical polynomials
         ind=mod(T,2)==0 & I<=J+K & J<=K+I & K<=I+J;
-    case {}
+    case {'L'}
         % asymmetrical polynomials
         ind=I<=J+K & J<=K+I & K<=I+J;
     otherwise
@@ -108,6 +117,9 @@ switch upper(sys)
         A = [1,  cumprod(1:2:(4*p-1)) ./ cumprod(1:(2*p))]';
         M = 1 ./ (2*S+1) .* ...
             A(S-I+1) .* A(S-J+1) .* A(S-K+1) ./ A(S+1);
+    case {'T', 'U', 'L'}
+        % Haven't implemented explicit formulas yet
+        M = polysys_triples_by_quadrature(sys, p, I, J, K, 1e-10);
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
@@ -116,3 +128,21 @@ if sys == lower(sys) % lower case signifies normalised polynomials
     z = 1 ./ sqrt(polysys_sqnorm(upper(sys), 0:p))';
     M = M .* z(I+1) .* z(J+1) .* z(K+1);
 end
+
+
+function M = polysys_triples_by_quadrature(sys, p, I, J, K, thresh)
+if nargin<6
+    thresh = 1e-10;
+end
+
+% required number of points, an n point Gauss rule is exact to order
+% 2n-1 and we need order 3p
+n = ceil((3*p+1)/2);
+[x,w] = polysys_int_rule(sys, n);
+
+% evaluate polynomials at Gauss points and build triple products
+y = gpc_evaluate(eye(p+1), {sys, multiindex(1,p)}, x');
+M = (y(I+1,:).*y(J+1,:).*y(K+1,:)) * w';
+
+% remove near zero elements
+M(abs(M)<thresh )=0;
