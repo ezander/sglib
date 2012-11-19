@@ -120,6 +120,7 @@ switch upper(sys)
     case {'T', 'U', 'L'}
         % Haven't implemented explicit formulas yet
         M = polysys_triples_by_quadrature(sys, p, I, J, K, 1e-10);
+        sys = upper(sys);
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end

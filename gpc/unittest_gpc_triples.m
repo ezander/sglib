@@ -34,7 +34,7 @@ test_mult('l')
 test_mult('P', 2)
 test_mult('Ph')
 test_mult('pPhH')
-%test_mult('tu')
+test_mult('tu')
 test_mult('luUL')
 
 
