@@ -19,6 +19,10 @@ function r = polysys_recur_coeff(sys, deg)
 %   Note: Normally you don't want to call this function directly. Call one
 %   of the GPC functions instead.
 %
+% References:
+%   [1] Abramowitz & Stegun: Handbook of Mathematical Functions
+%   [2] http://dlmf.nist.gov/18.9
+%
 % Example (<a href="matlab:run_example polysys_recur_coeff">run</a>)
 %
 % See also GPC
@@ -43,8 +47,7 @@ switch upper(sys)
     case 'P'
         r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
     case 'T'
-        r = [zero, 2*one, one];
-        r(1,2) = 1;
+        r = [zero, 2*one - (n==0), one];
     case 'U'
         r = [zero, 2*one, one];
     case 'L'
