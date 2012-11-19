@@ -28,6 +28,7 @@ xw_ex = [[0.000000000000000, 0.568888888888889];
 assert_equals( [x(3:end), 2*w(3:end)'], xw_ex, 'P_5');
 
 
+
 [x, w] = polysys_int_rule('L', 5);
 xw_ex = [[0.263560319718141, 0.521755610582809];
     [0.141340305910652e1, 0.398666811083176];
@@ -36,6 +37,12 @@ xw_ex = [[0.263560319718141, 0.521755610582809];
     [0.126408008442758e2, 0.233699723857762e-4]]
 assert_equals( [x, w'], xw_ex, 'L_5');
 
+% check special case of very small rule (n=1)
+[x, w] = polysys_int_rule('P', 1);
+assert_equals( [x, w], [0, 1], 'P_1');
+
+[x, w] = polysys_int_rule('L', 1);
+assert_equals( [x, w], [1, 1], 'L_1');
 
 % here we test that the x's are really zeros of the polynomials and the
 % weights sum up to one

@@ -30,12 +30,16 @@ r = polysys_recur_coeff(sys, n);
 % extract columns
 a = -r(:,1);
 b = r(2:end,3);
+c = r(:,2);
 
 % convert to monic polynomials
-c = r(:,2);
 a = a ./ c;
-b = b ./ (c(1:end-1) .* c(2:end));
-sb = sqrt(b);
+if n>1
+    b = b ./ (c(1:end-1) .* c(2:end));
+    sb = sqrt(b);
+else
+    sb = zeros(0,1);
+end
 
 % set up Jacobi matrix and compute eigenvalues
 J = diag(a) + diag(sb,1) + diag(sb,-1);

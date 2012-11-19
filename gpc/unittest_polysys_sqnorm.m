@@ -1,4 +1,4 @@
-function unittest_polysys_norm
+function unittest_polysys_sqnorm
 % UNITTEST_POLYSYS_NORM Test the POLYSYS_NORM function.
 %
 % Example (<a href="matlab:run_example unittest_polysys_norm">run</a>)
@@ -25,6 +25,7 @@ assert_equals(polysys_sqnorm('H', (0:5)'), [1, 1, 2, 6, 24, 120]', 'H');
 assert_equals(polysys_sqnorm('h', 0:5), [1, 1, 1, 1, 1, 1], 'h')
 assert_equals(polysys_sqnorm('H', 0:5, 'quad'), [1, 1, 2, 6, 24, 120], 'H_quad');
 assert_equals(polysys_sqnorm('H', (0:5)', 'quad'), [1, 1, 2, 6, 24, 120]', 'H_quad');
+assert_equals(polysys_sqnorm('H', 0:5, 'rc'), [1, 1, 2, 6, 24, 120], 'H_rc');
 
 % Legendre
 assert_equals(polysys_sqnorm('P', 0:5), [1, 1/3, 1/5, 1/7, 1/9, 1/11], 'P');
@@ -44,3 +45,13 @@ assert_equals(polysys_sqnorm('u', 0:5), [1, 1, 1, 1, 1, 1], 'u');
 assert_equals(polysys_sqnorm('L', 0:5), [1, 1, 1, 1, 1, 1], 'L');
 assert_equals(polysys_sqnorm('l', 0:5), [1, 1, 1, 1, 1, 1], 'l');
 
+% Test shapes (with Hermite)
+methods = {'mc', 'quad', 'rc', 'default'};
+shapes = [[1,6]; [6,1]; [3,4]]';
+
+for method=methods
+    for shape=shapes
+        I = zeros(shape');
+        assert_equals(polysys_sqnorm('H', I, method{1}), 1+I, sprintf('shape_%s_%d_%d', method{1}, shape));
+    end
+end

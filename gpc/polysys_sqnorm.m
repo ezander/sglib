@@ -29,16 +29,22 @@ function nrm2 = polysys_sqnorm(sys, n, method)
 if nargin>=3
     % Those methods can be used if the norms are not known explicitly. The
     % MC method is not accurate at all: its purpose is for checking against
-    % the most stupid errors.
+    % the most stupid errors. Best (and coolest) of the three, is the one
+    % using only the recurrence coefficients.
     switch method
         case 'quad'
             nrm2 = polysys_sqnorm_by_quad(sys, n);
             return
+        case 'rc'
+            nrm2 = polysys_sqnorm_by_rc(sys, n);
+            return
         case 'mc'
             nrm2 = polysys_sqnorm_by_mc(sys, n);
             return
-        otherwise
+        case 'default'
             % do nothing, fall through
+        otherwise
+            error('sglib:gpc:sqnorm', 'Unknown method: %s', method);
     end
 end
 
@@ -53,22 +59,42 @@ switch sys
     case {'h', 'p', 't', 'u', 'U', 'l', 'L'}
         nrm2 = ones(size(n));
     otherwise
-        nrm2 = polysys_sqnorm_by_quad(sys, n);
+        %nrm2 = polysys_sqnorm_by_quad(sys, n);
+        nrm2 = polysys_sqnorm_by_rc(sys, n);
 end
 
-function nrm2 = polysys_sqnorm_by_quad(sys, n)
+function nrm2 = polysys_sqnorm_by_quad(sys, I)
 % POLYSYS_NORM_BY_QUAD Compute the square norm by Gauss quadrature.
-m = max(n(:));
-[x,w] = polysys_int_rule(sys, m+1);
-y = gpc_evaluate(eye(m+1), {sys, (0:m)'}, x');
+n = max(I(:));
+[x,w] = polysys_int_rule(sys, n+1);
+y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x');
 nrm2 = (y.*y)*w';
-nrm2 = reshape(nrm2(n+1), size(n));
+nrm2 = reshape(nrm2(I+1), size(I));
 
-function nrm2 = polysys_sqnorm_by_mc(sys, n)
+function nrm2 = polysys_sqnorm_by_rc(sys, I)
+% POLYSYS_NORM_BY_RC Compute the square norm via the recurrence coefficients.
+% See the neat article by:
+%    Alan G. Law and M. B. Sledd
+%    Proceedings of the American Mathematical Society, Vol. 48, No. 2
+%    (Apr., 1975), pp. 505 - 507
+%    URL: http://www.jstor.org/stable/2040291
+% Note that here the symbols a and b are reversed compared to the article
+% by Law and Sled. Further, as we're doing stochastics here, we can be sure
+% what the normalisation constant is (namely 1).
+n = max(I(:));
+r = polysys_recur_coeff(sys, n+1);
+b = r(:,2);
+h = b(1) ./ b(2:end);
+c = r(2:end,3);
+nrm2 = [1; h(:) .* cumprod(c(:))];
+nrm2 = reshape(nrm2(I+1), size(I));
+
+
+function nrm2 = polysys_sqnorm_by_mc(sys, I)
 % POLYSYS_NORM_BY_MC Approximate the square norm by MC quadrature.
-m = max(n(:));
+n = max(I(:));
 N = 100000;
 x = polysys_sample_rv(sys, 1, N);
-y = gpc_evaluate(eye(m+1), {sys, (0:m)'}, x);
+y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
 nrm2 = sum(y.*y,2)/N;
-nrm2 = reshape(nrm2(n+1), size(n));
+nrm2 = reshape(nrm2(I+1), size(I));
