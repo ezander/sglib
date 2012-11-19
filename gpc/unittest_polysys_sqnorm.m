@@ -55,3 +55,8 @@ for method=methods
         assert_equals(polysys_sqnorm('H', I, method{1}), 1+I, sprintf('shape_%s_%d_%d', method{1}, shape));
     end
 end
+
+
+% Error handling
+%assert_error( {@polysys_sqnorm, {'?', 0:5}, {1,2,3}}, 'sglib:gpc', 'unknown polys' )
+assert_error( {@polysys_sqnorm, {'H', 0:5, 'foo'}, {1,2,3}}, 'sglib:gpc', 'unknown method' )

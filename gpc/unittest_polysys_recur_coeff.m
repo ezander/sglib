@@ -71,6 +71,8 @@ assert_equals(polysys_rc2coeffs(polysys_recur_coeff('L', 5)), [
     [0, 0, 0, 1/2, -2, 1]; [0, 0, -1/6, 3/2, -3, 1];
     [0, 1/24, -2/3, 3, -4, 1]; [-1/120, 5/24, -5/3, 5, -5, 1]], 'L_poly')
 
+% error checking
+assert_error( {@polysys_recur_coeff, {'?', 5}, {1,2}}, 'sglib:gpc', 'unknown polys' )
 
 %p=polysys_rc2coeffs(polysys_recur_coeff('L', 5));
 %rats2(p);

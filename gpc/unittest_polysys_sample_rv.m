@@ -57,3 +57,7 @@ assert_equals(y, y_ex, 'U_cdf', 'abstol', 5/sqrt(N))
 x = sort(polysys_sample_rv('l', 1, N));
 y = 1-exp(-x);
 assert_equals(y, y_ex, 'L_cdf', 'abstol', 5/sqrt(N))
+
+%% Error handling
+assert_error( {@polysys_sample_rv, {'?',1,1}, {1,2,3}}, 'sglib:gpc', 'unknown polys' )
+
