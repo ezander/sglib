@@ -39,11 +39,13 @@ Further speed is for many example about 1/10 of that of the Matlab version.
 CONTENTS
 ========
 
-SGlib contains quite a few different areas 
+SGlib contains methods in the following areas 
 
-* Tensor methods
+* Polynomial chaose (PCE) methods
+* Generalized polynomial chaos (GPC)
 * Statistics functions
 * Unit testing
+* Tensor methods
 * Parameter studies
 * Option management
 * Lots of utilities
