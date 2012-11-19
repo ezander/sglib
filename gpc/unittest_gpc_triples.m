@@ -20,20 +20,22 @@ function unittest_gpc_triples
 munit_set_function( 'gpc_triples' );
 
 
-test_mult('P')
-test_mult('p')
 test_mult('H')
 test_mult('h')
+test_mult('P')
+test_mult('p')
 test_mult('T')
 test_mult('t')
 test_mult('U')
-%test_mult('L')
+test_mult('u')
+test_mult('L')
+test_mult('l')
 
 test_mult('P', 2)
 test_mult('Ph')
 test_mult('pPhH')
 %test_mult('tu')
-%test_mult('tuUT')
+test_mult('luUL')
 
 
 function test_mult(sys,m)

@@ -28,7 +28,7 @@ function [x,w]=gauss_rule(sys, n, varargin)
 r = polysys_recur_coeff(sys, n);
 
 % extract columns
-a = r(:,1);
+a = -r(:,1);
 b = r(2:end,3);
 
 % convert to monic polynomials

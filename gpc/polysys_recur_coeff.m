@@ -1,7 +1,20 @@
 function r = polysys_recur_coeff(sys, deg)
 % POLYSYS_RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
 %   R = POLYSYS_RECUR_COEFF(SYS, DEG) computes the recurrence coefficients for
-%   the system of orthogonal polynomials SYS 
+%   the system of orthogonal polynomials SYS. The signs are compatible with
+%   the ones given in Abramowith & Stegun 22.7:
+%
+%       p_n+1  = (a_n + x b_n) p_n - c_n p_n
+%
+%   Since matlab indices start at one, we have here the mapping
+%
+%       r(n,:) = (a_n-1, b_n-1, c_n-1)
+%
+%   Furthermore the coefficients start here for p_1, so that only p_-1=0
+%   and p_0=1 need to be fixed (otherwise p_1, would need to be another
+%   parameter, since it's not always equal to x). Therefore there needs to
+%   be a little extra treatment for the coefficient of the Chebyshev
+%   polynomials of the first kind, esp. T_1).
 %
 %   Note: Normally you don't want to call this function directly. Call one
 %   of the GPC functions instead.
@@ -42,9 +55,9 @@ end
 
 if sys == lower(sys) % lower case signifies normalised polynomials
     z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg))]';
-    % row n: p_n  = (a_n- + x b_n-) p_n-1 + c_n p_n-2
-    %   =>   z_n q_n  = (a_n- + x b_n-) z_n-1 q_n-1 + c_n z_n-2 p_n-2
-    %   =>   q_n  = (a_n- + x b_n-) z_n-1/z_n q_n-1 + c_n z_n-2/z_n p_n-2
+    % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
+    %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
+    %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
     r = [r(:,1) .* z(n+2) ./ z(n+3), ...
          r(:,2) .* z(n+2) ./ z(n+3), ...
          r(:,3) .* z(n+1) ./ z(n+3)];

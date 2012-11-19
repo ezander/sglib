@@ -38,7 +38,7 @@ switch sys
         nrm2 = polysys_sqnorm_by_quad(sys, n);
     case 'L'
         nrm2 = polysys_sqnorm_by_quad(sys, n);
-    case {'h', 'p', 't', 'u', 'v'}
+    case {'h', 'p', 't', 'u', 'l'}
         nrm2 = ones(size(n));
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
@@ -49,4 +49,13 @@ m = max(n(:));
 [x,w] = polysys_int_rule(sys, m+1);
 y = gpc_evaluate(eye(m+1), {sys, (0:m)'}, x');
 nrm2 = (y.*y)*w';
+nrm2 = reshape(nrm2(n+1), size(n));
+
+
+function nrm2 = polysys_sqnorm_by_mc(sys, n)
+m = max(n(:));
+N = 100000;
+x = polysys_sample_rv(sys, 1, N);
+y = gpc_evaluate(eye(m+1), {sys, (0:m)'}, x);
+nrm2 = sum(y.*y,2)/N;
 nrm2 = reshape(nrm2(n+1), size(n));
