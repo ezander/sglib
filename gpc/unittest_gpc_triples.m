@@ -60,10 +60,6 @@ function test_mult(sys,m)
     end
     z_k_gamma=row_col_mult( z_k_gamma, (1./gpc_norm(V_z)').^2 );
     
-    xi = gpc_sample(V_x, n);
+    xi = gpc_sample(V_x, k);
     assert_equals(gpc_evaluate(z_k_gamma, V_z, xi), ...
         gpc_evaluate(x_i_alpha, V_x, xi) .* gpc_evaluate(y_i_alpha, V_y, xi), ['mult_', sys]);
-
-
-
-

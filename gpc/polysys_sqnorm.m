@@ -75,6 +75,7 @@ function nrm2 = polysys_sqnorm_by_rc(sys, I)
 % POLYSYS_NORM_BY_RC Compute the square norm via the recurrence coefficients.
 % See the neat article by:
 %    Alan G. Law and M. B. Sledd
+%    Normalizing Orthogonal Polynomials by Using their Recurrence Coefficients
 %    Proceedings of the American Mathematical Society, Vol. 48, No. 2
 %    (Apr., 1975), pp. 505 - 507
 %    URL: http://www.jstor.org/stable/2040291

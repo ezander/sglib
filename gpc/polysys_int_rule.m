@@ -59,5 +59,5 @@ end
 % compute the weights
 
 
-function [x,w]=gauss_lobatto_rule(sys, n, varargin)
-function [x,w]=gauss_kronrod_rule(sys, n, varargin)
+%function [x,w]=gauss_lobatto_rule(sys, n, varargin)
+%function [x,w]=gauss_kronrod_rule(sys, n, varargin)
