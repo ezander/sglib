@@ -53,4 +53,6 @@ p=a(1);
 if doplot
     plot( log(N(:)), log(T(:)), 'x', ...
         log(N(:)), polyval(a,log(N(:))), '-' );
+    xlabel('n');
+    ylabel('t');
 end

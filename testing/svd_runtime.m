@@ -1,24 +1,10 @@
-n=100:5:400;
+function svd_runtime
 
-t=[];
-for i=n
-    ts=tic;
-    te=toc(ts);
-    m=0;
-    while te<1
-       m=m+1;
-       A=rand(i);
-       [u,s,v]=svd(A);
-       te=toc(ts);
-    end
-    fprintf( '%3d %d %g %g\n', i, m, te, te/m );
-    t=[t te/m];
-end
-    
-plot(n,t)
+fprintf( 'measuring runtime for svd\n');
+[p,t,n] = estimate_rate( @svdn, logspace2(200,600,40), 'verbosity', 2, 'doplot', true );
+fprintf( 'runtime for svd scales like n ^ %g\n', p);
 
-p=polyfit( log(n), log(t), 1 )
-plot(log(n),log(t),'.',log(n),p(1)*log(n)+p(2))
+function A=svdn(n)
+A=rand(n);
+[u,s,v]=svd(A);
 
-
-p=polyfit( n, t, 3 )
