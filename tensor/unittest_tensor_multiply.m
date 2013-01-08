@@ -77,6 +77,11 @@ Z=tensor_multiply( X, Y, [2 1], [1 2] );
 assert_equals( Z, 69, 'multcont_4' );
 
 
-
-
-
+A=ones(2,3,4);
+B=ones(3,4);
+C=tensor_multiply( A, B, [2 3], [1 2] );
+assert_equals( C, [12; 12], 'mult_res_vector');
+C=tensor_multiply( A, B, [2], [1] );
+assert_equals( C, 3*ones(2,4,4), 'mult_res_tensor');
+C=tensor_multiply( A, B, [3], [2] );
+assert_equals( C, 4*ones(2,3,3), 'mult_res_tensor2');

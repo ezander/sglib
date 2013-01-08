@@ -17,9 +17,8 @@ function Z=tensor_multiply( X, Y, xdim, ydim )
 %   disp( size(Z1) ); % should be [2,3,4,5,2,3,2]
 %   Z2=tensor_multiply( X, Y, 2, 3 );
 %   disp( size(Z2) ); % should be [2,4,5,2,2]
-%   % this doesn't work yet
-%   % Z3=tensor_multiply( X, Y, [2 1], [3 2] );
-%   % disp( size(Z3) ); % should be [4,5,2]
+%   Z3=tensor_multiply( X, Y, [2 1], [3 2] );
+%   disp( size(Z3) ); % should be [4,5,2]
 %
 % See also TENSOR_ADD, TENSOR_SCALE
 
@@ -56,8 +55,13 @@ else
     
     Z=X*Y';
     zshape=[xshape yshape];
-    if ~isempty(zshape)
-        Z=reshape( Z, zshape );
+    switch length(zshape)
+        case 0
+            % do nothing
+        case 1
+            Z = Z(:);
+        otherwise
+            Z=reshape( Z, zshape );
     end
 end
 
