@@ -12,10 +12,10 @@ end
 function plot_geom( basemodel_ )
 
 eval( ['model_', basemodel_, '_easy']) 
-cache_script   define_geometry
+define_geometry
 
 multiplot;
-plot_mesh( pos, els, 'bndcolor', 'r' )
+plot_mesh( pos, els, 'bndcolor', 'k', 'bndwidth', 1 )
 axis equal; axis square;
 save_figure( gca, {'geometry-model_%s', basemodel_}, 'afterreparent', @axis_style );
 

@@ -11,7 +11,7 @@ function [xd,wd] = full_tensor_grid( d, stages, oned_rule_func )
 %   direction (totalling 15 integration points).
 %
 %
-% Example (<a href="matlab:run_example tensor_mesh">run</a>)
+% Example (<a href="matlab:run_example full_tensor_grid">run</a>)
 %   [xd,wd]=full_tensor_grid( 2, 7, @gauss_hermite_rule );
 %   subplot(2,2,1); plot(xd(1,:),xd(2,:),'*k')
 %   [xd,wd]=full_tensor_grid( [], [3 9], @gauss_hermite_rule );

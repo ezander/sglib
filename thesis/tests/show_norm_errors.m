@@ -8,6 +8,7 @@ R2=17;
 %randn('seed')
 %randn('seed', 1018663534 );
 randn('seed', 1776363387 );
+randn('seed', 1776363386 );
 
 T1={randn(M,R1), randn(N,R1)};
 T2={randn(M,R2), randn(N,R2)};
@@ -62,14 +63,19 @@ for i=1:1
     end
 end
 
+%%
 multiplot_init(1,1);
 y=abs(res([1,2,4,5],:));
 y(y==0)=1e-18;
-plot( deltas, y, 'x-' );
+%lso = {'x-', 'o-', 'x-.', 'o-.'};
+lso = 's-|o-|x-.|+-.';
+set(gca,'LineStyleOrder', lso);
+co = zeros(1,3);
+%co = 0.5 * repmat(linspace(0,1,4),3,1)'
+set(gca,'ColorOrder', co);
+plot( deltas, y);
 logaxis(gca,'xy');
 legend('full tensor','inner product','orth. inner product','orth. (core) full tensor')
-%xlabel( 'true difference' );
-%xlabel( 'computed difference' );
 grid on
 save_figure( gca, 'tensor_inner_product_methods' );
 
