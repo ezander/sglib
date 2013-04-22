@@ -7,7 +7,6 @@ function demo_b_over_a( varargin )
 options=varargin2options( varargin );
 [shift,options]=get_option( options, 'shift', 0.02 );
 check_unsupported_options( options, mfilename );
-shift=0;
 
 % Trying to approximate a random variable X=B/A by PCE
 % b and a depending on the same basic gaussian random var i.e. a=a(xi),
@@ -24,6 +23,7 @@ x_func={@div_func,{b_func, a_func}};
 disp( 'show the pdf''s of the three random vars' );
 p=5;
 gam=randn_sorted(10000);
+subplot(1,1,1);
 kernel_density( funcall( a_func, gam ), [], [], 'b' ); hold on;
 kernel_density( funcall( b_func, gam ), [], [], 'g' );
 kernel_density( funcall( x_func, gam ), [], [], 'r' );

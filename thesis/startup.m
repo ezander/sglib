@@ -32,3 +32,6 @@ run( fullfile( '..', 'sglib_startup' ) );
 addpath( fullfile( '..', 'paramstudy' ) );
 
 dbstop if error
+
+global sglib_figdir
+sglib_figdir='/home/ezander/projects/docs/stochastics/thesis/figures/'

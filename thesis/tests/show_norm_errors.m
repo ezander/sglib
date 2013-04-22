@@ -67,15 +67,21 @@ end
 multiplot_init(1,1);
 y=abs(res([1,2,4,5],:));
 y(y==0)=1e-18;
-%lso = {'x-', 'o-', 'x-.', 'o-.'};
-lso = 's-|o-|x-.|+-.';
-set(gca,'LineStyleOrder', lso);
-co = zeros(1,3);
-%co = 0.5 * repmat(linspace(0,1,4),3,1)'
-set(gca,'ColorOrder', co);
-plot( deltas, y);
+lso = {'x-', 'o-', 'x-.', 'o-.'};
+lsos = 's-|o-|x-.|+-.';
+co = get(gca, 'ColorOrder');
+
+%set(gca,'LineStyleOrder', lso);
+%plot( deltas, y);
+hold off
+for i = 1:size(y,1)
+    hold all
+    plot( deltas, y(i,:),  lso{i}, 'Color', co(i,:))
+end
+hold off
+
 logaxis(gca,'xy');
-legend('full tensor','inner product','orth. inner product','orth. (core) full tensor')
+legend('full tensor','inner product','orth. inner product','orth. (core) full tensor', 'Location', 'NorthWest')
 grid on
 save_figure( gca, 'tensor_inner_product_methods' );
 

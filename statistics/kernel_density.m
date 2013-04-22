@@ -68,7 +68,11 @@ else
     x1=min(xl);
     x2=max(xl);
     if isempty(sig)
-        sig=(x2-x1)/sqrt(size(xl,1));
+        s = std(xl);
+        n = size(xl,1);
+        sig=(x2-x1)/sqrt(n);
+        % normal distribution approximation, Gaussian approximation, or Silverman's rule of thumb.
+        sig= s * (4/(3*n)) ^ 0.2;
     end
 
     x1=x1-2*sig;
