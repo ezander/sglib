@@ -79,22 +79,16 @@ end
 
 
 
-%% Projection
-
-%% Interpolation
-
-% show polynomials
-state = electrical_network_init();
-
-order = 4;
-I = multiindex(state.num_params, order);
+%% Show polynomials
+order = 3;
+I = multiindex(2, order);
 % Polynome: 
 %  p,P - Legendre
 %  l,L - Laguerre
 %  h,H - Hermite
 %  t,T - Chebyshev 1. kind
 %  u,U - Chebyshev 2. kind
-V = {'P', I}; 
+V = {'p', I}; 
 for ind = 1:size(I,1)
     %xi = gpc_sample(V, 10000);
     [X,Y]=meshgrid(linspace(-1,1,40));
@@ -108,30 +102,39 @@ for ind = 1:size(I,1)
 end
 
 
-%%
+%% Projection
+
+state = electrical_network_init();
+
+order = 3;
+I = multiindex(state.num_params, order);
+V = {'P', I}; 
 
 [x,w] = smolyak_grid(state.num_params, 4, @gauss_legendre_rule);
 w = w / sum(w);
-plot(x(1,:),x(2,:),'*k')
 
+M = size(I,1);
 N = size(x,2);
-u = zeros(state.num_vars, N);
-for i = 1:N
-    p = x(:, i);
-    u_p = nonlinear_solve_picard(@electrical_network_residual, state, p);
-    
-    u(:, i) = u_p;
+u = zeros(state.num_vars, M);
+for k = 1:N
+    p = x(:, k);
+    u_k = nonlinear_solve_picard(@electrical_network_residual, state, p);
+    P_jk = gpc_evaluate(eye(M), V, p);
+    u = u + w(k) * u_k * P_jk';
 end
 
-mu = u * w;
-sig2 = (u - repmat(mu, 1, N)).^2 * w;
+u_normed = u * diag(1./gpc_norm(V));
+mu = u_normed(:,1);
+sig2 = sum(u_normed(:,2:end).^2, 2);
 sig = sqrt(sig2);
 
-underline('Sparse grid integration')
+underline('Projection (L_2, response surface)')
 for i = 1:state.num_vars
     fprintf( 'u_%d = %g+-%g\n', i, mu(i), sig(i));
 end
 
+
+%% Interpolation
 
 %% Interpolation with radial basis functions
 
