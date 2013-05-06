@@ -51,6 +51,7 @@ while true
     % i.e. compute the (scrambled) radical inverse function
     if ~isempty(scramble_func)
         if isfloat(scramble_func)
+            assert(isequal(sort(scramble_func(:)),(0:p-1)'))
             d = scramble_func(d+1);
         else
             d = funcall(scramble_func, d, p, j);

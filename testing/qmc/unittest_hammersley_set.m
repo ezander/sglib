@@ -20,10 +20,13 @@ function unittest_hammersley_set
 munit_set_function('hammersley_set');
 
 l = (1:5)/5;
+
 % test for dim 1
 assert_equals(hammersley_set(5, 1), l');
+
 % test for dim 2
 assert_equals(hammersley_set(5, 2), [[1/2, 1/4, 3/4, 1/8, 5/8]; l]');
+
 % test for dim 3
 assert_equals(hammersley_set(5, 3), [[1/2, 1/4, 3/4, 1/8, 5/8];
     [1/3, 2/3, 1/9, 4/9, 7/9]; l]');

@@ -46,7 +46,7 @@ fprintf('corrcoeff rand: %.4g+-sqrt(%.4g)\n', mean(c), var(c))
 %% Figure 2
 
 N=100;
-x = halton_sequence(100, 15);
+x = halton_sequence(100, 15, 'scramble', '');
 
 for i = 8:15
     for j = 8:15

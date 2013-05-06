@@ -20,10 +20,21 @@ function unittest_halton_sequence
 munit_set_function('halton_sequence');
 
 % test for dim 1
-assert_equals(halton_sequence(5, 1), [1/2, 1/4, 3/4, 1/8, 5/8]');
+assert_equals(halton_sequence(5, 1), [1/2, 1/4, 3/4, 1/8, 5/8]', 'dim1');
+
 % test for dim 2
 assert_equals(halton_sequence(5, 2), [[1/2, 1/4, 3/4, 1/8, 5/8];
-    [1/3, 2/3, 1/9, 4/9, 7/9]]');
+    [1/3, 2/3, 1/9, 4/9, 7/9]]', 'dim2');
+
 % test for dim 2, start = 2
-assert_equals(halton_sequence(4, 2, 2), [[1/4, 3/4, 1/8, 5/8];
-    [2/3, 1/9, 4/9, 7/9]]');
+assert_equals(halton_sequence(4, 2, 'n0', 2), [[1/4, 3/4, 1/8, 5/8];
+    [2/3, 1/9, 4/9, 7/9]]', 'n0_2');
+
+% test for dim 3, braaten-weller scrambling
+assert_equals(halton_sequence(5, 3, 'scramble', 'bw'), [[1/2, 1/4, 3/4, 1/8, 5/8];
+    [2/3, 1/3, 2/9, 8/9, 5/9]; [2/5, 4/5, 1/5, 3/5, 2/25]]', 'scr_bw');
+
+% test for dim 3, reverse scrambling
+assert_equals(halton_sequence(5, 3, 'scramble', 'rev'), [[1/2, 1/4, 3/4, 1/8, 5/8];
+    [2/3, 1/3, 2/9, 8/9, 5/9]; [4/5, 3/5, 2/5, 1/5, 4/25]]', 'scr_rev');
+
