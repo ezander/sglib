@@ -1,15 +1,21 @@
-function q = van_der_corput(n, p)
+function phi = van_der_corput(n, p, varargin)
 % VAN_DER_CORPUT Compute the van der Corput sequence.
-%   Q = VAN_DER_CORPUT(N, P) Computes the values of the van der Corput
+%   Q = VAN_DER_CORPUT(N, P, OPTIONS) Computes the values of the van der Corput
 %   sequence for base P. P is often chosen as a prime number but doesn't
 %   have to be. N is not the length of the produced sequence but must
 %   contain the elements for which the van der Corput sequence is computed.
 %   If the first M elements of the sequence shall be computed, 1:M can be
 %   passed as parameter N.
 %
+% Options:
+%   scamble_func: default [], can be used to pass a function handle or array 
+%                 that specifies a permutations of the digits for scrambled 
+%                 Halton sequences 
+%
 % Example (<a href="matlab:run_example van_der_corput">run</a>)
 %   van_der_corput(1:10, 2)
 %   van_der_corput(1:10, 3)
+%   van_der_corput(1:10, 3, "scramble_func", [0, 2, 1])
 %
 % See also HALTON, HAMMERSLEY, UNITTEST_VAN_DER_CORPUT, RAND
 
@@ -25,17 +31,41 @@ function q = van_der_corput(n, p)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+options = varargin2options(varargin);
+[scramble_func, options] = get_option(options, 'scramble_func', []);
+check_unsupported_options(options, mfilename);
+
+% check that all input values are non-negative integers
 assert(all(n(:)>=0))
 assert(all(n(:)==round(n(:) )))
 
-q = zeros(size(n));
-f = 1/p;
+phi = zeros(size(n));
+q = 1/p;
+j = 1;
 while true
-    r = rem(n, p);
-    q = q + f * r;
-    n = floor(n/p);
+    % get next base p digit from n and shift n by one digit
+    d = rem(n, p);
+    n = floor(n / p);
+    
+    % if needed scramble the digit, and add it in reverse order
+    % i.e. compute the (scrambled) radical inverse function
+    if ~isempty(scramble_func)
+        if isfloat(scramble_func)
+            d = scramble_func(d+1);
+        else
+            d = funcall(scramble_func, d, p, j);
+        end
+        d = reshape(d, size(phi));
+    end
+    phi = phi + q * d;
+
+    % if all n's are zero exit
     if all(n(:)==0)
         break;
     end
-    f = f/p;
+    
+    % compute new multiplication factor and iteration index
+    q = q / p;
+    j = j + 1;
 end
+
