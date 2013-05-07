@@ -7,7 +7,7 @@ V = {'p', multiindex(state.num_params, 1)};
 u = zeros(state.num_vars, N);
 for i = 1:N
     p = gpc_sample(V, 1); % same as rand(2,1)
-    u_p = nonlinear_solve_picard(@electrical_network_residual, state, p);
+    u_p = electrical_network_solve(state, p);
     
     u(:, i) = u_p;
 end
@@ -36,7 +36,7 @@ N = size(x,2);
 u = zeros(state.num_vars, N);
 for i = 1:N
     p = x(:, i);
-    u_p = nonlinear_solve_picard(@electrical_network_residual, state, p);
+    u_p = electrical_network_solve(state, p);
     
     u(:, i) = u_p;
 end
@@ -63,7 +63,7 @@ N = size(x,2);
 u = zeros(state.num_vars, N);
 for i = 1:N
     p = x(:, i);
-    u_p = nonlinear_solve_picard(@electrical_network_residual, state, p);
+    u_p = electrical_network_solve(state, p);
     
     u(:, i) = u_p;
 end
@@ -118,7 +118,7 @@ N = size(x,2);
 u = zeros(state.num_vars, M);
 for k = 1:N
     p = x(:, k);
-    u_k = nonlinear_solve_picard(@electrical_network_residual, state, p);
+    u_k = electrical_network_solve(state, p);
     P_jk = gpc_evaluate(eye(M), V, p);
     u = u + w(k) * u_k * P_jk';
 end
@@ -128,7 +128,9 @@ mu = u_normed(:,1);
 sig2 = sum(u_normed(:,2:end).^2, 2);
 sig = sqrt(sig2);
 
-[u_mean, u_var] = gpc_moments(u, V);
+%[u_mean, u_var] = gpc_moments(u, V);
+
+
 
 underline('Projection (L_2, response surface)')
 for i = 1:state.num_vars

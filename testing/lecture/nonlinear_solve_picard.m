@@ -57,5 +57,5 @@ for iter = 1:max_iter
             abstol, max_iter);
     end
     
-    u = u + r;
+    u = u + state.A \ r;
 end
