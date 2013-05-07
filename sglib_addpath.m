@@ -64,6 +64,7 @@ addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'util') );
 addpath( fullfile( basepath, 'linalg') );
 addpath( fullfile( basepath, 'gpc') );
+addpath( fullfile( basepath, 'qmc') );
 
 if exist( fullfile( basepath, 'thesis'), 'dir' )
   addpath( fullfile( basepath, 'thesis') )
