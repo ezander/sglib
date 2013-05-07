@@ -128,6 +128,8 @@ mu = u_normed(:,1);
 sig2 = sum(u_normed(:,2:end).^2, 2);
 sig = sqrt(sig2);
 
+[u_mean, u_var] = gpc_moments(u, V);
+
 underline('Projection (L_2, response surface)')
 for i = 1:state.num_vars
     fprintf( 'u_%d = %g+-%g\n', i, mu(i), sig(i));

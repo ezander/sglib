@@ -1,4 +1,4 @@
-function r = electrical_network_residual(state, u, p)
+function res = electrical_network_residual(state, u, p)
 % ELECTRICAL_NETWORK_RESIDUAL function to compute the residuum
 % (preconditioned).
 %
@@ -8,10 +8,8 @@ function r = electrical_network_residual(state, u, p)
 % third parameter.
 
 A = state.A;
-Pr = state.Pr;
 fg = state.fg;
 f0 = state.f0;
 
 % Compute the residual of the electrical network
-
-r = Pr * ( (fg + p(2)).*f0 - (A*u + (p(1)+2)*(u'*u)*u));
+res = (fg + p(2)).*f0 - (A*u + (p(1)+2)*(u'*u)*u);
