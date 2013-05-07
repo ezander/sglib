@@ -24,12 +24,13 @@ f = @(state,x,p)(x^2-p);
 df = @(state,x,p)(2*x);
 res = @(state,x,p)(-df(state,x,p)\f(state,x,p));
 state = struct('u0', 1);
+state.A = 1;
 [u, iter, res] = nonlinear_solve_picard(res, state, 3, 'verbose', false);
 assert_equals(u, sqrt(3), 'sqrt3');
 
 % function to solve A*x 
 f = @(state,x,p)(state.A*x + (x'*x)*x);
-res = @(state,x,p)(state.A\(state.b - f(state,x,p)));
+res = @(state,x,p)(state.b - f(state,x,p));
 
 % picard iterations are pretty sensitive so we need to set the random
 % matrix to a specific one
