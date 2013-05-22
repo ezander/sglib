@@ -38,7 +38,11 @@ V = {'h', I};
 assert_equals(gpc_norm(V).^2, ones(10,1));
 
 % Later
-
 V = {'PPHH', [I, I]};
 assert_equals(gpc_norm(V).^2, (1./[1,3,3,5,9,5,7,15,15,7] .* [1,1,1,2,1,2,6,2,2,6])');
 
+% check options
+I = multiindex(2, 3);
+V = {'P', I};
+assert_equals(gpc_norm(V, 'sqrt', true), sqrt(1./[1,3,3,5,9,5,7,15,15,7]'));
+assert_equals(gpc_norm(V, 'sqrt', false), 1./[1,3,3,5,9,5,7,15,15,7]');

@@ -1,8 +1,13 @@
-function norm_I=gpc_norm( V )
+function norm_I=gpc_norm( V, varargin )
 % GPC_NORM Compute the norm of the system of GPC polynomials.
 %  NORM_I=GPC_NORM( V ) returns the norms of the GPC
 %  polynomials specified by the V. The returned vector
 %  is a column vector.
+%
+% Options:
+%  sqrt: boolean - {true}, false
+%        If true, which  is the default, the true norm is returned.
+%        Otherwise, i.e. if false, the square of the norm is returned.
 %
 % Example (<a href="matlab:run_example gpc_norm">run</a>)
 %  I_u=[0 0; 1 1; 2 2; 2 3; 3 3];
@@ -27,6 +32,11 @@ function norm_I=gpc_norm( V )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options = varargin2options(varargin);
+[do_sqrt, options] = get_option(options, 'sqrt', true);
+check_unsupported_options(options, mfilename);
+
+
 sys = V{1};
 I = V{2};
 m = size(I,2);
@@ -37,7 +47,7 @@ if length(sys)==1
     nrm = polysys_sqnorm(sys, 0:N);
     % Note: the reshape in the next line is necessary, as otherwise, if I
     % is just a column vector it would be transformed into a row vector
-    norm_I=sqrt(prod(reshape(nrm(I+1), size(I)), 2));
+    norm2_I=prod(reshape(nrm(I+1), size(I)), 2);
 else
     norm2_I = ones(size(I,1), 1);
     for j = 1:m
@@ -45,6 +55,10 @@ else
         nrm2 = polysys_sqnorm(sys(j), (0:N)');
         norm2_I=norm2_I .* nrm2(I(:,j)+1);
     end
-    norm_I = sqrt(norm2_I);
 end
 
+if do_sqrt
+    norm_I = sqrt(norm2_I);
+else
+    norm_I = norm2_I;
+end
