@@ -34,10 +34,15 @@ check_unsupported_options(options, mfilename);
 % Up to here no version information existed, 
 
 % Version 0.9.2
-% Commit: 
-% Added version information 
+% Commit: 5a3045acd0a8ffe480c2ae35a12c36cb6527fabc
+% * Added version information 
 
-version = [0, 9, 2];
+% Version 0.9.3
+% Commit: 
+% * Added option for computing squared gpc norm
+% * Changed ordering of multiindices to be compatible with UQToolkit
+
+version = [0, 9, 3];
 if as_string
     version = sprintf('%d.', version);
     version = version(1:end-1);

@@ -159,11 +159,11 @@ for k=1:m
 
     for q=0:p
         % Copy indices from m-1 random vars in the new multiindex field to
-        % the right position
-        I_kp{q+1}( :, 1:end-1 ) = catmat(I_k1p{(q+1):-1:1});
-        % Now fill the right most column such that I_kp{q+1} still has
+        % the position 2:m
+        I_kp{q+1}( :, 2:end ) = catmat(I_k1p{1:(q+1)});
+        % Now fill the leftmost column such that I_kp{q+1} still has
         % homogeneous order q
-        I_kp{q+1}(:,end)=q-sum(I_kp{q+1},2);
+        I_kp{q+1}(:,1)=q-sum(I_kp{q+1},2);
     end
 end
 
