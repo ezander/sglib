@@ -28,9 +28,9 @@ function varargout=multiindex_combine( I_j, p, varargin )
 %   things even more difficult and thus introducing more sources of error.
 %
 % Example (<a href="matlab:run_example multiindex_combine">run</a>)
-%   I_f=multiindex(2,3,[],'use_sparse', true)
-%   I_k=multiindex(3,2,[],'use_sparse', true)
-%   I_g=multiindex(2,2,[],'use_sparse', true)
+%   I_f=multiindex(2,3)
+%   I_k=multiindex(3,2)
+%   I_g=multiindex(2,2)
 %   [I_f,I_k,I_g,I_u]=multiindex_combine({I_f,I_k,I_g},-1);
 %   disp(full(I_f)); disp(full(I_k)); disp(full(I_g)); disp(size(I_u))
 %
@@ -103,6 +103,6 @@ if nargin>=2
             p=full(p); % necessary if I_j is sparse
         end
     end
-    varargout{m+1}=multiindex( n_vars, p, [], 'use_sparse', use_sparse, 'lex_ordering', lex_ordering );
+    varargout{m+1}=multiindex( n_vars, p, 'use_sparse', use_sparse, 'lex_ordering', lex_ordering );
 end
 

@@ -1,20 +1,28 @@
-function I_mp=multiindex(m,p,combine,varargin)
+function I_mp=multiindex(m,p,varargin)
 % MULTIINDEX Generate a table of multiindices.
-%   I_MP=MULTIINDEX(M,P,COMBINE,OPTIONS) generate a table of multiindices using
-%   the standard block scheme i.e. generating all multi-indices up to
-%   degree P in all M (random) variables. (Limitation to certain
-%   limiters/norms will be added later). If combine is not specified or
-%   evaluates to true then the homogeneous multiindices will be combined
-%   into one large (sparse) array I_MP. Otherwise I_MP is a cell array
-%   where I_MP{q+1} represents the multiindices with degree q.
+%   I_MP=MULTIINDEX(M,P,OPTIONS) generates a table of multiindices up to
+%   degree P in all M (random) variables.
+%
+% Note: from sglib version 0.9.3 on the third parameter COMBINE has been
+%   removed and changed into an option. The method of passing the optional
+%   COMBINE parameter was not compatible anymore with the newer 'varargin'
+%   system of optional arguments.
 %
 % Options:
 %   use_sparse: true, {false}
 %     Return the result as a sparse array.
+%   ordering: {'degree'}, 'lexicographical', 'lex', 'uqtoolkit', 'uqtk'
+%     Specifies the ordering of the multiindex set returned. 'lex' and
+%     'lexicographical' are the same and return the set in lexicographical
+%     order. 'degree' and 'uqtoolkit' return the set ordered by degree,
+%     where the second tries to be compatible with the UQToolkit for
+%     complete polynomials.
 %   lex_ordering: true, {false}
-%     Returns the result in lexicographical ordering (like e.g. A. Keese) instead
-%     of ordering by degree first (this option is obviously ignored if COMBINE is
-%     false)
+%     Obsolete. Use ordering='lex' instead!
+%   combine: {true}, false
+%     When true (default) the homogeneous multiindices will be combined
+%     into one large array. Otherwise the return value I_MP is a cell array
+%     where I_MP{q+1} represents the multiindices with degree q.
 %   full: true, {false}
 %     Return the full tensor product multiindex set.
 %
@@ -24,14 +32,21 @@ function I_mp=multiindex(m,p,combine,varargin)
 %   I=multiindex(2,4);
 %   disp(I);
 %   % Get output as sparse array
-%   I=multiindex(2,4,[],'use_sparse',true);
+%   I=multiindex(2,4,'use_sparse',true);
 %   disp(I); % convert from sparse
 %
 %   % To generate the polynomial chaos for 5 random variables up to
 %   % polynomial order 3, using only the homogeneous chaos of order 3
-%   I=multiindex(5,3,false);
+%   I=multiindex(5,3,'combine', false);
 %   I3=full(I{3+1});
 %   disp(I3)
+%
+%   % Generate multiindices with ordering as in UQToolkit and compare to 
+%   % standard sglib ordering
+%   Iuq=multiindex(3,2,'ordering', 'uqtoolkit');
+%   Isg=multiindex(3,2);
+%   fprintf('uqtk    sglib\n')
+%   fprintf('%d %d %d   %d %d %d\n', [Iuq, Isg]')
 %
 % See also MULTIINDEX_ORDER, MULTIINDEX_COMBINE, MULTIINDEX_FACTORIAL
 
@@ -49,20 +64,32 @@ function I_mp=multiindex(m,p,combine,varargin)
 
 error( nargchk( 2, inf, nargin ) );
 
-if nargin<3 || isempty(combine)
-    combine=true;
-end
-
 options=varargin2options( varargin );
 [use_sparse,options]=get_option( options, 'use_sparse', false );
 [lex_ordering,options]=get_option( options, 'lex_ordering', false );
+[ordering,options]=get_option( options, 'ordering', 'degree' );
+[combine,options]=get_option( options, 'combine', true );
 [full,options]=get_option( options, 'full', false );
 check_unsupported_options( options, mfilename );
 
+switch ordering
+    case {'lex','lexicographical'}
+        std_ordering = true; % doesn't really matter
+        lex_ordering = true;
+    case 'degree'
+        std_ordering = true;
+        % leave lex_ordering as it is
+    case {'uqtoolkit', 'uqtk'}
+        std_ordering = false;
+        % leave lex_ordering as it is
+    otherwise
+        error('sglib:multiindex', 'unknown ordering: %s', std_ordering);
+end
+
 if full
-    I_mp=multiindex_full(m,p,use_sparse);
+    I_mp=multiindex_full(m, p, use_sparse);
 else
-    I_mp=multiindex_complete(m,p,use_sparse);
+    I_mp=multiindex_complete(m, p, std_ordering, use_sparse);
 end
 
 if combine
@@ -70,17 +97,17 @@ if combine
     if lex_ordering
         I_mp=sortrows(I_mp,m:-1:1);
     end
+elseif lex_ordering
+    for q=0:p
+        I_mp{q+1}=sortrows(I_mp{q+1},m:-1:1);
+    end
 end
 
 
-function I_kp=multiindex_full(m,p,use_sparse)
+function I_kp=multiindex_full(m, p, use_sparse)
 I_kp=cell(1,m*p+1);
 for q=0:m*p
-    if use_sparse
-        I_kp{q+1}=sparse(q==0,0);
-    else
-        I_kp{q+1}=zeros(q==0,0);
-    end
+    I_kp{q+1}=array_alloc(q==0, 0, use_sparse);
 end
 
 % Now iterate over the number of random variables.
@@ -89,11 +116,7 @@ for k=1:m
     I_k1p=I_kp;
 
     for q=0:k*p
-        if use_sparse
-            I_kp{q+1}=sparse(0,k);
-        else
-            I_kp{q+1}=zeros(0,k);
-        end
+        I_kp{q+1}=array_alloc(0, k, use_sparse);
     end
     for q=0:(k-1)*p
         for r=0:p
@@ -103,7 +126,7 @@ for k=1:m
 end
 
 
-function I_kp=multiindex_complete(m,p,use_sparse)
+function I_kp=multiindex_complete(m, p, std_ordering, use_sparse)
 % The (old) idea of the algorithm is the following:
 % We do a recursion on the number of random variables, not on the order (in
 % my opinion its easier and faster that way). For just one random variable
@@ -129,13 +152,7 @@ function I_kp=multiindex_complete(m,p,use_sparse)
 % just one monomial of homogeneous order q=i-1
 I_kp=cell(1,p+1);
 for q=0:p
-    if use_sparse
-        %I_kp{q+1}=sparse(1,1,q);
-        I_kp{q+1}=sparse(q==0,0);
-    else
-        %I_kp{q+1}=q;
-        I_kp{q+1}=zeros(q==0,0);
-    end
+    I_kp{q+1}=array_alloc(q==0, 0, use_sparse);
 end
 
 % Now iterate over the number of random variables.
@@ -150,20 +167,25 @@ for k=1:m
     [count,nonzero]=multiindex_stats(k,p);
     I_kp=cell(1,p+1);
     for q=0:p
-        if use_sparse
-            I_kp{q+1}=spalloc(count(q+1),k,nonzero(q+1));
-        else
-            I_kp{q+1}=zeros(count(q+1),k);
-        end
+        I_kp{q+1}=array_alloc(count(q+1), k, use_sparse, nonzero(q+1));
     end
 
     for q=0:p
-        % Copy indices from m-1 random vars in the new multiindex field to
-        % the position 2:m
-        I_kp{q+1}( :, 2:end ) = catmat(I_k1p{1:(q+1)});
-        % Now fill the leftmost column such that I_kp{q+1} still has
-        % homogeneous order q
-        I_kp{q+1}(:,1)=q-sum(I_kp{q+1},2);
+        if std_ordering
+            % Copy indices from m-1 random vars in the new multiindex field to
+            % the position 1:m-1
+            I_kp{q+1}( :, 1:end-1 ) = catmat(I_k1p{(q+1):-1:1});
+            % Now fill the rightmost column (m) such that I_kp{q+1} still has
+            % homogeneous order q
+            I_kp{q+1}(:,end)=q-sum(I_kp{q+1},2);
+        else
+            % Copy indices from m-1 random vars in the new multiindex field to
+            % the position 2:m
+            I_kp{q+1}( :, 2:end ) = catmat(I_k1p{1:(q+1)});
+            % Now fill the leftmost column such that I_kp{q+1} still has
+            % homogeneous order q
+            I_kp{q+1}(:,1)=q-sum(I_kp{q+1},2);
+        end
     end
 end
 
@@ -197,4 +219,16 @@ end
 % workaround for an octave bug
 if issparse(varargin{1}) && ~issparse(A)
     A=sparse(A);
+end
+
+function A = array_alloc(m, n, use_sparse, nnz)
+% ARRAY_ALLOC Allocates a full or sparse array depending on a parameter.
+if use_sparse
+    if nargin<4
+        A = sparse(m, n);
+    else
+        A = spalloc(m, n, nnz);
+    end
+else
+    A=zeros(m, n);
 end

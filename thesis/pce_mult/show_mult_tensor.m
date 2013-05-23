@@ -1,7 +1,7 @@
 I=multiindex(10,1); 
 I=multiindex(3,5); 
 I=multiindex(3,7); name='comp_mult_tensor_3_7.eps';
-I=multiindex(3,4,true,'full',true); name='full_mult_tensor_3_4.eps';
+I=multiindex(3,4,'full',true); name='full_mult_tensor_3_4.eps';
 
 nnz(hermite_triple_fast(I,I,I));
 M=hermite_triple_fast(I,I,I);

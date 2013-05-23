@@ -10,7 +10,7 @@ for m=1:maxm
     for p=1:maxp
         fprintf( 'm=%d, p=%d\n', m, p );
         tic
-        A=multiindex(m,p,true,'use_sparse', true);
+        A=multiindex(m,p,'use_sparse', true);
         t=toc;
         tic
         A=multiindex2(m,p);
@@ -24,5 +24,3 @@ end
   
 %sz
 %tm
-
-

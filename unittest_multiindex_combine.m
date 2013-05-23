@@ -21,9 +21,9 @@ function unittest_multiindex_combine
 
 munit_set_function( 'multiindex_combine' );
 
-I_f0=multiindex(2,6,[],'use_sparse', false);
-I_k0=multiindex(4,5,[],'use_sparse', false);
-I_g0=multiindex(6,3,[],'use_sparse', false);
+I_f0=multiindex(2, 6, 'use_sparse', false);
+I_k0=multiindex(4, 5, 'use_sparse', false);
+I_g0=multiindex(6, 3, 'use_sparse', false);
 [I_f,I_k,I_g,I_u]=multiindex_combine({I_f0,I_k0,I_g0},-1);
 assert_equals( size(I_f), [28,12], 'size1' );
 assert_equals( size(I_k), [126,12], 'size2' );
@@ -33,9 +33,9 @@ assert_equals( I_f(:,1:2), I_f0, 'contain1' );
 assert_equals( I_k(:,3:6), I_k0, 'contain2' );
 assert_equals( I_g(:,7:12), I_g0, 'contain3' );
 
-I_f0=multiindex(2,6,[],'use_sparse', true);
-I_k0=multiindex(4,5,[],'use_sparse', true);
-I_g0=multiindex(6,3,[],'use_sparse', true);
+I_f0=multiindex(2, 6, 'use_sparse', true);
+I_k0=multiindex(4, 5, 'use_sparse', true);
+I_g0=multiindex(6, 3, 'use_sparse', true);
 [I_f,I_k,I_g,I_u]=multiindex_combine({I_f0,I_k0,I_g0},-1);
 assert_equals( size(I_f), [28,12], 'sp_size1' );
 assert_equals( size(I_k), [126,12], 'sp_size2' );

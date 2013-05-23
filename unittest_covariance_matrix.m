@@ -196,7 +196,9 @@ mean_u; %#ok: mean_u unused
 C_u=covariance_matrix( x, {@gaussian_covariance, {0.3, sqrt(var_u)}} );
 
 C_gam=transform_covariance_pce( C_u, u_i, 'comp_ii_reltol', 1e-2 );
+s=warning('OFF', 'sglib:kl_solve_evp:negative');
 v_gam=kl_solve_evp( C_gam, M, m_gam, 'correct_var', true );
+warning(s);
 [u_alpha,I_u]=pce_transform_multi( v_gam, u_i, 'fast', true );
 
 C_u_pce=pce_covariance( u_alpha, I_u );

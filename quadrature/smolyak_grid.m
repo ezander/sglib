@@ -99,7 +99,7 @@ end
 xd=[];
 wd=[];
 
-I=multiindex(d,stages-1,false);
+I=multiindex(d,stages-1,'combine', false);
 I=cell2mat(I(max(0,stages-d)+1:end)')+1;
 for i=1:size(I,1)
 

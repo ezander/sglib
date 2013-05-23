@@ -23,6 +23,6 @@ munit_set_function( 'multiindex_factorial' );
 fac=multiindex_factorial( [0,1,2,3,4]' );
 assert_equals( fac, [1,1,2,6,24]', 'factorial' );
 
-ind=multiindex(2,6,[],'use_sparse',true);
+ind=multiindex(2, 6, 'use_sparse',true);
 fac=multiindex_factorial(ind([1,2,3,25,28],:));
 assert_equals( fac, [1,1,1,36,720]', 'factorial' );

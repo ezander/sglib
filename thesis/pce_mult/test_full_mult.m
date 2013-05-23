@@ -56,7 +56,7 @@ f=@(p)(1/8*(2*p.^3+9*p.^2+14*p+8-mod(p,2)));
 
 
 for p=0:20
-    I=multiindex(1,p,true,'full',true);
+    I=multiindex(1,p,'full',true);
     M=hermite_triple_fast(I,I,I);
     fprintf('%2d %5d %5d %4d\n', [p numel(M), (p+1)^3, nnz(M)]);
     nu1=numel(M);
@@ -69,13 +69,13 @@ return
 
 for p=0:4
     disp(p);
-    I=multiindex(1,p,true,'full',true);
+    I=multiindex(1,p,'full',true);
     M=hermite_triple_fast(I,I,I);
     disp([numel(M), nnz(M)]);
     nu1=numel(M);
     nz1=nnz(M);
     for m=2:3
-        I=multiindex(m,p,true,'full',true);
+        I=multiindex(m,p,'full',true);
         M=hermite_triple_fast(I,I,I);
         disp([numel(M), nu1^m, (p+1)^(3*m), nnz(M), nz1^m]);
     end

@@ -25,9 +25,9 @@ userwait;
 
 function sp_plots( m_f, p_f, m_k, p_k, p_u, lex_ordering )
 
-I_k=multiindex(m_k,p_k,[],'lex_ordering', lex_ordering);
+I_k=multiindex(m_k,p_k,'lex_ordering', lex_ordering);
 
-I_f=multiindex(m_f,p_f,[],'lex_ordering', lex_ordering);
+I_f=multiindex(m_f,p_f,'lex_ordering', lex_ordering);
 
 [I_f,I_k,I_u]=multiindex_combine({I_f,I_k},p_u,'lex_ordering', lex_ordering);
 

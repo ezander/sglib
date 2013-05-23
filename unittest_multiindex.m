@@ -30,7 +30,7 @@ assert_equals( unique(ind(:,1)), (0:6)', 'unique' )
 assert_equals( unique(ind(:,2)), (0:6)', 'unique' )
 assert_equals( size(unique(ind,'rows'),1), 28, 'unique' )
 
-ind=multiindex(2,6,[],'use_sparse',true);
+ind=multiindex(2,6,'use_sparse',true);
 assert_true( issparse(ind), 'multiindex should be sparse matrix', 'not_sparse' )
 assert_equals( size(ind), [28, 2], 'sp_size' )
 assert_equals( ind(1,:), [0, 0], 'sp_first' )
@@ -39,8 +39,40 @@ assert_equals( unique(ind(:,1)), (0:6)', 'sp_unique' )
 assert_equals( unique(ind(:,2)), (0:6)', 'sp_unique' )
 assert_equals( size(unique(ind,'rows'),1), 28, 'sp_unique' )
 
-ind=multiindex(200,1,[],'use_sparse',true);
+ind=multiindex(200,1,'use_sparse',true);
 assert_equals( size(ind), [201, 200], 'large_nrv' )
 
 ind=multiindex( 0, 7 );
 assert_equals( numel(ind), 0, 'mzero_size' )
+
+% lexicographical 
+ind=multiindex( 3, 5, 'ordering', 'lex' );
+assert_true( all(diff(ind * [1; 8; 64])>0), 'ordering not lexico. increasing', 'lex_increasing' )
+
+% create using other parameter
+ind2=multiindex( 3, 5, 'lex_ordering', true );
+assert_equals(ind2, ind, 'lex_param');
+
+% test uqtoolkit ordering
+% (the functional tested may look a bit strange here: the first one
+% computes the order per index, takes the difference and makes sure it is
+% increasing, the second one makes sure the ordering is increasing by
+% degree and for each degree lexicographically decreasing).
+ind=multiindex( 3, 5, 'ordering', 'uqtk' );
+assert_true( all(diff(sum(ind, 2))>=0), ...
+    'degree not increasing', 'uqtk_increasing' )
+assert_true( all(diff(ind * [36;6;1] + 217*(5-sum(ind,2)))<0), 'functional not decreasing', 'uqtk_func_dec')
+
+% degree ordering test
+ind=multiindex( 3, 5, 'ordering', 'degree' );
+assert_true( all(diff(sum(ind, 2))>=0), ...
+    'degree not increasing', 'deg_increasing' )
+assert_true( all(diff(ind * [1;6;36] + 217*sum(ind,2))>0), 'functional not increasing', 'deg_func_inc')
+
+% tensor product test
+ind=multiindex( 3, 5, 'full', true, 'lex_ordering', true );
+assert_equals(ind * [1;6;36], (0:215)', 'full_tensor_lex');
+
+ind=multiindex( 3, 5, 'full', true, 'lex_ordering', false );
+assert_equals(sort(ind * [1;6;36]), (0:215)', 'full_tensor');
+assert_true(all(diff(sum(ind,2))>=0), 'degree not increasing', 'full_tensor_inc_deg');

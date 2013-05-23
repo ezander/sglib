@@ -1,4 +1,4 @@
-function version=sglib_version(varargin)
+function [version, msg]=sglib_version(varargin)
 % SGLIB_VERSION Returns version information for sglib.
 %   SGLIB_VERSION Returns version information for sglib either as array or
 %   in string format (if the option 'as_string' is specified). 
@@ -29,6 +29,7 @@ options = varargin2options(varargin);
 [as_string, options] = get_option(options, 'as_string', false);
 check_unsupported_options(options, mfilename);
 
+msg = '';
 
 % Version 0.9.1
 % Up to here no version information existed, 
@@ -40,15 +41,13 @@ check_unsupported_options(options, mfilename);
 % Version 0.9.3
 % Commit: 
 % * Added option for computing squared gpc norm
-% * Changed ordering of multiindices to be compatible with UQToolkit
+% * Added option to make ordering of multiindices compatible with UQToolkit
+% * Incompatible change to 'multiindex' interface when used with more than
+%   two arguments
+msg = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
 
 version = [0, 9, 3];
 if as_string
     version = sprintf('%d.', version);
     version = version(1:end-1);
 end
-
-
-
-
-
