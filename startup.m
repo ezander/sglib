@@ -5,11 +5,18 @@ function startup
 %   work SGLIB_STARTUP, so that SGLIB_STARTUP can be called from anywhere
 %   else without interfering with any other startup script that might be on
 %   the path.
+%   
+%   For more information on startup files click <a href="matlab:doc startup">here</a>.
+%
+% Note: if the user (i.e. you) has a starup.m file in his or her home
+%   directory, this startup file is also executed after the sglib_startup
+%   file has executed.
+% 
 %
 % Example (<a href="matlab:run_example startup">run</a>)
 %   startup
 %
-% See also
+% See also SGLIB_STARTUP
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
