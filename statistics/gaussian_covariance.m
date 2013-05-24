@@ -1,6 +1,6 @@
-function cov=gaussian_covariance( x1, x2, l, sigma, smooth )
-% GAUSSIAN_COVARIANCE  Compute the convariance function of gaussian.
-%   C=GAUSSIAN_COVARIANCE( X1, X2, L, SIGMA ) computes the covariance between
+function cov=gaussian_covariance(x1, x2, l, sigma, smooth)
+% GAUSSIAN_COVARIANCE  Compute the Gaussian covariance function.
+%   C=GAUSSIAN_COVARIANCE(X1, X2, L, SIGMA) computes the covariance between
 %   points given in X1 and X2. If X2 is empty it is assumed that X1
 %   only contains distances. Otherwise, X1 and X2 can contain lists of
 %   points, where the first index in X1/X2 corresponds to the number of the
@@ -13,9 +13,27 @@ function cov=gaussian_covariance( x1, x2, l, sigma, smooth )
 %   x2=rand(10,2);
 %   c=gaussian_covariance( x1, x2, 0.2, 1 );
 %
-%   x=linspace(-2,2)';
-%   c=gaussian_covariance( x, [], 0.5, 0.3 );
-%   plot(x,c);
+%   x=sqrspace(-2, 2, 100, 4);
+%   clf;
+%   subplot(2, 1, 1);
+%   hold all
+%   plot(x, gaussian_covariance(x, [], 0.5, 0.5));
+%   plot(x, gaussian_covariance(x, [], 0.3, 0.5));
+%   plot(x, gaussian_covariance(x, [], 0.2, 0.5));
+%   plot(x, gaussian_covariance(x, [], 0.1, 0.5));
+%   title('Gaussian covariance');
+%   legend('\sigma=0.5, l=0.5', '\sigma=0.5, l=0.3', '\sigma=0.5, l=0.2', '\sigma=0.5, l=0.1');
+%   hold off
+%
+%   subplot(2, 1, 2);
+%   hold all
+%   plot(x, gaussian_covariance( x, [], 0.5, 0.5 ));
+%   plot(x, gaussian_covariance( x, [], 0.5, 0.4 ));
+%   plot(x, gaussian_covariance( x, [], 0.5, 0.3 ));
+%   plot(x, gaussian_covariance( x, [], 0.5, 0.2 ));
+%   title('Gaussian covariance');
+%   legend('\sigma=0.5, l=0.5', '\sigma=0.4, l=0.5', '\sigma=0.3, l=0.5', '\sigma=0.2, l=0.5');
+%   hold off
 %
 % See also EXPONENTIAL_COVARIANCE, COVARIANCE_MATRIX
 

@@ -15,7 +15,7 @@
 %   exponential_pdf                  - Probability distribution function of the exponential distribution.
 %   exponential_raw_moments          - Compute raw moments of the exponential distribution.
 %   exponential_stdnor               - Transforms standard normal random numbers into exponential distributed ones.
-%   gaussian_covariance              - Compute the convariance function of gaussian.
+%   gaussian_covariance              - Compute the Gaussian covariance function.
 %   gendist_cdf                      - Short description of gendist_cdf.
 %   gendist_moments                  - Short description of gendist_moments.
 %   gendist_pdf                      - Short description of gendist_pdf.
