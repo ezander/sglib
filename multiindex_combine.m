@@ -57,7 +57,32 @@ if ischar(use_sparse) && strcmp( use_sparse, 'auto' )
     use_sparse=all( cellfun( @issparse, I_j) );
 end
 
+m=numel(I_j);
+% preallocate output cell array
+if nargin<2
+    varargout=cell(1,m);
+else
+    varargout=cell(1,m+1);
+end
 
+I_j = multiindex_extend(I_j);
+varargout(1:m) = I_j;
+
+
+% create a matrix for the output random field
+if nargin>=2
+    n_vars = size(I_j{1}, 2);
+    if p==-1
+        for i=1:m
+            p=max(p,max(sum(I_j{i},2)));
+            p=full(p); % necessary if I_j is sparse
+        end
+    end
+    varargout{m+1}=multiindex( n_vars, p, 'use_sparse', use_sparse, 'lex_ordering', lex_ordering );
+end
+
+
+function I_j = multiindex_extend(I_j)
 % determine the combined number of random vars
 m=numel(I_j);
 n_vars=0;
@@ -65,12 +90,6 @@ for i=1:m
     n_vars=n_vars+size(I_j{i},2);
 end
 
-% preallocate output cell array
-if nargin<2
-    varargout=cell(1,m);
-else
-    varargout=cell(1,m+1);
-end
 
 % set the number of random vars that should be insert before and after the
 % current index set
@@ -87,22 +106,12 @@ for i=1:m
         % if sparse we can just shift column numbers and set the matrix
         % size to the new values
         [rows,cols,vals] = find(I_curr);
-        varargout{i}=sparse(rows,cols+n_pre,vals,m_curr,n_vars);
+        I_j{i}=sparse(rows,cols+n_pre,vals,m_curr,n_vars);
     else
         % for full matrices we have to append and prepend zero matrices
-        varargout{i}=[zeros(m_curr,n_pre), I_curr, zeros(m_curr,n_post)];
+        I_j{i}=[zeros(m_curr,n_pre), I_curr, zeros(m_curr,n_post)];
     end
     n_pre=n_pre+n_curr;
 end
 
-% create a matrix for the output random field
-if nargin>=2
-    if p==-1
-        for i=1:m
-            p=max(p,max(sum(I_j{i},2)));
-            p=full(p); % necessary if I_j is sparse
-        end
-    end
-    varargout{m+1}=multiindex( n_vars, p, 'use_sparse', use_sparse, 'lex_ordering', lex_ordering );
-end
 

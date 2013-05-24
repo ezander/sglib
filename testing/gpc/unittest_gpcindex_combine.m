@@ -30,6 +30,12 @@ gpcindex_combine( {'H', I1a}, {'H', I1b}, 'product_tensor');
 gpcindex_combine( {'H', I1a}, {'H', I1b}, 'product_mp');
 
 
+
+% gpcspace_create
+% gpcspace_product
+% gpcspace_direct_sum
+
+
 % 1. add two random variables on same V1a, V1b subset V1
 % 2. add two random variables on V1, V2 independent, minimum V3
 % 3. same as 2, "full" V3

@@ -29,21 +29,27 @@ options = varargin2options(varargin);
 [as_string, options] = get_option(options, 'as_string', false);
 check_unsupported_options(options, mfilename);
 
-msg = '';
+msg = ''; %#ok<NASGU>
+
+% Version information follows:
+% If the change is minor add to the last digit, large changes the middle
+% digit, and if the change is large and may be incompatible to previous
+% versions increase the first digit.
+% For each new version add new version number, the commit hash from git and
+% appropriate information what has changed.
 
 % Version 0.9.1
-% Up to here no version information existed, 
+% Up to here no version information existed
 
 % Version 0.9.2
 % Commit: 5a3045acd0a8ffe480c2ae35a12c36cb6527fabc
-% * Added version information 
+% * Added version information
 
 % Version 0.9.3
-% Commit: 
 % * Added option for computing squared gpc norm
 % * Added option to make ordering of multiindices compatible with UQToolkit
 % * Incompatible change to 'multiindex' interface when used with more than
-%   two arguments
+%   two arguments (removed optional 'combine' parameter)
 msg = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
 
 version = [0, 9, 3];
