@@ -1,17 +1,26 @@
 function cov=matern_covariance(nu, x1, x2, l, sigma, smooth)
 % MATERN_COVARIANCE  Compute the Matern covariance function.
-%   C=MATERN_COVARIANCE(X1, X2, NU, L, SIGMA) computes the Matern covariance between
-%   points given in X1 and X2. If X2 is empty it is assumed that X1
-%   only contains distances. Otherwise, X1 and X2 can contain lists of
-%   points, where the first index in X1/X2 corresponds to the number of the
-%   point and the second index to the dimension, i.e. X1(i,:) is a row
-%   vector containing the coordinates of point x_i. If L or SIGMA are not
-%   given they are both assumed to be 1.
+%   C=MATERN_COVARIANCE(NU, X1, X2, L, SIGMA) computes the Matern
+%   covariance with parameter NU between points given in X1 and X2. If X2
+%   is empty it is assumed that X1 only contains distances. Otherwise, X1
+%   and X2 can contain lists of points, where the first index in X1/X2
+%   corresponds to the number of the point and the second index to the
+%   dimension, i.e. X1(i,:) is a row vector containing the coordinates of
+%   point x_i. If L or SIGMA are not given they are both assumed to be 1.
 %
 %   The matern covariance is given by
 %   $$C(d) = \sigma^2 \frac{1}{\Gamma(\nu)2^{\nu-1}}
 %     \Bigg(2\sqrt{\nu}d\Bigg)^\nu K_\nu\Bigg(2\sqrt{\nu}d\Bigg)$$
 %   where $K_\nu$ is Bessel function of the second kind (in matlab BESSELK) and $d$ is the scaled distance. 
+%
+% References:
+%   [1] Minasny, B.; McBratney, AB (2005). "The Matern function as a general
+%       model for soil variograms". Geoderma 128: 192-207.
+%       doi:10.1016/j.geoderma.2005.04.003.
+%   [2] C. E. Rasmussen & C. K. I. Williams, Gaussian Processes for Machine
+%       Learning, the MIT Press, 2006, ISBN 026218253X.
+%       http://www.gaussianprocess.org/gpml/chapters/RW4.pdf‎
+%   [3] http://en.wikipedia.org/wiki/Matern_covariance_function
 %
 % Example (<a href="matlab:run_example matern_covariance">run</a>)
 %   x1=rand(10,2);
@@ -42,15 +51,6 @@ function cov=matern_covariance(nu, x1, x2, l, sigma, smooth)
 %   title('Matern covariance (\sigma=0.5, l=0.5)');
 %   legend('nu=0.15', 'nu=0.3', 'nu=0.5', 'nu=1', 'nu=2', 'nu=30');
 %   hold off
-%
-% References:
-%   [1] Minasny, B.; McBratney, AB (2005). "The Matern function as a general
-%       model for soil variograms". Geoderma 128: 192-207.
-%       doi:10.1016/j.geoderma.2005.04.003.
-%   [2] C. E. Rasmussen & C. K. I. Williams, Gaussian Processes for Machine
-%       Learning, the MIT Press, 2006, ISBN 026218253X.
-%       http://www.gaussianprocess.org/gpml/chapters/RW4.pdf‎
-%   [3] http://en.wikipedia.org/wiki/Matern_covariance_function
 %
 % See also EXPONENTIAL_COVARIANCE, GAUSSIAN_COVARIANCE, COVARIANCE_MATRIX, BESSELK
 

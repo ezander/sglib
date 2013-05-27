@@ -45,13 +45,16 @@ check_unsupported_options(options, mfilename);
 % * Added option to make ordering of multiindices compatible with UQToolkit
 % * Incompatible change to 'multiindex' interface when used with more than
 %   two arguments (removed optional 'combine' parameter)
-version = [0, 9, 3];
 msg = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
 
-% Version 0.9.4 (upcoming)
+% Version 0.9.4
 % * Extended SQRSPACE to cope with negative values and different exponents.
-%version = [0, 9, 4];
+% * Added Matern and rational quadratic covariance function models
+
+version = [0, 9, 4];
 %msg = '';
+
+% Version 0.9.5 (upcoming)
 
 
 % If Version information is requested as string, convert the arrary
