@@ -44,13 +44,13 @@ function cov=matern_covariance(nu, x1, x2, l, sigma, smooth)
 %   hold off
 %
 % References:
-%   1. Minasny, B.; McBratney, AB (2005). "The Matern function as a general
-%      model for soil variograms". Geoderma 128: 192-207.
-%      doi:10.1016/j.geoderma.2005.04.003.
-%   2. C. E. Rasmussen & C. K. I. Williams, Gaussian Processes for Machine
-%      Learning, the MIT Press, 2006, ISBN 026218253X.
-%      http://www.gaussianprocess.org/gpml/chapters/RW4.pdf‎
-%   3. http://en.wikipedia.org/wiki/Matern_covariance_function
+%   [1] Minasny, B.; McBratney, AB (2005). "The Matern function as a general
+%       model for soil variograms". Geoderma 128: 192-207.
+%       doi:10.1016/j.geoderma.2005.04.003.
+%   [2] C. E. Rasmussen & C. K. I. Williams, Gaussian Processes for Machine
+%       Learning, the MIT Press, 2006, ISBN 026218253X.
+%       http://www.gaussianprocess.org/gpml/chapters/RW4.pdf‎
+%   [3] http://en.wikipedia.org/wiki/Matern_covariance_function
 %
 % See also EXPONENTIAL_COVARIANCE, GAUSSIAN_COVARIANCE, COVARIANCE_MATRIX, BESSELK
 
@@ -71,8 +71,20 @@ if nargin<4; l=1; end
 if nargin<5; sigma=1; end
 if nargin<6; smooth=0; end
 
+% Check that the parameter nu is within range
+assert(nu>0)
+if nu>100
+    warning('sglib:matern_covariance', 'Matern covariance doesn'' work well with parameter nu>100');
+end
+
+
 d=scaled_distance(x1, x2, l, smooth);
 
+% The general form of the Matern covariance can be found in the references
+% given above. However, for d==0 special treatment is necessary, since the
+% general expression given 0*infty there.
 C1 = 1 / (gamma(nu) * (2^(nu-1)));
 C2 = sqrt(2 * nu);
-cov = sigma^2 * C1 * (C2 * d).^nu .* besselk(nu, C2 * d);
+nz = (d~=0.0);
+cov = sigma^2 * ones(size(d));
+cov(nz) = sigma^2 * C1 * (C2 * d(nz)).^nu .* besselk(nu, C2 * d(nz));

@@ -20,7 +20,30 @@ function unittest_matern_covariance
 munit_set_function( 'matern_covariance' );
 
 
-% should be same as Gaussian 
-x=linspace(0.2,1,10);
+%% Special cases
+
+% a) nu very large (limit to infty) should be same as Gaussian 
+x=linspace(0,1,10);
 assert_equals( matern_covariance(100, x), exp(-x.^2/2), 'simple', 'abstol', 0.01 );
+
+%) b) nu=1/2 exponential
+x=linspace(0,10);
+assert_equals( matern_covariance(0.5, x, []), exp(-x), '0.5/exp')
+
+%) c) nu=3/2 and nu=5/2 (see 4.17 in Ref. [2] in matern_covariance.m)
+x=linspace(0,10);
+assert_equals( matern_covariance(1.5, x, []), (1+sqrt(3)*x).*exp(-sqrt(3)*x), 'nu1.5')
+assert_equals( matern_covariance(2.5, x, []), (1+sqrt(5)*x+5/3*x.^2).*exp(-sqrt(5)*x), 'nu1.5')
+
+%% Test scaling
+x=linspace(0,10);
+assert_equals( matern_covariance(0.5, x, [], 3), exp(-x/3), 'l')
+assert_equals( matern_covariance(0.5, x, [], 3, 4), 16*exp(-x/3), 'l_sig')
+
+%% test the accuracy around 0
+d = 1e-10;
+x=linspace(0,d,30);
+assert_equals( (matern_covariance(0.5, x, [])-1)/d, expm1(-x)/d, 'around0', 'reltol', 1e-4)
+
+
 
