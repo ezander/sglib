@@ -55,6 +55,7 @@ version = [0, 9, 4];
 %msg = '';
 
 % Version 0.9.5 (upcoming)
+% * Added gpc_partial_eval for partial evaluation of GPCs
 
 
 % If Version information is requested as string, convert the arrary
