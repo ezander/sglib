@@ -20,24 +20,41 @@ function unittest_gpc_partial_eval
 munit_set_function( 'gpc_partial_eval' );
 
 % test with Legendre polynomials 
-I_a = multiindex(3, 4);
-V_a = {'p', I_a};
-n = 11;
-k = 2;
-a_i_alpha = randn(n, size(I_a, 1));
-
-xi_a = gpc_sample(V_a);
-[b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi_a(k));
-
-xi_b = xi_a;
-xi_b(k) = [];
-assert_equals(gpc_evaluate(b_i_alpha, V_b, xi_b), gpc_evaluate(a_i_alpha, V_a, xi_a), 'eval');
+V_a = {'p', multiindex(3, 4)};
+test_eval(V_a, 11, 2, 'evalP', true)
 
 % test with Hermite polynomials 
-I_a = multiindex(5, 3);
-V_a = {'H', I_a};
-n = 7;
-k = 4;
+V_a = {'H', multiindex(5, 3)};
+test_eval(V_a, 7, 4, 'evalH4')
+
+% test boundary cases
+V_a = {'H', multiindex(5, 3)};
+test_eval(V_a, 7, 1, 'evalH1')
+test_eval(V_a, 7, 5, 'evalH5')
+
+% test boundary cases
+V_a = {'H', multiindex(5, 3)};
+test_eval(V_a, 7, 1, 'evalH1')
+test_eval(V_a, 7, 5, 'evalH5')
+
+% test with strange multiindex set
+V_a = {'H', [multiindex(3, 2), multiindex(3, 2)]};
+test_eval(V_a, 11, 2, 'eval_m2')
+
+% test with multiple vars
+V_a = {'L', multiindex(7,3)};
+test_eval(V_a, 11, [1,3,4], 'eval_m3', true)
+test_eval(V_a, 11, [7,6,3], 'eval_m3dec')
+
+% Test with heterogeneous polynomials
+V_a = {'uHplP', multiindex(5,3)};
+test_eval(V_a, 11, 3, 'eval_het1', true)
+test_eval(V_a, 11, [5, 1, 2], 'eval_het2')
+
+
+
+function test_eval(V_a, n, k, label, test_uniq)
+I_a = V_a{2};
 a_i_alpha = randn(n, size(I_a, 1));
 
 xi_a = gpc_sample(V_a);
@@ -45,11 +62,8 @@ xi_a = gpc_sample(V_a);
 
 xi_b = xi_a;
 xi_b(k) = [];
-assert_equals(gpc_evaluate(b_i_alpha, V_b, xi_b), gpc_evaluate(a_i_alpha, V_a, xi_a), 'evalH');
+assert_equals(gpc_evaluate(b_i_alpha, V_b, xi_b), gpc_evaluate(a_i_alpha, V_a, xi_a), label);
 
-
-% V_a = {'hHlPu', ...
-% k = [1,3] xi(k)
-
-
-
+if nargin>=5 && test_uniq
+    assert_equals(size(unique(V_b{2}, 'rows')), size(V_b{2}), [label, '_uniq']);
+end
