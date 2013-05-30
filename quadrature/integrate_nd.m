@@ -66,6 +66,14 @@ end
 % get pos and weights and make sure they are in the right shape
 [xd,wd]=funcall(grid_func, m, p, rule_func );
 
+% if no functions is specified just return points and weights as 
+% cell array
+if isempty(func)
+    int = {xd, wd};
+    return
+end
+
+% integrate with the computed points and weights
 if vectorized
     if ~transposed
         int=funcall(func,xd)*wd;

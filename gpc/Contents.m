@@ -23,9 +23,9 @@
 %
 %     H, h: stochastic Hermite polynomials
 %     P, p: Legendre polynomials (on (-1, 1))
-%     L, l: Laguerre polynomials (not yet implemented)
-%     T, t: Chebyshev polynomials, 1st kind (not yet implemented)
-%     U, u: Chebyshev polynomials, 2nd kind (not yet implemented)
+%     L, l: Laguerre polynomials
+%     T, t: Chebyshev polynomials, 1st kind
+%     U, u: Chebyshev polynomials, 2nd kind
 %
 %   The corresponding random variables are:
 %     N(0,1):   standard normal, i.e. mean 0, variance 1

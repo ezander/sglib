@@ -44,11 +44,10 @@ function [b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi)
 if length(k)==1
     [b_i_alpha, V_b] = gpc_partial_eval_onevar(a_i_alpha, V_a, k, xi);
 else
-    ind = 1:max(k(:));
     for j=1:length(k)
-        k0 = find(ind==k(j));
-        [a_i_alpha, V_a] = gpc_partial_eval_onevar(a_i_alpha, V_a, k0, xi(j));
-        ind(k0) = [];
+        [a_i_alpha, V_a] = gpc_partial_eval_onevar(a_i_alpha, V_a, k(j), xi(j));
+        ind = (k>k(j));
+        k(ind) = k(ind) - 1;
     end
     b_i_alpha = a_i_alpha;
     V_b = V_a;

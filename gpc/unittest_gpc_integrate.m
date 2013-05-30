@@ -1,14 +1,13 @@
-function unittest_integrate_nd
-% UNITTEST_INTEGRATE_ND Test the INTEGRATE_ND function.
+function unittest_gpc_integrate
+% UNITTEST_GPC_INTEGRATE Test the GPC_INTEGRATE function.
 %
-% Example (<a href="matlab:run_example unittest_integrate_nd">run</a>)
-%   unittest_integrate_nd
+% Example (<a href="matlab:run_example unittest_gpc_integrate">run</a>)
+%   unittest_gpc_integrate
 %
-% See also INTEGRATE_ND, TESTSUITE 
+% See also GPC_INTEGRATE, TESTSUITE 
 
 %   Elmar Zander
-%   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
-%   $Id$ 
+%   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -18,11 +17,19 @@ function unittest_integrate_nd
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'integrate_nd' );
+munit_set_function( 'gpc_integrate' );
 
-assert_equals( integrate_nd( @scalar_func_2d_vec, @gauss_hermite_rule, 2, 3 ), [1;0;0;1;0;1;0;3], 'default' );
-assert_equals( integrate_nd( @scalar_func_2d_vec, @gauss_hermite_rule, 2, 3, 'grid', 'smolyak' ), [1;0;0;1;0;1;0;3], 'smolyak' );
-assert_equals( integrate_nd( @scalar_func_2d_vec, @gauss_hermite_rule, 2, 3, 'grid', 'full_tensor' ), [1;0;0;1;0;1;0;3], 'tensor' );
+V = {'H', multiindex(2,0)};
+assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3), [1;0;0;1;0;1;0;3], 'default' );
+assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'smolyak'), [1;0;0;1;0;1;0;3], 'smolyak' );
+assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'full_tensor'), [1;0;0;1;0;1;0;3], 'tensor' );
+
+
+xw = gpc_integrate([], V, 3, 'grid', 'smolyak');
+[x,w] = deal(xw{:});
+gpc_integrate([], V, 3, 'grid', 'full_tensor')
+return
+
 
 assert_equals( integrate_nd( @scalar_func_2d_novec, @gauss_hermite_rule, 2, 3, 'vectorized', false ), [1;0;0;1;0;1;0;3], 'novec' );
 assert_equals( integrate_nd( @scalar_func_2d_novec_trans, @gauss_hermite_rule, 2, 3, 'vectorized', false, 'transposed', true ), [1;0;0;1;0;1;0;3], 'novec_trans' );
@@ -51,3 +58,6 @@ res=scalar_func_2d_novec( x' )';
 
 function res=polyfun( x, y )
 res=[ ones(size(x)); x; y; x.^2; x.*y; y.^2; x.^3; y.^4 ];
+
+
+
