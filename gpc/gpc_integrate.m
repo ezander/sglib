@@ -49,6 +49,7 @@ options = varargin2options(varargin);
 [ndint_options, options] = get_option(options, 'ndint_options', {});
 [grid, options] = get_option(options, 'grid', 'smolyak');
 [vectorized, options] = get_option(options, 'vectorized', true);
+[transposed, options] = get_option(options, 'transposed', false);
 [gpc_coeffs, options] = get_option(options, 'gpc_coeffs', []);
 check_unsupported_options(options, mfilename);
 
@@ -67,7 +68,8 @@ end
 if ~isempty(gpc_coeffs)
     func = {@func_with_gpc_eval, {func, V, gpc_coeffs}, {1, 2, 3}};
 end
-int=integrate_nd(func, rule_func, m, p, 'grid', grid, 'vectorized', vectorized, ndint_options{:});
+int=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
+    'vectorized', vectorized, 'transposed', transposed, ndint_options{:});
 
 function y = func_with_gpc_eval(func, V, a_i_alpha, x)
 a = gpc_evaluate(a_i_alpha, V, x);

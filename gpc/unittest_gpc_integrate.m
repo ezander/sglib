@@ -25,22 +25,25 @@ assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'smolyak'), [1;0
 assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'full_tensor'), [1;0;0;1;0;1;0;3], 'tensor' );
 
 
-xw = gpc_integrate([], V, 3, 'grid', 'smolyak');
+xw = gpc_integrate([], {'H', [0,0,0,0]}, 3, 'grid', 'smolyak');
 [x,w] = deal(xw{:});
-gpc_integrate([], V, 3, 'grid', 'full_tensor')
-return
+[xs, ws] = smolyak_grid(4, 3, @gauss_hermite_rule);
+assert_equals(x, xs, 'gh_nodes');
+assert_equals(w, ws, 'gh_weights');
 
 
-assert_equals( integrate_nd( @scalar_func_2d_novec, @gauss_hermite_rule, 2, 3, 'vectorized', false ), [1;0;0;1;0;1;0;3], 'novec' );
-assert_equals( integrate_nd( @scalar_func_2d_novec_trans, @gauss_hermite_rule, 2, 3, 'vectorized', false, 'transposed', true ), [1;0;0;1;0;1;0;3], 'novec_trans' );
 
-assert_equals( integrate_nd( @scalar_func_2d_vec_trans, @gauss_hermite_rule, 2, 3, 'transposed', true ), [1,0,0,1,0,1,0,3], 'trans' );
+V = {'H', multiindex(2,0)};
+assert_equals( gpc_integrate( @scalar_func_2d_novec, V, 3, 'vectorized', false ), [1;0;0;1;0;1;0;3], 'novec' );
+assert_equals( gpc_integrate( @scalar_func_2d_novec_trans, V, 3, 'vectorized', false, 'transposed', true ), [1;0;0;1;0;1;0;3], 'novec_trans' );
 
-assert_equals( integrate_nd( @(x)(exp(x(1))), @gauss_hermite_rule, 1, 10, 'vectorized', false ), exp(1/2), 'exp1' );
-assert_equals( integrate_nd( @(x)(exp(x(1)+x(2))), @gauss_hermite_rule, 2, 10, 'vectorized', false ), exp(1), 'exp2' );
-assert_equals( integrate_nd( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule, 3, 8, 'vectorized', true ), exp(1/2), 'exp3' );
-assert_equals( integrate_nd( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule, 3, 8, 'vectorized', true, 'grid', 'tensor' ), exp(1/2), 'exp3b' );
-assert_equals( integrate_nd( @(x)(exp( sum(x,2)/sqrt(3))), @gauss_hermite_rule, 3, 8, 'vectorized', true, 'transposed', true ), exp(1/2), 'exp3c' );
+assert_equals( gpc_integrate( @scalar_func_2d_vec_trans, V, 3, 'transposed', true ), [1,0,0,1,0,1,0,3], 'trans' );
+
+assert_equals( gpc_integrate( @(x)(exp(x(1))), {'H', [0]}, 10, 'vectorized', false ), exp(1/2), 'exp1' );
+assert_equals( gpc_integrate( @(x)(exp(x(1)+x(2))), {'H', [0, 0]}, 10, 'vectorized', false ), exp(1), 'exp2' );
+assert_equals( gpc_integrate( @(x)(exp( sum(x,1)/sqrt(3) )), {'H', [0, 0, 0]}, 8, 'vectorized', true ), exp(1/2), 'exp3' );
+assert_equals( gpc_integrate( @(x)(exp( sum(x,1)/sqrt(3) )), {'H', [0, 0, 0]}, 8, 'vectorized', true, 'grid', 'tensor' ), exp(1/2), 'exp3b' );
+assert_equals( gpc_integrate( @(x)(exp( sum(x,2)/sqrt(3))), {'H', [0, 0, 0]}, 8, 'vectorized', true, 'transposed', true ), exp(1/2), 'exp3c' );
 
 
 
@@ -58,6 +61,4 @@ res=scalar_func_2d_novec( x' )';
 
 function res=polyfun( x, y )
 res=[ ones(size(x)); x; y; x.^2; x.*y; y.^2; x.^3; y.^4 ];
-
-
 
