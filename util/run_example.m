@@ -1,4 +1,4 @@
-function cmds=run_example( cmd, show )
+function cmds=run_example( cmd, varargin )
 % RUN_EXAMPLE Runs the example for a command.
 %   If the help output for CMD contains an example section, running
 %   RUN_EXAMPLE( CMD ) will extract this section and run it in the current
@@ -30,20 +30,31 @@ function cmds=run_example( cmd, show )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<2
-    show=false;
-end
+show=false;
+num='';
 
+for i=1:length(varargin)
+    extra = varargin{i};
+    switch extra
+        case 'show'
+            show = true;
+        case {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+            num = [' ', extra];
+        case ''
+            % do noting
+    end
+end
+    
 s=help(cmd);
 
-[x1,x2]=regexp( s, '\n *Example.*?\n' );
+[x1,x2]=regexp( s, ['\n *Example' num '.*?\n'] );
 if isempty(x1);
     warning( 'run_example:not_found', 'No sample section found in: %s', cmd );
     return;
 end
 s=s(x2(1)+1:end);
 
-x1=regexp( s, '\n *(See also|Run|References)' );
+x1=regexp( s, '\n *(See also|Run|References|Example)' );
 if ~isempty(x1)
     s=s(1:x1(1)-1);
 end
@@ -52,6 +63,7 @@ if ~show
 else
     fprintf( 'Sorry, the example code cannot be run directly (probably some function decls inside).\n' );
     fprintf( 'Maybe you should copy and paste it into an m-file of your own.\n\n' );
+    fprintf( '%s\n', s);
 end
 
 if nargout==1

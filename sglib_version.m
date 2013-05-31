@@ -51,11 +51,16 @@ msg = 'Attention: incompatible change in ''multiindex'' when called with more th
 % * Extended SQRSPACE to cope with negative values and different exponents.
 % * Added Matern and rational quadratic covariance function models
 
-version = [0, 9, 4];
+% Version 0.9.5
+% * Added gpc_partial_eval for partial evaluation of GPCs
+% * Added gpc_integrate for integration over GPC spaces
+% * Added gpc_basis_eval for quick evaluation of the GPC basis functions
+% * Added monomial evaluation to gpc_evaluate
+version = [0, 9, 5];
 %msg = '';
 
-% Version 0.9.5 (upcoming)
-% * Added gpc_partial_eval for partial evaluation of GPCs
+% Version 0.9.6 (upcoming)
+
 
 
 % If Version information is requested as string, convert the arrary
