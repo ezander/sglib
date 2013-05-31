@@ -25,7 +25,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %    hist(polysys_sample_rv('l', N, 1), M);
 %    title('exponential')
 %
-% See also GPC_SAMPLE, INV_REG_BETA, RAND, RANDN
+% See also GPC_SAMPLE, RAND, RANDN
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig
@@ -59,6 +59,8 @@ switch upper(sys)
         % Exponential distribution
         U = rand(m, n);
         xi = -log(1 - U);
+    case 'M'
+        error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end

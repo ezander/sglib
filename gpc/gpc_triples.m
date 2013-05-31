@@ -28,7 +28,6 @@ function M=gpc_triples(V_a, V_b, V_c, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options( varargin );
-[algorithm,options]=get_option( options, 'algorithm', 'default' );
 [by_quadrature,options]=get_option( options, 'by_quadrature', false );
 check_unsupported_options( options, mfilename );
 
@@ -86,7 +85,7 @@ end
 T=I+J+K;
 S=T/2;
 switch upper(sys)
-    case {'H', 'P', 'T', 'U'}
+    case {'H', 'P', 'T', 'U', 'M'}
         % symmetrical polynomials
         ind=mod(T,2)==0 & I<=J+K & J<=K+I & K<=I+J;
     case {'L'}
@@ -117,8 +116,12 @@ switch upper(sys)
         A = [1,  cumprod(1:2:(4*p-1)) ./ cumprod(1:(2*p))]';
         M = 1 ./ (2*S+1) .* ...
             A(S-I+1) .* A(S-J+1) .* A(S-K+1) ./ A(S+1);
+    case 'M'
+        % the Monomials are pretty trivial
+        M = double(I+J==K);
     case {'T', 'U', 'L'}
-        % Haven't implemented explicit formulas yet
+        % Haven't implemented explicit formulas yet (should be easy for
+        % Chebyshev)
         M = polysys_triples_by_quadrature(sys, p, I, J, K, 1e-10);
         sys = upper(sys);
     otherwise

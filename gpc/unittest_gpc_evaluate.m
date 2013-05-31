@@ -19,6 +19,31 @@ function unittest_gpc_evaluate
 
 munit_set_function( 'gpc_evaluate' );
 
+% Test with monomials
+% m=1
+p = 5;
+m = 1;
+I_a = multiindex(m, p);
+M=size(I_a,1);
+a_i_alpha = eye(M);
+
+xi = rand(m, 20);
+a=gpc_evaluate(a_i_alpha, {'M', I_a}, xi);
+assert_equals(a, repmat(xi,M,1).^repmat(I_a,1,size(xi,2)), 'mono1')
+
+%m>1
+p = 5;
+m = 2;
+I_a = multiindex(m, p);
+M=size(I_a,1);
+a_i_alpha = eye(M);
+
+xi = rand(m, 20);
+a=gpc_evaluate(a_i_alpha, {'M', I_a}, xi);
+%assert_equals(a, repmat(xi,M,1).^repmat(reshape(I_a,[],1),1,size(xi,2)), 'mono1')
+assert_equals(a, ...
+    repmat(xi(1,:),M,1).^repmat(I_a(:,1),1,size(xi,2)) .* ...
+    repmat(xi(2,:),M,1).^repmat(I_a(:,2),1,size(xi,2)), 'mono2')
 
 % Test orthogonality
 N = 5;

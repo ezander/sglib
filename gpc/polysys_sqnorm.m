@@ -56,6 +56,8 @@ switch sys
         nrm2 = 1 ./ (2*n + 1);
     case 'T'
         nrm2 = 0.5*((n==0) + 1);
+    case {'M', 'm'}
+        error('sglib:polysys_sqrnorm', 'There is no measure associated with the monomials');
     case {'h', 'p', 't', 'u', 'U', 'l', 'L'}
         nrm2 = ones(size(n));
     otherwise

@@ -34,6 +34,10 @@
 %     AS:       shifted Arcsine distribution on [-1, 1]
 %     W(1):     Wigner semicircle distribution, 2*Beta(3/2,3/2)-1
 %
+%   Further, as a convenience, with some functions you can use 'M' for the
+%   monomials. Note, however, that this does not work for all functions
+%   since there is no probability measure associated with the monomials.
+%
 % Todo:
 %     * probably the random variables should rather have variance 1 all,
 %       otherise strange mistakes can occur (or not?)
@@ -49,12 +53,18 @@
 %
 % Files
 % GPC functions (high level)
+%   gpc_eval_basis               - Evaluates the GPC basis functions at given points.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
+%   gpc_integrate                - Short description of gpc_integrate.
 %   gpc_norm                     - Compute the norm of the system of GPC polynomials.
+%   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
 %   gpc_sample                   - Draw samples from a GPC.
 %   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
+%   unittest_gpc_eval_basis      - Test the GPC_EVAL_BASIS function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
+%   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_norm            - Test the GPC_NORM function.
+%   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
 %   unittest_gpc_sample          - Test the GPC_SAMPLE function.
 %   unittest_gpc_triples         - Test the GPC_TRIPLES function.
 % 
@@ -64,8 +74,11 @@
 %   polysys_recur_coeff          - Compute recurrence coefficient of orthogonal polynomials.
 %   polysys_sample_rv            - Sample from a probability distribution.
 %   polysys_sqnorm               - POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+%   unittest_polysys_int_rule    - Test the POLYSYS_INT_RULE function.
 %   unittest_polysys_recur_coeff - Test the POLYSYS_RECUR_COEFF function.
+%   unittest_polysys_sample_rv   - Test the POLYSYS_SAMPLE_RV function.
 %   unittest_polysys_sqnorm      - UNITTEST_POLYSYS_NORM Test the POLYSYS_NORM function.
+%
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.

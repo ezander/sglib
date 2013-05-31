@@ -52,6 +52,8 @@ switch upper(sys)
         r = [zero, 2*one, one];
     case 'L'
         r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
+    case 'M'
+        r = [zero, one, zero];
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
