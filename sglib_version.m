@@ -60,7 +60,7 @@ version = [0, 9, 5];
 %msg = '';
 
 % Version 0.9.6 (upcoming)
-
+% * Cleanup of linalg
 
 
 % If Version information is requested as string, convert the arrary

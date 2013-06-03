@@ -43,6 +43,8 @@ end
 
 is_unittest=strncmp( name, 'unittest_', 9 );
 if is_unittest
+    show_options=false;
+    show_notes=false;
     testfunction=name(10:end);
 end
 
@@ -85,11 +87,13 @@ if writetofile
     end
     fprintf( fid, '%%\n' );
     if show_options
-        fprintf( fid, '%%Options:\n' );
+        fprintf( fid, '%% Options\n' );
         fprintf( fid, '%%\n' );
     end
     if show_notes
-        fprintf( fid, '%%Notes:\n' );
+        fprintf( fid, '%% References\n' );
+        fprintf( fid, '%%\n' );
+        fprintf( fid, '%% Notes\n' );
         fprintf( fid, '%%\n' );
     end
     fprintf( fid, '%% Example (<a href="matlab:run_example %s">run</a>)\n', name );
