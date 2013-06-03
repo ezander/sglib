@@ -1,10 +1,21 @@
 function d=frobenius_inner(A,B)
-% FROBENIUS_INNER Short description of frobenius_inner.
-%   FROBENIUS_INNER Long description of frobenius_inner.
+% FROBENIUS_INNER Computes the Frobenius inner product.
+%   D=FROBENIUS_INNER(A,B) computes the Frobenius inner product between
+%   matrices A and B. The Frobenius inner product is given by 
+%     A:B := tr(A'*B) = sum_ij A_ij B_ij
+%
+% Note:
+%   The computation is of course not carried out by the trace formula,
+%   which is very inefficient, but by a more efficient method. 
 %
 % Example (<a href="matlab:run_example frobenius_inner">run</a>)
+%   A = rand(4,5);
+%   B = rand(4,5);
+%   fprintf('A:B=%g\n', frobenius_inner(A, B));
+%   % computing the Frobenius norm
+%   fprintf('||A||_F=%g=%g\n', sqrt(frobenius_inner(A, A)), norm(A,'fro'));
 %
-% See also
+% See also NORM, TRACE
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
