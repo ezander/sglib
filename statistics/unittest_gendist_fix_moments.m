@@ -20,10 +20,17 @@ function unittest_gendist_fix_moments
 
 munit_set_function( 'gendist_fix_moments' );
 
+% can test directly for the normal and uniform distributions
+[shift,scale]=gendist_fix_moments( 'normal', {2, 5}, 7, 13 );
+assert_equals([shift,scale], [5, sqrt(13/25)], 'normal');
+
+[shift,scale]=gendist_fix_moments( 'uniform', {22, 88}, 50, 3 );
+assert_equals([shift,scale], [-5, 1/11], 'uniform');
+
+% can test via the moments for the lognormal distribution
 dist='lognormal';
 params={0,1};
 [shift,scale]=gendist_fix_moments( dist, params, 3.1, 2.4 );
 [mean,var]=gendist_moments( dist, params, shift, scale );
 assert_equals( mean, 3.1, 'mean' );
 assert_equals( var, 2.4, 'var' );
-
