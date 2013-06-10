@@ -2,7 +2,7 @@ format compact
 format short g
 
 clf
-f = @clenshaw_curtis_legendre_rule;
+f = @clenshaw_curtis_nested;
 x = smolyak_grid(2, 5, f);
 size(x)
 plot(x(1,:), x(2,:), 'k.');

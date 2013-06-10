@@ -13,7 +13,7 @@ function show_smolyak_grids
 
 %% Smolyak grid for Clenshaw-Curtis rules (2D)
 
-rule=@clenshaw_curtis_legendre_rule;
+rule=@clenshaw_curtis_nested;
 dim=2;
 
 % Smolyak grid with 4 stages
@@ -35,7 +35,7 @@ plotnd(4, dim, xd);
 return
 %% Smolyak grid for Clenshaw-Curtis rules (3D)
 
-rule=@clenshaw_curtis_legendre_rule;
+rule=@clenshaw_curtis_nested;
 dim=3;
 
 % Smolyak grid with 4 stages
@@ -62,7 +62,7 @@ rules={@gauss_hermite_rule, 'hermite';
       @gauss_legendre_rule, 'legendre';
       ; 'clenshaw-curtis' }
 
-for rule={@gauss_hermite_rule, @gauss_legendre_rule, @clenshaw_curtis_legendre_rule }
+for rule={@gauss_hermite_rule, @gauss_legendre_rule, @clenshaw_curtis_nested}
       for i=1:4
         subplot(2,2,i);
         plot(xd(1,:),xd(2,:),'*k')

@@ -7,7 +7,7 @@ for p=1:4
     subplot(3,4,p+4)
     test(13, p, @gauss_legendre_rule, 'full_tensor')
     subplot(3,4,p+8)
-    test(13, p, @clenshaw_curtis_legendre_rule, 'smolyak')
+    test(13, p, @clenshaw_curtis_nested, 'smolyak')
 end
 
 function test(pt, p, rule_func, grid)

@@ -22,7 +22,7 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %      option for compatibility with old A. K. versions.)
 %
 % Example (<a href="matlab:run_example smolyak_grid">run</a>)
-%   for rule={@gauss_hermite_rule, @gauss_legendre_rule, @clenshaw_curtis_legendre_rule }
+%   for rule={@gauss_hermite_rule, @gauss_legendre_rule, @clenshaw_curtis_nested}
 %     for i=1:4
 %       [xd,wd]=smolyak_grid( 2, 3+i, rule );
 %       subplot(2,2,i);

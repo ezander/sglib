@@ -1,17 +1,17 @@
 function test_fejer
 
+clc
+format compact
+format short g
 
-cc_fejer(5, 1)
-cc_fejer(5, 2)
-cc_fejer(5, 3)
-sum(cc_fejer(5, 1))
-sum(cc_fejer(5, 2))
-sum(cc_fejer(5, 3))
+n=1
+cc_fejer(n, 1)
+cc_fejer(n, 2)
+cc_fejer(n, 3)
+sum(cc_fejer(n, 1))
+sum(cc_fejer(n, 2))
+sum(cc_fejer(n, 3))
 
-[w1,w2,wc]=fejer(16); 
-wc(end+1)=wc(1);
-sum(wc)
-length(wc)
 
 
 function w = cc_fejer(n, mode)

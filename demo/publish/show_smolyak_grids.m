@@ -20,7 +20,7 @@ function show_smolyak_grids
 
 %% Smolyak grid for Clenshaw-Curtis rules (2D)
 
-rule=@clenshaw_curtis_legendre_rule;
+rule=@clenshaw_curtis_nested;
 dim=2;
 
 % Smolyak grid with 4 stages

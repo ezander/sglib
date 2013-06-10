@@ -59,10 +59,10 @@ appdata.settings=sglib_settings( 'load' );
 
 % show greeting if user wants that
 if appdata.settings.show_greeting
-    [versionstr, msg] = sglib_version('as_string', true);
+    [versionstr, msgs] = sglib_version('as_string', true);
     fprintf( '\nSGLIB v%s\n', versionstr );
-    if ~isempty(msg)
-        fprintf( '%s\n', msg );
+    for msg = msgs
+        fprintf( '%s\n', msg{1} );
     end
     fprintf( '\nChecking toolboxes:\n' );
 end

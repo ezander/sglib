@@ -1,8 +1,16 @@
-function [version, msg]=sglib_version(varargin)
+function [version, msgs]=sglib_version(varargin)
 % SGLIB_VERSION Returns version information for sglib.
-%   SGLIB_VERSION Returns version information for sglib either as array or
-%   in string format (if the option 'as_string' is specified). 
+%   VERSION=SGLIB_VERSION Returns version information for sglib either as
+%   array or in string format (if the option 'as_string' is specified). 
 %
+%   VERSION=SGLIB_VERSION('as_string', true) Returns version information
+%   for sglib  in string format. 
+%
+%   [VERSION, MSGS]=SGLIB_VERSION Returns an addtional cell array
+%   containing string messages with important information about possibly
+%   incompatible changes. 
+%
+% Note:
 %   The code of SGLIB_VERSION will also contain a log of the major
 %   improvements of sglib (some kind of 'whats_new' file.
 %
@@ -12,7 +20,7 @@ function [version, msg]=sglib_version(varargin)
 %   fprintf('Version as string: ');
 %   disp(sglib_version('as_string', true))
 %
-% See also
+% See also VERSION, SGLIB_STARTUP
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -28,6 +36,8 @@ function [version, msg]=sglib_version(varargin)
 options = varargin2options(varargin);
 [as_string, options] = get_option(options, 'as_string', false);
 check_unsupported_options(options, mfilename);
+
+msgs = {};
 
 % Version information follows:
 % If the change is minor add to the last digit, large changes the middle
@@ -45,7 +55,7 @@ check_unsupported_options(options, mfilename);
 % * Added option to make ordering of multiindices compatible with UQToolkit
 % * Incompatible change to 'multiindex' interface when used with more than
 %   two arguments (removed optional 'combine' parameter)
-msg = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
+msgs{end+1} = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
 
 % Version 0.9.4
 % * Extended SQRSPACE to cope with negative values and different exponents.
@@ -56,11 +66,15 @@ msg = 'Attention: incompatible change in ''multiindex'' when called with more th
 % * Added gpc_integrate for integration over GPC spaces
 % * Added gpc_basis_eval for quick evaluation of the GPC basis functions
 % * Added monomial evaluation to gpc_evaluate
-version = [0, 9, 5];
-%msg = '';
 
-% Version 0.9.6 (upcoming)
-% * Cleanup of linalg
+% Version 0.9.6
+% * Cleanup of linalg (esp. subspace_distance and subspace_angles)
+% * Added composite and nested trapezoidal rule.
+% * Improved Clenshaw-Curtis rule 
+msgs{end+1} = 'Attention: clenshaw_curtis_legendre_rule removed. Use clenshaw_curtis_nested instead.';
+version = [0, 9, 6];
+
+% Version 0.9.7 (upcoming)
 
 
 % If Version information is requested as string, convert the arrary

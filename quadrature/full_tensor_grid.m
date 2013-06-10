@@ -18,7 +18,7 @@ function [xd,wd] = full_tensor_grid( d, stages, oned_rule_func )
 %   subplot(2,2,2); plot(xd(1,:),xd(2,:),'*k')
 %   [xd,wd]=full_tensor_grid( [], 5, {@gauss_hermite_rule; @gauss_legendre_rule}  );
 %   subplot(2,2,3); plot(xd(1,:),xd(2,:),'*k')
-%   [xd,wd]=full_tensor_grid( [], [6 6 3], {@gauss_hermite_rule; @gauss_legendre_rule; @clenshaw_curtis_legendre_rule}  );
+%   [xd,wd]=full_tensor_grid( [], [6 6 3], {@gauss_hermite_rule; @gauss_legendre_rule; @clenshaw_curtis_nested}  );
 %   subplot(2,2,4); plot3(xd(1,:),xd(2,:),xd(3,:),'*k')
 %
 % See also SMOLYAK_GRID, TENSOR_MESH
