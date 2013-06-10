@@ -4,11 +4,13 @@ function xi = gpc_sample(V, n)
 %   is the number of random variables. V contains a specification of the
 %   random variables and a multiindex set (see Example). 
 %
-% Example (<a href="matlab:run_example gpc_sample">run</a>)
+% Example 1 (<a href="matlab:run_example gpc_sample 1">run</a>)
 %    I = multiindex(3,2);
 %    V = {'H', I};
 %    xi = gpc_sample(V, 5)
-%    V = {'PHp', I};
+%
+% Example 2 (<a href="matlab:run_example gpc_sample 2">run</a>)
+%    V = {'PLp', [0, 0, 0]};
 %    xi = gpc_sample(V, 3000);
 %    plot(xi(1,:), xi(2,:), '.')
 %    xlabel('Uniform'); ylabel('Gauss');
