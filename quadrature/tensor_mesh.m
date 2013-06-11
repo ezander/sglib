@@ -19,7 +19,6 @@ function [xd,wd] = tensor_mesh(x1,w1)
 
 %   Andreas Keese, Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 
 % get dimension
 d = length(x1);

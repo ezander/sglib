@@ -15,14 +15,11 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 %   u=apply_boundary_conditions_solution( ui, g, P_I, P_B );
 %   fprintf( '%5s  %5s | %5s %5s\n', 'u', 'g', 'Ku', 'f', '=====', '=====', '=====', '=====' )
 %   fprintf( '%5.2f  %5.2f | %5.2f  %5.2f\n', [ u, g, K*u, f]'  )
-
 %
-% See also BOUNDARY_PROJECTORS, APPLY_BOUNDARY_CONDITIONS_RHS,
-%   APPLY_BOUNDARY_CONDITIONS_SOLUTION
+% See also BOUNDARY_PROJECTORS, APPLY_BOUNDARY_CONDITIONS_RHS, APPLY_BOUNDARY_CONDITIONS_SOLUTION
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

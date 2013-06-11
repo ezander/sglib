@@ -12,7 +12,6 @@ function cov=rational_quadratic_covariance(alpha, x1, x2, l, sigma, smooth)
 %     $$C(d) = \Bigg(1+\frac{d^2}{2\alpha l^2}\Bigg)^{-\alpha}$$
 %
 % References:
-% References:
 %   [1] C. E. Rasmussen & C. K. I. Williams, Gaussian Processes for Machine
 %       Learning, the MIT Press, 2006, ISBN 026218253X.
 %       http://www.gaussianprocess.org/gpml/chapters/RW4.pdf‎
@@ -53,7 +52,6 @@ function cov=rational_quadratic_covariance(alpha, x1, x2, l, sigma, smooth)
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
-%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

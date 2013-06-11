@@ -8,7 +8,6 @@ function err=pce_error_est( x_i_alpha, I_x, y_i_alpha, I_y )
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing, TU Braunschweig
-%   $Id$ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

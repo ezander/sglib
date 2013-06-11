@@ -8,7 +8,6 @@ function unittest_pce_multiply
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: test_pce_multiply.m 175 2009-07-22 12:00:10Z ezander $ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

@@ -8,7 +8,6 @@ function unittest_pce_divide
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: test_pce_divide.m 170 2009-07-20 12:49:50Z ezander $ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

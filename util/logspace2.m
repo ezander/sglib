@@ -16,7 +16,6 @@ function y = logspace2( d1, d2, n )
 %   See also LINSPACE, LOGSPACE :.
 
 %    Copyright 2002 Elmar Zander, Institute of Scientific Computing, Braunschweig
-%    $Id: logspace2.m 45 2008-11-26 15:40:16Z ezander $
 
 if nargin==2
     n=100;

@@ -9,7 +9,6 @@ function [pce_coeff,pce_herm_ind]=pce_expand_2d( f, p )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: pce_expand_2d.m 316 2009-07-16 12:05:58Z ezander $ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

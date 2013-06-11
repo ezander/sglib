@@ -4,7 +4,6 @@ function [g_i_alpha, I_g, C]=expand_gaussian_field_pce( cov_func, pos, G_N, m_ga
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

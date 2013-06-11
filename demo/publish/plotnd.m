@@ -6,9 +6,8 @@ function plotnd( n, dim, xd )
 %
 % See also
 
-%   <author>
-%   Copyright 2009, <institution>
-%   $Id$ 
+%   Author: Elmar Zander
+%   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

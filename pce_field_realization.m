@@ -17,7 +17,6 @@ function [u_i,xi]=pce_field_realization( u_i_alpha, I_alpha, xi )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

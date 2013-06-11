@@ -38,7 +38,6 @@ function [z_k_gamma,I_z,M]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, var
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id: pce_multiply.m 170 2009-07-20 12:49:50Z ezander $ 
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

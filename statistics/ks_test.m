@@ -15,6 +15,11 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 %   of them in fact being equal. CRIT is the critical value associated with
 %   the value of ALPHA and the sample size.
 %
+% References:
+%    [1] Miller, L.H., "Table of Percentage Points of Kolmogorov Statistics",
+%        Journal of the American Statistical Association, (1951), 111-121.
+%    [2] Knuth, Donald E. "The Art of Computer Programming - Vol. 2"
+%
 % Example (<a href="matlab:run_example ks_test">run</a>)
 %    % test the quality of matlabs gaussian random numbers
 %    n=10000;
@@ -25,15 +30,9 @@ function [reject,ksval,critval]=ks_test( cdf, x_samp, alpha )
 %    % generates good normal random numbers, otherwise higher
 %
 % See also
-%
-% Reference
-%    Miller, L.H., "Table of Percentage Points of Kolmogorov Statistics",
-%      Journal of the American Statistical Association, (1951), 111-121.
-%    Knuth, Donald E. "The Art of Computer Programming - Vol. 2"
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

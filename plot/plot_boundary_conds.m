@@ -6,9 +6,8 @@ function plot_boundary_conds( pos, els, varargin )
 %
 % See also
 
-%   <author>
-%   Copyright 2011, <institution>
-%   $Id$ 
+%   Elmar Zander
+%   Copyright 2011, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

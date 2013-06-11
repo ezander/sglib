@@ -38,7 +38,6 @@ function y = sqrspace( d1, d2, n, p )
 % See also LINSPACE, LOGSPACE2
 
 %    Copyright 2002 Elmar Zander, Institute of Scientific Computing, Braunschweig
-%    $Id: logspace2.m 45 2008-11-26 15:40:16Z ezander $
 
 if nargin<3 || isempty(n)
     n=100;

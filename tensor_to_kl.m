@@ -16,7 +16,6 @@ function [r_i_k, r_k_alpha]=tensor_to_kl( R, normalize )
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

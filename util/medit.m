@@ -15,7 +15,6 @@ function medit( filename, prepend )
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
-%   $Id$
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -108,7 +107,6 @@ if writetofile
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );
     fprintf( fid, '%%   Copyright %s, %s\n', year, institution );
-    %fprintf( fid, '%%   $Id$ \n' );
     fprintf( fid, '%%\n' );
     fprintf( fid, '%%   This program is free software: you can redistribute it and/or modify it\n' );
     fprintf( fid, '%%   under the terms of the GNU General Public License as published by the\n' );

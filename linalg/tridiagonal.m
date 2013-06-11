@@ -6,7 +6,6 @@ function M = tridiagonal( N, d, u, l )
 %    l for the values below the diagonal.
 
 %    Copyright 2002 Elmar Zander, Institute for Scientific Computing, Braunschweig
-%    $Id: tridiagonal.m 45 2008-11-26 15:40:16Z ezander $
 
 M = zeros( N, N );
 M(1:N+1:end)=d;
