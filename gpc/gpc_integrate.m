@@ -73,4 +73,4 @@ int=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
 
 function y = func_with_gpc_eval(func, V, a_i_alpha, x)
 a = gpc_evaluate(a_i_alpha, V, x);
-y = func(x, a);
+y = funcall(func, x, a);

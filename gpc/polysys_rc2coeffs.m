@@ -9,11 +9,16 @@ function p=polysys_rc2coeffs(r)
 %   GPC_EVALUATE instead.
 %
 % Example (<a href="matlab:run_example polysys_rc2coeffs">run</a>)
-%       r = polysys_recur_coeff('H', 5);
-%       p = polysys_rc2coeffs(r);
-%       for i = 1:size(p,1)
-%          fprintf('p_%d(x) = %s\n', i-1, format_poly(p(i,:)));
-%       end
+%   for sys = 'HPLTUM'
+%     underline(['Polynomials: ' sys]);
+%     r = polysys_recur_coeff(sys, 5);
+%     p = polysys_rc2coeffs(r);
+%     for i = 1:size(p,1)
+%       fprintf('%s_%d(x) = %s\n', sys, i-1, format_poly(p(i,:)));
+%     end
+%     fprintf('\n');
+%   end
+%
 % See also GPC_EVALUATE, POLYSYS_RECUR_COEFF
 
 %   Elmar Zander
