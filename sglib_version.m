@@ -75,6 +75,7 @@ msgs{end+1} = 'Attention: clenshaw_curtis_legendre_rule removed. Use clenshaw_cu
 version = [0, 9, 6];
 
 % Version 0.9.7 (upcoming)
+% * Added gpc_moments
 
 
 % If Version information is requested as string, convert the arrary

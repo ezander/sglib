@@ -10,7 +10,7 @@ function [mean,var,skew,kurt]=gpc_moments( r_i_alpha, V_r, varargin )
 %
 % Example (<a href="matlab:run_example gpc_moments">run</a>)
 %
-% See also GPC
+% See also GPC, GPC_INTEGRATE
 
 %   Elmar Zander
 %   Copyright 2013, Institute of Scientific Computing, TU Braunschweig.
