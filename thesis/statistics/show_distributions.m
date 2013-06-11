@@ -2,7 +2,7 @@ function show_distributions
 
 hold off;
 
-x=point_range([0,1], false, 0.02);
+x=point_range([0,1], 'ext', 0.02);
 f1=beta_pdf(x,2,3);
 f2=beta_pdf(x,0.5,0.5);
 f3=beta_pdf(x,0.5,2);
@@ -10,7 +10,7 @@ plot(x,f1,x,f2,x,f3);
 ylim( [0,4] );
 
 clf; hold all;
-x=point_range([0,1], false, 0.02);
+x=point_range([0,1], 'ext', 0.02);
 an=pi*rand(7,2)*diag([2,1]);
 co=[ cos(an(:,1)).*sin(an(:,2)),...
      sin(an(:,1)).*sin(an(:,2)),...

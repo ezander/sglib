@@ -1,19 +1,47 @@
 function str=disp_func( func )
+% DISP_FUNC Convert function handle to string description.
+%   STR=DISP_FUNC( FUNC ) returns the string representation of FUNC.
+%   Partially supplied arguments are put at the appropriate places. 
+%
+% Options
+%   TODO: there should be options for the naming of positional arguments,
+%   number of arguments, string escaping, etc.
+%
+% Example (<a href="matlab:run_example disp_func">run</a>)
+%    disp_func( {{@testtest, {'a', 'd', 'r'}, {3,2,5}}, {'a', 'd', 'r'}} )
+%    disp_func( {@foobar, {'a', 'b'}, {1,3}})
+%
+% See also FUNCALL, DISP
+
+%   Elmar Zander
+%   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if nargin==0
-    disp_func( {{@testtest, {'a', 'd', 'r'}, {3,2,5}}, {'a', 'd', 'r'}} )
-    return;
-end
+error(nargchk(1, inf, nargin));
 
-if isempty( func ) 
+if isempty(func)
     str='<none>';
 else
     [handle,args]=collect_args( func );
-    str=[ handle2str( handle ), '(', args2str(args), ')'];
+    str=sprintf('%s(%s)', handle2str( handle ), args2str(args));
 end
 
+if nargout==0
+    disp(str);
+    clear('str');
+end
+    
+
 function s=handle2str( handle )
+% HANDLE2STR Convert a function handle into a string.
 if isa( handle, 'function_handle' )
     s=['@' func2str(handle) ];
 elseif ischar(handle)
@@ -21,59 +49,75 @@ elseif ischar(handle)
 else
     error( 'unknown' );
 end
-    
-function [handle,args]=collect_args( func )
-[handle,func]=identity_replace( func );
-phs={}; for i=1:10; phs{end+1}=makeph(i); end
-args=funcall( func, phs{:} );
 
-function [handle,func]=identity_replace( func )
+function [handle,args]=collect_args( func )
+% COLLECT_ARG Extract function handle and collect specified and positional arguments
+[handle,arg_func]=identity_replace( func );
+phs={}; for i=1:10; phs{end+1}=make_pos_arg(i); end
+args=funcall( arg_func, phs{:} );
+
+function [handle,arg_func]=identity_replace( func )
+% IDENTITY_REPLACE Replaces inner function handle with the 'identity' so
+% that evaluating the function gives the function's arguments. The inner
+% function handle is returned separately.
 if iscell(func)
     inner=func{1};
     [handle, inner]=identity_replace(inner);
-    func={inner, func{2:end}};
+    arg_func={inner, func{2:end}};
 else
     handle=func;
-    func=@identity;
+    arg_func=@identity;
 end
 
 function out=identity( varargin )
+% IDENTITY Return arguments unaltered
 out=varargin;
 
 
 function s=args2str( args )
+% ARGS2STR Convert arguments to string representation
 last={};
 
-while numel(args)>0 && ~isph(args{end})
+% remove trailing specified arguments end insert into 'last' cell array
+while numel(args)>0 && ~is_pos_arg(args{end})
     last=[args(end) last];
     args(end)=[];
 end
-while numel(args)>0 && isph(args{end})
+% remove trailing positional arguments
+while numel(args)>0 && is_pos_arg(args{end})
     args(end)=[];
 end
 
 s='';
 for i=1:length(args)
-    if isph(args{i})
-        s=[s strvarexpand( ', arg$args{i}{1}$' )];
+    if is_pos_arg(args{i})
+        s=[s strvarexpand( ', <arg$args{i}{1}$>' )]; %#ok<AGROW>
     else
-        s=[s strvarexpand( ', $args{i}$' )];
+        s=[s strvarexpand( ', $args{i}$' )]; %#ok<AGROW>
     end
 end
-if length( last )
-        s=[s ', ...'];
+
+% If there are trailing arguments, put an ellipses in between
+if ~isempty( last )
+    s=[s ', ...'];
+    for i=1:length(last)
+        s=[s strvarexpand( ', $last{i}$' )]; %#ok<AGROW>
+    end
 end
-for i=1:length(last)
-    s=[s strvarexpand( ', $last{i}$' )];
-end
+
+% Cut the ', ' from the beginning of the string
 if length(s)>=2
     s=s(3:end);
 end
 
 
+function bool=is_pos_arg( arg )
+% IS_POS_ARG Checks whether args is a positional argument
+bool=iscell(arg) && numel(arg)>=2 && isequal( arg{2}, @pos_arg_tag );
 
-function phtag
-function arg=makeph( n )
-arg={n,@phtag};
-function bool=isph( arg )
-bool=iscell(arg) && numel(arg)>=2 && isequal( arg{2}, @phtag );
+function arg=make_pos_arg( n )
+% MAKE_POS_ARG Create positional argument number N
+arg={n,@pos_arg_tag};
+
+function pos_arg_tag
+% POS_ARG_TAG This functions is a just a unique tags for positional arguments

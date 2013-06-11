@@ -1,17 +1,17 @@
 function y = sqrspace( d1, d2, n, p )
-% SQRSPACE2 Square-spaced vector
-%   y = SQRSPACE(d1, d2) generates a row vector of 100 points between d1 
-%   and d2, where the spacing increases with the square of x. The spacing
+% SQRSPACE Square-spaced vector
+%   Y = SQRSPACE(D1, D2) generates a row vector of 100 points between D1
+%   and D2, where the spacing increases with the square of X. The spacing
 %   of SQRSPACE is, however, not as extreme as that of LOGSPACE or
 %   LOGSPACE2, and has the further advantage that 0 can be one endpoint and
 %   can even be crossed.
 %
-%   SQRSPACE(d1, d2, N) generates N points instead of the default 100
-%   points. 
+%   SQRSPACE(D1, D2, N) generates N points instead of the default 100
+%   points.
 %
-%   SQRSPACE(d1, d2, N, P) generates N points where the scaling is with
+%   SQRSPACE(D1, D2, N, P) generates N points where the scaling is with
 %   the P-th power instead of the default second power. Setting [] for N
-%   uses the default N=100;
+%   uses the default N=100.
 %
 % Example (<a href="matlab:run_example sqrspace">run</a>)
 %   clf
@@ -35,9 +35,19 @@ function y = sqrspace( d1, d2, n, p )
 %   ylim([0.5, 4.5]);
 %   hold off
 %
-% See also LINSPACE, LOGSPACE2
+% See also LINSPACE, LOGSPACE2, POINT_RANGE
 
-%    Copyright 2002 Elmar Zander, Institute of Scientific Computing, Braunschweig
+%   Elmar Zander
+%   Copyright 2002, 2013, Inst. of Scientific Computing, TU Braunschweig
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 if nargin<3 || isempty(n)
     n=100;
