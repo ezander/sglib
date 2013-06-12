@@ -1,5 +1,5 @@
 function unittest_polysys_sqnorm
-% UNITTEST_POLYSYS_NORM Test the POLYSYS_NORM function.
+% UNITTEST_POLYSYS_SQNORM Test the POLYSYS_SQNORM function.
 %
 % Example (<a href="matlab:run_example unittest_polysys_norm">run</a>)
 %   unittest_polysys_norm

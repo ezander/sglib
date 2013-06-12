@@ -39,23 +39,18 @@
 %   since there is no probability measure associated with the monomials.
 %
 % Todo:
-%     * probably the random variables should rather have variance 1 all,
-%       otherise strange mistakes can occur (or not?)
-%     * implement Laguerre and Chebyshev (nearly done)
 %     * gpc_add and gpc_multiply needs to be implemented
 %     * need functions to manipulate the {polysys, multiindex} pairs (call
-%       them polyspace?)
+%       them gpcspace?)
 %     * better performance for mixed case by caching over polynomials
 %       systems
-%     * implement gpc_moments (at least till second moment)
-%     * implement integration rules for the different types of polys
-%     * extract polynomial/random var method and test them separately
 %
 % Files
 % GPC functions (high level)
 %   gpc_eval_basis               - Evaluates the GPC basis functions at given points.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
 %   gpc_integrate                - Short description of gpc_integrate.
+%   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
 %   gpc_norm                     - Compute the norm of the system of GPC polynomials.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
 %   gpc_sample                   - Draw samples from a GPC.
@@ -63,6 +58,7 @@
 %   unittest_gpc_eval_basis      - Test the GPC_EVAL_BASIS function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
+%   unittest_gpc_moments         - Test the GPC_MOMENTS function.
 %   unittest_gpc_norm            - Test the GPC_NORM function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
 %   unittest_gpc_sample          - Test the GPC_SAMPLE function.
@@ -77,7 +73,7 @@
 %   unittest_polysys_int_rule    - Test the POLYSYS_INT_RULE function.
 %   unittest_polysys_recur_coeff - Test the POLYSYS_RECUR_COEFF function.
 %   unittest_polysys_sample_rv   - Test the POLYSYS_SAMPLE_RV function.
-%   unittest_polysys_sqnorm      - UNITTEST_POLYSYS_NORM Test the POLYSYS_NORM function.
+%   unittest_polysys_sqnorm      - Test the POLYSYS_SQNORM function.
 %
 
 %   Elmar Zander

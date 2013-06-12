@@ -60,7 +60,7 @@ assert_equals( [mu,var,skew,kurt], [4,0.09,0,-1], 'mvsk_U' );
 %% A Test for skewness sign
 
 I_r=[0; 1; 2];
-[mu,var,skew1,kurt]=gpc_moments( [4,  6, -7], {'H', I_r} );
+[mu,var,skew1,kurt]=gpc_moments( [4,  6, -7], {'H', I_r} ); %#ok<*NASGU,*ASGLU>
 [mu,var,skew2,kurt]=gpc_moments( [4,  6, 7], {'H', I_r} );
 assert_equals( skew1, -skew2, 'skew' );
 

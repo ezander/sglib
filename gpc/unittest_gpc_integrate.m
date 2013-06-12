@@ -39,7 +39,7 @@ assert_equals( gpc_integrate( @scalar_func_2d_novec_trans, V, 3, 'vectorized', f
 
 assert_equals( gpc_integrate( @scalar_func_2d_vec_trans, V, 3, 'transposed', true ), [1,0,0,1,0,1,0,3], 'trans' );
 
-assert_equals( gpc_integrate( @(x)(exp(x(1))), {'H', [0]}, 10, 'vectorized', false ), exp(1/2), 'exp1' );
+assert_equals( gpc_integrate( @(x)(exp(x(1))), {'H', 0}, 10, 'vectorized', false ), exp(1/2), 'exp1' );
 assert_equals( gpc_integrate( @(x)(exp(x(1)+x(2))), {'H', [0, 0]}, 10, 'vectorized', false ), exp(1), 'exp2' );
 assert_equals( gpc_integrate( @(x)(exp( sum(x,1)/sqrt(3) )), {'H', [0, 0, 0]}, 8, 'vectorized', true ), exp(1/2), 'exp3' );
 assert_equals( gpc_integrate( @(x)(exp( sum(x,1)/sqrt(3) )), {'H', [0, 0, 0]}, 8, 'vectorized', true, 'grid', 'tensor' ), exp(1/2), 'exp3b' );
