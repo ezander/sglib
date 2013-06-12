@@ -76,7 +76,7 @@ else
     x_mean = x_mean + delta / n;
     if compute_var
         if compute_m2
-            check_boolean(nargin>=5, 'Cannot compute update to X_M2 if it wasn''t specified in the input', mfilename);
+            assert(nargin>=5);
             x_m2 = x_m2 + delta .* (x_n - x_mean);
             x_var = x_m2 / (n-1);
         else        
