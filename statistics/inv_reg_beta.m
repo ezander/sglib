@@ -53,7 +53,7 @@ else
     notnan=~isnan(xi);
     xi=xi(notnan); yi=yi(notnan);
     % interpolate now
-    x=interp1( yi, xi, y, 'cubic', NaN );
+    x=interp1( yi, xi, y, 'pchip', NaN );
     x(x>1)=1;
     x(x<0)=0;
 end

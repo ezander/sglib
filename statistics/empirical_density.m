@@ -87,7 +87,9 @@ else
     yl2 = interp1(xl,yl,xl2,mesh_interp);
 
     % get polynomial approximation on the mesh,
+    state=warning('off', 'MATLAB:interp1:ppGriddedInterpolant');
     pp = interp1(xl2,yl2,poly_interp,'pp');
+    warning(state);
 
     % and determine the derivative (pdf=cdf').
     pp.coefs=vector_polyder( pp.coefs );

@@ -76,7 +76,7 @@ I = [I1(ind1(ind),:), I2(ind2(ind),:)];
 
 
 return
-function foo
+function foobar
 I1a = multiindex(3,2);
 I1b = multiindex(3,4);
 I2 = multiindex(2,4);

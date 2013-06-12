@@ -70,6 +70,18 @@ end
 if length(names)~=length(values)
     error( 'util:varargin2options:missing_value', 'Wrong option specification: not all option names have a corresponding value' );
 end
-[unames,ind]=unique(names);
-unames;%#ok (we only need ind)
+ind=unique_index(names);
 options=cell2struct( values(ind), names(ind), 2 );
+
+
+function ind=unique_index(names)
+% check which version we're using (i.e. whether unique reports the first
+% element first when an element appears multiple times, or not).
+[c,ind]=unique([1,1]); %#ok<*ASGLU>
+if ind==1
+    % new version, force legacy behaviour
+    [c,ind]=unique(names, 'legacy');
+else
+    % old version
+    [c,ind]=unique(names);
+end
