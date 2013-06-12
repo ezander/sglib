@@ -10,7 +10,7 @@ f_mask=~k_mask;
 [ind2fblock, I_fu]=find_blocks( I_u, f_mask );
 
 t=tic;
-K_k=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k(:,k_mask), I_ku(:,k_mask), stiffness_func, form, varargin );
+K_k=kl_pce_compute_operator( k_i_k, k_k_alpha, I_k(:,k_mask), I_ku(:,k_mask), stiffness_func, form, varargin{:} );
 if verbosity>1
     fprintf( 'kappa_op: '); toc(t);
 end

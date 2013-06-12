@@ -57,7 +57,7 @@ check_unsupported_options(options, mfilename);
 
 m = size(I, 2);
 m1 = size(polys,2);
-assert(m1==1 || m1==m);
+check_boolean(m1==1 || m1==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
 rule_func = cell(m1, 1);
 for i = 1:m1

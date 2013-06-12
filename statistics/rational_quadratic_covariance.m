@@ -67,7 +67,7 @@ if nargin<5; sigma=1; end
 if nargin<6; smooth=0; end
 
 % Check that the parameter alpha is within range
-assert(alpha>0)
+check_boolean(alpha>0, 'input argument "alpha" must be positive', mfilename);
 
 d=scaled_distance(x1, x2, l, smooth);
 cov = sigma^2 * (1 + d.^2 / (2 * alpha)) .^ (-alpha);

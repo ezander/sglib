@@ -31,7 +31,7 @@ function xi = gpc_sample(V, n)
 sys = V{1};
 I = V{2};
 m = size(I,2);
-assert(length(sys)==1 || length(sys)==m)
+check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
 if nargin<2
     n = 1;

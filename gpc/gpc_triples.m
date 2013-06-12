@@ -36,10 +36,10 @@ I_a = V_a{2};
 I_b = V_b{2};
 I_c = V_c{2};
 
-assert(isequal(sys, V_b{1}))
-assert(isequal(sys, V_c{1}))
-assert(length(sys)==1 || length(sys)==size(I_a,2))
-assert(size(I_a,2)==size(I_b,2) && size(I_b,2)==size(I_c,2))
+check_boolean(isequal(sys, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
+check_boolean(isequal(sys, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
+check_boolean(size(I_a,2)==size(I_b,2), 'size of germ of A doesn''t match that of B', mfilename);
+check_boolean(size(I_a,2)==size(I_c,2), 'size of germ of A doesn''t match that of C', mfilename);
 
 triple_opts = {by_quadrature};
 M=multiplication_tensor(sys, I_a, I_b, I_c, triple_opts);

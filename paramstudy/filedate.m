@@ -26,5 +26,9 @@ if ~exist(file,'file')
     num=-inf;
 else
     x=dir( file );
-    num=x.datenum;
+    if isfield(x, 'datenum')
+        num=x.datenum;
+    else
+        num=datenum(x.date);
+    end
 end

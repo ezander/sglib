@@ -59,7 +59,7 @@ switch type
         dist=norm(V*V'-U*U', 2);
     case 'wwf'
         [m, n]=size(U);
-        assert(all(size(V)==[m,n]));
+        check_boolean(all(size(V)==[m,n]), 'size error', mfilename);
         dist=sqrt(max(min(m,n)-trace(V'*U*U'*V),0));
         % Note: probably there is an error in [2] and it should read
         % min(m,n) instead of max(m,n). Further, we need to clamp the value

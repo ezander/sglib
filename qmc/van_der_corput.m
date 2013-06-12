@@ -36,8 +36,8 @@ options = varargin2options(varargin);
 check_unsupported_options(options, mfilename);
 
 % check that all input values are non-negative integers
-assert(all(n(:)>=0))
-assert(all(n(:)==round(n(:) )))
+check_boolean(all(n(:)>=0), 'n must be positive');
+check_boolean(all(n(:)==round(n(:))), 'n must be an integer vector');
 
 phi = zeros(size(n));
 q = 1/p;
@@ -51,7 +51,7 @@ while true
     % i.e. compute the (scrambled) radical inverse function
     if ~isempty(scramble_func)
         if isfloat(scramble_func)
-            assert(isequal(sort(scramble_func(:)),(0:p-1)'))
+            %assert(isequal(sort(scramble_func(:)),(0:p-1)'))
             d = scramble_func(d+1);
         else
             d = funcall(scramble_func, d, p, j);

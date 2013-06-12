@@ -58,13 +58,23 @@ switch solver_type
         info=struct( 'L', M, 'U', speye(N), 'p', 1:N );
     case 'lu'
         % precompute lu decomposition and solve only triangular systems
-        [L,U,p]=lu(M,'vector',decomp_options{:});
+        if isversion('0.0', '7.3')
+            % 'vector' option did not exist before matlab 7.3
+            [L,U,P]=lu(M,decomp_options{:});
+            [p,j,s]=find(P'); %#ok
+        else
+            [L,U,p]=lu(M,'vector',decomp_options{:});
+        end
         Ainv=operator_from_function( {@lu_solve, {L,U,p,false}, {1,2,3,4}}, size(M') );
         A=operator_from_function( {@lu_solve, {L,U,p,true}, {1,2,3,4}}, size(M') );
         info=struct( 'L', L, 'U', U, 'p', p );
     case 'chol'
         % precompute choleski decomposition and solve only triangular systems
-        L=chol(M,'lower',decomp_options{:});
+        if isversion('0.0', '7.3')
+            L=chol(M,decomp_options{:})';
+        else
+            L=chol(M,'lower',decomp_options{:});
+        end
         p=1:size(L,1); %#ok
         Ainv=operator_from_function( {@lu_solve, {L,L',p,false}, {1,2,3,4}}, size(M') );
         A=operator_from_function( {@lu_solve, {L,L',p,true}, {1,2,3,4}}, size(M') );

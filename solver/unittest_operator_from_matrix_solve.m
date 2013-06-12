@@ -54,6 +54,11 @@ assert_equals( operator_apply( Ainv, X ), M\X, 'chol_solve' );
 assert_matrix( info.L, 'lower triangular', 'chol_l_lower' );
 assert_matrix( info.U, 'upper triangular', 'chol_u_upper' );
 
+if isversion('0.0', '7.4')
+    % ILU has been introduced in matlab version 7.4, so if we have a
+    % smaller version number we skip these tests.
+    return
+end
 
 opts = {'reltol', 1e-4};
 M=mk_any(N,0.1,1e-3);

@@ -71,7 +71,7 @@ if nargin<5; sigma=1; end
 if nargin<6; smooth=0; end
 
 % Check that the parameter nu is within range
-assert(nu>0)
+check_boolean(nu>0, 'input argument "nu" must be positive', mfilename);
 if nu>100
     warning('sglib:matern_covariance', 'Matern covariance doesn'' work well with parameter nu>100');
 end

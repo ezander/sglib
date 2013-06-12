@@ -40,7 +40,7 @@ check_unsupported_options(options, mfilename);
 sys = V{1};
 I = V{2};
 m = size(I,2);
-assert(length(sys)==1 || length(sys)==m)
+check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
 if length(sys)==1
     N = max(max(I));
