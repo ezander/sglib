@@ -4,6 +4,14 @@ function ok=isversion( minversion, maxversion )
 %   version (VERSION) is greater or equal MINVERSION and less but not equal
 %   to MAXVERSION.
 %
+%   In order to check which matlab version supports which features or
+%   introduced which incompatibilities see the references [1-3].
+%
+% References:
+%   [1] http://www.dynare.org/DynareWiki/MatlabVersionsCompatibility
+%   [2] http://www.mathworks.de/de/help/matlab/release-notes.html
+%   [3] http://www.mathworks.de/de/help/matlab/release-notes-older.html
+%
 % Example (<a href="matlab:run_example isversion">run</a>)
 %   if isversion( '6.0', '7.0' )
 %       % do version 6.x stuff
