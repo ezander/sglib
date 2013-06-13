@@ -74,15 +74,26 @@ for i = 1:m1
     rule_func{i} = {@polysys_int_rule, {poly}, {1}};
 end
 
-if ~isempty(gpc_coeffs)
-    func = {@func_with_gpc_eval, {func, V, gpc_coeffs}, {1, 2, 3}};
+if ~isempty(func)
+    % function is explicitly given
+    if ~isempty(gpc_coeffs)
+        func = {@func_with_gpc_eval, {func, V, gpc_coeffs}, {1, 2, 3}};
+    end
+    int=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
+        'vectorized', vectorized, 'transposed', transposed, ndint_options{:});
+else
+    % return only integration rule
+    [x,w]=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
+        'vectorized', vectorized, 'transposed', transposed, ndint_options{:});
+    if ~isempty(gpc_coeffs)
+        x = gpc_evaluate(gpc_coeffs, V, x);
+    end
+    if nargout<2
+        int = {x, w};
+    else
+        int = x;
+    end
 end
-int=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
-    'vectorized', vectorized, 'transposed', transposed, ndint_options{:});
-
-if isempty(func) && nargout>=2
-    [int,w] = deal(int{:});
-end    
 
 function y = func_with_gpc_eval(func, V, a_i_alpha, x)
 a = gpc_evaluate(a_i_alpha, V, x);

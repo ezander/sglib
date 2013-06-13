@@ -1,10 +1,14 @@
-function int=integrate_nd(func, rule_func, m, p, varargin )
+function [int,w]=integrate_nd(func, rule_func, m, p, varargin )
 % INTEGRATE_ND Integrate a multivariate function.
 %    INT=INTEGRATE_ND(FUNC, RULE_FUNC, M, P, OPTIONS ) integrates the function
 %    FUNC using Smolyak quadrature based on the 1d integration rule
 %    RULE_FUNC in M variables using P stages. For examples please refer to
 %    the unit test (UNITTEST_INTEGRATE_ND). Instead of Smolyak also full
 %    tensor product quadrature can be used (see options section).
+%
+%    [X,W]=INTEGRATE_ND([], RULE_FUNC, M, P, OPTIONS ) returns the
+%    integration points and weights for the given high-dimensional
+%    integration rule.
 %
 % Options:
 %   vectorized: {true}, false
@@ -68,7 +72,12 @@ end
 % if no functions is specified just return points and weights as 
 % cell array
 if isempty(func)
-    int = {xd, wd};
+    if nargout<2
+        int = {xd, wd};
+    else
+        int = xd;
+        w = wd;
+    end
     return
 end
 

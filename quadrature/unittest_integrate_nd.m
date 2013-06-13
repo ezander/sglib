@@ -34,6 +34,15 @@ assert_equals( integrate_nd( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule,
 assert_equals( integrate_nd( @(x)(exp( sum(x,1)/sqrt(3) )), @gauss_hermite_rule, 3, 8, 'vectorized', true, 'grid', 'tensor' ), exp(1/2), 'exp3b' );
 assert_equals( integrate_nd( @(x)(exp( sum(x,2)/sqrt(3))), @gauss_hermite_rule, 3, 8, 'vectorized', true, 'transposed', true ), exp(1/2), 'exp3c' );
 
+% check that if the function is empty only the integration rule is returned
+x_ex = [-1, 0, 0, 0, 1; 0, -1, 0, 1, 0];
+w_ex = [0.5, 0.5, -1, 0.5, 0.5]';
+[x,w]=integrate_nd( [], @gauss_hermite_rule, 2, 2 );
+assert_equals(x, x_ex, 'rule_x');
+assert_equals(w, w_ex, 'rule_w');
+
+xw=integrate_nd( [], @gauss_hermite_rule, 2, 2 );
+assert_equals(xw, {x_ex, w_ex}, 'rule_xw');
 
 
 function res=scalar_func_2d_vec( x )

@@ -25,12 +25,18 @@ assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'smolyak'), [1;0
 assert_equals( gpc_integrate(@scalar_func_2d_vec, V, 3, 'grid', 'full_tensor'), [1;0;0;1;0;1;0;3], 'tensor' );
 
 
-xw = gpc_integrate([], {'H', [0,0,0,0]}, 3, 'grid', 'smolyak');
-[x,w] = deal(xw{:});
+% test wether correct nodes and weights are returned
 [xs, ws] = smolyak_grid(4, 3, @gauss_hermite_rule);
+xw = gpc_integrate([], {'H', [0,0,0,0]}, 3, 'grid', 'smolyak');
+assert_equals(xw, {xs, ws}, 'gh_nodes_weights');
+[x,w] = gpc_integrate([], {'H', [0,0,0,0]}, 3, 'grid', 'smolyak');
 assert_equals(x, xs, 'gh_nodes');
 assert_equals(w, ws, 'gh_weights');
 
+% test with nodes when gpc_coeffs are specified
+p_i_alpha = [1, 2, 3, 4, 5];
+[x,w] = gpc_integrate([], {'H', multiindex(4,1)}, 3, 'grid', 'smolyak', 'gpc_coeffs', p_i_alpha);
+assert_equals(x, 1 + [2,3,4,5] * xs, 'gpc_nodes');
 
 
 V = {'H', multiindex(2,0)};
