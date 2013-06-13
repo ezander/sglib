@@ -1,5 +1,6 @@
 %% Todos as of 12 Jun 2013
 
+% in gpc_integrate return the evaluated "points" if gpc_coeffs is given
 % Move paramstudy, octcompat into util
 % qmc -> sampling?
 % implement polysys_invcdf for sampling from qmc
@@ -9,6 +10,8 @@
 % put kde into stats/private and use in kernel_estimate_fast or something
 % import stiffness matrix functions
 % remove thesis from here and organise as submodule thing
+% move svd_type stuff in linalg into private
+% move inv_reg_beta into private? or math_util?
 
 % move plot_range, xxxspace into plotting?
 % check pcefunc stuff, works? 

@@ -1,6 +1,15 @@
-function int=gpc_integrate(func, V, p, varargin)
+function [int, w]=gpc_integrate(func, V, p, varargin)
 % GPC_INTEGRATE Short description of gpc_integrate.
-%   GPC_INTEGRATE Long description of gpc_integrate.
+%   INT=GPC_INTEGRATE(FUNC, V, P, OPTIONS) integrate the function FUNC over
+%   the given GPC space V with an integration rule of order P. The grid can
+%   be specified via the option 'grid' and defaults to 'smolyak'. The
+%   integral is returned in INT.
+%
+%   XW=GPC_INTEGRATE([], V, P, OPTIONS) return the points and weights in
+%   one cell array {X,W}.
+%
+%   [X, W]=GPC_INTEGRATE([], V, P, OPTIONS) return the points and weights
+%   of the integration rule separately.
 %
 % Example 1: (<a href="matlab:run_example gpc_integrate 1">run</a>)
 %   I_a = multiindex(3,4);
@@ -16,23 +25,23 @@ function int=gpc_integrate(func, V, p, varargin)
 %
 % Example 2: (<a href="matlab:run_example gpc_integrate 2">run</a>)
 %   subplot(2,2,1);
-%   xw = gpc_integrate([], {'h',[0,0]}, 5, 'grid', 'smolyak');
-%   plot(xw{1}(1,:),xw{1}(2,:),'x'); axis('square');
+%   [x,w] = gpc_integrate([], {'h',[0,0]}, 5, 'grid', 'smolyak');
+%   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Gauss/Hermite')
 %   subplot(2,2,2);
-%   xw = gpc_integrate([], {'p',[0,0]}, 5, 'grid', 'smolyak');
-%   plot(xw{1}(1,:),xw{1}(2,:),'x'); axis('square');
+%   [x,w] = gpc_integrate([], {'p',[0,0]}, 5, 'grid', 'smolyak');
+%   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Uniform/Legendre')
 %   subplot(2,2,3);
-%   xw = gpc_integrate([], {'l',[0,0]}, 5, 'grid', 'smolyak');
-%   plot(xw{1}(1,:),xw{1}(2,:),'x'); axis('square');
+%   [x,w] = gpc_integrate([], {'l',[0,0]}, 5, 'grid', 'smolyak');
+%   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Exponential/Laguerre')
 %   subplot(2,2,4);
-%   xw = gpc_integrate([], {'u',[0,0]}, 5, 'grid', 'smolyak');
-%   plot(xw{1}(1,:),xw{1}(2,:),'x'); axis('square');
+%   [x,w] = gpc_integrate([], {'u',[0,0]}, 5, 'grid', 'smolyak');
+%   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Semicircle/Chebyshev_U')
 %
-% See also GPC, GPC_EVALUATE, GPC_SAMPLE, GPC_MOMENTS
+% See also GPC, FUNCALL, GPC_EVALUATE, GPC_SAMPLE, GPC_MOMENTS
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -71,6 +80,10 @@ end
 int=integrate_nd(func, rule_func, m, p, 'grid', grid, ...
     'vectorized', vectorized, 'transposed', transposed, ndint_options{:});
 
+if isempty(func) && nargout>=2
+    [int,w] = deal(int{:});
+end    
+
 function y = func_with_gpc_eval(func, V, a_i_alpha, x)
 a = gpc_evaluate(a_i_alpha, V, x);
-y = funcall(func, x, a);
+y = funcall(func, a);

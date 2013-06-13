@@ -87,6 +87,6 @@ p_int=ceil(p_r*(1+max(p))/2);
 m=gpc_integrate({@kernel, {p}, {1}}, V_r, p_int, 'gpc_coeffs', r_i_alpha);
 
 
-function val=kernel( p, xi, r_i ) %#ok<INUSL>
+function val=kernel(p, r_i)
 % KERNEL Kernel for evaluating p-th moments
 val=r_i.^p;

@@ -1,6 +1,6 @@
 function xi = gpc_sample(V, n)
 % GPC_SAMPLE Draw samples from a GPC.
-%   XI = GPC_SAMPLE(V, N) creates N rows and M columns of samples, where M
+%   XI = GPC_SAMPLE(V, N) creates M rows and N columns of samples, where M
 %   is the number of random variables. V contains a specification of the
 %   random variables and a multiindex set (see Example). 
 %
