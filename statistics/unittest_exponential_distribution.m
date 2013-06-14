@@ -34,3 +34,15 @@ assert_equals( exponential_pdf(inf,alpha), 0, 'pdf_inf' );
 F=exponential_cdf( x1, alpha );
 F2=pdf_integrate( exponential_pdf( x2, alpha ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
+
+
+%% exponential distribution
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
+munit_set_function( 'exponential_stdnor' );
+params={.7};
+x=exponential_stdnor( gam, params{:} );
+assert_equals( exponential_cdf(x, params{:}), uni, 'exponential' )

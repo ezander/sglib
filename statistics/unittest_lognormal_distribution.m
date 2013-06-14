@@ -34,3 +34,16 @@ assert_equals( lognormal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 F=lognormal_cdf(x1, mu, sig);
 F2=pdf_integrate( lognormal_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
+
+%% lognormal_stdnor
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
+munit_set_function( 'lognormal_stdnor' );
+params={.2,.3};
+x=lognormal_stdnor( gam, params{:} );
+assert_equals( lognormal_cdf(x, params{:}), uni, 'lognormal' )
+assert_equals( lognormal_stdnor(gam), lognormal_stdnor(gam, 0, 1), 'lognormal_def12');
+assert_equals( lognormal_stdnor(gam, 0), lognormal_stdnor(gam, 0, 1), 'lognormal_def2');

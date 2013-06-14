@@ -32,3 +32,16 @@ assert_equals( normal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 F=normal_cdf(x1, mu, sig);
 F2=pdf_integrate( normal_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
+
+%% normal_stdnor
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
+munit_set_function( 'normal_stdnor' );
+params={.2,.3};
+x=normal_stdnor( gam, params{:} );
+assert_equals( normal_cdf(x, params{:}), uni, 'normal' )
+assert_equals( normal_stdnor(gam), normal_stdnor(gam, 0, 1), 'normal_def12');
+assert_equals( normal_stdnor(gam, 0), normal_stdnor(gam, 0, 1), 'normal_def2');

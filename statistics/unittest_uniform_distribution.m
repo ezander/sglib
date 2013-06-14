@@ -35,3 +35,17 @@ assert_equals( uniform_pdf(inf,a,b), 0, 'pdf_inf' );
 F=uniform_cdf( x1, a,b );
 F2=pdf_integrate( uniform_pdf( x2, a,b ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
+
+
+%% uniform_stdnor
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
+munit_set_function( 'uniform_stdnor' );
+params={0.2,1.3};
+x=uniform_stdnor( gam, params{:} );
+assert_equals( uniform_cdf(x, params{:}), uni, 'uniform' )
+assert_equals( uniform_stdnor(gam), uniform_stdnor(gam, 0, 1), 'uniform_def12');
+assert_equals( uniform_stdnor(gam, 0), uniform_stdnor(gam, 0, 1), 'uniform_def2');
