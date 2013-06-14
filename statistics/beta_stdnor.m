@@ -28,6 +28,5 @@ function y=beta_stdnor( x, a, b )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-% TODO: for some parameters (.5,.5) the function simplifies significantly
-
-y=inv_reg_beta( 0.5*(1+erf(x/sqrt(2))), a, b );
+%y=inv_reg_beta( 0.5*(1+erf(x/sqrt(2))), a, b );
+y=beta_invcdf(normal_cdf(x, 0, 1), a, b);

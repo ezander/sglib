@@ -47,14 +47,12 @@ switch upper(sys)
         % Arcsine distribution with support [-1,1] (which is the same as as
         % Beta(1/2,1/2) distribution with shifted support.
         U = rand(m, n);
-        xi = sin(pi/2*(2*U-1));
-        % would be the same, but less efficient
-        % xi = 2 * inv_reg_beta(U, 1/2, 1/2) - 1;
+        xi = 2 * beta_invcdf(U, 1/2, 1/2) - 1;
     case 'U'
         % Wigner semicircle distribution (which is the same as as
-        % Beta(3/2,3/2) distribution.
+        % Beta(3/2,3/2) distribution shift from [0,1] to [-1,1].
         U = rand(m, n);
-        xi = 2 * inv_reg_beta(U, 3/2, 3/2) - 1;
+        xi = 2 * beta_invcdf(U, 3/2, 3/2) - 1;
     case 'L'
         % Exponential distribution
         U = rand(m, n);

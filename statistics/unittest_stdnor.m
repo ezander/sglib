@@ -18,38 +18,54 @@ function unittest_stdnor
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% normal distribution
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
-% normal distribution
 munit_set_function( 'normal_stdnor' );
 params={.2,.3};
 x=normal_stdnor( gam, params{:} );
 assert_equals( normal_cdf(x, params{:}), uni, 'normal' )
+assert_equals( normal_stdnor(gam), normal_stdnor(gam, 0, 1), 'normal_def12');
+assert_equals( normal_stdnor(gam, 0), normal_stdnor(gam, 0, 1), 'normal_def2');
 
 % lognormal distribution
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
 munit_set_function( 'lognormal_stdnor' );
 params={.2,.3};
 x=lognormal_stdnor( gam, params{:} );
 assert_equals( lognormal_cdf(x, params{:}), uni, 'lognormal' )
+assert_equals( lognormal_stdnor(gam), lognormal_stdnor(gam, 0, 1), 'lognormal_def12');
+assert_equals( lognormal_stdnor(gam, 0), lognormal_stdnor(gam, 0, 1), 'lognormal_def2');
 
 % exponential distribution
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
 munit_set_function( 'exponential_stdnor' );
 params={.7};
 x=exponential_stdnor( gam, params{:} );
 assert_equals( exponential_cdf(x, params{:}), uni, 'exponential' )
 
-% beta distribution
-munit_set_function( 'beta_stdnor' );
-params={.5,1.3};
-x=beta_stdnor( gam, params{:} );
-assert_equals( beta_cdf(x, params{:}), uni, 'beta' )
 
 % uniform distribution
+N=50;
+uni=linspace(0,1,N+2)';
+uni=uni(2:end-1);
+gam=sqrt(2)*erfinv(2*uni-1);
+
 munit_set_function( 'uniform_stdnor' );
 params={0.2,1.3};
 x=uniform_stdnor( gam, params{:} );
 assert_equals( uniform_cdf(x, params{:}), uni, 'uniform' )
+assert_equals( uniform_stdnor(gam), uniform_stdnor(gam, 0, 1), 'uniform_def12');
+assert_equals( uniform_stdnor(gam, 0), uniform_stdnor(gam, 0, 1), 'uniform_def2');
 
