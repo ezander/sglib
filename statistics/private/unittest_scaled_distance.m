@@ -17,7 +17,7 @@ function unittest_scaled_distance
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'private/scaled_distance' );
+munit_set_function( 'scaled_distance' );
 assert_equals( scaled_distance( 1, 2, 1, 0, false ), 1, 'one' );
 assert_equals( scaled_distance( 0, 3, 0.5, 0, false ), 6, 'six' );
 assert_equals( scaled_distance( 1, [], 2, 0, false ), 0.5, 'no_x2' );
