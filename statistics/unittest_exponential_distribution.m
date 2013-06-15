@@ -17,7 +17,7 @@ function unittest_exponential_distribution
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+%% exponential_cdf
 alpha=1.5;
 munit_set_function('exponential_cdf');
 assert_equals( exponential_cdf(-inf,alpha), 0, 'cdf_minf' );
@@ -25,11 +25,14 @@ assert_equals( exponential_cdf(-1e10,alpha), 0, 'cdf_negative' );
 assert_equals( exponential_cdf(inf,alpha), 1, 'cdf_inf' );
 assert_equals( exponential_cdf(log(2)/alpha,alpha), 1/2, 'cdf_median' );
 
+
+%% exponential_pdf
 munit_set_function('exponential_pdf');
 assert_equals( exponential_pdf(-inf,alpha), 0, 'pdf_minf' );
 assert_equals( exponential_pdf(-1e10,alpha), 0, 'pdf_negative' );
 assert_equals( exponential_pdf(inf,alpha), 0, 'pdf_inf' );
 
+% pdf matches cdf
 [x1,x2]=linspace_mp( -0.1, 5 );
 F=exponential_cdf( x1, alpha );
 F2=pdf_integrate( exponential_pdf( x2, alpha ), F, x1);
@@ -46,3 +49,13 @@ munit_set_function( 'exponential_stdnor' );
 params={.7};
 x=exponential_stdnor( gam, params{:} );
 assert_equals( exponential_cdf(x, params{:}), uni, 'exponential' )
+
+
+%% exponential_raw_moments
+munit_set_function( 'exponential_raw_moments' );
+
+expected=[1., 0.7692307692307692, 1.1834319526627217, 2.7309968138370504, 8.403067119498616, 32.31948892114852];
+assert_equals( expected, exponential_raw_moments( 0:5, 1.3 ), 'lam1.3' );
+
+expected=[750;5;375000];
+assert_equals( expected, exponential_raw_moments( [3;1;5], 0.2 ), 'lam0.2T' );
