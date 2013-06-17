@@ -109,12 +109,12 @@ if nargin > 1
         varargin(1:2) = [];
     end
 end
-
+verbose=true;
 [err] = localCheckValidString(str);
 if isempty(err)
     [tstr] = localDecorateInputString(str,format,width,fragment);
     [dvi,loginfo,err] = localCallTeXParser(tstr, doinitex, verbose, dofileio);
-    dvi=dvimod(dvi);
+    %dvi=dvimod(dvi);
 end
 
 if nargout > 0
@@ -122,7 +122,8 @@ if nargout > 0
     if ~isempty(err)
         dviout = [];
     else
-        dviout = dvi;
+        %dviout = dvi;
+        dviout = dvimod(dvi, 500000, false);
     end
     if nargout > 1
         errout = err;
@@ -266,8 +267,9 @@ if isempty(texpath)
 
     % Uncomment the following for sandbox testing
     %mlroot = 'S:/A/matlab';
-
-    texpath{1} = fullfile(mlroot,'sys','fonts','type1','cm',filesep);
+    texpath = {};
+    texpath{end+1} = fullfile(mlroot,'sys','fonts','ttf','cm',filesep);
+    texpath{end+1} = fullfile(mlroot,'sys','fonts','type1','cm',filesep);
     texpath{end+1} = fullfile(mlroot,'sys','tex',filesep);
     texpath{end+1} = fullfile(mlroot,'sys','tex','latex','base',filesep);
     texpath{end+1} = fullfile(mlroot,'sys','tex','tfm',filesep);

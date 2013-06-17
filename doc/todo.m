@@ -1,6 +1,5 @@
 %% Todos as of 12 Jun 2013
 
-% in gpc_integrate return the evaluated "points" if gpc_coeffs is given
 % Move paramstudy, octcompat into util
 % qmc -> sampling?
 % implement polysys_invcdf for sampling from qmc
