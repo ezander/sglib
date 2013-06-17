@@ -48,6 +48,29 @@ x = linspace(-0.5, 4.3);
 assert_equals( lognormal_pdf(x), lognormal_pdf(x,0,1), 'pdf_def12' );
 assert_equals( lognormal_pdf(x,-0.2), lognormal_pdf(x,-0.2,1), 'pdf_def2' );
 
+
+%% lognormal_invcdf
+munit_set_function( 'lognormal_invcdf' );
+
+y = linspace(0, 1);
+x = linspace(0, 10);
+
+params = {};
+assert_equals( lognormal_cdf(lognormal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
+assert_equals( lognormal_invcdf(lognormal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
+assert_equals( isnan(lognormal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+
+params = {0.5};
+assert_equals( lognormal_cdf(lognormal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_2');
+assert_equals( lognormal_invcdf(lognormal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_2');
+assert_equals( isnan(lognormal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan2');
+
+params = {0.7, 1.5};
+assert_equals( lognormal_cdf(lognormal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_3');
+assert_equals( lognormal_invcdf(lognormal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_3');
+assert_equals( isnan(lognormal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan3');
+
+
 %% lognormal_stdnor
 munit_set_function( 'lognormal_stdnor' );
 N=50;

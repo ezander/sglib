@@ -54,21 +54,23 @@ assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 %% beta_invcdf
 munit_set_function( 'beta_invcdf' );
 
+y = linspace(0, 1);
 x = linspace(0, 1);
+
 params = {2, 3};
-assert_equals( beta_cdf(beta_invcdf(x, params{:}), params{:}), x, 'cdf_invcdf_1');
+assert_equals( beta_cdf(beta_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
 assert_equals( beta_invcdf(beta_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
 assert_equals( isnan(beta_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
 
 params = {0.5, 0.5};
-assert_equals( beta_cdf(beta_invcdf(x, params{:}), params{:}), x, 'cdf_invcdf_1');
-assert_equals( beta_invcdf(beta_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
-assert_equals( isnan(beta_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+assert_equals( beta_cdf(beta_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_2');
+assert_equals( beta_invcdf(beta_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_2');
+assert_equals( isnan(beta_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan2');
 
 params = {1, 1};
-assert_equals( beta_cdf(beta_invcdf(x, params{:}), params{:}), x, 'cdf_invcdf_1');
-assert_equals( beta_invcdf(beta_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
-assert_equals( isnan(beta_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+assert_equals( beta_cdf(beta_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_3');
+assert_equals( beta_invcdf(beta_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_3');
+assert_equals( isnan(beta_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan3');
 
 
 %% beta_stdnor

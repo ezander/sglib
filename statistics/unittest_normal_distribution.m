@@ -48,6 +48,27 @@ assert_equals( normal_pdf(x), normal_pdf(x,0,1), 'pdf_def12' );
 assert_equals( normal_pdf(x,0.2), normal_pdf(x,0.2,1), 'pdf_def2' );
 
 
+%% normal_invcdf
+munit_set_function( 'normal_invcdf' );
+
+y = linspace(0, 1);
+x = linspace(-2, 3);
+
+params = {};
+assert_equals( normal_cdf(normal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
+assert_equals( normal_invcdf(normal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
+assert_equals( isnan(normal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+
+params = {0.5};
+assert_equals( normal_cdf(normal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_2');
+assert_equals( normal_invcdf(normal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_2');
+assert_equals( isnan(normal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan2');
+
+params = {0.7, 1.5};
+assert_equals( normal_cdf(normal_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_3');
+assert_equals( normal_invcdf(normal_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_3');
+assert_equals( isnan(normal_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan3');
+
 %% normal_stdnor
 munit_set_function( 'normal_stdnor' );
 N=50;

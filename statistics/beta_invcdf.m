@@ -1,8 +1,8 @@
-function y=beta_invcdf(x, a, b)
+function x=beta_invcdf(y, a, b)
 % BETA_INVCDF Inverse CDF of the Beta distribution.
-%   Y=BETA_INVCDF( X, A, B ) computes the inverse cumulative distribution
+%   X=BETA_INVCDF( Y, A, B ) computes the inverse cumulative distribution
 %   function of the Beta distribution with parameters A and B for the
-%   values in X, which should all be in [0,1]. This function can be used to
+%   values in Y, which should all be in [0,1]. This function can be used to
 %   transform [0,1] uniformly distributed random numbers into Beta
 %   distributed random numbers. 
 %
@@ -13,9 +13,9 @@ function y=beta_invcdf(x, a, b)
 %
 % Example (<a href="matlab:run_example beta_invcdf">run</a>)
 %   N=10000;
-%   x=rand(N,1);
-%   y=beta_invcdf(x,2,4);
-%   hist(y);
+%   y=rand(N,1);
+%   x=beta_invcdf(y,2,4);
+%   hist(x,30);
 %
 % See also BETA_CDF, BETA_PDF, RAND
 
@@ -30,17 +30,17 @@ function y=beta_invcdf(x, a, b)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-y=nan(size(x));
-ind = (x>=0) & (x<=1);
+x=nan(size(y));
+ind = (y>=0) & (y<=1);
 
 if a==1 && b==1
     % Beta(1,1) is same as Uniform([0,1])
-    y(ind) = x(ind);
+    x(ind) = y(ind);
 elseif a==0.5 && b==0.5
     % Beta(0.5, 0.5) is same as Arcsine
-    y(ind) = 0.5 * (sin(pi*(x(ind)-0.5)) + 1);
+    x(ind) = 0.5 * (sin(pi*(y(ind)-0.5)) + 1);
 else
-    y(ind)=inv_reg_beta(x(ind), a, b );
+    x(ind)=inv_reg_beta(y(ind), a, b );
     %Note Beta(1.5, 1.5) is the same as the semicircle distribution but
     %that cannot be used to speed up evaluation. What could be used is the
     %equivalence to the Kumaraswamy distribution if A or B is 1

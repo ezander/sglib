@@ -49,6 +49,31 @@ x = linspace(-1.1, 2.3);
 assert_equals( uniform_pdf(x), uniform_pdf(x,0,1), 'pdf_def12' );
 assert_equals( uniform_pdf(x,-0.2), uniform_pdf(x,-0.2,1), 'pdf_def2' );
 
+
+%% uniform_invcdf
+munit_set_function( 'uniform_invcdf' );
+
+y = linspace(0, 1);
+
+params = {};
+x = linspace(0, 1);
+assert_equals( uniform_cdf(uniform_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
+assert_equals( uniform_invcdf(uniform_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_1');
+assert_equals( isnan(uniform_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+
+params = {0.5};
+x = linspace(0.5, 1);
+assert_equals( uniform_cdf(uniform_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_2');
+assert_equals( uniform_invcdf(uniform_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_2');
+assert_equals( isnan(uniform_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan2');
+
+params = {-2, 3};
+x = linspace(-2, 3);
+assert_equals( uniform_cdf(uniform_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_3');
+assert_equals( uniform_invcdf(uniform_cdf(x, params{:}), params{:}), x, 'invcdf_cdf_3');
+assert_equals( isnan(uniform_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan3');
+
+
 %% uniform_stdnor
 munit_set_function( 'uniform_stdnor' );
 N=50;

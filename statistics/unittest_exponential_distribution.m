@@ -38,8 +38,22 @@ F=exponential_cdf( x1, alpha );
 F2=pdf_integrate( exponential_pdf( x2, alpha ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
 
+%% exponential_invcdf
+munit_set_function( 'exponential_invcdf' );
 
-%% exponential distribution
+y = linspace(0, 1);
+params = {2};
+assert_equals( exponential_cdf(exponential_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
+assert_equals( exponential_invcdf(exponential_cdf(y, params{:}), params{:}), y, 'invcdf_cdf_1');
+assert_equals( isnan(exponential_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+
+params = {0.5};
+assert_equals( exponential_cdf(exponential_invcdf(y, params{:}), params{:}), y, 'cdf_invcdf_1');
+assert_equals( exponential_invcdf(exponential_cdf(y, params{:}), params{:}), y, 'invcdf_cdf_1');
+assert_equals( isnan(exponential_invcdf([-0.1, 1.1], params{:})), [true, true], 'invcdf_nan1');
+
+
+%% exponential_stdnor
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
