@@ -40,6 +40,10 @@ assert_equals( format_poly( [1 1 1], options ), [' 2        '; 'u  + u + 1'], 't
 assert_equals( format_poly( [1 2 3; 0 -4 0] ), { 'x^2+2x+3', '-4x'}, 'multi' );
 assert_equals( format_poly( [1 2 3; 0 -4 0], 'symbol', 't', 'tight', false ), { 't^2 + 2t + 3', '-4t'}, 'multi_opt' );
 
+% with and without rats
+assert_equals( format_poly( [1.4 0.5 1/3], 'rats', true ), '7/5x^2+1/2x+1/3', 'rats_true' );
+assert_equals( format_poly( [1.4 0.5 1/3], 'rats', false ), '1.4x^2+0.5x+0.33333', 'rats_false' );
+
 % no return value if not wanted
 if ismatlab
   assert_equals( evalc( 'format_poly( 1 )' ), sprintf('1\n'), 'noretval' );

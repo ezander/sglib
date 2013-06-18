@@ -11,16 +11,18 @@ function s=format_poly( p, varargin )
 %     Use twoline output for exponents instead of caret.
 %   symbol: {'x'}
 %     Use specified symbol as variable name.
+%   rats: true, {false}
+%     Display coefficients as rational approximations (rats).
 %
 % Example (<a href="matlab:run_example format_poly">run</a>)
 %   format_poly( [-1 2 3] );
 %   % displays:
 %   %   -x^2+2x+3
 %
-%   format_poly( [-1 2 0 4], 'twoline', true, 'tight', false, 'symbol', 's' );
+%   format_poly( [-1 2/3 0 4], 'twoline', true, 'tight', false, 'symbol', 's', 'rats', true );
 %   % displays:
-%   %     3     2
-%   %   -s  + 2s  + 4
+%   %     3       2
+%   %   -s  + 2/3s  + 4
 %
 % See also
 
@@ -41,6 +43,7 @@ options=varargin2options( varargin );
 [tight,options]=get_option( options, 'tight', true );
 [twoline,options]=get_option( options, 'twoline', false );
 [symbol,options]=get_option( options, 'symbol', 'x' );
+[use_rats,options]=get_option( options, 'rats', false );
 check_unsupported_options( options, mfilename );
 
 if size(p,1)>1
@@ -66,7 +69,11 @@ else
                 end
             end
             if ~(abs(a)==1 && i>=2)
-                s=[s num2str(abs(a))]; 
+                if use_rats
+                    s=[s strtrim(rats(abs(a)))];
+                else
+                    s=[s num2str(abs(a))];
+                end
             end
             switch(i)
                 case 1
