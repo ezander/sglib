@@ -1,6 +1,6 @@
-function [V_u, u_i_alpha] = compute_response_surf_projection(init_func, solve_func, polysys, order, p, varargin)
-% COMPUTE_RESPONSE_SURF_PROJECTION Compute a gpc response surface representation.
-%   COMPUTE_RESPONSE_SURF_PROJECTION Long description of compute_response_surf_projection.
+function [V_u, u_i_alpha] = compute_response_surface_projection(init_func, solve_func, polysys, order, p, varargin)
+% COMPUTE_RESPONSE_SURFACE_PROJECTION Compute a gpc response surface representation.
+%   COMPUTE_RESPONSE_SURFACE_PROJECTION Long description of compute_response_surf_projection.
 %
 % Options
 %
@@ -8,7 +8,7 @@ function [V_u, u_i_alpha] = compute_response_surf_projection(init_func, solve_fu
 %
 % Notes
 %
-% Example (<a href="matlab:run_example compute_response_surf_projection">run</a>)
+% Example (<a href="matlab:run_example compute_response_surface_projection">run</a>)
 %
 % See also
 

@@ -29,7 +29,7 @@ show_mean_var('Sparse grid (Smolyak) integration', u_mean, u_var);
 %% Projection
 p_u = 3;
 p_int = 5;
-[V_u, u_i_alpha] = compute_response_surf_projection(init_func, solve_func, polysys, p_u, p_int);
+[V_u, u_i_alpha] = compute_response_surface_projection(init_func, solve_func, polysys, p_u, p_int);
 
 [u_mean, u_var] = gpc_moments(u_i_alpha, V_u);
 show_mean_var('Projection (L_2, response surface)', u_mean, u_var);
