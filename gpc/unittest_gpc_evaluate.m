@@ -29,7 +29,7 @@ a_i_alpha = eye(M);
 
 xi = rand(m, 20);
 a=gpc_evaluate(a_i_alpha, {'M', I_a}, xi);
-assert_equals(a, repmat(xi,M,1).^repmat(I_a,1,size(xi,2)), 'mono1')
+assert_equals(a, binfun(@power, xi, I_a), 'mono1')
 
 %m>1
 p = 5;
@@ -40,10 +40,9 @@ a_i_alpha = eye(M);
 
 xi = rand(m, 20);
 a=gpc_evaluate(a_i_alpha, {'M', I_a}, xi);
-%assert_equals(a, repmat(xi,M,1).^repmat(reshape(I_a,[],1),1,size(xi,2)), 'mono1')
 assert_equals(a, ...
-    repmat(xi(1,:),M,1).^repmat(I_a(:,1),1,size(xi,2)) .* ...
-    repmat(xi(2,:),M,1).^repmat(I_a(:,2),1,size(xi,2)), 'mono2')
+    binfun(@power, xi(1,:), I_a(:,1)) .* ...
+    binfun(@power, xi(2,:), I_a(:,2)), 'mono2')
 
 % Test orthogonality
 N = 5;
@@ -109,29 +108,3 @@ a1 = gpc_evaluate(a_i_alpha, {'h', I_a(:,1)}, xi(1,:));
 a2 = gpc_evaluate(a_i_alpha, {'p', I_a(:,2)}, xi(2,:));
 assert_equals(a12, a1 .* a2, 'mixed');
 
-
-
-
-% I_a = multiindex(1, 5);
-% xi = linspace(-1,1,100);
-% a_i_alpha = eye(6);
-% 
-% a=gpc_evaluate(a_i_alpha, {'P', I_a}, xi);
-% subplot(2,2,1)
-% plot(xi,a)
-% grid on
-% 
-% a=gpc_evaluate(a_i_alpha, {'p', I_a}, xi);
-% subplot(2,2,2)
-% plot(xi,a)
-% grid on
-% 
-% a=gpc_evaluate(a_i_alpha, {'H', I_a}, xi);
-% subplot(2,2,3)
-% plot(xi,a)
-% grid on
-% 
-% a=gpc_evaluate(a_i_alpha, {'h', I_a}, xi);
-% subplot(2,2,4)
-% plot(xi,a)
-% grid on

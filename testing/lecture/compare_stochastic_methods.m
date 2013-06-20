@@ -30,7 +30,6 @@ state = electrical_network_init();
 
 [x,w] = full_tensor_grid(state.num_params, 5, @gauss_legendre_rule);
 w = w / sum(w);
-plot(x(1,:),x(2,:),'*k')
 
 N = size(x,2);
 u = zeros(state.num_vars, N);
@@ -42,7 +41,7 @@ for i = 1:N
 end
 
 mu = u * w;
-sig2 = (u - repmat(mu, 1, N)).^2 * w;
+sig2 = binfun(@minus, u, mu).^2 * w;
 sig = sqrt(sig2);
 
 underline('Full tensor grid integration')
@@ -69,7 +68,7 @@ for i = 1:N
 end
 
 mu = u * w;
-sig2 = (u - repmat(mu, 1, N)).^2 * w;
+sig2 = binfun(@minus, u, mu).^2 * w;
 sig = sqrt(sig2);
 
 underline('Sparse grid integration')

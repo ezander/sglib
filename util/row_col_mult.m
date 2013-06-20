@@ -12,8 +12,8 @@ function B=row_col_mult( A, x )
 %
 % Example (<a href="matlab:run_example row_col_mult">run</a>)
 %   A=[1 2; 3 4];
-%   row_col_mult(A,[1, 2]) % column-wise mult; prints [1 4; 3 8]
-%   row_col_mult(A,[1; 2]) % row-wise mult; prints [1 2; 6 8]
+%   row_col_mult(A,[1, 10]) % column-wise mult; prints [1 20; 3 40]
+%   row_col_mult(A,[1; 10]) % row-wise mult; prints [1 2; 30 40]
 %
 % See also TIMES, MTIMES
 

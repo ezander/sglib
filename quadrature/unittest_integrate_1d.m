@@ -41,7 +41,7 @@ assert_equals( int, (1-(-1).^(n+1))./(n+1), 'example2' );
 
 
 function pow=all_powers( x, n )
-pow=repmat(x,size(n,1),1).^repmat(n,1,size(x,2));
+pow=binfun(@power, x, n);
 
 function res=scalar_func_1d( x )
 res=ones(size(x));
