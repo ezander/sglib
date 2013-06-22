@@ -55,7 +55,7 @@ msgs = {};
 % * Added option to make ordering of multiindices compatible with UQToolkit
 % * Incompatible change to 'multiindex' interface when used with more than
 %   two arguments (removed optional 'combine' parameter)
-msgs{end+1} = 'Attention: incompatible change in ''multiindex'' when called with more than two parameters (see help).';
+msgs{end+1} = 'Attention (0.9.3): incompatible change in ''multiindex'' when called with more than two parameters (see help).';
 
 % Version 0.9.4
 % * Extended SQRSPACE to cope with negative values and different exponents.
@@ -71,11 +71,21 @@ msgs{end+1} = 'Attention: incompatible change in ''multiindex'' when called with
 % * Cleanup of linalg (esp. subspace_distance and subspace_angles)
 % * Added composite and nested trapezoidal rule.
 % * Improved Clenshaw-Curtis rule 
-msgs{end+1} = 'Attention: clenshaw_curtis_legendre_rule removed. Use clenshaw_curtis_nested instead.';
+msgs{end+1} = 'Attention (0.9.6): clenshaw_curtis_legendre_rule removed. Use clenshaw_curtis_nested instead.';
 version = [0, 9, 6];
 
-% Version 0.9.7 (upcoming)
-% * Added gpc_moments
+% Version 0.9.7
+% * Added gpc_moments function
+% * gpc_integrate can report nodes and weight and also transform the nodes
+% * Added Latin hypercube sampling for uniform random vars
+% * Lots of cleanup (directories, compatibility, comments, ...)
+% * New demonstrations (for the UQ lecture, and D. Xiu's book)
+% * Added inverse CDF's for various distributions
+% * Various small performance and interface improvements
+msgs{end+1} = 'Attention (0.9.7): large restructuring of sglib directories!';
+
+% Version 0.9.8 (upcoming)
+% * Added Latin hypercube sampling and QMC for GPC
 
 
 % If Version information is requested as string, convert the arrary
