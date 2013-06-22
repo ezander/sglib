@@ -38,27 +38,36 @@ function xi = polysys_sample_rv(sys, m, n)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin<3 || isempty(n)
+    U = m;
+    xi = invcdf_transform(sys, U);
+elseif strcmpi(sys, 'H')
+    xi = randn(m, n);
+else
+    U = rand(m, n);
+    xi = invcdf_transform(sys, U);
+end
+
+function xi = invcdf_transform(sys, U)
 switch upper(sys)
     case 'H'
-        xi = randn(m, n);
+        xi = normal_invcdf(U);
     case 'P'
-        xi = 2 * rand(m, n) - 1;
+        xi = uniform_invcdf(U, -1, 1);
     case 'T'
         % Arcsine distribution with support [-1,1] (which is the same as as
         % Beta(1/2,1/2) distribution with shifted support.
-        U = rand(m, n);
         xi = 2 * beta_invcdf(U, 1/2, 1/2) - 1;
     case 'U'
         % Wigner semicircle distribution (which is the same as as
         % Beta(3/2,3/2) distribution shift from [0,1] to [-1,1].
-        U = rand(m, n);
         xi = 2 * beta_invcdf(U, 3/2, 3/2) - 1;
     case 'L'
         % Exponential distribution
-        U = rand(m, n);
         xi = -log(1 - U);
     case 'M'
         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
+
