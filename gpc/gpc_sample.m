@@ -32,7 +32,7 @@ function xi = gpc_sample(V, n, varargin)
 %
 % Example 2 (<a href="matlab:run_example gpc_sample 2">run</a>)
 %    V = gpcbasis_create('PLh');
-%    xi = gpc_sample(V, 3000, 'mode', 'qmc');
+%    xi = gpc_sample(V, 3000, 'mode', 'default');
 %    subplot(2,2,1);
 %    plot(xi(1,:), xi(2,:), '.')
 %    xlabel('Uniform'); ylabel('Exponential');
@@ -89,7 +89,7 @@ if length(sys)==1
     if isempty(U)
         xi = polysys_sample_rv(sys, m, n);
     else
-        xi = polysys_sample_rv(sys, U);
+        xi = polysys_sample_rv(sys, U');
     end
 else
     check_range(length(sys), m, m, 'len(sys)==m', mfilename);

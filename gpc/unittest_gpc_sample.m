@@ -22,19 +22,35 @@ munit_set_function( 'gpc_sample' );
 I = multiindex(3,2);
 
 xi = gpc_sample({'H', I}, 500);
-assert_equals(size(xi), [3, 500], 'size');
+assert_equals(size(xi), [3, 500], 'size1');
 assert_equals(any(xi(:)>1), true, 'normal any>1', {'fuzzy', true});
 
 xi = gpc_sample({'H', I});
 assert_equals(size(xi), [3, 1], 'default_size');
 
 xi = gpc_sample({'P', I}, 500);
-assert_equals(size(xi), [3, 500], 'size');
+assert_equals(size(xi), [3, 500], 'size2');
 assert_equals(all(xi(:)<1), true, 'uniform all<1', {'fuzzy', true});
 
 xi = gpc_sample({'PHp', I}, 1500);
-assert_equals(size(xi), [3, 1500], 'size');
+assert_equals(size(xi), [3, 1500], 'size3');
 assert_equals(all(xi(1,:)<1), true, 'xi1<1', {'fuzzy', true});
 assert_equals(any(xi(2,:)>1), true, 'xi2>1', {'fuzzy', true});
 assert_equals(all(xi(3,:)<1), true, 'xi2<1', {'fuzzy', true});
 
+
+%%
+m=3; N=347;
+I = multiindex(m,2);
+V = {'PHp', I};
+assert_equals(size(gpc_sample(V, N, 'mode', 'default')), [m, N], 'size1_def');
+assert_equals(size(gpc_sample(V, N, 'mode', 'lhs')), [m, N], 'size1_lhs');
+assert_equals(size(gpc_sample(V, N, 'mode', 'qmc')), [m, N], 'size1_qmc');
+
+V = {'P', I};
+assert_equals(size(gpc_sample(V, N, 'mode', 'default')), [m, N], 'size2_def');
+assert_equals(size(gpc_sample(V, N, 'mode', 'lhs')), [m, N], 'size2_lhs');
+assert_equals(size(gpc_sample(V, N, 'mode', 'qmc')), [m, N], 'size2_qmc');
+
+%% qmc is repeatable
+assert_equals(gpc_sample(V, N, 'mode', 'qmc'), gpc_sample(V, N, 'mode', 'qmc'), 'rep_qmc');
