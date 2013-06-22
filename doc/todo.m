@@ -1,3 +1,9 @@
+%% 19 Jun 2013
+
+% error measure for response surface
+% plotting for response surfaces
+% full tensor grid 
+
 %% Todos as of 12 Jun 2013
 
 % Move paramstudy, octcompat into util

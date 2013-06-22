@@ -1,4 +1,4 @@
-function [V_u, u_i_alpha] = compute_response_surface_projection(init_func, solve_func, polysys, order, p, varargin)
+function u_i_alpha = compute_response_surface_projection(init_func, solve_func, V_u, p, varargin)
 % COMPUTE_RESPONSE_SURFACE_PROJECTION Compute a gpc response surface representation.
 %   COMPUTE_RESPONSE_SURFACE_PROJECTION Long description of compute_response_surf_projection.
 %
@@ -25,18 +25,13 @@ function [V_u, u_i_alpha] = compute_response_surface_projection(init_func, solve
 
 state = funcall(init_func);
 
-I = multiindex(state.num_params, order);
-V_u = {polysys, I}; 
-
 [x,w] = gpc_integrate([], V_u, p);
 
 M = size(I,1);
 N = size(x,2);
 u_i_alpha = zeros(state.num_vars, M);
 
-% something with the norm is not quite right
 nrm2 = gpc_norm(V_u, 'sqrt', false);
-
 for k = 1:N
     p_k = x(:, k);
     u_i_k = funcall(solve_func, state, p_k);

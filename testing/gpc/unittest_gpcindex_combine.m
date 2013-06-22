@@ -22,6 +22,9 @@ munit_set_function( 'gpcindex_combine' );
 % the gpcindex_combine function is not yet written, but the tests it should
 % fulfill are already here.
 
+
+foo
+
 function foo
 p=4;
 I1 = multiindex(3,2)
@@ -106,6 +109,6 @@ gpcindex_combine( {'H', I1a}, {'H', I1b}, 'product_mp');
 % gpc_integrate
 
 
-% gpcspace_create
-% gpcspace_product
-% gpcspace_direct_sum
+% gpcbasis_create
+% gpcbasis_product
+% gpcbasis_direct_sum
