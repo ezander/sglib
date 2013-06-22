@@ -53,25 +53,25 @@ end
 
 addpath( basepath );
 addpath( fullfile( basepath, 'doc') );
-addpath( fullfile( basepath, 'munit') );
-addpath( fullfile( basepath, 'plot') );
-addpath( fullfile( basepath, 'quadrature') );
-addpath( fullfile( basepath, 'simplefem') );
-addpath( fullfile( basepath, 'solver') );
-addpath( fullfile( basepath, 'statistics') );
-addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'util') );
-addpath( fullfile( basepath, 'linalg') );
+addpath( fullfile( basepath, 'munit') );
+addpath( fullfile( basepath, 'quadrature') );
+addpath( fullfile( basepath, 'statistics') );
+addpath( fullfile( basepath, 'sampling') );
 addpath( fullfile( basepath, 'gpc') );
-addpath( fullfile( basepath, 'qmc') );
+addpath( fullfile( basepath, 'plotting') );
+addpath( fullfile( basepath, 'solver') );
+addpath( fullfile( basepath, 'tensor') );
+addpath( fullfile( basepath, 'linalg') );
+addpath( fullfile( basepath, 'fem/simplefem') );
 
 if exist( fullfile( basepath, 'thesis'), 'dir' )
   addpath( fullfile( basepath, 'thesis') )
   addpath( fullfile( basepath, 'thesis', 'script') )
   addpath( fullfile( basepath, 'thesis', 'models') )
 end
-if exist( fullfile( basepath, 'paramstudy'), 'dir' )
-  addpath( fullfile( basepath, 'paramstudy') )
+if exist( fullfile( basepath, 'util/paramstudy'), 'dir' )
+  addpath( fullfile( basepath, 'util/paramstudy') )
 end
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
@@ -79,7 +79,7 @@ end
 
 
 if add_octave_path
-    addpath( fullfile( basepath, 'octcompat') );
+    addpath( fullfile( basepath, 'util/octcompat') );
 end
 
 if add_experimental_path
