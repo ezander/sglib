@@ -64,10 +64,9 @@ switch upper(sys)
         xi = 2 * beta_invcdf(U, 3/2, 3/2) - 1;
     case 'L'
         % Exponential distribution
-        xi = -log(1 - U);
+        xi = exponential_invcdf(U, 1);
     case 'M'
         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
-

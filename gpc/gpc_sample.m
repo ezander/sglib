@@ -75,6 +75,9 @@ switch(mode)
         U = [];
         if ~isempty(rand_func)
             U = funcall(rand_func, n, m);
+            if size(U,1)~=n
+                error('sglib:error');
+            end
         end
     case 'qmc'
         qmc_options = {};
