@@ -26,6 +26,7 @@ function V = gpcbasis_create(polysys, varargin)
 options=varargin2options(varargin);
 [m,options]=get_option(options, 'm', @isdefault);
 [p,options]=get_option(options, 'p', @isdefault);
+[full_tensor,options]=get_option(options, 'full_tensor', false);
 check_unsupported_options(options, mfilename);
 
 if isdefault(m)
@@ -34,7 +35,7 @@ end
 if isdefault(p)
     p=0;
 end
-V = {polysys, multiindex(m, p)};
+V = {polysys, multiindex(m, p, 'full', full_tensor)};
 
 function b=isdefault(p)
 b=isequal(p,@isdefault);
