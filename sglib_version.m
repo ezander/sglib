@@ -72,7 +72,6 @@ msgs{end+1} = 'Attention (0.9.3): incompatible change in ''multiindex'' when cal
 % * Added composite and nested trapezoidal rule.
 % * Improved Clenshaw-Curtis rule 
 msgs{end+1} = 'Attention (0.9.6): clenshaw_curtis_legendre_rule removed. Use clenshaw_curtis_nested instead.';
-version = [0, 9, 6];
 
 % Version 0.9.7
 % * Added gpc_moments function
@@ -83,6 +82,7 @@ version = [0, 9, 6];
 % * Added inverse CDF's for various distributions
 % * Various small performance and interface improvements
 msgs{end+1} = 'Attention (0.9.7): large restructuring of sglib directories!';
+version = [0, 9, 7];
 
 % Version 0.9.8 (upcoming)
 % * Added Latin hypercube sampling and QMC for GPC
