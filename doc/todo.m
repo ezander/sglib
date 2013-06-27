@@ -1,25 +1,22 @@
 %% 19 Jun 2013
 
-% error measure for response surface
-% plotting for response surfaces
+% error measure for response surface (+)
+% plotting for response surfaces (+)
 % full tensor grid 
 
 %% Todos as of 12 Jun 2013
 
-% Move paramstudy, octcompat into util
-% qmc -> sampling?
-% implement polysys_invcdf for sampling from qmc
-% implement statistics/xxx_invcdf for expansion of gpc parameters
+% implement polysys_invcdf  (extract from gpc_sample...)
 % implement all polysys distributions also in statistics (could reuse their
-% cdf then)
+%    cdf then) (nearly, arcsine and semicircle??? or keep beta???)
 % put kde into stats/private and use in kernel_estimate_fast or something
-% import stiffness matrix functions
+% import stiffness matrix functions from fileexchange
 % remove thesis from here and organise as submodule thing
+% to the same with the testing area
+% reorganise the demo area (publish, xiu_book, lecture, ....)
 % move svd_type stuff in linalg into private
-% move inv_reg_beta into private? or math_util?
 
 % move plot_range, xxxspace into plotting?
-% check pcefunc stuff, works? 
 
 % make list of subdirs for and 
 %   check all Contents.m
