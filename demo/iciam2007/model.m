@@ -1,8 +1,8 @@
 function model()
 
 global n pos els M
-global p_f m_f l_f lc_f h_f cov_f f_i_alpha I_f mu_f f_k_alpha f_i_k
-global p_k m_k l_k lc_k h_k cov_k k_i_alpha I_k mu_k k_k_alpha k_i_k
+global p_f m_f l_f lc_f h_f cov_f f_i_alpha I_f f_i_k f_k_alpha
+global p_k m_k l_k lc_k h_k cov_k k_i_alpha I_k k_i_k k_k_alpha
 global p_u m_u I_u
 
 

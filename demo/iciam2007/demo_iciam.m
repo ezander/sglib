@@ -3,14 +3,14 @@
 disp( 'warning doesn''t work any more' );
 
 addpath( '..' )
-init_demos
+%init_demos
 clf
 clear
 
 % Solving with stochastic operator
 global n pos els M %#ok
-global p_f m_gam_f m_f lc_f h_f cov_f f_alpha I_f mu_f f_i_alpha v_f %#ok
-global p_k m_gam_k m_k lc_k h_k cov_k k_alpha I_k mu_k k_i_alpha v_k %#ok
+global p_f m_gam_f m_f lc_f h_f cov_f f_alpha I_f f_i_alpha %#ok
+global p_k m_gam_k m_k lc_k h_k cov_k k_alpha I_k k_i_alpha %#ok
 global p_u m_gam_u I_u %#ok
 
 % loads everything into the global variables
@@ -22,8 +22,11 @@ model();
 global K_ab K_mu_delta K_mu_iota %#ok
 operators();
 
-
-K_ab_mat=cell2mat(K_ab);
+if iscell(K_ab)
+    K_ab_mat=cell2mat(K_ab);
+else
+    K_ab_mat=K_ab;
+end
 
 if 0
     g_alpha=0*f_alpha;
@@ -36,7 +39,7 @@ end
 show_sparsity_pattern( K_ab_mat, n );
 userwait;
 
-f_beta=compute_pce_rhs( f_alpha, I_f, I_u );
+f_beta=compute_pce_rhs( f_i_alpha, I_f, I_u );
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
