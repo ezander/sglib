@@ -1,10 +1,25 @@
 function [m1, m2] = gpcbasis_size(V, dim)
-% GPCBASIS_SIZE Short description of gpcbasis_size.
-%   GPCBASIS_SIZE Long description of gpcbasis_size.
+% GPCBASIS_SIZE Return the size of the GPC basis.
+%   [NS, M] = GPCBASIS_SIZE(V) returns the number of basis functions NS and
+%   the number of random variables M on which the GPC basis V is defined.
+%
+%   S = GPCBASIS_SIZE(V) returns the size of the basis NS and the
+%   number of random variables M on which the GPC basis V is defined in one
+%   array S=[NS, M].
+%
+%   NS = GPCBASIS_SIZE(V, 1) returns the number of basis functions NS and
+%   the of the GPC basis V.
+%
+%   M = GPCBASIS_SIZE(V, 2) returns the number of random variables M on
+%   which the GPC basis V is defined.
 %
 % Example (<a href="matlab:run_example gpcbasis_size">run</a>)
+%   V = gpcbasis_create('H', 'm', 4, 'p', 2);
+%   fprintf('%d basis functions in %d RVs\n', gpcbasis_size(V,1), gpcbasis_size(V,2));
+%   V = gpcbasis_create('hlp', 'p', 6);
+%   fprintf('%d basis functions in %d RVs\n', gpcbasis_size(V,1), gpcbasis_size(V,2));
 %
-% See also
+% See also GPCBASIS_CREATE, SIZE
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
