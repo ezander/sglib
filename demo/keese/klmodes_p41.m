@@ -42,7 +42,7 @@ end
 for i=1:4
     subplot(2,2,i);
     u=v_f(:,modes(i));
-    plot_field( pos, els, u, 'view', [220,25], 'colormap', 'cool', 'show_surf', true, 'shading', 'faceted' );
+    plot_field( pos, els, u, 'view', [220,25], 'colormap', 'cool', 'shading', 'faceted' );
     plot_field_contour( pos, els, u, 'zpos', 'min' );
     plot_boundary( pos, els, 'color', 'k', 'zpos', min(u) );
     title(sprintf('%s KL-mode, L-shaped domain',mode_names{i}));
