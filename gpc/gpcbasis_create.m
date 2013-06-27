@@ -31,6 +31,8 @@ check_unsupported_options(options, mfilename);
 
 if isdefault(m)
     m=length(polysys);
+elseif ~(length(polysys)==1 || length(polysys)==m)
+    error('sglib:gpcbasis', 'length of ''polysys'' does not match ''m''');
 end
 if isdefault(p)
     p=0;

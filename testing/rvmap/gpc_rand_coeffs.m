@@ -25,6 +25,6 @@ function x_i_alpha = gpc_rand_coeffs(V_x, Nx, varargin)
 
 I_x=V_x{2};
 
-Mx = gpcbasis_size(V_x);
+Mx = gpcbasis_size(V_x, 1);
 x_i_alpha = rand(Nx, Mx)+0.2;
 x_i_alpha = binfun(@times, x_i_alpha, 10.^(-multiindex_order(I_x)'));

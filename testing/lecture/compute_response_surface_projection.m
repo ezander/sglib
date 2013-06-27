@@ -26,7 +26,7 @@ function u_i_alpha = compute_response_surface_projection(init_func, solve_func, 
 state = funcall(init_func);
 
 [x,w] = gpc_integrate([], V_u, p);
-M = gpcbasis_size(V_u);
+M = gpcbasis_size(V_u, 1);
 N = size(x,2);
 u_i_alpha = zeros(state.num_vars, M);
 

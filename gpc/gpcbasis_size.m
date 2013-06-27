@@ -18,11 +18,6 @@ function [m1, m2] = gpcbasis_size(V, dim)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<2
-    dim = 1;
-else
-    if nargout==2
-        error('sglib:gpc_size', 'can''t specify dimension with multiple output argument');
-    end
     dim = -1;
 end
 
@@ -30,9 +25,13 @@ switch dim
     case 1
         m1 = size(V{2}, 1);
     case 2
-        m2 = size(V{2}, 2);
+        m1 = size(V{2}, 2);
     case -1
-        [m1, m2] = size(V{2});
+        if nargout<2
+            m1 = size(V{2});
+        else
+            [m1, m2] = size(V{2});
+        end
     otherwise
         error('sglib:gpc_size', 'invalide value for input paramter ''dim'' specified: %s', strvarexpand());
 end   

@@ -19,8 +19,8 @@ function unittest_gpc_covariance
 
 munit_set_function( 'gpc_covariance' );
 
-V = gpcbasis_create('HlP', 'p', 4)
-M = gpcbasis_size(V);
+V = gpcbasis_create('HlP', 'p', 4);
+M = gpcbasis_size(V, 1);
 
 Na = 10;
 a_i_alpha = rand(Na, M);
@@ -38,17 +38,13 @@ assert_equals( cov_ab2(1:Na, Na+1:end), cov_ab, 'foo')
 %%
 m=3;
 p=4;
-options = struct;
-options.p = p;
-options.m = m;
-%V = gpcbasis_create('H', options);
 V = gpcbasis_create('H', 'm', m, 'p', p);
-M = gpcbasis_size(V);
+M = gpcbasis_size(V, 1);
 
 Na = 10;
 a_i_alpha = rand(Na, M);
 
-cov_a = gpc_covariance(a_i_alpha, V)
+cov_a = gpc_covariance(a_i_alpha, V);
 cov_a_old = pce_covariance(a_i_alpha, V{2});
 assert_equals(cov_a, cov_a_old, 'foobar');
 
