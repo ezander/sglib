@@ -1,4 +1,4 @@
-function exstr=strvarexpand( str )
+function exstr=strvarexpand(str, varargin)
 % STRVAREXPAND Expand variables and expression inside a string.
 %   STRVAREXPAND(STR) looks for expressions inside STR delimited by dollar
 %   signs ($) and replace them by their value. Everything inside $'s maybe 
@@ -27,6 +27,11 @@ function exstr=strvarexpand( str )
 
 %#ok<*MSNU>
 
+options=varargin2options(varargin);
+[maxarr, options]=get_option(options, 'maxarr', 10);
+[maxcell, options]=get_option(options, 'maxcell', 50);
+check_unsupported_options(options, mfilename);
+
 exstr='';
 lpos=1;
 [pos,str]=finddollars( str );
@@ -40,7 +45,7 @@ for i=pos
         catch
             part=['<err:' part '>'];
         end
-        part=tostring( part, orig );
+        part=tostring( part, orig, maxarr, maxcell );
     end
     exstr=[exstr part]; %#ok<AGROW> 
     lpos=i+1;
@@ -57,9 +62,7 @@ if nargout<1
     stop_check;
 end
 
-function str=tostring( val, orig )
-maxarr=10;
-maxcell=50;
+function str=tostring( val, orig, maxarr, maxcell )
 if islogical(val)
     val=double(val);
 end
@@ -76,7 +79,7 @@ if isnumeric(val)
             if i>1
                 str=[str, ', ']; %#ok<*AGROW>
             end
-            str=[str, tostring(val(i),sprintf('%s[%d]',orig,i))];
+            str=[str, tostring(val(i),sprintf('%s[%d]',orig,i), maxarr, maxcell)];
         end
         if maxarr<numel(val)
             str=[str, ', ...']; %#ok<*AGROW>
@@ -93,7 +96,7 @@ elseif iscell(val)
         if i>1
             str=[str, ', '];
         end
-        str=[str, tostring(val{i},sprintf('%s{%d}',orig,i))];
+        str=[str, tostring(val{i},sprintf('%s{%d}',orig,i), maxarr, maxcell)];
     end
     if maxcell<numel(val)
         str=[str, ', ...']; %#ok<*AGROW>
@@ -107,7 +110,7 @@ elseif isstruct(val)
         if i>1
             str=[str, ', '];
         end
-        str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name))];
+        str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name), maxarr, maxcell)];
     end
     str=[str, ')'];
 else

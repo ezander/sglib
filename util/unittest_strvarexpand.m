@@ -19,14 +19,12 @@ function unittest_strvarexpand
 
 munit_set_function( 'strvarexpand' );
 
+% define some variables for testing
 a=10; %#ok
 cell={10,'abc'}; %#ok
 test='1234'; %#ok
-s.a=a;
-s.cell=cell;
 
-
-
+% test basic expressions
 assert_equals( strvarexpand(''), '', 'empty' );
 assert_equals( strvarexpand('foo'), 'foo', 'str' );
 assert_equals( strvarexpand('$test$'), '1234', 'var' );
@@ -37,27 +35,33 @@ assert_equals( strvarexpand('XX$a$'), 'XX10', 'mixed1' );
 assert_equals( strvarexpand('$a$YY'), '10YY', 'mixed2' );
 assert_equals( strvarexpand('a+1=$a+1$ cell={$cell{1}$,$cell{2}$} test=$test$'), 'a+1=11 cell={10,abc} test=1234', 'mixed3' );
 
+% test arrays and cells
 assert_equals( strvarexpand('$[1+1,2*3]$'), '[2, 6]', 'arr' );
 assert_equals( strvarexpand('${''abc'',2^3}$'), '{abc, 8}', 'cell1' );
 assert_equals( strvarexpand('$cell$'), '{10, abc}', 'cell2' );
 
+% test logical values and logical arrays
 assert_equals( strvarexpand('$true$'), '1', 'logical_t' );
 assert_equals( strvarexpand('$false$'), '0', 'logical_f' );
 assert_equals( strvarexpand('$[true,false,true]$'), '[1, 0, 1]', 'logical_arr' );
 
-
+% test structs
+s=struct();
+s.a=a;
+s.cell=cell;
 assert_equals( strvarexpand('$struct()$'), '()', 'struct_empty' );
 assert_equals( strvarexpand('$s$'), '(a=10, cell={10, abc})', 'struct' );
 
-
+% test errorneous constructs
 assert_equals( strvarexpand('$not_defined$'), '<err:not_defined>', 'err' );
 assert_equals( strvarexpand('$xxx$'), '<err:xxx>', 'err' );
 
+% test escaped $'s
 assert_equals( strvarexpand('\$xxx\$'), '$xxx$', 'escaped' );
 assert_equals( strvarexpand('$1+2$ \$x\axx\$ $1+1$ \b \$'), '3 $x\axx$ 2 \b $', 'escaped2' );
 
-
-
-% warning( 'off', 'strvarexpand:type' );
-% assert_equals( strvarexpand('$struct()$'), '$struct()$', 'struct_fail' );
-% warning( 'on', 'strvarexpand:type' );
+% test optional parameters
+assert_equals( strvarexpand('$[1,2,3,4,5]$', 'maxarr', 2), '[1, 2, ...]', 'maxarr2' );
+assert_equals( strvarexpand('$[1,2,3,4,5]$', 'maxarr', 3), '[1, 2, 3, ...]', 'maxarr3' );
+assert_equals( strvarexpand('${1,2,3,4,5}$', 'maxcell', 2), '{1, 2, ...}', 'maxcell2' );
+assert_equals( strvarexpand('${1,2,3,4,5}$', 'maxcell', 4), '{1, 2, 3, 4, ...}', 'maxcell4' );
