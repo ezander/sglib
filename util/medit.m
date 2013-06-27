@@ -127,7 +127,17 @@ if writetofile
     fclose( fid );
 end
 
-edit( filename )
+try
+    err = false;
+    oldpath=addpath(fullfile(matlabroot, 'toolbox/matlab/codetools'), '-begin');
+    edit(filename);
+catch
+    err = true;
+end
+matlabpath(oldpath)
+if err
+    rethrow(lasterror);
+end
 
 
 
