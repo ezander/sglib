@@ -2,6 +2,9 @@
 % move mean_var_update to stats
 % move plot_resp to plot_gpc_resp...
 % need function to check compatibility of gpc's
+% gpcbasis_create should also work with an rvtype, 
+% need function to map polynomials system char's to names
+% insert @default stuff into get_option
 
 %% 19 Jun 2013
 

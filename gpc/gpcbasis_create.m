@@ -1,16 +1,36 @@
 function V = gpcbasis_create(polysys, varargin)
 % GPCBASIS_CREATE Short description of gpcspace_create.
 %   GPCSPACE_CREATE Long description of gpcspace_create.
+%   
+%   H,h - Gauss/Hermite (normalised)
+%   P,p - Uniform/Legendre (normalised)
+%   L,l - Exponential/Laguerre (both are automatically normalised)
+%   T,t - Arcsine/Chebyshev 1st kind (both normalised)
+%   U,u - Semicircle/Chebyshev 2nd kind (both normalised)
+%   M   - Monomials (no corresponding probability measure, normalisation
+%           not possible)
 %
 % Options
-%
-% References
-%
-% Notes
+%   m: {automatic, length=polysys}
+%      Number of random variables in the germ of the GPC
+%   p: {automatic, 0}
+%      Order of expansion, if multiindex needs to be created
+%   full_tensor: {false}, true
+%      Create the multiindex set for full tensor polynomials instead of
+%      complete polynomials (i.e. the polynomial with the highest degree
+%      has degree M*P instead of degree P).
+%   I: {automatic}
+%      If specified this is used as multiindex set, m and p should not be
+%      specified then. Size of multiindex set (dim=2) should match the
+%      length of polysys (i.e. ismember(length(polysys), [1, dim(I,2)]))
 %
 % Example (<a href="matlab:run_example gpcbasis_create">run</a>)
+%   % Create a GPC basis with Hermite Chaoses in 4 RVs up to total degree 2
+%   V = gpcbasis_create('H', 'm', 4, 'p', 2);
+%   fprintf('%d basis functions in %d RVs\n', gpcbasis_size(V,1), gpcbasis_size(V,2));
+%   V = gpcbasis_create('hlp', 'p', 6);
 %
-% See also
+% See also GPC, GPCBASIS_SIZE
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
