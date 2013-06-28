@@ -1,3 +1,8 @@
+% move polysys_pdf to gpc, create cdfinv and cdf
+% move mean_var_update to stats
+% move plot_resp to plot_gpc_resp...
+% need function to check compatibility of gpc's
+
 %% 19 Jun 2013
 
 % error measure for response surface (+)

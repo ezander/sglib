@@ -1,4 +1,4 @@
-function [y_relerr, xi] = compute_mc_error(y_j_alpha, x_i_alpha, V_xy, phi_j_beta, V_phi, N)
+function [y_relerr, xi] = compute_mc_error(y_j_beta, V_y, x_i_alpha, V_x, phi_j_gamma, V_phi, N)
 % COMPUTE_MC_ERROR Short description of compute_mc_error.
 %   COMPUTE_MC_ERROR Long description of compute_mc_error.
 %
@@ -23,11 +23,11 @@ function [y_relerr, xi] = compute_mc_error(y_j_alpha, x_i_alpha, V_xy, phi_j_bet
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-xi = gpc_sample(V_xy, N, 'mode', 'lhs');
+xi = gpc_sample(V_x, N, 'mode', 'lhs');
 
-x = gpc_evaluate(x_i_alpha, V_xy, xi);
-y = gpc_evaluate(y_j_alpha, V_xy, xi);
+x = gpc_evaluate(x_i_alpha, V_x, xi);
+y = gpc_evaluate(y_j_beta, V_y, xi);
 
-y_approx = gpc_evaluate(phi_j_beta, V_phi, x);
+y_approx = gpc_evaluate(phi_j_gamma, V_phi, x);
 
 y_relerr = (sum((y-y_approx).^2, 2)/N) ./ (sum(y.^2, 2)/N);

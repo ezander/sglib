@@ -1,4 +1,4 @@
-function [V_phi, phi_j_beta]=approx_rvmap(y_j_alpha, x_i_alpha, V_xy, p_phi, p_int, varargin)
+function [V_phi, phi_j_gamma]=approx_rvmap(y_j_beta, V_y, x_i_alpha, V_x, p_phi, p_int, varargin)
 % APPROX_RVMAP Short description of approx_rvmap.
 %   APPROX_RVMAP Long description of approx_rvmap.
 %
@@ -27,14 +27,17 @@ function [V_phi, phi_j_beta]=approx_rvmap(y_j_alpha, x_i_alpha, V_xy, p_phi, p_i
 Nx = size(x_i_alpha, 1);
 V_phi=gpcbasis_create('M', 'm', Nx, 'p', p_phi, 'full_tensor', ~true);
 
-[xi_i, w_i] = gpc_integrate([], V_xy, p_int);
+assert(gpcbasis_size(V_x, 2)==gpcbasis_size(V_y, 2));
+% check_gpc_compatibility(V_x, V_y, 'same_germ');
 
-x_i = gpc_evaluate(x_i_alpha, V_xy, xi_i);
-y_j = gpc_evaluate(y_j_alpha, V_xy, xi_i);
+[xi_i, w_i] = gpc_integrate([], V_x, p_int);
+
+x_i = gpc_evaluate(x_i_alpha, V_x, xi_i);
+y_j = gpc_evaluate(y_j_beta, V_y, xi_i);
 phi_i = gpc_eval_basis(V_phi, x_i);
 
 A = phi_i * diag(w_i) * phi_i';
 b = phi_i * diag(w_i) * y_j';
-phi_j_beta = (A\b)';
+phi_j_gamma = (A\b)';
 
 %cond(A)
