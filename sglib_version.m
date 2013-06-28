@@ -82,10 +82,16 @@ msgs{end+1} = 'Attention (0.9.6): clenshaw_curtis_legendre_rule removed. Use cle
 % * Added inverse CDF's for various distributions
 % * Various small performance and interface improvements
 msgs{end+1} = 'Attention (0.9.7): large restructuring of sglib directories!';
-version = [0, 9, 7];
 
 % Version 0.9.8 (upcoming)
 % * Added Latin hypercube sampling and QMC for GPC
+% * Added computation of GPC covariance matrices
+% * Improved gpcbasis_create and _size functions
+% * Added functions for plotting of response surfaces
+% * Added functions for approximating maps between rv's 
+version = [0, 9, 8];
+
+% Version 0.9.9 (upcoming)
 
 
 % If Version information is requested as string, convert the arrary

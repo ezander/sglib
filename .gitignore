@@ -9,3 +9,5 @@ sglib.settings
 *.pdf
 *.tex
 *.ps
+*.zip
+testing/xiu_book/html

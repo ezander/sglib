@@ -1,5 +1,5 @@
 % SGLib (WiRe)
-% Version 0.9.7 27-JUL-2013
+% Version 0.9.8 28-JUL-2013
 %
 % This directory contains the essential methods for working with stochastic
 % Galerkin methods i.e. dealing with stochastic distributions, orthogonal
