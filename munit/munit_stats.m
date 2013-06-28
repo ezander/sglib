@@ -19,6 +19,7 @@ function stats=munit_stats(cmd,varargin)
 
 % persistent var to keep stats during calls
 persistent munit_stats; 
+mlock;
 
 if nargin<1
     cmd='get';

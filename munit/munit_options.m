@@ -18,6 +18,7 @@ function options=munit_options(cmd,varargin)
 
 % persistent var to keep options during calls
 persistent munit_options;
+mlock;
 
 if nargin<1
     cmd='get';

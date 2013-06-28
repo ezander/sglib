@@ -78,6 +78,7 @@ munit_printf('debug', 'Entered module (%d): %s', {level, module_name});
 
 % for coverage report we need to start profiling
 if coverage
+    clear('functions');
     profile('on');
 end
 
