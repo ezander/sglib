@@ -80,8 +80,11 @@ if ~isequal(pdf_plane, 'none')
     
     % plot pdf
     hold on;
+    s = ishold;
     reshape_surf(N, N, xi(1,:), xi(2,:), repmat(l, size(p)), c_p)
-    hold off;
+    if ~s
+        hold off;
+    end
     shading('interp');
 end
 

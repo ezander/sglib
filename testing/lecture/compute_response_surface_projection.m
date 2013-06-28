@@ -1,4 +1,4 @@
-function u_i_alpha = compute_response_surface_projection(init_func, solve_func, V_u, p, varargin)
+function [u_i_alpha, x, w] = compute_response_surface_projection(init_func, solve_func, V_u, p_int, varargin)
 % COMPUTE_RESPONSE_SURFACE_PROJECTION Compute a gpc response surface representation.
 %   COMPUTE_RESPONSE_SURFACE_PROJECTION Long description of compute_response_surf_projection.
 %
@@ -23,9 +23,13 @@ function u_i_alpha = compute_response_surface_projection(init_func, solve_func, 
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[grid,options]=get_option(options, 'grid', 'smolyak');
+check_unsupported_options(options, mfilename);
+
 state = funcall(init_func);
 
-[x,w] = gpc_integrate([], V_u, p);
+[x,w] = gpc_integrate([], V_u, p_int, 'grid', grid);
 M = gpcbasis_size(V_u, 1);
 N = size(x,2);
 u_i_alpha = zeros(state.num_vars, M);
