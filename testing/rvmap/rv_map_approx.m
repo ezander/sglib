@@ -1,18 +1,17 @@
 function rv_map_approx
 
-
 Nx = 3;
 V_x=gpcbasis_create('H', 'm', 4, 'p', 2);
 x_i_alpha = gpc_rand_coeffs(V_x, Nx);
 
 Ny = 2;
-V_y=gpcbasis_create('H', 'm', 4, 'p', 3);
+V_y=gpcbasis_create('H', 'm', 4, 'p', 2);
 y_j_beta = gpc_rand_coeffs(V_y, Ny);
 
 p_phi = 3;
 p_int = 6;
 
-[V_phi, phi_j_gamma]=approx_rvmap(y_j_beta, V_y, x_i_alpha, V_x, p_phi, p_int);
+[V_phi, phi_j_gamma]=approx_rvmap(y_j_beta, V_y, x_i_alpha, V_x, p_phi, p_int, 'cond_warning', 1e10);
 
 %% show difference between approximations
 

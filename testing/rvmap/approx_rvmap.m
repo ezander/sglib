@@ -23,6 +23,9 @@ function [V_phi, phi_j_gamma]=approx_rvmap(y_j_beta, V_y, x_i_alpha, V_x, p_phi,
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[cond_warning,options]=get_option(options, 'cond_warning', false);
+check_unsupported_options(options, mfilename);
 
 Nx = size(x_i_alpha, 1);
 V_phi=gpcbasis_create('M', 'm', Nx, 'p', p_phi, 'full_tensor', ~true);
@@ -40,4 +43,11 @@ A = phi_i * diag(w_i) * phi_i';
 b = phi_i * diag(w_i) * y_j';
 phi_j_gamma = (A\b)';
 
-%cond(A)
+if cond_warning
+    kappa = cond(A);
+    if kappa>=cond_warning
+        warning('sglib:approx_rvmap:cond', ...
+            'Condition number of matrix too large (%g), function approximation may be inaccurate', ...
+            kappa);
+    end
+end
