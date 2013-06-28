@@ -20,6 +20,10 @@ function assert_error( eval_func, expect_err_id, assert_id)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin<3
+    assert_id=[];
+end
+
 result_list={};
 try
     if ischar(eval_func)
