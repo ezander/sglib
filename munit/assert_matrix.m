@@ -23,6 +23,10 @@ options=varargin2options( varargin );
 [exact,options]=get_option( options, 'exact', false );
 check_unsupported_options(options,mfilename);
 
+if nargin<3
+    assert_id = [];
+end
+
 if ischar(properties)
     properties={properties};
 end
