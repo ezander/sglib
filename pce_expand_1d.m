@@ -39,11 +39,6 @@ function [X_alpha,I]=pce_expand_1d( X_func, p )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin==0
-    unittest_pce_expand_1d;
-    return
-end
-
 I=multiindex(1,p);
 order=2*max(p,1)+2;
 

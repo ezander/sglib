@@ -47,11 +47,6 @@ function [z_k_gamma,I_z,M]=pce_multiply( x_i_alpha, I_x, y_j_beta, I_y, I_z, var
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin==0
-    unittest_pce_multiply;
-    return;
-end
-
 % check number of arguments
 error( nargchk( 3, inf, nargin ) );
 

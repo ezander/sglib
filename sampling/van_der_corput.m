@@ -17,7 +17,7 @@ function phi = van_der_corput(n, p, varargin)
 %   van_der_corput(1:10, 3)
 %   van_der_corput(1:10, 3, "scramble_func", [0, 2, 1])
 %
-% See also HALTON, HAMMERSLEY, UNITTEST_VAN_DER_CORPUT, RAND
+% See also HALTON, HAMMERSLEY, RAND
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

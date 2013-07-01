@@ -40,7 +40,7 @@ function [x_mean, x_var, x_m2] = mean_var_update(n, x_n, x_mean, x_var, x_m2)
 %   end
 %   [x_mean, x_var]
 %
-% See also MEAN, VAR, UNITTEST_MEAN_VAR_UPDATE
+% See also MEAN, VAR
 %
 % References:
 %   Donald E. Knuth (1998). The Art of Computer Programming, volume 2: 
