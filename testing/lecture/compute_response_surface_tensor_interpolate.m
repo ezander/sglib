@@ -33,10 +33,11 @@ state = funcall(init_func);
 A=gpc_eval_basis(V_u, x);
 
 
-N = size(x,2);
-u = zeros(state.num_vars, N);
-for i = 1:N
-    u(:,i) = funcall(solve_func, state, x(:,i));
+Q = length(w);
+u = zeros(state.num_vars, Q);
+for j = 1:Q
+    x_j = x(:,j);
+    u(:,j) = funcall(solve_func, state, x_j);
 end
 
 u_i_alpha = u/A;

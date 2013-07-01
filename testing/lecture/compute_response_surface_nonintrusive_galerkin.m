@@ -44,26 +44,23 @@ end
 
 
 [x,w] = gpc_integrate([], V_u, p_int, 'grid', grid);
-
+Q = length(w);
 
 converged=false;
-invnrm2 = 1./gpc_norm(V_u, 'sqrt', false);
-
 for k=1:max_iter
     unext_i_alpha = u_i_alpha;
     % do the computation of unext
     
     % that's the z-sum here, i.e. z=x(:,j)
-    for j=1:length(w)
+    for j=1:Q
         p = x(:, j);
         % compute u_i_p = sum u_i_alpha Psi_alpha(p)
         u_i_p = gpc_evaluate(u_i_alpha, V_u, p);
         % evaluate S at p, u_i_p
         S_p = funcall(step_func, state, u_i_p, p);
         % update unext
-        unext_i_alpha = unext_i_alpha + w(j) * S_p * (gpc_eval_basis(V_u, p) .* invnrm2)';
+        unext_i_alpha = unext_i_alpha + w(j) * S_p * gpc_eval_basis(V_u, p, 'dual', true);
     end
-    %gpcbasis_evaluate(V_u, p, 'dual', true)
     
     % compute the size of the update step in the Frobenius norm, maybe not
     % the best convergence criterion, but at least easy and fast to compute

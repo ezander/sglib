@@ -30,13 +30,14 @@ if ~isempty(mode)
 end
 
 state = funcall(init_func);
-V = {polysys, multiindex(state.num_params, 0)};
-u = zeros(state.num_vars, N);
-p = gpc_sample(V, N, sample_options);
-for i = 1:N
-    u_i = funcall(solve_func, state, p(:, i));
-    u(:, i) = u_i;
+V = gpcbasis_create(polysys, 'm', state.num_params);
+x = gpc_sample(V, N, sample_options);
+
+u_mean = [];
+u_var = [];
+for j = 1:N
+    x_j = x(:,j);
+    u_j = funcall(solve_func, state, x_j);
+    [u_mean, u_var] = mean_var_update(j, u_j, u_mean, u_var);
 end
 
-u_mean = mean(u, 2);
-u_var = var(u, [], 2);

@@ -1,4 +1,4 @@
-function [u_mean, u_var] = compute_moments_quad(init_func, solve_func, polysys, p, varargin)
+function [u_mean, u_var] = compute_moments_quad(init_func, solve_func, polysys, p_int, varargin)
 % COMPUTE_MOMENTS_QUAD Compute mean and variance by high-dimensional quadrature.
 %   [U_MEAN, U_VAR] = COMPUTE_MOMENTS_QUAD(INIT_FUNC, SOLVE_FUNC, P) computes
 %   the mean and variance of a system described by INIT_FUNC and SOLVE_FUNC
@@ -29,18 +29,14 @@ options = varargin2options(varargin);
 check_unsupported_options(options, mfilename);
 
 state = funcall(init_func);
+V = gpcbasis_create(polysys, 'm', state.num_params);
+[x, w] = gpc_integrate([], V, p_int, 'grid', grid);
+Q = length(w);
 
-V = {polysys, multiindex(state.num_params, 0)};
-
-[x, w] = gpc_integrate([], V, 5, 'grid', grid);
-
-N = size(x,2);
-u = zeros(state.num_vars, N);
-for i = 1:N
-    p = x(:, i);
-    u_p = funcall(solve_func, state, p);
-    
-    u(:, i) = u_p;
+u = zeros(state.num_vars, Q);
+for j = 1:Q
+    x_j = x(:, j);
+    u(:, j) = funcall(solve_func, state, x_j);
 end
 
 u_mean = u * w;

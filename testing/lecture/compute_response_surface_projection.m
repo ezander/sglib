@@ -31,13 +31,12 @@ state = funcall(init_func);
 
 [x,w] = gpc_integrate([], V_u, p_int, 'grid', grid);
 M = gpcbasis_size(V_u, 1);
-N = size(x,2);
+Q = length(w);
 u_i_alpha = zeros(state.num_vars, M);
 
-nrm2 = gpc_norm(V_u, 'sqrt', false);
-for k = 1:N
-    p_k = x(:, k);
-    u_i_k = funcall(solve_func, state, p_k);
-    psi_k_alpha = gpc_eval_basis(V_u, p_k);
-    u_i_alpha = u_i_alpha + w(k) * u_i_k * (psi_k_alpha ./ nrm2)';
+for j = 1:Q
+    p_j = x(:, j);
+    u_i_j = funcall(solve_func, state, p_j);
+    psi_j_alpha_dual = gpc_eval_basis(V_u, p_j, 'dual', true);
+    u_i_alpha = u_i_alpha + w(j) * u_i_j * psi_j_alpha_dual;
 end
