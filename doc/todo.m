@@ -8,12 +8,13 @@
 % gpcbasis_create should also work with an rvtype, 
 % need function to map polynomials system char's to names
 % insert @default stuff into get_option
+% cleanup the main sglib directory/maybe make some randfield dir?
+% better heuristics for ranges in plot_resp_surface
 
 %% 19 Jun 2013
 
 % error measure for response surface (+)
 % plotting for response surfaces (+)
-% full tensor grid 
 
 %% Todos as of 12 Jun 2013
 

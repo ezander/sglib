@@ -75,8 +75,8 @@ switch(mode)
         U = [];
         if ~isempty(rand_func)
             U = funcall(rand_func, n, m);
-            if size(U,1)~=n
-                error('sglib:error');
+            if any(size(U)~=[n, m])
+                error('sglib:gpc_sample', 'rand_func did not return an array of the expect size [%d,%d], but [%d,%d]', n, m, size(U,1), size(U,2));
             end
         end
     case 'qmc'

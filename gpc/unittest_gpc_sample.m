@@ -54,3 +54,18 @@ assert_equals(size(gpc_sample(V, N, 'mode', 'qmc')), [m, N], 'size2_qmc');
 
 %% qmc is repeatable
 assert_equals(gpc_sample(V, N, 'mode', 'qmc'), gpc_sample(V, N, 'mode', 'qmc'), 'rep_qmc');
+
+%% test with rand_func functions
+assert_equals(gpc_sample(gpcbasis_create('ppp'), 7, 'rand_func', @ones), ones(3, 7), 'rfunc_ones');
+assert_equals(gpc_sample(gpcbasis_create('ppp'), 7, 'rand_func', @zeros), -ones(3, 7), 'rfunc_zeros1');
+assert_equals(gpc_sample(gpcbasis_create('lll'), 7, 'rand_func', @zeros), -zeros(3, 7), 'rfunc_zeros2');
+assert_equals(gpc_sample(gpcbasis_create('ut'), 7, 'rand_func', @zeros), -ones(2, 7), 'rfunc_zeros3');
+
+assert_equals(gpc_sample(gpcbasis_create('hpuHPT'), 7, 'rand_func', @half), zeros(6, 7), 'rfunc_half1');
+assert_error(funcreate(@gpc_sample, gpcbasis_create('h', 'm', 3), 7, 'rand_func', @wrong), 'sglib:gpc_sample', 'err_nomatch');
+
+function U=half(n,m)
+U=0.5 + zeros(n,m);
+
+function U=wrong(n,m)
+U=zeros(n+2,m);
