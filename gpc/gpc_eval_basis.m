@@ -1,12 +1,15 @@
 function y = gpc_eval_basis(V, xi, varargin)
 % GPC_EVAL_BASIS Evaluates the GPC basis functions at given points.
-%   Y = GPC_EVAL_BASIS(V, XI) evaluates the GPC basis functions specified
+%   Y_ALPHA_I = GPC_EVAL_BASIS(V, XI) evaluates the GPC basis functions specified
 %   by V at the points specified by XI. If there are M basis functions
 %   defined on m random variables then XI should be m x N matrix, where N
 %   is the number of evaulation points. The returned matrix Y is of size 
 %   M x N such that Y(I,j) is the I-th basis function evaluated at point
 %   XI(J).
 %
+%   Y_I_ALPHA = GPC_EVAL_BASIS(V, XI, 'dual', true) evaluates the dual GPC
+%   basis. (Some more explanation needed...)
+%   
 % Example (<a href="matlab:run_example gpc_eval_basis">run</a>)
 %
 % See also
@@ -22,6 +25,15 @@ function y = gpc_eval_basis(V, xi, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[dual, options]=get_option(options, 'dual', false);
+check_unsupported_options(options, mfilename);
+
 M = size(V{2}, 1);
 a_i_alpha = sparse(1:M, 1:M, ones(M,1));
 y = gpc_evaluate(a_i_alpha, V, xi);
+
+if dual
+    nrm2 = gpc_norm(V, 'sqrt', false);
+    y = binfun(@rdivide, y, nrm2)';
+end
