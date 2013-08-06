@@ -32,8 +32,4 @@ else
     w = ones(size(x,2),1);
 end
 
-y = gpc_eval_basis({'M', I}, 0.5*(x+1)) * diag(w);
-
-
-
-
+y = gpcbasis_evaluate({'M', I}, 0.5*(x+1)) * diag(w);

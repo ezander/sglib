@@ -1,4 +1,3 @@
-% move gpc_eval_basis to gpcbasis_evaluate
 % comutation of dual basis in ???
 
 % move polysys_pdf to gpc, create cdfinv and cdf

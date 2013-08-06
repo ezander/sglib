@@ -61,7 +61,7 @@ V = gpcbasis_create(polysys, 'p', 4);
 % interval [-1, 1] and plotted. Note that |x| must be a row vector in this
 % case (more to the rationale in the section on gpc).
 x = linspace(-1, 1);
-y = gpc_eval_basis(V, x);
+y = gpcbasis_evaluate(V, x);
 plot(x,y)
 title('Legendre polynomials of degree 0 to 4')
 
@@ -114,7 +114,7 @@ end
 
 V = gpcbasis_create(polysys, 'p', 4);
 x = linspace(-2, 2);
-y = gpc_eval_basis(V, x);
+y = gpcbasis_evaluate(V, x);
 plot(x,y)
 title('Hermite polynomials of degree 0 to 4')
 
@@ -161,7 +161,7 @@ end
 
 V = gpcbasis_create(polysys, 'p', 4);
 x = linspace(0, 4);
-y = gpc_eval_basis(V, x);
+y = gpcbasis_evaluate(V, x);
 plot(x,y)
 title('Laguerre polynomials of degree 0 to 4')
 

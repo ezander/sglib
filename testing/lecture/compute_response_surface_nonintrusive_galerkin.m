@@ -59,7 +59,7 @@ for k=1:max_iter
         % evaluate S at p, u_i_p
         S_p = funcall(step_func, state, u_i_p, p);
         % update unext
-        unext_i_alpha = unext_i_alpha + w(j) * S_p * gpc_eval_basis(V_u, p, 'dual', true);
+        unext_i_alpha = unext_i_alpha + w(j) * S_p * gpcbasis_evaluate(V_u, p, 'dual', true);
     end
     
     % compute the size of the update step in the Frobenius norm, maybe not

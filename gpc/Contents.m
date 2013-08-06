@@ -46,8 +46,12 @@
 %       systems
 %
 % Files
+%
 % GPC functions (high level)
-%   gpc_eval_basis               - Evaluates the GPC basis functions at given points.
+%   gpcbasis_create              - Short description of gpcspace_create.
+%   gpcbasis_size                - Return the size of the GPC basis.
+%   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
+%   gpc_covariance               - Compute covariance matrix between GPC variables.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
 %   gpc_integrate                - Short description of gpc_integrate.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
@@ -55,7 +59,10 @@
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
 %   gpc_sample                   - Draw samples from a GPC.
 %   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
-%   unittest_gpc_eval_basis      - Test the GPC_EVAL_BASIS function.
+%   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
+%   unittest_gpcbasis_size       - Test the GPCBASIS_SIZE function.
+%   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
+%   unittest_gpc_covariance      - Test the GPC_COVARIANCE function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.

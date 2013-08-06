@@ -37,7 +37,7 @@ assert(gpcbasis_size(V_x, 2)==gpcbasis_size(V_y, 2));
 
 x_i = gpc_evaluate(x_i_alpha, V_x, xi_i);
 y_j = gpc_evaluate(y_j_beta, V_y, xi_i);
-phi_i = gpc_eval_basis(V_phi, x_i);
+phi_i = gpcbasis_evaluate(V_phi, x_i);
 
 A = phi_i * diag(w_i) * phi_i';
 b = phi_i * diag(w_i) * y_j';

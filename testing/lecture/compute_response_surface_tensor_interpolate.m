@@ -30,7 +30,7 @@ state = funcall(init_func);
 [x,w] = gpc_integrate([], V_u, p_u+1, 'grid', 'full_tensor');
 
 % compute the (generalised) Vandermonde matrix
-A=gpc_eval_basis(V_u, x);
+A=gpcbasis_evaluate(V_u, x);
 
 
 Q = length(w);
