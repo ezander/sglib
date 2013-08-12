@@ -125,4 +125,6 @@ x2=max(x,[],2);
 
 xn = repmat(0.5, size(x));
 ind = (x2-x1) > 1e-6 * (x1+x2);
-xn(ind,:)=binfun(@rdivide, binfun(@minus, x(ind,:), x1(ind)), x2(ind)-x1(ind));
+if any(ind)
+    xn(ind,:)=binfun(@rdivide, binfun(@minus, x(ind,:), x1(ind)), x2(ind)-x1(ind));
+end
