@@ -23,6 +23,11 @@ function munit_run_testsuite( varargin )
 %     tested. Since this functions relies on the profiler and the coverage
 %     report feature this option is only available in matlab version from
 %     probably 7 onward.
+%   include_only: {}
+%     If specified, only tests for the included commands are run. Must
+%     contain a cell array of strings, which can be the names of the
+%     functions that shall be tested themselves, or the names of the
+%     corresponding unittests.
 %
 % Example
 %   munit_reset_options();
@@ -49,6 +54,7 @@ options=varargin2options( varargin );
 [module_name,options]=get_option( options, 'module_name', '' );
 [coverage,options]=get_option( options, 'coverage', false );
 [on_error,options]=get_option( options, 'on_error', 'debug' );
+[include_only,options]=get_option( options, 'include_only', {} );
 [level,options]=get_option( options, 'level', 1 );
 check_unsupported_options( options, mfilename );
 
@@ -100,13 +106,21 @@ end
 
 for i=1:length(files)
     test_cmd=files(i).name(1:end-2);
-    munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
 
     slash_pos=find(test_cmd==filesep);
     if ~isempty(slash_pos)
         test_cmd=test_cmd( slash_pos(end)+1:end );
     end
-
+    
+    if ~isempty(include_only) 
+        testit = false;
+        testit = testit || ismember(test_cmd, include_only);
+        testit = testit || ismember(test_cmd(length(prefix)+1:end), include_only);
+        if ~testit
+            continue
+        end
+    end
+    munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
     safe_eval( curr_dir, test_cmd, on_error );
 end
 
