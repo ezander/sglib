@@ -30,12 +30,15 @@ options=varargin2options(varargin);
 [avoid_bsxfun, options]=get_option(options, 'avoid_bsxfun', false);
 check_unsupported_options(options, mfilename);
 
-if ~avoid_bsxfun || iscell(func) || isversion('0.0', '7.4')
+if avoid_bsxfun || iscell(func) || isversion('0.0', '7.4')
     n=max(ndims(A),ndims(B));
     sa=size(A);
     sb=size(B);
     sa=[sa ones(1,n-length(sa))];
     sb=[sb ones(1,n-length(sb))];
+    if ~all(sa==sb | sa==1 | sb==1)
+        error('MATLAB:bsxfun:arrayDimensionsMustMatch', 'Non-singleton dimensions of the two input arrays must match each other.');
+    end
     oa=sa==1;
     ob=sb==1;
     ra=ones(1,n);
