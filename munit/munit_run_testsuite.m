@@ -81,6 +81,7 @@ if level==1
 end
 munit_stats('push', module_name );
 munit_printf('debug', 'Entered module (%d): %s', {level, module_name});
+munit_printf('debug', '   directory: %s', {curr_dir});
 
 % for coverage report we need to start profiling
 if coverage
@@ -169,3 +170,4 @@ catch %#ok<CTCH>
             assert_false( true, sprintf( 'Caught an error in %s (%s):  %s', unittest_cmd, show_cmd, err.message ) );
     end
 end
+cd(olddir);

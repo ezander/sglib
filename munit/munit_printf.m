@@ -20,7 +20,8 @@ function munit_printf(type, message, vars)
 %options=munit_options();
 switch type
     case 'debug'
-        no_disp=true;
+        debug_mode = munit_set_debug('state');
+        no_disp=~debug_mode;
     otherwise
         no_disp=false;
 end
