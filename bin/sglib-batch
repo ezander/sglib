@@ -1,0 +1,51 @@
+#! /bin/bash
+
+cmd="$(basename $1 .m)"
+sglibroot="$HOME/projects/stochastics/sglib"
+extracmd="$2"
+
+# note: only redirecting stdin allows backgrounding of the process;
+# furthermore, by piping "quit" into the process instead of putting it
+# into the -r command, matlab exits even when an error is encountered
+# in evaluating cmd
+
+#rm -rf /tmp/sglib-ezander/copy/
+mkdir -p /tmp/sglib-ezander/copy/
+rsync -av $sglibroot /tmp/sglib-ezander/copy/ 
+sglibroot="/tmp/sglib-ezander/copy/sglib"
+
+
+OPTIONS=""
+
+# Inhibit starting the jvm
+# OPTIONS="$OPTIONS -nojvm"
+
+# Inhibit showing the splash screen
+OPTIONS="$OPTIONS -nosplash"
+
+# Inhibit the display completely
+if [ "$0" == "sglib-batch" ]; then
+    OPTIONS="$OPTIONS -nodisplay"
+fi
+
+
+# Inhibit only the desktop
+OPTIONS="$OPTIONS -nodesktop"
+
+
+echo "quit" | matlab $OPTIONS  -r "run('$sglibroot/thesis/startup'); $extracmd; $cmd"
+
+STAT="% $(git log -n1 | grep commit)\n"
+STAT="$STAT% cmdate $(git log -n1 | grep '^Date:'| tr -s ' '|cut -d' ' -f2-)"
+#if [ -n $(git status --untracked=no 2>/dev/null) ]; then
+if git status --untracked=no | grep -q "modified:"; then
+    STAT="$STAT (dirty)"
+else
+    STAT="$STAT (clean)"
+fi
+STAT="$STAT\n"
+STAT="$STAT% rndate $(date)"
+echo
+echo -e "$STAT" 
+echo "% script $(basename $(pwd))/$1"
+echo "% host   $(uname -a)"

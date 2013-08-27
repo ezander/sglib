@@ -1,0 +1,34 @@
+#! /bin/bash
+
+excl='( -name .git -o -name contrib ) -prune'; 
+#echo $excl; 
+tree=false;
+tree=true;
+
+indent='        ';
+
+for i in $(find . -type d \( $excl -o -print \) ); do 
+    num=$(find $i $excl -o -name "*.m" | wc -l); 
+    nums=$(find $i -maxdepth 1 -name "*.m" | wc -l); 
+    #nume=$(find $i -mindepth 2 -name "*.m" | wc -l); 
+    nume=$((num-nums))
+    if [ $num -gt 0 ]; then 
+	if $tree; then
+	    #ind=$(echo $i|cut -d/ -f2-|sed "s/[^/]//g; s/[/]/$indent/g;" );
+	    ind=$(echo $i|sed "s/[^/]//g; s/[/]/$indent/g;" );
+	    name=$(basename $i)
+	    sep=" - "
+	else
+	    ind=""
+	    name=$i;
+	    sep=": "
+	fi
+	if [ "$name" == "." ]; then name=$(basename $(pwd)); fi
+	printf "$ind%3d(%3d+%3d)$sep%s\n" $num $nums $nume $name; 
+    fi; 
+done
+
+
+#find . $excl -o -name "*.m" | wc -l
+
+#find . $excl -o -name "*.m" -exec cat {} \; | egrep -v "^ *%" | egrep -v "^ *$" | wc -l

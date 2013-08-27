@@ -1,0 +1,3 @@
+#! /bin/bash
+
+touch $HOME/sglib_stop

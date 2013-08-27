@@ -1,0 +1,47 @@
+#! /bin/bash
+
+file="$1"
+if [ -z "$file" ]; then
+    echo "No file specified"
+    exit 1
+fi
+if [ ! -e "$file" ]; then
+    echo "File not found"
+    exit 1
+fi
+
+dir=$(mktemp -d)
+
+awk --source "BEGIN {dir=\"$dir\"; }" --source '
+  BEGIN { 
+    x=1; 
+    x=2;
+  } 
+  /^function/ { 
+    if (x<=1) {
+      x=2
+    }
+    else {
+      s=$0
+      sub( /^function[[:blank:]]*/, "", s )
+      sub( /^.*=[[:blank:]]*/, "", s )
+      sub( /\(.*$/, "", s )
+      currfile=dir "/" s ".m"
+      print "Line: " NR ": " $0
+      # print "================================================================" 
+      print "     writing to: " currfile
+      x=3
+    }
+  }
+  x==3 { 
+    # print "    " s ": " $0 
+    print $0 >> currfile
+  }
+  END { print "done" }
+' \
+    $file 
+
+mkdir -p "private"
+mv -i $dir/* private/
+
+rm -rf $dir 

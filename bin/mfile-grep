@@ -1,0 +1,7 @@
+#! /bin/bash
+
+if [ -z $2 ]; then
+    grep "$1" --color=always -ir --include="*.m" . | less -R
+else
+    emacs $(grep "$1" -irl --include="*.m" .) &
+fi

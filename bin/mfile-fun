@@ -1,0 +1,12 @@
+#! /bin/bash
+
+base='/afs/tu-bs.de/appl/';
+name=$(basename $1 ".m");
+
+for dir in $base/matlab*; do
+    echo -en "Searching in $(basename $dir): "
+    l=$(echo $dir|wc -c);
+    found=$(find $dir -iname "$name.m"|cut -c$((l+1))-)
+    echo $found
+done
+
