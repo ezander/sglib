@@ -17,10 +17,16 @@ GIT_SUBTREE="git subtree"
 
 
 case "$1" in
-    "push")
+    push)
 	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
 	;;
-    "pull")
+    pull)
 	$GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
 	;;
+    *)
+	echo "Unknown or empty subcommand '$1'"
+	echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull' or 'push'"
+	exit 1
+	;;
 esac
+echo "foo"
