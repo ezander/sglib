@@ -1,0 +1,26 @@
+#!/bin/bash
+
+REMOTE="git@github.com:ezander/sglib.git"
+#REMOTE="/home/ezander/git/mirror/sglib.git"
+PREFIX="sglib"
+
+if [[ ! (-d "$PREFIX" && -d ".git") ]]; then
+    echo "No $PREFIX or no .git directory found."
+    echo "First change into root directory of subproject!";
+    exit 1;
+fi
+    
+
+PUSH_BRANCH=$(basename $(pwd))
+GIT_SUBTREE="git subtree"
+#GIT_SUBTREE="echo git subtree"
+
+
+case "$1" in
+    "push")
+	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
+	;;
+    "pull")
+	$GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
+	;;
+esac
