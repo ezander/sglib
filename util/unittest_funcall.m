@@ -56,8 +56,8 @@ assert_equals( [d,e], res, 'param_last' );
 
 % test no output arg behaviour
 if ismatlab
-  s=evalc( 'funcall( @sin, 3 )' );
-  assert_true( any( strfind( s, '0.14' ) ), 'must output sin(3)', 'no_argout_sin' );
+  s=evalc( 'funcall( @upper, ''asdf'' )' );
+  assert_true( any( strfind( s, 'ASDF' ) ), 'must output ''ASDF''', 'no_argout_upper' );
 
   s=evalc( 'funcall( @noargout, 3 )' );
   assert_true( any( strfind( s, 'noargout' ) ), 'noargoutout should see nargout==0', 'no_argout_0' );
