@@ -69,22 +69,9 @@ Delta(:,:,3) =[
    122     0    46     0    94   498];
 assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u ), Delta, 'multi' );
 
+assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u, 'algorithm', 1 ), Delta, 'multi' );
+assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u, 'algorithm', 2 ), Delta, 'multi' );
+assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u, 'algorithm', 3 ), Delta, 'multi' );
 
-
-
-
-
-
-if 0
-    % this section is for testing speed only
-    % don't include in normal test runs
-    hermite_triple_fast(10); %#ok<UNRCH>
-    I_k=multiindex(4,4);
-    I_f=multiindex(2,3);
-    [I_k,I_f,I_u]=multiindex_combine( {I_k, I_f}, -1 );
-    n=10;
-    k_iota=rand(n,size(I_k,1));
-    tic;
-    Delta=compute_pce_matrix( k_iota, I_k, I_u );
-    toc
-end
+DeltaMat = reshape(Delta, [], size(Delta,3));
+assert_equals( compute_pce_matrix( k_i_iota, I_k, I_u, 'algorithm', 4 ), DeltaMat, 'multi' );
