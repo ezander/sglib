@@ -123,31 +123,17 @@ function P=polyint_mixed( p, a, m, gauss_vars )
 I=multiindex( m, p );
 i=0:max(I(:));
 modes_legendre=2*uniform_raw_moments( i, -1, 1 )';
-modes_gauss=normal_raw_moments( i, 0, 1 )';
+modes_gauss=normal_raw_moments( i)';
 legendre_vars=1:m;
 legendre_vars(gauss_vars)=[];
 P=a*(prod([modes_legendre(I(:,legendre_vars)+1), modes_gauss(I(:,gauss_vars)+1)],2));
 
-
-% Old and slower, but better intelligible polyint function
-% function P=polyint_rule( p, a, xd, wd )
-% P=0;
-% for i=1:size(xd,2)
-%     P=P+wd(i)*polyeval( p, a, xd(:,i)' );
-% end
-% function y=polyeval( p, a, x )
-% m=size(x,2);
-% I=multiindex( m, p );
-% X=repmat( x, size(I,1), 1 );
-% y=a*prod(X.^I,2);
- 
 function m=uniform_raw_moments(n,a,b)
 m=(a.^(n+1)-b.^(n+1))/(a-b)./(n+1);
 
-function m=normal_raw_moments(n, mu, sigma)
-max_n=max(n(:));
-M=zeros(1,max_n+1);
-for j=0:max_n
-    M(j+1)=sigma.^j.*hermite_val([zeros(1,j) 1],mu/sigma/1i).*(1i.^j);
-end
-m=M(n+1);
+function m=normal_raw_moments(n)
+k=0:round(max(n(:))/2);
+meven=round(factorial(2*k)./(2.^k.*factorial(k)));
+m=zeros(size(n));
+even=(mod(n,2)==0);
+m(even)=meven(n(even)/2+1);

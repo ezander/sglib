@@ -19,8 +19,5 @@ function sglib_testsuite
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-% TODO: implement proper recursive behaviour of testsuite
-% TODO: specify which dirs to run first
 dir=fileparts(mfilename('fullpath'));
 munit_run_testsuite( 'module_name', 'sglib', 'dir', dir );

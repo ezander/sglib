@@ -19,7 +19,7 @@ function unittest_generalised_solve_pcg
 
 munit_set_function( 'generalised_solve_pcg' );
 
-rand('seed', 12345 );
+rand('seed', 12345 ); %#ok<RAND>
 
 [A,M,F]=setup( 5, 3, 3, 2 );
 A=tensor_operator_to_matrix(A);
@@ -41,7 +41,7 @@ assert_equals(info.resvec,resvec,'resvec');
 
 
 [x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxiter, M ); %#ok<ASGLU>
-[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxiter, M ); %#ok<NASGU>
+[x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxiter, M ); %#ok<ASGLU>
 [X,flag,info]=generalised_solve_pcg( A, b, 'reltol', tol, 'Minv', inv(M) ); %#ok<ASGLU>
 assert_equals(x,x2,'pre_x')
 assert_equals(resvec(:),resvec2(:),'pre_resvec')
@@ -60,16 +60,16 @@ F=tensor_to_vector(F);
 Xex=A\F;
 tol=1e-6;
 
-[X,flag,info]=generalised_solve_pcg( A, F, 'abstol', tol );
+[X,flag]=generalised_solve_pcg( A, F, 'abstol', tol );
 assert_equals( flag, 0, 'pcg_op_flag' );
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
-[X,flag,info]=generalised_solve_pcg( A, F, 'Minv', Minv );
+[X,flag]=generalised_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcgprec_op_flag' );
 assert_equals( X, Xex, 'pcgprec_op', 'abstol', tol, 'reltol', tol  );
 
 A=operator_from_matrix(A);
-[X,flag,info]=generalised_solve_pcg( A, F, 'Minv', Minv );
+[X,flag]=generalised_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_linop_flag' );
 assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 
@@ -77,19 +77,19 @@ assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 
 % test the stuff for matrices and linear operators
 [A,M,F]=setup( 5, 3, 3, 2 );
-%M=tensor_operator_to_matrix(M);
-%Minv=operator_from_matrix(M,'solve', 'use_lu', true);
 Xex=tensor_operator_to_matrix(A)\tensor_to_vector(F);
-%A=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
+Aop=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
 tol=1e-5;
 trunc=struct('eps',0,'k_max',inf);
-[X,flag,info]=generalised_solve_pcg( A, F, 'trunc_mode', 'before', 'trunc', trunc );
+[X,flag]=generalised_solve_pcg( Aop, F, 'trunc_mode', 'before', 'trunc', trunc );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
-Minv=stochastic_precond_mean_based( A );
-[X,flag,info]=generalised_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
+Minv=cell(1,2);
+Minv{1}=operator_from_matrix_solve( M{1}, 'lu');
+Minv{2}=operator_from_matrix_solve( M{2}, 'lu');
+[X,flag]=generalised_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=tensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
