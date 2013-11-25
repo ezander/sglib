@@ -1,7 +1,6 @@
 #!/bin/bash
 
 REMOTE="git@github.com:ezander/sglib.git"
-#REMOTE="/home/ezander/git/mirror/sglib.git"
 PREFIX="sglib"
 
 if [[ ! (-d "$PREFIX" && -d ".git") ]]; then
@@ -20,13 +19,17 @@ case "$1" in
     push)
 	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
 	;;
+    pushdirect)
+	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "master"
+	;;
     pull)
 	$GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
 	;;
     *)
 	echo "Unknown or empty subcommand '$1'"
-	echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull' or 'push'"
+	echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
+	echo "  'push' will push into the branch '$PUSH_BRANK' allowing some checks before merging "
+	echo "   into the master branch, while 'pushdirect' will push directly into master."
 	exit 1
 	;;
 esac
-echo "foo"
