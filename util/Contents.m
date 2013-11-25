@@ -34,7 +34,6 @@
 %   save_format               - Saves current display formatting info.
 %   restore_format            - Restores display formatting info.
 %   erase_print               - Erase previous output and print new stuff.
-%   format_poly               - Format a polynomial for output.
 %   strvarexpand              - Expand variables and expression inside a string.
 %
 % Argument checking
@@ -64,18 +63,10 @@
 %
 % Miscellaneous
 %   merge_cells               - Merges two cell arrays with specified positions.
-%   row_col_mult              - Multiply a matrix column- or row-wise with a vector.
-%   binfun                    - Computes a binary function with singleton dimensions expanded.
 %   ifelse                    - Returns one of two arguments depending on condition.
 %   makesavepath              - Making necessary subdirs for saving a file.
 %
-% Numerical functions
-%   chopabs                   - Replace numbers close to zero with zero.
-%   revkron                   - Reversed Kronecker tensor product.
-%   unitvector                - Creates one or more unit vectors.
-%
 % Unclassified functions
-%   accsum                    - Accurately sums an array without cancellation.
 %   cache_file_base           - Returns the base path where cache files are stored.
 %   cache_script              - 
 %   check_empty               - Checks that some variable is empty.
@@ -100,9 +91,6 @@
 %   memstats                  - Short description of memstats.
 %   never                     - Returns false.
 %   package_function          - 
-%   point_range               - Create points for plotting functions with jumps.
-%   roundat                   - Rounds to some given scale.
-%   sqrspace                  - Square-spaced vector
 %   struct2options            - Short description of struct2options.
 %   swallow                   - Just swallows its arguments
 %   timers                    - Allows starting and stopping of timers for performance measurements.
@@ -111,11 +99,9 @@
 % PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
 % UP THE CONTENTS DISPLAY.
 % Test functions
-%   unittest_binfun           - Test the BINFUN function.
+
 %   unittest_cached_funcall   - Test the CACHED_FUNCALL function.
 %   unittest_checks           - Test the CHECKS function.
-%   unittest_chopabs          - Test the CHOPABS function.
-%   unittest_format_poly      - Test the FORMAT_POLY functions.
 %   unittest_funcall          - Test the FUNCALL function.
 %   unittest_funcall_funfun   - Test the FUNCALL_FUNFUN function.
 %   unittest_get_mfile_path   - Test the GET_MFILE_PATH function.
@@ -126,21 +112,14 @@
 %   unittest_makesavepath     - Test the MAKESAVEPATH function.
 %   unittest_merge_cells      - Test the MERGE_CELLS function.
 %   unittest_options          - Test the OPTIONS function.
-%   unittest_revkron          - Test the REVKRON and function.
-%   unittest_row_col_mult     - Test row_col_mult function.
 %   unittest_strvarexpand     - Test the STRVAREXPAND function.
 %   unittest_underline        - Test the UNDERLINE function.
-%   unittest_unitvector       - Test the UNITVECTOR function.
-%   unittest_unitvector       - Test the UNITVECTOR function.
-%   unittest_accsum           - Test the ACCSUM function.
 %   unittest_datestring       - Test the DATESTRING function.
 %   unittest_estimate_rate    - Test the ESTIMATE_RATE function.
 %   unittest_funcreate        - Test the FUNCREATE function.
 %   unittest_get_base_param   - Test the GET_BASE_PARAM function.
 %   unittest_makehyperlink    - Test the MAKEHYPERLINK function.
-%   unittest_roundat          - Test the ROUNDAT function.
 %   unittest_spatial_function - Test the SPATIAL_FUNCTION function.
-%   unittest_sqrspace         - Test the SQRSPACE function.
 %   unittest_struct2options   - Test the STRUCT2OPTIONS function.
 %   unittest_timers           - Test the TIMERS function.
 

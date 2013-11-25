@@ -52,6 +52,7 @@ addpath( basepath );
 addpath( fullfile( basepath, 'doc') );
 addpath( fullfile( basepath, 'util') );
 addpath( fullfile( basepath, 'munit') );
+addpath( fullfile( basepath, 'mathutil') );
 addpath( fullfile( basepath, 'quadrature') );
 addpath( fullfile( basepath, 'pce') );
 addpath( fullfile( basepath, 'gpc') );
@@ -63,19 +64,15 @@ addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'linalg') );
 addpath( fullfile( basepath, 'sfem') );
 addpath( fullfile( basepath, 'fem/simplefem') );
+addpath( fullfile( basepath, 'util/paramstudy') )
 
-if exist( fullfile( basepath, 'util/paramstudy'), 'dir' )
-  addpath( fullfile( basepath, 'util/paramstudy') )
-end
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
 end
 
-
 if add_octave_path
     addpath( fullfile( basepath, 'util/octcompat') );
 end
-
 
 rehash;
 
