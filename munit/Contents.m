@@ -7,6 +7,7 @@
 %   assert_equals                - Check the equality of acutal and expected values.
 %   assert_error                 - Asserts that the called function emits a correct error.
 %   assert_false                 - Asserts that the given condition is false.
+%   assert_matrix                - Short description of assert_matrix.
 %   assert_output                - Short description of assert_output.
 %   assert_true                  - Asserts that the given condition is true.
 %   munit_options                - Set or get unit options.

@@ -1,5 +1,4 @@
 % DOC
-% ===
 %
 % This directory contains general documentation on SGLIB, like user guide,
 % naming conventions and description of general mechanisms and storage
@@ -8,11 +7,12 @@
 % Files
 %   doc_function_handle - The function call mechanism in SGLIB.
 %   doc_howto           - How to do common tasks in SGLIB.
-%   doc_naming          - Naming of variables and functions in SGLIB.
+%   doc_ideas           - Contains some ideas that are underlying or should be implemented in SGLIB.
+%   doc_naming          - Naming and storage of variables and functions in SGLIB.
+%   doc_old_readme      - Old readme information, should move into other doc files.
 %   doc_options         - The options mechanism in SGLIB.
 %   doc_unit_testing    - Unit testing in SGLIB.
-
-
+%   todo                - Contains my personal TODO
 
 
 %   Elmar Zander

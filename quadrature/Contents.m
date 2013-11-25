@@ -14,9 +14,10 @@
 %   clenshaw_curtis_rule                  - Compute nodes and weights of the Clenshaw-Curtis rules.
 %   gauss_hermite_rule                    - Return the Gauss-Hermite quadrature rule with p nodes.
 %   gauss_legendre_rule                   - Get Gauss points and weights for quadrature over [-1,1].
+%   gauss_legendre_triangle_rule          - Get Gauss points and weights for quadrature over canonical triangle.
+%   newton_cotes_rule                     - Compute points and weights of the trapezoidal rule.
 %   trapezoidal_nested                    - Computes the nested trapezoidal rule.
 %   trapezoidal_rule                      - Compute points and weights of the trapezoidal rule.
-%   gauss_legendre_triangle_rule          - Get Gauss points and weights for quadrature over canonical triangle.
 %
 % Grid generation for high-dimensional quadrature
 %   full_tensor_grid                      - Return nodes and weights for full tensor product grid.
@@ -37,6 +38,7 @@
 %   unittest_gauss_legendre_triangle_rule - Test the GAUSS_LEGENDRE_TRIANGLE_RULE function.
 %   unittest_integrate_1d                 - Test the INTEGRATE_1D function.
 %   unittest_integrate_nd                 - Test the INTEGRATE_ND function.
+%   unittest_newton_cotes_rule            - Test the NEWTON_COTES_RULE function.
 %   unittest_smolyak_grid                 - Test the SMOLYAK_GRID function.
 %   unittest_tensor_mesh                  - Test the TENSOR_MESH function.
 %   unittest_trapezoidal_rule             - Test the TRAPEZOIDAL_RULE function.

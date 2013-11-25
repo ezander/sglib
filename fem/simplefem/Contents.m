@@ -7,24 +7,26 @@
 % of calling external frameworks.
 %
 % PDE and mesh methods
-%   correct_mesh                 - 
-%   create_mesh_1d               - Creates a 1D mesh for simple finite element calculations.
-%   find_boundary                - 
-%   load_pdetool_geom            - 
-%   mass_matrix                  - Assemble the mass matrix.
-%   refine_mesh                  - 
-%   stiffness_matrix             - Assemble stiffness matrix for linear tri/tet elements.
-%   gauss_legendre_triangle_rule - Get Gauss points and weights for quadrature over canonical triangle.
+%   clear_non_boundary_values - 
+%   correct_mesh              - 
+%   create_mesh_2d_rect       - Short description of create_mesh_2d_rect.
+%   create_mesh_1d            - Creates a 1D mesh for simple finite element calculations.
+%   find_boundary             - 
+%   mass_matrix               - Assemble the mass matrix.
+%   mesh_parameters           - 
+%   point_projector           - Short description of point_projector.
+%   refine_mesh               - 
+%   stiffness_matrix          - Assemble stiffness matrix for linear tri/tet elements.
+%
+% Unittests
+%   unittest_correct_mesh     - Test the CORRECT_MESH function.
+%   unittest_create_mesh_1d   - Test the CREATE_MESH_1D function.
+%   unittest_find_boundary    - Test the FIND_BOUNDARY function.
+%   unittest_mass_matrix      - Test the mass_matrix function.
+%   unittest_point_projector  - Test the POINT_PROJECTOR function.
+%   unittest_refine_mesh      - Test the REFINE_MESH function.
+%   unittest_stiffness_matrix - UNITTEST_STIFFNESS Test the stiffness_matrix function.
 
-% PLEASE KEEP THE EMPTY LINE ABOVE SO THAT THE TEST FUNCTIONS DONT CLUTTER
-% UP THE CONTENTS DISPLAY.
-% Test functions
-%   unittest_boundary_projectors - Test the boundary_projectors function.
-%   unittest_correct_mesh        - Test the CORRECT_MESH function.
-%   unittest_find_boundary       - Test the FIND_BOUNDARY function.
-%   unittest_mass_matrix         - Test the mass_matrix function.
-%   unittest_refine_mesh         - Test the REFINE_MESH function.
-%   unittest_stiffness           - Test the stiffness_matrix function.
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.
