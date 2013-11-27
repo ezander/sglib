@@ -63,15 +63,16 @@ addpath( fullfile( basepath, 'solver') );
 addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'linalg') );
 addpath( fullfile( basepath, 'sfem') );
-addpath( fullfile( basepath, 'fem/simplefem') );
-addpath( fullfile( basepath, 'util/paramstudy') )
+addpath( fullfile( basepath, 'fem', 'simplefem') );
+addpath( fullfile( basepath, 'util', 'paramstudy') )
+
 
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
 end
 
 if add_octave_path
-    addpath( fullfile( basepath, 'util/octcompat') );
+    addpath( fullfile( basepath, 'util', 'octcompat') );
 end
 
 rehash;
