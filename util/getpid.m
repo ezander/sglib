@@ -4,7 +4,8 @@ function pid=getpid()
 %   works on unix systems. On windows systems a -1 is returned.
 %
 % Example (<a href="matlab:run_example getpid">run</a>)
-%   PID=GETPID;
+%   pid=getpid();
+%   fprintf('The current matlab process has PID: %d\n', pid);
 %
 % See also SYSTEM
 
