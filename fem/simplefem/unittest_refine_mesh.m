@@ -31,33 +31,33 @@ assert_equals( order_els(ne), order_els([6 4 5; 2 4 6; 6 5 3; 4 1 5]'), 'new_el'
 % check that new points are unique
 pos=[0, 1, 1, 0; 0, 0, 1, 1];
 els=[1,3;2,4;3,1];
-[np,ne]=refine_mesh( pos, els );
+np=refine_mesh( pos, els );
 npu=unique(np','rows')';
 assert_equals( size(np), size(npu), 'unique_pos' );
-% clf
-% plot_mesh( pos, els, 'color', 'k'  );
-% plot_boundary( pos, els, 'color', 'r'  );
-% clf
-% plot_mesh( np, ne, 'color', 'k'  );
-% plot_boundary( np, ne, 'color', 'r'  );
-
-
 
 % This defines a mesh in the shape of a butterfly, refining it with e.g.
 % delaunay gives points outside the boundary and connects points that
 % should not be connected (i.e. points that are very close but not
-% connected in the original mesh). This test only checks it graphically, 
-% since I had no time to correctly code the test algorithmically)
-% pos=[-1 3; 0 0; 1 3; 1 -3; -1 -3]';
-% els=[1 5 2; 2 4 3]';
-% clf
-% plot_mesh( pos, els, 'color', 'k'  );
-% plot_boundary( pos, els, 'color', 'r'  );
-% [npos,nels]=refine_mesh( pos, els );
-% plot_mesh( npos, nels, 'color', 'k'  );
-% plot_boundary( npos, nels, 'color', 'b'  );
-% xlim([-2,2]);
-% ylim([-4,4]);
+% connected in the original mesh). 
+pos=[-1 3; 0 0; 1 3; 1 -3; -1 -3]';
+els=[1 5 2; 2 4 3]';
+[npos,nels]=refine_mesh( pos, els );
+if never
+    clf
+    plot_mesh( pos, els, 'color', 'k', 'bndcolor', 'r');
+    plot_mesh( npos, nels, 'color', 'k', 'bndcolor', 'b');
+    xlim([-2,2]);
+    ylim([-4,4]);
+end
+
+x=npos(1,:);
+y=npos(2,:);
+assert_equals((y<=3*abs(x)) & (y>=-3*abs(x)), true(size(x)), 'non_convex');
+
+% test the prolongation
+[pos, els]=create_mesh_2d_rect(2);
+[npos, nels, P]=refine_mesh(pos, els); %#ok<ASGLU>
+assert_equals(P*pos', npos', 'prolong');
 
 
 function els=order_els(els)

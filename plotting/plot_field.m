@@ -78,3 +78,7 @@ if ismatlab()
 else
     fprintf('plot_field not yet implemented for octave\n');
 end
+
+if nargout==0
+    clear('h');
+end

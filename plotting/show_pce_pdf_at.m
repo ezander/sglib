@@ -23,7 +23,7 @@ check_unsupported_options(options, mfilename);
 
 colors='bkrcmyg';
 Px=point_projector( pos, els, x );
-r_x_alpha=Px'*r_i_alpha;
+r_x_alpha=Px*r_i_alpha;
 for i=1:size(r_x_alpha,1)
     [y,x]=pce_pdf( [], r_x_alpha(i,:), I_r, 'N', N);
     plot(x,y,colors(i)); hold on;

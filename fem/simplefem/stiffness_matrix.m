@@ -1,9 +1,36 @@
 function K=stiffness_matrix( pos, els, k )
-% STIFFNESS_MATRIX Assemble stiffness matrix for linear tri/tet elements.
+% STIFFNESS_MATRIX Assemble stiffness matrix for P1 elements.
 %   K=STIFFNESS_MATRIX( POS, ELS, K ) computes the stiffness matrix for
-%   triangular or tetrahedral elements specified in ELS with nodes
-%   specified in POS. Linear nodal ansatz functions are used here. K on
-%   input is a vector specifiying a coefficient field given at the nodes.
+%   Lagrange P1 elements specified in ELS with nodes specified in POS.
+%   K on input is a vector specifiying a coefficient field given at the nodes.
+%
+% Note:
+%   This function is not vectorised and pretty slow for larger meshes.
+%   Please use a decent FEM code for larger meshes. This is just a toy
+%   implementation for testing out stochastic methods.
+%
+% Example (<a href="matlab:run_example stiffness_matrix">run</a>)
+%   % Print standard 1D stiffness matrix on console
+%   [pos, els] = create_mesh_1D(0, 1, 5);
+%   K = full(stiffness_matrix(pos, els, 0.25*ones(size(pos,2),1)))
+%   % Show sparsity pattern of 2D stiffness matrix
+%   [pos, els] = create_mesh_2D_rect(3);
+%   K = stiffness_matrix(pos, els, ones(size(pos,2),1));
+%   spy(K);
+%
+% See also MASS_MATRIX
+
+%   Elmar Zander
+%   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 % TODO: check dimension of k
 if nargin<3 || isempty(k)
