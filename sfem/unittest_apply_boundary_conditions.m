@@ -36,6 +36,8 @@ K(n,n)=1;
 bnd=[1,n];
 f=(1:n)';
 g=((n:-1:1).*(n:-1:1))';
+f=repmat(f, 1, 2);
+g=repmat(g, 1, 2);
 
 [P_I,P_B]=boundary_projectors( bnd, n );
 
