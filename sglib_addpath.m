@@ -63,7 +63,9 @@ addpath( fullfile( basepath, 'solver') );
 addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'linalg') );
 addpath( fullfile( basepath, 'sfem') );
+addpath( fullfile( basepath, 'fem') );
 addpath( fullfile( basepath, 'fem', 'simplefem') );
+addpath( fullfile( basepath, 'fem', 'pdetool') );
 addpath( fullfile( basepath, 'util', 'paramstudy') )
 
 
