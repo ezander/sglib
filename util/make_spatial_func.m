@@ -1,10 +1,17 @@
 function func=make_spatial_func(func_str)
-% MAKE_SPATIAL_FUNC Short description of make_spatial_function.
-%   MAKE_SPATIAL_FUNC Long description of make_spatial_function.
+% MAKE_SPATIAL_FUNC Create directly a function handle for a spatial function.
+%   FUNC=MAKE_SPATIAL_FUNC(FUNC_STR) creates directly a function handle 
+%   for a spatial function that can be evaluated by FUNCALL. 
 %
 % Example (<a href="matlab:run_example make_spatial_func">run</a>)
+%   func = make_spatial_function('x^2+y^2+sin(x*y)');
+%   [X, Y] = meshgrid(linspace(-3,3,50));
+%   pos = [X(:)'; Y(:)'];
+%   x = funcall(func, pos);
+%   Z = reshape(z, size(X));
+%   surf(X,Y,Z)
 %
-% See also
+% See also SPATIAL_FUNCTION
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
