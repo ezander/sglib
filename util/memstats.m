@@ -1,10 +1,14 @@
 function mem=memstats(varargin)
-% MEMSTATS Short description of memstats.
-%   MEMSTATS Long description of memstats.
+% MEMSTATS Get memory statistics under GNU/Linux.
+%   MEMSTATS retrieves statistics about memory usage of the current matlab
+%   process. It works by reading the 'status' file, in the folder
+%   corrsponding to the current process id in 'proc' file system. This is
+%   very Linux specific and will not work in other operating systems.
 %
 % Example (<a href="matlab:run_example memstats">run</a>)
+%   memstats()
 %
-% See also
+% See also MEMORY
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing, TU Braunschweig
@@ -43,7 +47,7 @@ for i=1:length(fields{1})
     name=fields{1}{i}(1:end-1);
     if  strcmp( name(1:min(end,2)), 'Vm' )
         fullvalue=fields{2}{i};
-        num=str2num(fullvalue(1:end-3));
+        num=str2double(fullvalue(1:end-3));
         unit=fullvalue(end-1:end);
         switch lower(unit)
             case 'kb'; meminbytes=num*1024;
@@ -75,14 +79,14 @@ for i=1:length(fields{1})
     name=fields{1}{i}(1:end-1);
     if strcmp( name, 'PPid' )
         fullvalue=fields{2}{i};
-        ppid=str2num(fullvalue);
+        ppid=str2double(fullvalue);
         return
     end
 end
 
 function fields=readstatusfile(pid)
 % open the status file and read into fields (cell arrays)
-file=sprintf( '/proc/%d/status', pid );
+file=fullfile(filesep, 'proc', num2str(pid,'%d'), 'status' );
 [fid,message]=fopen( file, 'r' );
 if fid==-1
     warning( 'sglib:memstats', 'Could not open file "%s" for getting memory information. Reason: %s', file, message );

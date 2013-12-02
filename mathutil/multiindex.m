@@ -63,6 +63,10 @@ function I_mp=multiindex(m,p,varargin)
 
 error( nargchk( 2, inf, nargin ) );
 
+if length(varargin)>=1 && isempty(varargin{1})
+    error('sglib:obsolete', 'You are probably using the old interface of the multiindex function, which has changed as of version 0.9.3. Please remove [] as third argument.');
+end
+
 options=varargin2options( varargin );
 [use_sparse,options]=get_option( options, 'use_sparse', false );
 [lex_ordering,options]=get_option( options, 'lex_ordering', false );

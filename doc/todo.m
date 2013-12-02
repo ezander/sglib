@@ -1,3 +1,7 @@
+%TODO Contains my personal TODO
+
+
+%% 25 Nov 2013
 % comutation of dual basis in ???
 
 % move polysys_pdf to gpc, create cdfinv and cdf

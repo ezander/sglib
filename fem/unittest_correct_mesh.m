@@ -4,7 +4,7 @@ function unittest_correct_mesh
 % Example (<a href="matlab:run_example unittest_correct_mesh">run</a>)
 %   unittest_correct_mesh
 %
-% See also CORRECT_MESH, TESTSUITE 
+% See also CORRECT_MESH
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing
@@ -19,17 +19,20 @@ function unittest_correct_mesh
 
 munit_set_function( 'correct_mesh' );
 
+% 1d mesh where no change is necessary
 [pos1,els1]=create_mesh_1d( 2, 5, 10 );
 [pos2,els2]=correct_mesh( pos1, els1 );
 assert_equals( pos1, pos2, 'no_change1' );
 assert_equals( els1, els2, 'no_change2' );
 
+% add some unused nodes that need to be removed
 els3=els1+5;
 pos3=[zeros(1,5), pos1, ones(1,3)];
 [pos2,els2]=correct_mesh( pos3, els3 );
 assert_equals( pos1, pos2, 'rem_points1' );
 assert_equals( els1, els2, 'rem_points2' );
 
+% swap some indices in els so that the determinant becomes negative
 els3=els1;
 ind=[1,3,7];
 els3([1,2],ind)=els3([2,1],ind);
@@ -47,4 +50,3 @@ pos=[0 1; -1 0; 0 0; 1 0; 0 -1]';
 [pos2,els2]=correct_mesh( pos, els );
 assert_equals( pos2, pos, '2d_pos' );
 assert_equals( els2, [1 2 3; 1 3 4; 3 2 5; 4 3 5]', '2d_els' );
-

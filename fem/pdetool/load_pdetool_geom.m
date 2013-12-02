@@ -1,4 +1,4 @@
-function [pos,els,G,ptdata]=load_pdetool_geom( name, varargin)
+function [pos,els]=load_pdetool_geom( name, varargin)
 
 options=varargin2options(varargin);
 [numrefine,options]=get_option( options, 'numrefine', 0 );
@@ -36,7 +36,7 @@ end
 % extra options passed to initgeom
 pdetool_options={};
 if ~isempty(Hmax)
-    pdetool_options={pdetool_options{:}, 'Hmax', Hmax};
+    pdetool_options=[pdetool_options, {'Hmax', Hmax}];
 end
 
 % init the mesh and refine once is requested
@@ -64,16 +64,3 @@ if normalize
     pos=pos/max(max(pos)-min(pos))*2;
     pos=pos-repmat( (max(pos)+min(pos))/2, size(pos,1), 1 );
 end
-
-% extract stiffness matrix and gramian (throw away the former)
-if nargout>=3
-    [K,G]=assema(p,t,0,1,0); %#ok
-end
-
-
-% if user to have ptdata structure for further communication with the
-% pde-toolbox
-if nargout>=4
-    ptdata={p,e,t};
-end
-

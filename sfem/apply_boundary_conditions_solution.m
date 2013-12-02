@@ -41,7 +41,8 @@ end
 
 % Computes:
 %   u=P_I'*ui+P_B'*gb (with gb=P_B*g)
-u=tensor_operator_apply( {P_I', I_S{:}}, ui );
+%#ok<*CCAT> (Ignore this "performance" hint!)
+u=tensor_operator_apply( {P_I', I_S{:}}, ui ); 
 g=tensor_operator_apply( {P_B'*P_B, I_S{:}}, g );
 
 u=gvector_add( u, g );

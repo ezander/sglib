@@ -1,10 +1,18 @@
 function u=spatial_function(func_str, pos, varargin)
-% SPATIAL_FUNCTION Short description of spatial_function.
-%   SPATIAL_FUNCTION Long description of spatial_function.
+% SPATIAL_FUNCTION Evaluate a function defined by a string using X, Y and Z.
+%   U=SPATIAL_FUNCTION(FUNC_STR, POS) evaluates the spatial function given
+%   the coordinates given in POS. The operations in FUNC_STR are
+%   automatically vectorised and X is replaced by POS(1,:), Y by POS(2,:)
+%   and Z by POS(3,:). 
 %
 % Example (<a href="matlab:run_example spatial_function">run</a>)
+%   [X, Y] = meshgrid(linspace(-3,3,50));
+%   pos = [X(:)'; Y(:)'];
+%   z = spatial_function('x^2+y^2+sin(x*y)', pos);
+%   Z = reshape(z, size(X));
+%   surf(X,Y,Z)
 %
-% See also
+% See also MAKE_SPATIAL_FUNC
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -20,11 +28,6 @@ function u=spatial_function(func_str, pos, varargin)
 options=varargin2options(varargin);
 [mode,options]=get_option(options,'mode','zero');
 check_unsupported_options(options,mfilename);
-
-% Suppress alls warnings about unused variables because quite a few are
-% used only by eval 
-%% # o k< *NASGU>
-
 
 func_str=vectorize(func_str);
 null=zeros(1,size(pos,2));  %#ok<NASGU>
@@ -45,9 +48,6 @@ func_str=strrep( func_str, '\x', 'XXX' );
 func_str=strrep( func_str, '\y', 'YYY' );
 func_str=strrep( func_str, '\z', 'ZZZ' );
 
-% func_str=strrep( func_str, 'x', xrepl );
-% func_str=strrep( func_str, 'y', yrepl );
-% func_str=strrep( func_str, 'z', zrepl );
 func_str=regexprep( func_str, '\<x\>', xrepl );
 func_str=regexprep( func_str, '\<y\>', yrepl );
 func_str=regexprep( func_str, '\<z\>', zrepl );

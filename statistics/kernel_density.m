@@ -88,6 +88,6 @@ end
 
 if nargout==0
     plot_args=varargin;
-   plot(x,p,plot_args{:});
+    plot(x,p,plot_args{:});
 end
 

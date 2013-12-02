@@ -129,7 +129,7 @@ end
 
 try
     err = false;
-    oldpath=addpath(fullfile(matlabroot, 'toolbox/matlab/codetools'), '-begin');
+    oldpath=addpath(fullfile(matlabroot, 'toolbox', 'matlab', 'codetools'), '-begin');
     edit(filename);
 catch
     err = true;

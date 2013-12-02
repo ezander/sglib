@@ -1,4 +1,4 @@
-function basepath=sglib_addpath( basepath, restore, add_experimental_path, add_octave_path )
+function basepath=sglib_addpath( basepath, restore, add_octave_path )
 % SGLIB_ADDPATH Set paths for sglib.
 %   SGLIB_ADDPATH( BASEPATH, RESTORE, EXPERIMENTAL, OCTAVE ) adds paths for sglib to the
 %   normal search path. If OCTAVE (default: FALSE) is true the path to the
@@ -34,10 +34,7 @@ function basepath=sglib_addpath( basepath, restore, add_experimental_path, add_o
 if nargin<2 || isempty(restore)
     restore=true;
 end
-if nargin<3 || isempty(add_experimental_path)
-    add_experimental_path=false;
-end
-if nargin<4 || isempty(add_octave_path)
+if nargin<3 || isempty(add_octave_path)
     add_octave_path=false;
 end
 
@@ -55,35 +52,29 @@ addpath( basepath );
 addpath( fullfile( basepath, 'doc') );
 addpath( fullfile( basepath, 'util') );
 addpath( fullfile( basepath, 'munit') );
+addpath( fullfile( basepath, 'mathutil') );
 addpath( fullfile( basepath, 'quadrature') );
+addpath( fullfile( basepath, 'pce') );
+addpath( fullfile( basepath, 'gpc') );
 addpath( fullfile( basepath, 'statistics') );
 addpath( fullfile( basepath, 'sampling') );
-addpath( fullfile( basepath, 'gpc') );
 addpath( fullfile( basepath, 'plotting') );
 addpath( fullfile( basepath, 'solver') );
 addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'linalg') );
-addpath( fullfile( basepath, 'fem/simplefem') );
+addpath( fullfile( basepath, 'sfem') );
+addpath( fullfile( basepath, 'fem') );
+addpath( fullfile( basepath, 'fem', 'simplefem') );
+addpath( fullfile( basepath, 'fem', 'pdetool') );
+addpath( fullfile( basepath, 'util', 'paramstudy') )
 
-if exist( fullfile( basepath, 'thesis'), 'dir' )
-  addpath( fullfile( basepath, 'thesis') )
-  addpath( fullfile( basepath, 'thesis', 'script') )
-  addpath( fullfile( basepath, 'thesis', 'models') )
-end
-if exist( fullfile( basepath, 'util/paramstudy'), 'dir' )
-  addpath( fullfile( basepath, 'util/paramstudy') )
-end
+
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
 end
 
-
 if add_octave_path
-    addpath( fullfile( basepath, 'util/octcompat') );
-end
-
-if add_experimental_path
-    addpath( fullfile( basepath, 'experimental') );
+    addpath( fullfile( basepath, 'util', 'octcompat') );
 end
 
 rehash;

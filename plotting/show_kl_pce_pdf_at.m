@@ -19,7 +19,7 @@ function show_kl_pce_pdf_at( pos, els, r_i_k, r_k_alpha, I_r, x, varargin)
 
 colors='bkrcmyg';
 Px=point_projector( pos, els, x );
-r_x_alpha=((Px'*r_i_k)*r_k_alpha);
+r_x_alpha=((Px*r_i_k)*r_k_alpha);
 for i=1:size(r_x_alpha,1)
     [y,x]=pce_pdf( [], r_x_alpha(i,:), I_r, 'N', 1e3);
     plot(x,y,colors(i)); hold on;

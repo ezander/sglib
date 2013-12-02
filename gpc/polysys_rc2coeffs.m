@@ -14,7 +14,7 @@ function p=polysys_rc2coeffs(r)
 %     r = polysys_recur_coeff(sys, 5);
 %     p = polysys_rc2coeffs(r);
 %     for i = 1:size(p,1)
-%       fprintf('%s_%d(x) = %s\n', sys, i-1, format_poly(p(i,:)));
+%       fprintf('%s_%d(x) = %s\n', sys, i-1, format_poly(p(i,:), 'rats', true));
 %     end
 %     fprintf('\n');
 %   end
