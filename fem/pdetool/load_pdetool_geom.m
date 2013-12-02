@@ -36,7 +36,7 @@ end
 % extra options passed to initgeom
 pdetool_options={};
 if ~isempty(Hmax)
-    pdetool_options={pdetool_options{:}, 'Hmax', Hmax};
+    pdetool_options=[pdetool_options, {'Hmax', Hmax}];
 end
 
 % init the mesh and refine once is requested
