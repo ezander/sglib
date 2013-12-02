@@ -13,7 +13,7 @@ function [pos,els]=create_mesh_2d_rect(numrefine)
 %      plot_mesh(pos, els);
 %   end
 %
-% See also PLOT_MESH
+% See also REFINE_MESH, FIND_BOUNDARY, PLOT_MESH
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

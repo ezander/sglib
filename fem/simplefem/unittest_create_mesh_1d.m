@@ -4,7 +4,7 @@ function unittest_create_mesh_1d
 % Example (<a href="matlab:run_example unittest_create_mesh_1d">run</a>)
 %   unittest_create_mesh_1d
 %
-% See also CREATE_MESH_1D, TESTSUITE 
+% See also CREATE_MESH_1D
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

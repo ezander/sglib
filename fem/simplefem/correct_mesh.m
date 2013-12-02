@@ -12,7 +12,7 @@ function [pos,els]=correct_mesh( pos, els )
 %    els=[1, 3, 4; 1, 5, 4]'
 %    [pos, els] = correct_mesh(pos, els)
 %
-% See also
+% See also REFINE_MESH, MESH_PARAMETERS
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

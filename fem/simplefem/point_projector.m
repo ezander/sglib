@@ -17,7 +17,7 @@ function P=point_projector( pos, els, x )
 %   z2 = P * z;
 %   subplot(1,2,2); plot_field(pos2, els2, z2, 'view', [40, 25]);
 %
-% See also
+% See also REFINE_MESH
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_create_mesh_2d_rect
 % Example (<a href="matlab:run_example unittest_create_mesh_2d_rect">run</a>)
 %   unittest_create_mesh_2d_rect
 %
-% See also CREATE_MESH_2D_RECT, TESTSUITE 
+% See also CREATE_MESH_2D_RECT
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

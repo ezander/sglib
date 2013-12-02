@@ -4,7 +4,7 @@ function unittest_mesh_parameters
 % Example (<a href="matlab:run_example unittest_mesh_parameters">run</a>)
 %   unittest_mesh_parameters
 %
-% See also MESH_PARAMETERS, TESTSUITE 
+% See also MESH_PARAMETERS
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

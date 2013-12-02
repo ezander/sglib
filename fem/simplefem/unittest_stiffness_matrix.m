@@ -1,10 +1,10 @@
 function unittest_stiffness_matrix
-% UNITTEST_STIFFNESS Test the stiffness_matrix function.
+%UNITTEST_STIFFNESS_MATRIX Test the STIFFNESS_MATRIX function.
 %
 % Example (<a href="matlab:run_example unittest_stiffness">run</a>)
 %    unittest_stiffness
 %
-% See also TESTSUITE
+% See also STIFFNESS_MATRIX
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

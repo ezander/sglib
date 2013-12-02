@@ -58,5 +58,6 @@ if d==2
     A = sqrt(s.*(s-a).*(s-b).*(s-c));
     r_in = sqrt((s-a).*(s-b).*(s-c)./s);
     r_out = 0.25 * a.*b.*c ./ A;
+    swallow(r_out);
     qual=max(h,[],1) ./ r_in;
 end

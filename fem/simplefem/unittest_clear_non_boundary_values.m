@@ -4,7 +4,7 @@ function unittest_clear_non_boundary_values
 % Example (<a href="matlab:run_example unittest_clear_non_boundary_values">run</a>)
 %   unittest_clear_non_boundary_values
 %
-% See also CLEAR_NON_BOUNDARY_VALUES, TESTSUITE 
+% See also CLEAR_NON_BOUNDARY_VALUES
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

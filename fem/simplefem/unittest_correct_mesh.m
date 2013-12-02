@@ -4,7 +4,7 @@ function unittest_correct_mesh
 % Example (<a href="matlab:run_example unittest_correct_mesh">run</a>)
 %   unittest_correct_mesh
 %
-% See also CORRECT_MESH, TESTSUITE 
+% See also CORRECT_MESH
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

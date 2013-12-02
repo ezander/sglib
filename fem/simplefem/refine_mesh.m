@@ -45,6 +45,7 @@ eltoedge=reshape(1:(3*nels),[],3)';
 % original edges in 'from')
 uedges=sort(edges,1);
 [uedges,to,from]=unique( uedges', 'rows' );
+swallow(to);
 
 ind1 = uedges(:,1);
 ind2 = uedges(:,2);

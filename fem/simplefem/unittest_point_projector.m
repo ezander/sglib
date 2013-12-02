@@ -4,7 +4,7 @@ function unittest_point_projector
 % Example (<a href="matlab:run_example unittest_point_projector">run</a>)
 %   unittest_point_projector
 %
-% See also POINT_PROJECTOR, TESTSUITE 
+% See also POINT_PROJECTOR
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -38,8 +38,6 @@ assert_equals( P, unitvector(3,6)', 'match1' );
 
 
 % check for 2d
-
-%%
 [pos,els]=create_mesh_2d_rect( 3 );
 x=[0.55; 0.42];
 P=point_projector( pos, els, x );

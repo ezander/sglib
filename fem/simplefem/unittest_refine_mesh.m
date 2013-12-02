@@ -4,7 +4,7 @@ function unittest_refine_mesh
 % Example (<a href="matlab:run_example unittest_refine_mesh">run</a>)
 %   unittest_refine_mesh
 %
-% See also REFINE_MESH, TESTSUITE 
+% See also REFINE_MESH
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

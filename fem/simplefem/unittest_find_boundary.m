@@ -4,7 +4,7 @@ function unittest_find_boundary
 % Example (<a href="matlab:run_example unittest_find_boundary">run</a>)
 %   unittest_find_boundary
 %
-% See also FIND_BOUNDARY, TESTSUITE 
+% See also FIND_BOUNDARY
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing
@@ -20,6 +20,7 @@ function unittest_find_boundary
 munit_set_function( 'find_boundary' );
 
 [pos,els]=create_mesh_1d( 0, 2, 5);
+swallow(pos);
 assert_equals( find_boundary( els ), [1,5], '1d' );
 
 % 2D test for the following grid

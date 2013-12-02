@@ -18,7 +18,7 @@ function [pos,els,bnd]=create_mesh_1d( x1, x2, n, shuffle )
 %   clf; dock; func=@cos;
 %   plot( pos, func(pos), 'b-x', pos(bnd), func(pos(bnd)), 'rx' );
 %
-% See also
+% See also REFINE_MESH, FIND_BOUNDARY
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

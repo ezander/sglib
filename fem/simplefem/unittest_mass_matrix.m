@@ -1,10 +1,10 @@
 function unittest_mass_matrix
-% UNITTEST_MASS_MATRIX Test the mass_matrix function.
+%UNITTEST_MASS_MATRIX Test the MASS_MATRIX function.
 %
 % Example (<a href="matlab:run_example unittest_mass_matrix">run</a>)
 %    unittest_mass_matrix
 %
-% See also TESTSUITE
+% See also MASS_MATRIX
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

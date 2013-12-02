@@ -37,11 +37,8 @@ if nargin<3 || isempty(k)
     k=ones(1,size(pos,2))'; % make dual
 end
 
-N=size(pos,2);
-T=size(els,2);
 
-K=spalloc(N,N,T*3);
-
+% Determine the Gauss-Legendre rule to use for integration
 d=size(pos,1);
 switch d
     case 1
@@ -54,18 +51,21 @@ switch d
         error('simplefem:stiffness_matrix:param_error', 'Unsupported dimension: %d. Maybe you have to pass your position vector transposed?', d);
 end
 
-
+% Compute element stiffness matrices for each element and assemble
+N=size(pos,2);
+T=size(els,2);
+K=spalloc(N,N,T*3);
 for t=1:T
     nodes=els(:,t);
     coords=pos(:,nodes);
 
-    KT=elementStiffness( d, coords, k(nodes), xi, w );
-
-    K(nodes,nodes)=K(nodes,nodes)+KT; %#ok<SPRIX>
+    Kt=element_stiffness( d, coords, k(nodes), xi, w );
+    K(nodes,nodes)=K(nodes,nodes)+Kt; %#ok<SPRIX>
 end
 
 
-function KT=elementStiffness( d, pos, k, xi, w )
+function KT=element_stiffness( d, pos, k, xi, w )
+% ELEMENT_STIFFNESS Compute the element stiffness matrix.
 n_dof=d+1;
 switch d
     case 1
