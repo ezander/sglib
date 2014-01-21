@@ -21,10 +21,12 @@ munit_set_function( 'gendist' );
 
 % first test without shift and scaling
 x=linspace(-10,10,1000);
+y=linspace(0.01,0.99,1000);
 mom_ex=cell(1,4);
 mom_ac=cell(1,4);
 assert_equals( gendist_pdf(x, 'beta', {4,2}), beta_pdf( x, 4, 2), 'beta_pdf' );
 assert_equals( gendist_cdf(x, 'normal', {1,3}), normal_cdf( x, 1, 3), 'normal_cdf' );
+assert_equals( gendist_invcdf(y, 'normal', {1,3}), normal_invcdf( y, 1, 3), 'normal_invcdf' );
 assert_equals( gendist_stdnor(x, 'lognormal', {0,2}), lognormal_stdnor( x, 0, 2), 'lognormal_stdnor' );
 [mom_ac{:}]=gendist_moments('exponential', {4});
 [mom_ex{:}]=exponential_moments(4);
@@ -33,6 +35,7 @@ assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'exponential_moments' );
 % test shifting and scaling with normal distribution
 assert_equals( gendist_pdf(x, 'normal', {0, 1}, 1.2, 3.7), normal_pdf( x, 1.2, 3.7), 'shift_normal_pdf' );
 assert_equals( gendist_cdf(x, 'normal', {0, 1}, 1.2, 3.7), normal_cdf( x, 1.2, 3.7), 'shift_normal_cdf' );
+assert_equals( gendist_invcdf(y, 'normal', {0, 1}, 1.2, 3.7), normal_invcdf( y, 1.2, 3.7), 'shift_normal_invcdf' );
 assert_equals( gendist_stdnor(x, 'normal', {0, 1}, 1.2, 3.7), normal_stdnor( x, 1.2, 3.7), 'shift_normal_stdnor' );
 [mom_ac{:}]=gendist_moments('normal', {0, 1}, 1.2, 3.7);
 [mom_ex{:}]=normal_moments(1.2, 3.7);
@@ -41,6 +44,7 @@ assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'shift_normal_moments' );
 % second test shifting and scaling 
 assert_equals( gendist_pdf(x, 'normal', {1, 2}, 2.5, 3), normal_pdf( x, 3.5, 6), 'shift_normal_pdf2' );
 assert_equals( gendist_cdf(x, 'normal', {1, 2}, 2.5, 3), normal_cdf( x, 3.5, 6), 'shift_normal_cdf2' );
+assert_equals( gendist_invcdf(y, 'normal', {1, 2}, 2.5, 3), normal_invcdf( y, 3.5, 6), 'shift_normal_invcdf2' );
 assert_equals( gendist_stdnor(x, 'normal', {1, 2}, 2.5, 3), normal_stdnor( x, 3.5, 6), 'shift_normal_stdnor2' );
 [mom_ac{:}]=gendist_moments('normal', {1, 2}, 2.5, 3);
 [mom_ex{:}]=normal_moments(3.5, 6);
@@ -49,10 +53,16 @@ assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'shift_normal_moments2' );
 % test internal consistency of shifting and scaling with beta distribution
 x=linspace(-10,10,10000);
 h=x(2)-x(1);
-pdf=gendist_pdf(x, 'beta', {2.5, 3.7}, 1.3, 4.6);
-cdf=gendist_cdf(x, 'beta', {2.5, 3.7}, 1.3, 4.6);
+params = {'beta', {2.5, 3.7}, 1.3, 4.6};
+pdf=gendist_pdf(x, params{:});
+cdf=gendist_cdf(x, params{:});
 % -> test that pdf is the derivative of cdf
 assert_equals( sum((diff(cdf)-h*0.5*(pdf(2:end)+pdf(1,end-1))).^2), 0, 'l2_pdf_cdf', 'abstol', 2e-4 );
+% -> test that cdf is inverse of invcdf (xi must be inside range of beta
+% values)
+xi=linspace(0.13,3.6,10000);
+assert_equals( gendist_invcdf(gendist_cdf(xi, params{:}), params{:}), xi, 'l2_invcdf_cdf');
+assert_equals( gendist_cdf(gendist_invcdf(y, params{:}), params{:}), y, 'l2_cdf_invcdf');
 
 % test moments by integration of x^n over pdf
 [mean,var,skew,kurt]=gendist_moments('beta', {2.5, 3.7}, 1.3, 4.6);
