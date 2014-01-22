@@ -1,4 +1,4 @@
-function x=gendist_invcdf(y, dist, params, shift, scale)
+function x=gendist_invcdf(y, dist, varargin)
 % GENDIST_INVCDF Short description of gendist_invcdf.
 %   GENDIST_INVCDF Long description of gendist_invcdf.
 %
@@ -23,16 +23,7 @@ function x=gendist_invcdf(y, dist, params, shift, scale)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('shift', 'var' ) || isempty(shift)
-    shift=0;
-end
-if ~exist('scale', 'var' ) || isempty(scale)
-    scale=1;
-end
-if ~exist('params', 'var' ) 
-    params={};
-end
+[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
-mean=gendist_moments( dist, params );
-x=feval( [dist '_invcdf'], y, params{:} );
+x=feval( [distname '_invcdf'], y, params{:} );
 x=(x-mean)*scale+mean+shift;

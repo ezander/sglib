@@ -1,10 +1,14 @@
-function y=gendist_cdf(x, dist, params, shift, scale)
+function y=gendist_cdf(x, dist, varargin)
 % GENDIST_CDF Short description of gendist_cdf.
 %   GENDIST_CDF Long description of gendist_cdf.
 %
-% Example (<a href="matlab:run_example gendist_pdf">run</a>)
+% Example (<a href="matlab:run_example gendist_cdf">run</a>)
+%   % create a lognormal distribution shifted by 2 to the right
+%   dist = gendist_create('lognormal', {0, 1}, 'shift', 2);
+%   x = linspace(0, 7);
+%   plot(x, gendist_cdf(x, dist));
 %
-% See also
+% See also GENDIST_CREATE, GENDIST_PDF, GENDIST_INVCDF, GENDIST_MOMENTS
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing
@@ -17,16 +21,7 @@ function y=gendist_cdf(x, dist, params, shift, scale)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('shift', 'var' ) || isempty(shift)
-    shift=0;
-end
-if ~exist('scale', 'var' ) || isempty(scale)
-    scale=1;
-end
-if ~exist('params', 'var' ) 
-    params={};
-end
+[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
-mean=gendist_moments( dist, params );
 x=(x-shift-mean)/scale+mean;
-y=feval( [dist '_cdf'], x, params{:} );
+y=feval( [distname '_cdf'], x, params{:} );

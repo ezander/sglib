@@ -1,4 +1,4 @@
-function y=gendist_pdf(x, dist, params, shift, scale)
+function y=gendist_pdf(x, dist, varargin)
 % GENDIST_PDF Short description of gendist_pdf.
 %   GENDIST_PDF Long description of gendist_pdf.
 %
@@ -17,16 +17,7 @@ function y=gendist_pdf(x, dist, params, shift, scale)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('shift', 'var' ) || isempty(shift)
-    shift=0;
-end
-if ~exist('scale', 'var' ) || isempty(scale)
-    scale=1;
-end
-if ~exist('params', 'var' ) 
-    params={};
-end
+[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
-mean=gendist_moments( dist, params );
 x=(x-shift-mean)/scale+mean;
-y=feval( [dist '_pdf'], x, params{:} )/scale;
+y=feval( [distname '_pdf'], x, params{:} )/scale;

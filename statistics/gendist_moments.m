@@ -1,4 +1,4 @@
-function [mean,var,skew,kurt]=gendist_moments(dist, params, shift, scale)
+function [mean,var,skew,kurt]=gendist_moments(dist, varargin)
 % GENDIST_MOMENTS Short description of gendist_moments.
 %   GENDIST_MOMENTS Long description of gendist_moments.
 %
@@ -17,19 +17,11 @@ function [mean,var,skew,kurt]=gendist_moments(dist, params, shift, scale)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('shift', 'var' ) || isempty(shift)
-    shift=0;
-end
-if ~exist('scale', 'var' ) || isempty(scale)
-    scale=1;
-end
-if ~exist('params', 'var' ) 
-    params={};
-end
+[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
 n=max(nargout,1);
 m=cell(1,n);
-[m{:}]=feval( [dist '_moments'], params{:} );
+[m{:}]=feval( [distname '_moments'], params{:} );
 
 % Apply scale and shift to the moments. Note: since we are using not the
 % raw but the normalized central moments we only have to shift the mean by

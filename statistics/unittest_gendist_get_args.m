@@ -18,23 +18,28 @@ function unittest_gendist_get_args
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'gendist_get_args' );
-clc
+
 expect1 = {'beta', {1,2}, 3, 4, beta_moments(1,2)};
 expect2 = {'beta', {1,2}, 3, 1, beta_moments(1,2)};
 expect3 = {'beta', {1,2}, 0, 4, beta_moments(1,2)};
 expect4 = {'beta', {1,2}, 0, 1, beta_moments(1,2)};
 expect5 = {'beta', {1,2}, 3, 4, 8};
 
-assert_equals(gendist_get_args('beta', {{1,2}, 3, 4}), expect1, 'call1');
-assert_equals(gendist_get_args('beta', {{1,2}, 3, []}), expect2, 'call2');
-assert_equals(gendist_get_args('beta', {{1,2}, [], 4}), expect3, 'call3');
-assert_equals(gendist_get_args('beta', {{1,2}, [], []}), expect4, 'call4');
-assert_equals(gendist_get_args('beta', {{1,2}, 3}), expect2, 'call5');
-assert_equals(gendist_get_args('beta', {{1,2}, []}), expect4, 'call6');
-assert_equals(gendist_get_args('beta', {{1,2}}), expect4, 'call7');
-% 
-assert_equals(gendist_get_args({'beta', {1,2}, 3, 4}, {}), expect1, 'call9');
-assert_equals(gendist_get_args({'beta', {1,2}, 3, 4, 8}, {}), expect5, 'call10');
+% test with old calling conventions
+assert_equals(gendist_get_args('beta', {{1,2}, 3, 4}), expect1, 'cvold1');
+assert_equals(gendist_get_args('beta', {{1,2}, 3, []}), expect2, 'cvold2');
+assert_equals(gendist_get_args('beta', {{1,2}, [], 4}), expect3, 'cvold3');
+assert_equals(gendist_get_args('beta', {{1,2}, [], []}), expect4, 'cvold4');
+assert_equals(gendist_get_args('beta', {{1,2}, 3}), expect2, 'cvold5');
+assert_equals(gendist_get_args('beta', {{1,2}, []}), expect4, 'cvold6');
+assert_equals(gendist_get_args('beta', {{1,2}}), expect4, 'cvold7');
+
+assert_equals(gendist_get_args('normal', {}), {'normal', {}, 0, 1, normal_moments()}, 'cvold8');
+assert_equals(gendist_get_args('lognormal', {}), {'lognormal', {}, 0, 1, lognormal_moments()}, 'cvold9');
+
+% test with new calling conventions
+assert_equals(gendist_get_args({'beta', {1,2}, 3, 4}, {}), expect1, 'cvnew1');
+assert_equals(gendist_get_args({'beta', {1,2}, 3, 4, 8}, {}), expect5, 'cvnew2');
 
 % errors
 assert_error(funcreate(@gendist_get_args, {'beta', {1,2}, 3, 4, 8}, {2}), 'sglib', 'einval_arg1');
