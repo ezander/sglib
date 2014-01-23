@@ -19,10 +19,14 @@
 %   exponential_raw_moments                - Compute raw moments of the exponential distribution.
 %   exponential_stdnor                     - Transforms standard normal random numbers into exponential distributed ones.
 %   gaussian_covariance                    - Compute the Gaussian covariance function.
-%   gendist_cdf                            - Short description of gendist_cdf.
-%   gendist_fix_moments                    - Computes scale and shift to get specific moments.
-%   gendist_moments                        - Short description of gendist_moments.
-%   gendist_pdf                            - Short description of gendist_pdf.
+%   gendist_cdf                            - Cumulative distribution function of a gendist.
+%   gendist_create                         - Create a structure that describes a statistical distribution.
+%   gendist_fix_bounds                     - Fixes the bounds for distributions on bounded intervals.
+%   gendist_fix_moments                    - Generates a new gendist with specified moments.
+%   gendist_invcdf                         - Inverse CDF (quantile function) of a gendist.
+%   gendist_moments                        - Compute moments for a gendist.
+%   gendist_pdf                            - Probability distribution function for a gendist.
+%   gendist_sample                         - Draw random samples from a gendist.
 %   gendist_stdnor                         - Short description of gendist_stdnor.
 %   kendall_correlation                    - Short description of kendall_correlation.
 %   kernel_density                         - Kernel density estimation for given data.
@@ -39,19 +43,20 @@
 %   normal_moments                         - Compute moments of the normal distribution.
 %   normal_pdf                             - Probability distribution function of the normal distribution.
 %   normal_raw_moments                     - Compute raw moments of the normal distribution.
+%   normal_sample                          - Draws random samples from the normal distribution.
 %   normal_stdnor                          - Transforms standard normal random numbers into normal distributed ones.
 %   pearson_correlation                    - Computes the (Pearson) correlation coefficient.
 %   rational_quadratic_covariance          - Compute the rational quadratic covariance function.
 %   spearman_correlation                   - Computes the Spearman rank correlation coefficient.
 %   spherical_covariance                   - Compute the spherical covariance function.
+%
+% Unittests
 %   uniform_cdf                            - Cumulative distribution function of the uniform distribution.
 %   uniform_invcdf                         - Inverse CDF of the Uniform distribution.
 %   uniform_moments                        - Compute moments of the uniform distribution.
 %   uniform_pdf                            - Probability distribution function of the uniform distribution.
 %   uniform_raw_moments                    - Compute raw moments of the uniform distribution.
 %   uniform_stdnor                         - Transforms standard normal random numbers into uniform distributed ones.
-%
-% Unittests
 %   unittest_beta_distribution             - Test the distribution functions.
 %   unittest_beta_find_ratio               - Test the BETA_FIND_RATIO function.
 %   unittest_cross_correlation             - Test the CROSS_CORRELATION function.
@@ -61,7 +66,9 @@
 %   unittest_exponential_distribution      - Test the distribution functions.
 %   unittest_gaussian_covariance           - Test the GAUSSIAN_COVARIANCE function.
 %   unittest_gendist                       - Test the GENDIST function.
+%   unittest_gendist_fix_bounds            - Test the GENDIST_FIX_BOUNDS function.
 %   unittest_gendist_fix_moments           - Test the GENDIST_FIX_MOMENTS function.
+%   unittest_gendist_sample                - Test the GENDIST_SAMPLE function.
 %   unittest_kernel_density                - Test the KERNEL_DENSITY function.
 %   unittest_lognormal_distribution        - Test the distribution functions.
 %   unittest_matern_covariance             - Test the MATERN_COVARIANCE function.

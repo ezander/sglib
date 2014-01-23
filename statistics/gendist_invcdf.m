@@ -1,5 +1,5 @@
 function x=gendist_invcdf(y, dist, varargin)
-% GENDIST_INVCDF LOGNORMAL_INVCDF Inverse CDF (quantile function) of a gendist.
+% GENDIST_INVCDF Inverse CDF (quantile function) of a gendist.
 %   X=GENDIST_INVCDF( Y, DIST ) computes the inverse cumulative distribution
 %   function of the probability distribution DIST values in Y, which should
 %   all be in [0,1]. This function can be used to transform [0,1] uniformly
