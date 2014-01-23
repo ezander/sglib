@@ -1,23 +1,22 @@
-function [shift,scale]=gendist_fix_moments(dist, params, mean, var)
-% GENDIST_FIX_MOMENTS Computes scale and shift to get specific moments.
-%   [SHIFT,SCALE]=GENDIST_FIX_MOMENTS(DIST, PARAMS, MEAN, VAR) computes
-%   shift and scale parameters such that the distribution specified by
-%   DIST, PARAMS, SHIFT and SCALE has mean MEAN and variance VAR.
+function dist_new=gendist_fix_moments(dist, mean, var)
+% GENDIST_FIX_MOMENTS Generates a new gendist with specified moments.
+%   DIST_NEW=GENDIST_FIX_MOMENTS(DIST, MEAN, VAR) computes from the
+%   distribution DIST a new shifted and scaled distribution DIST_NEW such
+%   that the mean and variance of NEW_DIST are given by MEAN and VAR.
 %
 % Example (<a href="matlab:run_example gendist_fix_moments">run</a>)
-%   dist = 'beta';
-%   params = {2, 4};
-%   [m, v] = gendist_moments(dist, params);
+%   dist = gendist_create('beta', {2, 4});
+%   [m, v] = gendist_moments(dist);
 %   fprintf( 'before: mu=%g, var=%g\n', m, v);
 %   
-%   [shift,scale]=gendist_fix_moments(dist, params, pi, exp(1));
-%   [m, v] = gendist_moments(dist, params, shift, scale);
+%   dist=gendist_fix_moments(dist, pi, exp(1));
+%   [m, v] = gendist_moments(dist);
 %   fprintf( 'after:  mu=%g, var=%g\n', m, v);
 %
-% See also GENDIST_MOMENTS
+% See also GENDIST_CREATE, GENDIST_MOMENTS
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2010, 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -28,6 +27,11 @@ function [shift,scale]=gendist_fix_moments(dist, params, mean, var)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-[target_mean, target_var]=gendist_moments( dist, params );
-shift=mean-target_mean;
-scale=sqrt(var/target_var);
+[old_mean, old_var]=gendist_moments( dist );
+
+shift=mean-old_mean;
+scale=sqrt(var/old_var);
+dist_new = dist;
+dist_new{3} = dist{3} + shift;
+dist_new{4} = dist{4} * scale;
+% dist_new = gendist_create('gendist', {dist}, 'shift', shift, 'scale', scale);
