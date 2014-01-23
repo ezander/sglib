@@ -25,7 +25,7 @@ function varargout=gendist_get_args(dist, params)
 if ischar(dist)
     % warning('sglib:statistics:gendist', 'Old style calling convention used');
     dist = {dist, params{:}};
-elseif iscell(dist) && isempty(params)
+elseif iscell(dist) && (nargin<2 || isempty(params))
     % ok nothing to do
 else
     error('sglib:statistics:gendist', 'Invalid arguments');
