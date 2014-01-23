@@ -1,9 +1,14 @@
 %TODO Contains my personal TODO
 
+% statistics distributions: remove stdnor stuff, keep only in normal, lognormal, and
+% gendist (otherwise compose dynamically), create density_plot,
+% gendist_from_stat_toolbox, after removal of stdnor: change demos and sfem
+% methods to use dists instead of stdnor stuff
+%
+% introduce similar concept for covariances: gencov (or something), from
+% kernel, flags (isotropic, homogeneous), spectral density, ...
 
 %% 25 Nov 2013
-% comutation of dual basis in ???
-
 % move polysys_pdf to gpc, create cdfinv and cdf
 % move mean_var_update to stats
 % move plot_resp to plot_gpc_resp...
@@ -11,7 +16,6 @@
 % gpcbasis_create should also work with an rvtype, 
 % need function to map polynomials system char's to names
 % insert @default stuff into get_option
-% cleanup the main sglib directory/maybe make some randfield dir?
 % better heuristics for ranges in plot_resp_surface
 
 %% 19 Jun 2013
