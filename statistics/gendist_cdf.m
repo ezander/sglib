@@ -1,6 +1,7 @@
 function y=gendist_cdf(x, dist, varargin)
-% GENDIST_CDF Short description of gendist_cdf.
-%   GENDIST_CDF Long description of gendist_cdf.
+% GENDIST_CDF Cumulative distribution function of a gendist.
+%   Y=GENDIST_CDF( X, DIST) computes the cdf for the for probablity
+%   distribution DIST for all values in X, which may be a vector.
 %
 % Example (<a href="matlab:run_example gendist_cdf">run</a>)
 %   % create a lognormal distribution shifted by 2 to the right

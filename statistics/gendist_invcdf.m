@@ -1,16 +1,26 @@
 function x=gendist_invcdf(y, dist, varargin)
-% GENDIST_INVCDF Short description of gendist_invcdf.
-%   GENDIST_INVCDF Long description of gendist_invcdf.
+% GENDIST_INVCDF LOGNORMAL_INVCDF Inverse CDF (quantile function) of a gendist.
+%   X=GENDIST_INVCDF( Y, DIST ) computes the inverse cumulative distribution
+%   function of the probability distribution DIST values in Y, which should
+%   all be in [0,1]. This function can be used to transform [0,1] uniformly
+%   distributed random numbers into random numbers distributed according to
+%   the probability distribution DIST. A further use is the computation of
+%   quantiles of the distribution.
 %
-% Options
+% Example 1 (<a href="matlab:run_example gendist_invcdf 1">run</a>)
+%   % Compute min, max and median of a shifted Beta distribution
+%   dist = gendist_create('beta', {2, 3}, 'shift', 3.8 );
+%   fprintf('bounds: [%g, %g]\n', gendist_invcdf([0, 1], dist));
+%   fprintf('median: [%g]\n', gendist_invcdf(0.5, dist));
 %
-% References
+% Example 2 (<a href="matlab:run_example gendist_invcdf 2">run</a>)
+%   % Generate lognormally distributed samples
+%   dist = gendist_create('lognormal', {1, 0.5});
+%   y=rand(100000,1);
+%   x=gendist_invcdf(y, dist);
+%   hist(x, 100);
 %
-% Notes
-%
-% Example (<a href="matlab:run_example gendist_invcdf">run</a>)
-%
-% See also
+% See also GENDIST_CREATE, GENDIST_CDF, RAND
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

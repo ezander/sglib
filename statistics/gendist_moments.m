@@ -1,13 +1,17 @@
 function [mean,var,skew,kurt]=gendist_moments(dist, varargin)
-% GENDIST_MOMENTS Short description of gendist_moments.
-%   GENDIST_MOMENTS Long description of gendist_moments.
+% GENDIST_MOMENTS Compute moments for a gendist.
+%   [VAR,MEAN,SKEW,KURT]=GENDIST_MOMENTS( DIST ) computes the moments of
+%   the probablity distribution DIST.
 %
 % Example (<a href="matlab:run_example gendist_moments">run</a>)
+%   dist = gendist_create('beta', {2,2}, 'shift', 3, 'scale', 2);
+%   [mean,var,skew,kurt]=gendist_moments(dist);
+%   fprintf('Moments:\nmean=%g, var=%g, skew=%g, kurt=%g\n', mean, var, skew, kurt);
 %
-% See also
+% See also GENDIST_CREATE, GENDIST_PDF, GENDIST_CDF, GENDIST_FIX_MOMENTS
 
 %   Elmar Zander
-%   Copyright 2009, Inst. of Scientific Computing
+%   Copyright 2009, 2014, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

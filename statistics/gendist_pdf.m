@@ -1,13 +1,17 @@
 function y=gendist_pdf(x, dist, varargin)
-% GENDIST_PDF Short description of gendist_pdf.
-%   GENDIST_PDF Long description of gendist_pdf.
+% GENDIST_PDF Probability distribution function for a gendist.
+%   Y=GENDIST_PDF(X, DIST) computes the pdf for the probablity distribution
+%   DIST for all values in X
 %
 % Example (<a href="matlab:run_example gendist_pdf">run</a>)
+%   dist = gendist_create('normal', {2, 0.3});
+%   x = linspace(0, 5);
+%   plot(x, gendist_pdf(x, dist));
 %
-% See also
+% See also GENDIST_CREATE, GENDIST_CDF, GENDIST_MOMENTS
 
 %   Elmar Zander
-%   Copyright 2009, Inst. of Scientific Computing
+%   Copyright 2009, 2014, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
