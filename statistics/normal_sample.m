@@ -27,6 +27,6 @@ function xi=normal_sample(n, mu, sigma)
 if isscalar(n)==1
     xi = randn(n,1);
 else
-    xi = rand(n);
+    xi = randn(n);
 end
 xi = (xi * sigma) + mu;
