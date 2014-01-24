@@ -61,6 +61,8 @@ options.max_assertion_disp=10;
 options.prefix='unittest_';
 options.output_func=@display_func;
 options.compact=0;
+options.equalnan=true;
+options.equalinf=true;
 
 function display_func( s )
 stdin=1;

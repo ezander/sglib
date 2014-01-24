@@ -113,6 +113,8 @@ result_list={};
 % Get abstol and reltol
 abstol=get_option( curr_options, 'abstol', options.abstol );
 reltol=get_option( curr_options, 'reltol', options.reltol );
+equalnan=get_option( curr_options, 'equalnan', options.equalnan );
+equalinf=get_option( curr_options, 'equalinf', options.equalinf );
 
 if ~isscalar(abstol) && any(size(abstol)~=size(actual))
     error( 'assert_equals:options', 'if abstol is a vector then it must have the same size as the value vector' );
@@ -125,7 +127,16 @@ end
 max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options.max_assertion_disp );
  
 % Do actual comparison
-comp = (abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
+comp = false(size(actual));
+if equalnan
+    comp = comp | (isnan(expected) & isnan(actual));
+end
+if equalinf
+    inf_ind = isinf(expected);
+    comp(inf_ind) = comp(inf_ind) | (expected(inf_ind) == actual(inf_ind));
+end
+comp = comp | (isfinite(expected) & abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
+
 if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %g~=%g', actual, expected );

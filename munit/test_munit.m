@@ -168,14 +168,22 @@ munit_stats('pop');
 munit_print_stats;
 test_stats(munit_stats,61,0,35,2,[],'stats_assert_bool2');
 
+munit_stats('push','infnan');
+unittest_assert_equals_inf_nan;
+munit_print_stats;
+test_stats(munit_stats,70,9,6,0,[],'stats_assert_bool1');
+munit_stats('pop');
+munit_print_stats;
+test_stats(munit_stats,70,0,41,2,[],'stats_assert_bool2');
+
 
 munit_stats('push','error');
 unittest_assert_error;
 munit_print_stats;
-%test_stats(munit_stats,60,8,4,0,[],'stats_assert_error1');
+test_stats(munit_stats,76,6,3,0,[],'stats_assert_error1');
 munit_stats('pop');
 munit_print_stats;
-%test_stats(munit_stats,60,0,35,1,[],'stats_assert_error2');
+test_stats(munit_stats,76,0,44,2,[],'stats_assert_error2');
 
 fprintf('=====================================================\n');
 
@@ -267,6 +275,18 @@ assert_equals( cell(2,2,2), cell(2,2,2), 'pass_cell6' );
 
 assert_equals( 1, 2, 'fail_fuzzy', 'fuzzy', true );
 
+
+function unittest_assert_equals_inf_nan
+munit_set_function('assert_equals_inf_nan');
+assert_equals( [inf, -inf, 1], [inf, -inf, 1], 'pass_inf_inf1' );
+assert_equals( [inf, -inf, 1], [inf, -inf, 2], 'fail_inf_inf2' );
+assert_equals( inf, 1, 'fail_inf1' );
+assert_equals( inf, -inf, 'fail_inf2' );
+assert_equals( inf, nan, 'fail_inf3' );
+assert_equals( inf, inf, 'fail_inf_inf_nonequalinf', 'equalinf', false );
+assert_equals( [nan, 1], [nan, 1], 'pass_nan1' );
+assert_equals( nan, nan, 'fail_nan_nonequalnan', 'equalnan', false );
+assert_equals( [nan, inf, 1, -inf], [nan, inf, 1, -inf], 'pass_nan1' );
 
 
 function unittest_assert_bool
