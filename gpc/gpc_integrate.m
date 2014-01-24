@@ -14,7 +14,7 @@ function [int, w]=gpc_integrate(func, V, p, varargin)
 % Example 1: (<a href="matlab:run_example gpc_integrate 1">run</a>)
 %   I_a = multiindex(3,4);
 %   a_i_alpha = rand(10, size(I_a, 1));
-%   gpc_integrate(@(x,a)(a), {'h',I_a}, 5, 'gpc_coeffs', a_i_alpha)
+%   gpc_integrate(@(a)(a), {'h',I_a}, 5, 'gpc_coeffs', a_i_alpha)
 %
 %   gpc_integrate(@(x)(sin(x(1)+x(2))), {'hl',[0,0]}, 5, 'grid', 'smolyak', 'vectorized', false)
 %   gpc_integrate(@(x)(sin(x(1,:)+x(2,:))), {'hl',[0,0]}, 5, 'grid', 'smolyak')
