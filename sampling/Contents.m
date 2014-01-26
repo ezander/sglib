@@ -3,7 +3,7 @@
 % This folder contains functions for support of sampling based methods like
 % quasi Monte Carlo (QMC) and Latin hypercube (LHS) based methods. Many of
 % the methods can also be invoked indirectly (and more conveniently) via
-% the GPC functions (see GPC_SAMPLE).
+% the GPC functions (see GPCGERM_SAMPLE).
 %
 % Files
 %   halton_sequence          - Generate a Halton sequence for QMC integration.

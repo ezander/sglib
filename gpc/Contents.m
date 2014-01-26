@@ -57,7 +57,7 @@
 %   gpc_integrate                - Short description of gpc_integrate.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
-%   gpc_sample                   - Draw samples from a GPC.
+%   gpcgerm_sample               - Draw samples from a GPC.
 %   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
 %   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
 %   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
@@ -68,7 +68,7 @@
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
-%   unittest_gpc_sample          - Test the GPC_SAMPLE function.
+%   unittest_gpcgerm_sample      - Test the GPCGERM_SAMPLE function.
 %   unittest_gpc_triples         - Test the GPC_TRIPLES function.
 % 
 % Polysys functions (low level)

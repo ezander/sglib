@@ -5,7 +5,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %   An array of size M x N of independently generated samples is returned. 
 %
 %   Note: Normally you don't want to call this function directly. Rather
-%   call GPC_SAMPLE instead.
+%   call GPCGERM_SAMPLE instead.
 %
 % Example (<a href="matlab:run_example polysys_sample_rv">run</a>)
 %    N = 100000; M = 50;
@@ -25,7 +25,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %    hist(polysys_sample_rv('l', N, 1), M);
 %    title('exponential')
 %
-% See also GPC_SAMPLE, RAND, RANDN
+% See also GPCGERM_SAMPLE, RAND, RANDN
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

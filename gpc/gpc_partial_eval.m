@@ -13,7 +13,7 @@ function [b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi)
 %   I_a = multiindex(4,2);
 %   V_a = {'uHpl', I_a};
 %   a_i_alpha = randn(4, size(I_a, 1));
-%   xi_a = gpc_sample(V_a);
+%   xi_a = gpcgerm_sample(V_a);
 %   k = 3;
 %   [b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi_a(k));
 %   xi_b = xi_a;
@@ -27,7 +27,7 @@ function [b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi)
 %   % evaluation gives the same results
 %   [gpc_evaluate(b_i_alpha, V_b, xi_b), gpc_evaluate(a_i_alpha, V_a, xi_a)]
 %
-% See also GPC_EVALUATE, GPC_SAMPLE, MULTIINDEX
+% See also GPC_EVALUATE, GPCGERM_SAMPLE, MULTIINDEX
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

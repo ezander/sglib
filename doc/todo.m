@@ -1,5 +1,8 @@
 %TODO Contains my personal TODO
 
+% implement arcine and semicircle as beta in gendist_create
+
+
 % check results from smolyak in the new demo
 
 
@@ -39,9 +42,6 @@
 
 %% Todos as of 12 Jun 2013
 
-% implement polysys_invcdf  (extract from gpc_sample...)
-% implement all polysys distributions also in statistics (could reuse their
-%    cdf then) (nearly, arcsine and semicircle??? or keep beta???)
 % put kde into stats/private and use in kernel_estimate_fast or something
 % import stiffness matrix functions from fileexchange
 % remove thesis from here and organise as submodule thing

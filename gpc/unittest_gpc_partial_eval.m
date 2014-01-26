@@ -57,7 +57,7 @@ function test_eval(V_a, n, k, label, test_uniq)
 I_a = V_a{2};
 a_i_alpha = randn(n, size(I_a, 1));
 
-xi_a = gpc_sample(V_a);
+xi_a = gpcgerm_sample(V_a);
 [b_i_alpha, V_b] = gpc_partial_eval(a_i_alpha, V_a, k, xi_a(k));
 
 xi_b = xi_a;

@@ -41,7 +41,7 @@ function [int, w]=gpc_integrate(func, V, p, varargin)
 %   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Semicircle/Chebyshev_U')
 %
-% See also GPC, FUNCALL, GPC_EVALUATE, GPC_SAMPLE, GPC_MOMENTS
+% See also GPC, FUNCALL, GPC_EVALUATE, GPCGERM_SAMPLE, GPC_MOMENTS
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
