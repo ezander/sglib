@@ -74,6 +74,6 @@ end
 
 % if dual basis is to be computed
 if dual
-    nrm2 = gpc_norm(V, 'sqrt', false);
+    nrm2 = gpcbasis_norm(V, 'sqrt', false);
     y_alpha_j = binfun(@rdivide, y_alpha_j, nrm2)';
 end

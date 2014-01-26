@@ -35,7 +35,7 @@ assert_equals(y, y_ex, 'legendre');
 
 % test dual basis for Legendre
 yd = gpcbasis_evaluate(V, [ones(3,1), -ones(3,1)], 'dual', true);
-n = gpc_norm(V, 'sqrt', false);
+n = gpcbasis_norm(V, 'sqrt', false);
 yd_ex = binfun(@rdivide, [ones(size(p)), (-1).^p], n)';
 
 assert_equals(yd, yd_ex, 'legendre_dual');

@@ -1,6 +1,6 @@
-function norm_I=gpc_norm( V, varargin )
-% GPC_NORM Compute the norm of the system of GPC polynomials.
-%  NORM_I=GPC_NORM( V ) returns the norms of the GPC
+function norm_I=gpcbasis_norm( V, varargin )
+% GPCBASIS_NORM Compute the norm of the system of GPC polynomials.
+%  NORM_I=GPCBASIS_NORM( V ) returns the norms of the GPC
 %  polynomials specified by the V. The returned vector
 %  is a column vector.
 %
@@ -9,14 +9,14 @@ function norm_I=gpc_norm( V, varargin )
 %        If true, which  is the default, the true norm is returned.
 %        Otherwise, i.e. if false, the square of the norm is returned.
 %
-% Example (<a href="matlab:run_example gpc_norm">run</a>)
+% Example (<a href="matlab:run_example gpcbasis_norm">run</a>)
 %  I_u=[0 0; 1 1; 2 2; 2 3; 3 3];
 %  V_u={'H', I_u};
-%  norm_I_u=gpc_norm(V_u);
+%  norm_I_u=gpcbasis_norm(V_u);
 %  fprintf('|H_{%1d,%1d}| => %g\n', [I_u norm_I_u]')
 %  
 %  V_u={'HP', I_u};
-%  norm_I_u=gpc_norm(V_u);
+%  norm_I_u=gpcbasis_norm(V_u);
 %  fprintf('|H_{%1d}P_{%1d}| => %g\n', [I_u norm_I_u]')
 %
 % See also GPC

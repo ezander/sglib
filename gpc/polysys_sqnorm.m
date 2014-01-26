@@ -13,7 +13,7 @@ function nrm2 = polysys_sqnorm(sys, n, method)
 %   disp(rats(polysys_sqnorm('P', 0:5),4));
 %   disp(rats(polysys_sqnorm('p', 0:5),4));
 %
-% See also GPC_NORM
+% See also GPCBASIS_NORM
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

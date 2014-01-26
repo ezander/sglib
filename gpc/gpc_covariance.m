@@ -31,7 +31,7 @@ if nargin<3
 end
 
 % compute the square of the norm of the GPC basis
-nrm2 = gpc_norm(V_ab, 'sqrt', false);
+nrm2 = gpcbasis_norm(V_ab, 'sqrt', false);
 
 % determine all multiindices not belonging to the mean
 ind = (multiindex_order(V_ab{2})~=0);

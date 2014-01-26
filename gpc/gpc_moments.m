@@ -71,7 +71,7 @@ function var=var_direct( r_i_alpha, V_r )
 % VAR_DIRECT Compute the variance of a GPC directly from the coefficients
 I_r = V_r{2};
 mean_ind = (multiindex_order(I_r)==0);
-sqr_norm = gpc_norm(V_r, 'sqrt', false);
+sqr_norm = gpcbasis_norm(V_r, 'sqrt', false);
 var=r_i_alpha(:,~mean_ind).^2 * sqr_norm(~mean_ind);
 
 
