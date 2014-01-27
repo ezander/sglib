@@ -32,5 +32,5 @@ if nargin<3
 end
 
 y=zeros(size(x));
-p=(x>0);
-y(p)=1/2*(1+erf( (log(x(p))-mu)/(sigma*sqrt(2)) ));
+ind=(x>0);
+y(ind)=1/2*(1+erf( (log(x(ind))-mu)/(sigma*sqrt(2)) ));
