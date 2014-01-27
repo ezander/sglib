@@ -27,14 +27,10 @@ switch upper(sys)
         dist = gendist_create('uniform', {-1, 1});
     case 'T'
         % ChebyshevT/Shifted Arcsine
-        % Arcsine distribution with support [-1,1] (which is the same as as
-        % Beta(1/2,1/2) distribution with shifted support.
-        dist = gendist_create('beta', {1/2, 1/2}, 'shift', -1/2, 'scale', 2);
+        dist = gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
     case 'U'
         % ChebyshevU/Semicircle
-        % Wigner semicircle distribution (which is the same as as
-        % Beta(3/2,3/2) distribution shift from [0,1] to [-1,1].
-        dist = gendist_create('beta', {3/2, 3/2}, 'shift', -1/2, 'scale', 2);
+        dist = gendist_create('semicircle');
     case 'L'
         % Laguerre/Exponential
         dist = gendist_create('exponential', {1});

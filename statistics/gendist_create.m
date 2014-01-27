@@ -7,6 +7,10 @@ function dist=gendist_create(distname, params, varargin)
 %   field contains the parameters for the chosen distribution as a cell
 %   array. 
 %
+%   The ArcSine and Wigner Semicircle can now also be generated. The call
+%   to GENDIST_CREATE will return a scaled and shifted Beta distribution
+%   with special values for the parameters in these cases.
+%
 % Options
 %   'shift': 0
 %      Shift the distribution SHIFT units to the right.
@@ -49,6 +53,26 @@ if nargin==1
     params={};
 end
 
+% Some special treatment for distributions that don't have their "own"
+% functions, but are special cases of other distributions
+switch(distname)
+    case 'arcsine'
+        % Arcsine distribution, which is the same as the Beta(1/2,1/2)
+        % distribution.
+        distname = 'beta';
+        params = {1/2, 1/2};
+    case 'semicircle'
+        % Wigner semicircle distribution, which is the same as the
+        % Beta(3/2,3/2) distribution shifted from [0,1] to [-1,1].
+        distname = 'beta';
+        params = {3/2, 3/2};
+        shift = shift - 1/2;
+        scale = scale * 2;
+    otherwise
+        % do nothing
+end
+
+% Test whether the relevant functions are there
 if check
     exts = {'pdf', 'cdf', 'moments', 'invcdf'};
     for ext=exts
@@ -60,4 +84,5 @@ if check
     end
 end
 
+% Generate the structure (rather: cell array) using the getargs function
 dist=gendist_get_args(distname, {params, shift, scale});
