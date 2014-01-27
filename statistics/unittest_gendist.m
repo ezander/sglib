@@ -77,6 +77,16 @@ assert_equals( kurt, kurt_pdf, 'kurt_pdf', 'abstol', 1e-6 );
 
 % test that cdf(stdnor()) is cdf of normal dist
 x=linspace(-7,7,1000);
-stdnor=gendist_stdnor(x, 'beta', {2.5, 3.7}, 1.3, 4.6);
-y=gendist_cdf(stdnor, 'beta', {2.5, 3.7}, 1.3, 4.6);
-assert_equals( y, normal_cdf(x), 'cdf_stdnor_normal' );
+dist = gendist_create('beta', {2.5, 3.7}, 'shift', 1.3, 'scale', 4.6);
+stdnor=gendist_stdnor(x, dist);
+y=gendist_cdf(stdnor, dist);
+assert_equals( y, normal_cdf(x), 'cdf_stdnor_beta' );
+
+dist = gendist_create('normal');
+y=gendist_stdnor(x, dist);
+assert_equals( y, x, 'cdf_stdnor_normal' );
+
+dist = gendist_create('chisquared', {3});
+stdnor=gendist_stdnor(x, dist);
+y=gendist_cdf(stdnor, dist);
+assert_equals( y, normal_cdf(x), 'cdf_stdnor_chi' );

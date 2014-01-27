@@ -19,5 +19,10 @@ function y=gendist_stdnor(x, dist, varargin)
 
 [distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
-y=feval( [distname '_stdnor'], x, params{:} );
-y=(y-mean)*scale+mean+shift;
+stdnor_func = [distname '_stdnor'];
+if exist(stdnor_func, 'file')
+    y=feval( stdnor_func, x, params{:} );
+    y=(y-mean)*scale+mean+shift;
+else
+    y=gendist_invcdf(normal_cdf(x, 0, 1), dist);
+end
