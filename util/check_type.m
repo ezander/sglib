@@ -40,12 +40,16 @@ ok=true;
 ok=ok&&(emptyok||~empty);
 ok=ok&&(empty||isa( x, classname ));
 if ~ok
-    if emptyok
-        emptystr='empty or ';
+    if empty && ~emptyok
+        message=sprintf( '%s must be of type non-empty %s but was empty %s', varname, classname, class(x));
     else
-        emptystr='';
+        if emptyok
+            emptystr='empty or ';
+        else
+            emptystr='';
+        end
+        message=sprintf( '%s must be %sof type %s but was: %s', varname, emptystr, classname, class(x) );
     end
-    message=sprintf( '%s must be %sof type %s but was: %s', varname, emptystr, classname, class(x) );
     check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
 end
 
