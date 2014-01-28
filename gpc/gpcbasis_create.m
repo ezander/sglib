@@ -51,6 +51,12 @@ options=varargin2options(varargin);
 [full_tensor,options]=get_option(options, 'full_tensor', false);
 check_unsupported_options(options, mfilename);
 
+if iscell(polysys)
+    V_old = polysys;
+    polysys = V_old{1};
+    m = gpcbasis_size(V_old, 2);
+end
+
 if isdefault(m)
     m=length(polysys);
 elseif ~(length(polysys)==1 || length(polysys)==m)

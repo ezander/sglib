@@ -1,5 +1,9 @@
 %TODO Contains my personal TODO
 
+% write help for gpcbasis_create (important!!)
+
+% check halton_sequence for n==0
+
 % implement arcine and semicircle as beta in gendist_create
 
 
