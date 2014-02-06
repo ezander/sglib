@@ -71,7 +71,7 @@ if nargin<2 || isempty(n)
 end
 
 switch(mode)
-    case 'default'
+    case {'mc', 'default'}
         U = [];
         if ~isempty(rand_func)
             U = funcall(rand_func, n, m);
