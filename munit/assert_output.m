@@ -1,12 +1,14 @@
 function assert_output( command, expected_output, assert_id )
-% ASSERT_OUTPUT Short description of assert_output.
-%   ASSERT_OUTPUT Asserts that a given commmand screen output is correct.
+% ASSERT_OUTPUT Assert that the console output of a command is correct.
+%   ASSERT_OUTPUT( COMMAND, EXPECTED_OUTPUT, ASSERT_ID ) asserts that the
+%   output on the console of the command COMMAND, which has to be specified
+%   as a string, matches the string EXPECTED_OUTPUT.
 %
 % Example (<a href="matlab:run_example assert_output">run</a>)
 %    assert_output( 'fprintf(''%03d'', 12)', '012', 'pass' )
 %    assert_output( 'fprintf(''%03d'', 12)', '0012', 'fail' )
 %
-% See also
+% See also ASSERT_EQUALS, ASSERT_TRUE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -23,9 +25,15 @@ if nargin<3
     assert_id = [];
 end
 
+result_list={};
 if exist('evalc')  %#ok<EXIST>
     if ~isempty(expected_output)
         expected_output=sprintf(expected_output);
     end
-    assert_equals( evalc(command), expected_output, assert_id );
+    output = evalc(command);
+    if ~strcmp(output, expected_output)
+        message = sprintf('command output was ''%s'', but ''%s'' was expected', output, expected_output);
+        result_list{end+1}={message, assert_id};
+    end
 end
+munit_process_assert_results( result_list, assert_id );

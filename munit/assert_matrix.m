@@ -1,10 +1,36 @@
 function assert_matrix( A, properties, assert_id, varargin )
-% ASSERT_MATRIX Short description of assert_matrix.
-%   ASSERT_MATRIX Long description of assert_matrix.
+% ASSERT_MATRIX Assert that a matrix has specified properties.
+%   ASSERT_MATRIX( A, PROPERTIES, ASSERT_ID, OPTIONS ) asserts that matrix
+%   A has the property or properties specified in PROPERTIES. This can be a
+%   string or cell array containing strings, which can be any of the
+%   following:
+%     'square', 'sparse', 'full', 'real', 'symmetric', 'hermitian',
+%     'unitary', 'orthogonal', 'diagonal', 'identity', 'lower triangular',
+%     'upper triangular'
+%   Most options (except square, sparse and full) are checked up to some
+%   default absolute or relative precision, which can be changed by setting
+%   the options 'abstol', 'reltol' or 'exact'.
+%
+% Options
+%   'abstol': 1e-8
+%      Sets the absolute tolerance for testing the given matrix properties.
+%      This means that an elementwise difference of at max 'abstol'
+%      is allowed.
+%   'reltol': 1e-8
+%      Sets the relative elementwise tolerance.
+%   'exact': {false}, true
+%      When set to true, sets both 'abstol' and 'reltol' to zero.
 %
 % Example (<a href="matlab:run_example assert_matrix">run</a>)
-%
-% See also
+%   A = hilb(5);
+%   % The following will pass
+%   assert_matrix(A, 'symmetric');
+%   % The following will complain that A is neither sparse nor diagonal
+%   assert_matrix(A, {'square', 'sparse', 'real', 'diagonal'}, 'ssrd');
+%   % Seeting abstol high will also make 'diagonal pass
+%   assert_matrix(A, 'diagonal', 'not_really_diag', 'abstol', 1);
+%   
+% See also ASSERT_EQUALS, ASSERT_TRUE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

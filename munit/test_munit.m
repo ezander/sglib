@@ -1,10 +1,16 @@
 function test_munit
 % TEST_MUNIT Test the munit framework itself.
-%
+%   TEST_MUNIT will perform a self test of the munit unit testing
+%   framework. Note it is normal that lots of failure messages are printed,
+%   as that is what a unit testing framework should print, when it
+%   encounters one. You know that the test was successful when the last
+%   line printed was something like:
+%     OK: MUnit seems to work as it should...
+%   
 % Example (<a href="matlab:run_example test_munit">run</a>)
 %   test_munit;
 %
-% See also
+% See also MUNIT_RUN_TESTSUITE, MUNIT_OPTIONS
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing
@@ -16,7 +22,6 @@ function test_munit
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 
 % Since we cannot use munit here itself we have to rely on more basic 

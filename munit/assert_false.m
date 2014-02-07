@@ -6,6 +6,8 @@ function assert_false( bool_val, message, assert_id )
 %   MESSAGE. For a description of OPTIONS see ASSERT.
 %
 % Example (<a href="matlab:run_example assert_false">run</a>)
+%   % The assertion passes
+%   x = 19;
 %   assert_false( x<0, 'x may not be negative', 'non_negative' );
 %
 % See also ASSERT_TRUE, ASSERT_EQUALS

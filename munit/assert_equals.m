@@ -7,7 +7,9 @@ function assert_equals( actual, expected, assert_id, varargin )
 %   as equal convert to one form.
 %
 % Example (<a href="matlab:run_example assert_equals">run</a>)
+%   % the first one passes, the second one fails
 %   assert_equals( factorial(1:4), [1,2,6,24], 'fact', 'abstol', 0, 'reltol', 0 );
+%   assert_equals( {1,2}, {1,3}, 'cellarr' );
 %
 % See also ASSERT_TRUE, ASSERT_FALSE, ASSERT_ERROR
 

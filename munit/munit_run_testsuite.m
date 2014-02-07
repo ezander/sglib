@@ -30,11 +30,12 @@ function munit_run_testsuite( varargin )
 %     corresponding unittests.
 %
 % Example
-%   munit_reset_options();
 %   munit_set_debug( true );
 %   munit_run_testsuite( 'mymod', pwd, 'subdirs', {'submod1', 'submod2'} );
+%   % very handy is also the following
+%   munit_run_testsuite('coverage', true);
 %
-% See also 
+% See also MUNIT_SET_DEBUG, ASSERT_EQUALS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
