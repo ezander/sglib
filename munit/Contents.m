@@ -7,17 +7,17 @@
 %   assert_equals                - Check the equality of acutal and expected values.
 %   assert_error                 - Asserts that the called function emits a correct error.
 %   assert_false                 - Asserts that the given condition is false.
-%   assert_matrix                - Short description of assert_matrix.
-%   assert_output                - Short description of assert_output.
+%   assert_matrix                - Assert that a matrix has specified properties.
+%   assert_output                - Assert that the console output of a command is correct.
 %   assert_true                  - Asserts that the given condition is true.
-%   munit_options                - Set or get unit options.
+%   munit_options                - Set or get Munit options.
 %   munit_print_stats            - Print the statistics of the current module.
-%   munit_printf                 - Short description of munit_printf.
+%   munit_printf                 - Prints munit messages.
 %   munit_process_assert_results - Invoked when an assertion has failed.
 %   munit_run_testsuite          - Runs all tests in one directory.
 %   munit_set_debug              - Sets debugging in failed assertions on and off.
 %   munit_set_function           - Sets the function name for the following assertions.
-%   munit_stats                  - Short description of munit_stats.
+%   munit_stats                  - Internal function to handle munit statistics.
 %   test_munit                   - Test the munit framework itself.
 
 %   Elmar Zander

@@ -231,14 +231,14 @@ assert_equals( ones(2,2), ones(2,2), 'pass_mat_num' );
 assert_equals( ones(2,2,2), ones(2,2,2), 'pass_tens_num' );
 
 assert_equals( true, false, 'fail_sca_log_mismatch' );
-assert_equals( repmat(true,2,1), repmat(false,2,1), 'fail_vec_log_mismatch' );
-assert_equals( repmat(false,1,2), repmat(true,1,2), 'fail_vec_log_mismatch2' );
-assert_equals( repmat(true,2,2), repmat(false,2,2), 'fail_mat_log_mismatch1' );
-assert_equals( repmat(false,[2,2,2]), repmat(true,[2,2,2]), 'fail_tens_log_mismatch1' );
+assert_equals( true(2,1), false(2,1), 'fail_vec_log_mismatch' );
+assert_equals( false(1,2), true(1,2), 'fail_vec_log_mismatch2' );
+assert_equals( true(2,2), false(2,2), 'fail_mat_log_mismatch1' );
+assert_equals( false([2,2,2]), true([2,2,2]), 'fail_tens_log_mismatch1' );
 
 assert_equals( true, true, 'pass_sca_log' );
-assert_equals( repmat(true,2,1), repmat(true,2,1), 'pass_vec_log1' );
-assert_equals( repmat(false,1,2), repmat(false,1,2), 'pass_vec_log2' );
+assert_equals( true(2,1), true(2,1), 'pass_vec_log1' );
+assert_equals( false(1,2), false(1,2), 'pass_vec_log2' );
 
 assert_equals( 'abc', 'abd', 'fail_str_mismatch' );
 assert_equals( 'abcd', 'abcd', 'pass_str' );

@@ -150,7 +150,7 @@ if any(~comp(:))
         else
             % here comes a bit tricky matlab cell array/matrix
             % manipulation to get the index in the form we want
-            %TODO: write a small tutorial on the stupied cell handling and
+            %TODO: write a small tutorial on the stupid cell handling and
             %conversion stuff in matlab
             ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);
@@ -202,7 +202,7 @@ if any(~comp(:))
         else
             % here comes a bit tricky matlab cell array/matrix
             % manipulation to get the index in the form we want
-            %TODO: write a small tutorial on the stupied cell handling and
+            %TODO: write a small tutorial on the stuped cell handling and
             %conversion stuff in matlab
             ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);
