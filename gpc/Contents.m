@@ -45,38 +45,42 @@
 %     * better performance for mixed case by caching over polynomials
 %       systems
 %
-% Files
-%
 % GPC functions (high level)
-%   gpcbasis_create              - Short description of gpcspace_create.
-%   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
-%   gpcbasis_norm                - Compute the norm of the system of GPC polynomials.
-%   gpcbasis_size                - Return the size of the GPC basis.
 %   gpc_covariance               - Compute covariance matrix between GPC variables.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
-%   gpc_integrate                - Short description of gpc_integrate.
+%   gpc_integrate                - Integrate over GPC space or generate integration points.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
-%   gpcgerm_sample               - Draw samples from a GPC.
-%   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
-%   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
-%   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
-%   unittest_gpcbasis_norm       - Test the GPCBASIS_NORM function.
-%   unittest_gpcbasis_size       - Test the GPCBASIS_SIZE function.
+%   gpc_triples                  - Computation of the expectation of triple products of GPC polynomials.
+%   gpcbasis_create              - Create representation of a GPC space/basis.
+%   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
+%   gpcbasis_norm                - Compute the norm of the system of GPC basis polynomials.
+%   gpcbasis_size                - Return the size of the GPC basis.
+%   gpcgerm_cdf                  - Computes the joint CDF of the GPC germ.
+%   gpcgerm_pdf                  - Computes the joint PDF of the GPC germ.
+%   gpcgerm_sample               - Draw samples from a GPC germ.
 %   unittest_gpc_covariance      - Test the GPC_COVARIANCE function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
-%   unittest_gpcgerm_sample      - Test the GPCGERM_SAMPLE function.
 %   unittest_gpc_triples         - Test the GPC_TRIPLES function.
+%   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
+%   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
+%   unittest_gpcbasis_norm       - Test the GPCBASIS_NORM function.
+%   unittest_gpcbasis_size       - Test the GPCBASIS_SIZE function.
+%   unittest_gpcgerm_cdf         - Test the GPCGERM_CDF function.
+%   unittest_gpcgerm_pdf         - Test the GPCGERM_PDF function.
+%   unittest_gpcgerm_sample      - Test the GPCGERM_SAMPLE function.
 % 
 % Polysys functions (low level)
-%   polysys_int_rule             - Short description of polysys_int_rule.
+%   polysys_dist                 - Get the associated distribution for a polynomial system.
+%   polysys_int_rule             - Compute the integration rule for a given system of polynomials.
 %   polysys_rc2coeffs            - Generate polynomial coefficients from recurrence.
 %   polysys_recur_coeff          - Compute recurrence coefficient of orthogonal polynomials.
 %   polysys_sample_rv            - Sample from a probability distribution.
-%   polysys_sqnorm               - POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+%   polysys_sqnorm               - Compute the square norm of the orthogonal polynomials.
+%   unittest_polysys_dist        - Test the POLYSYS_DIST function.
 %   unittest_polysys_int_rule    - Test the POLYSYS_INT_RULE function.
 %   unittest_polysys_recur_coeff - Test the POLYSYS_RECUR_COEFF function.
 %   unittest_polysys_sample_rv   - Test the POLYSYS_SAMPLE_RV function.
@@ -93,4 +97,3 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-

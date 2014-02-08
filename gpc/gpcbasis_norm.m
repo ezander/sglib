@@ -1,8 +1,7 @@
 function norm_I=gpcbasis_norm( V, varargin )
-% GPCBASIS_NORM Compute the norm of the system of GPC polynomials.
-%  NORM_I=GPCBASIS_NORM( V ) returns the norms of the GPC
-%  polynomials specified by the V. The returned vector
-%  is a column vector.
+% GPCBASIS_NORM Compute the norm of the system of GPC basis polynomials.
+%  NORM_I=GPCBASIS_NORM( V ) returns the norms of the GPC basis polynomials
+%  specified by the V. The returned vector is a column vector.
 %
 % Options:
 %  sqrt: boolean - {true}, false

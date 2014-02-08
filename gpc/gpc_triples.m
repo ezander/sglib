@@ -1,8 +1,8 @@
 function M=gpc_triples(V_a, V_b, V_c, varargin)
-% GPC_TRIPLES Computation of the expectation of triple products of gpc polynomials.
+% GPC_TRIPLES Computation of the expectation of triple products of GPC polynomials.
 %   M=GPC_TRIPLES(V_A,V_B,V_C) computes the value of 
 %    <Psi_alpha Psi_beta Psi_gamma> where
-%   the Psi_alpha are the multivariate Gpc polynomials and the expectation
+%   the Psi_alpha are the multivariate GPC polynomials and the expectation
 %   <.> is over the measure of the random variable corresponding to the
 %   system of orthogonal polynomial i.e. The result is a tensor of order 3,
 %   thus you can pass all arguments V_A, V_B and V_C as arrays of

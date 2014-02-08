@@ -1,5 +1,5 @@
 function [int, w]=gpc_integrate(func, V, p, varargin)
-% GPC_INTEGRATE Short description of gpc_integrate.
+% GPC_INTEGRATE Integrate over GPC space or generate integration points.
 %   INT=GPC_INTEGRATE(FUNC, V, P, OPTIONS) integrate the function FUNC over
 %   the given GPC space V with an integration rule of order P. The grid can
 %   be specified via the option 'grid' and defaults to 'smolyak'. The

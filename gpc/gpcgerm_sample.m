@@ -1,5 +1,5 @@
 function xi = gpcgerm_sample(V, n, varargin)
-% GPCGERM_SAMPLE Draw samples from a GPC.
+% GPCGERM_SAMPLE Draw samples from a GPC germ.
 %   XI = GPCGERM_SAMPLE(V, N) creates M rows and N columns of samples, where M
 %   is the number of random variables. V contains a specification of the
 %   random variables and a multiindex set (see Example). 

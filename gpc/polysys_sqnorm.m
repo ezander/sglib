@@ -1,5 +1,5 @@
 function nrm2 = polysys_sqnorm(sys, n, method)
-% POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+% POLYSYS_SQNORM Compute the square norm of the orthogonal polynomials.
 %   NRM2 = POLYSYS_SQNORM(SYS, N) computes the square of the norm NRM2 of the
 %   system of orthogonal polynomials given by SYS for the degree N. If N is
 %   a vector a vector of square norms NRM is returned with the same shape.

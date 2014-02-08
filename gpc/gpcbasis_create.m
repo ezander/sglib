@@ -1,14 +1,22 @@
 function V = gpcbasis_create(polysys, varargin)
-% GPCBASIS_CREATE Short description of gpcspace_create.
-%   GPCSPACE_CREATE Long description of gpcspace_create.
+% GPCBASIS_CREATE Create representation of a GPC space/basis.
+%   V = GPCBASIS_CREATE(POLYSYS, OPTIONS) creates a representation of a GPC
+%   space. POLYSYS can be a single character or a string of characters
+%   specifying the germ of the GPC space. For a single character the option
+%   'm' can be used to specify the number of independent random variables
+%   making up the germ, otherwise the size of the germ is the length of the
+%   given string passed in polysys. If the option 'p' is specified a
+%   multiindex in M variables up to complete order P is created. It's
+%   probably best to take a look at the examples below.
 %   
-%   H,h - Gauss/Hermite (normalised)
-%   P,p - Uniform/Legendre (normalised)
-%   L,l - Exponential/Laguerre (both are automatically normalised)
-%   T,t - Arcsine/Chebyshev 1st kind (both normalised)
-%   U,u - Semicircle/Chebyshev 2nd kind (both normalised)
-%   M   - Monomials (no corresponding probability measure, normalisation
-%           not possible)
+%   The characters that can be currently used are:
+%     H,h - Gauss/Hermite
+%     P,p - Uniform/Legendre
+%     L,l - Exponential/Laguerre (both are automatically normalised)
+%     T,t - Arcsine/Chebyshev 1st kind
+%     U,u - Semicircle/Chebyshev 2nd kind (both normalised)
+%     M   - Monomials (no corresponding probability measure, normalisation
+%             not possible)
 %
 % Options
 %   m: {automatic, length=polysys}
