@@ -67,13 +67,13 @@ function MT=element_mass( d, pos, xi, w )
 
 switch d
     case 1
-        phi{1}=@(xi)(1-xi);
-        phi{2}=@(xi)(xi);
+        phi{1}=1-xi;
+        phi{2}=xi;
         J=pos(:,2)-pos(:,1);
     case 2
-        phi{1}=@(xi)(1-xi(1,:)-xi(2,:));
-        phi{2}=@(xi)(xi(1,:));
-        phi{3}=@(xi)(xi(2,:));
+        phi{1}=1-xi(1,:)-xi(2,:);
+        phi{2}=xi(1,:);
+        phi{3}=xi(2,:);
         J=[pos(:,2)-pos(:,1), pos(:,3)-pos(:,1)];
 end
 
@@ -83,9 +83,7 @@ end
 
 phi_xi=zeros(length(w),d+1);
 for i=1:d+1
-    phi_xi(:,i)=phi{i}(xi);
+    phi_xi(:,i)=phi{i};
 end
 
 MT=abs(det(J))*phi_xi'*(w*ones(1,d+1).*phi_xi);
-
-
