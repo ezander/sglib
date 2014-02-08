@@ -4,7 +4,7 @@ function unittest_gpcgerm_cdf
 % Example (<a href="matlab:run_example unittest_gpcgerm_cdf">run</a>)
 %   unittest_gpcgerm_cdf
 %
-% See also GPCGERM_CDF, TESTSUITE 
+% See also GPCGERM_CDF, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_tensor_to_vector
 % Example (<a href="matlab:run_example unittest_tensor_to_vector">run</a>)
 %   unittest_tensor_to_vector
 %
-% See also TENSOR_TO_VECTOR, TESTSUITE 
+% See also TENSOR_TO_VECTOR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_gpc_partial_eval
 % Example (<a href="matlab:run_example unittest_gpc_partial_eval">run</a>)
 %   unittest_gpc_partial_eval
 %
-% See also GPC_PARTIAL_EVAL, TESTSUITE 
+% See also GPC_PARTIAL_EVAL, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_pce_error_mc
 % Example (<a href="matlab:run_example unittest_pce_error_mc">run</a>)
 %   unittest_pce_error_mc
 %
-% See also PCE_ERROR_MC, TESTSUITE 
+% See also PCE_ERROR_MC, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing

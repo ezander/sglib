@@ -4,7 +4,7 @@ function unittest_gpcbasis_create
 % Example (<a href="matlab:run_example unittest_gpcbasis_create">run</a>)
 %   unittest_gpcbasis_create
 %
-% See also GPCBASIS_CREATE, TESTSUITE 
+% See also GPCBASIS_CREATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

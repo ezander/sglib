@@ -4,7 +4,7 @@ function unittest_smolyak_grid
 % Example (<a href="matlab:run_example unittest_smolyak_grid">run</a>)
 %   unittest_smolyak_grid
 %
-% See also SMOLYAK_GRID, TESTSUITE 
+% See also SMOLYAK_GRID, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

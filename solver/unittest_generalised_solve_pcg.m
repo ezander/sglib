@@ -4,7 +4,7 @@ function unittest_generalised_solve_pcg
 % Example (<a href="matlab:run_example unittest_generalised_solve_pcg">run</a>)
 %   unittest_generalised_solve_pcg
 %
-% See also GENERALISED_SOLVE_PCG, TESTSUITE 
+% See also GENERALISED_SOLVE_PCG, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_isversion
 % Example (<a href="matlab:run_example unittest_isversion">run</a>)
 %   unittest_isversion
 %
-% See also ISVERSION, TESTSUITE 
+% See also ISVERSION, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

@@ -12,7 +12,7 @@ function p=gpcgerm_cdf(V, xi)
 %   Z = reshape(gpcgerm_cdf(V, [X(:), Y(:)]'), size(X));
 %   subplot(1,2,2); surf(X, Y, Z);
 %
-% See also GPC, POLYSYS_CDF, GPCGERM_PDF
+% See also GPC, GPCGERM_PDF
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

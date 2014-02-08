@@ -4,7 +4,7 @@ function unittest_schattenp_truncate
 % Example (<a href="matlab:run_example unittest_tensor_truncate">run</a>)
 %    unittest_tensor_truncate
 %
-% See also TENSOR_TRUNCATE, TESTSUITE
+% See also TENSOR_TRUNCATE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

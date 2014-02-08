@@ -4,7 +4,7 @@ function unittest_simple_iteration_contractivity
 % Example (<a href="matlab:run_example unittest_simple_iteration_contractivity">run</a>)
 %   unittest_simple_iteration_contractivity
 %
-% See also SIMPLE_ITERATION_CONTRACTIVITY, TESTSUITE 
+% See also SIMPLE_ITERATION_CONTRACTIVITY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

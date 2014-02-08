@@ -4,7 +4,7 @@ function unittest_gauss_legendre_triangle_rule
 % Example (<a href="matlab:run_example unittest_gauss_legendre_triangle_rule">run</a>)
 %   unittest_gauss_legendre_triangle_rule
 %
-% See also GAUSS_LEGENDRE_TRIANGLE_RULE, TESTSUITE 
+% See also GAUSS_LEGENDRE_TRIANGLE_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

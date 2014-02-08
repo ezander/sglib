@@ -4,7 +4,7 @@ function unittest_operator_compose
 % Example (<a href="matlab:run_example unittest_operator_compose">run</a>)
 %   unittest_operator_compose
 %
-% See also OPERATOR_COMPOSE, TESTSUITE 
+% See also OPERATOR_COMPOSE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

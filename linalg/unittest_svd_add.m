@@ -4,7 +4,7 @@ function unittest_svd_add
 % Example (<a href="matlab:run_example unittest_svd_add">run</a>)
 %   unittest_svd_add
 %
-% See also SVD_ADD, TESTSUITE 
+% See also SVD_ADD, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_options
 % Example (<a href="matlab:run_example unittest_options">run</a>)
 %   unittest_options
 %
-% See also OPTIONS, TESTSUITE 
+% See also OPTIONS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

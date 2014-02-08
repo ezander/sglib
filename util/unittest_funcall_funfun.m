@@ -4,7 +4,7 @@ function unittest_funcall_funfun
 % Example (<a href="matlab:run_example unittest_funcall_funfun">run</a>)
 %   unittest_funcall_funfun
 %
-% See also FUNCALL_FUNFUN, TESTSUITE 
+% See also FUNCALL_FUNFUN, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

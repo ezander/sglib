@@ -4,7 +4,7 @@ function unittest_polysys_dist
 % Example (<a href="matlab:run_example unittest_polysys_dist">run</a>)
 %   unittest_polysys_dist
 %
-% See also POLYSYS_DIST, TESTSUITE 
+% See also POLYSYS_DIST, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

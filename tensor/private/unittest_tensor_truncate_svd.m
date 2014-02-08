@@ -4,7 +4,7 @@ function unittest_tensor_truncate_svd
 % Example (<a href="matlab:run_example unittest_tensor_truncate_svd">run</a>)
 %   unittest_tensor_truncate_svd
 %
-% See also TENSOR_TRUNCATE_SVD, TESTSUITE 
+% See also TENSOR_TRUNCATE_SVD, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_tensor_to_array
 % Example (<a href="matlab:run_example unittest_tensor_to_array">run</a>)
 %   unittest_tensor_to_array
 %
-% See also TENSOR_TO_ARRAY, TESTSUITE 
+% See also TENSOR_TO_ARRAY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

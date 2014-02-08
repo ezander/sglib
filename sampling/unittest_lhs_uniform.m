@@ -4,7 +4,7 @@ function unittest_lhs_uniform
 % Example (<a href="matlab:run_example unittest_lhs_uniform">run</a>)
 %   unittest_lhs_uniform
 %
-% See also LHS_UNIFORM, TESTSUITE 
+% See also LHS_UNIFORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

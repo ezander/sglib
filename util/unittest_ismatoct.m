@@ -4,7 +4,7 @@ function unittest_ismatoct
 % Example (<a href="matlab:run_example unittest_ismatoct">run</a>)
 %    unittest_ismatoct
 %
-% See also IS_MATLAB, IS_OCTAVE, TESTSUITE
+% See also IS_MATLAB, IS_OCTAVE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

@@ -4,7 +4,7 @@ function unittest_pce_multiply
 % Example (<a href="matlab:run_example unittest_pce_multiply">run</a>) 
 %    unittest_pce_multiply
 %
-% See also PCE_MULTIPLY, TESTSUITE
+% See also PCE_MULTIPLY, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

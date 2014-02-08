@@ -4,7 +4,7 @@ function unittest_beta_find_ratio
 % Example (<a href="matlab:run_example unittest_beta_find_ratio">run</a>)
 %   unittest_beta_find_ratio
 %
-% See also BETA_FIND_RATIO, TESTSUITE
+% See also BETA_FIND_RATIO, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

@@ -15,7 +15,7 @@ function unittest_gpc_moments
 % Example (<a href="matlab:run_example unittest_gpc_moments">run</a>)
 %   unittest_gpc_moments
 %
-% See also GPC_MOMENTS, TESTSUITE 
+% See also GPC_MOMENTS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

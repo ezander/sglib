@@ -4,7 +4,7 @@ function unittest_gpcbasis_poly_ind
 % Example (<a href="matlab:run_example unittest_gpcbasis_poly_ind">run</a>)
 %   unittest_gpcbasis_poly_ind
 %
-% See also GPCBASIS_POLY_IND, TESTSUITE 
+% See also GPCBASIS_POLY_IND, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

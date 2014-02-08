@@ -4,7 +4,7 @@ function unittest_van_der_corput
 % Example (<a href="matlab:run_example unittest_van_der_corput">run</a>)
 %   unittest_van_der_corput
 %
-% See also VAN_DER_CORPUT, TESTSUITE 
+% See also VAN_DER_CORPUT, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

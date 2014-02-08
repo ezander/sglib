@@ -4,7 +4,7 @@ function unittest_kl_pce_moments
 % Example (<a href="matlab:run_example unittest_kl_pce_moments">run</a>)
 %   unittest_kl_pce_moments
 %
-% See also KL_PCE_MOMENTS, TESTSUITE 
+% See also KL_PCE_MOMENTS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

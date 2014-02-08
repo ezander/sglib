@@ -4,7 +4,7 @@ function unittest_unitvector
 % Example (<a href="matlab:run_example unittest_unitvector">run</a>)
 %   unittest_unitvector
 %
-% See also UNITVECTOR, TESTSUITE 
+% See also UNITVECTOR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

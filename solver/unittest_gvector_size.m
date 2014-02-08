@@ -4,7 +4,7 @@ function unittest_gvector_size
 % Example (<a href="matlab:run_example unittest_gvector_size">run</a>)
 %   unittest_gvector_size
 %
-% See also GVECTOR_SIZE, TESTSUITE 
+% See also GVECTOR_SIZE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_tensor_rank
 % Example (<a href="matlab:run_example unittest_tensor_rank">run</a>)
 %   unittest_tensor_rank
 %
-% See also TENSOR_RANK, TESTSUITE 
+% See also TENSOR_RANK, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

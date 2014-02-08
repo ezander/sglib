@@ -4,7 +4,7 @@ function unittest_integrate_1d
 % Example (<a href="matlab:run_example unittest_integrate_1d">run</a>)
 %   unittest_integrate_1d
 %
-% See also INTEGRATE_1D, TESTSUITE 
+% See also INTEGRATE_1D, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

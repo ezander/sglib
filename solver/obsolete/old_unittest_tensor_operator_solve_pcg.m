@@ -4,7 +4,7 @@ function unittest_tensor_operator_solve_pcg
 % Example (<a href="matlab:run_example unittest_tensor_operator_solve_pcg">run</a>)
 %   unittest_tensor_operator_solve_pcg
 %
-% See also TENSOR_OPERATOR_SOLVE_PCG, TESTSUITE 
+% See also TENSOR_OPERATOR_SOLVE_PCG, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

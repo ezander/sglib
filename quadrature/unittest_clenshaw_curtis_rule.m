@@ -4,7 +4,7 @@ function unittest_clenshaw_curtis_rule
 % Example (<a href="matlab:run_example unittest_clenshaw_curtis_rule">run</a>)
 %   unittest_clenshaw_curtis_rule
 %
-% See also CLENSHAW_CURTIS_RULE, TESTSUITE 
+% See also CLENSHAW_CURTIS_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

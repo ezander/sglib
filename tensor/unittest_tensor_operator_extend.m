@@ -4,7 +4,7 @@ function unittest_tensor_operator_extend
 % Example (<a href="matlab:run_example unittest_tensor_operator_extend">run</a>)
 %   unittest_tensor_operator_extend
 %
-% See also TENSOR_OPERATOR_EXTEND, TESTSUITE 
+% See also TENSOR_OPERATOR_EXTEND, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

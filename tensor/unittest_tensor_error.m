@@ -4,7 +4,7 @@ function unittest_tensor_error
 % Example (<a href="matlab:run_example unittest_tensor_error">run</a>)
 %   unittest_tensor_error
 %
-% See also TENSOR_ERROR, TESTSUITE 
+% See also TENSOR_ERROR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

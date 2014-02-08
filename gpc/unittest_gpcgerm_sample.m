@@ -4,7 +4,7 @@ function unittest_gpcgerm_sample
 % Example (<a href="matlab:run_example unittest_gpcgerm_sample">run</a>)
 %   unittest_gpcgerm_sample
 %
-% See also GPCGERM_SAMPLE, TESTSUITE 
+% See also GPCGERM_SAMPLE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig.

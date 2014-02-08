@@ -4,7 +4,7 @@ function unittest_polysys_sample_rv
 % Example (<a href="matlab:run_example unittest_polysys_sample_rv">run</a>)
 %   unittest_polysys_sample_rv
 %
-% See also POLYSYS_SAMPLE_RV, TESTSUITE 
+% See also POLYSYS_SAMPLE_RV, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

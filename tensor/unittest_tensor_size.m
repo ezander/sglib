@@ -4,7 +4,7 @@ function unittest_tensor_size
 % Example (<a href="matlab:run_example unittest_tensor_size">run</a>)
 %   unittest_tensor_size
 %
-% See also TENSOR_SIZE, TESTSUITE 
+% See also TENSOR_SIZE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

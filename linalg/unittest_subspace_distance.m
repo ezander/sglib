@@ -4,7 +4,7 @@ function unittest_subspace_distance
 % Example (<a href="matlab:run_example unittest_subspace_distance">run</a>)
 %   unittest_subspace_distance
 %
-% See also SUBSPACE_DISTANCE, TESTSUITE 
+% See also SUBSPACE_DISTANCE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_check_tensors_compatible
 % Example (<a href="matlab:run_example unittest_check_tensors_compatible">run</a>)
 %   unittest_check_tensors_compatible
 %
-% See also CHECK_TENSORS_COMPATIBLE, TESTSUITE 
+% See also CHECK_TENSORS_COMPATIBLE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

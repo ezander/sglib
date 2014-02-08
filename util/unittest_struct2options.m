@@ -4,7 +4,7 @@ function unittest_struct2options
 % Example (<a href="matlab:run_example unittest_struct2options">run</a>)
 %   unittest_struct2options
 %
-% See also STRUCT2OPTIONS, TESTSUITE 
+% See also STRUCT2OPTIONS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

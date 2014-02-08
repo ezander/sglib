@@ -4,7 +4,7 @@ function unittest_trapezoidal_rule
 % Example (<a href="matlab:run_example unittest_trapezoidal_rule">run</a>)
 %   unittest_trapezoidal_rule
 %
-% See also TRAPEZOIDAL_RULE, TESTSUITE 
+% See also TRAPEZOIDAL_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

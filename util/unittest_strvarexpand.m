@@ -4,7 +4,7 @@ function unittest_strvarexpand
 % Example (<a href="matlab:run_example unittest_strvarexpand">run</a>)
 %   unittest_strvarexpand
 %
-% See also STRVAREXPAND, TESTSUITE 
+% See also STRVAREXPAND, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

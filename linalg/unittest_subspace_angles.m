@@ -4,7 +4,7 @@ function unittest_subspace_angles
 % Example (<a href="matlab:run_example unittest_subspace_angles">run</a>)
 %   unittest_subspace_angle
 %
-% See also SUBSPACE_ANGLES, TESTSUITE 
+% See also SUBSPACE_ANGLES, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

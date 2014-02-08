@@ -4,7 +4,7 @@ function unittest_frobenius_inner
 % Example (<a href="matlab:run_example unittest_frobenius_inner">run</a>)
 %   unittest_frobenius_inner
 %
-% See also FROBENIUS_INNER, TESTSUITE 
+% See also FROBENIUS_INNER, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -11,8 +11,11 @@ function cov_ab_ij=gpc_covariance(a_i_alpha, V_ab, b_j_alpha)
 %   of size NA x M  then the result COV_IJ is a matrix of size NA x NA.
 %
 % Example (<a href="matlab:run_example gpc_covariance">run</a>)
+%   V = gpcbasis_create('hh', 'p', 4);
+%   a_alpha = rand(3, gpcbasis_size(V, 1));
+%   gpc_covariance(a_alpha, V, a_alpha)
 %
-% See also
+% See also GPCBASIS_CREATE, GPC
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

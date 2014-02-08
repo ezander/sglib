@@ -4,7 +4,7 @@ function unittest_gpcbasis_size
 % Example (<a href="matlab:run_example unittest_gpcbasis_size">run</a>)
 %   unittest_gpcbasis_size
 %
-% See also GPCBASIS_SIZE, TESTSUITE 
+% See also GPCBASIS_SIZE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

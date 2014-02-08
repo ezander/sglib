@@ -4,7 +4,7 @@ function unittest_randn_sorted
 % Example (<a href="matlab:run_example unittest_randn_sorted">run</a>)
 %   unittest_randn_sorted
 %
-% See also RANDN_SORTED, TESTSUITE 
+% See also RANDN_SORTED, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_svd_update
 % Example (<a href="matlab:run_example unittest_svd_update">run</a>)
 %   unittest_svd_update
 %
-% See also SVD_UPDATE, TESTSUITE 
+% See also SVD_UPDATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

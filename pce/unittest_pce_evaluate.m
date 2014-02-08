@@ -4,7 +4,7 @@ function unittest_pce_evaluate
 % Example (<a href="matlab:run_example unittest_pce_evaluate">run</a>)
 %   unittest_pce_evaluate
 %
-% See also PCE_EVALUATE, TESTSUITE 
+% See also PCE_EVALUATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_newton_cotes_rule
 % Example (<a href="matlab:run_example unittest_newton_cotes_rule">run</a>)
 %   unittest_newton_cotes_rule
 %
-% See also NEWTON_COTES_RULE, TESTSUITE 
+% See also NEWTON_COTES_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

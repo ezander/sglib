@@ -4,7 +4,7 @@ function unittest_gendist_get_args
 % Example (<a href="matlab:run_example unittest_gendist_get_args">run</a>)
 %   unittest_gendist_get_args
 %
-% See also GENDIST_GET_ARGS, TESTSUITE 
+% See also GENDIST_GET_ARGS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

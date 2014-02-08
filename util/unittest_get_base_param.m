@@ -4,7 +4,7 @@ function unittest_get_base_param
 % Example (<a href="matlab:run_example unittest_get_base_param">run</a>)
 %   unittest_get_base_param
 %
-% See also GET_BASE_PARAM, TESTSUITE 
+% See also GET_BASE_PARAM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

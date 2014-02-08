@@ -4,7 +4,7 @@ function unittest_is_gvector
 % Example (<a href="matlab:run_example unittest_is_gvector">run</a>)
 %   unittest_is_gvector
 %
-% See also IS_GVECTOR, TESTSUITE 
+% See also IS_GVECTOR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

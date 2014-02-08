@@ -4,7 +4,7 @@ function unittest_gpcbasis_norm
 % Example (<a href="matlab:run_example unittest_gpcbasis_norm">run</a>)
 %   unittest_gpcbasis_norm
 %
-% See also GPCBASIS_NORM, TESTSUITE 
+% See also GPCBASIS_NORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig.

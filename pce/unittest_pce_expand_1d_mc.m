@@ -4,7 +4,7 @@ function unittest_pce_expand_1d_mc
 % Example (<a href="matlab:run_example unittest_pce_expand_1d">run</a>)
 %    unittest_pce_expand_1d_mc
 %
-% See also PCE_EXPAND_1D_MC, TESTSUITE
+% See also PCE_EXPAND_1D_MC, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

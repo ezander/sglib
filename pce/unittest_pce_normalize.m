@@ -4,7 +4,7 @@ function unittest_pce_normalize
 % Example (<a href="matlab:run_example unittest_pce_normalize">run</a>)
 %    unittest_pce_normalize
 %
-% See also PCE_NORMALIZE, TESTSUITE
+% See also PCE_NORMALIZE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

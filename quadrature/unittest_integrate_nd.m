@@ -4,7 +4,7 @@ function unittest_integrate_nd
 % Example (<a href="matlab:run_example unittest_integrate_nd">run</a>)
 %   unittest_integrate_nd
 %
-% See also INTEGRATE_ND, TESTSUITE 
+% See also INTEGRATE_ND, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

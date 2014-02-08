@@ -4,7 +4,7 @@ function unittest_data_moments
 % Example (<a href="matlab:run_example unittest_data_moments">run</a>)
 %   unittest_data_moments
 %
-% See also DATA_MOMENTS, TESTSUITE 
+% See also DATA_MOMENTS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

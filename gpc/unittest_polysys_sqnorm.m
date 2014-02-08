@@ -4,7 +4,7 @@ function unittest_polysys_sqnorm
 % Example (<a href="matlab:run_example unittest_polysys_norm">run</a>)
 %   unittest_polysys_norm
 %
-% See also POLYSYS_NORM, TESTSUITE 
+% See also POLYSYS_SQNORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

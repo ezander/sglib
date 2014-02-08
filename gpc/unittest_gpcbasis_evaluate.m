@@ -4,7 +4,7 @@ function unittest_gpcbasis_evaluate
 % Example (<a href="matlab:run_example unittest_gpcbasis_evaluate">run</a>)
 %   unittest_gpcbasis_evaluate
 %
-% See also GPCBASIS_EVALUATE, TESTSUITE 
+% See also GPCBASIS_EVALUATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

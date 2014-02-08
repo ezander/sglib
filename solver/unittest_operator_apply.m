@@ -4,7 +4,7 @@ function unittest_operator_apply
 % Example (<a href="matlab:run_example unittest_operator_apply">run</a>)
 %   unittest_operator_apply
 %
-% See also OPERATOR_APPLY, TESTSUITE 
+% See also OPERATOR_APPLY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

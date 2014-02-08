@@ -4,7 +4,7 @@ function unittest_kernel_density
 % Example (<a href="matlab:run_example unittest_kernel_density">run</a>)
 %   unittest_kernel_density
 %
-% See also KERNEL_DENSITY, TESTSUITE 
+% See also KERNEL_DENSITY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

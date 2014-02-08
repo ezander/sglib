@@ -4,7 +4,7 @@ function unittest_param_study
 % Example (<a href="matlab:run_example unittest_param_study">run</a>)
 %   unittest_param_study
 %
-% See also PARAM_STUDY, TESTSUITE 
+% See also PARAM_STUDY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

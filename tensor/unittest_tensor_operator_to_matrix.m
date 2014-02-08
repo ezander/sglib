@@ -4,7 +4,7 @@ function unittest_tensor_operator_to_matrix
 % Example (<a href="matlab:run_example unittest_tensor_operator_to_matrix">run</a>)
 %   unittest_tensor_operator_to_matrix
 %
-% See also TENSOR_OPERATOR_TO_MATRIX, TESTSUITE 
+% See also TENSOR_OPERATOR_TO_MATRIX, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

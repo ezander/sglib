@@ -4,7 +4,7 @@ function unittest_spatial_function
 % Example (<a href="matlab:run_example unittest_spatial_function">run</a>)
 %   unittest_spatial_function
 %
-% See also SPATIAL_FUNCTION, TESTSUITE 
+% See also SPATIAL_FUNCTION, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

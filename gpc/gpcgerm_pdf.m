@@ -12,7 +12,7 @@ function p=gpcgerm_pdf(V, xi)
 %   Z = reshape(gpcgerm_pdf(V, [X(:), Y(:)]'), size(X));
 %   subplot(1,2,2); surf(X, Y, Z);
 %
-% See also GPC, POLYSYS_PDF, GPCGERM_CDF
+% See also GPC, GPCGERM_CDF
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

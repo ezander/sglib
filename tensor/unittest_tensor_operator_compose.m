@@ -4,7 +4,7 @@ function unittest_tensor_operator_compose
 % Example (<a href="matlab:run_example unittest_tensor_operator_compose">run</a>)
 %    unittest_tensor_operator_compose
 %
-% See also TENSOR_OPERATOR_COMPOSE, TESTSUITE
+% See also TENSOR_OPERATOR_COMPOSE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

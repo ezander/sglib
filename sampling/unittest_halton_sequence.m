@@ -4,7 +4,7 @@ function unittest_halton_sequence
 % Example (<a href="matlab:run_example unittest_halton_sequence">run</a>)
 %   unittest_halton_sequence
 %
-% See also HALTON_SEQUENCE, TESTSUITE 
+% See also HALTON_SEQUENCE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

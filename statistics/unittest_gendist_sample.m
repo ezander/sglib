@@ -4,7 +4,7 @@ function unittest_gendist_sample
 % Example (<a href="matlab:run_example unittest_gendist_sample">run</a>)
 %   unittest_gendist_sample
 %
-% See also GENDIST_SAMPLE, TESTSUITE 
+% See also GENDIST_SAMPLE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

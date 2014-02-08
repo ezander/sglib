@@ -4,7 +4,7 @@ function unittest_operator_from_matrix_solve
 % Example (<a href="matlab:run_example unittest_operator_from_matrix_solve">run</a>)
 %   unittest_operator_from_matrix_solve
 %
-% See also OPERATOR_FROM_MATRIX_SOLVE, TESTSUITE 
+% See also OPERATOR_FROM_MATRIX_SOLVE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

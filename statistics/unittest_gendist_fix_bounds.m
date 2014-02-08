@@ -4,7 +4,7 @@ function unittest_gendist_fix_bounds
 % Example (<a href="matlab:run_example unittest_gendist_fix_bounds">run</a>)
 %   unittest_gendist_fix_bounds
 %
-% See also GENDIST_FIX_BOUNDS, TESTSUITE 
+% See also GENDIST_FIX_BOUNDS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

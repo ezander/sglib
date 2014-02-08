@@ -4,7 +4,7 @@ function unittest_gvector_error
 % Example (<a href="matlab:run_example unittest_gvector_error">run</a>)
 %   unittest_gvector_error
 %
-% See also GVECTOR_ERROR, TESTSUITE 
+% See also GVECTOR_ERROR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

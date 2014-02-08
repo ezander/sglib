@@ -4,7 +4,7 @@ function unittest_get_mfile_path
 % Example (<a href="matlab:run_example unittest_get_mfile_path">run</a>)
 %   unittest_get_mfile_path
 %
-% See also GET_MFILE_PATH, TESTSUITE 
+% See also GET_MFILE_PATH, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

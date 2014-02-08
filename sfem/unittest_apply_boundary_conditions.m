@@ -4,7 +4,7 @@ function unittest_apply_boundary_conditions
 % Example (<a href="matlab:run_example unittest_apply_boundary_conditions">run</a>)
 %    unittest_apply_boundary_conditions
 %
-% See also APPLY_BOUNDARY_CONDITIONS, TESTSUITE
+% See also APPLY_BOUNDARY_CONDITIONS, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

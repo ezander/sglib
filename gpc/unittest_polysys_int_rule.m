@@ -4,7 +4,7 @@ function unittest_polysys_int_rule
 % Example (<a href="matlab:run_example unittest_polysys_int_rule">run</a>)
 %   unittest_polysys_int_rule
 %
-% See also POLYSYS_INT_RULE, TESTSUITE 
+% See also POLYSYS_INT_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

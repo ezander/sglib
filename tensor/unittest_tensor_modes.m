@@ -4,7 +4,7 @@ function unittest_tensor_modes
 % Example (<a href="matlab:run_example unittest_tensor_modes">run</a>)
 %   unittest_tensor_modes
 %
-% See also TENSOR_MODES, TESTSUITE 
+% See also TENSOR_MODES, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

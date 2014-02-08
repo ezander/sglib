@@ -4,7 +4,7 @@ function unittest_compute_pce_matrix
 % Example (<a href="matlab:run_example unittest_compute_pce_matrix">run</a>)
 %   unittest_compute_pce_matrix;
 %
-% See also COMPUTE_PCE_MATRIX, TESTSUITE
+% See also COMPUTE_PCE_MATRIX, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

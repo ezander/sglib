@@ -4,7 +4,7 @@ function unittest_checks
 % Example (<a href="matlab:run_example unittest_checks">run</a>)
 %   unittest_checks
 %
-% See also CHECKS, TESTSUITE 
+% See also CHECKS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

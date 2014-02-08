@@ -4,7 +4,7 @@ function unittest_boundary_projectors
 % Example (<a href="matlab:run_example unittest_boundary_projectors">run</a>)
 %    unittest_boundary_projectors
 %
-% See also BOUNDARY_PROJECTORS, TESTSUITE
+% See also BOUNDARY_PROJECTORS, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

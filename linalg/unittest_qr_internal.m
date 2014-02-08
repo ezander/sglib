@@ -4,7 +4,7 @@ function unittest_qr_internal
 % Example (<a href="matlab:run_example unittest_qr_internal">run</a>)
 %   unittest_qr_internal
 %
-% See also QR_INTERNAL, TESTSUITE 
+% See also QR_INTERNAL, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

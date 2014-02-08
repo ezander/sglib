@@ -4,7 +4,7 @@ function unittest_tensor_order
 % Example (<a href="matlab:run_example unittest_tensor_order">run</a>)
 %   unittest_tensor_order
 %
-% See also TENSOR_ORDER, TESTSUITE 
+% See also TENSOR_ORDER, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

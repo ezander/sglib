@@ -102,7 +102,7 @@ if writetofile
     else
         fprintf( fid, '%%   %s\n', name );
         fprintf( fid, '%%\n' );
-        fprintf( fid, '%% See also %s, TESTSUITE \n', upper(testfunction) );
+        fprintf( fid, '%% See also %s, MUNIT_RUN_TESTSUITE \n', upper(testfunction) );
     end
     fprintf( fid, '\n' );
     fprintf( fid, '%%   %s\n', author );

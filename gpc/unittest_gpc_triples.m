@@ -4,7 +4,7 @@ function unittest_gpc_triples
 % Example (<a href="matlab:run_example unittest_gpc_triples">run</a>)
 %   unittest_gpc_triples
 %
-% See also GPC_TRIPLES, TESTSUITE 
+% See also GPC_TRIPLES, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.

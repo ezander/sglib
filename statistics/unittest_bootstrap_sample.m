@@ -4,7 +4,7 @@ function unittest_bootstrap_sample
 % Example (<a href="matlab:run_example unittest_bootstrap_sample">run</a>)
 %   unittest_bootstrap_sample
 %
-% See also BOOTSTRAP_SAMPLE, TESTSUITE 
+% See also BOOTSTRAP_SAMPLE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

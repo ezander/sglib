@@ -4,7 +4,7 @@ function unittest_kl_pce_compute_operator
 % Example (<a href="matlab:run_example unittest_kl_pce_compute_operator">run</a>)
 %   unittest_kl_pce_compute_operator
 %
-% See also KL_PCE_COMPUTE_OPERATOR, TESTSUITE 
+% See also KL_PCE_COMPUTE_OPERATOR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

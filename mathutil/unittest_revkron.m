@@ -4,7 +4,7 @@ function unittest_revkron
 % Example (<a href="matlab:run_example unittest_revkron">run</a>)
 %    unittest_revkron
 %
-% See also REVKRON, TESTSUITE
+% See also REVKRON, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

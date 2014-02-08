@@ -3,8 +3,10 @@ function [x,w]=polysys_int_rule(sys, n, varargin)
 %   POLYSYS_INT_RULE Long description of polysys_int_rule.
 %
 % Example (<a href="matlab:run_example polysys_int_rule">run</a>)
+%   % 5 Point Gauss Hermite rule
+%   [x,w]=polysys_int_rule('h', 5)
 %
-% See also
+% See also POLYSYS_RECUR_COEFF
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

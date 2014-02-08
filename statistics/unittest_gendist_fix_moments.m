@@ -4,7 +4,7 @@ function unittest_gendist_fix_moments
 % Example (<a href="matlab:run_example unittest_gendist_fix_moments">run</a>)
 %   unittest_gendist_fix_moments
 %
-% See also GENDIST_FIX_MOMENTS, TESTSUITE 
+% See also GENDIST_FIX_MOMENTS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_tensor_operator_apply
 % Example (<a href="matlab:run_example unittest_tensor_operator_apply">run</a>)
 %    unittest_tensor_operator_apply
 %
-% See also TENSOR_OPERATOR_APPLY, TESTSUITE
+% See also TENSOR_OPERATOR_APPLY, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Institute of Scientific Computing, TU Braunschweig.

@@ -4,7 +4,7 @@ function unittest_sqrspace
 % Example (<a href="matlab:run_example unittest_sqrspace">run</a>)
 %   unittest_sqrspace
 %
-% See also SQRSPACE, TESTSUITE 
+% See also SQRSPACE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

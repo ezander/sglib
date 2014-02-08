@@ -4,7 +4,7 @@ function unittest_tensor_mesh
 % Example (<a href="matlab:run_example unittest_tensor_mesh">run</a>)
 %   unittest_tensor_mesh
 %
-% See also TENSOR_MESH, TESTSUITE 
+% See also TENSOR_MESH, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

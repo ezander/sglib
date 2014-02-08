@@ -4,7 +4,7 @@ function unittest_gpc_integrate
 % Example (<a href="matlab:run_example unittest_gpc_integrate">run</a>)
 %   unittest_gpc_integrate
 %
-% See also GPC_INTEGRATE, TESTSUITE 
+% See also GPC_INTEGRATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -37,6 +37,7 @@ assert_equals(w, ws, 'gh_weights');
 p_i_alpha = [1, 2, 3, 4, 5];
 [x,w] = gpc_integrate([], {'H', multiindex(4,1)}, 3, 'grid', 'smolyak', 'gpc_coeffs', p_i_alpha);
 assert_equals(x, 1 + [2,3,4,5] * xs, 'gpc_nodes');
+assert_equals(sum(w), 1, 'gpc_weights_sum');
 
 
 V = {'H', multiindex(2,0)};

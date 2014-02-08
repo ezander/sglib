@@ -4,7 +4,7 @@ function unittest_makehyperlink
 % Example (<a href="matlab:run_example unittest_makehyperlink">run</a>)
 %   unittest_makehyperlink
 %
-% See also MAKEHYPERLINK, TESTSUITE 
+% See also MAKEHYPERLINK, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_lmoments
 % Example (<a href="matlab:run_example unittest_lmoments">run</a>)
 %   unittest_lmoments
 %
-% See also LMOMENTS, TESTSUITE 
+% See also LMOMENTS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

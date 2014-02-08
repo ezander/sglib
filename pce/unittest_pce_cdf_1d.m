@@ -4,7 +4,7 @@ function unittest_pce_cdf_1d
 % Example (<a href="matlab:run_example unittest_pce_cdf_1d">run</a>)
 %   unittest_pce_cdf_1d
 %
-% See also PCE_CDF_1D, TESTSUITE 
+% See also PCE_CDF_1D, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

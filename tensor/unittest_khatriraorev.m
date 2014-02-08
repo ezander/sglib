@@ -4,7 +4,7 @@ function unittest_khatriraorev
 % Example (<a href="matlab:run_example unittest_khatriraorev">run</a>)
 %   unittest_khatriraorev
 %
-% See also KHATRIRAOREV, TESTSUITE 
+% See also KHATRIRAOREV, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

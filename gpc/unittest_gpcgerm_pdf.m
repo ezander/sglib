@@ -4,7 +4,7 @@ function unittest_gpcgerm_pdf
 % Example (<a href="matlab:run_example unittest_gpcgerm_pdf">run</a>)
 %   unittest_gpcgerm_pdf
 %
-% See also GPCGERM_PDF, TESTSUITE 
+% See also GPCGERM_PDF, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

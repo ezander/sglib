@@ -4,7 +4,7 @@ function unittest_generalised_solve_simple
 % Example (<a href="matlab:run_example unittest_generalised_solve_simple">run</a>)
 %   unittest_generalised_solve_simple
 %
-% See also GENERALISED_SOLVE_SIMPLE, TESTSUITE 
+% See also GENERALISED_SOLVE_SIMPLE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

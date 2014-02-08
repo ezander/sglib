@@ -4,7 +4,7 @@ function unittest_tensor_multiply
 % Example (<a href="matlab:run_example unittest_tensor_multiply">run</a>)
 %   unittest_tensor_multiply
 %
-% See also TENSOR_MULTIPLY, TESTSUITE 
+% See also TENSOR_MULTIPLY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
