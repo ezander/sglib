@@ -1,4 +1,4 @@
-function [x,w]=clenshaw_curtis_nested(n)
+function [x,w]=clenshaw_curtis_nested(n, varargin)
 % CLENSHAW_CURTIS_NESTED Compute the nested Clenshaw-Curtis rule.
 %   [X,W]=CLENSHAW_CURTIS_NESTED(N) computes the Clenshaw-Curtis rule of
 %   order M=2^(N-1)+1. This is mainly for sparse grid integration where
@@ -25,5 +25,16 @@ function [x,w]=clenshaw_curtis_nested(n)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-m = 2^(n-1)+1;
-[x,w]=clenshaw_curtis_rule(m);
+options=varargin2options(varargin, mfilename);
+[mode, options]=get_option(options, 'mode', 0);
+check_unsupported_options(options)
+
+switch mode
+    case {'cc', 0}
+        m = 2^(n-1)+1;
+    case {'fejer1', 1}
+        error('sglib:not_nested', 'Fejer 1 rules are not nested.' );
+    case {'fejer2', 2}
+        m = 2^n-1;
+end
+[x,w]=clenshaw_curtis_rule(m, 'mode', mode);
