@@ -50,8 +50,8 @@ end
 % set up Jacobi matrix and compute eigenvalues
 J = diag(a) + diag(sb,1) + diag(sb,-1);
 [V,D] = eig(J);
-x = diag(D);
-w = V(1,:).^2;
+x = diag(D)';
+w = V(1,:)'.^2;
 w = w / sum(w);
 
 % symmetrise

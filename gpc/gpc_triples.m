@@ -145,8 +145,8 @@ n = ceil((3*p+1)/2);
 [x,w] = polysys_int_rule(sys, n);
 
 % evaluate polynomials at Gauss points and build triple products
-y = gpc_evaluate(eye(p+1), {sys, multiindex(1,p)}, x');
-M = (y(I+1,:).*y(J+1,:).*y(K+1,:)) * w';
+y = gpc_evaluate(eye(p+1), {sys, multiindex(1,p)}, x);
+M = (y(I+1,:).*y(J+1,:).*y(K+1,:)) * w;
 
 % remove near zero elements
 M(abs(M)<thresh )=0;

@@ -69,8 +69,8 @@ function nrm2 = polysys_sqnorm_by_quad(sys, I)
 % POLYSYS_NORM_BY_QUAD Compute the square norm by Gauss quadrature.
 n = max(I(:));
 [x,w] = polysys_int_rule(sys, n+1);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x');
-nrm2 = (y.*y)*w';
+y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+nrm2 = (y.*y)*w;
 nrm2 = reshape(nrm2(I+1), size(I));
 
 function nrm2 = polysys_sqnorm_by_rc(sys, I)
