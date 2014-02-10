@@ -49,8 +49,8 @@ if nargout>1
     if isfield( options, field )
         options=rmfield(options,field);
     end
-    if ~isfield( options, 'supported_fields__' )
-        options.supported_fields__={};
+    if ~isfield( options, 'internal__' )
+        options.internal__.supported_fields={};
     end
-    options.supported_fields__{end+1}=field;
+    options.internal__.supported_fields{end+1}=field;
 end
