@@ -56,7 +56,6 @@ for method=methods
     end
 end
 
-
 % Error handling
-%assert_error( {@polysys_sqnorm, {'?', 0:5}, {1,2,3}}, 'sglib:gpc', 'unknown polys' )
-assert_error( {@polysys_sqnorm, {'H', 0:5, 'foo'}, {1,2,3}}, 'sglib:gpc', 'unknown method' )
+assert_error( funcreate(@polysys_sqnorm, '?', 0:5), 'sglib:gpc', 'unknown polys' )
+assert_error( funcreate(@polysys_sqnorm, 'H', 0:5, 'foo'), 'sglib:gpc', 'unknown method' )
