@@ -1,4 +1,4 @@
-function unittest_is_tensor
+function unittest_istensor
 % UNITTEST_IS_TENSOR Test the IS_TENSOR function.
 %
 % Example (<a href="matlab:run_example unittest_is_tensor">run</a>)

@@ -1,6 +1,6 @@
-function r=tensor_operator_order(A)
-% TENSOR_OPERATOR_ORDER Short description of tensor_operator_order.
-%   TENSOR_OPERATOR_ORDER Long description of tensor_operator_order.
+function D=tensor_operator_order(A)
+% TENSOR_OPERATOR_ORDER Return the order of a tensor operator.
+%   D=TENSOR_OPERATOR_ORDER(A) returns the order of the tensor operator A.
 %
 % Example (<a href="matlab:run_example tensor_operator_order">run</a>)
 %
@@ -19,4 +19,4 @@ function r=tensor_operator_order(A)
 
 check_tensor_operator_format( A );
 
-r=size(A,2);
+D=size(A,2);

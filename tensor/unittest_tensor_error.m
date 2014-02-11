@@ -32,7 +32,7 @@ assert_equals( tensor_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );
 M=53;
 N=47;
 R=13;
-randn('seed', 1018663534 );
+rand_seed(1018663534 );
 %format short g
 for d=10.^(-3:-1:-10)
     T1=create_test_tensor( M, N, R );

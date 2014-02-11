@@ -19,10 +19,7 @@ function unittest_khatriraorev
 
 munit_set_function( 'khatriraorev' );
 
-M=13; N=17; O=19; R=7;
+M=13; N=17; R=7;
 A=randn( M, R );
 B=randn( N, R );
-
-assert_equals( sum( khatriraorev( A, B )', 1 ), tensor_to_vector( {A, B } )', 'sum' );
-
-
+assert_equals( sum( khatriraorev( A, B ), 2 ), tensor_to_vector( {A, B } ), 'sum' );

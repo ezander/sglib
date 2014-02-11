@@ -41,7 +41,7 @@ for i=1:tensor_order(T1)
         Q=orth( [T1{i}, T2{i}] );
     else
         error( 'this does not work that way, anybody with a good idea please stand forth' );
-        Q=gram_schmidt( [T1{i}, T2{i}], G{i} );
+        %Q=gram_schmidt( [T1{i}, T2{i}], G{i} );
     end
     T1{i}=Q'*T1{i};
     T2{i}=Q'*T2{i};
