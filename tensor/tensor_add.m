@@ -36,23 +36,30 @@ end
 
 check_tensors_compatible( T1, T2 );
 
-persistent max_size;
-
-if isempty(max_size)
-    max_size=10000;
+% We do a rank check here, because usually if the rank is growing too large
+% that hints at a bug in the code (forgotten tensor truncations), and
+% before crashing the computer, the user is given a hint.
+persistent max_rank;
+if isempty(max_rank)
+    max_rank=10000;
 end
 
-if tensor_rank(T1)+tensor_rank(T2)>max_size
+if tensor_rank(T1)+tensor_rank(T2)>max_rank
     warning( 'tensor:tensor_add:large', ['Your tensor is growing pretty large. Forgotten to truncate?\n', ... 
         'max_size is currently %d. You may set it to a higher value by entering e.g. max_size=%d.'], ...
-        max_size, 10*max_size );
+        max_rank, 10*max_rank );
     keyboard;
 end
     
 
-% Important: apply alpha only to one argument! This guy is a tensor not
-% a cartesian product.
-% TODO: Maybe a loop if faster than this mat2cell stuff? Check performance
-T2{1}=alpha*T2{1};
-dims=tensor_size(T1);
-T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';
+% Important: apply multiplication with alpha only to one component, since
+% this is a tensor (not a Cartesian product or something).
+if alpha~=1
+    T2{1}=alpha*T2{1};
+end
+
+D = tensor_order(T1);
+T=cell(1,D);
+for d = 1:D
+    T{d} = [T1{d}, T2{d}];
+end
