@@ -22,4 +22,9 @@ munit_set_function( 'khatriraorev' );
 M=13; N=17; R=7;
 A=randn( M, R );
 B=randn( N, R );
-assert_equals( sum( khatriraorev( A, B ), 2 ), tensor_to_vector( {A, B } ), 'sum' );
+C = khatriraorev( A, B );
+assert_equals( sum( C, 2 ), reshape(A*B', [], 1), 'sum' );
+assert_equals( C(:,1), kron(B(:,1), A(:,1)), 'col1' );
+assert_equals( C(:,7), kron(B(:,7), A(:,7)), 'col7' );
+
+assert_error(funcreate(@khatriraorev, rand(3,4), rand(3,5)), 'sglib:', 'err_dimen');
