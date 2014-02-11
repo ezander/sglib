@@ -4,10 +4,19 @@ function w=interpolatory_weights(x, varargin)
 %   integration rule with Lebesgue measure where an integration interval of
 %   [-1, 1] is assumed. It is not checked that the values in X lie within
 %   that interval.
+%   Note that the Gauss, Clenshaw-Curtis and Fejer rules don't use this
+%   method to compute their weights, but have specialised method of their
+%   own.
 %
 % Note: The code currently works by computing the Lagrange polynomial for
 %   each node and integrating that over the domain, which can be done
-%   exactly and easily for polynomials.
+%   exactly and easily for polynomials. TODO: however, better would
+%   probably be to implement the algorithm in [1], at least if we want to
+%   go to really high orders.
+%
+% References
+%    [1] J. Kautsky and S. Elhay, Calculation of the weights of
+%        interpolatory quadratures, Numer. Math., 40 (1982), pp. 407–422.
 %
 % Example (<a href="matlab:run_example interpolatory_weights">run</a>)
 %   % generate closed Newton-Cotes rule with seven points
