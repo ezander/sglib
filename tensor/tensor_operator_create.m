@@ -1,16 +1,13 @@
 function A=tensor_operator_create(ops, varargin)
-% TENSOR_OPERATOR_CREATE Short description of tensor_operator_create.
+% TENSOR_OPERATOR_CREATE Create a tensor operator.
 %   TENSOR_OPERATOR_CREATE Long description of tensor_operator_create.
 %
-% Options
-%
-% References
-%
-% Notes
-%
 % Example (<a href="matlab:run_example tensor_operator_create">run</a>)
+%   for i=1:5; K{i}=rand(10); end
+%   for i=1:5; X{i}=rand(20); end
+%   A = tensor_operator_create({K,X});
 %
-% See also
+% See also TENSOR_OPERATOR_ORDER, TENSOR_OPERATOR_APPLY
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
