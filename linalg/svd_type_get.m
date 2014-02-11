@@ -13,7 +13,7 @@ function type=svd_type_get( S )
 %   disp(svd_type_get(diag(S)))
 %   disp(svd_type_get([]))
 %
-% See also SVD_ADD, SVD_UPDATE, SVD_TYPE_SET
+% See also SVD, SVD_ADD, SVD_UPDATE, SVD_TYPE_SET
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

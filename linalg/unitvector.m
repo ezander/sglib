@@ -21,7 +21,7 @@ function e=unitvector( k, n, sparsevec )
 %   disp( unitvector( [1,2,4], 5 )' );
 %   fprintf( 'The same as sparse matrix:\n' );
 %   disp( unitvector( [1,2,4], 5, true ) );
-
+%
 % See also ZEROS, SPARSE, EYE
 
 %   Elmar Zander

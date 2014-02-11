@@ -4,10 +4,10 @@ function unittest_gram_schmidt
 % Example (<a href="matlab:run_example unittest_gram_schmidt">run</a>)
 %    unittest_gram_schmidt
 %
-% See also TESTSUITE
+% See also MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

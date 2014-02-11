@@ -40,7 +40,7 @@ if isempty(G)
         % select only columns from B that are above the noise level and
         % orthogonalize
         ind=sqrt(sum(P.^2,1)./sum(B.^2,1))>1e-14;
-        [Q2,Rdummy]=qr(P(:,ind),0);
+        [Q2,Rdummy]=qr(P(:,ind),0); %#ok<NASGU>
         
         % reorthogonalize after subtracting components from span(Q1) that
         % are still left over (sometimes destroying orthogonality)

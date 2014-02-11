@@ -4,7 +4,7 @@ function mat=matrix_gallery( name, varargin )
 %
 % Example (<a href="matlab:run_example matrix_gallery">run</a>)
 %
-% See also
+% See also GALLERY, TRIDIAGONAL
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

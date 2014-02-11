@@ -1,13 +1,13 @@
 function unittest_schattenp_truncate
-% UNITTEST_TENSOR_TRUNCATE Test the TENSOR_TRUNCATE function.
+% UNITTEST_SCHATTENP_TRUNCATE Test the SCHATTENP_TRUNCATE function.
 %
-% Example (<a href="matlab:run_example unittest_tensor_truncate">run</a>)
-%    unittest_tensor_truncate
+% Example (<a href="matlab:run_example unittest_schattenp_truncate">run</a>)
+%    unittest_schattenp_truncate
 %
-% See also TENSOR_TRUNCATE, MUNIT_RUN_TESTSUITE
+% See also SCHATTENP_TRUNCATE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -64,3 +64,10 @@ assert_equals( schattenp_truncate( s, 1000.5/sinf, true, inf ), 1 );
 assert_equals( schattenp_truncate( s, 1.5, false, inf ), 2 );
 assert_equals( schattenp_truncate( s, 1.5/sinf, true, inf ), 2 );
 assert_equals( schattenp_truncate( s, 0.5/sinf, true, inf ), 50 );
+
+
+% some more special cases
+% Sigma empty, then there's nothing to truncate
+k=schattenp_truncate( [], 1.2, false, 3, 20 );
+assert_equals(k, 0, 'empty');
+

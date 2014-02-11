@@ -1,10 +1,10 @@
 function unittest_svd_type
-% UNITTEST_SVD_TYPE Test the SVD_TYPE function.
+% UNITTEST_SVD_TYPE Test the SVD_TYPE_GET and _SET functions.
 %
 % Example (<a href="matlab:run_example unittest_svd_type">run</a>)
 %   unittest_svd_type
 %
-% See also SVD_TYPE, MUNIT_RUN_TESTSUITE 
+% See also SVD_TYPE_GET, SVD_TYPE_SET, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
@@ -55,13 +55,4 @@ assert_equals(U1*diag(S1)*V1', A, 'mat_vec');
 [U1,S1,V1] = svd_type_set(U,S,V,'empty'); 
 assert_equals(U1*V1', A, 'mat_emp'); 
 assert_equals(S1, [], 'mat_emp_S'); 
-
-
-
-%     [U,S,V] = svd_type_set(U,S,V,'empty'); disp(norm(U*V'-A)); 
-%     [U,S,V] = svd_type_set(U,S,V,'matrix'); disp(norm(U*S*V'-A)); 
-% 
-
-
-
 

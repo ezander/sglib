@@ -43,10 +43,10 @@ function [Q,R]=gram_schmidt( A, B, mod, reorth )
 %    end
 %  end
 %
-% See also
+% See also QR, ORTH, QR_INTERNAL
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

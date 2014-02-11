@@ -30,11 +30,11 @@ function [Un,Sn,Vn,err]=svd_update(U,S,V,C,varargin)
 %
 % Example (<a href="matlab:run_example svd_update">run</a>)
 %
-% See also SVD_ADD
+% See also SVD, SVD_ADD
 
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2010-2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

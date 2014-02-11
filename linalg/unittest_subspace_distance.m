@@ -46,4 +46,6 @@ assert_equals(subspace_distance(A,B,opts), subspace_distance(B,A,opts), 'symm_ww
 assert_equals(subspace_distance(A, A, opts), 0, 'zero_wwf');
 
 
+assert_error(funcreate(@subspace_distance,A,B,'type', 'qwerty'), 'sglib:', 'err_type');
+
 

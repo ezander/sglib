@@ -31,7 +31,6 @@ X=rand(M,N);
 
 % reduce that to rank K in Xn (components are U,s,V)
 K=20;
-l2err=S(K+1,K+1);
 U=U(:,1:K);
 V=V(:,1:K);
 S=S(1:K,1:K);
@@ -48,6 +47,7 @@ assert_equals( Un*Sn*Vn', Xn, 'full' )
 
 [Un,Sn,Vn]=svd_add( U*S, [], V, A, B );
 assert_equals( Un*Vn', Xn, 'full_noS' )
+assert_equals( Sn, [], 'full_noS' )
 
 [Un,Sn,Vn]=svd_add( U, diag(S), V, A, B );
 assert_equals( Un*diag(Sn)*Vn', Xn, 'full_vecS' )
@@ -58,7 +58,7 @@ assert_equals( Un*diag(Sn)*Vn', Xn, 'full_vecS' )
 assert_true( size(Un,2)<=10, 'rank' )
 assert_equals( norm(Xn-Un*Sn*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
 
-[Un,Sn,Vn,err]=svd_add( U*S, [], V, A, B, 'rank', 10 );
+[Un,Sn,Vn,err]=svd_add( U*S, [], V, A, B, 'rank', 10 ); %#ok<ASGLU>
 assert_true( size(Un,2)<=10, 'rank' )
 assert_equals( norm(Xn-Un*Vn','fro')/norm(Xn,'fro'), err, 'norm' )
  

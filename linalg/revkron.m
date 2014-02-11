@@ -24,8 +24,6 @@ function K=revkron( A, B )
 %   compared to the hard to remember
 %      kron(B,A)*reshape(x*y',[],1)==reshape(A*x*(B*y)',[],1)
 %
-
-%
 % Example (<a href="matlab:run_example revkron">run</a>)
 %   tf = {'true', 'false'};
 %   x=rand(8,1);
@@ -46,7 +44,7 @@ function K=revkron( A, B )
 % See also KRON
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

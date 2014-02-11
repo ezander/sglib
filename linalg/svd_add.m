@@ -28,10 +28,10 @@ function [Un,Sn,Vn,err]=svd_add(U,S,V,A,B,varargin)
 %     no truncation will happen. If both rank and reltol are set the
 %     the criterion leading to the smaller rank will be applied.
 %
-% See also
+% See also SVD, SVD_UPDATE
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2010-2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
