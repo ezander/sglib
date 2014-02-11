@@ -47,8 +47,8 @@ options=varargin2options(varargin);
 [rank,options]=get_option(options,'rank', inf );
 check_unsupported_options(options);
 
-type=get_svd_type(S);
-[U,S,V]=svd_to_type( U, S, V, 'matrix' );
+type=svd_type_get(S);
+[U,S,V]=svd_type_set( U, S, V, 'matrix' );
 
 L=size(A,2);
 
@@ -65,5 +65,5 @@ Un=Un(:,1:k);
 Vn=Vn(:,1:k);
 Sn=Sn(1:k,1:k);
 
-[Un,Sn,Vn]=svd_to_type( Un, Sn, Vn, type );
+[Un,Sn,Vn]=svd_type_set( Un, Sn, Vn, type );
 
