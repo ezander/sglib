@@ -1,10 +1,41 @@
 %TODO Contains my personal TODO
 
-% write help for gpcbasis_create (important!!)
+%% 13 Feb 2014
 
-% check halton_sequence for n==0
+% demo_simplefem umbennenen demo_gpc_diffusion_1d, eventuell neue
+% demo_simplefem erstellen 
 
-% implement arcine and semicircle as beta in gendist_create
+% suppress default creation of pdfs from publish_to_latex
+
+% Move boundary condition functions into the fem directory, make a
+% apply_boundary_conditions_system functions, which make a full system from
+% A, f and g
+
+% Make tensor operator or general operator avaible to use in matlab pcg
+
+% write help for plot_density and move into statistics directory
+
+% Make some data/extras/... directory where data files, tex files, etc can
+% be put
+
+% Smolyak needs to be able to take funcs, which may clash with
+% specification of multiple rule_funcs
+
+% Create model and methods directories in sglib
+
+% Separate the 1d diffusion model into a parametric model and a "functional
+% model" (try to use solve function with mean values for the preconditioner
+% of pcg).
+
+% remove many of the old hermite_ and pce_ functions, move them to obsolete
+% and issue obsoletion_warnings which may be turned off, implement them in
+% terms of new functions
+
+% rename tensor_ stuff to ctensor, and gvector to tensor or gtensor,
+% instead of doing full tensor stuff in gvector functions move that to
+% ftensor, so that it can be tested gvectors 
+
+% Help needed for: sfem functions, ...
 
 
 % check results from smolyak in the new demo
@@ -25,12 +56,8 @@
 % introduce similar concept for covariances: gencov (or something), from
 % kernel, flags (isotropic, homogeneous), spectral density, ...
 % 
-% make the rug plot determine the length of the rugs things in relation to
-% the total plot size (maybe in points or something), further include in
-% the density plot as option (with symm(etric), up and down, off or something)
 
 %% 25 Nov 2013
-% move polysys_pdf to gpc, create cdfinv and cdf
 % move mean_var_update to stats
 % move plot_resp to plot_gpc_resp...
 % need function to check compatibility of gpc's
@@ -48,8 +75,6 @@
 
 % put kde into stats/private and use in kernel_estimate_fast or something
 % import stiffness matrix functions from fileexchange
-% remove thesis from here and organise as submodule thing
-% to the same with the testing area
 % reorganise the demo area (publish, xiu_book, lecture, ....)
 % move svd_type stuff in linalg into private
 

@@ -1,10 +1,10 @@
 function q = halton_sequence(n, d, varargin)
 % HALTON_SEQUENCE Generate a Halton sequence for QMC integration.
-%   Q=HALTON_SEQUENCE(N,D) generates and N x D array of points for quasi
-%   Monte Carlo integration. Each of the D columns contains N points of the
-%   van der Corput sequence to base P, where P(J) is the J-th prime number.
-%   Additionally to the standard algorithm different start values,
-%   scrambling algorithms and column shufflings may be specified.
+%   Q=HALTON_SEQUENCE(N, D, OPTIONS) generates and N x D array of points
+%   for quasi Monte Carlo integration. Each of the D columns contains N
+%   points of the van der Corput sequence to base P, where P(J) is the J-th
+%   prime number. Additionally to the standard algorithm different start
+%   values, scrambling algorithms and column shufflings may be specified.
 %
 % Options:
 %   n0: [1], start value for the van der Corput sequences
@@ -27,10 +27,11 @@ function q = halton_sequence(n, d, varargin)
 %   hold off;
 %
 % References:
-%   B. Vandewoestyne and R. Cools: Good permutations for scrambled Halton
-%   sequences in terms of L2-discrepancy, Report TW 406, September 2004
+%   [1] B. Vandewoestyne and R. Cools: Good permutations for scrambled
+%       Halton sequences in terms of L2-discrepancy, Report TW 406,
+%       September 2004
 %
-% See also VAN_DER_CORPUT
+% See also VAN_DER_CORPUT, HAMMERSLEY_SET, GPC_SAMPLE
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -65,7 +66,7 @@ for i = 1:d
         case {'rev', 'reverse'}
             scramble_func = perm_reverse(p(i));
     end
-    q(:,i) = van_der_corput(n0:(n+n0-1), p(i), 'scramble_func', scramble_func);
+    q(:,i) = van_der_corput(n0:(n+n0-1), p(i), 'scramble_func', scramble_func)';
     if shuffle
         perm = randperm(n);
         q(:,i) = q(perm, i);

@@ -33,9 +33,7 @@ function fi=apply_boundary_conditions_rhs( K, f, g, P_I, P_B )
 
 
 if isnumeric(K)
-    N=size(P_I,2);
-    NM=size(K);
-    M=NM(1)/N;
+    M = get_stoch_size(P_I, K, [], []);
     I_S=speye(M);
     P_I_ex=revkron(P_I, I_S);
     P_B_ex=revkron(P_B'*P_B, I_S);

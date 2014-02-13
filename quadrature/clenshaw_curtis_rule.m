@@ -1,8 +1,22 @@
 function [x,w]=clenshaw_curtis_rule(n, varargin)
 % CLENSHAW_CURTIS_RULE Compute nodes and weights of the Clenshaw-Curtis rules.
-%   [X,W]=CLENSHAW_CURTIS_RULE(N) 
-% 
+%   [X,W]=CLENSHAW_CURTIS_RULE(N) returns the nodes and weights of the N
+%   point Clenshaw-Curtis rule, or of Fejer's first or second rule, is the
+%   'mode' option was set accordingly. N must be an integer larger or equal
+%   to 1.
+%   
+% Note: There is no one-point Clenshaw-Curtis rule. However, for the nested
+%   Clenshaw-Curtis used in sparse grid methods, the midpoint rule is
+%   usually used for the first stage, instead of the CC 2 rule, which is
+%   equivalent to the trapezoidal rule. The midpoint rule has the same
+%   order of accuracy but leads to fewer nodes in high dimesions (see e.g.
+%   [3]). 
+%
 % Options
+%   'mode': {'cc'}, 'fejer1', 'fejer2'
+%     Selects the actual integration rule from Clenshaw-Curtis, Fejer 1 or
+%     Fejer 2. Fejer 1 and 2 don't include the end points of the interval
+%     of integration and are better suited if there are singularities.
 %   'interval': [-1, 1]
 %      Must be a double array of length 2, specifying the interval on which
 %      the Clenshaw-Curtis or Fejer rule is to be computed.
@@ -12,10 +26,20 @@ function [x,w]=clenshaw_curtis_rule(n, varargin)
 %       Quadrature Rules, BIT (46) 2006, pp 195-202
 %       doi: 10.1007/s10543-006-0045-4
 %   [2] G. von Winckel: http://www.scientificpython.net/1/post/2012/04/clenshaw-curtis-quadrature.html
+%   [3] K. Petra: Asymptotically minimal Smolyak Cubature,
+%       http://http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.33.2432 
 %
 % Example (<a href="matlab:run_example clenshaw_curtis_rule">run</a>)
+%   % Integrate a continuous function on [-1,1]
+%   [x, w] = clenshaw_curtis_rule(10);
+%   I=cos(pi*x/2)*w
+%   Iex=4/pi
+%   % Integrate a function with singularities at -1 and 1
+%   [x, w] = clenshaw_curtis_rule(20, 'mode', 'fejer1');
+%   I=abs(x)./sqrt(1-x.^2)*w
+%   Iex=2
 %
-% See also
+% See also CLENSHAW_CURTIS_NESTED, SMOLYAK_GRID
 
 %   Elmar Zander
 %   Copyright 2013-2014, Inst. of Scientific Computing, TU Braunschweig
@@ -44,8 +68,6 @@ switch mode
     otherwise
         error('sglib:invalid_argument', strvarexpand('Unknown mode "$mode$" for clenshaw_curtis'));
 end
-
-
 
 n1 = n + mode - 1;
 x=cc_fejer_nodes(n1, mode);

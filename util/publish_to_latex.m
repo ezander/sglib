@@ -45,6 +45,7 @@ options=varargin2options( varargin );
 [puboptions.createThumbnail,options]=get_option( options, 'createThumbnail', true );
 [pdflatex_cmd,options]=get_option( options, 'pdflatex_cmd', 'pdflatex' );
 [latex_filter,options]=get_option(options, 'latex_filter', []);
+[copy2pwd,options]=get_option( options, 'copy2pwd', true);
 check_unsupported_options( options, mfilename );
 
 
@@ -64,10 +65,19 @@ if ~isempty(latex_filter)
     funcall(latex_filter, fullfile(dir, [file, '.tex'] ));
 end
 
-cmd = strvarexpand('cd $dir$ && $pdflatex_cmd$ $file$ && cp $file$.pdf ..');
+cmd = strvarexpand('cd $dir$ && $pdflatex_cmd$ $file$');
 system( cmd );
+
+
+if copy2pwd
+    srcpdffile = fullfile(dir, [file, '.pdf']);
+    pdffile = fullfile(pwd, [file, '.pdf']);
+    copyfile(srcpdffile, pdffile);
+else
+    pdffile = fullfile(dir, [file, '.pdf']);
+end
 
 % show the file
 if nargin>=2 && (isequal(read_now,'true') || isequal(read_now, true))
-    open( [file, '.pdf'] );
+    open( pdffile );
 end

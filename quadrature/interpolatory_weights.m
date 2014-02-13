@@ -45,8 +45,8 @@ function w=interpolatory_weights(x, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
-%[algorithm,options]=get_option(options, 'algorithm', 'lagrange');
-[algorithm,options]=get_option(options, 'algorithm', 'vandermonde');
+[algorithm,options]=get_option(options, 'algorithm', 'lagrange');
+%[algorithm,options]=get_option(options, 'algorithm', 'vandermonde');
 [I,options]=get_option(options, 'interval', [-1,1]);
 check_unsupported_options(options,mfilename);
 

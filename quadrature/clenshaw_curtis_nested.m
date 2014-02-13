@@ -1,8 +1,13 @@
 function [x,w]=clenshaw_curtis_nested(n, varargin)
 % CLENSHAW_CURTIS_NESTED Compute the nested Clenshaw-Curtis rule.
-%   [X,W]=CLENSHAW_CURTIS_NESTED(N) computes the Clenshaw-Curtis rule of
-%   order M=2^(N-1)+1. This is mainly for sparse grid integration where
-%   nested rules are advantageous.
+%   [X,W]=CLENSHAW_CURTIS_NESTED(N) computes the nested Clenshaw-Curtis or
+%   Fejer rules. This is mainly for sparse grid integration where nested
+%   rules are advantageous.
+%
+% Options
+%   'mode': {'cc'}, 'fejer1', 'fejer2'
+%     Selects the actual integration rule from Clenshaw-Curtis, Fejer 1 or
+%     Fejer 2.
 %
 % Example (<a href="matlab:run_example clenshaw_curtis_nested">run</a>)
 %   clf; hold all
@@ -29,11 +34,13 @@ options=varargin2options(varargin, mfilename);
 [mode, options]=get_option(options, 'mode', 0);
 check_unsupported_options(options)
 
+check_range(n, 1, inf, 'n', mfilename);
+
 switch mode
     case {'cc', 0}
-        m = 2^(n-1)+1;
+        m = 2^(n-1)+(n>1);
     case {'fejer1', 1}
-        error('sglib:not_nested', 'Fejer 1 rules are not nested.' );
+        m = 3^(n-1);
     case {'fejer2', 2}
         m = 2^n-1;
 end

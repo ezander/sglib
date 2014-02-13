@@ -18,7 +18,7 @@ function unittest_clenshaw_curtis_rule
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'clenshaw_curtis_rule' );
-%%
+
 for mode=[0,1,2]
     for n=1:4
         [x,w]=clenshaw_curtis_rule(n, 'mode', mode);
@@ -64,11 +64,18 @@ assert_equals(w, w0/2, 'shifted_w');
 
 munit_set_function( 'clenshaw_curtis_nested' );
 
-assert_equals(clenshaw_curtis_nested(1), [-1, 1], 'nested_1');
+assert_equals(clenshaw_curtis_nested(1), 0, 'nested_1');
 for i = 1:5
     x1 = clenshaw_curtis_nested(i);
     x2 = clenshaw_curtis_nested(i+1);
     assert_true(all(ismember(x1, x2)), [], sprintf('is_nested_%d', i));
+end
+
+assert_equals(clenshaw_curtis_nested(1, 'mode', 2), 0, 'fj1_nested_1');
+for i = 1:5
+    x1 = clenshaw_curtis_nested(i, 'mode', 1);
+    x2 = clenshaw_curtis_nested(i+1, 'mode', 1);
+    assert_true(all(ismember(x1, x2)), [], sprintf('fj1_is_nested_%d', i));
 end
 
 assert_equals(clenshaw_curtis_nested(1, 'mode', 2), 0, 'fj2_nested_1');

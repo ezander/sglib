@@ -78,8 +78,8 @@ if check
     for ext=exts
         funcname = [distname, '_', ext{1}];
         if ~exist(funcname)
-            error('sglib:gendist', 'Error function "%s" needed for distribution "%s" does not exist.', ...
-                funcname, distname );
+            error('sglib:gendist', 'Cannot create distribution %s. Function "%s" needed for distribution "%s" does not exist. Maybe you misspelled the name?', ...
+                distname, funcname, distname );
         end
     end
 end

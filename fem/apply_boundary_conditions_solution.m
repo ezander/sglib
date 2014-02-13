@@ -33,9 +33,7 @@ function u=apply_boundary_conditions_solution( ui, g, P_I, P_B )
 if iscell(ui)
     I_S=cell(1,length(ui)-1);
 else
-    Ni=size(P_I,1);
-    NiM=numel(ui);
-    M=NiM/Ni;
+    M = get_stoch_size(P_I, [], ui, []);
     if M>1; I_S={speye(M)}; else I_S={1}; end
 end
 
