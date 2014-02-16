@@ -19,8 +19,8 @@ function d=gvector_size(T)
 
 if isnumeric(T)
     d=size(T);
-elseif is_tensor(T)
-    d=tensor_size(T);
+elseif is_ctensor(T)
+    d=ctensor_size(T);
 elseif isobject(T)
     d=size(T); % class must have overwritten the size function
 else

@@ -6,7 +6,7 @@ function R=kl_to_tensor( r_i_k, r_k_alpha )
 %   to the ansatz functions used and R_K_ALPHA contains the PC expansion
 %   of the corresponding KL random variable.
 %
-% See also TENSOR_TO_KL
+% See also CTENSOR_TO_KL
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

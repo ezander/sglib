@@ -53,11 +53,11 @@ trunc_med=trunc;
 trunc_med.eps=trunc.eps/3;
 trunc_med.k_max=1.5*trunc.k_max;
 
-truncate_strong={@tensor_truncate_variable, {trunc}, {2}};
-truncate_med={@tensor_truncate_fixed, {trunc_med}, {2}};
-truncate_zero={@tensor_truncate_zero, {trunc}, {2}};
+truncate_strong={@ctensor_truncate_variable, {trunc}, {2}};
+truncate_med={@ctensor_truncate_fixed, {trunc_med}, {2}};
+truncate_zero={@ctensor_truncate_zero, {trunc}, {2}};
 
-if is_tensor(F)
+if is_ctensor(F)
     switch trunc.trunc_mode
         case 1 % after preconditioning
             truncate_operator_func=truncate_zero;
@@ -68,9 +68,9 @@ if is_tensor(F)
             truncate_before_func=truncate_med;
             truncate_after_func=truncate_med;
         case 3 % in the operator
-            truncate_operator_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_before_func={@tensor_truncate_variable, {trunc}, {2}};
-            truncate_after_func={@tensor_truncate_variable, {trunc}, {2}};
+            truncate_operator_func={@ctensor_truncate_variable, {trunc}, {2}};
+            truncate_before_func={@ctensor_truncate_variable, {trunc}, {2}};
+            truncate_after_func={@ctensor_truncate_variable, {trunc}, {2}};
     end
     %pass_options=[pass_options {'truncate_func', truncate_func}]
     pass_options=[pass_options {'truncate_operator_func', truncate_operator_func}];

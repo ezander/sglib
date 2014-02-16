@@ -35,12 +35,12 @@ assert_equals( UC, {A{1}*T{1}, A{2}*T{2}}, 'mat_op' );
 
 % test order 2 tensors with full tensors
 
-U_ex=tensor_to_array( UA );
-U=tensor_operator_apply_elementary(A, tensor_to_array( T ));
+U_ex=ctensor_to_array( UA );
+U=tensor_operator_apply_elementary(A, ctensor_to_array( T ));
 assert_equals( U, U_ex, 'full_mat' );
-U=tensor_operator_apply_elementary(B, tensor_to_array( T ));
+U=tensor_operator_apply_elementary(B, ctensor_to_array( T ));
 assert_equals( U, U_ex, 'full_op' );
-U=tensor_operator_apply_elementary(C, tensor_to_array( T ));
+U=tensor_operator_apply_elementary(C, ctensor_to_array( T ));
 assert_equals( U, U_ex, 'full_mat_op' );
 
 % test order 4 tensors with matrix operator

@@ -25,8 +25,8 @@ if alpha==0 % Yes, exact test for floating points is ok here!
     U=gvector_null(T);
 elseif isnumeric(T)
     U=alpha*T;
-elseif is_tensor(T)
-    U=tensor_scale(T,alpha);
+elseif is_ctensor(T)
+    U=ctensor_scale(T,alpha);
 elseif isobject(T)
     U=alpha*T;
 else

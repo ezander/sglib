@@ -20,18 +20,18 @@ function unittest_tensor_operator_solve_pcg
 munit_set_function( 'tensor_operator_solve_pcg' );
 
 [A,M,F]=setup( 5, 3, 3, 2 );
-XvecEx=tensor_operator_to_matrix(A)\tensor_to_vector(F);
+XvecEx=tensor_operator_to_matrix(A)\ctensor_to_vector(F);
 tol=1e-7;
 %pcg_opts={ 'eps', 1e-7, 'k_max', 2 };
 assert_opts={ 'abstol', 10*tol, 'reltol', 10*tol };
 
 [X,flag,info]=tensor_operator_solve_pcg( A, F);
-Xvec1=tensor_to_vector( X );
+Xvec1=ctensor_to_vector( X );
 assert_equals( flag, 0, 'tensor_pcg_op_flag' );
 assert_equals( Xvec1, XvecEx, 'tensor_pcg_op', assert_opts{:} );
 
 [X,flag,info]=tensor_operator_solve_pcg( A, F, 'M', M );
-Xvec1=tensor_to_vector( X );
+Xvec1=ctensor_to_vector( X );
 assert_equals( flag, 0, 'tensor_pcg_op_flag' );
 assert_equals( Xvec1, XvecEx, 'tensor_pcg_op', assert_opts{:} );
 

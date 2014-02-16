@@ -28,8 +28,8 @@ T1={rand(8,4), rand(10,4) };
 T2={rand(8,3), rand(10,3) };
 M1=rand(8); M1=M1*M1';
 M2=rand(10); M2=M2*M2';
-t1=tensor_to_vector(T1);
-t2=tensor_to_vector(T2);
+t1=ctensor_to_vector(T1);
+t2=ctensor_to_vector(T2);
 s=gvector_scalar_product(T1,T2);
 assert_equals( s, t1'*t2, 'inner' );
 s=gvector_scalar_product(T1,T2,{M1,[]});
@@ -41,8 +41,8 @@ assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2' );
 
 
 
-T1=tensor_to_array(T1);
-T2=tensor_to_array(T2);
+T1=ctensor_to_array(T1);
+T2=ctensor_to_array(T2);
 s=gvector_scalar_product(T1,T2,{M1,M2});
 assert_equals( s, t1'*revkron(M1,M2)*t2, 'inner_M1_M2_2' );
 

@@ -17,11 +17,11 @@ function [trunc_operator_func, trunc_before_func, trunc_after_func]=define_trunc
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-ta={@tensor_truncate_fixed, {trunc}, {2}};
+ta={@ctensor_truncate_fixed, {trunc}, {2}};
 trunc_op=trunc; trunc_op.eps=trunc.eps/div_op;
-to={@tensor_truncate_fixed, {trunc_op}, {2}};
+to={@ctensor_truncate_fixed, {trunc_op}, {2}};
 trunc_b=trunc; trunc_op.eps=trunc.eps/div_b;
-tb={@tensor_truncate_fixed, {trunc_b}, {2}};
+tb={@ctensor_truncate_fixed, {trunc_b}, {2}};
 id=@identity;
 switch trunc_mode
     case 'none'

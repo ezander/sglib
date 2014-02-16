@@ -24,7 +24,7 @@ rand('seed', 12345 ); %#ok<RAND>
 [A,M,F]=setup( 5, 3, 3, 2 );
 A=tensor_operator_to_matrix(A);
 M=tensor_operator_to_matrix(M);
-b=tensor_to_vector(F);
+b=ctensor_to_vector(F);
 b=b/norm(b)*2; % makes reltol more significant than abstol
 tol=1e-6; maxiter=100; 
 
@@ -56,7 +56,7 @@ assert_equals(info.relres,relres,'pre_relres')
 A=tensor_operator_to_matrix(A);
 M=tensor_operator_to_matrix(M);
 Minv=operator_from_matrix(M,'solve', 'use_lu', true);
-F=tensor_to_vector(F);
+F=ctensor_to_vector(F);
 Xex=A\F;
 tol=1e-6;
 
@@ -77,13 +77,13 @@ assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 
 % test the stuff for matrices and linear operators
 [A,M,F]=setup( 5, 3, 3, 2 );
-Xex=tensor_operator_to_matrix(A)\tensor_to_vector(F);
+Xex=tensor_operator_to_matrix(A)\ctensor_to_vector(F);
 Aop=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
 tol=1e-5;
 trunc=struct('eps',0,'k_max',inf);
 [X,flag]=generalised_solve_pcg( Aop, F, 'trunc_mode', 'before', 'trunc', trunc );
 assert_equals( flag, 0, 'pcg_op_flag' );
-X=tensor_to_vector(X);
+X=ctensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
 Minv=cell(1,2);
@@ -91,7 +91,7 @@ Minv{1}=operator_from_matrix_solve( M{1}, 'lu');
 Minv{2}=operator_from_matrix_solve( M{2}, 'lu');
 [X,flag]=generalised_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_op_flag' );
-X=tensor_to_vector(X);
+X=ctensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
 

@@ -5,5 +5,5 @@ if nargin<4
 end
 
 T={randn(M,R), randn(N,R)};
-dc=tensor_norm(T); 
+dc=ctensor_norm(T); 
 T{1}=T{1}*d/dc;

@@ -32,8 +32,8 @@ A=cell(R,2);
 Alin=cell(R,2);
 
 X={rand(N1,RX), rand(N2,RX)};
-Xmat=tensor_to_array(X);
-Xvec=tensor_to_vector(X);
+Xmat=ctensor_to_array(X);
+Xvec=ctensor_to_vector(X);
 B={zeros(M1,0), zeros(M2,0)};
 for i=1:R
     A(i,1:2)={rand(M1,N1), rand(M2,N2) };
@@ -42,12 +42,12 @@ for i=1:R
     
     B={[B{1}, A{i,1}*X{1}], [B{2}, A{i,2}*X{2}] };
 end
-Bmat=tensor_to_array(B);
-Bvec=tensor_to_vector(B);
+Bmat=ctensor_to_array(B);
+Bvec=ctensor_to_vector(B);
 
 
 assert_equals( tensor_operator_apply( A, X, 'reverse', false ), B, 'tensor/tensor' );
-assert_equals( tensor_to_array(tensor_operator_apply( A, X)), Bmat, 'tensor/tensor' );
+assert_equals( ctensor_to_array(tensor_operator_apply( A, X)), Bmat, 'tensor/tensor' );
 assert_equals( tensor_operator_apply( A, Xvec ), Bvec, 'tensor/vect' );
 assert_equals( tensor_operator_apply( A, Xmat ), Bmat, 'tensor/mat' );
 

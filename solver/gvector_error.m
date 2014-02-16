@@ -22,11 +22,11 @@ options=varargin2options( varargin );
 [relerr,options]=get_option(options,'relerr',false);
 check_unsupported_options(options);
 
-if ~is_tensor(TE) && is_tensor(TA)
+if ~is_ctensor(TE) && is_ctensor(TA)
     if isvector(TE)
-        TA=tensor_to_vector(TA);
+        TA=ctensor_to_vector(TA);
     else
-        TA=tensor_to_array(TA);
+        TA=ctensor_to_array(TA);
     end
 end
 

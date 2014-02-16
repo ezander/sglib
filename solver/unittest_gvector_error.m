@@ -35,9 +35,9 @@ assert_equals( gvector_error(TA, TE, 'G', G, 'relerr', true), sqrt(DT'*G*DT)/sqr
 % Separated
 TA={rand(4,2), rand(5,2)};
 DT={rand(4,1), rand(5,1)};
-TE=tensor_add( TA, DT );
+TE=ctensor_add( TA, DT );
 L1=rand(4,4);
 L2=rand(5,5);
 G={L1*L1', L2*L2'};
-assert_equals( gvector_error(TA, TE), tensor_norm(DT), 'canon' );
-assert_equals( gvector_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );
+assert_equals( gvector_error(TA, TE), ctensor_norm(DT), 'canon' );
+assert_equals( gvector_error(TA, TE, 'G', G), ctensor_norm(DT, G), 'canonG' );

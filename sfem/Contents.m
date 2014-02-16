@@ -28,7 +28,7 @@
 %   kl_to_tensor                          - Pack a KL expansion into tensor product format.
 %   pce_to_kl                             - Reduce a pure PCE field into a KL-PCE field.
 %   project_pce_on_kl                     - Project a spatially PC expanded field into a KL-PCE field.
-%   tensor_to_kl                          - Unpack a KL expansion from a tensor product.
+%   ctensor_to_kl                          - Unpack a KL expansion from a tensor product.
 %
 % Random field expansion
 %   expand_field_kl_pce                   - 
@@ -58,5 +58,5 @@
 %   unittest_kl_pce_to_compact_form       - Test the KL_PCE_TO_COMPACT_FORM function.
 %   unittest_kl_pce_to_standard_form      - Test the KL_PCE_TO_STANDARD_FORM function.
 %   unittest_kl_solve_evp                 - Test the KL_SOLVE_EVP function.
-%   unittest_kl_tensor                    - Test the KL_TO_TENSOR and TENSOR_TO_KL functions.
+%   unittest_kl_tensor                    - Test the KL_TO_TENSOR and CTENSOR_TO_KL functions.
 %   unittest_pce_to_kl                    - Test the PCE_TO_KL function.

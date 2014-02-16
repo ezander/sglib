@@ -16,8 +16,8 @@ function U=tensor_operator_apply_elementary( A, T )
 %   UA=tensor_operator_apply_elementary(A,T);
 %   UB=tensor_operator_apply_elementary(B,T);
 %   UC=tensor_operator_apply_elementary(C,T);
-%   tensor_norm( tensor_add( UA, UB, -1 ) ) % should be zero
-%   tensor_norm( tensor_add( UA, UC, -1 ) ) % should be zero
+%   ctensor_norm( ctensor_add( UA, UB, -1 ) ) % should be zero
+%   ctensor_norm( ctensor_add( UA, UC, -1 ) ) % should be zero
 %
 % See also TENSOR_SOLVE
 

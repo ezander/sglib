@@ -34,7 +34,7 @@ if ~isequal(trunc_mode,'none')
     apply_operator_options=[apply_operator_options, {'pass_on', {'truncate_func', truncate_operator_func}}];
 end
 
-tensor_mode=is_tensor(F);
+tensor_mode=is_ctensor(F);
 info.abstol=abstol;
 info.reltol=reltol;
 info.maxiter=maxiter;
@@ -66,11 +66,11 @@ prev_tic=start_tic;
 
 flag=1;
 for iter=1:maxiter
-    %if is_tensor( Xc); fprintf( 'Rank X: %d\n', tensor_rank(Xc) ); end
+    %if is_ctensor( Xc); fprintf( 'Rank X: %d\n', ctensor_rank(Xc) ); end
     APc=operator_apply(A,Pc, 'pass_on', {'truncate_func', truncate_operator_func} );
-    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
+    %if is_ctensor( Xc); fprintf( 'Rank A: %d\n', ctensor_rank(APc) ); end
     APc=funcall( truncate_before_func, APc );
-    %if is_tensor( Xc); fprintf( 'Rank A: %d\n', tensor_rank(APc) ); end
+    %if is_ctensor( Xc); fprintf( 'Rank A: %d\n', ctensor_rank(APc) ); end
     alpha=gvector_scalar_product( Rc, Zc)/...
         gvector_scalar_product( Pc, APc );
     Xn=gvector_add( Xc, Pc, alpha);

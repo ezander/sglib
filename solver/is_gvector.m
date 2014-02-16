@@ -1,10 +1,10 @@
 function [bool,format]=is_gvector(T)
-% IS_TENSOR Checks whether object is in a recognized tensor format.
-%   BOOL=IS_TENSOR(T) returns true if T is in a recognized tensor format.
+% IS_CTENSOR Checks whether object is in a recognized tensor format.
+%   BOOL=IS_CTENSOR(T) returns true if T is in a recognized tensor format.
 %   Currently that means that T may be a full tensor or in canonical
 %   format. (Tucker format will follow).
 %
-% Example (<a href="matlab:run_example is_tensor">run</a>)
+% Example (<a href="matlab:run_example is_ctensor">run</a>)
 %
 % See also
 
@@ -26,7 +26,7 @@ if isnumeric(T)
     bool=true;
     format='full';
     return;
-elseif is_tensor(T)
+elseif is_ctensor(T)
     bool=true;
     format='canonical';
     return;

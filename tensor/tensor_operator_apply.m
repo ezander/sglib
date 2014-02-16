@@ -57,9 +57,9 @@ for i=1:R
         else
             Y=b;
         end
-    elseif is_tensor(Y)
+    elseif is_ctensor(Y)
         if fast_qr
-            orth_columns=tensor_rank(Y);
+            orth_columns=ctensor_rank(Y);
         end
     end
         

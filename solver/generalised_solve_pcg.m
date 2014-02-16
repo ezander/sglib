@@ -41,7 +41,7 @@ if ~isequal(trunc_mode,'none')
         {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}];
 end
 
-tensor_mode=is_tensor(F);
+tensor_mode=is_ctensor(F);
 info.abstol=abstol;
 info.reltol=reltol;
 info.maxiter=maxiter;
@@ -80,7 +80,7 @@ restart=true;
 for iter=1:maxiter
     % add the preconditioned residuum to X
     if tensor_mode
-        info.rank_res_before(iter)=tensor_rank(Rc);
+        info.rank_res_before(iter)=ctensor_rank(Rc);
         info.epsvec(iter)=trunc.eps;
     end
     timers( 'start', 'gsolve_prec_apply' );
@@ -165,9 +165,9 @@ for iter=1:maxiter
     
     % log rank if in tensor mode
     if tensor_mode
-        info.rank_sol_after(iter)=tensor_rank(Xn);
+        info.rank_sol_after(iter)=ctensor_rank(Xn);
         if verbosity>0
-            strvarexpand('iter: $iter$  ranks:  Xn: $tensor_rank(Xn)$,  Rc:  $tensor_rank(Rc)$ ' );
+            strvarexpand('iter: $iter$  ranks:  Xn: $ctensor_rank(Xn)$,  Rc:  $ctensor_rank(Rc)$ ' );
         end
     end
     

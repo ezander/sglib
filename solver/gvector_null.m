@@ -26,8 +26,8 @@ function Z=gvector_null( T )
 
 if isnumeric(T)
     Z=zeros(size(T));
-elseif is_tensor(T)
-    Z=tensor_null(T);
+elseif is_ctensor(T)
+    Z=ctensor_null(T);
 elseif isobject(T)
     Z=0*T;
 else
