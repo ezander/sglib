@@ -1,0 +1,77 @@
+#! /bin/bash
+
+tmpfile=$(mktemp)
+funfile=$(mktemp)
+sedfile=$(mktemp)
+trap "rm -f $tmpfile $funfile $sedfile" EXIT
+
+# save and check input parameters
+findstr=${1:?Error: no find string specified}
+replstr=${2:?Error: no replace string specified}
+
+function find_all_func_expr_in_mfiles() {
+    local findstr="$1"
+    local findexpr="\b[_[:alnum:]]*$findstr[_[:alnum:]]*\b"
+    egrep -o "^ *function.*$findexpr"  -r --include="*.m" . \
+	| egrep -o "$findexpr"  \
+	| cut -d: -f2 | sort | uniq
+}
+
+function find_all_expr_in_mfiles() {
+    local findstr="$1"
+    local findexpr="\b[_[:alnum:]]*$findstr[_[:alnum:]]*\b"
+    egrep -o "$findexpr"  -r --include="*.m" . \
+	| cut -d: -f2 | sort | uniq
+}
+
+function find_all_func_mfiles() {
+    local findstr="$1"
+    find . -name "*$findstr*.m"| rev | cut -d. -f2- | cut -d/ -f1 | rev | sort | uniq
+}
+
+function make_sed_file() {
+    local findstr="$1"
+    local replstr="$2"
+    local findexpr="\(.*\)\($findstr\)\(.*\)"
+    local rep1expr="s|\\\\b\1\2\3\\\\b|\1$replstr\3|g"
+    local rep2expr="s|\\\\b\U\1\2\3\E\\\\b|\U\1$replstr\3\E|g"
+    sed "s/$findexpr/$rep1expr\n$rep2expr/g"
+}
+
+function find_matching_mfiles() {
+    local findstr="$1"
+    local IFS=$'\n' 
+    echo $findstr
+    files=($(grep "$findstr" -irl --include="*.m" .))
+}
+
+function process_files() {
+    for ((i=0; i<${#files[@]}; i++)); do
+	processing_cmd "${files[i]}"
+    done
+}
+
+function processing_cmd() {
+    local currfile="$1"
+    echo -en "\nReplacing in: $currfile\n"
+    sed --in-place --file="$sedfile" "$currfile"
+    basename="$(basename $currfile ".m")"
+    if egrep -q "\b$basename\b" "$funfile"; then
+	newbase=$(echo "$basename" | sed "s|$findstr|$replstr|g");
+	newfile=$(echo "$currfile" | sed "s|\(.*\)$basename.m|\1$newbase.m|g");
+	echo "Renaming: $currfile -> $newfile"
+	mv "$currfile" "$newfile"
+    fi
+}
+
+#find_all_func_expr_in_mfiles "$findstr" > $funfile
+#find_all_expr_in_mfiles "$findstr" > $funfile
+
+find_all_func_mfiles "$findstr" > $funfile
+emacs $funfile
+cat $funfile | make_sed_file "$findstr" "$replstr" > $sedfile
+emacs $sedfile
+
+find_matching_mfiles "$findstr"
+process_files
+
