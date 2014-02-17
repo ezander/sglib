@@ -1,10 +1,10 @@
-function unittest_is_gvector
+function unittest_is_tensor
 % UNITTEST_IS_TENSOR Test the IS_CTENSOR function.
 %
-% Example (<a href="matlab:run_example unittest_is_gvector">run</a>)
-%   unittest_is_gvector
+% Example (<a href="matlab:run_example unittest_is_tensor">run</a>)
+%   unittest_is_tensor
 %
-% See also IS_GVECTOR, MUNIT_RUN_TESTSUITE 
+% See also IS_TENSOR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing
@@ -17,22 +17,22 @@ function unittest_is_gvector
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'is_gvector' );
+munit_set_function( 'is_tensor' );
 
-assert_false( is_gvector('abc'), 'is_gvector(str)', 'string' );
-assert_false( is_gvector(struct()), 'is_gvector(str)', 'struct' );
+assert_false( is_tensor('abc'), 'is_tensor(str)', 'string' );
+assert_false( is_tensor(struct()), 'is_tensor(str)', 'struct' );
 
-assert_true( is_gvector([]), 'is_gvector([])', 'empty' );
-assert_true( is_gvector(ones(3,1)), 'is_gvector(arr)', 'full1' );
-assert_true( is_gvector(ones(3,3)), 'is_gvector(arr)', 'full2' );
-assert_true( is_gvector(ones(3,4,5)), 'is_gvector(arr)', 'full3' );
+assert_true( is_tensor([]), 'is_tensor([])', 'empty' );
+assert_true( is_tensor(ones(3,1)), 'is_tensor(arr)', 'full1' );
+assert_true( is_tensor(ones(3,3)), 'is_tensor(arr)', 'full2' );
+assert_true( is_tensor(ones(3,4,5)), 'is_tensor(arr)', 'full3' );
 
-b=is_gvector( {ones(3,3), ones(5,5)} );
+b=is_tensor( {ones(3,3), ones(5,5)} );
 assert_equals(  b, false, 'no_canon' );
-[b,f]=is_gvector( {ones(3,3), ones(5,3)} );
+[b,f]=is_tensor( {ones(3,3), ones(5,3)} );
 assert_equals(  b, true, 'canon' );
 assert_equals(  f, 'canonical', 'canon_format' );
-[b,f]=is_gvector( {ones(3,1), ones(5,1)} );
+[b,f]=is_tensor( {ones(3,1), ones(5,1)} );
 assert_equals(  b, true, 'canon2' );
 assert_equals(  f, 'canonical', 'canon2_format' );
 

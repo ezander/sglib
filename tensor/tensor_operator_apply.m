@@ -36,7 +36,7 @@ check_unsupported_options( options, mfilename );
 check_tensor_operator_format( A );
 
 da=tensor_operator_size( A, false );
-dt=gvector_size( T );
+dt=tensor_size( T );
 if any(da(:,2)~=dt(:) & da(:,2)~=0) && ~(isvector(T) && prod(dt)==prod(da(:,2)))
     error( 'tensor:tensor_operator_apply:mismatch', 'tensor operator and gvector dimension mismatch' );
 end
@@ -53,7 +53,7 @@ for i=1:R
     
     if i==1
         if ~residual
-            Y=gvector_null(V);
+            Y=tensor_null(V);
         else
             Y=b;
         end
@@ -64,9 +64,9 @@ for i=1:R
     end
         
     if ~residual
-        Y=gvector_add( Y, V );
+        Y=tensor_add( Y, V );
     else
-        Y=gvector_add( Y, V, -1 );
+        Y=tensor_add( Y, V, -1 );
     end
     
     Y=funcall( truncate_func, Y, 'orth_columns', orth_columns );

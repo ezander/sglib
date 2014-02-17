@@ -54,9 +54,9 @@ info.errvec=[];
 info.updvec=[];
 info.updnormvec=[];
 
-Xc=gvector_null(F);
+Xc=tensor_null(F);
 Rc=funcall( truncate_before_func, F );
-initres=gvector_norm( Rc );
+initres=tensor_norm( Rc );
 normres=initres;
 lastnormres=normres;
 info.resvec(1)=initres;
@@ -87,9 +87,9 @@ for iter=1:maxiter
     Z=operator_apply(Minv,Rc);
     Z=funcall( truncate_after_func, Z );
     timers( 'stop', 'gsolve_prec_apply' );
-    rho_n=gvector_scalar_product( Rc, Z );
+    rho_n=tensor_scalar_product( Rc, Z );
     if beta_formula
-        rhod_n=gvector_scalar_product( DR, Z );
+        rhod_n=tensor_scalar_product( DR, Z );
     end
     if restart
         P=Z;
@@ -102,8 +102,8 @@ for iter=1:maxiter
         end
         beta=max(beta,0);
         % P=Z+beta*P;
-        P=gvector_scale( P, beta );
-        P=gvector_add( Z, P );
+        P=tensor_scale( P, beta );
+        P=tensor_add( Z, P );
         P=funcall( truncate_after_func, P );
     end
     
@@ -116,17 +116,17 @@ for iter=1:maxiter
     %     alpha=rho/(p'*q);
     %     x=x+alpha*p;
         Qn=funcall( truncate_after_func, Qc );
-        alpha=rho_n/gvector_scalar_product( P, Qc );
-        DX=gvector_scale( P, alpha );
+        alpha=rho_n/tensor_scalar_product( P, Qc );
+        DX=tensor_scale( P, alpha );
         
         % add update and truncate
-        Xn=gvector_add( Xc, DX );
+        Xn=tensor_add( Xc, DX );
         Xn=funcall( truncate_after_func, Xn );
         
         % compute update ratio
-        DY=gvector_add( Xn, Xc, -1 );
-        updnorm=gvector_norm( DX );
-        upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
+        DY=tensor_add( Xn, Xc, -1 );
+        updnorm=tensor_norm( DX );
+        upratio=tensor_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
         info.updvec(iter)=upratio;
         info.updnormvec(iter)=updnorm;
         
@@ -173,7 +173,7 @@ for iter=1:maxiter
     
     % log rel error if given
     if ~isempty(X_true)
-        curr_err=gvector_error( Xn, X_true, 'relerr', true );
+        curr_err=tensor_error( Xn, X_true, 'relerr', true );
         if verbosity>0 && ~isempty(X_true)
             strvarexpand('iter: $iter$  relerr: $curr_err$ ' );
         end
@@ -188,13 +188,13 @@ for iter=1:maxiter
         Rn=funcall( truncate_before_func, Rn );
     else
         %     r=r-alpha*q;
-        Rn=gvector_add( Rc, gvector_scale( -alpha, Qn ) );
+        Rn=tensor_add( Rc, tensor_scale( -alpha, Qn ) );
     end
 
     
     % compute norm of residuum
     lastnormres=min(lastnormres,normres);
-    normres=gvector_norm( Rn );
+    normres=tensor_norm( Rn );
     relres=normres/initres;
     info.resvec(iter+1)=normres;
     
@@ -220,7 +220,7 @@ for iter=1:maxiter
     
     % keep difference in residual for Polak-Ribiere and Hestenes-Stiefel
     if beta_formula
-        DR=gvector_add( Rn, Rc, -1 );
+        DR=tensor_add( Rn, Rc, -1 );
         rhod_c=rhod_n;
     end
         

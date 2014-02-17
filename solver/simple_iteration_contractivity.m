@@ -33,19 +33,19 @@ x0=rand(MN,1);
 rat=0;
 flag=1;
 iter=0;
-r=gvector_norm( x0 );
+r=tensor_norm( x0 );
 if r==0; return; end
 
 
 for iter=1:maxiter
-    x0=gvector_scale(x0,1/r);
+    x0=tensor_scale(x0,1/r);
     ttt=tic;
     tmp=operator_apply( K, x0 );
     tmp=operator_apply( Pinv, tmp );
     ttt=toc(ttt);
-    x0=gvector_add( x0, tmp, -1 );
+    x0=tensor_add( x0, tmp, -1 );
     
-    r=gvector_norm( x0 );
+    r=tensor_norm( x0 );
     ratn=r;
 
     if verbosity>0

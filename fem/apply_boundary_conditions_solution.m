@@ -43,4 +43,4 @@ end
 u=tensor_operator_apply( {P_I', I_S{:}}, ui ); 
 g=tensor_operator_apply( {P_B'*P_B, I_S{:}}, g );
 
-u=gvector_add( u, g );
+u=tensor_add( u, g );

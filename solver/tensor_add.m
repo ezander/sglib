@@ -1,6 +1,6 @@
-function T=gvector_add( T1, T2, alpha )
-% GVECTOR_ADD Add two vectors.
-%   GVECTOR_ADD( T1, T2, ALPHA ) adds two vectors T1 and T2,
+function T=tensor_add( T1, T2, alpha )
+% TENSOR_ADD Add two vectors.
+%   TENSOR_ADD( T1, T2, ALPHA ) adds two vectors T1 and T2,
 %   multiplying T2 by ALPHA first if given.
 %
 % Note 1: implementation is of course trivial, since addition of sparse
@@ -10,13 +10,13 @@ function T=gvector_add( T1, T2, alpha )
 % Note 2: This method does not perform reduction of the new vector. You
 %   have to call GVECTOR_REDUCE manually to achieve this.
 %
-% Example (<a href="matlab:run_example gvector_add">run</a>)
+% Example (<a href="matlab:run_example tensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
 %   T2={rand(8,3), rand(10,3)}
-%   Z=gvector_add(T1,T2,3)
+%   Z=tensor_add(T1,T2,3)
 %   norm( T1{1}*T1{2}'+3*T2{1}*T2{2}'-Z{1}*Z{2}', 'fro' )% should be approx. zero
 %
-% See also GVECTOR_REDUCE, GVECTOR_NULL, GVECTOR_SCALE
+% See also GVECTOR_REDUCE, TENSOR_NULL, TENSOR_SCALE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -41,6 +41,6 @@ elseif is_ctensor(T1) && is_ctensor(T2)
 elseif isobject(T1)
     T=T1+alpha*T2;
 else
-    error( 'vector:gvector_null:param_error', ...
+    error( 'vector:tensor_null:param_error', ...
         'input parameter is no recognized vector format or formats don''t match' );
 end

@@ -48,7 +48,7 @@ if isempty(A)
     % A is the identity
     y=x;
     if residual
-        y=gvector_add( b, y, -1 );
+        y=tensor_add( b, y, -1 );
     end
 elseif isnumeric(A)
     % A is a matrix
@@ -63,7 +63,7 @@ elseif iscell(A) && isfunction(A{2})
     % application of the linear operator
     y=funcall( A{2}, x, pass_on{:} );
     if residual
-        y=gvector_add( b, y, -1 );
+        y=tensor_add( b, y, -1 );
     end
 else
     error( 'operator_size:type', 'linear operator is neither a matrix nor a cell array' );

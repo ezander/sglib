@@ -51,9 +51,9 @@ info.errvec=[];
 info.updvec=[];
 info.updnormvec=[];
 
-Xc=gvector_null(F);
+Xc=tensor_null(F);
 Rc=funcall( truncate_before_func, F );
-initres=gvector_norm( Rc );
+initres=tensor_norm( Rc );
 normres=initres;
 lastnormres=normres;
 info.resvec(1)=initres;
@@ -76,13 +76,13 @@ for iter=1:maxiter
     abort=false;
     while true
         % add update and truncate
-        Xn=gvector_add( Xc, DX );
+        Xn=tensor_add( Xc, DX );
         Xn=funcall( truncate_after_func, Xn );
         
         % compute update ratio
-        DY=gvector_add( Xn, Xc, -1 );
-        updnorm=gvector_norm( DX );
-        upratio=gvector_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
+        DY=tensor_add( Xn, Xc, -1 );
+        updnorm=tensor_norm( DX );
+        upratio=tensor_scalar_product( DY, DX, [], 'orth', false )/updnorm^2;
         info.updvec(iter)=upratio;
         info.updnormvec(iter)=updnorm;
         
@@ -128,7 +128,7 @@ for iter=1:maxiter
     
     % log rel error if given
     if ~isempty(X_true)
-        curr_err=gvector_error( Xn, X_true, 'relerr', true );
+        curr_err=tensor_error( Xn, X_true, 'relerr', true );
         if verbosity>0 && ~isempty(X_true)
             strvarexpand('iter: $iter$  relerr: $curr_err$ ' );
         end
@@ -138,7 +138,7 @@ for iter=1:maxiter
     % compute new residuum
     if false
         AXn=operator_apply(A,Xn, apply_operator_options{:} );
-        Rn=gvector_add( F, AXn, -1 );
+        Rn=tensor_add( F, AXn, -1 );
     else
         timers( 'start', 'gsolve_oper_apply' );
         Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
@@ -148,7 +148,7 @@ for iter=1:maxiter
     
     % compute norm of residuum
     lastnormres=min(lastnormres,normres);
-    normres=gvector_norm( Rn );
+    normres=tensor_norm( Rn );
     relres=normres/initres;
     info.resvec(iter+1)=normres;
     

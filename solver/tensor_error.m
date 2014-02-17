@@ -1,8 +1,8 @@
-function err=gvector_error(TA, TE, varargin )
-% GVECTOR_ERROR Short description of gvector_error.
-%   GVECTOR_ERROR Long description of gvector_error.
+function err=tensor_error(TA, TE, varargin )
+% TENSOR_ERROR Short description of tensor_error.
+%   TENSOR_ERROR Long description of tensor_error.
 %
-% Example (<a href="matlab:run_example gvector_error">run</a>)
+% Example (<a href="matlab:run_example tensor_error">run</a>)
 %
 % See also
 
@@ -30,9 +30,9 @@ if ~is_ctensor(TE) && is_ctensor(TA)
     end
 end
 
-norm_TE=gvector_norm(TE,G);
-DT=gvector_add(TA,TE,-1);
-err=gvector_norm(DT,G);
+norm_TE=tensor_norm(TE,G);
+DT=tensor_add(TA,TE,-1);
+err=tensor_norm(DT,G);
 
 if relerr
     err=err/norm_TE;

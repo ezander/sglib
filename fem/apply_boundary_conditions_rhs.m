@@ -56,4 +56,4 @@ fi=operator_apply( P_I_ex, f );
 g=operator_apply( P_B_ex, g );
 g=operator_apply( K, g );
 gi=operator_apply( P_I_ex, g );
-fi=gvector_add( fi, gi, -1 );
+fi=tensor_add( fi, gi, -1 );

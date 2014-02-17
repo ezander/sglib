@@ -1,12 +1,12 @@
-function U=gvector_scale( T, alpha )
-% GVECTOR_SCALE Scale a vector by a scalar.
-%   U=GVECTOR_SCALE( T, ALPHA ) returns mathematically ALPHA*T.
+function U=tensor_scale( T, alpha )
+% TENSOR_SCALE Scale a vector by a scalar.
+%   U=TENSOR_SCALE( T, ALPHA ) returns mathematically ALPHA*T.
 %
-% Example (<a href="matlab:run_example gvector_scale">run</a>)
+% Example (<a href="matlab:run_example tensor_scale">run</a>)
 %   T={rand(8,2), rand(10,2)}
-%   U=gvector_scale(T,3)
+%   U=tensor_scale(T,3)
 %
-% See also GVECTOR_NULL, GVECTOR_ADD
+% See also TENSOR_NULL, TENSOR_ADD
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
@@ -22,7 +22,7 @@ function U=gvector_scale( T, alpha )
 if alpha==0 % Yes, exact test for floating points is ok here!
     % If scale is zero we can for some vector formats save space by
     % returning a real null vector
-    U=gvector_null(T);
+    U=tensor_null(T);
 elseif isnumeric(T)
     U=alpha*T;
 elseif is_ctensor(T)
@@ -30,6 +30,6 @@ elseif is_ctensor(T)
 elseif isobject(T)
     U=alpha*T;
 else
-    error( 'vector:gvector_scale:param_error', ...
+    error( 'vector:tensor_scale:param_error', ...
         'input parameter is no recognized vector format' );   
 end

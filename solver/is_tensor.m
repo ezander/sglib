@@ -1,4 +1,4 @@
-function [bool,format]=is_gvector(T)
+function [bool,format]=is_tensor(T)
 % IS_CTENSOR Checks whether object is in a recognized tensor format.
 %   BOOL=IS_CTENSOR(T) returns true if T is in a recognized tensor format.
 %   Currently that means that T may be a full tensor or in canonical

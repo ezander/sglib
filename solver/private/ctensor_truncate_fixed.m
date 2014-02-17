@@ -1,7 +1,7 @@
 function U=ctensor_truncate_fixed( T, trunc, varargin )
 
 U=ctensor_truncate( T, 'eps', trunc.eps, 'k_max', trunc.k_max, varargin{:} );
-%gvector_error( T, U, 'relerr', true )
+%tensor_error( T, U, 'relerr', true )
 
 if get_option( trunc, 'show_reduction', false )
     r1=ctensor_rank(T);

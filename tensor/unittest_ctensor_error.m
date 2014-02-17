@@ -39,5 +39,5 @@ for d=10.^(-3:-1:-10)
     T2=perturb_test_tensor( T1, d );
     T1mat=ctensor_to_array(T1);
     T2mat=ctensor_to_array(T2);
-    assert_equals( ctensor_error( T1, T2 ), gvector_error( T1mat, T2mat ), 'small_err', 'abstol', 1e-14 );
+    assert_equals( ctensor_error( T1, T2 ), tensor_error( T1mat, T2mat ), 'small_err', 'abstol', 1e-14 );
 end

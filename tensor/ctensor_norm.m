@@ -37,7 +37,7 @@ check_unsupported_options(options,mfilename);
 
 check_tensor_format( T );
 
-%d=gvector_norm( ctensor_to_array( T ) );
+%d=tensor_norm( ctensor_to_array( T ) );
 
 if ctensor_order(T)==2 && isempty(G)
     d=orth_norm( T );

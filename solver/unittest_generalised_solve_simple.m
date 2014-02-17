@@ -28,7 +28,7 @@ randn('seed', 12345 ); %#ok<RAND>
 
 Amat=tensor_operator_to_matrix(A);
 Mmat=tensor_operator_to_matrix(M);
-F=gvector_scale( F, 2/gvector_norm(F) ); % makes reltol more significant than abstol
+F=tensor_scale( F, 2/tensor_norm(F) ); % makes reltol more significant than abstol
 b=ctensor_to_vector(F);
 tol=1e-6; maxiter=100; 
 

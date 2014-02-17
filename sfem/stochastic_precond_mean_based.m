@@ -116,5 +116,5 @@ function y=preconditioner_two_apply(A1inv, A2, x)
 y1=operator_apply(A1inv,x);
 z=operator_apply(A2,y1);
 y2=operator_apply(A1inv,z);
-y=gvector_add(y1, y2, -1);
+y=tensor_add(y1, y2, -1);
 

@@ -1,8 +1,8 @@
-function d=gvector_size(T)
-% GVECTOR_SIZE Short description of gvector_size.
-%   GVECTOR_SIZE Long description of gvector_size.
+function d=tensor_size(T)
+% TENSOR_SIZE Short description of tensor_size.
+%   TENSOR_SIZE Long description of tensor_size.
 %
-% Example (<a href="matlab:run_example gvector_size">run</a>)
+% Example (<a href="matlab:run_example tensor_size">run</a>)
 %
 % See also
 
