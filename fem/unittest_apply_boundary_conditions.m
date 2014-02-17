@@ -55,3 +55,58 @@ assert_equals( P_I*K*u, P_I*f, 'Ku_f_I' );
 
 
 
+
+%%
+[K,f,g,u,P_I,P_B]=setup_test_system(1, true);
+[Kn, fn]=apply_boundary_conditions_system(K, f, g, P_I, P_B);
+un = Kn\fn;
+assert_equals(un, u, 'det_mat')
+
+
+%%
+[K,f,g,u,P_I,P_B]=setup_test_system(3, true);
+[Kn, fn]=apply_boundary_conditions_system(K, f, g, P_I, P_B);
+un = Kn\fn;
+assert_equals(un, u, 'stoch_mat')
+
+%%
+[K,f,g,u,P_I,P_B]=setup_test_system(3, false);
+[Kn, fn]=apply_boundary_conditions_system(K, f, g, P_I, P_B);
+un = tensor_operator_to_matrix(Kn)\tensor_to_vector(fn);
+assert_equals(un, tensor_to_vector(u), 'stoch_tensor')
+
+%%
+[K,f,g,u,P_I,P_B]=setup_test_system(3, false, true);
+[Kn, fn]=apply_boundary_conditions_system(K, f, g, P_I, P_B);
+un = tensor_operator_to_matrix(Kn)\fn;
+assert_equals(un, u, 'stoch_tensor_vec')
+
+
+function [K,f,g,u,P_I,P_B]=setup_test_system(order, vec, uvec)
+if nargin<3
+    uvec=vec;
+end
+
+bnd = [3, 7];
+K={rand(7,7), rand(4,4), rand(5,5);
+    rand(7,7), rand(4,4), rand(5,5)};
+K=K(:,1:order);
+if vec; K=tensor_operator_to_matrix(K); end
+
+[P_I, P_B] = boundary_projectors(bnd, 7);
+ru = 2;
+u = {rand(7,ru), rand(4,ru), rand(5,ru)};
+u = u(1:order);
+if uvec; u=tensor_to_vector(u); end
+
+
+I_I = {P_I' * P_I, eye(4), eye(5)};
+I_I=I_I(:,1:order);
+if vec; I_I=tensor_operator_to_matrix(I_I); end
+
+I_B = {P_B' * P_B, eye(4), eye(5)};
+I_B=I_B(:,1:order);
+if vec; I_B=tensor_operator_to_matrix(I_B); end
+
+f = operator_apply(K, u);
+g = operator_apply(I_B, u);
