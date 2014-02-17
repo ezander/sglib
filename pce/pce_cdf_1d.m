@@ -1,4 +1,4 @@
-function y=pce_cdf_1d( x, X_alpha, I_X )
+function y=pce_cdf_1d( xi, X_alpha, I_X )
 % PCE_CDF_1D Compute cumulative distribution for univariate PCE.
 %   PCE_CDF_1D Long description of pce_cdf_1d.
 %
@@ -17,34 +17,32 @@ function y=pce_cdf_1d( x, X_alpha, I_X )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~size(I_X,2)==1
-    error( 'pce_cdf_1d:dim_error', 'function works only for univariate PCE variables' )
+V=gpcbasis_create('H', 'I', I_X);
+y=gpc_cdf_1d(X_alpha, V, xi);
+
+
+function y=gpc_cdf_1d(X_alpha, V, xi)
+
+% Determine some parameters
+I=V{2};
+sys=V{1};
+dist=polysys_dist(sys);
+
+if ~size(I,2)==1
+    error( 'gpc_cdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
 end
 
+% Determine the polynomial
+deg=max(I);
+P=polysys_rc2coeffs(polysys_recur_coeff(sys, deg));
+p=X_alpha*P;
+while(~isempty(p) && ~p(1)); p(1)=[]; end
 
-n=size(X_alpha,1)-1;
-h=hermite( n, true );
-p=X_alpha'*h;
-
-y=x;
-for i=1:length(x(:))
-    q=p;
-    q(end)=q(end)-x(i);
-    r=roots( q );
-    r=sort(r(imag(r)==0));
-    
-    sign_minf=sign(p(1))*(1-2*mod(n,2));
-    if sign_minf<0
-        r=[-inf; r]; %#ok<AGROW>
-    end
-    
-    sign_inf=sign(p(1));
-    if sign_inf<0
-        r=[r; inf]; %#ok<AGROW>
-    end
-    
-    y(i)=0;
-    for k=1:2:length(r)
-        y(i)=y(i)+normal_cdf(r(k+1))-normal_cdf(r(k));
-    end
+% Find zeros of polynomial plus endpoints at infinity and sum up weights
+% over those intervals
+y=zeros(size(xi));
+for i=1:length(xi(:))
+    r = find_poly_intervals(p, xi(i));
+    val = gendist_cdf(r, dist);
+    y(i) = sum([-1, 1] * reshape(val(:),2,[]));
 end
