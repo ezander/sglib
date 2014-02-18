@@ -111,3 +111,19 @@ r_i_alpha=rand(10,size(I_r,1));
 
 assert_equals( [mu1,var1,skew1,kurt1], [mu2,var2,skew2,kurt2], 'consistency' );
 
+%% Check var_only stuff
+r_i_alpha=[4, 0.3, 0, 0];
+I_r=[0; 1; 2; 3];
+V={'H', I_r};
+
+assert_equals( gpc_moments( r_i_alpha, V, 'var_only', true ), 0.09, 'var_H' );
+assert_equals( gpc_moments( r_i_alpha, V, 'var_only', true, 'algorithm', 'mixed' ), 0.09, 'var_Hm' );
+assert_equals( gpc_moments( r_i_alpha, V, 'var_only', true, 'algorithm', 'integrate' ), 0.09, 'var_Hi' );
+
+assert_error( funcreate(@should_raise), 'sglib:', 'err_two_arg');
+
+function [m,v]=should_raise()
+r_i_alpha=[4, 0.3, 0, 0];
+I_r=[0; 1; 2; 3];
+V={'H', I_r};
+[m,v]=gpc_moments(r_i_alpha, V, 'var_only', true );

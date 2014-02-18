@@ -39,8 +39,8 @@ if isequal(p,default)
         V = gpcbasis_create(sys, 'p', p);
         p_int = max(10,2*p);
         a_alpha = do_param_expand(a_dist, V, p_int);
-        [ag_mean, ag_var] = gpc_moments(a_alpha, V);
-        if abs(a_var-ag_var)<varerr*a_var
+        a_var_gpc = gpc_moments(a_alpha, V, 'var_only', true);
+        if abs(a_var-a_var_gpc)<varerr*a_var
             break;
         end
     end
@@ -57,12 +57,12 @@ a_alpha(1) = a_mean;
 
 % Compute the variance error or rescale the coefficients to fit the true
 % variance if requested (in which case the varerror is of course zero)
-[ag_mean, ag_var] = gpc_moments(a_alpha, V);
+a_var_gpc = gpc_moments(a_alpha, V, 'var_only', true);
 if fixvar
-    a_alpha(2:end) = a_alpha(2:end) * sqrt(a_var/ag_var);
+    a_alpha(2:end) = a_alpha(2:end) * sqrt(a_var/a_var_gpc);
     varerr = 0;
 else
-    varerr = abs(a_var - ag_var);
+    varerr = abs(a_var - a_var_gpc);
 end
 
 function d=default
