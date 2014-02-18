@@ -46,6 +46,6 @@ end
 function y = operator_sum(A1, A2, x, varargin);
 y1=operator_apply( A1, x, 'pass_on', varargin );
 y2=operator_apply( A2, x, 'pass_on', varargin );
-y = gvector_add(y);
+y = tensor_add(y);
 
 

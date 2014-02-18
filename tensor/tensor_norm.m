@@ -14,7 +14,7 @@ function [d,dsqr]=tensor_norm( T, G )
 %   Z=tensor_add(T,T,-1);
 %   fprintf('%f\n', tensor_norm( Z ) )
 %
-% See also TENSOR_ADD, GVECTOR_REDUCE
+% See also TENSOR_ADD, TENSOR_REDUCE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

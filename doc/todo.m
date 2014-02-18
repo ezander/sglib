@@ -31,10 +31,6 @@
 % and issue obsoletion_warnings which may be turned off, implement them in
 % terms of new functions
 
-% rename tensor_ stuff to ctensor, and gvector to tensor or gtensor,
-% instead of doing full tensor stuff in gvector functions move that to
-% ftensor, so that it can be tested gvectors 
-
 % Help needed for: sfem functions, ...
 
 
@@ -63,7 +59,6 @@
 % need function to check compatibility of gpc's
 % gpcbasis_create should also work with an rvtype, 
 % need function to map polynomials system char's to names
-% insert @default stuff into get_option
 % better heuristics for ranges in plot_resp_surface
 
 %% 19 Jun 2013

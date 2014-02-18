@@ -38,7 +38,7 @@ check_tensor_operator_format( A );
 da=tensor_operator_size( A, false );
 dt=tensor_size( T );
 if ~(isvector(T) && prod(dt)==prod(da(:,2))) && any(da(:,2)~=dt(:) & da(:,2)~=0)
-    error( 'tensor:tensor_operator_apply:mismatch', 'tensor operator and gvector dimension mismatch' );
+    error( 'tensor:tensor_operator_apply:mismatch', 'Dimensions of the tensor and the tensor operator do not match' );
 end
 
 
