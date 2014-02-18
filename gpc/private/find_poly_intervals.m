@@ -1,16 +1,22 @@
 function r=find_poly_intervals(p, y)
-% FIND_POLY_INTERVALS Short description of find_poly_intervals.
-%   FIND_POLY_INTERVALS Long description of find_poly_intervals.
-%
-% Options
-%
-% References
-%
-% Notes
+% FIND_POLY_INTERVALS Finds intervals in which a polynomials inequality is satisfied.
+%   R=FIND_POLY_INTERVALS(P, Y) finds intervals R in which the polynomial
+%   inequality P(X)<Y is satisfied for all X in R. Also intervals with
+%   bounds at positive and negative infinity are returned. R contains the
+%   lower bounds in R(1,:) and the upper bounds of the intervals in R(2,:).
+%   This functions is used for the computation of the PDF and CDF of the
+%   univariate GPCs.
 %
 % Example (<a href="matlab:run_example find_poly_intervals">run</a>)
+%   p=1e3*poly(cos(pi*(0.5:11.5)/12)); % chebyshev
+%   y=0.3;
+%   r=find_poly_intervals(p,y);
+%   x=linspace(-1.5,1.5,1000);
+%   plot(x,polyval(p,x), x, y*ones(size(x))); grid on;
+%   line(r,y*ones(size(r)),'Color', 'r'); % show intervals
+%   ylim([-0.6, 1.2])
 %
-% See also
+% See also GPC_PDF_1D, GPC_CDF_1D, POLY, POLYVAL, ROOTS
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
@@ -45,9 +51,10 @@ if sign_minf<0
     r=[-inf, r];
 end
 
+r=reshape(r, 2, []);
+
 % erase double roots if present
-ind = r(1:2:end)==r(2:2:end);
+ind = r(1,:)==r(2,:);
 if any(ind)
-    i=find(ind)*2;
-    r([i, i-1])=[];
+    r(:,ind)=[];
 end

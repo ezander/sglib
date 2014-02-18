@@ -1,10 +1,22 @@
 function y=pce_cdf_1d( xi, X_alpha, I_X )
 % PCE_CDF_1D Compute cumulative distribution for univariate PCE.
-%   PCE_CDF_1D Long description of pce_cdf_1d.
+%   Y=PCE_CDF_1D( XI, X_ALPHA, I_X ) computes the cumulative distribution
+%   function (CDF) of X_ALPHA at the points XI. This function works only
+%   for univariate PCEs, i.e. the PCE may only depend on one Gaussian
+%   random variable.
 %
 % Example (<a href="matlab:run_example pce_cdf_1d">run</a>)
+%   % Recover a Chi-squared cdf from a PCE
+%   X_alpha=[1, 0, 1];
+%   I_X=multiindex(1, 2);
+%   xi = linspace(0, 5, 20);
+%   y=pce_cdf_1d(xi, X_alpha, I_X );
+%   hold off;
+%   plot(xi,y); hold all;
+%   y=chisquared_cdf(xi,1);
+%   plot(xi, y, '-..'); hold off;
 %
-% See also
+% See also PCE_PDF_1D
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -19,30 +31,3 @@ function y=pce_cdf_1d( xi, X_alpha, I_X )
 
 V=gpcbasis_create('H', 'I', I_X);
 y=gpc_cdf_1d(X_alpha, V, xi);
-
-
-function y=gpc_cdf_1d(X_alpha, V, xi)
-
-% Determine some parameters
-I=V{2};
-sys=V{1};
-dist=polysys_dist(sys);
-
-if ~size(I,2)==1
-    error( 'gpc_cdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
-end
-
-% Determine the polynomial
-deg=max(I);
-P=polysys_rc2coeffs(polysys_recur_coeff(sys, deg));
-p=X_alpha*P;
-while(~isempty(p) && ~p(1)); p(1)=[]; end
-
-% Find zeros of polynomial plus endpoints at infinity and sum up weights
-% over those intervals
-y=zeros(size(xi));
-for i=1:length(xi(:))
-    r = find_poly_intervals(p, xi(i));
-    val = gendist_cdf(r, dist);
-    y(i) = sum([-1, 1] * reshape(val(:),2,[]));
-end

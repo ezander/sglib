@@ -19,19 +19,19 @@ function unittest_find_poly_intervals
 
 munit_set_function( 'find_poly_intervals' );
 
-assert_equals(find_poly_intervals(poly([2,3,5]),0), [-inf,2,3,5], 'pos_odd');
-assert_equals(find_poly_intervals(-poly([2,3]),0), [-inf,2,3,inf], 'neg_even');
-assert_equals(find_poly_intervals(poly([2,3,5]),0), [-inf,2,3,5], 'pos_odd');
-assert_equals(find_poly_intervals(-poly([2,3,5]),0), [2,3,5,inf], 'neg_odd');
+assert_equals(find_poly_intervals(poly([2,3,5]),0),  [[-inf;2],[3;5]], 'pos_odd');
+assert_equals(find_poly_intervals(-poly([2,3]),0),   [[-inf;2],[3;inf]], 'neg_even');
+assert_equals(find_poly_intervals(poly([2,3,5]),0),  [[-inf;2],[3;5]], 'pos_odd');
+assert_equals(find_poly_intervals(-poly([2,3,5]),0), [[2;3],   [5;inf]], 'neg_odd');
 
-assert_equals(find_poly_intervals(poly_add(poly([2,3,5]), pi),pi), [-inf,2,3,5], 'add');
-assert_equals(find_poly_intervals(poly([2,6]),-3), [3,5], 'non_empty');
-assert_equals(find_poly_intervals(poly([2,6]),-5), zeros(1,0), 'empty');
-assert_equals(find_poly_intervals(poly([2,6]),-4+1e-13), [4,4], 'nearly_empty', 'abstol', 1e-5);
+assert_equals(find_poly_intervals(poly_add(poly([2,3,5]), pi),pi), [[-inf;2],[3;5]], 'add');
+assert_equals(find_poly_intervals(poly([2,6]),-3), [3;5], 'non_empty');
+assert_equals(find_poly_intervals(poly([2,6]),-5), zeros(2,0), 'empty');
+assert_equals(find_poly_intervals(poly([2,6]),-4+1e-13), [4;4], 'nearly_empty', 'abstol', 1e-5);
 
 
-assert_equals(find_poly_intervals(poly([0,0]), 0), zeros(1,0), 'double_root');
-assert_equals(find_poly_intervals(poly([-1,-2,0,0,2,3,0,0]), 0), [-2,-1,2,3], 'multi_root');
+assert_equals(find_poly_intervals(poly([0,0]), 0), zeros(2,0), 'double_root');
+assert_equals(find_poly_intervals(poly([-1,-2,0,0,2,3,0,0]), 0), [[-2;-1],[2;3]], 'multi_root');
 
 
 
