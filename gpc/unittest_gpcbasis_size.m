@@ -35,3 +35,5 @@ assert_equals(m, m_ex, 'm');
 
 [Ns,m] = gpcbasis_size(V);
 assert_equals([Ns, m], [Ns_ex, m_ex], 'ns_m');
+
+assert_error(funcreate(@gpcbasis_size,V,3), 'sglib:gpc', 'err_wrong_dim');

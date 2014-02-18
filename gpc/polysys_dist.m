@@ -5,7 +5,7 @@ function dist=polysys_dist(sys)
 %
 % Example (<a href="matlab:run_example polysys_dist">run</a>)
 %
-% See also
+% See also POLYSYS_SAMPLE_RV, GPCGERM_PDF, GPCGERM_CDF, GPCGERM_SAMPLE
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig

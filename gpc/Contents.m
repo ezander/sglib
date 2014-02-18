@@ -46,11 +46,15 @@
 %       systems
 %
 % GPC functions (high level)
+%   gpc_cdf_1d                   - Comute CDF of univariate GPC.
+%   gpc_combine_inputs           - Combines input paramteres or fields into one GPC space.
 %   gpc_covariance               - Compute covariance matrix between GPC variables.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
 %   gpc_integrate                - Integrate over GPC space or generate integration points.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
+%   gpc_param_expand             - Short description of gpc_param_expand.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
+%   gpc_pdf_1d                   - Comute PDF of univariate GPC.
 %   gpc_triples                  - Computation of the expectation of triple products of GPC polynomials.
 %   gpcbasis_create              - Create representation of a GPC space/basis.
 %   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
@@ -59,11 +63,14 @@
 %   gpcgerm_cdf                  - Computes the joint CDF of the GPC germ.
 %   gpcgerm_pdf                  - Computes the joint PDF of the GPC germ.
 %   gpcgerm_sample               - Draw samples from a GPC germ.
+%   unittest_gpc_cdf_1d          - Test the GPC_CDF_1D function.
+%   unittest_gpc_combine_inputs  - Test the GPC_COMBINE_INPUTS function.
 %   unittest_gpc_covariance      - Test the GPC_COVARIANCE function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
+%   unittest_gpc_pdf_1d          - Test the GPC_PDF_1D function.
 %   unittest_gpc_triples         - Test the GPC_TRIPLES function.
 %   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
 %   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
@@ -88,7 +95,7 @@
 %
 
 %   Elmar Zander
-%   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2012-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

@@ -12,7 +12,7 @@ function y_alpha_j = gpcbasis_evaluate(V, xi, varargin)
 %   
 % Example (<a href="matlab:run_example gpcbasis_evaluate">run</a>)
 %
-% See also
+% See also GPC_EVALUATE, GPCBASIS_CREATE
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

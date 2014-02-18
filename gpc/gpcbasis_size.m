@@ -48,6 +48,6 @@ switch dim
             [m1, m2] = size(V{2});
         end
     otherwise
-        error('sglib:gpc_size', 'invalide value for input paramter ''dim'' specified: %s', strvarexpand());
+        error('sglib:gpc_size', 'Invalid value for input paramter ''dim'' specified: %d', dim);
 end   
         

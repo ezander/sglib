@@ -48,3 +48,9 @@ y=gpc_cdf_1d(X_alpha, V_X, x );
 y_ex=lognormal_cdf(x,0,1);
 assert_equals(y, y_ex, 'lognorm');
 
+%%
+% test error message
+V=gpcbasis_create('HH', 'p', 3);
+M=gpcbasis_size(V,1);
+a_alpha = rand(1, M);
+assert_error(funcreate(@gpc_cdf_1d, a_alpha, V, rand(M,3)), 'sglib:gpc_cdf', 'err_multivar');

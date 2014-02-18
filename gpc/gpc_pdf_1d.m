@@ -41,12 +41,12 @@ function y=gpc_pdf_1d(X_alpha, V, xi)
 
 % Determine some parameters
 I=V{2};
+if size(I,2)~=1
+    error( 'sglib:gpc_pdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
+end
+
 sys=V{1};
 dist=polysys_dist(sys);
-
-if ~size(I,2)==1
-    error( 'gpc_pdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
-end
 
 % Determine the polynomial
 deg=max(I);

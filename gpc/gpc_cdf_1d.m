@@ -29,12 +29,12 @@ function y=gpc_cdf_1d(a_alpha, V_a, x)
 
 % Determine some parameters
 I=V_a{2};
+if size(I,2)~=1
+    error( 'sglib:gpc_cdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
+end
+
 sys=V_a{1};
 dist=polysys_dist(sys);
-
-if ~size(I,2)==1
-    error( 'gpc_cdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
-end
 
 % Determine the polynomial
 deg=max(I);

@@ -22,7 +22,6 @@ munit_set_function( 'gpc_combine_inputs' );
 V1 = gpcbasis_create('hh', 'p', 4);
 a1_alpha = rand(2, gpcbasis_size(V1,1));
 
-V2 = gpcbasis_create('ppp', 'p', 2);
 V2 = gpcbasis_create('p', 'p', 2, 'm', 3);
 a2_alpha = rand(5, gpcbasis_size(V2,1));
 
