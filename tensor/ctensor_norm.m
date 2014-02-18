@@ -14,7 +14,7 @@ function [d,dsqr]=ctensor_norm( T, G, varargin )
 %   Z=ctensor_add(T,T,-1);
 %   fprintf('%f\n', ctensor_norm( Z ) )
 %
-% See also CTENSOR_ADD, TENSOR_REDUCE
+% See also CTENSOR_ADD, TENSOR_TRUNCATE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

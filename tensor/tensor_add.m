@@ -8,7 +8,7 @@ function T=tensor_add( T1, T2, alpha )
 %   makes the code clearer.
 %
 % Note 2: This method does not perform reduction of the new vector. You
-%   have to call TENSOR_REDUCE manually to achieve this.
+%   have to call TENSOR_TRUNCATE manually to achieve this.
 %
 % Example (<a href="matlab:run_example tensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
@@ -16,7 +16,7 @@ function T=tensor_add( T1, T2, alpha )
 %   Z=tensor_add(T1,T2,3)
 %   norm( T1{1}*T1{2}'+3*T2{1}*T2{2}'-Z{1}*Z{2}', 'fro' )% should be approx. zero
 %
-% See also TENSOR_REDUCE, TENSOR_NULL, TENSOR_SCALE
+% See also TENSOR_TRUNCATE, TENSOR_NULL, TENSOR_SCALE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

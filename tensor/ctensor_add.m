@@ -1,14 +1,15 @@
 function T=ctensor_add( T1, T2, alpha )
-% CTENSOR_ADD Add two tensors.
-%   CTENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2,
-%   multiplying T2 by ALPHA first if given.
+% CTENSOR_ADD Add two canonical tensors.
+%   CTENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2 in canonical
+%   format, multiplying T2 by ALPHA first if given. If ALPHA is unspecified
+%   or empty the tensor are just added.
 %
-% Note 1: implementation is of course trivial, since addition of sparse
-%   tensors if simply juxtaposition, but having this as a separate function
-%   makes the code clearer.
+% Note 1: implementation is of course trivial, since addition of tensors if
+%   simply juxtaposition, but having this as a separate function makes the
+%   code clearer. 
 %
 % Note 2: This method does not perform reduction of the new tensor. You
-%   have to call TENSOR_REDUCE manually to achieve this.
+%   have to call TENSOR_TRUNCATE manually to achieve this.
 %
 % Example (<a href="matlab:run_example ctensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
@@ -16,7 +17,7 @@ function T=ctensor_add( T1, T2, alpha )
 %   Z=ctensor_add(T1,T2,3)
 %   norm( T1{1}*T1{2}'+3*T2{1}*T2{2}'-Z{1}*Z{2}', 'fro' )% should be approx. zero
 %
-% See also TENSOR_REDUCE, CTENSOR_NULL, CTENSOR_SCALE
+% See also TENSOR_TRUNCATE, CTENSOR_NULL, CTENSOR_SCALE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
