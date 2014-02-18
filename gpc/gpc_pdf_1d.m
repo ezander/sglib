@@ -13,8 +13,20 @@ function y=gpc_pdf_1d(X_alpha, V, xi)
 %   the germ. 
 %
 % Example (<a href="matlab:run_example gpc_pdf_1d">run</a>)
+%   dist=gendist_create('beta', {3, 2}, 'shift', 0.5);
+%   for i=1:4
+%     deg=3*i;
+%     [X_alpha, V_X] = gpc_param_expand(dist, 'H', 'p', deg);
+%     
+%     xi = linspace(0.3, 2, 100);
+%     y=gpc_pdf_1d(X_alpha, V_X, xi);
+%     subplot(2,2,i); 
+%     plot(xi,y); hold all;
+%     y=gendist_pdf(xi,dist);
+%     plot(xi, y, '-..'); hold off;
+%  end
 %
-% See also GPCBASIS_CREATE, GPC_PDF_1D
+% See also GPCBASIS_CREATE, GPC_CDF_1D
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
