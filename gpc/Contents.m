@@ -52,7 +52,7 @@
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
 %   gpc_integrate                - Integrate over GPC space or generate integration points.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
-%   gpc_param_expand             - Short description of gpc_param_expand.
+%   gpc_param_expand             - Computes GPC expansion of an input parameter.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
 %   gpc_pdf_1d                   - Comute PDF of univariate GPC.
 %   gpc_triples                  - Computation of the expectation of triple products of GPC polynomials.
@@ -69,6 +69,7 @@
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.
+%   unittest_gpc_param_expand    - Test the GPC_PARAM_EXPAND function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
 %   unittest_gpc_pdf_1d          - Test the GPC_PDF_1D function.
 %   unittest_gpc_triples         - Test the GPC_TRIPLES function.

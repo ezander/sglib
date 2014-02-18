@@ -23,18 +23,18 @@ munit_set_function( 'gpc_param_expand' );
 % Some tests with the combination lognormal/normal for which the expansion
 % is known analytically (see third case)
 a_dist=gendist_create('lognormal', {0, 1});
-[a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'p', 7);
+a_alpha = gpc_param_expand(a_dist, 'H', 'p', 7);
 a_alpha_ex=exp(1/2)./factorial(0:7);
 assert_equals(a_alpha, a_alpha_ex, 'lognorm1', 'abstol', 1e-5);
 
 a_dist=gendist_create('lognormal', {1, 1});
-[a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'p', 7);
+a_alpha = gpc_param_expand(a_dist, 'H', 'p', 7);
 a_alpha_ex=exp(3/2)./factorial(0:7);
 assert_equals(a_alpha, a_alpha_ex, 'lognorm2', 'abstol', 1e-5);
 
 mu=0.3; sigma=0.7;
 a_dist=gendist_create('lognormal', {mu, sigma});
-[a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'p', 7);
+a_alpha = gpc_param_expand(a_dist, 'H', 'p', 7);
 a_alpha_ex=exp(mu+(sigma^2)/2) * sigma.^(0:7)./factorial(0:7);
 assert_equals(a_alpha, a_alpha_ex, 'lognorm3');
 
@@ -50,7 +50,7 @@ assert_equals(abs(var-gpc_moments(a_alpha, V_a, 'var_only', true)), varerr, 'var
 assert_equals(V_a{1}, 'H', 'sys');
 
 a_dist=gendist_create('lognormal', {0.2, 0.3});
-[a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'varerr', 1e-5);
+[a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'varerr', 1e-5); %#ok<ASGLU>
 assert_true(varerr<1e-5, 'Variance error too high', 'varerr_opt');
 
 a_dist=gendist_create('lognormal', {0.2, 1.2});
@@ -58,6 +58,7 @@ a_dist=gendist_create('lognormal', {0.2, 1.2});
 [mu,var]=gendist_moments(a_dist);
 assert_equals(a_alpha(1), mu, 'mean2');
 assert_equals(var, gpc_moments(a_alpha, V_a, 'var_only', true), 'fixvar');
+assert_equals(varerr, 0, 'fixvar0');
 
 
 
