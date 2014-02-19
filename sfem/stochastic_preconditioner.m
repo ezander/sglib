@@ -1,6 +1,6 @@
-function [Pinv,P,info]=stochastic_precond_mean_based( A, varargin)
-% STOCHASTIC_PRECOND_MEAN_BASED Create the mean based preconditioner from a stochastic operator.
-%   PINV=STOCHASTIC_PRECOND_MEAN_BASED( A, USE_LU ) creates the mean based
+function [Pinv,P,info]=stochastic_preconditioner( A, varargin)
+% STOCHASTIC_PRECONDITIONER Create the mean based preconditioner from a stochastic operator.
+%   PINV=STOCHASTIC_PRECONDITIONER( A, USE_LU ) creates the mean based
 %   preconditioner PINV from the stochastic operator A in that MINV
 %   approximates the inverse of A, or rather
 %      OPERATOR_APPLY(PINV,OPERATOR_APPLY(A{1,:},X)==X 
@@ -9,7 +9,7 @@ function [Pinv,P,info]=stochastic_precond_mean_based( A, varargin)
 %   Otherwise application of MINV result in solving with A{1,:} (of course
 %   no inversion of the matrices is done here!). 
 %
-% Example (<a href="matlab:run_example stochastic_precond_mean_based">run</a>)
+% Example (<a href="matlab:run_example stochastic_preconditioner">run</a>)
 %
 % See also
 
