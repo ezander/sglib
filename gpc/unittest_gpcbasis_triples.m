@@ -1,10 +1,10 @@
-function unittest_gpc_triples
-% UNITTEST_GPC_TRIPLES Test the GPC_TRIPLES function.
+function unittest_gpcbasis_triples
+% UNITTEST_GPCBASIS_TRIPLES Test the GPCBASIS_TRIPLES function.
 %
-% Example (<a href="matlab:run_example unittest_gpc_triples">run</a>)
-%   unittest_gpc_triples
+% Example (<a href="matlab:run_example unittest_gpcbasis_triples">run</a>)
+%   unittest_gpcbasis_triples
 %
-% See also GPC_TRIPLES, MUNIT_RUN_TESTSUITE 
+% See also GPCBASIS_TRIPLES, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
@@ -17,7 +17,7 @@ function unittest_gpc_triples
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'gpc_triples' );
+munit_set_function( 'gpcbasis_triples' );
 
 
 test_mult('H')
@@ -51,7 +51,7 @@ function test_mult(sys,m)
     x_i_alpha = rand(n, size(V_x{2},1));
     y_i_alpha = rand(n, size(V_y{2},1));
     
-    M = gpc_triples(V_x, V_y, V_z);
+    M = gpcbasis_triples(V_x, V_y, V_z);
     z_k_gamma=zeros(n,size(V_z{2},1));
     for i=1:n
         aaa = tensor_multiply( M, y_i_alpha(i,:), 2, 2 );

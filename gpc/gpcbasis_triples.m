@@ -1,6 +1,6 @@
-function M=gpc_triples(V_a, V_b, V_c, varargin)
-% GPC_TRIPLES Computation of the expectation of triple products of GPC polynomials.
-%   M=GPC_TRIPLES(V_A,V_B,V_C) computes the value of 
+function M=gpcbasis_triples(V_a, V_b, V_c, varargin)
+% GPCBASIS_TRIPLES Computation of the expectation of triple products of GPC polynomials.
+%   M=GPCBASIS_TRIPLES(V_A,V_B,V_C) computes the value of 
 %    <Psi_alpha Psi_beta Psi_gamma> where
 %   the Psi_alpha are the multivariate GPC polynomials and the expectation
 %   <.> is over the measure of the random variable corresponding to the
@@ -8,10 +8,10 @@ function M=gpc_triples(V_a, V_b, V_c, varargin)
 %   thus you can pass all arguments V_A, V_B and V_C as arrays of
 %   multiindices.
 %
-% Example (<a href="matlab:run_example gpc_triples">run</a>)
+% Example (<a href="matlab:run_example gpcbasis_triples">run</a>)
 %   I=multiindex(4,3); J=multiindex(4,2);
 %   sys = 'hhpp';
-%   M=gpc_triples( {sys, I}, {sys, I}, {sys, I} );
+%   M=gpcbasis_triples( {sys, I}, {sys, I}, {sys, I} );
 %   spy(sum(M,3))
 %
 % See also GPC, GPC_EVALUATE, SQUEEZE

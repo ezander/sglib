@@ -55,7 +55,7 @@
 %   gpc_param_expand             - Computes GPC expansion of an input parameter.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
 %   gpc_pdf_1d                   - Comute PDF of univariate GPC.
-%   gpc_triples                  - Computation of the expectation of triple products of GPC polynomials.
+%   gpcbasis_triples                  - Computation of the expectation of triple products of GPC polynomials.
 %   gpcbasis_create              - Create representation of a GPC space/basis.
 %   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
 %   gpcbasis_norm                - Compute the norm of the system of GPC basis polynomials.
@@ -72,7 +72,7 @@
 %   unittest_gpc_param_expand    - Test the GPC_PARAM_EXPAND function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
 %   unittest_gpc_pdf_1d          - Test the GPC_PDF_1D function.
-%   unittest_gpc_triples         - Test the GPC_TRIPLES function.
+%   unittest_gpcbasis_triples         - Test the GPCBASIS_TRIPLES function.
 %   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
 %   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
 %   unittest_gpcbasis_norm       - Test the GPCBASIS_NORM function.
