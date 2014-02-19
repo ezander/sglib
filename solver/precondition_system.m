@@ -22,13 +22,13 @@ switch prec_strat
         PMi_inv={speye(size(Ki{1,1})),speye(size(Ki{1,2}))};
         PFi=operator_apply( Mi_inv, Fi );
     case 'ilu'
-        [MiC_inv,MiC,info]=stochastic_precond_mean_based( Ki, 'decomp_type', 'ilu', 'decomp_options', prec_options );
+        [MiC_inv,MiC,info]=stochastic_preconditioner( Ki, 'decomp_type', 'ilu', 'decomp_options', prec_options );
         PKi=operator_compose( MiC_inv, Ki );
         PKi=operator_compose( MiC, PKi, 'tensor_sum', false );
         PMi_inv=Mi_inv;
         PFi=Fi;
     case 'ilu_res'
-        [MiC_inv,MiC,info]=stochastic_precond_mean_based( Ki, 'decomp_type', 'ilu', 'decomp_options', prec_options );
+        [MiC_inv,MiC,info]=stochastic_preconditioner( Ki, 'decomp_type', 'ilu', 'decomp_options', prec_options );
         PKi=operator_compose( MiC_inv, Ki );
         PMi_inv=operator_compose( Mi_inv, MiC );
         PFi=operator_apply( MiC_inv, Fi );

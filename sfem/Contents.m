@@ -39,7 +39,7 @@
 %   covariance_matrix                     - Calculate point covariance matrix.
 %
 % Stochastic Galerkin method
-%   stochastic_precond_mean_based         - Create the mean based preconditioner from a stochastic operator.
+%   stochastic_preconditioner         - Create the mean based preconditioner from a stochastic operator.
 %
 % Application of boundary conditions to tensors and tensor operators
 %   apply_boundary_conditions_operator    - Apply essential boundary conditions to operator.
