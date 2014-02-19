@@ -33,3 +33,33 @@ assert_equals( operator_size( A3 ), [3,5], 'A3_size' );
 assert_equals( operator_size( A4 ), [3,5], 'A4_size' );
 assert_equals( operator_size( I ), [0,0], 'I_size' );
 
+%%
+T={zeros(2,3), zeros(5,7), zeros(11,13); zeros(2,3), zeros(5,7), zeros(11,13); };
+sz=operator_size(T);
+assert_equals(sz, [110, 273], 'contr');
+sz=operator_size(T,'contract', false);
+assert_equals(sz, [2, 3; 5, 7; 11, 13], 'nocontr');
+%%
+sz=operator_size(T, 'domain_only', true);
+assert_equals(sz, 273, 'contr_dom');
+sz=operator_size(T, 'domain_only', true, 'contract', false);
+assert_equals(sz, [3; 7; 13], 'nocontr');
+%%
+sz=operator_size(T, 'range_only', true);
+assert_equals(sz, 110, 'contr_ran');
+sz=operator_size(T, 'range_only', true, 'contract', false);
+assert_equals(sz, [2; 5; 11], 'nocontr_ran');
+%%
+[d,r]=operator_size(T);
+assert_equals([d,r], [110, 273], 'args');
+[d1,d2]=operator_size(T, 'domain_only', true, 'contract', false);
+assert_equals({d1, d2}, {3, [7; 13]}, 'args_dom');
+[r1, r2, r3]=operator_size(T, 'range_only', true, 'contract', false);
+assert_equals({r1, r2, r3}, {2, 5, 11}, 'args_ran');
+
+[r1, r2, r3, d]=operator_size(T, 'contract', false);
+assert_equals({r1, r2, r3}, {2, 5, 11}, 'args2a');
+assert_equals(d, [3;7;13], 'args2b');
+
+
+

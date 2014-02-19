@@ -1,4 +1,4 @@
-function d=operator_size( A, varargin )
+function varargout=operator_size( A, varargin )
 % OPERATOR_SIZE Return the size of a linear operator.
 %   D=OPERATOR_SIZE( A ) returns the size of the linear operator
 %   A. 
@@ -27,8 +27,10 @@ function d=operator_size( A, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options=varargin2options(varargin);
-[range,options]=get_option(options,'range',true);
-[domain,options]=get_option(options,'domain',true);
+[range_only,options]=get_option(options,'range_only',false);
+[domain_only,options]=get_option(options,'domain_only',false);
+[range,options]=get_option(options,'range',~domain_only);
+[domain,options]=get_option(options,'domain',~range_only);
 [contract,options]=get_option(options,'contract',true);
 check_unsupported_options(options,mfilename);
 
@@ -50,4 +52,12 @@ end
 
 select=logical([range, domain]);
 d=d(:,select);
+
+if nargout==1
+    varargout={d};
+else
+    shape=[ones(1,nargout-1), numel(d)-nargout+1];
+    varargout=mat2cell(d(:),shape);
+end
+
 
