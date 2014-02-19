@@ -33,6 +33,6 @@ switch trunc_mode
     case 'after'
         funcs={id,id,ta};
     otherwise
-        error( 'sglib:generalised_solve_simple:trunc_mode', 'unknown truncation mode %s', truncmode );
+        error( 'sglib:tensor_solve_simple:trunc_mode', 'unknown truncation mode %s', truncmode );
 end
 [trunc_operator_func,trunc_before_func,trunc_after_func]=funcs{:};

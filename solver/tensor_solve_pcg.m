@@ -1,4 +1,4 @@
-function [X,flag,info]=generalised_solve_simple( A, F, varargin )
+function [X,flag,info]=tensor_solve_pcg( A, F, varargin )
 
 options=varargin2options( varargin );
 [Minv,options]=get_option( options, 'Minv', [] );
@@ -19,6 +19,9 @@ options=varargin2options( varargin );
 [verbosity,options]=get_option( options, 'verbosity', 0 );
 [X_true,options]=get_option( options, 'solution', [] );
 [memtrace,options]=get_option( options, 'memtrace', 1 );
+
+[beta_formula,options]=get_option( options, 'beta_formula', 'PR' );
+
 check_unsupported_options( options, mfilename );
 
 timers( 'start', 'gen_solver_simple' );
@@ -62,7 +65,18 @@ start_cputime=cputime();
 start_tic=tic;
 prev_tic=start_tic;
 
+switch lower(beta_formula)
+    case {'fr', 'fletcher-reeves', 0}; beta_formula=0;
+    case {'pr', 'polak-ribiere', 1}; beta_formula=1;
+    case {'hs', 'hestenes-stiefel', 2}; beta_formula=2;
+    otherwise; error( 'sglib:tensor_solve_pcg', 'unknown beta_formula' );
+end
+if beta_formula
+    DR=Rc;
+end
+
 flag=1;
+restart=true;
 for iter=1:maxiter
     % add the preconditioned residuum to X
     if tensor_mode
@@ -70,11 +84,41 @@ for iter=1:maxiter
         info.epsvec(iter)=trunc.eps;
     end
     timers( 'start', 'gsolve_prec_apply' );
-    DX=operator_apply(Minv,Rc);
+    Z=operator_apply(Minv,Rc);
+    Z=funcall( truncate_after_func, Z );
     timers( 'stop', 'gsolve_prec_apply' );
+    rho_n=tensor_scalar_product( Rc, Z );
+    if beta_formula
+        rhod_n=tensor_scalar_product( DR, Z );
+    end
+    if restart
+        P=Z;
+        restart=false;
+    else
+        switch beta_formula
+            case 0; beta=rho_n/rho_c;
+            case 1; beta=rhod_n/rho_c;
+            case 2; beta=rhod_n/rhod_c;
+        end
+        beta=max(beta,0);
+        % P=Z+beta*P;
+        P=tensor_scale( P, beta );
+        P=tensor_add( Z, P );
+        P=funcall( truncate_after_func, P );
+    end
+    
+    %     q=A*p;
+    Qc=operator_apply(A,P, 'residual', false, apply_operator_options{:} );
+    Qn=Qc;
     
     abort=false;
     while true
+    %     alpha=rho/(p'*q);
+    %     x=x+alpha*p;
+        Qn=funcall( truncate_after_func, Qc );
+        alpha=rho_n/tensor_scalar_product( P, Qc );
+        DX=tensor_scale( P, alpha );
+        
         % add update and truncate
         Xn=tensor_add( Xc, DX );
         Xn=funcall( truncate_after_func, Xn );
@@ -108,6 +152,7 @@ for iter=1:maxiter
                 apply_operator_options=[apply_operator_options, ...
                     {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}]; %#ok<AGROW>
             end
+            restart=true;
         else
             flag=3;
             abort=true;
@@ -136,15 +181,16 @@ for iter=1:maxiter
     end
     
     % compute new residuum
-    if false
-        AXn=operator_apply(A,Xn, apply_operator_options{:} );
-        Rn=tensor_add( F, AXn, -1 );
-    else
+    if tensor_mode
         timers( 'start', 'gsolve_oper_apply' );
         Rn=operator_apply(A,Xn, 'residual', true, 'b', F, apply_operator_options{:} );
         timers( 'stop', 'gsolve_oper_apply' );
+        Rn=funcall( truncate_before_func, Rn );
+    else
+        %     r=r-alpha*q;
+        Rn=tensor_add( Rc, tensor_scale( -alpha, Qn ) );
     end
-    Rn=funcall( truncate_before_func, Rn );
+
     
     % compute norm of residuum
     lastnormres=min(lastnormres,normres);
@@ -172,10 +218,16 @@ for iter=1:maxiter
         break;
     end
     
+    % keep difference in residual for Polak-Ribiere and Hestenes-Stiefel
+    if beta_formula
+        DR=tensor_add( Rn, Rc, -1 );
+        rhod_c=rhod_n;
+    end
+        
     % set all iteration variables to new state
     Xc=Xn;
     Rc=Rn;
-   
+    rho_c=rho_n;
 end
 X=funcall( truncate_after_func, Xn );
 

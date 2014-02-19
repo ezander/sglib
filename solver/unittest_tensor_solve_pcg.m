@@ -1,10 +1,10 @@
-function unittest_generalised_solve_pcg
-% UNITTEST_GENERALISED_SOLVE_PCG Test the GENERALISED_SOLVE_PCG function.
+function unittest_tensor_solve_pcg
+% UNITTEST_TENSOR_SOLVE_PCG Test the TENSOR_SOLVE_PCG function.
 %
-% Example (<a href="matlab:run_example unittest_generalised_solve_pcg">run</a>)
-%   unittest_generalised_solve_pcg
+% Example (<a href="matlab:run_example unittest_tensor_solve_pcg">run</a>)
+%   unittest_tensor_solve_pcg
 %
-% See also GENERALISED_SOLVE_PCG, MUNIT_RUN_TESTSUITE 
+% See also TENSOR_SOLVE_PCG, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -17,7 +17,7 @@ function unittest_generalised_solve_pcg
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'generalised_solve_pcg' );
+munit_set_function( 'tensor_solve_pcg' );
 
 rand('seed', 12345 ); %#ok<RAND>
 
@@ -35,14 +35,14 @@ assert_equals(iter,iter2,'pre_iter')
 assert_equals(relres,relres2,'pre_relres')
 assert_equals(resvec(:),resvec2(:),'pre_resvec')
 
-[X,flag,info]=generalised_solve_pcg( A, b, 'reltol', tol ); %#ok<ASGLU>
+[X,flag,info]=tensor_solve_pcg( A, b, 'reltol', tol ); %#ok<ASGLU>
 assert_equals(X,x2,'x')
 assert_equals(info.resvec,resvec,'resvec');
 
 
 [x,flag,relres,iter,resvec]=textbook_pcg( A, b, tol, maxiter, M ); %#ok<ASGLU>
 [x2,flag2,relres2,iter2,resvec2]=pcg( A, b, tol, maxiter, M ); %#ok<ASGLU>
-[X,flag,info]=generalised_solve_pcg( A, b, 'reltol', tol, 'Minv', inv(M) ); %#ok<ASGLU>
+[X,flag,info]=tensor_solve_pcg( A, b, 'reltol', tol, 'Minv', inv(M) ); %#ok<ASGLU>
 assert_equals(x,x2,'pre_x')
 assert_equals(resvec(:),resvec2(:),'pre_resvec')
 assert_equals(X,x2,'x')
@@ -60,16 +60,16 @@ F=ctensor_to_vector(F);
 Xex=A\F;
 tol=1e-6;
 
-[X,flag]=generalised_solve_pcg( A, F, 'abstol', tol );
+[X,flag]=tensor_solve_pcg( A, F, 'abstol', tol );
 assert_equals( flag, 0, 'pcg_op_flag' );
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 
-[X,flag]=generalised_solve_pcg( A, F, 'Minv', Minv );
+[X,flag]=tensor_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcgprec_op_flag' );
 assert_equals( X, Xex, 'pcgprec_op', 'abstol', tol, 'reltol', tol  );
 
 A=operator_from_matrix(A);
-[X,flag]=generalised_solve_pcg( A, F, 'Minv', Minv );
+[X,flag]=tensor_solve_pcg( A, F, 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_linop_flag' );
 assert_equals( X, Xex, 'pcg_linop', 'abstol', tol, 'reltol', tol  );
 
@@ -81,7 +81,7 @@ Xex=tensor_operator_to_matrix(A)\ctensor_to_vector(F);
 Aop=operator_from_function( {@tensor_operator_apply, {A}, {1}}, tensor_operator_size(A) );
 tol=1e-5;
 trunc=struct('eps',0,'k_max',inf);
-[X,flag]=generalised_solve_pcg( Aop, F, 'trunc_mode', 'before', 'trunc', trunc );
+[X,flag]=tensor_solve_pcg( Aop, F, 'trunc_mode', 'before', 'trunc', trunc );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=ctensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
@@ -89,7 +89,7 @@ assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
 Minv=cell(1,2);
 Minv{1}=operator_from_matrix_solve( M{1}, 'lu');
 Minv{2}=operator_from_matrix_solve( M{2}, 'lu');
-[X,flag]=generalised_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
+[X,flag]=tensor_solve_pcg( A, F, 'trunc_mode', 'before', 'Minv', Minv );
 assert_equals( flag, 0, 'pcg_op_flag' );
 X=ctensor_to_vector(X);
 assert_equals( X, Xex, 'pcg_op', 'abstol', tol, 'reltol', tol  );
