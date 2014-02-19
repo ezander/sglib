@@ -1,4 +1,9 @@
-function os = solver_message( method, tol, maxiter, flag, iter, relres )
+function os = solver_message( method, flag, info )
+
+tol=info.reltol;
+maxiter=info.maxiter;
+iter=info.iter;
+relres=info.relres;
 
 % TODO: need to rewrite from scratch, so it can be put under GPL (this is a
 % copy from the MathWorks code which can't be directly accessed.)

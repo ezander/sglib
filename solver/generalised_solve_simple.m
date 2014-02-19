@@ -55,12 +55,12 @@ Xc=tensor_null(F);
 Rc=funcall( truncate_before_func, F );
 initres=tensor_norm( Rc );
 normres=initres;
+relres=normres/initres;
 lastnormres=normres;
 info.resvec(1)=initres;
 start_cputime=cputime();
 start_tic=tic;
 prev_tic=start_tic;
-base_apply_operator_options=apply_operator_options;
 
 flag=1;
 for iter=1:maxiter
@@ -106,7 +106,7 @@ for iter=1:maxiter
             [truncate_operator_func, truncate_before_func, truncate_after_func]=define_truncate_functions( trunc_mode, trunc, div_b, div_op );
             if ~isequal(trunc_mode,'none')
                 apply_operator_options=[apply_operator_options, ...
-                    {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}];
+                    {'pass_on', {'truncate_func', truncate_operator_func, 'fast_qr', fast_qr}}]; %#ok<AGROW>
             end
         else
             flag=3;
