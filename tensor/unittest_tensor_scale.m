@@ -1,5 +1,5 @@
 function unittest_tensor_scale
-% UNITTEST_TENSOR_SCALE Test the VECTOR functions.
+% UNITTEST_TENSOR_SCALE Test the TENSOR_SCALE functions.
 %
 % Example (<a href="matlab:run_example unittest_tensor_scale">run</a>)
 %    unittest_tensor_scale

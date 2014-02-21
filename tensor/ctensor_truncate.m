@@ -55,7 +55,7 @@ elseif iscell(T)
 elseif isobject(T)
         T_k=call_cp_als( T, k_max, eps, 'random' );
 else
-    error( 'tensor:ctensor_truncate:tensor_format', 'Unknown tensor format' );
+    error( 'sglib:ctensor_truncate:tensor_format', 'Unknown tensor format' );
 end
 
 timers( 'stop', mfilename );

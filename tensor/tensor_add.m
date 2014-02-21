@@ -1,14 +1,13 @@
 function T=tensor_add( T1, T2, alpha )
-% TENSOR_ADD Add two vectors.
-%   TENSOR_ADD( T1, T2, ALPHA ) adds two vectors T1 and T2,
-%   multiplying T2 by ALPHA first if given.
+% TENSOR_ADD Add two tensors.
+%   T=TENSOR_ADD( T1, T2 ) adds two tensors T1 and T2 and returns the
+%   result in T.
+%   T=TENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2, multiplying
+%   T2 by ALPHA first if given.
 %
-% Note 1: implementation is of course trivial, since addition of sparse
-%   vectors if simply juxtaposition, but having this as a separate function
-%   makes the code clearer.
-%
-% Note 2: This method does not perform reduction of the new vector. You
-%   have to call TENSOR_TRUNCATE manually to achieve this.
+% Note: This method does not perform truncation/approximation of the new
+%   tensor. You have to call a suitable tensor approximation/truncation
+%   function manually to do this.
 %
 % Example (<a href="matlab:run_example tensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
@@ -16,10 +15,10 @@ function T=tensor_add( T1, T2, alpha )
 %   Z=tensor_add(T1,T2,3)
 %   norm( T1{1}*T1{2}'+3*T2{1}*T2{2}'-Z{1}*Z{2}', 'fro' )% should be approx. zero
 %
-% See also TENSOR_TRUNCATE, TENSOR_NULL, TENSOR_SCALE
+% See also TENSOR_NULL, TENSOR_SCALE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -41,6 +40,6 @@ elseif is_ctensor(T1) && is_ctensor(T2)
 elseif isobject(T1)
     T=T1+alpha*T2;
 else
-    error( 'vector:tensor_null:param_error', ...
-        'input parameter is no recognized vector format or formats don''t match' );
+    error( 'sglib:tensor_null:param_error', ...
+        'input parameter is no recognized tensor format or formats don''t match' );
 end

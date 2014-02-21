@@ -1,5 +1,5 @@
 function unittest_tensor_add
-% UNITTEST_TENSOR_ADD Test the VECTOR functions.
+% UNITTEST_TENSOR_ADD Test the TENSOR_ADD functions.
 %
 % Example (<a href="matlab:run_example unittest_tensor_add">run</a>)
 %    unittest_tensor_add

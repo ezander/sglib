@@ -1,5 +1,5 @@
 function U=tensor_scale( T, alpha )
-% TENSOR_SCALE Scale a vector by a scalar.
+% TENSOR_SCALE Scale a tensor by a scalar.
 %   U=TENSOR_SCALE( T, ALPHA ) returns mathematically ALPHA*T.
 %
 % Example (<a href="matlab:run_example tensor_scale">run</a>)
@@ -9,7 +9,7 @@ function U=tensor_scale( T, alpha )
 % See also TENSOR_NULL, TENSOR_ADD
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -20,7 +20,7 @@ function U=tensor_scale( T, alpha )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if alpha==0 % Yes, exact test for floating points is ok here!
-    % If scale is zero we can for some vector formats save space by
+    % If scale is zero we can for some tensor formats save space by
     % returning a real null vector
     U=tensor_null(T);
 elseif isnumeric(T)
@@ -30,6 +30,6 @@ elseif is_ctensor(T)
 elseif isobject(T)
     U=alpha*T;
 else
-    error( 'vector:tensor_scale:param_error', ...
-        'input parameter is no recognized vector format' );   
+    error( 'sglib:tensor_scale:param_error', ...
+        'input parameter is no recognized tensor format' );   
 end

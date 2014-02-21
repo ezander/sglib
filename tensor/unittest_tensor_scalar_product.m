@@ -1,5 +1,5 @@
 function unittest_tensor_scalar_product
-% UNITTEST_TENSOR_SCALAR_PRODUCT Test the VECTOR functions.
+% UNITTEST_TENSOR_SCALAR_PRODUCT Test the TENSOR_SCALAR_PRODUCT functions.
 %
 % Example (<a href="matlab:run_example unittest_tensor_scalar_product">run</a>)
 %    unittest_tensor_scalar_product
@@ -7,7 +7,7 @@ function unittest_tensor_scalar_product
 % See also TESTSUITE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

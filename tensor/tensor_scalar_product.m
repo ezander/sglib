@@ -1,9 +1,9 @@
 function d=tensor_scalar_product( T1, T2, G, varargin )
-% TENSOR_SCALAR_PRODUCT Compute the scalar product of two sparse vectors.
+% TENSOR_SCALAR_PRODUCT Compute the scalar product of two tensors.
 %   D=TENSOR_SCALAR_PRODUCT( T1, T2 ) computes the scalar product of the
-%   two sparse vectors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1,
-%   T2, G ) the scalar product is taken with respect to the "mass"
-%   matrices or Gramians in G (i.e. G{1} and G{2} for order 2 vectors).
+%   two tensors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1, T2, G )
+%   the scalar product is taken with respect to the "mass" matrices or
+%   Gramians in G (i.e. G{1} and G{2} for order 2 tensors).
 %
 % Example (<a href="matlab:run_example tensor_scalar_product">run</a>)
 %
@@ -21,7 +21,7 @@ function d=tensor_scalar_product( T1, T2, G, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<3
-    G=[];
+    G={};
 end
 
 if isnumeric(T1) && isnumeric(T2)
@@ -29,18 +29,15 @@ if isnumeric(T1) && isnumeric(T2)
         d=sum(T1(:).*T2(:));
     elseif isvector(T1)
         d=T1'*G*T2;
-        return;
-    elseif ndims(T1)==2
-        S=(T1'*G{1}*T2).*G{2};
-        d=sum(S(:));
     else
-        error('vector:tensor_scalar_product:not_implemented', 'not implemented yet' );
+        GT2 = tensor_operator_apply_elementary(G, T2);
+        d=sum(T1(:).*GT2(:));
     end
 elseif is_ctensor(T1) && is_ctensor(T2)
     d=ctensor_scalar_product(T1,T2,G,varargin{:});
 elseif isobject(T1) && isobject(T2)
     d=tt_tensor_scalar_product(T1,T2,G);
 else
-    error( 'vector:tensor_scalar_product:param_error', ...
-        'input parameter is no recognized vector format or formats don''t match' );
+    error( 'sglib:tensor_scalar_product:param_error', ...
+        'input parameter is no recognized tensor format or formats don''t match' );
 end

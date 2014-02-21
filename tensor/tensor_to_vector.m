@@ -1,16 +1,18 @@
 function v=tensor_to_vector(T)
-% TENSOR_TO_VECTOR Short description of tensor_to_vector.
-%   TENSOR_TO_VECTOR Long description of tensor_to_vector.
-%
-% Options
-%
-% References
-%
-% Notes
+% TENSOR_TO_VECTOR Convert a tensor into a vector.
+%   V=TENSOR_TO_VECTOR(T) converts the tensor T into a vector V. If T is
+%   already a vector, the output remains unchanged. If T is a matrix or
+%   higher dimensional array, the result is obtained by stacking its
+%   columns. For other types of tensors the appropriate function is called
+%   to first transform it into an equivalent vector or matrix form and then
+%   stack it if necessary.
 %
 % Example (<a href="matlab:run_example tensor_to_vector">run</a>)
+%   % create a ctensor and transform to a vector
+%   T = {[1;2], [3;5]};
+%   tensor_to_vector(T)
 %
-% See also
+% See also TENSOR_TO_ARRAY
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
@@ -32,5 +34,5 @@ elseif isobject(T)
     v = v(:);
 else
     error( 'sglib:tensor_to_vector:param_error', ...
-        'input parameter is no recognized vector format or formats don''t match' );
+        'input parameter is no recognized tensor format or formats don''t match' );
 end

@@ -1,13 +1,31 @@
 function err=tensor_error(TA, TE, varargin )
-% TENSOR_ERROR Short description of tensor_error.
-%   TENSOR_ERROR Long description of tensor_error.
+% TENSOR_ERROR Computes the difference/error between to tensors.
+%   ERR=CTENSOR_ERROR(TA, TE, OPTIONS) computes the difference between the
+%   tensors TA and TE, which is the error when TE represents the exact
+%   tensor and TA its approximation. With the option 'relerr' set to true
+%   the relative error with respect to TE is computed. With the option 'G'
+%   Gramian matrices for modified scalar products can be specified.
+%
+% Options
+%   G: []
+%      Specify Gramian matrices for error computation. If empty the normal
+%      Euclidean scalar product is used.
+%   relerr: {false}, true
+%      When set to true the relative error, instead of the absolute error
+%      is comuted.
 %
 % Example (<a href="matlab:run_example tensor_error">run</a>)
+%   TE={rand(80,12), rand(70,12)};
+%   TA=ctensor_truncate(TE, 'k_max', 10);
+%   fprintf('Absolute error (CP):  %g\n', tensor_error(TA, TE));
+%   Amat = tensor_to_array(TA);
+%   Emat = tensor_to_array(T);
+%   fprintf('Absolute error (mat): %g\n', tensor_error(Amat, Emat));
 %
-% See also
+% See also TENSOR_TRUNCATE, TENSOR_ADD, TENSOR_NORM, TENSOR_SCALAR_PRODUCT
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing
+%   Copyright 2010-2014, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
