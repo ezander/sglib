@@ -69,7 +69,8 @@ if isequal(p,@default)
         end
     end
     if abs(a_var-a_var_gpc)>=varerr*a_var
-        error('sglib:gpc_param_expand', 'Could not reach target variance error in GPC parameter expansion');
+        diststr=strvarexpand('$a_dist{1}$$a_dist{2}$');
+        error('sglib:gpc_param_expand', 'Could not reach target variance %g error in GPC parameter expansion of %s', varerr, diststr);
     end
 else
     if isequal(p_int,@default)
