@@ -7,11 +7,8 @@
 
 % suppress default creation of pdfs from publish_to_latex
 
-% Move boundary condition functions into the fem directory, make a
-% apply_boundary_conditions_system functions, which make a full system from
-% A, f and g
-
 % Make tensor operator or general operator avaible to use in matlab pcg
+% (half done)
 
 % write help for plot_density and move into statistics directory
 
