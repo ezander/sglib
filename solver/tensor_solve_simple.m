@@ -179,6 +179,7 @@ for iter=1:maxiter
 end
 X=funcall( truncate_after_func, Xn );
 
+info.method = mfilename;
 info.flag=flag;
 info.iter=iter;
 info.relres=relres;
@@ -192,7 +193,7 @@ end
 % if we were not successful but the user doesn't retrieve the flag as
 % output argument we issue a warning on the terminal
 if flag && nargout<2
-    solver_message( 'generalized_simple_iter', flag, info )
+    tensor_solver_message( info )
 end
 
 timers( 'stop', 'gen_solver_simple' );
