@@ -2,11 +2,6 @@
 
 %% 13 Feb 2014
 
-% demo_simplefem umbennenen demo_gpc_diffusion_1d, eventuell neue
-% demo_simplefem erstellen 
-
-% suppress default creation of pdfs from publish_to_latex
-
 % Make tensor operator or general operator avaible to use in matlab pcg
 % (half done)
 
