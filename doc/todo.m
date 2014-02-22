@@ -1,11 +1,29 @@
 %TODO Contains my personal TODO
 
+
+%% gpc diffusion demo
+
+% show also univariate cdf/pdf stuff
+% maybe split the demo into two or three parts, parameter exp, blackbox,
+% intrusive
+
+
+% TODO: Compare response surface with true response
+% TODO: Show grids for interpolation and projection
+% TODO: Make plotting stuff into a function and explain
+% TODO: Explain interpolation and/or projection shortly and show the code, then explain that that's been put into a function
+% TODO: compare some samples computed directly and per surrogate model
+% TODO: create model_stats(cmd) func (reset, print, ...)
+% TODO: compare to dishis results
+% TODO: create gpcbasis_info function (maybe remove gpcbasis_size)
+
+
 %% 13 Feb 2014
+
+% Help needed for: plot_density, apply_boundary_..., sfem functions, ...
 
 % Make tensor operator or general operator avaible to use in matlab pcg
 % (half done)
-
-% write help for plot_density and move into statistics directory
 
 % Make some data/extras/... directory where data files, tex files, etc can
 % be put
@@ -15,6 +33,8 @@
 
 % Create model and methods directories in sglib
 
+% register new gpc types, like (dist, polysys)
+
 % Separate the 1d diffusion model into a parametric model and a "functional
 % model" (try to use solve function with mean values for the preconditioner
 % of pcg).
@@ -22,8 +42,6 @@
 % remove many of the old hermite_ and pce_ functions, move them to obsolete
 % and issue obsoletion_warnings which may be turned off, implement them in
 % terms of new functions
-
-% Help needed for: sfem functions, ...
 
 
 % check results from smolyak in the new demo
@@ -46,12 +64,10 @@
 % 
 
 %% 25 Nov 2013
-% move mean_var_update to stats
 % move plot_resp to plot_gpc_resp...
+% better heuristics for ranges in plot_resp_surface (take maybe from 
 % need function to check compatibility of gpc's
-% gpcbasis_create should also work with an rvtype, 
 % need function to map polynomials system char's to names
-% better heuristics for ranges in plot_resp_surface
 
 %% 19 Jun 2013
 
