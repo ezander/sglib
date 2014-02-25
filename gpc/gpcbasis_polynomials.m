@@ -37,7 +37,7 @@ end
 if ischar(symbols)
     if any(symbols==',')
         symbols = strsplit2(symbols, ',');
-    else
+    elseif ~isempty(symbols)
         symbols = mat2cell(symbols, 1, ones(1,length(symbols)));
     end
 elseif ~iscell(symbols)
