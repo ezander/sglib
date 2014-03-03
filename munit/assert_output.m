@@ -30,7 +30,11 @@ if exist('evalc')  %#ok<EXIST>
     if ~isempty(expected_output)
         expected_output=sprintf(expected_output);
     end
-    output = evalc(command);
+    if ischar(command)
+        output = evalc(command);
+    else
+        output = evalc('funcall(command);');
+    end
     if ~strcmp(output, expected_output)
         message = sprintf('command output was ''%s'', but ''%s'' was expected', output, expected_output);
         result_list{end+1}={message, assert_id};
