@@ -56,6 +56,12 @@ elseif isnumeric(A)
     if residual
         y=b-y;
     end
+elseif isa(A, 'Operator')
+    if residual
+        y=A.residual(x, b);
+    else
+        y = A*x;
+    end
 elseif is_tensor_operator(A)
     y=tensor_operator_apply( A, x, pass_on{:}, 'residual', residual, 'b', b );
 elseif iscell(A) && isfunction(A{2})
