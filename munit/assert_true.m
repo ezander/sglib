@@ -27,6 +27,9 @@ function assert_true( bool_val, message, assert_id  )
 if nargin<3
     assert_id='';
 end
+if nargin<2
+    message='Assertion failed (no message specified).';
+end
 
 result_list={};
 if ~bool_val
