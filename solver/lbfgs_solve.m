@@ -1,4 +1,4 @@
-function x = lbfgs_solve(H0, Y, S, b)
+function q = lbfgs_solve(H0, Y, S, q)
 % LBFGS_SOLVE Solve with the L-BFGS Hessian approximation.
 %   X = LBFGS_SOLVE(H0, Y, S, B) returns the solution of H*X=B, where H is
 %   the Hessian approximation given by H0 and the BFGS update vectors in Y
@@ -26,26 +26,26 @@ function x = lbfgs_solve(H0, Y, S, b)
 k = length(S);
 assert(k==length(Y), 'Y and S must have same length');
 
-alpha = nan(1, k);
-beta = nan(1, k);
-rho = nan(1, k);
+inner_sq = nan(1, k);
+inner_yr = nan(1, k);
+inner_ys = nan(1, k);
 for i=k:-1:1
-    rho(i) = 1 / tensor_scalar_product(Y{i}, S{i});
-    alpha(i) = rho(i) * tensor_scalar_product(S{i}, b);
-    b = tensor_add(b, Y{i}, -alpha(i));
+    inner_ys(i) = tensor_scalar_product(Y{i}, S{i});
+    inner_sq(i) = tensor_scalar_product(S{i}, q);
+    q = tensor_add(q, Y{i}, -inner_sq(i)/inner_ys(i));
 end
 
 if isempty(H0)
-    x = b;
     if k>0
-        tau = tensor_scalar_product(Y{k}, S{k}) / tensor_scalar_product(Y{k}, Y{k});
-        x = tensor_scale(x, tau);
+        tau = tensor_scalar_product(Y{k}, S{k}) / ...
+            tensor_scalar_product(Y{k}, Y{k});
+        q = tensor_scale(q, tau);
     end
 else
-    x = operator_apply(H0, b);
+    q = operator_apply(H0, q);
 end
 
 for i=1:k
-    beta(i) = rho(i) * tensor_scalar_product(Y{i}, x);
-    x = tensor_add(x, S{i}, alpha(i)-beta(i));
+    inner_yr(i) = tensor_scalar_product(Y{i}, q);
+    q = tensor_add(q, S{i}, (inner_sq(i)-inner_yr(i))/inner_ys(i));
 end
