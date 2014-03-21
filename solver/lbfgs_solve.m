@@ -1,16 +1,39 @@
-function r = lbfgs_solve(H0, Y, S, q)
+function q = lbfgs_solve(H0, Y, S, q)
 
-k = length(S);
-alpha = nan(1, k);
-beta = nan(1, k);
-rho = nan(1, k);
-for i=k:-1:1
-    rho(i) = 1 / tensor_scalar_product(Y{i}, S{i});
-    alpha(i) = rho(i) * tensor_scalar_product(S{i}, q);
-    q = tensor_add(q, Y{i}, -alpha(i));
+q = lbfgs_solve_iterative(H0, Y, S, q);
+%r = lbfgs_solve_recursive(H0, Y, S, q, length(S));
+
+function q = lbfgs_solve_recursive(H0, Y, S, q, k)
+
+if k==0
+    q = operator_apply(H0, q);
+    return;
 end
-r = H0 * q;
+
+inner_ys = tensor_scalar_product(Y{k}, S{k});
+
+inner_sq = tensor_scalar_product(S{k}, q);
+q = tensor_add(q, Y{k}, -inner_sq/inner_ys);
+
+q = lbfgs_solve_recursive(H0, Y, S, q, k-1);
+
+inner_yr = tensor_scalar_product(Y{k}, q);
+q = tensor_add(q, S{k}, (inner_sq-inner_yr)/inner_ys);
+
+
+
+function q = lbfgs_solve_iterative(H0, Y, S, q)
+k = length(S);
+inner_sq = nan(1, k);
+inner_yr = nan(1, k);
+inner_ys = nan(1, k);
+for i=k:-1:1
+    inner_ys(i) = tensor_scalar_product(Y{i}, S{i});
+    inner_sq(i) = tensor_scalar_product(S{i}, q);
+    q = tensor_add(q, Y{i}, -inner_sq(i)/inner_ys(i));
+end
+q = operator_apply(H0, q);
 for i=1:k
-    beta(i) = rho(i) * tensor_scalar_product(Y{i}, r);
-    r = tensor_add(r, S{i}, alpha(i)-beta(i));
+    inner_yr(i) = tensor_scalar_product(Y{i}, q);
+    q = tensor_add(q, S{i}, (inner_sq(i)-inner_yr(i))/inner_ys(i));
 end
