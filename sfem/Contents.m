@@ -25,10 +25,10 @@
 %   kl_solve_1d_exp                       - Solve the 1D KL problem for the exponential covariance.
 %   kl_solve_evp                          - Solve the Karhunen-Loeve eigenvalue problem.
 %   kl_to_pce                             - Short description of kl_to_pce.
-%   kl_to_tensor                          - Pack a KL expansion into tensor product format.
+%   kl_to_ctensor                         - Pack a KL expansion into tensor product format.
 %   pce_to_kl                             - Reduce a pure PCE field into a KL-PCE field.
 %   project_pce_on_kl                     - Project a spatially PC expanded field into a KL-PCE field.
-%   ctensor_to_kl                          - Unpack a KL expansion from a tensor product.
+%   ctensor_to_kl                         - Unpack a KL expansion from a tensor product.
 %
 % Random field expansion
 %   expand_field_kl_pce                   - 
@@ -39,18 +39,10 @@
 %   covariance_matrix                     - Calculate point covariance matrix.
 %
 % Stochastic Galerkin method
-%   stochastic_preconditioner         - Create the mean based preconditioner from a stochastic operator.
-%
-% Application of boundary conditions to tensors and tensor operators
-%   apply_boundary_conditions_operator    - Apply essential boundary conditions to operator.
-%   apply_boundary_conditions_rhs         - Apply essential boundary conditions to right hand side.
-%   apply_boundary_conditions_solution    - Applies boundary conditions to the solution.
-%   boundary_projectors                   - Projection matrices on the set of inner and boundary nodes.
+%   stochastic_preconditioner             - Create the mean based preconditioner from a stochastic operator.
 %
 % Unittests
-%   unittest_apply_boundary_conditions    - Test the APPLY_BOUNDARY_CONDITIONS function.
-%   unittest_boundary_projectors          - Test the boundary_projectors function.
-%   unittest_covariance_matrix            - UNITTEST_COVARIANCE Test covariance related functions.
+%   unittest_covariance_matrix            - Test covariance related functions.
 %   unittest_kl_estimate_eps              - Test the KL_ESTIMATE_EPS function.
 %   unittest_kl_pce_compute_operator      - Test the KL_PCE_COMPUTE_OPERATOR function.
 %   unittest_kl_pce_compute_operator_fast - Test the KL_PCE_COMPUTE_OPERATOR_FAST function.
@@ -58,5 +50,5 @@
 %   unittest_kl_pce_to_compact_form       - Test the KL_PCE_TO_COMPACT_FORM function.
 %   unittest_kl_pce_to_standard_form      - Test the KL_PCE_TO_STANDARD_FORM function.
 %   unittest_kl_solve_evp                 - Test the KL_SOLVE_EVP function.
-%   unittest_kl_tensor                    - Test the KL_TO_TENSOR and CTENSOR_TO_KL functions.
+%   unittest_kl_tensor                    - Test the KL_TO_CTENSOR and CTENSOR_TO_KL functions.
 %   unittest_pce_to_kl                    - Test the PCE_TO_KL function.

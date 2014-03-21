@@ -1,5 +1,5 @@
 function unittest_kl_tensor
-% UNITTEST_KL_TENSOR Test the KL_TO_TENSOR and CTENSOR_TO_KL functions.
+% UNITTEST_KL_TENSOR Test the KL_TO_CTENSOR and CTENSOR_TO_KL functions.
 %
 % Example (<a href="matlab:run_example unittest_kl_tensor">run</a>)
 %    unittest_kl_tensor
@@ -26,13 +26,13 @@ N=51;
 M=56;
 L=15;
 
-% Test KL_TO_TENSOR
-munit_set_function( 'kl_to_tensor' );
+% Test KL_TO_CTENSOR
+munit_set_function( 'kl_to_ctensor' );
 
 r_i_k=rand(N,L);
 r_k_alpha=rand(L,M);
 
-R=kl_to_tensor( r_i_k, r_k_alpha );
+R=kl_to_ctensor( r_i_k, r_k_alpha );
 assert_equals( R, {r_i_k,r_k_alpha'}, 'R' );
 
 

@@ -1,6 +1,6 @@
-function R=kl_to_tensor( r_i_k, r_k_alpha )
-% KL_TO_TENSOR Pack a KL expansion into tensor product format.
-%   R=KL_TO_TENSOR( R_I_K, R_K_ALPHA ) packs the KL expansion
+function R=kl_to_ctensor( r_i_k, r_k_alpha )
+% KL_TO_CTENSOR Pack a KL expansion into tensor product format.
+%   R=KL_TO_CTENSOR( R_I_K, R_K_ALPHA ) packs the KL expansion
 %   contained in R_I_K and R_K_ALPHA into the tensor product R.
 %   R_I_K contains the coefficients of the KL eigenfunctions with respect
 %   to the ansatz functions used and R_K_ALPHA contains the PC expansion
@@ -24,7 +24,7 @@ function R=kl_to_tensor( r_i_k, r_k_alpha )
 error( nargchk( 2, 2, nargin ) );
 
 if size(r_i_k,2)~=size(r_k_alpha,1)
-    error('kl_to_tensor:size', 'number of kl expansion terms not consistent (transposed?)');
+    error('kl_to_ctensor:size', 'number of kl expansion terms not consistent (transposed?)');
 end
 
 % stuff into tensor product (=cell array)

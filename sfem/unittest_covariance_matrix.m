@@ -1,5 +1,5 @@
 function unittest_covariance_matrix
-% UNITTEST_COVARIANCE Test covariance related functions.
+% UNITTEST_COVARIANCE_MATRIX Test covariance related functions.
 %
 % Example (<a href="matlab:run_example unittest_covariance">run</a>)
 %   unittest_covariance

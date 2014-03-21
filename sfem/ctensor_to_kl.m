@@ -12,7 +12,7 @@ function [r_i_k, r_k_alpha]=ctensor_to_kl( R, normalize )
 %   if the tensor was truncated in a "KL-compatible" way, the result should
 %   be the same.
 %
-% See also KL_TO_TENSOR
+% See also KL_TO_CTENSOR
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
