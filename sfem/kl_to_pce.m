@@ -1,4 +1,4 @@
-function kl_to_pce(varargin)
+function [r_i_alpha] = kl_to_pce(r_i_k, r_k_alpha)
 % KL_TO_PCE Short description of kl_to_pce.
 %   KL_TO_PCE Long description of kl_to_pce.
 %
@@ -17,3 +17,4 @@ function kl_to_pce(varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+r_i_alpha = r_i_k * r_k_alpha;
