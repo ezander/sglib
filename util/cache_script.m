@@ -18,13 +18,14 @@ assignin( ws, 'really_long_and_strange_varname_493875ksdjfh', store );
 tmp_name=[tempname '.mat'];
 evalin( ws, strvarexpand( 'save $tmp_name$' ) );
 [status, hash]=hash_matfile( tmp_name );
+have_cache_file = (status == 0);
+delete( tmp_name );
 
 if isa(script, 'function_handle')
     script=func2str(script);
 end
 
-delete( tmp_name );
-if ~status
+if have_cache_file
     path=cache_file_base();
     filename=fullfile( path,  hash );
 else

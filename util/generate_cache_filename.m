@@ -1,4 +1,4 @@
-function filename=generate_cache_filename( script, var )
+function [filename, success]=generate_cache_filename( script, var )
 % GENERATE_CACHE_FILENAME Generate unique filename that can used for caching.
 %   FILENAME=GENERATE_CACHE_FILENAME( SCRIPT, VAR ) 
 %
@@ -29,7 +29,9 @@ if ~status
     path=cache_file_base();
     filename=fullfile( path, hash );
     makesavepath( filename );
+    success=true;
 else
     warning( 'Could not create unique cache filename. ' );
     filename='';
+    success=false;
 end
