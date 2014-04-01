@@ -1,6 +1,10 @@
-function r_func = gpc_function(r_i_alpha, V_r)
-% GPC_FUNCTION Create a function object from a GPC.
-%   GPC_FUNCTION Long description of gpc_function.
+function r_func=gpc_function(r_i_alpha, V_r)
+% GPC_FUNCTION Create a callable function from a GPC.
+%   R_FUNC=GPC_FUNCTION(R_I_ALPHA, V_R) creates the callable function
+%   R_FUNC (callable via FUNCALL) from the GPC specified by R_I_ALPHA and
+%   V_R. This mean, FUNCALL(R_FUNC, XI) gives the same as
+%   GPC_EVALUATE(R_I_ALPHA, V_R, XI). This is helpful in places, where a
+%   function is needed 
 %
 % Example (<a href="matlab:run_example gpc_function">run</a>)
 %
