@@ -48,3 +48,25 @@ cov_a = gpc_covariance(a_i_alpha, V);
 cov_a_old = pce_covariance(a_i_alpha, V{2});
 assert_equals(cov_a, cov_a_old, 'foobar');
 
+
+%% Empty basis
+V = gpcbasis_create('H', 'm', 0, 'p', p);
+M = gpcbasis_size(V, 1);
+Na = 10;
+a_i_alpha = rand(Na, M);
+
+cov_a = gpc_covariance(a_i_alpha, V);
+assert_equals(cov_a, zeros(Na), 'emptyV');
+
+
+%% Empty coefficient field
+V = gpcbasis_create('H', 'm', 1, 'p', p);
+M = gpcbasis_size(V, 1);
+Na = 0;
+a_i_alpha = rand(Na, M);
+
+cov_a = gpc_covariance(a_i_alpha, V);
+assert_equals(cov_a, zeros(Na), 'empty_a');
+
+
+

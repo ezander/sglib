@@ -34,10 +34,10 @@ if nargin<3
 end
 
 % compute the square of the norm of the GPC basis
-nrm2 = gpcbasis_norm(V_ab, 'sqrt', false);
+nrm2 = gpcbasis_norm(V_ab, 'sqrt', false)';
 
 % determine all multiindices not belonging to the mean
 ind = (multiindex_order(V_ab{2})~=0);
 
 % compute weighted inner product between A and B giving the covariance 
-cov_ab_ij = binfun(@times, a_i_alpha(:, ind), nrm2(ind)') * b_j_alpha(:, ind)';
+cov_ab_ij = binfun(@times, a_i_alpha(:, ind), nrm2(:,ind)) * b_j_alpha(:, ind)';
