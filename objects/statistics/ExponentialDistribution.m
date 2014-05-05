@@ -1,51 +1,59 @@
 classdef ExponentialDistribution < Distribution
-% EXPONENTIALDISTRIBUTION Short description of ExponentialDistribution.
-%   EXPONENTIALDISTRIBUTION Long description of ExponentialDistribution.
-%
-% Example (<a href="matlab:run_example ExponentialDistribution">run</a>)
-%   dist = ExponentialDistribution(2);
-%   [mu,var]=dist.moments()
-%
-% See also
-
-%   Aidin Nojavan
-%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
-%
-%   This program is free software: you can redistribute it and/or modify it
-%   under the terms of the GNU General Public License as published by the
-%   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
-%   See the GNU General Public License for more details. You should have
-%   received a copy of the GNU General Public License along with this
-%   program.  If not, see <http://www.gnu.org/licenses/>.
-
-    properties 
-        % lambda is the parameter of the Exponential Distribution (rate
+    % EXPONENTIALDISTRIBUTION Constructs an ExponentialDistribution.
+    %   DIST=EXPONENTIALDISTRIBUTION(LAMBDA) constructs a distribution
+    %   returned in dist representing an exponential distribution
+    %   with parameter LAMBDA.
+    %
+    % Example (<a href="matlab:run_example ExponentialDistribution">run</a>)
+    %   dist = ExponentialDistribution(2);
+    %   [var,mean,skew,kurt]=dist.moments()
+    %
+    % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
+    
+    %   Aidin Nojavan
+    %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
+    %
+    %   This program is free software: you can redistribute it and/or
+    %   modify it under the terms of the GNU General Public License as
+    %   published by the Free Software Foundation, either version 3 of the
+    %   License, or (at your option) any later version.
+    %   See the GNU General Public License for more details. You should
+    %   have received a copy of the GNU General Public License along with
+    %   this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    properties
+        % The parameter LAMBDA of the Exponential(LAMBDA) distribution.
+        % LAMBDA is the parameter of the exponential distribution (rate
         % parameter)
         lambda
     end
     methods
-        function obj=ExponentialDistribution(lambda)
-            obj.lambda=lambda;
+        function dist=ExponentialDistribution(lambda)
+            % EXPONENTIALDISTRIBUTION Constructs an ExponentialDistribution.
+            % DIST=EXPONENTIALDISTRIBUTION(LAMBDA) constructs a distribution
+            % returned in dist representing an exponential distribution
+            % with parameter LAMBDA.
+            dist.lambda=lambda;
         end
-        
-        function y=pdf(obj,x)
-            % PDF Compute the probability distribution function of the Exponential distribution.
-            y=exponential_pdf( x, obj.lambda);
+        function y=pdf(dist,x)
+            % PDF computes the probability distribution function of the
+            % exponential distribution.
+            y=exponential_pdf( x, dist.lambda);
         end
-        function y=cdf(obj,x)
-            % CDF Compute the cumulative distribution function of the Exponential distribution.
-            y=exponential_cdf( x, obj.lambda);
+        function y=cdf(dist,x)
+            % CDF computes the cumulative distribution function of the
+            % exponential distribution.
+            y=exponential_cdf( x, dist.lambda);
         end
-        function x=invcdf(obj,y)
-            % INVCDF Compute the inverse CDF (or quantile) function of the Exponential distribution.
-            x=exponential_invcdf( y, obj.lambda );
+        function x=invcdf(dist,y)
+            % INVCDF computes the inverse CDF (or quantile) function of the
+            % exponential distribution.
+            x=exponential_invcdf( y, dist.lambda );
         end
-        function [var,mean,skew,kurt]=moments(obj)
-            % MOMENTS Compute the moments of the Exponential distribution.
-            [var,mean,skew,kurt]=exponential_moments( obj.lambda);
+        function [var,mean,skew,kurt]=moments(dist)
+            % MOMENTS computes the moments of the exponential distribution.
+            [var,mean,skew,kurt]=exponential_moments( dist.lambda);
         end
-       
     end
 end
 

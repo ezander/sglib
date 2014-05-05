@@ -1,6 +1,11 @@
 function unittest_BetaDistribution
 % UNITTEST_BETADISTRIBUTION Test the BETADISTRIBUTION function.
 %
+% Example (<a href="matlab:run_example unittest_BetaDistribution">run</a>)
+%   unittest_BetaDistribution
+%
+% See also BETADISTRIBUTION, MUNIT_RUN_TESTSUITE
+
 %   Aidin Nojavan
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
@@ -13,11 +18,15 @@ function unittest_BetaDistribution
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'BetaDistribution' );
-%%Initialization
+
+%% Initialization
 B = BetaDistribution(2,3);
 assert_equals( B.a, 2, 'Initialization a' );
 assert_equals( B.b, 3, 'Initialization b' );
 
+%% Mean & Var
+assert_equals( B.mean, 0.4, 'mean' );
+assert_equals( B.var, 0.04, 'var' );
 %% beta_cdf
 assert_equals(cdf(B,-inf),0, 'cdf_minf' );
 assert_equals(cdf(B,-1e8), 0, 'cdf_zero' );
@@ -43,14 +52,6 @@ assert_equals( pdf(B,inf), 0, 'pdf_inf' );
 B = BetaDistribution(0.2,0.5);
 assert_equals(pdf(B,0), 0, 'pdf_zero' );
 assert_equals(pdf(B,1), 0, 'pdf_zero' );
-
-% % pdf matches cdf
-% B = BetaDistribution(2,3);
-% [x,x2]=linspace_mp(-0.1,1.1);
-% F=beta_cdf(x,a,b);
-% F2=pdf_integrate( beta_pdf(x2,a,b), F, x);
-% assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
-
 
 %% beta_invcdf
 
@@ -82,5 +83,14 @@ x=beta_stdnor(gam, 0.5, 1.3);
 
 B = BetaDistribution(0.5,1.3);
 assert_equals( cdf(B,x), uni, 'beta' );
-
-
+%% fix_moments
+B=BetaDistribution(2,3);
+dist=fix_moments(B,3,14);
+[m,v]=moments(dist);
+assert_equals(m,3,'mean fix_moments');
+assert_equals(v,14,'var fix_moments');
+%% Fix Bounds
+B = BetaDistribution(2,3);
+dist = fix_bounds(B,4,5);
+assert_equals(invcdf(dist,0), 4, 'fix_bounds-uni_min');
+assert_equals(invcdf(dist,1), 5, 'fix_bounds-uni_max');
