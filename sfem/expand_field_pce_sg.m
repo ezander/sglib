@@ -68,6 +68,7 @@ options=varargin2options( varargin );
 [transform_options,options]=get_option( options, 'transform', {'correct_var', true} );
 [kl_options,options]=get_option( options, 'kl_options', struct() );
 [p_trans,options]=get_option( options, 'p_trans', min(p,7) );
+[mean_func,options]=get_option( options, 'mean_func', [] );
 check_unsupported_options( options, mfilename );
 
 
@@ -105,3 +106,10 @@ g_j_i=kl_solve_evp( C_gam, G_N, m_gam, kl_options );
 
 % Step 5: transform gam(pos) into u
 [r_j_alpha,I_r]=pce_transform_multi( g_j_i, rho_k );
+
+
+% Replace the mean
+if ~isempty(mean_func)
+    r_i_mean=funcall( mean_func, pos );
+    r_i_alpha(:,1)=r_i_mean;
+end
