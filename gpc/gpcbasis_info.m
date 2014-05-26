@@ -35,7 +35,10 @@ switch type
         varargout{1} = max(I, 1);
     case {'max_degree'}
         varargout{1} = max(I(:));
+    case {'order'}
+        varargout{1} = multiindex_order(I);
+    case {'total_degree'}
+        varargout{1} = max(multiindex_order(I));
     otherwise
         error('sglib:gpc', 'Unknown info type "%s" for gpcbasis_info', type );
 end
-     

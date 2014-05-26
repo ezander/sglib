@@ -1,4 +1,4 @@
-function u_i_beta = gpc_projection(u_func, V_u, p_int)
+function u_i_beta = gpc_projection(u_func, V_u, p_int, varargin)
 % GPC_PROJECTION Compute a GPC expansion from a function by projection.
 %   U_I_BETA = GPC_PROJECTION(U_FUNC, V_U, P_INT) computes the coefficients
 %   U_I_BETA of the GPC expansion of U_FUNC with respect to the GPC basis
@@ -36,14 +36,24 @@ function u_i_beta = gpc_projection(u_func, V_u, p_int)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin, mfilename);
+[nk,options]=get_option(options, 'batch_size', 1000);
+check_unsupported_options(options);
+
+if nargin<3 || isempty(p_int)
+    p_int = gpcbasis_info(V_u, 'total_degree') + 1;
+end
+
 [xi_k,w_k] = gpc_integrate([], V_u, p_int);
 Q = length(w_k);
 
-for k = 1:Q
-    u_i_j = funcall(u_func, xi_k(:,k));
-    psi_j_beta_dual = gpcbasis_evaluate(V_u, xi_k(:,k), 'dual', true);
-    du_i_beta = w_k(k) * u_i_j * psi_j_beta_dual;
-    if k==1
+for k0 = 1:nk:Q
+    k = k0:min(k0+nk-1,Q);
+    u_i_k = funcall(u_func, xi_k(:,k));
+    psi_k_beta_dual = gpcbasis_evaluate(V_u, xi_k(:,k), 'dual', true);
+    du_i_beta = u_i_k * binfun(@times, w_k(k), psi_k_beta_dual);
+
+    if k0==1
         u_i_beta = du_i_beta;
     else
         u_i_beta = u_i_beta + du_i_beta;
