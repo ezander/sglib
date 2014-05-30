@@ -1,10 +1,43 @@
 function [filename,hash]=cache_script( script, varargin )
 % CACHE_SCRIPT Caches the results of a script.
-%   CACHE_SCRIPT Long description of cache_script.
+%   [FILENAME,HASH]=CACHE_SCRIPT(SCRIPT, OPTIONS) runs the script SCRIPT
+%   and stores the results in a MAT file FILENAME in a directory below
+%   '/tmp/sglib-USERNAME/cache/'. The exact name of the file is composed
+%   from a hash value, that is generated from the data in the callers
+%   workspace and the names and modification times of the script and its
+%   dependencies. The next time CACHE_SCRIPT is run with the same data in
+%   the caller's workspace and unchanged dependencies, the results are just
+%   retrieved from this file without rerunning the script. With the option
+%   'check_base' also variables in the base workspace (if that is not the
+%   same as the caller's workspace) can be taken into account.
+% 
+% Note 1: 
+%   This function currently only works correctly on Unix-like systems.
+%   Maybe I will extend it sometimes to MacOS, but most probably not to
+%   Windows systems.
+%
+% Note 2: 
+%   If functions are called via EVAL or FEVAL with string parameters, the
+%   may dependencies not be correct. Then the cache may need to be cleaned
+%   manually if those dependencies have changed.
+%
+% Options:
+%   check_base: {false}, true
+%      Take also variables in the base workspace into account for
+%      determining, whether to recreate the cache file.
+%   verbosity: integer, {1}
+%      If positive, diagnostic messages will be printed.
 %
 % Example (<a href="matlab:run_example cache_script">run</a>)
+%    % This is a pretty dumb example, but it shows the basics
+%    clear variables
+%    a=rand() 
+%    % next call will generate the results file anew
+%    cache_script 
+%    % next call will reuse the results
+%    cache_script 
 %
-% See also
+% See also CLEAR_CACHE, HASH_MATFILE, CACHE_FILE_BASE, MAKESAVEPATH, EVALIN, ASSIGNIN
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing
