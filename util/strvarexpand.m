@@ -30,6 +30,7 @@ function exstr=strvarexpand(str, varargin)
 options=varargin2options(varargin);
 [maxarr, options]=get_option(options, 'maxarr', 10);
 [maxcell, options]=get_option(options, 'maxcell', 50);
+[show_expr, options]=get_option(options, 'show_expr', false);
 check_unsupported_options(options, mfilename);
 
 exstr='';
@@ -46,8 +47,11 @@ for i=pos
             part=['<err:' part '>'];
         end
         part=tostring( part, orig, maxarr, maxcell );
+        if show_expr
+            part=[orig ':' part];
+        end
     end
-    exstr=[exstr part]; %#ok<AGROW> 
+    exstr=[exstr part]; %#ok<AGROW>
     lpos=i+1;
     doeval=~doeval;
 end
