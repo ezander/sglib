@@ -63,10 +63,10 @@ set(p,'FaceColor',face_color);
 
 % make it look nice
 [m,n]=size(A);
-ylim([0, m+1]);
-xlim([0, n+1]);
 set( gca, 'YDir', 'reverse' );
 axis( 'image' );
+ylim([0, m+1]);
+xlim([0, n+1]);
 grid( 'off' );
 box( 'on' );
 
