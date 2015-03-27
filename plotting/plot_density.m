@@ -104,7 +104,7 @@ switch(type)
         %error('foo');
     case 'empirical'
         error('foo');
-    case 'kernel'
+    case {'kernel', 'kde'}
         [xc,y]=kernel_density(x, n, kde_sig);
         plot(xc,y);
     otherwise
