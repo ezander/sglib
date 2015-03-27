@@ -17,10 +17,10 @@ function multiplot_legend(mh,i,j,c,varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options(varargin);
+options=varargin2options(varargin, mfilename);
 [format,options]=get_option(options,'format','%g');
 [paramname,options]=get_option(options,'paramname','');
-check_unsupported_options(options,mfilename);
+check_unsupported_options(options);
 
 if ~isempty(paramname)
     format=[paramname, '=', format];
@@ -30,5 +30,5 @@ if isnumeric(c)
     c=cellfun( @(x)(sprintf(format,x) ), num2cell( c ), 'UniformOutput', false );
 end
 
-multiplot( mh, i, j );
+multiplot( i, j );
 legend(c);
