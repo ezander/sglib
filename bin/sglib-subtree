@@ -12,19 +12,23 @@ fi
 
 PUSH_BRANCH=$(basename $(pwd))
 GIT_SUBTREE="git subtree"
+GIT="git"
 #GIT_SUBTREE="echo git subtree"
 
 
 case "$1" in
     push)
-	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
-	;;
+      $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
+	    ;;
     pushdirect)
-	$GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "master"
-	;;
+      $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "master"
+      ;;
     pull)
-	$GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
-	;;
+      $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
+	    ;;
+    fetch)
+      $GIT fetch "$REMOTE"
+	    ;;
     *)
 	echo "Unknown or empty subcommand '$1'"
 	echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
