@@ -68,6 +68,10 @@ else
         end
     end
     if writetofile
+        % the following three line give the full file path of the file 
+        % the would be opened (note: fopen with 'r' looks for the file in
+        % the path, while fopen with 'w' open the file with exactly the
+        % path specified)
         fid=fopen( filename, 'r' );
         filename=fopen(fid);
         fclose(fid);
@@ -75,15 +79,26 @@ else
 end
 
 if writetofile
+    % If the file already begin with 'function ...' we keep that line
+    func = sprintf( '%s(varargin)', name );
+    ind=strfind(prev_contents, sprintf('\n'));
+    if ~isempty(ind) && strncmp(prev_contents, 'function ', 9)
+        ind=ind(1);
+        func = prev_contents(10:ind-1);
+        prev_contents = prev_contents(ind+1:end);
+    end
+    
+    % Open file and write the help template stuff
     fid=fopen( filename, 'w' );
     if ~is_unittest
-        fprintf( fid, 'function %s(varargin)\n', name );
+        fprintf( fid, 'function %s\n', func );
         fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
-        fprintf( fid, '%%   %s Long description of %s.\n', upper(name), name );
+        fprintf( fid, '%%   %s Long description of %s.\n', upper(func), name );
     else
-        fprintf( fid, 'function %s\n', name );
+        fprintf( fid, 'function %s\n', func );
         fprintf( fid, '%% %s Test the %s function.\n', upper(name), upper(testfunction) );
     end
+    
     fprintf( fid, '%%\n' );
     if show_options
         fprintf( fid, '%% Options\n' );
@@ -131,12 +146,12 @@ try
     err = false;
     oldpath=addpath(fullfile(matlabroot, 'toolbox', 'matlab', 'codetools'), '-begin');
     edit(filename);
-catch
+catch %#ok<CTCH>
     err = true;
 end
 matlabpath(oldpath)
 if err
-    rethrow(lasterror);
+    rethrow(lasterror); %#ok<LERR>
 end
 
 
