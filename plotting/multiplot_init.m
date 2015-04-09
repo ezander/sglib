@@ -53,7 +53,7 @@ end
 
 % clear the current figure
 fh=clf;
-set( fh, 'defaulttextinterpreter', 'none' );
+%set( fh, 'defaulttextinterpreter', 'latex' );
 
 % initialise the figures
 handles=zeros(m,n);
@@ -62,9 +62,6 @@ for i=1:m
         % compute linear index for subplot
         k=j+n*(i-1);
         h=subplot( m, n, k ); 
-        % set hold all for plot and set a tag for later identification
-        hold all;
-        set( h, 'tag', sprintf('$mp:%d%d', i, j ) );
         % store the handle
         handles(i,j)=h;
     end
