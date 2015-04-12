@@ -1,4 +1,4 @@
-function [sigma_k]=kl_solve_1d_exp(x0,x1,l,n)
+function [r_i_k, sigma_k]=kl_solve_1d_exp(pos,sig_r,l_r,N)
 % KL_SOLVE_1D_EXP Solve the 1D KL problem for the exponential covariance.
 %   KL_SOLVE_1D_EXP Long description of kl_solve_1d_exp.
 %
@@ -17,47 +17,57 @@ function [sigma_k]=kl_solve_1d_exp(x0,x1,l,n)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-a=0.5*(x1-x0);
-c=1/l;
+x=pos(:);
+x0 = min(x);
+x1 = max(x);
+mx=0.5*(x0+x1);
 
 
-m=(n+1)*l;
-fun1=@(w)(c-w.*tan(a*w));
-w1=fsolve_mult( fun1, 0, m, 10*m );
+DX=(x1-x0);
+b = l_r/DX;
 
-fun2=@(w)(w+c.*tan(a*w));
-w2=fsolve_mult( fun2, 0, m, 10*m );
+w = compute_freqs(b, N);
 
-w=sort( [w1, w2] );
-w=w(1:n);
-sigma_k=sqrt( 2*c./(w.^2+c^2) );
+% LeMaitre2010, Eq. (2.23)
+% Note: sigma_k = sqrt(lambda_k)
+sigma_k = sig_r * sqrt(2 * b ./ (1 + (w*b).^2));
+
+% LeMaitre2010, Eq. (2.22)
+% Note: the meaning of odd/even is reversed here, since
+% indexing starts at 1 in matlab
+w_k = w/DX;
+
+ind_even = 1:2:N;
+A_k(ind_even) = 1./sqrt(0.5 * DX * (1 + sin(w(ind_even))./w(ind_even)));
+p_k(ind_even) = -mx*w(ind_even)/DX + pi/2;
+
+ind_odd = 2:2:N;
+A_k(ind_odd) = 1./sqrt(0.5 * DX * (1 - sin(w(ind_odd))./w(ind_odd)));
+p_k(ind_odd) = -mx*w(ind_odd)/DX;
+
+sin_rep_k = [A_k; w_k; p_k];
+r_i_k = sin_eval(x, sin_rep_k);
+
+function [y_i_k] = sin_eval(x_i, sin_rep_k)
+A_k=sin_rep_k(1,:); 
+w_k=sin_rep_k(2,:); 
+p_k=sin_rep_k(3,:); 
+y_i_k = binfun(@times, A_k, sin(binfun(@plus, x_i*w_k, p_k)));
 
 
-function w=fsolve_mult( fun, x0, x1, N )
-%%
-wc=linspace(x0,x1,N);
-fs=sign(fun(wc));
-sc=find(fs(2:end)+fs(1:end-1)==0); % sign changes
+function w=compute_freqs(b, N)
+% LeMaitre2010, Eq. (2.24)
+f1 = @(w)(1-b*w.*tan(w/2));
+f2 = @(w)(b*w+tan(w/2));
+delta=1e-10;
 
-w=[];
-opts=optimset( 'display', 'off', 'TolFun', 1e-10 );
-for i=1:length(sc)
-    ws=wc(sc(i)+[0,1]);
-    [x,fval,flag]=fzero( fun, ws, opts ); %#ok<ASGLU>
-    if flag==1
-        w(end+1)=x; %#ok<AGROW>
-    end
-end
-
-%%
-if 1==0
-    hold off;
-    %wcan=(wc(mins)+wc(mins+1))*0.5;
-    plot( wc, fv ); hold on;
-    plot( wc(mins), 0, 'bo' )
-    %plot( wcan, fun(wcan), 'ko' )
-    plot( w, fun(w), 'rx' )
-    ylim([-1,1])
-    hold off;
-end
+n=0; w=nan(1,N);
+while true
+    w(n+1)=fzero(f1, [n*pi+delta, (n+1)*pi-delta]);
+    n=n+1;
+    if n==N; break; end
     
+    w(n+1)=fzero(f2, [n*pi+delta, (n+1)*pi-delta]);
+    n=n+1;
+    if n==N; break; end
+end
