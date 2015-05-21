@@ -91,7 +91,8 @@ end
 plot(x, y);
 
 function [xc,y]=plot_sample_density(x, options)
-[type, options]=get_option(options, 'type', 'hist');
+%[type, options]=get_option(options, 'type', 'hist');
+[type, options]=get_option(options, 'type', 'kernel');
 [n, options]=get_option(options, 'n', 100);
 [kde_sig, options]=get_option(options, 'kde_sig', []);
 [rug, options]=get_option(options, 'rug', false);
