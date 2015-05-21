@@ -9,7 +9,7 @@ classdef BetaDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -58,5 +58,30 @@ classdef BetaDistribution < Distribution
             % MOMENTS computes the moments of the beta distribution.
             [mean,var,skew,kurt]=beta_moments( dist.a, dist.b );
         end
+        function polysys=default_polysys(dist, is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
+                polys{1}='u';
+                polys{2}='U';
+            elseif dist.a==1/2 && dist.b==1/2 %for ArcSinDistribution
+                polys{1}='t';
+                polys{2}='T';
+            else
+                polys{1}='h';
+                polys{2}='H';
+                warning('sglib:BetaDistribution', 'Jacobi polynomials are not implemented, Hermite polynomial will be used instead')
+            end
+            if is_normalized
+                polysys=polys{1};
+            else
+                polysys=polys{2};
+            end
+        end
+        function str=tostring(dist)
+            % Displays the distribution type: 'Beta(a, b)'
+            str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);
+        end
+        
     end
 end

@@ -10,7 +10,7 @@ classdef LogNormalDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BEA_PDF
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan  (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -67,6 +67,10 @@ classdef LogNormalDistribution < Distribution
         function [var,mean,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the LogNormal distribution.
             [var,mean,skew,kurt]=lognormal_moments( dist.sigma,dist.sigma);
+        end
+        function str=tostring(dist)
+            % Displays the distribution type: 'lnN(mu, var)'
+            str=sprintf('lnN(%.3f,  %.3f)', dist.mu, dist.sigma^2);
         end
     end
 end

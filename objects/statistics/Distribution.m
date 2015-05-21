@@ -7,7 +7,9 @@ classdef Distribution % < handle
         y=cdf(dist, x); % CDF Compute the cumulative distribution function.
         x=invcdf(dist, y); % INVCDF Compute the inverse CDF function.
         y=moments(dist); % MOMENTS Compute the moments of the distribution.
+        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties 
     end
+    
     methods
         function mean=mean(dist)
             % MEAN computes the mean value of the distribution.
@@ -15,7 +17,7 @@ classdef Distribution % < handle
         end
         function var=var(dist)
             % VAR computes the variance of the distribution
-            [m,v]=dist.moments();
+            [~,v]=dist.moments();
             var=v;
         end
         function tdist=translate(dist,shift,scale)
@@ -74,12 +76,25 @@ classdef Distribution % < handle
             shift  = min - ((old_min-center)*scale + center);
             new_dist=translate(dist,shift,scale);
         end
-        function y=stdnor(dist, x)
-            % STDNOR Map normal distributed random values.
+        
+        function y=NORTA(dist, x)
+            % NORTA Map normal distributed random values.
             % Y=STDNOR(DIST, X) Map normal distributed random values X to
             % random values Y distribution according to the probability
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
+        end
+        
+    end
+    methods(Static)
+        function polysys=default_polysys(is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if is_normalized
+                polysys='h';
+            else
+                polysys='H';
+            end
         end
     end
 end

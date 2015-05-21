@@ -7,6 +7,8 @@ options=varargin2options(varargin,mfilename);
 [verbosity, options]=get_option(options,'verbosity',0);
 [line_search_func, options]=get_option(options, 'line_search_func', @line_search_armijo);
 [line_search_opts, options]=get_option(options, 'line_search_opts', {});
+[mode, options]=get_option(options, 'update_mode', 'BFGS');
+
 check_unsupported_options(options);
 
 x=x0;
@@ -32,8 +34,14 @@ for iter=1:maxiter
     yy = tensor_add(dyn, dy, -1);
     if isa(H, 'UpdatableOperator')
         H = H.update(yy, s);
-    elseif ifnumeric(H)
+    elseif isnumeric(H)
+        if( norm(yy)==0 && norm(s)==0 )
+            break;
+        end
         [~, H] = qn_matrix_update(mode, [], H, yy, s);
+        if any(isnan(H))
+            %keyboard;
+        end
     else
         error('sglib:minfind_quasi_newton', 'Cannot update H. Unknown type');
     end
@@ -49,6 +57,14 @@ for iter=1:maxiter
         flag=0;
         break;
     end
+    
+    %%%%%%%%%%%%%%%%%%%%cheating: added by Noemi
+    if any(isnan(H))
+        flag=0;
+        disp('Non were find in Hessian approx')
+        break;
+    end
+    %%%%%%%%%%%%%%
 end    
 
 if flag
