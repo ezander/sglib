@@ -1,4 +1,4 @@
-function U=lhs_uniform(n, m)
+function U=lhs_uniform(n, m, varargin)
 % LHS_UNIFORM Generate uniform Latin hypercube samples.
 %   U=LHS_UNIFORM(N, M) generates N Latin hypercube samples for each of M
 %   uniformly distributed random variables returned. That is, each of the M
@@ -31,13 +31,24 @@ function U=lhs_uniform(n, m)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin, mfilename);
+[mode, options]=get_option(options, 'mode', 'rand');
+check_unsupported_options(options);
+
 U = zeros(n, m);
 for i =1:m
-    U(:,i) = lhs_sample_1d(n);
+    U(:,i) = lhs_sample_1d(n, mode);
 end
     
 
-function x=lhs_sample_1d(n)
+function x=lhs_sample_1d(n, mode)
 k = (randperm(n)-1);
-dx = rand(n,1);
+switch(mode)
+    case {'rand', 'rlhs'}
+        dx = rand(n,1);
+    case {'median', 'mlhs'}
+        dx = repmat(0.5, n, 1);
+    otherwise
+        error('sglib:lhs_uniform', 'Unknown mode for LHS: %s', mode);
+end
 x = (k(:) + dx)/n;

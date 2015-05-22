@@ -82,8 +82,10 @@ switch(mode)
     case 'qmc'
         qmc_options = {};
         U = halton_sequence(n, m, qmc_options);
-    case 'lhs'
+    case {'lhs', 'rlhs'}
         U = lhs_uniform(n, m);
+    case 'mlhs'
+        U = lhs_uniform(n, m, 'mode', 'median');
     otherwise
         error('sglib:gpcgerm_sample', 'Unknown paramter value "%s" for option "mode"', mode);
 end
