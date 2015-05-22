@@ -74,7 +74,7 @@ I_un(~(I_a==0))=1;
 % number of partials
 n=size(I_un,1);
 % prelocate memory for partial variances
-part_vars=zeros(n,Q);
+part_vars=zeros(n,num_vars);
 for i=1:n
     ind=find(ind2==i);
     part_vars(i,:)=sum(var_row(:, ind),2);
@@ -117,7 +117,7 @@ for i=1:max(sob_ind)
     part_vars(row_ind_i,:)=part_vars_i(flipud(ind_sort),:);
     
     if nargout==3
-        sob_sensitivity(row_ind_i,:)=part_vars_i./repmat(tot_var',sum(row_ind_i),1);
+        sob_sensitivity(row_ind_i,:)=part_vars(row_ind_i,:)./repmat(tot_var',sum(row_ind_i),1);
         ratios_i(i,:)=sum(sob_sensitivity(row_ind_i,:));
     end
 end
