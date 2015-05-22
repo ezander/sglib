@@ -6,7 +6,7 @@ function assert_matrix( A, properties, assert_id, varargin )
 %   following:
 %     'square', 'sparse', 'full', 'real', 'symmetric', 'hermitian',
 %     'unitary', 'orthogonal', 'diagonal', 'identity', 'lower triangular',
-%     'upper triangular'
+%     (or 'lower'), 'upper triangular' (or 'upper')
 %   Most options (except square, sparse and full) are checked up to some
 %   default absolute or relative precision, which can be changed by setting
 %   the options 'abstol', 'reltol' or 'exact'.
@@ -76,8 +76,8 @@ for i=1:length(properties)
         case 'orthogonal'; h={@isorthogonal, {abstol,reltol}};
         case 'diagonal'; h={@isdiagonal, {abstol,reltol}};
         case 'identity'; h={@isidentity, {abstol,reltol}};
-        case 'lower triangular'; h={@islowertri, {abstol,reltol}};
-        case 'upper triangular'; h={@isuppertri, {abstol,reltol}};
+        case {'lower', 'lower triangular'}; h={@islowertri, {abstol,reltol}};
+        case {'upper', 'upper triangular'}; h={@isuppertri, {abstol,reltol}};
         otherwise
             error( 'sglib:assert_matrix', 'Unknown matrix property: %s', property );
     end
