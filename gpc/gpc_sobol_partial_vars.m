@@ -1,4 +1,4 @@
-function [part_vars, I_un, varargout]=gpc_sobol_partial_vars(V_a, a_i_alpha, varargin)
+function [part_vars, I_un, ratios, ratio_per_order]=gpc_sobol_partial_vars(V_a, a_i_alpha, varargin)
 % GPC_SOBOL_PARTIAL_VARS Compute the partial variances and optionally the Sobol sensitivities.
 %   [PART_VARS, I_UN, SOBOL_SENSITIVITY]=
 %       =GPC_SOBOL_PARTIAL_VARSs(V_U, A_I_ALPHA, 'max_index', 2)
@@ -29,7 +29,7 @@ function [part_vars, I_un, varargout]=gpc_sobol_partial_vars(V_a, a_i_alpha, var
 %           sensitivity index for evaluating the sensitivities to the
 %           second and third germs combined
 %
-% Example (<a href="matlab:run_example multiindex_order">run</a>)
+% Example (<a href="matlab:run_example gpc_sobol_partial_vars">run</a>)
 %
 %
 % See also MULTIINDEX, GPC_BASIS_CREATE, GPC_MOMENTS
@@ -45,84 +45,54 @@ function [part_vars, I_un, varargout]=gpc_sobol_partial_vars(V_a, a_i_alpha, var
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 options=varargin2options(varargin);
-[max_index,options]=get_option( options, 'max_index', []);
+[max_index,options]=get_option( options, 'max_index', inf);
 check_unsupported_options(options,mfilename);
 
-Q=gpcbasis_size(V_a,2);
-num_vars=size(a_i_alpha,1);
 
-%%
-polysys=V_a{1};
+% Get the multiindex set and convert to a logical array (having 1s where
+% the original multiindex was nonzero; we'll call that logical index the
+% 'Sobol index')
 I_a=V_a{2};
-% get read of the constant term
-mean_ind = (multiindex_order(I_a)==0);
-I_a=I_a(~mean_ind,:);
-a_i_alpha=a_i_alpha(:,~mean_ind);
+I_un=boolean(I_a);
 
-% calculate variance of the a_i_alpha*Fi_ alpha_i polynomials
-sqr_norm = gpcbasis_norm({polysys, I_a}, 'sqrt', false);
-var_row=a_i_alpha.^2 .* repmat(sqr_norm', size(a_i_alpha,1),1);
+% Get rid of all the indices with too high an order and of the mean
+sob_order = sum(I_un, 2);
+ind = (sob_order>0) & (sob_order<=max_index);
 
-% change all nonzero elements to one
-I_un=I_a;
-I_un(~(I_a==0))=1;
-% get uniqe rows
-[I_un, ~, ind2]=unique(I_un, 'rows'); %I_un(ind2,:) this is how to get back the I
+I_a = I_a(ind, :);
+I_un = I_un(ind, :);
+a_i_alpha = a_i_alpha(:, ind);
+V_a{2} = I_a;
 
-% number of partials
-n=size(I_un,1);
-% prelocate memory for partial variances
-part_vars=zeros(n,num_vars);
-for i=1:n
-    ind=find(ind2==i);
-    part_vars(i,:)=sum(var_row(:, ind),2);
-end
+% Calculate variance of the a_i_alpha*F_alpha polynomials
+sqr_norm = gpcbasis_norm(V_a, 'sqrt', false);
+var_row=binfun(@times, a_i_alpha.^2, sqr_norm');
 
-%% sort partials by  Sobolev index
-sob_ind=sum(I_un,2);
-[sob_ind, ind]=sort(sob_ind);
+% Get uniqe rows from Sobol indices
+[I_un, ~, ind2]=unique(I_un, 'rows');
 
-I_un=I_un(ind,:);
-part_vars=part_vars(ind,:);
+% Sum up the variances corresponding to one 'Sobol index' (note: every
+% column in U (corresponding to the original index) .... )
+M = gpcbasis_size(V_a, 1);
+U = sparse(1:M, ind2, ones(1,M));
+part_vars = (var_row * U)';
 
+% Sort partial variances by Sobol order
+fake = [sum(I_un,2), fliplr(I_un)];
+[~, sortind] = sortrows(fake);
+I_un = I_un(sortind, :);
+part_vars=part_vars(sortind,:);
 
-% Get rid of rows with higher indices
-ind=sob_ind<=max_index;
-I_un=I_un(ind,:);
-part_vars=part_vars(ind,:);
-sob_ind=sob_ind(ind);
-
-% Calculate total variance and prelocate memory for sobol index
-% (part_vars/tot_vars) and for ratios (sum part_vars/tot_vars
-if nargout==3
-    sob_sensitivity=zeros(size(part_vars));
-    tot_var=gpc_moments(a_i_alpha, {polysys, I_a}, 'var_only', true);
-    ratios_i=zeros(max(sob_ind), num_vars);
-end
-
-% sort within specific indices
-for i=1:max(sob_ind)
-    %rows corresponding to the ith sobolev index
-    row_ind_i=(sob_ind==i);
-    %the indices corresponding to ith sobolev index
-    I_un_i=I_un(row_ind_i,:);
-    %the variances corresponding to the ith sobolev index
-    part_vars_i=part_vars(row_ind_i,:);
-    %sort rows
-    [~,ind_sort]=sortrows(I_un_i);
-    %Sorte indices and variances
-    I_un(row_ind_i,:)=I_un_i(flipud(ind_sort),:);
-    part_vars(row_ind_i,:)=part_vars_i(flipud(ind_sort),:);
+if nargout>=3
+    % Compute the ratios
+    ratios = binfun(@times, part_vars, 1./sum(part_vars,1));
     
-    if nargout==3
-        sob_sensitivity(row_ind_i,:)=part_vars(row_ind_i,:)./repmat(tot_var',sum(row_ind_i),1);
-        ratios_i(i,:)=sum(sob_sensitivity(row_ind_i,:));
+    if nargout>=4
+        % Compute the variance per Sobol order
+        sob_order = sum(I_un, 2);
+        n = length(sob_order);
+        U = sparse(1:n, sob_order, ones(1,n));
+        ratio_per_order = U' * ratios;
     end
 end
-if nargout==3
-    varargout{1}={sob_sensitivity, ratios_i};
-end
-end
-
