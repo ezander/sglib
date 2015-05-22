@@ -37,8 +37,7 @@ classdef PolynomialSystem < FunctionSystem
                 p(:,d+2) = (r(d,1) + xi' * r(d, 2)) .* p(:,d+1) - r(d,3) * p(:,d);
             end
             
-            y_alpha_j = ones(k,sys.deg);
-            y_alpha_j = y_alpha_j .* p(:, n(:,1)+2);
+            y_alpha_j = p(:,2:end);
         end
         
     end
