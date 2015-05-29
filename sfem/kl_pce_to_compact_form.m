@@ -24,10 +24,13 @@ else
     rc_i_k=rs_i_k*diag(sigma_rs_k);
 end
 
-% insert deteminstic vector as zeroth eigenfunction
-rc_i_k=[mu_rs_i, rc_i_k];
-
-% 
-M=size(rs_k_alpha,2);
-rc_k_alpha=[1, zeros(1,M-1); rs_k_alpha];
-
+if ~isempty(mu_rs_i)
+    % insert deteminstic vector as zeroth eigenfunction
+    rc_i_k=[mu_rs_i, rc_i_k];
+    
+    %
+    M=size(rs_k_alpha,2);
+    rc_k_alpha=[1, zeros(1,M-1); rs_k_alpha];
+else
+    rc_k_alpha=rs_k_alpha;
+end

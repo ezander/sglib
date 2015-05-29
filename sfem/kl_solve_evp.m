@@ -1,4 +1,4 @@
-function [r_i_k,sigma_k]=kl_solve_evp( C, G_N, l, varargin )
+function [r_i_k,sigma_k,l]=kl_solve_evp( C, G_N, l, varargin )
 % KL_SOLVE_EVP Solve the Karhunen-Loeve eigenvalue problem.
 %   [R_I_K,SIGMA_K]=KL_SOLVE_EVP( C, G_N, L, OPTIONS ) performs the
 %   Karhunen-Loeve expansion on the input arguments. C is the pointwise
