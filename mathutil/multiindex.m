@@ -11,12 +11,14 @@ function I_mp=multiindex(m,p,varargin)
 % Options:
 %   use_sparse: true, {false}
 %     Return the result as a sparse array.
-%   ordering: {'degree'}, 'lexicographical', 'lex', 'uqtoolkit', 'uqtk'
+%   ordering: {'degree'}, 'lexicographical', 'lex', 'uqtoolkit', 'uqtk',
+%     'random'
 %     Specifies the ordering of the multiindex set returned. 'lex' and
 %     'lexicographical' are the same and return the set in lexicographical
 %     order. 'degree' and 'uqtoolkit' return the set ordered by degree,
 %     where the second tries to be compatible with the UQToolkit for
-%     complete polynomials.
+%     complete polynomials. 'random' makes a random shuffling for testing
+%     purposes.
 %   lex_ordering: true, {false}
 %     Obsolete. Use ordering='lex' instead!
 %   combine: {true}, false
@@ -75,6 +77,7 @@ options=varargin2options( varargin );
 [full,options]=get_option( options, 'full', false );
 check_unsupported_options( options, mfilename );
 
+rand_ordering = false;
 switch ordering
     case {'lex','lexicographical'}
         std_ordering = true; % doesn't really matter
@@ -85,6 +88,10 @@ switch ordering
     case {'uqtoolkit', 'uqtk'}
         std_ordering = false;
         % leave lex_ordering as it is
+    case 'random'
+        std_ordering = true;
+        lex_ordering = false;
+        rand_ordering = true;
     otherwise
         error('sglib:multiindex', 'unknown ordering: %s', std_ordering);
 end
@@ -99,10 +106,16 @@ if combine
     I_mp=cell2mat( I_mp(:) );
     if lex_ordering
         I_mp=sortrows(I_mp,m:-1:1);
+    elseif rand_ordering
+        I_mp=shuffle_rows(I_mp);
     end
 elseif lex_ordering
     for q=0:p
         I_mp{q+1}=sortrows(I_mp{q+1},m:-1:1);
+    end
+elseif rand_ordering
+    for q=0:p
+        I_mp{q+1}=shuffle_rows(I_mp{q+1});
     end
 end
 
@@ -235,3 +248,7 @@ if use_sparse
 else
     A=zeros(m, n);
 end
+
+function I=shuffle_rows(I)
+M=size(I,1);
+I=I(randperm(M),:);
