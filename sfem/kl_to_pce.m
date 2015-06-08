@@ -1,10 +1,28 @@
-function [r_i_alpha] = kl_to_pce(mu_r_k, r_i_k, sigma_k, r_k_alpha, I_r)
-% KL_TO_PCE Short description of kl_to_pce.
-%   KL_TO_PCE Long description of kl_to_pce.
+function r_i_alpha = kl_to_pce(mu_r_i, r_i_k, sigma_k, r_k_alpha, I_r)
+% KL_TO_PCE Transform KL representation into a PCE representation.
+%   R_I_ALPHA = KL_TO_PCE(MU_R_I, R_I_K, SIGMA_K, R_K_ALPHA, I_R)
+%   transforms the KL representation, given by the mean MU_R_I, the spatial
+%   KL eigenfunctions R_I_K, the KL eigenvalues SIGMA_K, and the random
+%   variables R_K_ALPHA (in PCE representation w.r.t to the multiindex set
+%   I_R) into a PCE representation R_I_ALPHA. 
+%   
+%   R_I_ALPHA = KL_TO_PCE([], R_I_K, SIGMA_K, R_K_ALPHA) does the same,
+%   assuming the mean is zero.
+%
+%   R_I_ALPHA = KL_TO_PCE(MU_R_I, R_I_K, [], R_K_ALPHA, I_R) does the same,
+%   assuming the SIGMA_K are constant 1 (i.e. they are already part of the
+%   R_I_K or the R_K_ALPHA.)
+%
+%   R_I_ALPHA = KL_TO_PCE([], R_I_K, [], R_K_ALPHA) or R_I_ALPHA =
+%   KL_TO_PCE(R_I_K, R_K_ALPHA) assumes the mean is zero and the KL
+%   eigenvalues are all one.
+%
+% Note: if the mean is specified I_R has to be be passed to the function in
+%   order to determine where the mean component of the PCE is.
 %
 % Example (<a href="matlab:run_example kl_to_pce">run</a>)
-%
-% See also
+%   
+% See also PCE_TO_KL
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing
@@ -19,19 +37,19 @@ function [r_i_alpha] = kl_to_pce(mu_r_k, r_i_k, sigma_k, r_k_alpha, I_r)
 
 if nargin==2
     % using old version of the function
-    [r_i_alpha] = kl_to_pce([], mu_r_k, [], r_i_k);
+    [r_i_alpha] = kl_to_pce([], mu_r_i, [], r_i_k);
     return;
 end
 
 if isempty(sigma_k)
     r_i_alpha = r_i_k * r_k_alpha;
 else
-    r_i_alpha = binfun(@times, r_i_k, sigma_k) * r_k_alpha;
+    r_i_alpha = binfun(@times, r_i_k, sigma_k(:)') * r_k_alpha;
 end
 
-if ~isempty(mu_r_k)
-    m = size(I_g, 2);
-    mean_ind = multiindex_find(multiindex(m,0));
+if ~isempty(mu_r_i)
+    m = size(I_r, 2);
+    mean_ind = multiindex_find(multiindex(m,0), I_r);
     assert(length(mean_ind)==1);
-    r_i_alpha(:,mean_ind) = r_i_alpha(:,mean_ind) + mu_r_k;
+    r_i_alpha(:,mean_ind) = r_i_alpha(:,mean_ind) + mu_r_i;
 end
