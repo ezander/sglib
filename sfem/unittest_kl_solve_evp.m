@@ -44,7 +44,7 @@ assert_equals( diag(fs*fs'), diag(C) );
 
 
 
-% check against values for the exponential covariance taken from 
+%% check against values for the exponential covariance taken from 
 % ghanem & spanos, implemented in kl_solve_1d_exp
 a=3;
 c=0.7;
@@ -52,11 +52,14 @@ c=0.7;
 C=covariance_matrix( pos, {@exponential_covariance, {c, 1}} );
 M=mass_matrix( pos, els );
 [v,sig]=kl_solve_evp( C, M, 10 );
-sigex=kl_solve_1d_exp( -a, a, c, 10 );
+v = binfun(@times, v, sign(v(1,:)));
 
-assert_equals( sig(:), sigex(:), 'exp_cov_1d', 'abstol', 1e-3 );
+[v_ex, sig_ex]=kl_solve_1d_exp( pos, 1, c, 10 );
+v_ex = binfun(@times, v_ex, sign(v_ex(1,:)));
 
+assert_equals( sig, sig_ex, 'exp_cov_1d', 'abstol', 1e-3 );
+assert_equals( v, v_ex, 'exp_cov_1d_v', 'abstol', 1e-2 );
 
-[v,sig]=kl_solve_evp( C, M, 199 );
+[~,sig]=kl_solve_evp( C, M, 199 );
 assert_equals( sum(sig.^2), 2*a, 'sum_sig2', 'abstol', 1e-1 );
 

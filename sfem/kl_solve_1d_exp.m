@@ -30,7 +30,7 @@ w = compute_freqs(b, N);
 
 % LeMaitre2010, Eq. (2.23)
 % Note: sigma_k = sqrt(lambda_k)
-sigma_k = sig_r * sqrt(2 * b ./ (1 + (w*b).^2));
+sigma_k = sig_r * sqrt(2 * DX * b ./ (1 + (w*b).^2));
 
 % LeMaitre2010, Eq. (2.22)
 % Note: the meaning of odd/even is reversed here, since
