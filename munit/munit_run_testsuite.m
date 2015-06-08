@@ -123,7 +123,10 @@ for i=1:length(files)
         end
     end
     munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
+    
+    rand_state = munit_control_rand('seed');
     safe_eval( curr_dir, test_cmd, on_error );
+    munit_control_rand('set_state', rand_state);
 end
 
 if ~isempty(files) || level==1
