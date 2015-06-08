@@ -20,6 +20,8 @@ function unittest_gram_schmidt
 
 munit_set_function( 'gram_schmidt' );
 
+munit_control_rand('seed');
+
 % Test is currently only with random matrices, should be done also with
 % matrices from the matrix toolbox (but first, availability for octave has
 % to be checked...)
@@ -111,6 +113,7 @@ assert_equals( A, Q*R, 'eq_A_QR' );
 % testing for tall and squat matrices, also for matrices with repeated
 % entries
 
+
 n=20;
 k=30;
 A=rand(n,k);
@@ -148,3 +151,4 @@ A=[A A];
 assert_matrix( R, 'upper triangular', 'dcgs_R_is_upper');
 assert_matrix( Q'*M*Q, 'identity', 'dcgs_M_orth_Q' );
 assert_equals( A, Q*R, 'dcgs_eq_A_QR' );
+

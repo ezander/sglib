@@ -19,8 +19,8 @@ function unittest_tensor_solve_simple
 
 munit_set_function( 'tensor_solve_simple' );
 
-rand('seed', 12345 ); %#ok<RAND>
-randn('seed', 12345 ); %#ok<RAND>
+munit_control_rand('seed', 12345 );
+
 
 %[A,M,F]=setup( 5, 3, 3, 2, 0.1 );
 %[A,M,F]=setup( 50, 30, 3, 2, 0.0025 );
@@ -83,7 +83,7 @@ assert_equals( flag, 0, 'flag');
 %common={'maxiter', 30, 'reltol', tol, 'abstol', tol, 'verbosity', 0 };
 [X,flag,info]=tensor_solve_simple( A, F, 'Minv', Minv, common{:}, 'trunc_mode', 'after', 'trunc', trunc  ); %#ok<ASGLU>
 assert_equals(ctensor_to_vector(X),x,'sol', 'reltol', 1e-6);
-assert_equals(info.resvec(1:10),resvec(1:10),'resvec');
+assert_equals(info.resvec(1:8),resvec(1:8),'resvec');
 assert_true(ctensor_rank( X )<=min(ctensor_size(X)),'rank must be smaller/equal than min dimen','rank');
 assert_equals( flag, 0, 'flag');
 

@@ -19,7 +19,7 @@ function unittest_tensor_solve_pcg
 
 munit_set_function( 'tensor_solve_pcg' );
 
-rand('seed', 12345 ); %#ok<RAND>
+munit_control_rand('seed', 12345 );
 
 [A,M,F]=setup( 5, 3, 3, 2 );
 A=tensor_operator_to_matrix(A);

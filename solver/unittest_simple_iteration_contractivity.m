@@ -19,8 +19,7 @@ function unittest_simple_iteration_contractivity
 
 munit_set_function( 'simple_iteration_contractivity' );
 
-rand( 'seed', 754762 );
-randn( 'seed', 754762 );
+munit_control_rand('seed' );
 
 m=20;
 K=matrix_gallery('randcorr',m);
@@ -34,4 +33,4 @@ x0=rand(m,1);
 % if Pinv*K is not symmetric normest will give you the largest singular
 % value, while contractivity will give you the spectral radius of I-Pinv*K
 [rat,flag,iter]=simple_iteration_contractivity( K, Pinv );
-assert_equals( rat, normest( I-Pinv*K ), 'contractivity', 'abstol', 2e-4 );
+assert_equals( rat, normest( I-Pinv*K ), 'contractivity', 'abstol', 1e-3 );

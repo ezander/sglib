@@ -19,8 +19,7 @@ function unittest_subspace_distance
 
 munit_set_function( 'subspace_distance' );
 
-
-rand('seed', 74765); %#ok<RAND>
+munit_control_rand('seed', 74765);
 
 N=10;
 A=rand(N,3);

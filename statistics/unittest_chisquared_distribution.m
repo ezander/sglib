@@ -74,12 +74,13 @@ assert_equals([m,v,s,k], [10,20,sqrt(0.8),1.2], 'k10');
 %% chisquared_sample
 munit_set_function( 'chisquared_sample' );
 
+munit_control_rand('seed' );
+
 assert_equals(size(chisquared_sample(100,8)), [100,1], 'size_vec');
 assert_equals(size(chisquared_sample([27,13],8)), [27,13], 'size_mat');
 assert_equals(size(chisquared_sample([2,3,5,7],8)), [2,3,5,7], 'size_ten');
 
-rand('seed',1234); randn('seed', 1234);
 x=chisquared_sample(100000,8);
-assert_equals(mean(x), 8, 'approx_mean', 'abstol', 0.02);
-assert_equals(var(x), 16, 'approx_var', 'abstol', 0.03);
+assert_equals(mean(x), 8, 'approx_mean', 'abstol', 0.03);
+assert_equals(var(x), 16, 'approx_var', 'abstol', 0.1);
 

@@ -31,16 +31,16 @@ assert_equals(size(gendist_sample([3, 5], dist)), [3, 5], 'size_n2');
 assert_equals(size(gendist_sample([3, 6, 7], dist)), [3, 6, 7], 'size_n2');
 
 % check mean and var
-rand('seed', 63858); %#ok<RAND>
+munit_control_rand('seed', 63858);
 dist = gendist_create('uniform', {3, 5}, 'shift', 2.3, 'scale', 1.7);
 xi = gendist_sample(100000, dist);
 [mn, vr] = gendist_moments(dist);
-assert_equals(mean(xi), mn, 'mean_u', 'abstol', 0.0004 );
-assert_equals(std(xi), sqrt(vr), 'var_u', 'abstol', 0.001 );
+assert_equals(mean(xi), mn, 'mean_u', 'abstol', 0.005 );
+assert_equals(std(xi), sqrt(vr), 'var_u', 'abstol', 0.02 );
 
-randn('seed', 63858); %#ok<RANDN>
+munit_control_rand('seed', 63858);
 dist = gendist_create('normal', {1.2, 0.9}, 'shift', 2.3, 'scale', 1.7);
 xi = gendist_sample(100000, dist);
 [mn, vr] = gendist_moments(dist);
 assert_equals(mean(xi), mn, 'mean_u', 'abstol', 0.005 );
-assert_equals(std(xi), sqrt(vr), 'var_u', 'abstol', 0.001 );
+assert_equals(std(xi), sqrt(vr), 'var_u', 'abstol', 0.02 );

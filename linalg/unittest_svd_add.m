@@ -19,8 +19,8 @@ function unittest_svd_add
 
 munit_set_function( 'svd_add' );
 
+munit_control_rand('seed');
 
-%rand('seed', 76543 );
 
 M=100;
 N=200;

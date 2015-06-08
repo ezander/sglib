@@ -19,6 +19,8 @@ function unittest_ctensor_error
 
 munit_set_function( 'ctensor_error' );
 
+munit_control_rand('seed');
+
 TA={rand(4,2), rand(5,2)};
 DT={rand(4,1), rand(5,1)};
 TE=ctensor_add( TA, DT );
@@ -32,7 +34,7 @@ assert_equals( ctensor_error(TA, TE, 'G', G), ctensor_norm(DT, G), 'canonG' );
 M=53;
 N=47;
 R=13;
-rand_seed(1018663534 );
+munit_control_rand('seed', 1018663534 );
 %format short g
 for d=10.^(-3:-1:-10)
     T1=create_test_tensor( M, N, R );

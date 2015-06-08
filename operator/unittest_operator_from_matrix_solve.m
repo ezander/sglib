@@ -19,8 +19,8 @@ function unittest_operator_from_matrix_solve
 
 munit_set_function( 'operator_from_matrix_solve' );
 
-
-rand( 'seed', 1234567 );
+munit_control_rand('seed', 1234567 );
+munit_control_rand('seed', 1234 );
 
 % create sparse positive definite symmetric matrix
 N=30;
@@ -61,7 +61,7 @@ if isversion('0.0', '7.4')
 end
 
 opts = {'reltol', 1e-4};
-M=mk_any(N,0.1,1e-3);
+M=mk_any(N,0.1,1);
 [Ainv,A,info]=operator_from_matrix_solve(M, 'ilu'); % that's exact like exact lu (not any more as of R2012b)
 assert_equals( operator_size( A ), [N,N], 'ilu_size' );
 assert_equals( operator_apply( A, operator_apply( Ainv, X )), X, 'ilu_ident', opts);
@@ -97,6 +97,3 @@ M=rand(N);
 M(M>fill)=0;
 M=shift*eye(size(M))+M;
 M=sparse(M);
-
-%solver=operator_from_matrix_solve(M, 'chol');
-%solver=operator_from_matrix_solve(M, 'ilu');
