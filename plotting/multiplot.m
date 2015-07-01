@@ -46,7 +46,11 @@ end
 if nargin==0
     [i, j] = ij_next(mp_data);
 elseif nargin==1 || isempty(j)
-    [i, j] = ij_from_k(i, mp_data);
+    if ishandle(i)
+        [i, j] = ij_from_handle(i, mp_data);
+    else
+        [i, j] = ij_from_k(i, mp_data);
+    end
 elseif isempty(i)
     [i, j] = ij_from_k(j, mp_data);
 else
@@ -70,7 +74,7 @@ set( gcf, 'CurrentAxes', mh(i, j) );
 drawnow;
 
 % Return current handle if necessary
-if nargout<0
+if nargout>0
     h = mh(i, j);
 end
 
@@ -87,6 +91,18 @@ function [i, j]=get_from_k(k, m)
 % GET_FROM_K Get I,J coordinates from linear index K and given col size M
 i = mod(k - 1, m) + 1;
 j = floor((k - 1)/m) + 1;
+
+
+function [i, j] = ij_from_handle(h, mp_data)
+% IJ_FROM_HANDLE Get I,J coordinates from graphics handle H and current MP_DATA
+mh = mp_data.handles;
+k = find(mh==h, 1, 'first');
+if isempty(k)
+    warning('sglib:multiplot', 'Handle not found');
+    k = 1;
+end
+[i,j] = ij_from_k(k, mp_data);
+
 
 function [i,j] = ij_next(mp_data)
 % IJ_NEXT Get next I,J coordinate current MP_DATA
