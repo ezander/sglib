@@ -19,7 +19,7 @@ function a_i=pce_evaluate( a_i_alpha, I_a, xi )
 %   xi=randn(2, 7);                   % k=7
 %   pce_evaluate( a_i_alpha, I_a, xi )
 %
-% See also HERMITE_VAL_MULTI, MULTIINDEX
+% See also GPC_EVALUATE, MULTIINDEX
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -32,5 +32,4 @@ function a_i=pce_evaluate( a_i_alpha, I_a, xi )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-a_i=hermite_val_multi( a_i_alpha, I_a, xi' )';
-
+a_i = gpc_evaluate( a_i_alpha, {'H', I_a}, xi );
