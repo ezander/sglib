@@ -11,7 +11,8 @@ function cov=matern_covariance(nu, x1, x2, l, sigma, smooth)
 %   The matern covariance is given by
 %   $$C(d) = \sigma^2 \frac{1}{\Gamma(\nu)2^{\nu-1}}
 %     \Bigg(\sqrt{2\nu}d\Bigg)^\nu K_\nu\Bigg(\sqrt{2\nu}d\Bigg)$$
-%   where $K_\nu$ is Bessel function of the second kind (in matlab BESSELK) and $d$ is the scaled distance. 
+%   where $K_\nu$ is Bessel function of the second kind (in matlab BESSELK)
+%   and $d$ is the scaled distance.
 %
 % References:
 %   [1] Minasny, B.; McBratney, AB (2005). "The Matern function as a general

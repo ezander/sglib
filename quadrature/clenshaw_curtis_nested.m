@@ -12,7 +12,7 @@ function [x,w]=clenshaw_curtis_nested(n, varargin)
 % Example (<a href="matlab:run_example clenshaw_curtis_nested">run</a>)
 %   clf; hold all
 %   for i = 1:5
-%     [x, w] = clenshaw_curtis_nested(i);
+%     [x, w] = clenshaw_curtis_nested(i, 'mode', 0);
 %     plot(x, i*ones(size(x)), 'x');
 %   end
 %   xlim([-1.3, 1.3]); ylim([0.5, 5.5])
