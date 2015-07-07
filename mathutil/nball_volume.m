@@ -1,14 +1,24 @@
 function V=nball_volume(n, r)
-% NBALL_VOLUME Short description of nball_volume.
-%   NBALL_VOLUME(VARARGIN) Long description of nball_volume.
+% NBALL_VOLUME Returns the volume of a ball in R^n.
+%   V=NBALL_VOLUME(N, R) returns the volume of an N-dimensional ball of
+%   radius R. 
+%   V=NBALL_VOLUME(N) returns the volume of the N-dimensional unit ball.
+%
+%   The dimensions of N and R can be matrix valued such that both can be
+%   broadcast to match each other, i.e. the dimensions either match or
+%   exactly or the other array has a singleton dimension in the
+%   corresponding direction (see help for BINFUN).
 %
 % References
 %   [1] https://en.wikipedia.org/wiki/Ball_(mathematics) 
 %   [2] https://en.wikipedia.org/wiki/Volume_of_an_n-ball
 %
 % Example (<a href="matlab:run_example nball_volume">run</a>)
+%   strvarexpand( 'The area of a circle of radius 10 is $nball_volume(2, 10)$');
+%   strvarexpand( 'The volume of a ball of radius 10 is $nball_volume(3, 10)$');
+%   strvarexpand( 'The "volume" of a 4-ball of radius 10 is $nball_volume(4, 10)$');
 %
-% See also NBALL_SURFACE, NBALL_RADIUS
+% See also NBALL_SURFACE
 
 %   Elmar Zander
 %   Copyright 2015, Inst. of Scientific Computing
@@ -25,4 +35,9 @@ if nargin<2
     r = 1;
 end
 
-V = pi.^(n/2) ./ gamma(n/2+1) .* (r.^n);
+% Volume of n-dim unit ball
+V1 = pi.^(n/2) ./ gamma(n/2+1);
+% Volume of n cube of edge length r
+Cn = binfun(@power, r, n);
+% Volume of the n-ball is the product of the latter two
+V =  binfun(@times, V1, Cn);

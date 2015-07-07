@@ -26,4 +26,7 @@ V = nball_surface([1, 2, 3], 5);
 assert_equals(V, [2, 2*pi*5, 4*pi*25], 'r=5');
 
 V = nball_surface([2, 4, 3], [5, 6, 8]);
-assert_equals(V, [2*pi*5, 2*pi^2*6^3, 4*pi*64], 'r');
+assert_equals(V, [2*pi*5, 2*pi^2*6^3, 4*pi*64], 'multi');
+
+V = nball_surface([2; 4], [5, 8]);
+assert_equals(V, [2*pi*5, 2*pi*8; 2*pi^2*125, 2*pi^2*512], 'broadcast');

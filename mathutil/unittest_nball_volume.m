@@ -32,4 +32,9 @@ V = nball_volume([0, 1, 2], 5);
 assert_equals(V, [1, 2*5, pi*25], 'r=5');
 
 V = nball_volume([1, 3, 2], [5, 6, 8]);
-assert_equals(V, [2*5, 4/3*pi*6^3, pi*64], 'r');
+assert_equals(V, [2*5, 4/3*pi*6^3, pi*64], 'multi');
+
+V = nball_volume([1; 3], [5, 8]);
+assert_equals(V, [2*5, 2*8; 4/3*pi*125, 4/3*pi*512], 'broadcast');
+
+
