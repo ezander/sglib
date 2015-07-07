@@ -55,6 +55,16 @@ function [a_beta, V]=gpc_combine_inputs(a1_alpha, V1, a2_alpha, V2)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin==1 && iscell(a1_alpha)
+    gpcs = a1_alpha;
+    a_beta = zeros(0,0);
+    V = gpcbasis_create('');
+    for i=1:2:length(gpcs)
+        [a_beta, V] = gpc_combine_inputs(a_beta, V, gpcs{i}, gpcs{i+1});
+    end
+    return
+end
+
 I1 = V1{2};
 I2 = V2{2};
 [I11, I12] = multiindex_combine({I1, I2});
