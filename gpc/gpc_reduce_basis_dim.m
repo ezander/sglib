@@ -1,8 +1,13 @@
 function [u_i_beta, V_u_red] = gpc_reduce_basis_dim(u_i_alpha, V_u,  dim_index, varargin)
-% GPC_REDUCE_BASIS reduces the dimensions of the gpcbasis for the dimension
+% GPC_REDUCE_BASIS_DIM reduces the dimensions of the gpcbasis for the dimension
 % specified in DIM_INDEX and calculates the new reduced bases and the
 % modified coefficients U_I_BETA, by multiplying the original coefficients
 % with the polynomial values at the fixed germs
+%
+%Example:
+% [u_i_beta, V_u_red] =GPC_REDUCE_BASIS_DIM(u_i_alpha, V_u, [1,2])
+% where DIM_INDEX=[1,2] means that dependence on only first and second
+% RV/germ will be kept.
 %
 % The function is usefull when dependence on only few terms are to be
 % analysed, or when a response surface is to be plotted for gpc basis with

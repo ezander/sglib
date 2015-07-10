@@ -64,9 +64,9 @@ classdef LogNormalDistribution < Distribution
             % LogNormal distribution.
             x=lognormal_invcdf( y, dist.mu, dist.sigma );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the LogNormal distribution.
-            [var,mean,skew,kurt]=lognormal_moments( dist.sigma,dist.sigma);
+            [mean,var,skew,kurt]=lognormal_moments( dist.sigma,dist.sigma);
         end
         function str=tostring(dist)
             % Displays the distribution type: 'lnN(mu, var)'
