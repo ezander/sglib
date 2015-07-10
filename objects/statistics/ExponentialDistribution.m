@@ -50,9 +50,9 @@ classdef ExponentialDistribution < Distribution
             % exponential distribution.
             x=exponential_invcdf( y, dist.lambda );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the exponential distribution.
-            [var,mean,skew,kurt]=exponential_moments( dist.lambda);
+            [mean,var,skew,kurt]=exponential_moments( dist.lambda);
         end
         
         function str=tostring(dist)

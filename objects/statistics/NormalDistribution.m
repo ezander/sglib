@@ -62,9 +62,9 @@ classdef NormalDistribution < Distribution
             % normal distribution.
             x=normal_invcdf( y, dist.mu, dist.sigma );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the normal distribution.
-            [var,mean,skew,kurt]=normal_moments( dist.mu, dist.sigma );
+           [mean,var,skew,kurt]=normal_moments( dist.mu, dist.sigma );
         end
         function new_dist=translate(dist,shift,scale)
             % TRANSLATE translates the normal distribution DIST

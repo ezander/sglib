@@ -59,9 +59,9 @@ classdef UniformDistribution < Distribution
             % uniform distribution.
             x=uniform_invcdf( y, dist.a, dist.b );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS compute the moments of the uniform distribution.
-            [var,mean,skew,kurt]=uniform_moments( dist.a, dist.b );
+            [mean,var,skew,kurt]=uniform_moments( dist.a, dist.b );
         end
         function dist=translate(dist,shift,scale)
             % TRANSLATE translates the uniform distribution DIST

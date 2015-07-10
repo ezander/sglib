@@ -1,19 +1,19 @@
 classdef SimParameter < handle
     %SIMPARAMETER Constructs a parameter,
-    %   that my be a random variable or a deterministic one.
-    %   RAMETER=SIMPARAMETER(NAME,DIST) constructs parameter
+    %   that may be a random variable or a deterministic one.
+    %   PARAMETER=SIMPARAMETER(NAME,DIST) constructs parameter
     %   with name NAME and distribution DIST.
     %   by default the parameter is set to be random
     %   but can be fixed to the value VAL with SET_FIXED(PARAM, VAL)
     %   or to the mean value by SET_TO_MEAN(PARAM)
     %
-    % Example (<a href="matlab:run_example UniformDistribution">run</a>)
+    % Example (<a href="matlab:run_example SimParameter">run</a>)
     %   dist = LogNormalDistribution(2,3);
     %   param=SimParameter('kappa', dist) 
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     %
-    %  The POLYSIS is a letter defining the 
+    %  The POLYSYS is a letter defining the 
         %  orthogonal polynomial system which satisfyies the orthogonality condition
         % \Exp(\phi_i(Z)\phi_j(Z))=\delta_{ij}
         % Where  Z is a parameter with beta distribution
@@ -112,7 +112,7 @@ classdef SimParameter < handle
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
             options=varargin2options(varargin);
             [polysys,options]=get_option(options, 'polysys', '');
-            [expand_options, options]=get_option(options, 'expand_options', {});
+            [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
             if isempty(polysys)
@@ -121,12 +121,7 @@ classdef SimParameter < handle
                 % check wheter polysys is valid, if not change to default
                 % and send a warning
             end
-            if isempty(expand_options)
-                expand_options.varerr=0.0001;
-                expand_options.fixvar='false';
-            end
-            
-            [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
+               [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
         end
         
          function str=tostring(simparam)
