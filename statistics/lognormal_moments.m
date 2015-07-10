@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=lognormal_moments(mu,sigma)
 % LOGNORMAL_MOMENTS Compute moments of the lognormal distribution.
-%   [VAR,MEAN,SKEW,KURT]=LOGNORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=LOGNORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
 %   lognormal distribution.
 %
 % References:

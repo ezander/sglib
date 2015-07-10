@@ -5,7 +5,7 @@ classdef BetaDistribution < Distribution
     %
     % Example (<a href="matlab:run_example BetaDistribution">run</a>)
     %   dist = BetaDistribution(2,3);
-    %   [var,mean,skew,kurt]=dist.moments()
+    %   [mean,var,skew,kurt]=dist.moments()
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
@@ -56,7 +56,9 @@ classdef BetaDistribution < Distribution
         end
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the beta distribution.
-            [mean,var,skew,kurt]=beta_moments( dist.a, dist.b );
+            m = {nan, nan, nan, nan};
+            [m{1:nargout}] = beta_moments( dist.a, dist.b );
+            [mean,var,skew,kurt]=deal(m{:});
         end
     end
 end

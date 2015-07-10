@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=normal_moments(mu,sigma)
 % NORMAL_MOMENTS Compute moments of the normal distribution.
-%   [VAR,MEAN,SKEW,KURT]=NORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=NORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
 %   normal distribution. This is of course pretty trivial but for
 %   completenesses sake...
 %

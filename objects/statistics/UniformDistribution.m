@@ -6,7 +6,7 @@ classdef UniformDistribution < Distribution
     %
     % Example (<a href="matlab:run_example UniformDistribution">run</a>)
     %   dist = LogNormalDistribution(2,3);
-    %   [var,mean,skew,kurt]=dist.moments()
+    %   [mean,var,skew,kurt]=dist.moments()
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
@@ -59,9 +59,11 @@ classdef UniformDistribution < Distribution
             % uniform distribution.
             x=uniform_invcdf( y, dist.a, dist.b );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS compute the moments of the uniform distribution.
-            [var,mean,skew,kurt]=uniform_moments( dist.a, dist.b );
+            m = {nan, nan, nan, nan};
+            [m{1:nargout}] = uniform_moments( dist.a, dist.b );
+            [mean,var,skew,kurt]=deal(m{:});
         end
         function dist=translate(dist,shift,scale)
             % TRANSLATE translates the uniform distribution DIST

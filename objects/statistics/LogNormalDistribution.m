@@ -6,7 +6,7 @@ classdef LogNormalDistribution < Distribution
     %
     % Example (<a href="matlab:run_example LogNormalDistribution">run</a>)
     %   dist = LogNormalDistribution(2,3);
-    %   [var,mean,skew,kurt]=dist.moments()
+    %   [mean,var,skew,kurt]=dist.moments()
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BEA_PDF
     
@@ -64,9 +64,11 @@ classdef LogNormalDistribution < Distribution
             % LogNormal distribution.
             x=lognormal_invcdf( y, dist.mu, dist.sigma );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the LogNormal distribution.
-            [var,mean,skew,kurt]=lognormal_moments( dist.sigma,dist.sigma);
+            m = {nan, nan, nan, nan};
+            [m{1:nargout}] = lognormal_moments( dist.mu, dist.sigma );
+            [mean,var,skew,kurt]=deal(m{:});
         end
     end
 end

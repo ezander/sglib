@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=chisquared_moments(k)
 % CHISQUARED_MOMENTS Compute moments of the chisquared distribution.
-%   [VAR,MEAN,SKEW,KURT]=CHISQUARED_MOMENTS( MU, SIGMA ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=CHISQUARED_MOMENTS( MU, SIGMA ) computes the moments of the
 %   chisquared distribution.
 %
 % References:

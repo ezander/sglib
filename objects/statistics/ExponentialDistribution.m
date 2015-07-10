@@ -6,7 +6,7 @@ classdef ExponentialDistribution < Distribution
     %
     % Example (<a href="matlab:run_example ExponentialDistribution">run</a>)
     %   dist = ExponentialDistribution(2);
-    %   [var,mean,skew,kurt]=dist.moments()
+    %   [mean,var,skew,kurt]=dist.moments()
     %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
@@ -50,9 +50,11 @@ classdef ExponentialDistribution < Distribution
             % exponential distribution.
             x=exponential_invcdf( y, dist.lambda );
         end
-        function [var,mean,skew,kurt]=moments(dist)
+        function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the exponential distribution.
-            [var,mean,skew,kurt]=exponential_moments( dist.lambda);
+            m = {nan, nan, nan, nan};
+            [m{1:nargout}] = exponential_moments( dist.lambda );
+            [mean,var,skew,kurt]=deal(m{:});
         end
     end
 end
