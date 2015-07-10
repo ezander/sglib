@@ -26,6 +26,7 @@ expect4 = {'beta', {1,2}, 0, 1, beta_moments(1,2)};
 expect5 = {'beta', {1,2}, 3, 4, 8};
 
 % test with old calling conventions
+warn_state = warning('off', 'sglib:statistics:gendist');
 assert_equals(gendist_get_args('beta', {{1,2}, 3, 4}), expect1, 'cvold1');
 assert_equals(gendist_get_args('beta', {{1,2}, 3, []}), expect2, 'cvold2');
 assert_equals(gendist_get_args('beta', {{1,2}, [], 4}), expect3, 'cvold3');
@@ -36,6 +37,7 @@ assert_equals(gendist_get_args('beta', {{1,2}}), expect4, 'cvold7');
 
 assert_equals(gendist_get_args('normal', {}), {'normal', {}, 0, 1, normal_moments()}, 'cvold8');
 assert_equals(gendist_get_args('lognormal', {}), {'lognormal', {}, 0, 1, lognormal_moments()}, 'cvold9');
+warning(warn_state);
 
 % test with new calling conventions
 assert_equals(gendist_get_args({'beta', {1,2}, 3, 4}, {}), expect1, 'cvnew1');

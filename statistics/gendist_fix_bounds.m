@@ -40,6 +40,11 @@ function dist_new=gendist_fix_bounds(dist, min, max, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    dist_new = dist.fix_bounds(min, max, varargin{:});
+    return
+end
+
 options=varargin2options(varargin);
 [q0,options]=get_option(options,'q0',0);
 [q1,options]=get_option(options,'q1',1);

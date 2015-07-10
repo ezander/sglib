@@ -23,7 +23,7 @@ function varargout=gendist_get_args(dist, params)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if ischar(dist)
-    % warning('sglib:statistics:gendist', 'Old style calling convention used');
+    warning('sglib:statistics:gendist', 'Old style calling convention used');
     dist = {dist, params{:}};
 elseif iscell(dist) && (nargin<2 || isempty(params))
     % ok nothing to do

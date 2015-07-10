@@ -26,6 +26,10 @@ function dist_new=gendist_fix_moments(dist, mean, var)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    dist_new = dist.fix_moments(mean, var);
+    return
+end
 
 [old_mean, old_var]=gendist_moments( dist );
 

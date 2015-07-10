@@ -21,6 +21,11 @@ function y=gendist_pdf(x, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    y = dist.pdf(x);
+    return
+end
+
 [distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
 x=(x-shift-mean)/scale+mean;

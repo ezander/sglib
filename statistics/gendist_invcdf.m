@@ -33,6 +33,11 @@ function x=gendist_invcdf(y, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    x = dist.invcdf(y);
+    return
+end
+
 [distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
 x=feval( [distname '_invcdf'], y, params{:} );

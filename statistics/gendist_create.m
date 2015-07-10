@@ -85,4 +85,7 @@ if check
 end
 
 % Generate the structure (rather: cell array) using the getargs function
+warn_state = warning('off', 'sglib:statistics:gendist');
 dist=gendist_get_args(distname, {params, shift, scale});
+warning(warn_state);
+

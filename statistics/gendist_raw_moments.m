@@ -17,6 +17,11 @@ function m=gendist_raw_moments(n, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    m = dist.raw_moments(n);
+    return
+end
+
 [distname, params, shift, scale] = gendist_get_args(dist, varargin);
 assert(shift==0, 'shift parameter not supported yet for gendist_raw_moments');
 assert(scale==1, 'scale parameter not supported yet for gendist_raw_moments');

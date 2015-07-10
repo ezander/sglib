@@ -17,6 +17,11 @@ function y=gendist_stdnor(x, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    y = dist.stdnor(x);
+    return
+end
+
 [distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
 
 stdnor_func = [distname '_stdnor'];

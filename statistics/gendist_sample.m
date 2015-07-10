@@ -31,6 +31,11 @@ function xi=gendist_sample(n, dist)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if isa(dist, 'Distribution')
+    xi = dist.sample(n);
+    return
+end
+
 [distname, params, shift, scale, mean] = gendist_get_args(dist);
 sample_func = [distname '_sample'];
 if exist(sample_func, 'file')
