@@ -33,8 +33,8 @@ assert_equals( LN.mu, 0, 'Initialization default a' );
 assert_equals( LN.sigma, 1, 'Initialization default b' );
 
 %% Mean & Var
-assert_equals(LN.mean, 4.4817, 'mean','abstol',0.0001 );
-assert_equals(LN.var, 34.5126131, 'var' );
+assert_equals(LN.mean, exp(1/2), 'mean');
+assert_equals(LN.var, exp(2)-exp(1), 'var' );
 %% lognormal_cdf
 LN=LogNormalDistribution(2,0.5);
 assert_equals(cdf(LN,-inf), 0, 'cdf_minf' );
