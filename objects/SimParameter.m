@@ -121,7 +121,7 @@ classdef SimParameter < handle
                 % check wheter polysys is valid, if not change to default
                 % and send a warning
             end
-               [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
+                [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
         end
         
          function str=tostring(simparam)

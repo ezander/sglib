@@ -1,4 +1,5 @@
-function r = polysys_recur_coeff(sys, deg)
+function r = polysys_recur_coeff(sys, deg, varargin)
+
 % POLYSYS_RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
 %   R = POLYSYS_RECUR_COEFF(SYS, DEG) computes the recurrence coefficients for
 %   the system of orthogonal polynomials SYS. The signs are compatible with
@@ -38,6 +39,11 @@ function r = polysys_recur_coeff(sys, deg)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[dist_params, options]=get_option(options, 'dist_params', {});
+check_unsupported_options(options, mfilename);
+
+
 n = (0:deg-1)';
 one = ones(size(n));
 zero = zeros(size(n));
@@ -54,12 +60,25 @@ switch upper(sys)
         r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
     case 'M'
         r = [zero, one, zero];
-    otherwise
+    case 'J'
+        if isempty(dist_params)||length(dist_params)~=2
+            error('For the Jacobi polynomials, DIST_PARAMS (the value for ALPHA and BETA) has to be defined')
+        end
+        alpha=dist_params{1};
+        beta=dist_params{2};
+        b_n=(2*n+alpha+beta+1).*(2*n+alpha+beta+2)./...
+            ( 2*(n+1).*(n+alpha+beta+1) );
+        a_n=(alpha^2-beta^2).*(2*n+alpha+beta+1)./...
+            ( 2*(n+1).*(n+alpha+beta+1).*(2*n+alpha+beta) );
+        c_n=(n+alpha).*(n+beta).*(2*n+alpha+beta+2)./...
+            ( (n+1).*(n+alpha+beta+1).*(2*n+alpha+beta) );
+        r = [a_n, b_n, c_n];
+     otherwise
         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
 end
 
 if sys == lower(sys) % lower case signifies normalised polynomials
-    z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg))]';
+    z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg, dist_params))]';
     % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
     %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
     %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1

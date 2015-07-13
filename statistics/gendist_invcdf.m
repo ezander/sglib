@@ -1,4 +1,4 @@
-function x=gendist_invcdf(y, dist, varargin)
+function x=gendist_invcdf(y, a_dist)
 % GENDIST_INVCDF Inverse CDF (quantile function) of a gendist.
 %   X=GENDIST_INVCDF( Y, DIST ) computes the inverse cumulative distribution
 %   function of the probability distribution DIST values in Y, which should
@@ -33,7 +33,11 @@ function x=gendist_invcdf(y, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
+if isa(a_dist, 'Distribution')
+    x =a_dist.invcdf(y);
+else
+    [distname, params, shift, scale, mean] = gendist_get_args(a_dist);
 
-x=feval( [distname '_invcdf'], y, params{:} );
-x=(x-mean)*scale+mean+shift;
+    x=feval( [distname '_invcdf'], y, params{:} );
+    x=(x-mean)*scale+mean+shift;
+end

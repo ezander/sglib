@@ -54,11 +54,9 @@ check_unsupported_options(options,mfilename);
 
 check_type(sys, 'char', false, 'sys', mfilename);
 check_range(length(sys), 1, 1, 'length(sys)', mfilename); 
-if isa(a_dist, 'Distribution')
-    [a_mean, a_var] =a_dist.moments;
-else
-    [a_mean, a_var] = gendist_moments(a_dist);
-end
+
+[a_mean, a_var] = gendist_moments(a_dist);
+
 if isequal(p,@default)
     for p=0:50
         V_a = gpcbasis_create(sys, 'p', p);
@@ -101,13 +99,11 @@ if fixvar
 else
     varerr = abs(a_var - a_var_gpc);
 end
+end
 
 function a_alpha = do_param_expand(a_dist, V, p_int)
 [x,w]=gpc_integrate([], V, p_int);
 psi_k_alpha = gpcbasis_evaluate(V, x, 'dual', true);
-if isa(a_dist, 'Distribution')
-    fun_k=invcdf(a_dist,x);
-else
-    fun_k = gendist_invcdf(gpcgerm_cdf(V, x), a_dist{:});
-end
+fun_k = gendist_invcdf(gpcgerm_cdf(V, x), a_dist);
 a_alpha = fun_k*diag(w)*psi_k_alpha;
+end
