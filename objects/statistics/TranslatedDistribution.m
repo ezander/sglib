@@ -7,7 +7,7 @@ classdef TranslatedDistribution < Distribution
     %
     % See also DISTRIBUTION
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -99,6 +99,10 @@ classdef TranslatedDistribution < Distribution
             if nargout>=4
                 kurt=m{4};
             end
+        end
+        function str=tostring(tdist)
+            % Displays the distribution type: 'Translated(dist(param), shift, scale)'
+            str=sprintf('Translated(%s,  %.3f,  %.3f)', tdist.dist.tostring(), tdist.shift, tdist.scale);
         end
     end
 end

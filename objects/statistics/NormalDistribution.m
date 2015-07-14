@@ -74,5 +74,9 @@ classdef NormalDistribution < Distribution
             % distribution DIST in regard to parameters SHIFT and SCALE
             new_dist=NormalDistribution(dist.mu+shift,dist.sigma*scale);
         end
+        function str=tostring(dist)
+            % Displays the distribution type: 'N(mu,var)'
+            str=sprintf('N(%.3f,  %.3f)', dist.mu, dist.sigma^2);
+        end
     end
 end

@@ -1,4 +1,4 @@
-function nrm2 = polysys_sqnorm(sys, n, method)
+function nrm2 = polysys_sqnorm(sys, n, dist_params, method)
 % POLYSYS_SQNORM Compute the square norm of the orthogonal polynomials.
 %   NRM2 = POLYSYS_SQNORM(SYS, N) computes the square of the norm NRM2 of the
 %   system of orthogonal polynomials given by SYS for the degree N. If N is
@@ -26,20 +26,20 @@ function nrm2 = polysys_sqnorm(sys, n, method)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin>=3
+if nargin>=4
     % Those methods can be used if the norms are not known explicitly. The
     % MC method is not accurate at all: its purpose is for checking against
     % the most stupid errors. Best (and coolest) of the three, is the one
     % using only the recurrence coefficients.
     switch method
         case 'quad'
-            nrm2 = polysys_sqnorm_by_quad(sys, n);
+            nrm2 = polysys_sqnorm_by_quad(sys, n, dist_params);
             return
         case 'rc'
-            nrm2 = polysys_sqnorm_by_rc(sys, n);
+            nrm2 = polysys_sqnorm_by_rc(sys, n, dist_params);
             return
         case 'mc'
-            nrm2 = polysys_sqnorm_by_mc(sys, n);
+            nrm2 = polysys_sqnorm_by_mc(sys, n, dist_params);
             return
         case 'default'
             % do nothing, fall through
@@ -60,20 +60,24 @@ switch sys
         error('sglib:polysys_sqrnorm', 'There is no measure associated with the monomials');
     case {'h', 'p', 't', 'u', 'U', 'l', 'L'}
         nrm2 = ones(size(n));
+    case 'J'
+        alpha=dist_params{1};
+        beta=dist_params{2};
+        nrm2=2^(alpha+beta+1)*gamma(n+alpha+1).*gamma(n+beta+1)./(  (2*n+alpha+beta+1) .*gamma(n+alpha+beta+1).*factorial(n) );
     otherwise
         %nrm2 = polysys_sqnorm_by_quad(sys, n);
         nrm2 = polysys_sqnorm_by_rc(sys, n);
 end
 
-function nrm2 = polysys_sqnorm_by_quad(sys, I)
+function nrm2 = polysys_sqnorm_by_quad(sys, I, dist_params)
 % POLYSYS_NORM_BY_QUAD Compute the square norm by Gauss quadrature.
 n = max(I(:));
-[x,w] = polysys_int_rule(sys, n+1);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+[x,w] = polysys_int_rule(sys, n+1, dist_params);
+y = gpc_evaluate(eye(n+1), {sys, (0:n)', dist_params}, x);
 nrm2 = (y.*y)*w;
 nrm2 = reshape(nrm2(I+1), size(I));
 
-function nrm2 = polysys_sqnorm_by_rc(sys, I)
+function nrm2 = polysys_sqnorm_by_rc(sys, I, dist_params)
 % POLYSYS_NORM_BY_RC Compute the square norm via the recurrence coefficients.
 % See the neat article by:
 %    Alan G. Law and M. B. Sledd
@@ -85,7 +89,7 @@ function nrm2 = polysys_sqnorm_by_rc(sys, I)
 % by Law and Sled. Further, as we're doing stochastics here, we can be sure
 % what the normalisation constant is (namely 1).
 n = max(I(:));
-r = polysys_recur_coeff(sys, n+1);
+r = polysys_recur_coeff(sys, n+1, dist_params);
 b = r(:,2);
 h = b(1) ./ b(2:end);
 c = r(2:end,3);
@@ -93,11 +97,11 @@ nrm2 = [1; h(:) .* cumprod(c(:))];
 nrm2 = reshape(nrm2(I+1), size(I));
 
 
-function nrm2 = polysys_sqnorm_by_mc(sys, I)
+function nrm2 = polysys_sqnorm_by_mc(sys, I, dist_params)
 % POLYSYS_NORM_BY_MC Approximate the square norm by MC quadrature.
 n = max(I(:));
 N = 100000;
-x = polysys_sample_rv(sys, 1, N);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+x = polysys_sample_rv(sys, 1, N, dist_params);
+y = gpc_evaluate(eye(n+1), {sys, (0:n)', dist_params}, x);
 nrm2 = sum(y.*y,2)/N;
 nrm2 = reshape(nrm2(I+1), size(I));

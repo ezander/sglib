@@ -1,4 +1,4 @@
-function dist=polysys_dist(sys)
+function dist=polysys_dist(sys, varargin)
 % POLYSYS_DIST Get the associated distribution for a polynomial system.
 %   DIST=POLYSYS_DIST(SYS) returns the probability distribution associated
 %   with the orthogonal system of polynomials SYS.
@@ -34,6 +34,9 @@ switch upper(sys)
     case 'L'
         % Laguerre/Exponential
         dist = gendist_create('exponential', {1});
+    case 'J'
+        % Jacobi/Beta
+        dist = gendist_create('beta', varargin);
     case 'M'
         % Monomials/(no distribution)
         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');

@@ -35,7 +35,13 @@ for iter=1:maxiter
     if isa(H, 'UpdatableOperator')
         H = H.update(yy, s);
     elseif isnumeric(H)
+        if( norm(yy)==0 && norm(s)==0 )
+            break;
+        end
         [~, H] = qn_matrix_update(mode, [], H, yy, s);
+        if any(isnan(H))
+            %keyboard;
+        end
     else
         error('sglib:minfind_quasi_newton', 'Cannot update H. Unknown type');
     end
@@ -51,6 +57,14 @@ for iter=1:maxiter
         flag=0;
         break;
     end
+    
+    %%%%%%%%%%%%%%%%%%%%cheating: added by Noemi
+    if any(isnan(H))
+        flag=0;
+        disp('Non were find in Hessian approx')
+        break;
+    end
+    %%%%%%%%%%%%%%
 end    
 
 if flag

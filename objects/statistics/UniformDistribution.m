@@ -10,7 +10,7 @@ classdef UniformDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan  (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -74,6 +74,21 @@ classdef UniformDistribution < Distribution
             
             dist.a=m+shift-v;
             dist.b=m+shift+v;
+        end
+        function str=tostring(dist)
+            % Displays the distribution type: 'U(a, b)'
+            str=sprintf('U(%.3f,  %.3f)', dist.a, dist.b);
+        end
+    end
+    methods(Static)
+        function polysys=default_polysys(is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if is_normalized
+                polysys='p';
+            else
+                polysys='P';
+            end
         end
     end
 end

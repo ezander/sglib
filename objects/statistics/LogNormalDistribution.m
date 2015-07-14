@@ -10,7 +10,7 @@ classdef LogNormalDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BEA_PDF
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan  (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -69,6 +69,10 @@ classdef LogNormalDistribution < Distribution
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = lognormal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
+        end
+        function str=tostring(dist)
+            % Displays the distribution type: 'lnN(mu, var)'
+            str=sprintf('lnN(%.3f, %.3f)', dist.mu, dist.sigma^2);
         end
     end
 end

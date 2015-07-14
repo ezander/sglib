@@ -56,6 +56,21 @@ classdef ExponentialDistribution < Distribution
             [m{1:nargout}] = exponential_moments( dist.lambda );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        function str=tostring(dist)
+            % Displays the distribution type: 'Exp(lambda)'
+            str=sprintf('Exp( %.3f)', dist.lambda);
+        end
+    end
+    methods(Static)
+        function polysys=default_polysys(is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if is_normalized
+                polysys='l';
+            else
+                polysys='L';
+            end
+        end
     end
 end
 

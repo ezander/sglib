@@ -59,6 +59,7 @@ function xi = gpcgerm_sample(V, n, varargin)
 options=varargin2options(varargin);
 [mode,options]=get_option(options, 'mode', 'default');
 [rand_func,options]=get_option(options, 'rand_func', []);
+[qmc_options,options]=get_option(options, 'qmc_options', {});
 check_unsupported_options(options,mfilename);
 
 sys = V{1};
@@ -80,7 +81,6 @@ switch(mode)
             end
         end
     case 'qmc'
-        qmc_options = {};
         U = halton_sequence(n, m, qmc_options);
     case {'lhs', 'rlhs'}
         U = lhs_uniform(n, m);
