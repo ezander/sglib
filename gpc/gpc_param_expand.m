@@ -102,5 +102,5 @@ end
 function a_alpha = do_param_expand(a_dist, V, p_int)
 [x,w]=gpc_integrate([], V, p_int);
 psi_k_alpha = gpcbasis_evaluate(V, x, 'dual', true);
-fun_k = gendist_invcdf(gpcgerm_cdf(V, x), a_dist{:});
+fun_k = gendist_invcdf(gpcgerm_cdf(V, x), a_dist);
 a_alpha = fun_k*diag(w)*psi_k_alpha;
