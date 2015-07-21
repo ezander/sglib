@@ -45,14 +45,9 @@ ind_odd = 2:2:N;
 A_k(ind_odd) = 1./sqrt(0.5 * DX * (1 - sin(w(ind_odd))./w(ind_odd)));
 p_k(ind_odd) = -mx*w(ind_odd)/DX;
 
-sin_rep_k = [A_k; w_k; p_k];
-r_i_k = sin_eval(x, sin_rep_k);
-
-function [y_i_k] = sin_eval(x_i, sin_rep_k)
-A_k=sin_rep_k(1,:); 
-w_k=sin_rep_k(2,:); 
-p_k=sin_rep_k(3,:); 
-y_i_k = binfun(@times, A_k, sin(binfun(@plus, x_i*w_k, p_k)));
+tau = 2*pi;
+TB = {w_k'/tau, p_k'/tau, A_k'};
+r_i_k = trig_basis_eval(TB, x')';
 
 
 function w=compute_freqs(b, N)
