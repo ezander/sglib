@@ -29,6 +29,7 @@ classdef LogNormalDistribution < Distribution
         % The parameter SIGMA of the LogNormal(mu,SIGMA) distribution.
         % SIGMA is the scale parameter.
         sigma
+
     end
     methods
         function dist=LogNormalDistribution(mu,sigma)
@@ -69,6 +70,14 @@ classdef LogNormalDistribution < Distribution
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = lognormal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
+        end
+        function xi=sample(dist,n)
+            %   Draw random samples from LogNormal distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            xi=lognormal_sample(n, dist.mu, dist.sigma);
         end
         function str=tostring(dist)
             % Displays the distribution type: 'lnN(mu, var)'

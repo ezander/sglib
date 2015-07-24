@@ -1,4 +1,4 @@
-function xi = polysys_sample_rv(sys, m, n, dist_params)
+function xi = polysys_sample_rv(sys, m, n)
 % POLYSYS_SAMPLE_RV Sample from a probability distribution.
 %   XI = POLYSYS_SAMPLE_RV(SYS, M, N, DIST_PARAMS) samples from the probability
 %   distribution corresponding to the system of orthogonal polynomials SYS.
@@ -37,11 +37,11 @@ function xi = polysys_sample_rv(sys, m, n, dist_params)
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-if nargin<4
-    dist_params={};
-end
-dist = polysys_dist(sys, dist_params);
 
+dist = polysys_dist(sys);
+if iscell(dist)&&strcmpi(dist{1},'none')
+    error('sglib:gpc', 'err_monomials, there is no distribution associated with Monomials')
+end
 if nargin<3 || isempty(n)
     U = m;
     xi = gendist_invcdf(U, dist);

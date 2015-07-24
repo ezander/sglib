@@ -55,7 +55,6 @@ options=varargin2options(varargin);
 [m,options]=get_option(options, 'm', @isdefault);
 [p,options]=get_option(options, 'p', @isdefault);
 [I,options]=get_option(options, 'I', @isdefault);
-[dist_params,options]=get_option(options, 'dist_params', {});
 %[rvtype,options]=get_option(options, 'I', @isdefault); 'rvtype', 'normal'
 [full_tensor,options]=get_option(options, 'full_tensor', false);
 check_unsupported_options(options, mfilename);
@@ -79,10 +78,7 @@ if isdefault(I)
 else
     % check that I and m and polysys are compatible
 end
-if strcmpi(polysys, 'J') && ( isempty(dist_params) ||~(length(dist_params)==2))
-         error('sglib:gpcbasis', 'for beta distribution the values for ALPHA and BETA has to be defined, with the optional input:DIST_PARAMS');
-end
-    V = {polysys, I, dist_params};
+V = {polysys, I};
 end
 
 function b=isdefault(p)

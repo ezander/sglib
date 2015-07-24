@@ -1,13 +1,13 @@
-classdef HermitePolynomials < PolynomialSystem
-    % HERMITEPOLYNOMIALS Construct a HermitePolynomials.
-    % POLY=HERMITEPOLYNOMIALS(DEG) constructs polynomial system returned in
-    % POLY, representing an orthogonal Hermite polynomial of order DEG.
-    % Example (<a href="matlab:run_example HermitePolynomials">run</a>)
-    % poly=HermitePolynomials(3);
+classdef JacobiPolynomials < PolynomialSystem
+    %JACOBIITEPOLYNOMIALS Construct JacobiPolynomials.
+    % POLY=JACOBIPOLYNOMIALS(DEG) constructs polynomial system returned in
+    % POLY, representing an orthogonal JACOBI polynomial of order DEG.
+    % Example (<a href="matlab:run_example JacobiPolynomials">run</a>)
+    % sys=JacobiPolynomials(3);
     %
-    % See also LEGENDREPOLYNOMIALS POLYNOMIALSYSTEM
+    % See also LEGENDREPOLYNOMIALS POLYNOMIALSYSTEM 
     
-    %   Aidin Nojavan further extended by Noemi Friedman
+    %   Noemi Friedman & Elmar Zander
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or modify it
@@ -19,21 +19,26 @@ classdef HermitePolynomials < PolynomialSystem
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
     properties
-        % IS_NORMALIZED choses whether the polynomial should
+        % The two parameters for Jacobi polynomials
+        alpha
+        beta
+         % IS_NORMALIZED choses whether the polynomial should
         % be only orthogonal (IS_NORMALIZED=false) , or orthonormal (IS_NORMALIZED=true)
         % The default value is 'FALSE'
         is_normalized
     end
     
     methods
-        function poly=HermitePolynomials(is_normalized)
+        function poly=JacobiPolynomials(alpha, beta, is_normalized)
             % HERMITEPOLYNOMIALS Construct a HermitePolynomials.
             % POLY=HERMITEPOLYNOMIALS(DEG) constructs polynomial system
             % returned in POLY, representing an orthogonal Hermite
             % polynomial of order DEG.
-            if nargin<2
+            if nargin<3
                 is_normalized=false;
             end
+            poly.alpha=alpha;
+            poly.beta=beta;
             poly.is_normalized=is_normalized;
         end
         function r=recur_coeff(poly, deg)
@@ -57,34 +62,59 @@ classdef HermitePolynomials < PolynomialSystem
             %   [1] Abramowitz & Stegun: Handbook of Mathematical Functions
             %   [2] http://dlmf.nist.gov/18.9
             n = (0:deg-1)';
-            one = ones(size(n));
-            zero = zeros(size(n));
-            r = [zero, one, n];
+            a=poly.alpha;
+            b=poly.beta;
+            %one = ones(size(n));
+            %zero = zeros(size(n));
+            b_n=(2*n+a+b+1).*(2*n+a+b+2)./...
+                ( 2*(n+1).*(n+a+b+1) );
+            a_n=(a^2-b^2).*(2*n+a+b+1)./...
+                ( 2*(n+1).*(n+a+b+1).*(2*n+a+b) );
+            c_n=(n+a).*(n+b).*(2*n+a+b+2)./...
+                ( (n+1).*(n+a+b+1).*(2*n+a+b) );
+            if a+b==0 ||a+b==-1
+                b_n(1)=0.5*(a+b)+1;
+                a_n(1)=0.5*(a-b);
+                c_n(1)=0;
+            end
+            r = [a_n, b_n, c_n];
+            
             if poly.is_normalized% lower case signifies normalised polynomials
-                z = [0, sqrt(factorial(0:deg))]';
+                n=0:deg;
+                 nrm2=0.5*2^(a+b+1)*gamma(n+a+1).*gamma(n+b+1)./...
+                (  (2*n+a+b+1) .*gamma(n+a+b+1).*factorial(n) );
+                nrm2(1)=0.5*2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
+                ( gamma(a+b+1));
+                z = [0, sqrt(nrm2)]';
                 % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
                 %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
                 %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
+                n = (0:deg-1)';
                 r = [r(:,1) .* z(n+2) ./ z(n+3), ...
                     r(:,2) .* z(n+2) ./ z(n+3), ...
                     r(:,3) .* z(n+1) ./ z(n+3)];
             end
         end
-        function nrm2 =sqnorm(poly, n)
-            if nargin<2
-                n=0:deg;
-            end
-            if poly.is_normalized
-                nrm2=ones(size(n));
-            else
-                nrm2 = factorial(n);
-            end
+        function nrm2=sqnorm(poly, n)
+            %Norm wrt the weighting function:
+            %
+            %          x^alpha  (1-x)^beta
+            % w= --------------------
+            %              Beta(alpha,beta)
+            %
+            a=poly.alpha;
+            b=poly.beta;
+            
+            nrm2=2^(a+b+1)*gamma(n+a+1).*gamma(n+b+1)./...
+                (  (2*n+a+b+1) .*gamma(n+a+b+1).*factorial(n) );
+            nrm2(1)=2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
+                ( gamma(a+b+1));
+            %Devide by 2
+            nrm2=0.5*nrm2;
         end
-    end
-    methods(Static)
-        function w_dist=weighting_func()
-            %w_dist=NormalDistribution(0,1);
-            w_dist=gendist_create('normal', {0,1});
+        function w_dist=weighting_func(poly)
+            %w_dist=fix_bounds(BetaDistribution(poly.alpha+1,poly.beta+1),-1,1);
+            w_dist=gendist_fix_bounds(gendist_create('beta', {poly.alpha+1,poly.beta+1}), -1,1);
         end
     end
 end

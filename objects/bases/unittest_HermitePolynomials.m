@@ -6,7 +6,7 @@ function unittest_HermitePolynomials
 %
 % See also HERMITEPOLYNOMIALS, MUNIT_RUN_TESTSUITE 
 
-%   Aidin Nojavan
+%   Aidin Nojavan slightly modified by Noemi Friedman
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -19,17 +19,17 @@ function unittest_HermitePolynomials
 
 munit_set_function( 'HermitePolynomials' );
 %% Initialization
-H=HermitePolynomials(5);
-assert_equals(H.deg,5,'initialization');
+H=HermitePolynomials();
+assert_equals(H.is_normalized,false,'initialization');
 %% Recur_coeff
-r=H.recur_coeff();
+r=H.recur_coeff(5);
 assert_equals(r, ...
     [[0,1,0]; [0,1,1]; [0,1,2]; [0,1,3]; [0,1,4]],'recur_coeff');
 
-H=HermitePolynomials(3);
-r=H.recur_coeff();
+
+r=H.recur_coeff(3);
 assert_equals(r,[0 1 0;0 1 1;0 1 2],'recur_coeff');
 %% evaluate
 xi=[1,2,3,4];
-y=H.evaluate(xi);
+y=H.evaluate(3, xi);
 assert_equals(y,[1 1 0;1 2 3;1 3 8;1 4 15],'evaluate');

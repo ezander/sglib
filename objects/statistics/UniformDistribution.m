@@ -75,13 +75,28 @@ classdef UniformDistribution < Distribution
             dist.a=m+shift-v;
             dist.b=m+shift+v;
         end
+        function xi=sample(dist,n)
+            %   Draw random samples from Uniform distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            if isscalar(n)
+                yi = rand(n,1);
+            else
+                yi = rand(n);
+            end
+            shift=(dist.a+dist.b)/2-(dist.b-dist.a)/2;
+            scale=(dist.b-dist.a);
+            xi =(yi *scale ) + shift;
+        end
         function str=tostring(dist)
             % Displays the distribution type: 'U(a, b)'
             str=sprintf('U(%.3f,  %.3f)', dist.a, dist.b);
         end
     end
     methods(Static)
-        function polysys=default_polysys(is_normalized)
+        function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if is_normalized
@@ -89,6 +104,15 @@ classdef UniformDistribution < Distribution
             else
                 polysys='P';
             end
+        end
+        function poly=default_polys(n, is_normalized)
+            if nargin<2;
+                is_normalized=false;
+                if nargin<1
+                    n=0;
+                end
+            end
+            poly=LegendrePolynomials(n, is_normalized);
         end
     end
 end

@@ -1,13 +1,13 @@
 classdef LegendrePolynomials < PolynomialSystem
     % LEGENDREPOLYNOMIALS Construct a LegendrePolynomials.
-    % SYS=LEGENDREPOLYNOMIALS(DEG) constructs polynomial system returned in
-    % SYS, representing an orthogonal Legendre polynomial of order DEG.
+    % POLY=LEGENDREPOLYNOMIALS(DEG) constructs polynomial system returned in
+    % POLY, representing an orthogonal Legendre polynomial of order DEG.
     % Example (<a href="matlab:run_example LegendrePolynomials">run</a>)
-    % sys=LegendrePolynomials(3);
+    % poly=LegendrePolynomials(3);
     %
     % See also HERMITEPOLYNOMIALS POLYNOMIALSYSTEM
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan extended by Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or modify it
@@ -19,23 +19,27 @@ classdef LegendrePolynomials < PolynomialSystem
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
     properties
-        % The parameter DEG of the LegendrePolynomials(DEG) system. DEG is
-        % the order of the orthogonal Legendre polynomial system.
-        deg
+       % IS_NORMALIZED choses whether the polynomial should
+        % be only orthogonal (IS_NORMALIZED=false) , or orthonormal (IS_NORMALIZED=true)
+        % The default value is 'FALSE'
+        is_normalized
     end
     
     methods
-        function sys=LegendrePolynomials(deg)
+        function poly=LegendrePolynomials(is_normalized)
             % LEGENDREPOLYNOMIALS Construct a LegendrePolynomials.
-            % SYS=LEGENDREPOLYNOMIALS(DEG) constructs polynomial system
-            % returned in SYS, representing an orthogonal Legendre
+            % POLY=LEGENDREPOLYNOMIALS(DEG) constructs polynomial system
+            % returned in POLY, representing an orthogonal Legendre
             % polynomial of order DEG.
-            sys.deg=deg;
+           if nargin<1
+                is_normalized=false;
+            end
+            poly.is_normalized=is_normalized;
         end
-        function r=recur_coeff(sys)
+        function r=recur_coeff(poly, deg)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
-            % R = RECUR_COEFF(SYS) computes the recurrence coefficients for
-            % the system of orthogonal polynomials SYS. The signs are compatible with
+            % R = RECUR_COEFF(POLY) computes the recurrence coefficients for
+            % the system of orthogonal polynomials POLY. The signs are compatible with
             % the ones given in Abramowith & Stegun 22.7:
             %
             %       p_n+1  = (a_n + x b_n) p_n - c_n p_n-1
@@ -52,9 +56,31 @@ classdef LegendrePolynomials < PolynomialSystem
             % References:
             %   [1] Abramowitz & Stegun: Handbook of Mathematical Functions
             %   [2] http://dlmf.nist.gov/18.9
-            n = (0:sys.deg-1)';
+            n = (0:deg-1)';
             zero = zeros(size(n));
             r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
+            if poly.is_normalized% lower case signifies normalised polynomials
+               z = [0, sqrt(1 ./ (2*(0:deg) + 1))]';
+               % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
+                %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
+                %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
+                r = [r(:,1) .* z(n+2) ./ z(n+3), ...
+                    r(:,2) .* z(n+2) ./ z(n+3), ...
+                    r(:,3) .* z(n+1) ./ z(n+3)];
+            end
+        end
+        function nrm2 =sqnorm(poly, n)
+            if poly.is_normalized
+                nrm2=ones(size(n));
+            else
+                nrm2 = 1 ./ (2*n + 1);
+            end
+        end
+    end
+    methods(Static)
+        function w_dist=weighting_func()
+            %w_dist=UniformDistribution(-1,1);
+            w_dist= gendist_create('uniform', {-1,1});
         end
     end
 end

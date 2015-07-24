@@ -82,11 +82,11 @@ uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 U=UniformDistribution(0.2,1.3);
-x=stdnor(U,gam );
+x=NORTA(U,gam );
 assert_equals(cdf(U,x), uni, 'uniform' )
 U=UniformDistribution(0,1);
-assert_equals(uniform_stdnor(gam), stdnor(U,gam), 'uniform_def12');
-assert_equals(uniform_stdnor(gam, 0),stdnor(U,gam), 'uniform_def2');
+assert_equals(uniform_stdnor(gam), NORTA(U,gam), 'uniform_def12');
+assert_equals(uniform_stdnor(gam, 0), NORTA(U,gam), 'uniform_def2');
 %% translate
 U=UniformDistribution(2,3);
 %T=TranslatedDistribution(U,2,3);

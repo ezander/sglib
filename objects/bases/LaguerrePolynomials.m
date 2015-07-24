@@ -6,7 +6,7 @@ classdef LaguerrePolynomials < PolynomialSystem
     % sys=LaguerrePolynomials(3);
     % See also HERMITEPOLYNOMIALS POLYNOMIALSYSTEM
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan further extended by Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or modify it
@@ -17,20 +17,24 @@ classdef LaguerrePolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     properties
-        % The parameter DEG of the LaguerrePolynomials(DEG) system. DEG is
-        % the order of the orthogonal Laguerre polynomial system.
-        deg
+        % IS_NORMALIZED choses whether the polynomial should
+        % be only orthogonal (IS_NORMALIZED=false) , or orthonormal (IS_NORMALIZED=true)
+        % The default value is 'FALSE'
+        is_normalized
     end
     
     methods
-        function sys=LaguerrePolynomials(deg)
+        function sys=LaguerrePolynomials(is_normalized)
             % LAGUERREPOLYNOMIALS Construct a LaguerrePolynomials.
-            % SYS=LAGUERREPOLYNOMIALS(DEG) constructs polynomial system 
-            % returned in SYS, representing an orthogonal Laguerre 
+            % SYS=LAGUERREPOLYNOMIALS(DEG) constructs polynomial system
+            % returned in SYS, representing an orthogonal Laguerre
             % polynomial of order DEG.
-            sys.deg=deg;
+            if nargin<1
+                is_normalized=false;
+            end
+            sys.is_normalized=is_normalized;
         end
-        function r=recur_coeff(sys)
+        function r=recur_coeff(sys, deg)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
             % R = RECUR_COEFF(SYS) computes the recurrence coefficients for
             % the system of orthogonal polynomials SYS. The signs are compatible with
@@ -50,8 +54,18 @@ classdef LaguerrePolynomials < PolynomialSystem
             % References:
             %   [1] Abramowitz & Stegun: Handbook of Mathematical Functions
             %   [2] http://dlmf.nist.gov/18.9
-            n = (0:sys.deg-1)';
+            
+            n = (0:deg-1)';
             r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
+        end
+     end
+     methods(Static)
+        function w_dist=weighting_func()
+            %w_dist=ExponentialDistribution(1);
+            w_dist= gendist_create('exponential', {1});
+        end
+       function nrm2 =sqnorm(n)
+            nrm2 = ones(size(n));
         end
     end
 end

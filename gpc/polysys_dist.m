@@ -18,28 +18,29 @@ function dist=polysys_dist(sys, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-switch upper(sys)
-    case 'H'
-        % Hermite/Gauss
-        dist = gendist_create('normal', {0, 1});
-    case 'P'
-        % Legendre/Uniform
-        dist = gendist_create('uniform', {-1, 1});
-    case 'T'
-        % ChebyshevT/Shifted Arcsine
-        dist = gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
-    case 'U'
-        % ChebyshevU/Semicircle
-        dist = gendist_create('semicircle');
-    case 'L'
-        % Laguerre/Exponential
-        dist = gendist_create('exponential', {1});
-    case 'J'
-        % Jacobi/Beta
-        dist = gendist_create('beta', varargin);
-    case 'M'
-        % Monomials/(no distribution)
-        error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
-    otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-end
+[~, dist]=gpc_register_polysys(sys);
+% switch upper(sys)
+%     case 'H'
+%         % Hermite/Gauss
+%         dist = gendist_create('normal', {0, 1});
+%     case 'P'
+%         % Legendre/Uniform
+%         dist = gendist_create('uniform', {-1, 1});
+%     case 'T'
+%         % ChebyshevT/Shifted Arcsine
+%         dist = gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
+%     case 'U'
+%         % ChebyshevU/Semicircle
+%         dist = gendist_create('semicircle');
+%     case 'L'
+%         % Laguerre/Exponential
+%         dist = gendist_create('exponential', {1});
+%     case 'J'
+%         % Jacobi/Beta
+%         dist = gendist_create('beta', varargin);
+%     case 'M'
+%         % Monomials/(no distribution)
+%         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
+%     otherwise
+%         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+% end

@@ -19,12 +19,12 @@ function unittest_LegendrePolynomials
 
 munit_set_function( 'LegendrePolynomials' );
 %% Initialization
-L=LegendrePolynomials(3);
-assert_equals(L.deg,3,'initialization');
+L=LegendrePolynomials();
+assert_equals(L.is_normalized,false,'initialization');
 %% Recur_coeff
-r=L.recur_coeff();
+r=L.recur_coeff(3);
 assert_equals(r,[0 1 0;0 1.5 0.5;0 5/3 2/3],'recur_coeff');
 %% evaluate
 xi=[1,2,3,4];
-y=L.evaluate(xi);
+y=L.evaluate(3, xi);
 assert_equals(y,[1 1 1;1 2 5.5;1 3 13;1 4 47/2],'evaluate');

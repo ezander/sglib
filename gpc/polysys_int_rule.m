@@ -1,4 +1,4 @@
-function [x,w]=polysys_int_rule(sys, n, dist_params, varargin)
+function [x,w]=polysys_int_rule(sys, n,  varargin)
 % POLYSYS_INT_RULE Compute the integration rule for a given system of polynomials.
 %   [X,W]=POLYSYS_INT_RULE(SYS, N, DUST_PARMA, VARARGIN) computes the integration rule
 %   with N points for the given system of orthogonal polynomials specified
@@ -25,13 +25,13 @@ function [x,w]=polysys_int_rule(sys, n, dist_params, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[x,w]=gauss_rule(sys, n, dist_params, varargin);
+[x,w]=gauss_rule(sys, n, varargin);
 
-function [x,w]=gauss_rule(sys, n, dist_params, varargin)
+function [x,w]=gauss_rule(sys, n, varargin)
 % W. GAUTSCHI, ORTHOGONAL POLYNOMIALS AND QUADRATURE, Electronic
 % Transactions on Numerical Analysis, Volume 9, 1999, pp. 65-76.
 
-r = polysys_recur_coeff(sys, n, dist_params);
+r = polysys_recur_coeff(sys, n);
 
 % extract columns
 a = -r(:,1);

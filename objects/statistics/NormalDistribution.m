@@ -29,6 +29,11 @@ classdef NormalDistribution < Distribution
         % is the variance value.
         sigma
     end
+    methods(Static)
+        function poly=get_default_polys()
+            poly='Hermite';
+        end
+    end
     
     methods
         function dist=NormalDistribution(mu,sigma)
@@ -74,9 +79,28 @@ classdef NormalDistribution < Distribution
             % distribution DIST in regard to parameters SHIFT and SCALE
             new_dist=NormalDistribution(dist.mu+shift,dist.sigma*scale);
         end
+        function xi=sample(dist,n)
+            %   Draw random samples from Normal distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            xi=normal_sample(n, dist.mu, dist.sigma);
+        end
         function str=tostring(dist)
             % Displays the distribution type: 'N(mu,var)'
             str=sprintf('N(%.3f,  %.3f)', dist.mu, dist.sigma^2);
+        end
+    end
+    methods(Static)
+        function polysys=default_sys_letter(is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if is_normalized
+                polysys='H';
+            else
+                polysys='h';
+            end
         end
     end
 end

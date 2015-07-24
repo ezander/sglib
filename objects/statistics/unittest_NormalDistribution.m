@@ -72,11 +72,11 @@ uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 N=NormalDistribution(0.2,0.3);
-x=stdnor( N,gam );
+x=NORTA( N,gam );
 assert_equals( cdf(N,x), uni, 'normal' )
 N=NormalDistribution(0,1);
-assert_equals( normal_stdnor(gam), stdnor(N,gam), 'normal_def12');
-assert_equals( normal_stdnor(gam, 0),stdnor(N,gam), 'normal_def2');
+assert_equals( normal_stdnor(gam), NORTA(N,gam), 'normal_def12');
+assert_equals( normal_stdnor(gam, 0),NORTA(N,gam), 'normal_def2');
 %% translate
 N=NormalDistribution(2,3);
 %T=TranslatedDistribution(N,2,3);

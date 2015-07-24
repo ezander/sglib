@@ -7,7 +7,7 @@ classdef Distribution % < handle
         y=cdf(dist, x); % CDF Compute the cumulative distribution function.
         x=invcdf(dist, y); % INVCDF Compute the inverse CDF function.
         y=moments(dist); % MOMENTS Compute the moments of the distribution.
-        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties 
+        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
     end
     
     methods
@@ -87,14 +87,27 @@ classdef Distribution % < handle
         
     end
     methods(Static)
-        function polysys=default_polysys(is_normalized)
+        function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if is_normalized
-                polysys='h';
+                polysys='';
             else
-                polysys='H';
+                polysys='';
             end
         end
+        function polys=default_polys(n, is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if nargin<2;
+                is_normalized=false;
+                if nargin<1
+                    n=0;
+                end
+            end
+            polys=HermitePolynomials(n, is_normalized);
+        end
     end
+    
+    
 end

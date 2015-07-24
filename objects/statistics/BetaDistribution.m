@@ -9,7 +9,7 @@ classdef BetaDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan (slightly modified by Noemi Friedman)
+    %   Aidin Nojavan (extended by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -29,6 +29,8 @@ classdef BetaDistribution < Distribution
         % shape parameter, that appears as exponent of the random
         % variable and controls the shape of the distribution
         b
+        sys
+        
     end
     methods
         function dist=BetaDistribution(a,b)
@@ -38,7 +40,7 @@ classdef BetaDistribution < Distribution
             % and B.
             dist.a=a;
             dist.b=b;
-        end
+            end
         function y=pdf(dist,x)
             % PDF computes the probability distribution function of the
             % beta distribution.
@@ -60,24 +62,61 @@ classdef BetaDistribution < Distribution
             [m{1:nargout}] = beta_moments( dist.a, dist.b );
             [mean,var,skew,kurt]=deal(m{:});
         end
-        function polysys=default_polysys(dist, is_normalized)
+        function xi=sample(dist,n)
+            %   Draw random samples from Beta distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            if isscalar(n)
+                yi = rand(n,1);
+            else
+                yi = rand(n);
+            end
+                xi = dist.invcdf(yi);
+        end
+        function polysys=default_sys_letter(dist, is_normalized, varargin)
+            % DEFAULT_POLYSYS gives the 'SYS' letter belonging to the 'natural' polynomial system
+            % belonging to the distribution
+            options = varargin2options(varargin);
+            [generate_sys, options] = get_option(options, 'generate_sys', false);
+            check_unsupported_options(options, mfilename);
+            
+            if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
+                vsys{1}='u';
+                vsys{2}='U';
+            elseif dist.a==1/2 && dist.b==1/2 %for ArcSinDistribution
+                vsys{1}='t';
+                vsys{2}='T';
+            elseif generate_sys
+                vsys{2}=gpc_register_polysys('',dist);
+                vsys{1}=lower(vsys{2});
+            else
+                vsys{2}='';
+                vsys{1}='';
+             end
+            if is_normalized
+                polysys=vsys{1};
+            else
+                polysys=vsys{2};
+            end
+        end
+        
+        function polys=default_polys(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
+             if nargin<3;
+                is_normalized=false;
+                if nargin<2
+                 n=0;
+                end
+             end
             if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
-                polys{1}='u';
-                polys{2}='U';
+                polys=ChebyshevUPolynomials(is_normalized);
             elseif dist.a==1/2 && dist.b==1/2 %for ArcSinDistribution
-                polys{1}='t';
-                polys{2}='T';
+                polys=ChebyshevTPolynomials(is_normalized);
             else
-                polys{1}='h';
-                polys{2}='H';
-                warning('sglib:BetaDistribution', 'Jacobi polynomials are not implemented, Hermite polynomial will be used instead')
-            end
-            if is_normalized
-                polysys=polys{1};
-            else
-                polysys=polys{2};
+                polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
             end
         end
         function str=tostring(dist)

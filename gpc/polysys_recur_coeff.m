@@ -5,7 +5,7 @@ function r = polysys_recur_coeff(sys, deg, varargin)
 %   the system of orthogonal polynomials SYS. The signs are compatible with
 %   the ones given in Abramowith & Stegun 22.7:
 %
-%       p_n+1  = (a_n + x b_n) p_n - c_n p_n
+%       p_n+1  = (a_n + x b_n) p_n - c_n p_n-1
 %
 %   Since matlab indices start at one, we have here the mapping
 %
@@ -28,7 +28,7 @@ function r = polysys_recur_coeff(sys, deg, varargin)
 %
 % See also GPC
 
-%   Elmar Zander
+%   Elmar Zander (Jacobi polynomials added by Noemi Friedman)
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -39,50 +39,57 @@ function r = polysys_recur_coeff(sys, deg, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-options=varargin2options(varargin);
-[dist_params, options]=get_option(options, 'dist_params', {});
-check_unsupported_options(options, mfilename);
+[~, ~, poly]=gpc_register_polysys(sys);
+r =poly.recur_coeff(deg);
 
 
-n = (0:deg-1)';
-one = ones(size(n));
-zero = zeros(size(n));
-switch upper(sys)
-    case 'H'
-        r = [zero, one, n];
-    case 'P'
-        r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
-    case 'T'
-        r = [zero, 2*one - (n==0), one];
-    case 'U'
-        r = [zero, 2*one, one];
-    case 'L'
-        r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
-    case 'M'
-        r = [zero, one, zero];
-    case 'J'
-        if isempty(dist_params)||length(dist_params)~=2
-            error('For the Jacobi polynomials, DIST_PARAMS (the value for ALPHA and BETA) has to be defined')
-        end
-        alpha=dist_params{1};
-        beta=dist_params{2};
-        b_n=(2*n+alpha+beta+1).*(2*n+alpha+beta+2)./...
-            ( 2*(n+1).*(n+alpha+beta+1) );
-        a_n=(alpha^2-beta^2).*(2*n+alpha+beta+1)./...
-            ( 2*(n+1).*(n+alpha+beta+1).*(2*n+alpha+beta) );
-        c_n=(n+alpha).*(n+beta).*(2*n+alpha+beta+2)./...
-            ( (n+1).*(n+alpha+beta+1).*(2*n+alpha+beta) );
-        r = [a_n, b_n, c_n];
-     otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-end
-
-if sys == lower(sys) % lower case signifies normalised polynomials
-    z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg, dist_params))]';
-    % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
-    %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
-    %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
-    r = [r(:,1) .* z(n+2) ./ z(n+3), ...
-         r(:,2) .* z(n+2) ./ z(n+3), ...
-         r(:,3) .* z(n+1) ./ z(n+3)];
-end
+% switch class(poly)
+%     case  'HermitePolynomials'
+%         r = [zero, one, n];
+%     case 'LEGENDRE'
+%         r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
+%     case 'CHEBYSHEVT'
+%         r = [zero, 2*one - (n==0), one];
+%     case  'CHEBYSHEVU'
+%         r = [zero, 2*one, one];
+%     case 'LAGUERRE'
+%         r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
+%     case 'MONOMIALS'
+%         r = [zero, one, zero];
+%     case 'JACOBI'
+%         if iscell(dist)
+%             a=dist{2}{1}-1;
+%             b=dist{2}{2}-1;
+%         elseif isa(dist, 'BetaDistribution')
+%             a=dist.a-1;
+%             b=dist.b-1;
+%         elseif isa(dist, 'TranslatedDistribution')
+%             a=dist.dist.a-1;
+%             b=dist.dist.b-1;
+%         end
+%         b_n=(2*n+a+b+1).*(2*n+a+b+2)./...
+%             ( 2*(n+1).*(n+a+b+1) );
+%         a_n=(a^2-b^2).*(2*n+a+b+1)./...
+%             ( 2*(n+1).*(n+a+b+1).*(2*n+a+b) );
+%         c_n=(n+a).*(n+b).*(2*n+a+b+2)./...
+%             ( (n+1).*(n+a+b+1).*(2*n+a+b) );
+%         if a+b==0 ||a+b==-1
+%             b_n(1)=0.5*(a+b)+1;
+%             a_n(1)=0.5*(a-b);
+%             c_n(1)=0;
+%         end
+%         r = [a_n, b_n, c_n];
+%     otherwise
+%         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+% end
+%  
+% 
+% if sys == lower(sys) % lower case signifies normalised polynomials
+%     z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg))]';
+%     % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
+%     %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
+%     %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
+%     r = [r(:,1) .* z(n+2) ./ z(n+3), ...
+%          r(:,2) .* z(n+2) ./ z(n+3), ...
+%          r(:,3) .* z(n+1) ./ z(n+3)];
+% end
