@@ -86,11 +86,15 @@ classdef SimParameter < handle
             simparam.fixed_val=[];
         end
         
-        function samples=sample(simparam, x)
-            samples=simparam.dist.invcdf(x);
+        function xi=sample(simparam, n)
+            %   Draw random samples from the parameter.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            xi=simparam.dist.sample(n);
         end
         
-              
         function polysys=get_default_polysys(simparam, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
