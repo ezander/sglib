@@ -41,6 +41,10 @@ classdef SimParamSet < handle
         covariance
         mean_vals
         fixed_vals
+        
+        gpc_basis
+        gpc_coeffs
+        gpc_germ
     end
     
     methods
@@ -226,17 +230,34 @@ classdef SimParamSet < handle
         end
         
         %% Set gPC basis
-        function V=gpcbasis_create(params, varargin)
+        function  [a_beta, V_p, varserr]=gpc_expand(params, varargin)
             % Properties description
-            m_RV           =params.num_RVs;
-            ind_RV         =~ind_f;
-            RV                =params.simparams(ind_RV);
             
-            polysys=repmat('_', 1, m_RV);
-            for i=1:m_RV
-                polysys(i)=RV{i}.get_default_sys_letter;
+            options=varargin2options(varargin);
+            [polysys,options]=get_option(options, 'polysys', '');
+            [expand_options,options]=get_option(options, 'expand_options', {});
+            check_unsupported_options(options, mfilename);
+            
+            m_RV           =params.num_RVs;
+            ind_RV         =~params.is_fixed;
+            RV                =params.simparams(ind_RV);
+           
+            if m_RV==0;
+               error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
             end
-            V=gpcbasis_create(polysys, varargin);
+            varserr=zeros(1, m_RV);
+            
+            for i=1:m_RV
+                [a_alpha, V, varerr]=gpc_expand(RV{i});
+                varserr(i)=varerr;
+                if i==1
+                    a_beta=a_alpha;
+                    V_p=V;
+                else
+                [a_beta, V_p]=gpc_combine_inputs(a_beta, V_p, a_alpha, V);
+                end
+            end
+           
         end
         %% Generate integration points
         function  [x, w] =generate_integration_points(params, p, varargin)
