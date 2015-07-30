@@ -33,8 +33,6 @@ classdef SimParameter < handle
         dist
         is_fixed
         fixed_val
-        
-        
     end
     
     methods
@@ -95,7 +93,7 @@ classdef SimParameter < handle
             xi=simparam.dist.sample(n);
         end
         
-        function polysys=get_default_polysys(simparam, varargin)
+        function polysys=default_sys_letter(simparam, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -104,10 +102,10 @@ classdef SimParameter < handle
             % MYPARAM.SET_POLYSYS()
             % MYPARAM.SET_POLYSYS('p')
             options=varargin2options(varargin);
-            [is_normalized,options]=get_option(options, 'normal', 'true');
+            [is_normalized,options]=get_option(options, 'normal', false);
            check_unsupported_options(options, mfilename);
            
-           polysys=simparam.dist.default_polysys(is_normalized);
+           polysys=simparam.dist.default_sys_letter(is_normalized);
         end
         
         function [a_alpha, V, varerr]=gpc_expand(simparam, varargin)
@@ -120,11 +118,12 @@ classdef SimParameter < handle
             check_unsupported_options(options, mfilename);
             
             if isempty(polysys)
-                polysys=simparam.get_default_polysys;
+                polysys=simparam.dist.default_sys_letter(false);
             else
                 % check wheter polysys is valid, if not change to default
                 % and send a warning
-            end
+                gpc_register_polysys(polysys);
+           end
                 [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
         end
         

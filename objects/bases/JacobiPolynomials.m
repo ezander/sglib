@@ -81,9 +81,10 @@ classdef JacobiPolynomials < PolynomialSystem
             
             if poly.is_normalized% lower case signifies normalised polynomials
                 n=0:deg;
-                 nrm2=0.5*2^(a+b+1)*gamma(n+a+1).*gamma(n+b+1)./...
+                g=1/(2*beta(b+1, a+1)*(2^a)*(2^b));
+                 nrm2=g*2^(a+b+1)*gamma(n+a+1).*gamma(n+b+1)./...
                 (  (2*n+a+b+1) .*gamma(n+a+b+1).*factorial(n) );
-                nrm2(1)=0.5*2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
+                nrm2(1)=g*2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
                 ( gamma(a+b+1));
                 z = [0, sqrt(nrm2)]';
                 % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
@@ -107,14 +108,15 @@ classdef JacobiPolynomials < PolynomialSystem
             
             nrm2=2^(a+b+1)*gamma(n+a+1).*gamma(n+b+1)./...
                 (  (2*n+a+b+1) .*gamma(n+a+b+1).*factorial(n) );
-            nrm2(1)=2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
-                ( gamma(a+b+1));
-            %Devide by 2
-            nrm2=0.5*nrm2;
+            %nrm2(1)=2^(a+b+1)*gamma(a+1).*gamma(b+1)./...
+            %    ( gamma(a+b+1));
+            %Normalize to the form of the beta distribution
+            g=1/(2*beta(b+1, a+1)*(2^a)*(2^b));
+            nrm2=g*nrm2;
         end
         function w_dist=weighting_func(poly)
             %w_dist=fix_bounds(BetaDistribution(poly.alpha+1,poly.beta+1),-1,1);
-            w_dist=gendist_fix_bounds(gendist_create('beta', {poly.alpha+1,poly.beta+1}), -1,1);
+            w_dist=gendist_fix_bounds(gendist_create('beta', {poly.beta+1,poly.alpha+1}), -1,1);
         end
     end
 end

@@ -28,11 +28,11 @@ classdef PolynomialSystem < FunctionSystem
             %   is of size N x M such that Y(j,I) is the I-th basis function
             %   evaluated at point XI(J).
             k = size(xi, 2);
-            p = zeros(k,deg);
+            p = zeros(k,deg+1);
             p(:,1) = 0;
             p(:,2) = 1;
-            r = recur_coeff(poly, deg);
-            for d=1:deg-1
+            r = recur_coeff(poly, deg+1);
+            for d=1:deg
                 p(:,d+2) = (r(d,1) + xi' * r(d, 2)) .* p(:,d+1) - r(d,3) * p(:,d);
             end
             

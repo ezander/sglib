@@ -57,7 +57,7 @@ classdef SimParamSet < handle
             params.names={};
             params.num_params=0;
             params.num_RVs=0;
-            
+            params.is_fixed=logical([]);
             if nargin>0
                 params.add_parameter(varargin);
             end
@@ -98,10 +98,8 @@ classdef SimParamSet < handle
             elseif nargin>2&&~isscalar(val)
                 check_boolean(length(par_names)==length(val), 'length of VAL does not match with the one of the PARAM_NAMES', mfilename);
             end
-            
             for i=1:length(par_names)
-                ind=strcmpi(par_names{i}, params.names);
-                if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names{i});end
+                ind=find_param_ind(params, par_names{i});
                 if nargin>2
                     params.simparams{ind}.set_fixed(val(i));
                 else
@@ -115,7 +113,11 @@ classdef SimParamSet < handle
             end
         end
         %% Release SimParameters in the ParamSet
-        
+         % Releases the 
+            % SIMPARAMETERS from being fixed to random variables
+            % with names PAR_NAMES in the
+            % SIMPARAMSET. If no PARAM_NAMES is given, it changes all
+            % SIMPARAMETERS
         function set_not_fixed(params, par_names)
             if nargin<2
                 par_names=params.names;
@@ -124,9 +126,7 @@ classdef SimParamSet < handle
             end
             
             for i=1:length(par_names)
-                ind=strcmpi(par_names{i}, params.names);
-                if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names{i});end
-                
+                ind=find_param_ind(params, par_names{i});
                 params.simparams{ind}.set_not_fixed();
                 if params.is_fixed(ind)
                     params.is_fixed(ind)=false;
@@ -137,6 +137,11 @@ classdef SimParamSet < handle
         end
         %% Change Distribution of  SimParameters in the ParamSet
         function set_dist(params, par_names, dist)
+            % Changes the distribution to DIST of  the
+            % SIMPARAMETERS with names PAR_NAMES in the
+            % SIMPARAMSET. The SIMPARAMETERS, that
+            % were fixed are released. If no PARAM_NAMES is given, it changes all
+            % SIMPARAMETERS. 
             if isempty(par_names)
                 par_names=params.names;
             end
@@ -150,8 +155,7 @@ classdef SimParamSet < handle
             end
             
             for i=1:length(par_names)
-                ind=strcmpi(par_names{i}, params.names);
-                if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names{i});end
+                ind=find_param_ind(params, par_names{i});
                 params.simparams{ind}.set_dist(dist{i});
                 if params.is_fixed(ind)
                     params.is_fixed(ind)=false;
@@ -183,16 +187,18 @@ classdef SimParamSet < handle
             ind_f            =params.is_fixed;
             ind_RV         =~ind_f;
             RV                =params.simparams(ind_RV);
-            
-            
-            % Generate standard uniform samples
+            % Send error if all SIMPARAMS are fixed
+            if m_RV==0
+                error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
+            end
+                % Generate standard uniform samples
             switch(mode)
                 case {'mc', 'default'}
                     U = rand(n,m_RV);
                     if ~isempty(rand_func)
                         U = funcall(rand_func, n, m_RV);
                         if any(size(U)~=[n, m_RV])
-                            error('sglib:gpcgerm_sample', 'rand_func did not return an array of the expect size [%d,%d], but [%d,%d]', n, m, size(U,1), size(U,2));
+                            error('sglib:gpcsimparams_sample', 'rand_func did not return an array of the expect size [%d,%d], but [%d,%d]', n, m, size(U,1), size(U,2));
                         end
                     end
                 case 'qmc'
@@ -226,9 +232,9 @@ classdef SimParamSet < handle
             ind_RV         =~ind_f;
             RV                =params.simparams(ind_RV);
             
-            polysys=[];
+            polysys=repmat('_', 1, m_RV);
             for i=1:m_RV
-                polysys=[polysys, RV{i}.get_default_polysys];
+                polysys(i)=RV{i}.get_default_sys_letter;
             end
             V=gpcbasis_create(polysys, varargin);
         end
@@ -236,11 +242,14 @@ classdef SimParamSet < handle
         function  [x, w] =generate_integration_points(params, p, varargin)
             % Generates integration points for the SimParameters in the SIMPARAMSET object, that are
             % not fixed
-            V=simparams.create_gpc_basis();
+            V=params.create_gpc_basis();
             [x, w] = gpc_integrate([], V, p);
         end
-        
-        
-        
+        %% Find PARAM_NAMES
+        function ind=find_param_ind(params, par_names)
+            % finds index of SimParams which has name PAR_NAMES
+        ind=strcmpi(par_names, params.names);
+            if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names{i});end
+        end
     end
 end

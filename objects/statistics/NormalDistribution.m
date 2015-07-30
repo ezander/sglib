@@ -30,7 +30,7 @@ classdef NormalDistribution < Distribution
         sigma
     end
     methods(Static)
-        function poly=get_default_polys()
+        function poly=default_polys()
             poly='Hermite';
         end
     end
@@ -96,7 +96,7 @@ classdef NormalDistribution < Distribution
         function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-            if is_normalized
+            if nargin<1||~is_normalized
                 polysys='H';
             else
                 polysys='h';

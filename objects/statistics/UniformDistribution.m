@@ -99,10 +99,10 @@ classdef UniformDistribution < Distribution
         function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-            if is_normalized
-                polysys='p';
-            else
+            if nargin<1||~is_normalized
                 polysys='P';
+            else
+                polysys='p';
             end
         end
         function poly=default_polys(n, is_normalized)

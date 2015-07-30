@@ -79,7 +79,7 @@ classdef BetaDistribution < Distribution
             % DEFAULT_POLYSYS gives the 'SYS' letter belonging to the 'natural' polynomial system
             % belonging to the distribution
             options = varargin2options(varargin);
-            [generate_sys, options] = get_option(options, 'generate_sys', false);
+            [generate_sys, options] = get_option(options, 'generate_sys', true);
             check_unsupported_options(options, mfilename);
             
             if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
@@ -95,10 +95,10 @@ classdef BetaDistribution < Distribution
                 vsys{2}='';
                 vsys{1}='';
              end
-            if is_normalized
-                polysys=vsys{1};
-            else
+            if nargin<2||~is_normalized
                 polysys=vsys{2};
+            else
+                polysys=vsys{1};
             end
         end
         

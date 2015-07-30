@@ -120,6 +120,9 @@ classdef TranslatedDistribution < Distribution
         end
         function sys=default_sys_letter(tdist, is_normalized)
             % DEFAULT_SYS_LETTER gives the letter corresponding to the 'natural' polynomial system
+            if nargin<2
+                is_normalized=false;
+            end
             sys=tdist.dist.default_sys_letter(is_normalized);
         end
         function str=tostring(tdist)

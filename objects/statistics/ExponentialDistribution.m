@@ -78,10 +78,10 @@ classdef ExponentialDistribution < Distribution
         function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-            if is_normalized
-                polysys='l';
-            else
+           if nargin<1||~is_normalized
                 polysys='L';
+            else
+                polysys='l';
             end
         end
         function poly=default_polys(n, is_normalized)
