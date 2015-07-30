@@ -31,5 +31,5 @@ r=H.recur_coeff(3);
 assert_equals(r,[0 1 0;0 1 1;0 1 2],'recur_coeff');
 %% evaluate
 xi=[1,2,3,4];
-y=H.evaluate(3, xi);
+y=H.evaluate(2, xi);
 assert_equals(y,[1 1 0;1 2 3;1 3 8;1 4 15],'evaluate');

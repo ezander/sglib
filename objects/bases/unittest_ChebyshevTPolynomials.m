@@ -27,5 +27,5 @@ assert_equals(r,[[0,1,1];[0,2,1];[0,2,1];[0,2,1]],'recur_coeff');
 
 %% evaluate
 xi=[1,2,3,4];
-y=C.evaluate(4,xi);
+y=C.evaluate(3,xi);
 assert_equals(y,[1 1 1 1;1 2 7 26 ;1 3 17 99;1 4 31 244],'evaluate');
