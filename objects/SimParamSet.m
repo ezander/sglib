@@ -161,6 +161,7 @@ classdef SimParamSet < handle
             for i=1:length(par_names)
                 ind=find_param_ind(params, par_names{i});
                 params.simparams{ind}.set_dist(dist{i});
+                params.mean_vals(ind)=mean(dist{i});
                 if params.is_fixed(ind)
                     params.is_fixed(ind)=false;
                     params.num_RVs=params.num_RVs+1;
@@ -186,6 +187,7 @@ classdef SimParamSet < handle
             check_unsupported_options(options, mfilename);
             
             % Properties description
+            
             m_RV           =params.num_RVs;
             m                 =params.num_params;
             ind_f            =params.is_fixed;
@@ -223,7 +225,7 @@ classdef SimParamSet < handle
             if any(ind_f)
                 xi=zeros(n,m);
                 xi(:,ind_RV)=xi_RV;
-                xi(:,ind_f)=repmat(params.fixed_vals(ind_f), n, 1);
+                xi(:,ind_f)=repmat(params.fixed_vals(ind_f)', n, 1);
             else
                 xi=xi_RV;
             end
@@ -238,6 +240,7 @@ classdef SimParamSet < handle
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
+            m                 =params.num_params;
             m_RV           =params.num_RVs;
             ind_RV         =~params.is_fixed;
             RV                =params.simparams(ind_RV);
@@ -245,11 +248,16 @@ classdef SimParamSet < handle
             if m_RV==0;
                error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
             end
-            varserr=zeros(1, m_RV);
+            varserr=zeros(1, m);
             
-            for i=1:m_RV
-                [a_alpha, V, varerr]=gpc_expand(RV{i});
-                varserr(i)=varerr;
+            for i=1:m
+                if ind_RV(i) %if parameter is random
+                    [a_alpha, V, varerr]=gpc_expand(RV{i}, 'expand_options', expand_options);
+                    varserr(i)=varerr;
+                else
+                    a_alpha=params.fixed_vals(i);
+                    V={'p', [0]};
+                end
                 if i==1
                     a_beta=a_alpha;
                     V_p=V;

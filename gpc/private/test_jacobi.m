@@ -4,9 +4,7 @@ x=linspace(-1,1,100);
 p=5;
 n=0:p;
 %% check connection between Jacobi and Chebyshev (U) polynomials
-% U_n=(n+1)Jn(alpha=1/2,beta=1/2)(x)/Jn(alpha=1/2,beta=1/2)(1)
-% with the notation of SGLIB:
-% T_n=n(a=1/2,b=1/2)(2x-1)/Jn(a=1/2,b=1/2)(1)
+% U_n=(n+1)J_n(1/2,1/2)(x)/J_n(1/2,1/2)(1)
 
 a=1.5;
 b=1.5;
