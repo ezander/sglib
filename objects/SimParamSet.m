@@ -251,12 +251,14 @@ classdef SimParamSet < handle
             varserr=zeros(1, m);
             
             for i=1:m
+                j=0;
                 if ind_RV(i) %if parameter is random
-                    [a_alpha, V, varerr]=gpc_expand(RV{i}, 'expand_options', expand_options);
+                    j=j+1;
+                    [a_alpha, V, varerr]=gpc_expand(RV{j}, 'expand_options', expand_options);
                     varserr(i)=varerr;
                 else
                     a_alpha=params.fixed_vals(i);
-                    V={'p', [0]};
+                    V={'P', [0]};
                 end
                 if i==1
                     a_beta=a_alpha;
@@ -268,17 +270,22 @@ classdef SimParamSet < handle
            
         end
         %% Generate integration points
-        function  [x, w] =generate_integration_points(params, p, varargin)
+        function  [x, w, x_ref] =generate_integration_points(params, p, varargin)
             % Generates integration points for the SimParameters in the SIMPARAMSET object, that are
             % not fixed
-            V=params.create_gpc_basis();
-            [x, w] = gpc_integrate([], V, p);
+            
+            % generate gpc basis for the parameters
+            [a_beta, V_p, varserr]=params.gpc_expand();
+            % generate integration points for the gPC germs
+            [x_ref, w] = gpc_integrate([], V_p, p, varargin);
+            % transfer integration points to the parameter's domain with the gPCE
+            x=gpc_evaluate(a_beta, V_p, x_ref);
         end
         %% Find PARAM_NAMES
         function ind=find_param_ind(params, par_names)
             % finds index of SimParams which has name PAR_NAMES
         ind=strcmpi(par_names, params.names);
-            if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names{i});end
+            if ~any(ind); error('%s%s', 'The SimParamSet does not have parameter', par_names);end
         end
     end
 end
