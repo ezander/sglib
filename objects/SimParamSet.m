@@ -40,11 +40,7 @@ classdef SimParamSet < handle
         is_independent
         covariance
         mean_vals
-        fixed_vals
-        
-        gpc_basis
-        gpc_coeffs
-        gpc_germ
+        fixed_vals   
     end
     
     methods
@@ -249,21 +245,21 @@ classdef SimParamSet < handle
                error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
             end
             varserr=zeros(1, m);
-            
+            j=0;
             for i=1:m
-                j=0;
+                
                 if ind_RV(i) %if parameter is random
                     j=j+1;
                     [a_alpha, V, varerr]=gpc_expand(RV{j}, 'expand_options', expand_options);
                     varserr(i)=varerr;
-                else
-                    a_alpha=params.fixed_vals(i);
-                    V={'P', [0]};
+               % else
+               %     a_alpha=params.fixed_vals(i);
+               %    V={'p', [0]};
                 end
-                if i==1
+                if j==1
                     a_beta=a_alpha;
                     V_p=V;
-                else
+                elseif ind_RV(i)
                 [a_beta, V_p]=gpc_combine_inputs(a_beta, V_p, a_alpha, V);
                 end
             end
@@ -273,13 +269,25 @@ classdef SimParamSet < handle
         function  [x, w, x_ref] =generate_integration_points(params, p, varargin)
             % Generates integration points for the SimParameters in the SIMPARAMSET object, that are
             % not fixed
-            
+            m                 =params.num_params;
+            m_RV           =params.num_RVs;
+            ind_RV         =~params.is_fixed;
+            RV                =params.simparams(ind_RV);
+                        
             % generate gpc basis for the parameters
             [a_beta, V_p, varserr]=params.gpc_expand();
             % generate integration points for the gPC germs
             [x_ref, w] = gpc_integrate([], V_p, p, varargin);
-            % transfer integration points to the parameter's domain with the gPCE
+            % transfer integration points to the parameter's domain with the gPCE  
             x=gpc_evaluate(a_beta, V_p, x_ref);
+            % if there are fixed parameters, insert fixed values
+            if m>m_RV
+                x_new=zeros(m,length(w));
+                x_new(ind_RV,:)=x;
+                x_new(~ind_RV,:)=repmat(params.fixed_vals(~ind_RV), 1, length(w));
+                x=x_new;                
+            end
+            
         end
         %% Find PARAM_NAMES
         function ind=find_param_ind(params, par_names)

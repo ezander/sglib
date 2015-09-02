@@ -33,10 +33,12 @@ classdef SimParameter < handle
         dist
         is_fixed
         fixed_val
+        
+        plot_name
     end
     
     methods
-        function simparam=SimParameter(name, dist)
+        function simparam=SimParameter(name, dist, plot_name)
             % Returns a new SimParameter object with the distribution DIST
             % which was specified as an argument, and IS_FIXED set to false
             
@@ -55,6 +57,11 @@ classdef SimParameter < handle
             simparam.name=name;
             simparam.dist=dist;
             simparam.is_fixed=false;
+            if nargin>2
+                simparam.plot_name=plot_name;
+            else
+                simparam.plot_name=name;
+            end
          end
         
         function set_fixed(simparam, val)
