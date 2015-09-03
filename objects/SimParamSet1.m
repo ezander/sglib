@@ -263,16 +263,27 @@ classdef SimParamSet1 < handle
             [expand_options,options]=get_option(options, 'expand_options', {});
             [grid, options] = get_option(options, 'grid', 'smolyak');
             check_unsupported_options(options, mfilename);
+                                     
+            % generate gpc basis for the parameters
+            [p_beta, V_p, gpc_vars_err]=set.gpc_expand('polysys', polysys, 'expand_options', expand_options);
+            % generate integration points for the gPC germs (x_ref) and the
+            % map to the parameter set
+            [x, w, x_ref] = gpc_integrate(p_beta, V_p, p_int, 'grid', grid);
+            
+        end
+        %% Generate integration point from gPC 
+        function   [x, w, x_ref] = gpc_integrate(p_beta, V_p, p_int, varargin)
+           
             m                 =set.num_params();
             m_RV           =set.num_RVs();
             ind_RV         =set.find_ind_RV();
                                    
-            % generate gpc basis for the parameters
-            [a_beta, V_p, gpc_vars_err]=set.gpc_expand('polysys', polysys, 'expand_options', expand_options);
             % generate integration points for the gPC germs
-            [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', grid);
-            % transfer integration points to the parameter's domain with the gPCE  
-            x=gpc_evaluate(a_beta, V_p, x_ref);
+            [x_ref, w] = gpc_integrate([], V_p, p_int, varargin);
+           
+            %map integration points to the parameter's domain with the gPCE  
+            x=gpc_evaluate(p_beta, V_p, x_ref);
+            
             % if there are fixed parameters, insert fixed values
             if m>m_RV
                 x_new=zeros(m,length(w));
@@ -280,7 +291,6 @@ classdef SimParamSet1 < handle
                 x_new(~ind_RV,:)=repmat(set.find_fixed_vals(), 1, length(w));
                 x=x_new;                
             end
-            
         end
          %% Number of parameters
          function m=num_params(set)
@@ -364,7 +374,6 @@ classdef SimParamSet1 < handle
                  fixed_vals(i)=set.simparams.(fixed_p{i}).fixed_val;
              end
          end
-         
- 
+  
     end
 end
