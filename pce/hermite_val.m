@@ -1,5 +1,5 @@
 function y=hermite_val( pce_coeff, x )
-% HERMITE_VAL Evaluate expansion in Hermite polynomials.
+% HERMITE_VAL Evaluate expansion of univariate Hermite polynomials.
 %   Y=HERMITE_VAL( PCE_COEFF, X ) evaluates the Hermite polynomial given
 %   by the coefficients in PCE_COEFF at the positions given in X.
 %
@@ -23,28 +23,8 @@ function y=hermite_val( pce_coeff, x )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-% check that only single vectors are passed to hermite_val
-if ~isvector(pce_coeff)
-    warning('hermite_val:no_matrix', 'can pass only one polynomial at a time')
-end
-
-% make row vector
-if size(pce_coeff,1)>1
-    pce_coeff=pce_coeff';
-end
-
-% get all hermite polynomials as matrix and pre-multiply with coefficient
-% matrix to get the coefficients of the polynomials
-h=hermite(length(pce_coeff)-1,true);
-p=pce_coeff*h;
-
-% now evaluate
-y=polyval(p,x);
-
-%use_old_and_slow_algorithm
-%     p=[];
-%     for i=1:length(pce_coeff)
-%         h=hermite(i-1);
-%         p=[0 p]+pce_coeff(i)*h;
-%     end
-
+% 
+a_i_alpha = pce_coeff;
+p = size(a_i_alpha, 2)-1;
+V_a = gpcbasis_create('H', 'I', (0:p)' );
+y = gpc_evaluate(a_i_alpha, V_a, x);

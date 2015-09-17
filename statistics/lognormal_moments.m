@@ -1,11 +1,11 @@
 function [mean,var,skew,kurt]=lognormal_moments(mu,sigma)
 % LOGNORMAL_MOMENTS Compute moments of the lognormal distribution.
-%   [VAR,MEAN,SKEW,KURT]=LOGNORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=LOGNORMAL_MOMENTS( MU, SIGMA ) computes the moments of the
 %   lognormal distribution.
 %
-% Source:
-%   http://en.wikipedia.org/wiki/Log-normal_distribution
-%   http://mathworld.wolfram.com/LogNormalDistribution.html
+% References:
+%   [1] http://en.wikipedia.org/wiki/Log-normal_distribution
+%   [2] http://mathworld.wolfram.com/LogNormalDistribution.html
 %
 % Example (<a href="matlab:run_example lognormal_moments">run</a>)
 %   [mean,var]=lognormal_moments(mu,sigma);

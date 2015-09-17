@@ -28,6 +28,7 @@ switch form
     case 'tensor'
         K=assemble_mu_delta( k_i_k, k_k_alpha, I_k, I_u, stiffness_func, opt );
     otherwise
+        error('sglib:invalid', 'Invalid parameter value for KL/PDE form: %s. Use "matrix" or "tensor"', form);
 end
 
 
@@ -73,6 +74,7 @@ M_u=size(I_u,1);
 K=cell(M_u,M_u);
 for alpha=1:M_u
     if opt.verbosity
+        m_alpha_u = size(M_u, 2);
         erase_print( '%d/%d %d/%d', alpha*(alpha+1)/2, m_alpha_u*(M_u+1)/2, alpha, M_u );
     end
     for beta=1:alpha

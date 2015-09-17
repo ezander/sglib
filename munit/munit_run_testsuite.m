@@ -30,11 +30,12 @@ function munit_run_testsuite( varargin )
 %     corresponding unittests.
 %
 % Example
-%   munit_reset_options();
 %   munit_set_debug( true );
 %   munit_run_testsuite( 'mymod', pwd, 'subdirs', {'submod1', 'submod2'} );
+%   % very handy is also the following
+%   munit_run_testsuite('coverage', true);
 %
-% See also 
+% See also MUNIT_SET_DEBUG, ASSERT_EQUALS
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
@@ -122,7 +123,10 @@ for i=1:length(files)
         end
     end
     munit_printf( 'file', 'Running: %s', {fullfile(module_name, test_cmd)} );
+    
+    rand_state = munit_control_rand('seed');
     safe_eval( curr_dir, test_cmd, on_error );
+    munit_control_rand('set_state', rand_state);
 end
 
 if ~isempty(files) || level==1

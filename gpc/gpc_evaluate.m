@@ -17,7 +17,7 @@ function a_i_j=gpc_evaluate( a_i_alpha, V_a, xi )
 %   I_a=multiindex( 2, 3 );           % m=2, M=10
 %   V_a={'hp', I_a};
 %   a_i_alpha=cumsum(ones( 5, 10 ));  % N=5
-%   xi=gpc_sample(V_a, 7);            % k=7
+%   xi=gpcgerm_sample(V_a, 7);            % k=7
 %   ai=gpc_evaluate( a_i_alpha, V_a, xi );
 %   
 %   subplot(3,2,1)
@@ -41,7 +41,7 @@ function a_i_j=gpc_evaluate( a_i_alpha, V_a, xi )
 %   plot(xi, gpc_evaluate( eye(6), {'L', (0:5)'}, xi));
 %   title('Laguerre'); ylim([-10, 20]); grid on;
 %
-% See also GPC, GPC_SAMPLE
+% See also GPC, GPCGERM_SAMPLE
 
 %   Elmar Zander
 %   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.

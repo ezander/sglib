@@ -1,14 +1,13 @@
 function T=tensor_add( T1, T2, alpha )
 % TENSOR_ADD Add two tensors.
-%   TENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2,
-%   multiplying T2 by ALPHA first if given.
+%   T=TENSOR_ADD( T1, T2 ) adds two tensors T1 and T2 and returns the
+%   result in T.
+%   T=TENSOR_ADD( T1, T2, ALPHA ) adds two tensors T1 and T2, multiplying
+%   T2 by ALPHA first if given.
 %
-% Note 1: implementation is of course trivial, since addition of sparse
-%   tensors if simply juxtaposition, but having this as a separate function
-%   makes the code clearer.
-%
-% Note 2: This method does not perform reduction of the new tensor. You
-%   have to call TENSOR_REDUCE manually to achieve this.
+% Note: This method does not perform truncation/approximation of the new
+%   tensor. You have to call a suitable tensor approximation/truncation
+%   function manually to do this.
 %
 % Example (<a href="matlab:run_example tensor_add">run</a>)
 %   T1={rand(8,2), rand(10,2)}
@@ -16,10 +15,10 @@ function T=tensor_add( T1, T2, alpha )
 %   Z=tensor_add(T1,T2,3)
 %   norm( T1{1}*T1{2}'+3*T2{1}*T2{2}'-Z{1}*Z{2}', 'fro' )% should be approx. zero
 %
-% See also TENSOR_REDUCE, TENSOR_NULL, TENSOR_SCALE
+% See also TENSOR_NULL, TENSOR_SCALE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -34,25 +33,13 @@ if nargin<3
     alpha=1;
 end
 
-check_tensors_compatible( T1, T2 );
-
-persistent max_size;
-
-if isempty(max_size)
-    max_size=10000;
+if isnumeric(T1) && isnumeric(T2)
+    T=T1+alpha*T2;
+elseif is_ctensor(T1) && is_ctensor(T2)
+    T=ctensor_add( T1, T2, alpha );
+elseif isobject(T1)
+    T=T1+alpha*T2;
+else
+    error( 'sglib:tensor_null:param_error', ...
+        'input parameter is no recognized tensor format or formats don''t match' );
 end
-
-if tensor_rank(T1)+tensor_rank(T2)>max_size
-    warning( 'tensor:tensor_add:large', ['Your tensor is growing pretty large. Forgotten to truncate?\n', ... 
-        'max_size is currently %d. You may set it to a higher value by entering e.g. max_size=%d.'], ...
-        max_size, 10*max_size );
-    keyboard;
-end
-    
-
-% Important: apply alpha only to one argument! This guy is a tensor not
-% a cartesian product.
-% TODO: Maybe a loop if faster than this mat2cell stuff? Check performance
-T2{1}=alpha*T2{1};
-dims=tensor_size(T1);
-T=mat2cell( [cell2mat(T1(:)), cell2mat(T2(:))], dims )';

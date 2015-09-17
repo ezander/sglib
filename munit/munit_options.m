@@ -1,9 +1,12 @@
 function options=munit_options(cmd,varargin)
-% MUNIT_OPTIONS Set or get unit options.
+% MUNIT_OPTIONS Set or get Munit options.
+%   MUNIT_OPTIONS(CMD,VARARGIN) gets, sets or resets munit options. Usually
+%   this function is called only internally, or from SGLIB_SETTINGS.
 %
 % Example (<a href="matlab:run_example munit_options">run</a>)
+%   munit_options('get')
 %
-% See also
+% See also SGLIB_SETTINGS
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing
@@ -61,6 +64,8 @@ options.max_assertion_disp=10;
 options.prefix='unittest_';
 options.output_func=@display_func;
 options.compact=0;
+options.equalnan=true;
+options.equalinf=true;
 
 function display_func( s )
 stdin=1;

@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=uniform_moments(a,b)
 % UNIFORM_MOMENTS Compute moments of the uniform distribution.
-%   [VAR,MEAN,SKEW,KURT]=UNIFORM_MOMENTS( A, B) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=UNIFORM_MOMENTS( A, B) computes the moments of the
 %   uniform distribution. A and B default to 0 and 1 respectively.
 %
 % Example (<a href="matlab:run_example uniform_moments">run</a>)

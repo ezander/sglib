@@ -24,6 +24,6 @@ function y=beta_cdf( x, a, b )
 
 
 y=zeros(size(x));
-p=(x>=0)&(x<=1);
-y(p)=betainc( x(p), a, b );
+ind=(x>=0)&(x<=1);
+y(ind)=betainc( x(ind), a, b );
 y(x>1)=1;

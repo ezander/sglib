@@ -4,7 +4,7 @@ function unittest_gauss_legendre_triangle_rule
 % Example (<a href="matlab:run_example unittest_gauss_legendre_triangle_rule">run</a>)
 %   unittest_gauss_legendre_triangle_rule
 %
-% See also GAUSS_LEGENDRE_TRIANGLE_RULE, TESTSUITE 
+% See also GAUSS_LEGENDRE_TRIANGLE_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -19,7 +19,7 @@ function unittest_gauss_legendre_triangle_rule
 
 munit_set_function( 'gauss_legendre_triangle_rule' );
 
-% test for two different p values (should be enough)
+% Test for two different p values (should be enough)
 for p=[2,5];
     [x,w]=gauss_legendre_triangle_rule(p);
     assert_equals( size(x,1), 2, 'x_dim2' )
@@ -30,9 +30,12 @@ end
 
 munit_set_function( 'gauss_legendre_triangle_rule' );
 
-%TODO: put some real test code herein. also for 1d GL-function
+% Test for polynomilas up some specified order
+[A,B,I]=testGaussTriangle(2);
+assert_equals(A(I), B(I), 'poly_int_tri_2' );
 [A,B,I]=testGaussTriangle(5);
-assert_equals(A(I), B(I), 'poly_int_tri' );
+assert_equals(A(I), B(I), 'poly_int_tri_5' );
+
 
 
 

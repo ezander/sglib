@@ -1,35 +1,39 @@
-function y=pce_pdf_1d( x, pcc )%, pci )
+function y=pce_pdf_1d( xi, X_alpha, I_X )
+% PCE_PDF_1D Compute probability distribution for univariate PCE.
+%   Y=PCE_PDF_1D( XI, X_ALPHA, I_X ) computes the probablity distribution
+%   function (PDF) of X_ALPHA at the points XI. This function works only
+%   for univariate PCEs, i.e. the PCE may only depend on one Gaussian
+%   random variable.
+%
+% Example (<a href="matlab:run_example pce_pdf_1d">run</a>)
+%   for i=1:2
+%     deg=4*i-1;
+%     X_alpha = pce_expand_1d(@exp, deg);
+%     I_X=multiindex(1, deg);
+%     x=linspace(-3,3, 20);
+%     subplot(2,2,2*i-1)
+%     plot(x, exp(x), x, gpc_evaluate(X_alpha, gpcbasis_create('H', 'I', I_X), x), '-..')
+% 
+%     xi = linspace(-1, 5, 30);
+%     y=pce_pdf_1d(xi, X_alpha, I_X );
+%     subplot(2,2,2*i); 
+%     plot(xi,y); hold all;
+%     y=lognormal_pdf(xi,0,1);
+%     plot(xi, y, '-..'); hold off;
+%  end
+%
+% See also PCE_CDF_1D
 
-if nargin==0
-    pce_pdf( [-10 -8 -4 3]', [3 5 7] )
-    return
-end
+%   Elmar Zander
+%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
+%
+%   This program is free software: you can redistribute it and/or modify it
+%   under the terms of the GNU General Public License as published by the
+%   Free Software Foundation, either version 3 of the License, or (at your
+%   option) any later version. 
+%   See the GNU General Public License for more details. You should have
+%   received a copy of the GNU General Public License along with this
+%   program.  If not, see <http://www.gnu.org/licenses/>.
 
-n=size(pcc,1)-1;
-h=hermite( n, true );
-p=pcc'*h;
-dp=polyder(p);
-
-y=x;
-for i=1:length(x(:))
-    q=p;
-    q(end)=q(end)-x(i);
-    r=roots( q );
-    r=sort(r(imag(r)==0));
-    
-    sign_minf=sign(p(1))*(1-2*mod(n,2));
-    if sign_minf<0
-        r=[-inf; r]; %#ok<AGROW>
-    end
-    
-    sign_inf=sign(p(1));
-    if sign_inf<0
-        r=[r; inf]; %#ok<AGROW>
-    end
-    
-    y(i)=0;
-    for k=1:2:length(r)
-        y(i)=y(i)+(normal_pdf(r(k+1))/polyval(dp,r(k+1)))-(normal_pdf(r(k))/polyval(dp,r(k)));
-        %
-    end
-end
+V=gpcbasis_create('H', 'I', I_X);
+y=gpc_pdf_1d(X_alpha, V, xi);

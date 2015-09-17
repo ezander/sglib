@@ -4,7 +4,7 @@ function unittest_kl_pce_to_compact_form
 % Example (<a href="matlab:run_example unittest_kl_pce_to_compact_form">run</a>)
 %   unittest_kl_pce_to_compact_form
 %
-% See also KL_PCE_TO_COMPACT_FORM, TESTSUITE 
+% See also KL_PCE_TO_COMPACT_FORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

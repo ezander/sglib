@@ -32,7 +32,7 @@ function dist=subspace_distance(A, B, varargin)
 % See also SUBSPACE, SUBSPACE_ANGLES
 
 %   Elmar Zander
-%   Copyright 2010, 2013, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2010-2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -60,7 +60,9 @@ switch type
     case 'wwf'
         [m, n]=size(U);
         check_boolean(all(size(V)==[m,n]), 'size error', mfilename);
-        dist=sqrt(max(min(m,n)-trace(V'*U*U'*V),0));
+        UV=U'*V;
+        dist=sqrt(max(min(m,n)-frobenius_inner(UV,UV),0));
+        %%
         % Note: probably there is an error in [2] and it should read
         % min(m,n) instead of max(m,n). Further, we need to clamp the value
         % to be always positive.

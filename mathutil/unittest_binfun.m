@@ -4,7 +4,7 @@ function unittest_binfun
 % Example (<a href="matlab:run_example unittest_binfun">run</a>)
 %   unittest_binfun
 %
-% See also BINFUN, TESTSUITE 
+% See also BINFUN, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

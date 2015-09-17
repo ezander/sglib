@@ -4,7 +4,7 @@ function unittest_datestring
 % Example (<a href="matlab:run_example unittest_datestring">run</a>)
 %   unittest_datestring
 %
-% See also DATESTRING, TESTSUITE 
+% See also DATESTRING, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing, TU Braunschweig

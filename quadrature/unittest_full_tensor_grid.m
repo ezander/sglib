@@ -4,7 +4,7 @@ function varargout=unittest_full_tensor_grid( varargin )
 % Example (<a href="matlab:run_example unittest_full_tensor_grid">run</a>)
 %   unittest_full_tensor_grid
 %
-% See also FULL_TENSOR_GRID, TESTSUITE 
+% See also FULL_TENSOR_GRID, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

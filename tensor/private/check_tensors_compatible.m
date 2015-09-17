@@ -18,7 +18,7 @@ function bool=check_tensors_compatible( T1, T2 )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~is_tensor(T1) || ~is_tensor(T2)
+if ~is_ctensor(T1) || ~is_ctensor(T2)
     error( 'tensor:no_tensor', ...
         'No recognized tensor format' );
 end
@@ -27,8 +27,8 @@ if length(T1)~=length(T2)
     error( 'tensor:different_order', 'Tensors have different order' );
 end
 
-sz1=tensor_size( T1 );
-sz2=tensor_size( T2 );
+sz1=ctensor_size( T1 );
+sz2=ctensor_size( T2 );
 
 if any(sz1~=sz2)
     error( 'tensor:dimension_mismatch', 'Tensors have different dimensions' );

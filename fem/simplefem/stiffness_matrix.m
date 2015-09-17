@@ -69,18 +69,18 @@ function KT=element_stiffness( d, pos, k, xi, w )
 n_dof=d+1;
 switch d
     case 1
-        phi{1}=@(xi)(1-xi);
-        phi{2}=@(xi)(xi);
-        dphi{1}=@(xi)(-1*ones(size(xi,1),1));
-        dphi{2}=@(xi)( 1*ones(size(xi,1),1));
+        phi{1}=1-xi;
+        phi{2}=xi;
+        dphi{1}=-ones(size(xi,1),1);
+        dphi{2}= ones(size(xi,1),1);
         J=pos(:,2)-pos(:,1);
     case 2
-        phi{1}=@(xi)(1-xi(1,:)-xi(2,:));
-        phi{2}=@(xi)(xi(1,:));
-        phi{3}=@(xi)(xi(2,:));
-        dphi{1}=@(xi)( [-1;-1]*ones(1,size(xi,2),1) );
-        dphi{2}=@(xi)( [ 1; 0]*ones(1,size(xi,2),1) );
-        dphi{3}=@(xi)( [ 0; 1]*ones(1,size(xi,2),1) );
+        phi{1}=1-xi(1,:)-xi(2,:);
+        phi{2}=xi(1,:);
+        phi{3}=xi(2,:);
+        dphi{1}=[-1;-1]*ones(1,size(xi,2),1);
+        dphi{2}=[ 1; 0]*ones(1,size(xi,2),1);
+        dphi{3}=[ 0; 1]*ones(1,size(xi,2),1);
         J=[pos(:,2)-pos(:,1), pos(:,3)-pos(:,1)];
 end
 
@@ -88,8 +88,8 @@ phi_xi=zeros(length(w),n_dof);
 dphi_xi=zeros(length(w),d*n_dof);
 for i=1:n_dof
     i2=d*(i-1)+(1:d);
-    phi_xi(:,i)=phi{i}(xi)';
-    dphi_xi(:,i2)=dphi{i}(xi)';
+    phi_xi(:,i)=phi{i}';
+    dphi_xi(:,i2)=dphi{i}';
 end
 k_xi=phi_xi*k;
 

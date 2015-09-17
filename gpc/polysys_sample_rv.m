@@ -5,7 +5,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %   An array of size M x N of independently generated samples is returned. 
 %
 %   Note: Normally you don't want to call this function directly. Rather
-%   call GPC_SAMPLE instead.
+%   call GPCGERM_SAMPLE instead.
 %
 % Example (<a href="matlab:run_example polysys_sample_rv">run</a>)
 %    N = 100000; M = 50;
@@ -25,7 +25,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %    hist(polysys_sample_rv('l', N, 1), M);
 %    title('exponential')
 %
-% See also GPC_SAMPLE, RAND, RANDN
+% See also GPCGERM_SAMPLE, RAND, RANDN
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig
@@ -38,35 +38,10 @@ function xi = polysys_sample_rv(sys, m, n)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+dist = polysys_dist(sys);
 if nargin<3 || isempty(n)
     U = m;
-    xi = invcdf_transform(sys, U);
-elseif strcmpi(sys, 'H')
-    xi = randn(m, n);
+    xi = gendist_invcdf(U, dist);
 else
-    U = rand(m, n);
-    xi = invcdf_transform(sys, U);
-end
-
-function xi = invcdf_transform(sys, U)
-switch upper(sys)
-    case 'H'
-        xi = normal_invcdf(U);
-    case 'P'
-        xi = uniform_invcdf(U, -1, 1);
-    case 'T'
-        % Arcsine distribution with support [-1,1] (which is the same as as
-        % Beta(1/2,1/2) distribution with shifted support.
-        xi = 2 * beta_invcdf(U, 1/2, 1/2) - 1;
-    case 'U'
-        % Wigner semicircle distribution (which is the same as as
-        % Beta(3/2,3/2) distribution shift from [0,1] to [-1,1].
-        xi = 2 * beta_invcdf(U, 3/2, 3/2) - 1;
-    case 'L'
-        % Exponential distribution
-        xi = exponential_invcdf(U, 1);
-    case 'M'
-        error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
-    otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+    xi = gendist_sample([m, n], dist);
 end

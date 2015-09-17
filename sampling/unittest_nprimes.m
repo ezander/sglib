@@ -4,7 +4,7 @@ function unittest_nprimes
 % Example (<a href="matlab:run_example unittest_nprimes">run</a>)
 %   unittest_nprimes
 %
-% See also NPRIMES, TESTSUITE 
+% See also NPRIMES, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

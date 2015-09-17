@@ -4,7 +4,7 @@ function unittest_timers
 % Example (<a href="matlab:run_example unittest_timers">run</a>)
 %   unittest_timers
 %
-% See also TIMERS, TESTSUITE 
+% See also TIMERS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing

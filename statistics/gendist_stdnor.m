@@ -1,4 +1,4 @@
-function y=gendist_stdnor(x, dist, params, shift, scale)
+function y=gendist_stdnor(x, dist, varargin)
 % GENDIST_STDNOR Short description of gendist_stdnor.
 %   GENDIST_STDNOR Long description of gendist_stdnor.
 %
@@ -17,16 +17,17 @@ function y=gendist_stdnor(x, dist, params, shift, scale)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~exist('shift', 'var' ) || isempty(shift)
-    shift=0;
-end
-if ~exist('scale', 'var' ) || isempty(scale)
-    scale=1;
-end
-if ~exist('params', 'var' ) 
-    params={};
+if isa(dist, 'Distribution')
+    y = dist.stdnor(x);
+    return
 end
 
-y=feval( [dist '_stdnor'], x, params{:} );
-mean=gendist_moments( dist, params );
-y=(y-mean)*scale+mean+shift;
+[distname, params, shift, scale, mean] = gendist_get_args(dist, varargin);
+
+stdnor_func = [distname '_stdnor'];
+if exist(stdnor_func, 'file')
+    y=feval( stdnor_func, x, params{:} );
+    y=(y-mean)*scale+mean+shift;
+else
+    y=gendist_invcdf(normal_cdf(x, 0, 1), dist);
+end

@@ -4,11 +4,17 @@ function [x,w]=gauss_hermite_rule( p )
 %   of order 2*p. X contains the quadrature points and W contains the
 %   weights of the quadrature rule.
 %
+% Note: This method is pretty old and works with pre-computed nodes and
+%   weights up to order 9. If you need arbitrary order, please take a look
+%   at the GPC integration functions.
+%
 % Example (<a href="matlab:run_example gauss_hermite_rule">run</a>)
 %   [x,w]=gauss_hermite_rule( 4 );
+%
+% See also GAUSS_LEGENDRE_RULE, GAUSS_HERMITE, GPC_INTEGRATE
 
 %   Elmar Zander
-%   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2006-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

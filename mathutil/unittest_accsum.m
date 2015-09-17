@@ -4,7 +4,7 @@ function unittest_accsum
 % Example (<a href="matlab:run_example unittest_accsum">run</a>)
 %   unittest_accsum
 %
-% See also ACCSUM, TESTSUITE 
+% See also ACCSUM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

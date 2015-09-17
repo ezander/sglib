@@ -4,7 +4,7 @@ function unittest_pce_divide
 % Example (<a href="matlab:run_example unittest_pce_divide">run</a>) 
 %    unittest_pce_divide
 %
-% See also PCE_DIVIDE, TESTSUITE
+% See also PCE_DIVIDE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

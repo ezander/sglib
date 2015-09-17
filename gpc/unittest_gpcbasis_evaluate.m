@@ -4,7 +4,7 @@ function unittest_gpcbasis_evaluate
 % Example (<a href="matlab:run_example unittest_gpcbasis_evaluate">run</a>)
 %   unittest_gpcbasis_evaluate
 %
-% See also GPCBASIS_EVALUATE, TESTSUITE 
+% See also GPCBASIS_EVALUATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -35,7 +35,7 @@ assert_equals(y, y_ex, 'legendre');
 
 % test dual basis for Legendre
 yd = gpcbasis_evaluate(V, [ones(3,1), -ones(3,1)], 'dual', true);
-n = gpc_norm(V, 'sqrt', false);
+n = gpcbasis_norm(V, 'sqrt', false);
 yd_ex = binfun(@rdivide, [ones(size(p)), (-1).^p], n)';
 
 assert_equals(yd, yd_ex, 'legendre_dual');

@@ -1,4 +1,4 @@
-function options=varargin2options( args )
+function options=varargin2options( args, caller )
 % VARARGIN2OPTIONS Convert variable argument list to options structure.
 %   OPTIONS=VARARGIN2OPTIONS( ARGS ) returns the variable arguments as
 %   an options structure. This allows the user to pass the arguments in
@@ -36,6 +36,10 @@ function options=varargin2options( args )
 
 stop_check;
 
+if ~exist('caller', 'var')
+    caller = '<unknown function>';
+end
+
 % we need a cell array (don't pass varargin{:} any more, always pass
 % varargin itself)
 if ~iscell(args)
@@ -44,16 +48,16 @@ end
 
 % if no args present return empty structure
 if isempty(args)
-    options=struct();
+    options=add_internal_fields(struct(), caller);
     return;
 end
 
 % one arg as structure means we can return the struct as is
 if isstruct( args{1} )
     if length(args)>2
-        error( 'util:varargin2options:struct', 'Wrong option specification: when struct is given only one argument is allowed' );
+        option_error( caller, 'util:varargin2options:struct', 'Wrong option specification: when struct is given only one argument is allowed' );
     end
-    options=args{1};
+    options=add_internal_fields(args{1}, caller);
     return
 end
 
@@ -65,14 +69,19 @@ end
 names=args(1:2:end);
 values=args(2:2:end);
 if ~iscellstr(names)
-    error( 'util:varargin2options:invalid_names', 'Wrong option specification: not all option names are strings: %s', evalc( 'disp(names);' ) );
+    option_error( caller, 'util:varargin2options:invalid_names', 'Wrong option specification: not all option names are strings: %s', evalc( 'disp(names);' ) );
 end
 if length(names)~=length(values)
-    error( 'util:varargin2options:missing_value', 'Wrong option specification: not all option names have a corresponding value' );
+    option_error( caller, 'util:varargin2options:missing_value', 'Wrong option specification: not all option names have a corresponding value' );
 end
 ind=unique_index(names);
 options=cell2struct( values(ind), names(ind), 2 );
+options=add_internal_fields(options, caller);
 
+function options=add_internal_fields(options, caller)
+internal.supported_fields = {};
+internal.caller = caller;
+options.internal__ = internal;
 
 function ind=unique_index(names)
 % check which version we're using (i.e. whether unique reports the first
@@ -85,3 +94,12 @@ else
     % old version
     [c,ind]=unique(names);
 end
+
+function option_error(caller, tag, errstr, varargin)
+errtxt = sprintf([...
+    '\n\nError: The parameters passed as options to "%s" are not valid options\n', ...
+    'of the form "''string1'', value1, ''string2'', value2, ..." or an options struct.\n', ...
+    'Maybe the interface of the called function ("%s") has changed, but\n', ...
+    'the caller hasn''t been updated?\n\n'], caller, caller);
+
+error( tag, ['%s', errstr], errtxt, varargin{:} );

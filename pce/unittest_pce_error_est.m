@@ -4,7 +4,7 @@ function unittest_pce_error_est
 % Example (<a href="matlab:run_example unittest_pce_error_est">run</a>)
 %   unittest_pce_error_est
 %
-% See also PCE_ERROR_EST, TESTSUITE 
+% See also PCE_ERROR_EST, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing, TU Braunschweig

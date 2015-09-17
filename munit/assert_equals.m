@@ -7,7 +7,9 @@ function assert_equals( actual, expected, assert_id, varargin )
 %   as equal convert to one form.
 %
 % Example (<a href="matlab:run_example assert_equals">run</a>)
+%   % the first one passes, the second one fails
 %   assert_equals( factorial(1:4), [1,2,6,24], 'fact', 'abstol', 0, 'reltol', 0 );
+%   assert_equals( {1,2}, {1,3}, 'cellarr' );
 %
 % See also ASSERT_TRUE, ASSERT_FALSE, ASSERT_ERROR
 
@@ -113,6 +115,8 @@ result_list={};
 % Get abstol and reltol
 abstol=get_option( curr_options, 'abstol', options.abstol );
 reltol=get_option( curr_options, 'reltol', options.reltol );
+equalnan=get_option( curr_options, 'equalnan', options.equalnan );
+equalinf=get_option( curr_options, 'equalinf', options.equalinf );
 
 if ~isscalar(abstol) && any(size(abstol)~=size(actual))
     error( 'assert_equals:options', 'if abstol is a vector then it must have the same size as the value vector' );
@@ -125,7 +129,16 @@ end
 max_assertion_disp=get_option( curr_options, 'max_assertion_disp', options.max_assertion_disp );
  
 % Do actual comparison
-comp = (abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
+comp = false(size(actual));
+if equalnan
+    comp = comp | (isnan(expected) & isnan(actual));
+end
+if equalinf
+    inf_ind = isinf(expected);
+    comp(inf_ind) = comp(inf_ind) | (expected(inf_ind) == actual(inf_ind));
+end
+comp = comp | (isfinite(expected) & abs(actual-expected)<=max(abstol,reltol.*abs(expected)));
+
 if any(~comp(:))
     if isscalar(actual)
         msg=sprintf( 'values don''t match %g~=%g', actual, expected );
@@ -137,7 +150,7 @@ if any(~comp(:))
         else
             % here comes a bit tricky matlab cell array/matrix
             % manipulation to get the index in the form we want
-            %TODO: write a small tutorial on the stupied cell handling and
+            %TODO: write a small tutorial on the stupid cell handling and
             %conversion stuff in matlab
             ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);
@@ -189,7 +202,7 @@ if any(~comp(:))
         else
             % here comes a bit tricky matlab cell array/matrix
             % manipulation to get the index in the form we want
-            %TODO: write a small tutorial on the stupied cell handling and
+            %TODO: write a small tutorial on the stuped cell handling and
             %conversion stuff in matlab
             ind=cell(1,ndims(comp));
             [ind{:}]=ind2sub(size(comp),linind);

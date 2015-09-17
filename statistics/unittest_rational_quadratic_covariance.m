@@ -4,7 +4,7 @@ function unittest_rational_quadratic_covariance
 % Example (<a href="matlab:run_example unittest_rational_quadratic_covariance">run</a>)
 %   unittest_rational_quadratic_covariance
 %
-% See also RATIONAL_QUADRATIC_COVARIANCE, TESTSUITE 
+% See also RATIONAL_QUADRATIC_COVARIANCE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

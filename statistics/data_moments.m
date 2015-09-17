@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=data_moments( x )
 % DATA_MOMENTS Compute moments of given data.
-%   [VAR,MEAN,SKEW,KURT]=DATA_MOMENTS( X ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=DATA_MOMENTS( X ) computes the moments of the
 %   data given in X. The unbiased estimators are used here.
 %
 % Example (<a href="matlab:run_example data_moments">run</a>)

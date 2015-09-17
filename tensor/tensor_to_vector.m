@@ -1,13 +1,21 @@
-function t=tensor_to_vector(T)
-% TENSOR_TO_VECTOR Short description of tensor_to_vector.
-%   TENSOR_TO_VECTOR Long description of tensor_to_vector.
+function v=tensor_to_vector(T)
+% TENSOR_TO_VECTOR Convert a tensor into a vector.
+%   V=TENSOR_TO_VECTOR(T) converts the tensor T into a vector V. If T is
+%   already a vector, the output remains unchanged. If T is a matrix or
+%   higher dimensional array, the result is obtained by stacking its
+%   columns. For other types of tensors the appropriate function is called
+%   to first transform it into an equivalent vector or matrix form and then
+%   stack it if necessary.
 %
 % Example (<a href="matlab:run_example tensor_to_vector">run</a>)
+%   % create a ctensor and transform to a vector
+%   T = {[1;2], [3;5]};
+%   tensor_to_vector(T)
 %
-% See also
+% See also TENSOR_TO_ARRAY
 
 %   Elmar Zander
-%   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -17,23 +25,14 @@ function t=tensor_to_vector(T)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if tensor_order(T)==2
-    t=T{1}*T{2}';
-    t=t(:);
+if isnumeric(T)
+    v = T(:);
+elseif is_ctensor(T)
+    v=ctensor_to_vector(T);
+elseif isobject(T)
+    v = full(T);
+    v = v(:);
 else
-    t=zeros(prod(tensor_size(T)),1);
-    
-    R=tensor_rank(T);
-    for i=1:R
-        u=elementary_tensor_to_vector( T, i );
-        t=t+u;
-    end
+    error( 'sglib:tensor_to_vector:param_error', ...
+        'input parameter is no recognized tensor format or formats don''t match' );
 end
-
-function u=elementary_tensor_to_vector( T, i )
-d=length(T);
-u=1;
-for k=1:d
-    u=revkron(u,T{k}(:,i));
-end
-

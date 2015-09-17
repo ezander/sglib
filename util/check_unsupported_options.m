@@ -1,4 +1,4 @@
-function ok=check_unsupported_options( options, mfilename )
+function ok=check_unsupported_options( options, caller )
 % CHECK_UNSUPPORTED_OPTIONS Check whether unsupported options were passed.
 %   OK=CHECK_UNSUPPORTED_OPTIONS( options, mfilename ) checks whether there
 %   are entries left over in the OPTIONS struct, indicating that the user
@@ -42,16 +42,23 @@ function ok=check_unsupported_options( options, mfilename )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+% If no fields are present any more or the only present field is the
+% "internal__" field, we can exit quickly.
 fields=fieldnames( options );
-if isempty(fields) || (length(fields)==1 && strcmp( fields{1}, 'supported_fields__') )
+if isempty(fields) || (length(fields)==1 && strcmp( fields{1}, 'internal__') )
     if nargout>0; ok=true; end
     return;
 end
 
+
 ok=false;
-if isfield( options, 'supported_fields__' )
-    supported_fields=options.supported_fields__;
-    options=rmfield( options, 'supported_fields__' );
+if isfield( options, 'internal__' )
+    internal = options.internal__;
+    options = rmfield(options, 'internal__');
+    supported_fields=internal.supported_fields;
+    if nargin<2
+        caller = internal.caller;
+    end
 else
     supported_fields=[];
 end
@@ -60,12 +67,12 @@ fields=fieldnames(options);
 for i=1:length(fields)
     mode='warning';
     message=sprintf( 'unsupported option detected: %s', fields{i} );
-    check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
+    check_boolean( ok, message, caller, 'depth', 2, 'mode', mode );
 end
 
 if ~isempty( supported_fields )
     fields=sprintf( ', %s', supported_fields{:} );
-    fprintf( 'Valid options for "%s" are: %s \n', mfilename, fields(3:end) );
+    fprintf( 'Valid options for "%s" are: %s \n', caller, fields(3:end) );
 end
 
 if nargout==0

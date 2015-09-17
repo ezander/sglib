@@ -4,7 +4,7 @@ function unittest_hermite_norm
 % Example (<a href="matlab:run_example unittest_hermite_norm">run</a>)
 %   unittest_hermite_norm
 %
-% See also HERMITE_NORM, TESTSUITE 
+% See also HERMITE_NORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

@@ -1,10 +1,12 @@
 function stats=munit_stats(cmd,varargin)
-% MUNIT_STATS Short description of munit_stats.
-%   MUNIT_STATS Long description of munit_stats.
+% MUNIT_STATS Internal function to handle munit statistics.
+%   MUNIT_STATS is a function used to set and retrieve statistics gathered
+%   during munit runs. This function is used internally in the munit
+%   testing framework.
 %
 % Example (<a href="matlab:run_example munit_stats">run</a>)
 %
-% See also
+% See also MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

@@ -33,5 +33,5 @@ if nargin<3
 end
 
 y=zeros(size(x));
-p=(x>0);
-y(p)=exp( -(log(x(p))-mu).^2/(2*sigma^2) )./(sqrt(2*pi)*sigma*x(p));
+ind=(x>0);
+y(ind)=exp( -(log(x(ind))-mu).^2/(2*sigma^2) )./(sqrt(2*pi)*sigma*x(ind));

@@ -4,7 +4,7 @@ function unittest_underline
 % Example (<a href="matlab:run_example unittest_underline">run</a>)
 %   unittest_underline
 %
-% See also UNDERLINE, TESTSUITE 
+% See also UNDERLINE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

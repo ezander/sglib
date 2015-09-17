@@ -4,7 +4,7 @@ function unittest_options
 % Example (<a href="matlab:run_example unittest_options">run</a>)
 %   unittest_options
 %
-% See also OPTIONS, TESTSUITE 
+% See also OPTIONS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -19,29 +19,40 @@ function unittest_options
 
 munit_set_function( 'varargin2options' );
 
+internal = 'internal__';
+
 % test 1 element varargin for list, cell, struct
 options_exp=struct( 'foo', 1, 'bar', 'baz' );
+
 options_act=varargin2options( {'foo', 1, 'bar', 'baz'} );
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'list' );
 
 options_act=varargin2options( {struct( 'foo', 1, 'bar', 'baz' )} );
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'struct' );
 
 options_act=varargin2options( {{ 'foo', 1, 'bar', 'baz' }} );
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'struct' );
 
 % test 2 element varargin with repetition for list, cell
 
 options_exp=struct( 'foo', 2, 'bar', 'baz' );
+
 options_act=varargin2options( {'foo', 1, 'bar', 'baz', 'foo', 2} );
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'repeat' );
 
 % test empty varargin for list, cell, struct
 options_exp=struct();
+
 options_act=varargin2options({});
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'empty' );
 
 options_act=varargin2options({struct()});
+options_act=rmfield(options_act, internal);
 assert_equals( options_act, options_exp, 'empty_struct' );
 
 

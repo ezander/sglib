@@ -55,7 +55,7 @@ function varargout=funcall( func, varargin )
 %   size( funcall( {@rand, {10,20}, {1,4}}, 30, 40 ) ) % calls rand(10,30,40,20)
 %
 %
-% See also FUNCREATE, CELL, ISFUNCTION, VARARGIN, VARARGOUT, FEVAL
+% See also FUNCREATE, DISP_FUNC, CELL, ISFUNCTION, VARARGIN, VARARGOUT, FEVAL
 
 %   Elmar Zander
 %   Copyright 2006, 2009, 2013, Institute of Scientific Computing, TU Braunschweig.

@@ -34,8 +34,3 @@ assert_equals( hermite_val( [0 2 0], x), 2*x, 'H2' );
 assert_equals( hermite_val( [0 0 2], x), 2*(x.^2-1), 'H3' );
 assert_equals( hermite_val( [0 0 0 3], x), 3*(x.^3-3*x), 'H4' );
 assert_equals( hermite_val( [0 0 0 0 4], x), 4*(x.^4-6*x.^2+3), 'H5' );
-
-assert_equals( hermite_val( [0 0 2]', x), 2*(x.^2-1), 'H3_trans1' );
-x=x';
-assert_equals( hermite_val( [0 0 2], x), 2*(x.^2-1), 'H3_trans2' );
-assert_equals( hermite_val( [0 0 2]', x), 2*(x.^2-1), 'H3_trans3' );

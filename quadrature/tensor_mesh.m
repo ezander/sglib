@@ -3,17 +3,20 @@ function [xd,wd] = tensor_mesh(x1,w1)
 %   [XD,WD] = TENSOR_MESH(X1,W1) creates a tensor product rule from D 1D rules
 %   contained in the cell arrays X1 and W1.
 %
-% Example (<a href="matlab:run_example tensor_mesh">run</a>)
+% Example 1 (<a href="matlab:run_example tensor_mesh 1">run</a>)
 %   [x1,w1] = gauss_hermite_rule(10);
 %   [x2,w2] = gauss_hermite_rule(12);
-%   [xd,wd] = tensor_mesh({x1,x2},{w1,w2})
+%   [xd,wd] = tensor_mesh({x1,x2},{w1,w2});
 %   subplot(2,2,1)
 %   plot(xd(1,:),xd(2,:),'*k')
 %   ns=[length(w1),length(w2)];
 %   subplot(2,2,2)
+%
 %   stem3(xd(1,:),xd(2,:),wd,'fill')
 %   subplot(2,2,3)
 %   surf(reshape(xd(1,:),ns),reshape(xd(2,:),ns),reshape(wd,ns))
+%   subplot(2,2,4)
+%   surf(reshape(xd(1,:),ns),reshape(xd(2,:),ns),reshape(log(wd/max(wd))/log(10),ns))
 %
 % See also SMOLYAK_GRID, FULL_TENSOR_GRID
 

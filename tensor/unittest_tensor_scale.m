@@ -1,5 +1,5 @@
 function unittest_tensor_scale
-% UNITTEST_TENSOR_SCALE Test the TENSOR functions.
+% UNITTEST_TENSOR_SCALE Test the TENSOR_SCALE functions.
 %
 % Example (<a href="matlab:run_example unittest_tensor_scale">run</a>)
 %    unittest_tensor_scale
@@ -21,6 +21,9 @@ function unittest_tensor_scale
 % testing function TENSOR_SCALE
 munit_set_function( 'tensor_scale' );
 
+T=rand(3,4,5);
+assert_equals( tensor_scale(T, 5), 5*T, 'scale_full' )
+
 T={rand(8,2), rand(10,2)};
 S=tensor_scale(T,-3);
 assert_equals( S{1}*S{2}', -3*T{1}*T{2}', 'scale' )
@@ -32,4 +35,7 @@ assert_equals( cellfun('size', Z, 2 ), [0,0], 'scale_zero_dim' );
 T={rand(8,2), rand(10,2), rand(12,2)};
 Z=tensor_scale(T,2);
 assert_equals( Z, {2*T{1},T{2},T{3}}, 'scale_ord_three' );
+
+assert_error( 'tensor_scale(struct(),2)', '.*param.*', 'param_err' );
+
 

@@ -23,7 +23,7 @@ function func = funcreate(func_handle, varargin)
 %    fprintf('Evaluating %s at (%g, %g) gives %g\n', disp_func(func), ...
 %            x1, x2, funcall(func, x1, x2))
 %
-% See also FUNCALL, FUNCALL_FUNFUN, FUNARG, ELLIPSIS
+% See also FUNCALL, FUNCALL_FUNFUN, FUNARG, ELLIPSIS, DISP_FUNC
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

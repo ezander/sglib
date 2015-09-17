@@ -4,7 +4,7 @@ function unittest_trapezoidal_rule
 % Example (<a href="matlab:run_example unittest_trapezoidal_rule">run</a>)
 %   unittest_trapezoidal_rule
 %
-% See also TRAPEZOIDAL_RULE, TESTSUITE 
+% See also TRAPEZOIDAL_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -35,3 +35,9 @@ for i = 1:5
     x2 = trapezoidal_nested(i+1);
     assert_true(all(ismember(x1, x2)), [], sprintf('is_nested_%d', i));
 end
+
+
+[x0,w0] = trapezoidal_rule(4);
+[x,w] = trapezoidal_rule(4, 'interval', [0, 1]);
+assert_equals(x, (x0+1)/2, 'shifted_x');
+assert_equals(w, w0/2, 'shifted_w');

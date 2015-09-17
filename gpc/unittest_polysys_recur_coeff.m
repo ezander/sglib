@@ -4,7 +4,7 @@ function unittest_polysys_recur_coeff
 % Example (<a href="matlab:run_example unittest_polysys_recur_coeff">run</a>)
 %   unittest_polysys_recur_coeff
 %
-% See also POLYSYS_RECUR_COEFF, TESTSUITE
+% See also POLYSYS_RECUR_COEFF, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig

@@ -4,7 +4,7 @@ function unittest_gpc_evaluate
 % Example (<a href="matlab:run_example unittest_gpc_evaluate">run</a>)
 %   unittest_gpc_evaluate
 %
-% See also GPC_EVALUATE, TESTSUITE 
+% See also GPC_EVALUATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig.
@@ -92,7 +92,7 @@ assert_equals( actual, expect, 'H_val' );
 I_a=multiindex( 2, 3 );
 a_i_alpha=eye(size(I_a,1));
 V_a = {'P', I_a};
-xi=gpc_sample(V_a, 7);
+xi=gpcgerm_sample(V_a, 7);
 a12 = gpc_evaluate(a_i_alpha, V_a, xi);
 a1 = gpc_evaluate(a_i_alpha, {'P', I_a(:,1)}, xi(1,:));
 a2 = gpc_evaluate(a_i_alpha, {'P', I_a(:,2)}, xi(2,:));
@@ -102,7 +102,7 @@ assert_equals(a12, a1 .* a2, 'non-mixed');
 I_a=multiindex( 2, 3 );
 a_i_alpha=eye(size(I_a,1));
 V_a = {'hp', I_a};
-xi=gpc_sample(V_a, 7);
+xi=gpcgerm_sample(V_a, 7);
 a12 = gpc_evaluate(a_i_alpha, V_a, xi);
 a1 = gpc_evaluate(a_i_alpha, {'h', I_a(:,1)}, xi(1,:));
 a2 = gpc_evaluate(a_i_alpha, {'p', I_a(:,2)}, xi(2,:));

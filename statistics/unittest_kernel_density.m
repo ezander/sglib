@@ -4,7 +4,7 @@ function unittest_kernel_density
 % Example (<a href="matlab:run_example unittest_kernel_density">run</a>)
 %   unittest_kernel_density
 %
-% See also KERNEL_DENSITY, TESTSUITE 
+% See also KERNEL_DENSITY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -30,3 +30,9 @@ assert_equals( p(:,1), normal_pdf( x(:,1), 0, 1 ), 'normal', 'abstol', 0.02, 'fu
 % remark: performs pretty bad for distributions with jumps like the uniform
 % distribution since it is smoothing there too much)
 assert_equals( p(:,2), uniform_pdf( x(:,2), -2, 0 ), 'uniform', 'abstol', 0.2, 'fuzzy', true ); 
+
+% this checks for the existence of a bug that overwrote the value of n and
+% caused kernel_density to become very slow for large data sets
+xn = rand(120,1);
+[x,p]=kernel_density(xn, 27);
+assert_equals(size(x), [27,1], 'size');

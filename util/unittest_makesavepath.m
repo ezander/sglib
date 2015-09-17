@@ -4,7 +4,7 @@ function unittest_makesavepath
 % Example (<a href="matlab:run_example unittest_makesavepath">run</a>)
 %   unittest_makesavepath
 %
-% See also MAKESAVEPATH, TESTSUITE 
+% See also MAKESAVEPATH, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

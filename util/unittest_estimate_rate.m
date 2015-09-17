@@ -4,7 +4,7 @@ function unittest_estimate_rate
 % Example (<a href="matlab:run_example unittest_estimate_rate">run</a>)
 %   unittest_estimate_rate
 %
-% See also ESTIMATE_RATE, TESTSUITE 
+% See also ESTIMATE_RATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing, TU Braunschweig

@@ -3,7 +3,7 @@ function [k,err]=schattenp_truncate( sigma, eps, rel, p, maxk )
 if nargin<5
     maxk=inf;
 end
-if length(sigma)==0
+if isempty(sigma)
     k=0;
     err=0;
     return;
@@ -20,12 +20,7 @@ if isfinite(p)
     errp=flipud([0; csp(1:end-1)]);
     k=find(errp<=tol,1,'first');
     k=min(k,maxk);
-    
-    if k<=length(sigma)
-        err=(errp(k)/csp(end))^(1/p);
-    else
-        err=0;
-    end
+    err=(errp(k)/csp(end))^(1/p);
 else
     if rel; 
         eps=eps*max(sigma); 

@@ -4,7 +4,7 @@ function unittest_hammersley_set
 % Example (<a href="matlab:run_example unittest_hammersley_set">run</a>)
 %   unittest_hammersley_set
 %
-% See also HAMMERSLEY_SET, TESTSUITE 
+% See also HAMMERSLEY_SET, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

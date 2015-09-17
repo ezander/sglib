@@ -38,7 +38,7 @@ if nargin<1 || isempty(fun_name)
         end
     end
     if isempty(fun_name)
-        warning('could not determine function name from stack'); %#ok
+        warning('sglib:munit', 'could not determine function name from stack');
         fun_name='<unknown>';
     end
 end

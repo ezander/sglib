@@ -20,10 +20,10 @@ function Z=tensor_multiply( X, Y, xdim, ydim )
 %   Z3=tensor_multiply( X, Y, [2 1], [3 2] );
 %   disp( size(Z3) ); % should be [4,5,2]
 %
-% See also TENSOR_ADD, TENSOR_SCALE
+% See also CTENSOR_ADD, CTENSOR_SCALE
 
 %   Elmar Zander
-%   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
+%   Copyright 2009-2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

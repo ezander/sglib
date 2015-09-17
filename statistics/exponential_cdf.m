@@ -24,5 +24,5 @@ function y=exponential_cdf( x, lambda )
 
 
 y=zeros(size(x));
-p=(x>=0);
-y(p)=1-exp( -lambda*x(p) );
+ind=(x>=0);
+y(ind)=1-exp( -lambda*x(ind) );

@@ -11,9 +11,9 @@ check_unsupported_options( options, mfilename );
 %A0=A(1,:);
 %AR=A(2:end,:);
 
-null_vector=@tensor_null;
-add=@tensor_add;
-truncate=@tensor_truncate;
+null_vector=@ctensor_null;
+add=@ctensor_add;
+truncate=@ctensor_truncate;
 prec_solve=@tensor_operator_solve_elementary;
 apply_operator=@tensor_operator_apply;
 
@@ -79,11 +79,11 @@ A0=A(1,:);
 AR=A(2:end,:);
 norm_A0=tensor_operator_normest( AR ); % need to relate the truncation epsilons depending on when truncation is performed
 
-X=tensor_null(F);
+X=ctensor_null(F);
 
 
 R=compute_residual( A0, AR, X, F, truncate_options );
-norm_R0=tensor_norm( R );
+norm_R0=ctensor_norm( R );
 norm_R=norm_R0;
 
 flag=0;
@@ -108,7 +108,7 @@ while norm_R>tol
         end
 
         R=compute_residual( A0, AR, Z, F, truncate_options );
-        norm_R_new=tensor_norm( R );
+        norm_R_new=ctensor_norm( R );
         if norm_R_new>norm_R
             relax=relax/2;
             if relax<1e-2
@@ -143,11 +143,11 @@ relres=norm_R/norm_R0;
 
 function R=compute_residual( A0, AR, X, F, truncate_opts )
 R=F;
-R=tensor_add( R, tensor_operator_apply_elementary( A0, X ), -1 );
-R=tensor_truncate( R, truncate_opts );
+R=ctensor_add( R, tensor_operator_apply_elementary( A0, X ), -1 );
+R=ctensor_truncate( R, truncate_opts );
 for i=1:size(AR,1)
-    R=tensor_add( R, tensor_operator_apply_elementary( AR(i,:), X ), -1 );
-    R=tensor_truncate( R, truncate_opts );
+    R=ctensor_add( R, tensor_operator_apply_elementary( AR(i,:), X ), -1 );
+    R=ctensor_truncate( R, truncate_opts );
 end
 
 
@@ -156,8 +156,8 @@ Y=tensor_solve( A0, F );
 for i=1:size(AR,1)
     S=tensor_operator_apply_elementary( AR(i,:), X );
     S=tensor_solve( A0, S );
-    Y=tensor_add( Y, S, -1 );
-    Y=tensor_truncate( Y, truncate_opts );
+    Y=ctensor_add( Y, S, -1 );
+    Y=ctensor_truncate( Y, truncate_opts );
 end
 
 
@@ -165,13 +165,13 @@ function Y=jacobi_step_alg2( X, A0, AR, F, truncate_opts )
 Y=F;
 for i=1:size(AR,1)
     S=tensor_operator_apply_elementary( AR(i,:), X );
-    Y=tensor_add( Y, S, -1 );
-    Y=tensor_truncate( Y, truncate_opts );
+    Y=ctensor_add( Y, S, -1 );
+    Y=ctensor_truncate( Y, truncate_opts );
 end
 Y=tensor_solve( A0, Y );
 
 
 function Z=relax_update( X, Y, relax, truncate_opts )
-Z=tensor_add( Y, Y, relax-1 );
-Z=tensor_add( Z, X, 1-relax );
-Z=tensor_truncate( Z, truncate_opts  );
+Z=ctensor_add( Y, Y, relax-1 );
+Z=ctensor_add( Z, X, 1-relax );
+Z=ctensor_truncate( Z, truncate_opts  );

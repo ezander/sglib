@@ -59,15 +59,20 @@ addpath( fullfile( basepath, 'gpc') );
 addpath( fullfile( basepath, 'statistics') );
 addpath( fullfile( basepath, 'sampling') );
 addpath( fullfile( basepath, 'plotting') );
-addpath( fullfile( basepath, 'solver') );
-addpath( fullfile( basepath, 'tensor') );
 addpath( fullfile( basepath, 'linalg') );
+addpath( fullfile( basepath, 'tensor') );
+addpath( fullfile( basepath, 'operator') );
+addpath( fullfile( basepath, 'solver') );
 addpath( fullfile( basepath, 'sfem') );
 addpath( fullfile( basepath, 'fem') );
 addpath( fullfile( basepath, 'fem', 'simplefem') );
 addpath( fullfile( basepath, 'fem', 'pdetool') );
 addpath( fullfile( basepath, 'util', 'paramstudy') )
 
+addpath( fullfile( basepath, 'objects') );
+addpath( fullfile( basepath, 'objects', 'operators') );
+addpath( fullfile( basepath, 'objects', 'statistics') );
+addpath( fullfile( basepath, 'objects', 'bases') );
 
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )

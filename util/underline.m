@@ -8,6 +8,8 @@ function str=underline( s, varargin )
 % Options:
 %   char: '='
 %     The character used for underlining the string.
+%   newlines: 0
+%     Number of newlines to output before the underlined string;
 %
 % Example (<a href="matlab:run_example underline">run</a>)
 %   M=rand(2);
@@ -29,10 +31,20 @@ function str=underline( s, varargin )
 
 options=varargin2options( varargin );
 [uchar,options]=get_option( options, 'char', '=' );
+[minwidth,options]=get_option( options, 'minwidth', 0 );
+[newlines,options]=get_option( options, 'newlines', 0 );
 check_unsupported_options( options, mfilename );
 
+nl='';
+if newlines
+    nl = repmat(sprintf('\n'), 1, newlines);
+end
+
 n=length(s);
-s=sprintf( '%s\n%s', s, repmat( uchar, 1, n ) );
+trimleft = max(floor((minwidth-n)/2), 0);
+trimright = max(minwidth-n-trimleft,0);
+
+s=sprintf( '%s%s%s%s\n%s', nl, repmat(' ', 1, trimleft), s, repmat(' ', 1, trimright), repmat( uchar, 1, max(n,minwidth) ) );
 if nargout==0
     disp( s )
 else

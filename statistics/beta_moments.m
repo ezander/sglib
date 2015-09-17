@@ -1,6 +1,6 @@
 function [mean,var,skew,kurt]=beta_moments(a,b)
 % BETA_MOMENTS Compute moments of the beta distribution.
-%   [VAR,MEAN,SKEW,KURT]=BETA_MOMENTS( A, B ) computes the moments of the
+%   [MEAN,VAR,SKEW,KURT]=BETA_MOMENTS( A, B ) computes the moments of the
 %   beta distribution.
 %
 % Example (<a href="matlab:run_example beta_moments">run</a>)

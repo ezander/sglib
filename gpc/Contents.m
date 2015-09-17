@@ -45,38 +45,50 @@
 %     * better performance for mixed case by caching over polynomials
 %       systems
 %
-% Files
-%
 % GPC functions (high level)
-%   gpcbasis_create              - Short description of gpcspace_create.
-%   gpcbasis_size                - Return the size of the GPC basis.
-%   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
+%   gpc_cdf_1d                   - Comute CDF of univariate GPC.
+%   gpc_combine_inputs           - Combines input paramteres or fields into one GPC space.
 %   gpc_covariance               - Compute covariance matrix between GPC variables.
 %   gpc_evaluate                 - Evaluate a GPC at a given number of sample points.
-%   gpc_integrate                - Short description of gpc_integrate.
+%   gpc_integrate                - Integrate over GPC space or generate integration points.
 %   gpc_moments                  - Calculate the statistical moments of a distribution given as GPC.
-%   gpc_norm                     - Compute the norm of the system of GPC polynomials.
+%   gpc_param_expand             - Computes GPC expansion of an input parameter.
 %   gpc_partial_eval             - Partially evaluates a GPC and returns the reduced GPC.
-%   gpc_sample                   - Draw samples from a GPC.
-%   gpc_triples                  - Computation of the expectation of triple products of gpc polynomials.
-%   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
-%   unittest_gpcbasis_size       - Test the GPCBASIS_SIZE function.
-%   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
+%   gpc_pdf_1d                   - Comute PDF of univariate GPC.
+%   gpcbasis_triples                  - Computation of the expectation of triple products of GPC polynomials.
+%   gpcbasis_create              - Create representation of a GPC space/basis.
+%   gpcbasis_evaluate            - Evaluates the GPC basis functions at given points.
+%   gpcbasis_norm                - Compute the norm of the system of GPC basis polynomials.
+%   gpcbasis_size                - Return the size of the GPC basis.
+%   gpcgerm_cdf                  - Computes the joint CDF of the GPC germ.
+%   gpcgerm_pdf                  - Computes the joint PDF of the GPC germ.
+%   gpcgerm_sample               - Draw samples from a GPC germ.
+%   unittest_gpc_cdf_1d          - Test the GPC_CDF_1D function.
+%   unittest_gpc_combine_inputs  - Test the GPC_COMBINE_INPUTS function.
 %   unittest_gpc_covariance      - Test the GPC_COVARIANCE function.
 %   unittest_gpc_evaluate        - Test the GPC_EVALUATE function.
 %   unittest_gpc_integrate       - Test the GPC_INTEGRATE function.
 %   unittest_gpc_moments         - Test the GPC_MOMENTS function.
-%   unittest_gpc_norm            - Test the GPC_NORM function.
+%   unittest_gpc_param_expand    - Test the GPC_PARAM_EXPAND function.
 %   unittest_gpc_partial_eval    - Test the GPC_PARTIAL_EVAL function.
-%   unittest_gpc_sample          - Test the GPC_SAMPLE function.
-%   unittest_gpc_triples         - Test the GPC_TRIPLES function.
+%   unittest_gpc_pdf_1d          - Test the GPC_PDF_1D function.
+%   unittest_gpcbasis_triples         - Test the GPCBASIS_TRIPLES function.
+%   unittest_gpcbasis_create     - Test the GPCBASIS_CREATE function.
+%   unittest_gpcbasis_evaluate   - Test the GPCBASIS_EVALUATE function.
+%   unittest_gpcbasis_norm       - Test the GPCBASIS_NORM function.
+%   unittest_gpcbasis_size       - Test the GPCBASIS_SIZE function.
+%   unittest_gpcgerm_cdf         - Test the GPCGERM_CDF function.
+%   unittest_gpcgerm_pdf         - Test the GPCGERM_PDF function.
+%   unittest_gpcgerm_sample      - Test the GPCGERM_SAMPLE function.
 % 
 % Polysys functions (low level)
-%   polysys_int_rule             - Short description of polysys_int_rule.
+%   polysys_dist                 - Get the associated distribution for a polynomial system.
+%   polysys_int_rule             - Compute the integration rule for a given system of polynomials.
 %   polysys_rc2coeffs            - Generate polynomial coefficients from recurrence.
 %   polysys_recur_coeff          - Compute recurrence coefficient of orthogonal polynomials.
 %   polysys_sample_rv            - Sample from a probability distribution.
-%   polysys_sqnorm               - POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+%   polysys_sqnorm               - Compute the square norm of the orthogonal polynomials.
+%   unittest_polysys_dist        - Test the POLYSYS_DIST function.
 %   unittest_polysys_int_rule    - Test the POLYSYS_INT_RULE function.
 %   unittest_polysys_recur_coeff - Test the POLYSYS_RECUR_COEFF function.
 %   unittest_polysys_sample_rv   - Test the POLYSYS_SAMPLE_RV function.
@@ -84,7 +96,7 @@
 %
 
 %   Elmar Zander
-%   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2012-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -93,4 +105,3 @@
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
-

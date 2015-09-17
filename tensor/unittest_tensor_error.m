@@ -4,7 +4,7 @@ function unittest_tensor_error
 % Example (<a href="matlab:run_example unittest_tensor_error">run</a>)
 %   unittest_tensor_error
 %
-% See also TENSOR_ERROR, TESTSUITE 
+% See also TENSOR_ERROR, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -19,25 +19,25 @@ function unittest_tensor_error
 
 munit_set_function( 'tensor_error' );
 
+
+TA=rand(4,1);
+TE=rand(4,1);
+DT=TE-TA;
+assert_equals( tensor_error(TA, TE), norm(DT,2), 'norm2' );
+assert_equals( tensor_error(TA, TE, 'relerr', true), norm(DT,2)/norm(TE,2), 'relnorm2' );
+
+
+L=rand(4,4);
+G=L*L';
+assert_equals( tensor_error(TA, TE, 'G', G), sqrt(DT'*G*DT), 'normG' );
+assert_equals( tensor_error(TA, TE, 'G', G, 'relerr', true), sqrt(DT'*G*DT)/sqrt(TE'*G*TE), 'relnormG' );
+
+% Separated
 TA={rand(4,2), rand(5,2)};
 DT={rand(4,1), rand(5,1)};
-TE=tensor_add( TA, DT );
+TE=ctensor_add( TA, DT );
 L1=rand(4,4);
 L2=rand(5,5);
 G={L1*L1', L2*L2'};
-assert_equals( tensor_error(TA, TE), tensor_norm(DT), 'canon' );
-assert_equals( tensor_error(TA, TE, 'G', G), tensor_norm(DT, G), 'canonG' );
-
-%
-M=53;
-N=47;
-R=13;
-randn('seed', 1018663534 );
-%format short g
-for d=10.^(-3:-1:-10)
-    T1=create_test_tensor( M, N, R );
-    T2=perturb_test_tensor( T1, d );
-    T1mat=tensor_to_array(T1);
-    T2mat=tensor_to_array(T2);
-    assert_equals( tensor_error( T1, T2 ), gvector_error( T1mat, T2mat ), 'small_err', 'abstol', 1e-14 );
-end
+assert_equals( tensor_error(TA, TE), ctensor_norm(DT), 'canon' );
+assert_equals( tensor_error(TA, TE, 'G', G), ctensor_norm(DT, G), 'canonG' );

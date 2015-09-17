@@ -6,6 +6,8 @@ function assert_true( bool_val, message, assert_id  )
 %   For a description of OPTIONS see ASSERT.
 %
 % Example (<a href="matlab:run_example assert_true">run</a>)
+%   % The following assertion fails.
+%   x=-19;
 %   assert_true( x>0, 'x must be a positive number' );
 %
 % See also ASSERT_FALSE, ASSERT_EQUALS
@@ -24,6 +26,9 @@ function assert_true( bool_val, message, assert_id  )
 
 if nargin<3
     assert_id='';
+end
+if nargin<2
+    message='Assertion failed (no message specified).';
 end
 
 result_list={};

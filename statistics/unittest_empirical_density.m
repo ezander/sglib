@@ -4,7 +4,7 @@ function unittest_empirical_density
 % Example (<a href="matlab:run_example unittest_empirical_density">run</a>)
 %   unittest_empirical_density
 %
-% See also EMPIRICAL_DENSITY, TESTSUITE 
+% See also EMPIRICAL_DENSITY, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig

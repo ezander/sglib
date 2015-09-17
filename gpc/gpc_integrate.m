@@ -1,5 +1,5 @@
 function [int, w]=gpc_integrate(func, V, p, varargin)
-% GPC_INTEGRATE Short description of gpc_integrate.
+% GPC_INTEGRATE Integrate over GPC space or generate integration points.
 %   INT=GPC_INTEGRATE(FUNC, V, P, OPTIONS) integrate the function FUNC over
 %   the given GPC space V with an integration rule of order P. The grid can
 %   be specified via the option 'grid' and defaults to 'smolyak'. The
@@ -14,7 +14,7 @@ function [int, w]=gpc_integrate(func, V, p, varargin)
 % Example 1: (<a href="matlab:run_example gpc_integrate 1">run</a>)
 %   I_a = multiindex(3,4);
 %   a_i_alpha = rand(10, size(I_a, 1));
-%   gpc_integrate(@(x,a)(a), {'h',I_a}, 5, 'gpc_coeffs', a_i_alpha)
+%   gpc_integrate(@(a)(a), {'h',I_a}, 5, 'gpc_coeffs', a_i_alpha)
 %
 %   gpc_integrate(@(x)(sin(x(1)+x(2))), {'hl',[0,0]}, 5, 'grid', 'smolyak', 'vectorized', false)
 %   gpc_integrate(@(x)(sin(x(1,:)+x(2,:))), {'hl',[0,0]}, 5, 'grid', 'smolyak')
@@ -41,7 +41,7 @@ function [int, w]=gpc_integrate(func, V, p, varargin)
 %   plot(x(1,:),x(2,:),'x'); axis('square');
 %   title('Semicircle/Chebyshev_U')
 %
-% See also GPC, FUNCALL, GPC_EVALUATE, GPC_SAMPLE, GPC_MOMENTS
+% See also GPC, FUNCALL, GPC_EVALUATE, GPCGERM_SAMPLE, GPC_MOMENTS
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

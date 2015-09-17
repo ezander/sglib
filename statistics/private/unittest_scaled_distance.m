@@ -4,7 +4,7 @@ function unittest_scaled_distance
 % Example (<a href="matlab:run_example unittest_covariance_funcs">run</a>)
 %   unittest_covariance_funcs
 %
-% See also COVARIANCE_FUNCS, TESTSUITE 
+% See also COVARIANCE_FUNCS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

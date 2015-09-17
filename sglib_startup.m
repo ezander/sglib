@@ -41,9 +41,26 @@ addpath( basepath );
 is_octave=exist('octave_config_info', 'builtin');
 sglib_addpath( basepath, false, is_octave );
 
-% put stuff in appdata
+% locate the settings file (first in user's home dir, than in sglib path)
 appdata.basepath=basepath;
-appdata.settings_file=fullfile( basepath, 'sglib.settings' );
+homedir = getenv('HOME');
+settings_basename = 'sglib.settings';
+
+% The algorithm is like follows: if there is alread a settings file in the
+% sglib base directory that is used, if not, but there is one in the users
+% home directory that one is used, is there is still none one will be
+% created in the sglib base directory
+settings_file = fullfile(basepath, settings_basename);
+if ~exist(settings_file, 'file')
+    settings_file = fullfile(homedir, settings_basename);
+    if ~exist(settings_file, 'file')
+        settings_file = fullfile(basepath, settings_basename);
+    end
+end
+appdata.settings_file=settings_file;
+
+
+% put stuff in appdata
 sglib_set_appdata( appdata );
 
 % do some init stuff depending on matlab/octave version
@@ -62,6 +79,7 @@ if appdata.settings.show_greeting
     for msg = msgs
         fprintf( '%s\n', msg{1} );
     end
+    fprintf( '\nSettings file: %s\n', appdata.settings_file );
     fprintf( '\nChecking toolboxes:\n' );
 end
 

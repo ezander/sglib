@@ -41,7 +41,9 @@ end
 
 deps={};
 while ~isempty(funs)
+    s = warning('off', 'MATLAB:DEPFUN:DeprecatedAPI');
     imdeps=depfun( funs, '-toponly', '-quiet' );
+    warning(s);
     exclude=strmatch( excludepath, imdeps );
     imdeps(exclude)=[];
     funs=setdiff(imdeps,deps);

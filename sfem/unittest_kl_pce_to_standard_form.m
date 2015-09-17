@@ -4,7 +4,7 @@ function unittest_kl_pce_to_standard_form
 % Example (<a href="matlab:run_example unittest_kl_pce_to_standard_form">run</a>)
 %   unittest_kl_pce_to_standard_form
 %
-% See also KL_PCE_TO_STANDARD_FORM, TESTSUITE 
+% See also KL_PCE_TO_STANDARD_FORM, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

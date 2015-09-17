@@ -1,10 +1,22 @@
-function y=pce_cdf_1d( x, X_alpha, I_X )
+function y=pce_cdf_1d( xi, X_alpha, I_X )
 % PCE_CDF_1D Compute cumulative distribution for univariate PCE.
-%   PCE_CDF_1D Long description of pce_cdf_1d.
+%   Y=PCE_CDF_1D( XI, X_ALPHA, I_X ) computes the cumulative distribution
+%   function (CDF) of X_ALPHA at the points XI. This function works only
+%   for univariate PCEs, i.e. the PCE may only depend on one Gaussian
+%   random variable.
 %
 % Example (<a href="matlab:run_example pce_cdf_1d">run</a>)
+%   % Recover a Chi-squared cdf from a PCE
+%   X_alpha=[1, 0, 1];
+%   I_X=multiindex(1, 2);
+%   xi = linspace(0, 5, 20);
+%   y=pce_cdf_1d(xi, X_alpha, I_X );
+%   hold off;
+%   plot(xi,y); hold all;
+%   y=chisquared_cdf(xi,1);
+%   plot(xi, y, '-..'); hold off;
 %
-% See also
+% See also PCE_PDF_1D
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig
@@ -17,34 +29,5 @@ function y=pce_cdf_1d( x, X_alpha, I_X )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~size(I_X,2)==1
-    error( 'pce_cdf_1d:dim_error', 'function works only for univariate PCE variables' )
-end
-
-
-n=size(X_alpha,1)-1;
-h=hermite( n, true );
-p=X_alpha'*h;
-
-y=x;
-for i=1:length(x(:))
-    q=p;
-    q(end)=q(end)-x(i);
-    r=roots( q );
-    r=sort(r(imag(r)==0));
-    
-    sign_minf=sign(p(1))*(1-2*mod(n,2));
-    if sign_minf<0
-        r=[-inf; r]; %#ok<AGROW>
-    end
-    
-    sign_inf=sign(p(1));
-    if sign_inf<0
-        r=[r; inf]; %#ok<AGROW>
-    end
-    
-    y(i)=0;
-    for k=1:2:length(r)
-        y(i)=y(i)+normal_cdf(r(k+1))-normal_cdf(r(k));
-    end
-end
+V=gpcbasis_create('H', 'I', I_X);
+y=gpc_cdf_1d(X_alpha, V, xi);

@@ -1,24 +1,28 @@
 function [x,w]=gauss_legendre_rule(p)
 % GAUSS_LEGENDRE_RULE Get Gauss points and weights for quadrature over [-1,1].
-%   [X,W]=GAUSS_LEGENDRE_RULE( P ) returns the Gauss-Hermite quadrature
+%   [X,W]=GAUSS_LEGENDRE_RULE( P ) returns the Gauss-Legendre quadrature
 %   rule of order 2*p (exact for polynomial for degree less or equal to
 %   2p-1). X contains the quadrature points and W contains the weights of
 %   the quadrature rule.
 %
+% Note: This method is pretty old and works with pre-computed nodes and
+%   weights up to order 9. If you need arbitrary order, please take a look
+%   at the GPC integration functions.
+%
 % Example (<a href="matlab:run_example gauss_legendre_rule">run</a>)
 %   [x,w]=gauss_legendre_rule( 3 ); % can integrate exactly for d<=5
+%   a=rand(1,d+1); % random coefficients
+%   b=polyint(a);  % integrate polynomial
+%   I=polyval(b,1)-polyval(b,-1);
 %   for d=0:7 % degree of polynomial
-%     a=rand(1,d+1); % random coefficients
-%     b=polyint(a);  % integrate
-%     I=polyval(b,1)-polyval(b,-1);
-%     Ip=w'*polyval(a,x);
-%     fprintf( '%1d: err=%g\n', d, abs(I-Ip) );
+%     Ip=polyval(a,x)*w;
+%     fprintf( 'p=%1d: err=%6.4f exact=%d\n', d, abs(I-Ip), d<=5);
 %   end
-
-% TODO: should work for arbitrary p
+% 
+% See also GAUSS_HERMITE_RULE, GPC_INTEGRATE
 
 %   Elmar Zander
-%   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2006-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

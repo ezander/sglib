@@ -1,5 +1,5 @@
 function nrm2 = polysys_sqnorm(sys, n, method)
-% POLYSYS_NORM Compute the square norm of the orthogonal polynomials.
+% POLYSYS_SQNORM Compute the square norm of the orthogonal polynomials.
 %   NRM2 = POLYSYS_SQNORM(SYS, N) computes the square of the norm NRM2 of the
 %   system of orthogonal polynomials given by SYS for the degree N. If N is
 %   a vector a vector of square norms NRM is returned with the same shape.
@@ -13,7 +13,7 @@ function nrm2 = polysys_sqnorm(sys, n, method)
 %   disp(rats(polysys_sqnorm('P', 0:5),4));
 %   disp(rats(polysys_sqnorm('p', 0:5),4));
 %
-% See also GPC_NORM
+% See also GPCBASIS_NORM
 
 %   Elmar Zander
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig
@@ -69,8 +69,8 @@ function nrm2 = polysys_sqnorm_by_quad(sys, I)
 % POLYSYS_NORM_BY_QUAD Compute the square norm by Gauss quadrature.
 n = max(I(:));
 [x,w] = polysys_int_rule(sys, n+1);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x');
-nrm2 = (y.*y)*w';
+y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+nrm2 = (y.*y)*w;
 nrm2 = reshape(nrm2(I+1), size(I));
 
 function nrm2 = polysys_sqnorm_by_rc(sys, I)

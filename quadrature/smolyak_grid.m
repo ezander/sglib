@@ -29,14 +29,14 @@ function [xd,wd]=smolyak_grid( d, stages, oned_rule_func, varargin )
 %       plot(xd(1,:),xd(2,:),'*k')
 %       subtitle( func2str( rule{1} ), 'interpreter', 'none' );
 %     end
-%     pause( 2 )
+%     userwait
 %     for i=1:4
 %       [xd,wd]=smolyak_grid( 3, 3+i, rule );
 %       subplot(2,2,i);
 %       plot3(xd(1,:),xd(2,:),xd(3,:),'.k')
 %       subtitle( func2str( rule{1} ), 'interpreter', 'none' );
 %     end
-%     pause( 2 )
+%     userwait
 %   end
 %
 % See also FULL_TENSOR_GRID
@@ -103,17 +103,17 @@ I=cell2mat(I(max(0,stages-d)+1:end)')+1;
 for i=1:size(I,1)
 
     alpha = I(i,:);
-    alpha_sum = sum(alpha);
 
     tmp_x1 = cell(d,1);
     tmp_w1 = cell(d,1);
     for j=1:d
-        stage  = alpha(j);
-        tmp_x1{j} = x1{j,stage};
-        tmp_w1{j} = w1{j,stage};
+        alpha_j  = alpha(j);
+        tmp_x1{j} = x1{j,alpha_j};
+        tmp_w1{j} = w1{j,alpha_j};
     end
     [tmp_xd,tmp_wd]=tensor_mesh(tmp_x1,tmp_w1);
 
+    alpha_sum = sum(alpha);
     factor=(-1)^(d+stages-1-alpha_sum) * nchoosek(d-1,alpha_sum-stages);
 
     xd=[xd,tmp_xd]; %#ok<AGROW>

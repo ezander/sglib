@@ -24,5 +24,5 @@ function y=exponential_pdf( x, lambda )
 
 
 y=zeros(size(x));
-p=(x>=0);
-y(p)=lambda*exp(-lambda*x(p) );
+ind=(x>=0);
+y(ind)=lambda*exp(-lambda*x(ind) );

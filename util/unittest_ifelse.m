@@ -4,7 +4,7 @@ function unittest_ifelse
 % Example (<a href="matlab:run_example unittest_ifelse">run</a>)
 %   unittest_ifelse
 %
-% See also IFELSE, TESTSUITE 
+% See also IFELSE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

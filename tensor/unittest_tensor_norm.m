@@ -1,5 +1,5 @@
 function unittest_tensor_norm
-% UNITTEST_TENSOR_NORM Test the TENSOR functions.
+% UNITTEST_TENSOR_NORM Test the TENSOR_NORM functions.
 %
 % Example (<a href="matlab:run_example unittest_tensor_norm">run</a>)
 %    unittest_tensor_norm
@@ -7,7 +7,7 @@ function unittest_tensor_norm
 % See also TESTSUITE
 
 %   Elmar Zander
-%   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2007-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

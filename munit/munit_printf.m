@@ -1,10 +1,12 @@
 function munit_printf(type, message, vars)
-% MUNIT_PRINTF Short description of munit_printf.
-%   MUNIT_PRINTF Long description of munit_printf.
+% MUNIT_PRINTF Prints munit messages.
+%   MUNIT_PRINTF(TYPE, MESSAGE, VARS) prints MESSAGE in the command window.
+%   Depending on TYPE and the user setting for output messages ('compact',
+%   'medium' or 'long'), the current line is first overwritten or not.
 %
 % Example (<a href="matlab:run_example munit_printf">run</a>)
 %
-% See also
+% See also SGLIB_SETTINGS, MUNIT_OPTIONS, MUNIT_PROCESS_ASSERT_RESULTS
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing

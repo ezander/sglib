@@ -4,7 +4,7 @@ function unittest_funcreate
 % Example (<a href="matlab:run_example unittest_funcreate">run</a>)
 %   unittest_funcreate
 %
-% See also FUNCREATE, TESTSUITE 
+% See also FUNCREATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig

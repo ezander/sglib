@@ -46,7 +46,7 @@ switch action
                 settings.(setter{2})=setter{3};
             end
         end
-        sglib_set_appdata( settings, 'settings' );
+        do_set( settings, setters, false )
     case 'dialog'
         settings=sglib_get_appdata('settings', struct() );
         settings=settings_dialog( setters, settings, 'title', 'SGLib settings', 'set_callback', @do_set );
@@ -64,7 +64,10 @@ end
 
 
 
-function do_set( settings, setters )
+function do_set( settings, setters, write_to_file )
+if nargin<3
+    write_to_file = true;
+end
 setuserwaitmode( settings.userwaitmode );
 munit_set_debug( settings.munit_jump_debugger );
 
@@ -74,8 +77,10 @@ ind=find( strcmp( 'munit_output', cellfun( @(x)(subsref(x,S)), setters) ), 1, 'f
 oind=find( strcmp( settings.munit_output, setters{ind}{4} ), 1, 'first' )-1;
 munit_options( 'set', 'compact', oind );
 
-settings_file=sglib_get_appdata( 'settings_file' );
-write( settings_file, settings );
+if write_to_file
+    settings_file=sglib_get_appdata( 'settings_file' );
+    write( settings_file, settings );
+end
 sglib_set_appdata( settings, 'settings' );
 
 

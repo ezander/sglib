@@ -4,7 +4,7 @@ function unittest_tensor_size
 % Example (<a href="matlab:run_example unittest_tensor_size">run</a>)
 %   unittest_tensor_size
 %
-% See also TENSOR_SIZE, TESTSUITE 
+% See also TENSOR_SIZE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -19,9 +19,13 @@ function unittest_tensor_size
 
 munit_set_function( 'tensor_size' );
 
+T=rand(3,4,5);
+assert_equals( tensor_size(T), [3,4,5], 'full' )
+
+
 T={rand(8,2), rand(10,2)};
 assert_equals( tensor_size(T), [8,10], 'canonical2' );
 T={rand(8,3), rand(10,3), rand(12,3)};
 assert_equals( tensor_size(T), [8,10,12], 'canonical3' );
 
-assert_error( 'tensor_size(rand(3,4))', '.*param.*', 'wrong_arg' );
+assert_error( 'tensor_size(''foo'')', '.*param.*', 'wrong_arg' );

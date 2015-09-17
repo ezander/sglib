@@ -4,7 +4,7 @@ function unittest_isfunction
 % Example (<a href="matlab:run_example unittest_isfunction">run</a>)
 %   unittest_isfunction
 %
-% See also ISFUNCTION, TESTSUITE 
+% See also ISFUNCTION, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

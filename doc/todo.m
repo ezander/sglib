@@ -1,18 +1,73 @@
 %TODO Contains my personal TODO
 
 
-%% 25 Nov 2013
-% comutation of dual basis in ???
+%% gpc diffusion demo
 
-% move polysys_pdf to gpc, create cdfinv and cdf
-% move mean_var_update to stats
+% show also univariate cdf/pdf stuff
+% maybe split the demo into two or three parts, parameter exp, blackbox,
+% intrusive
+
+
+% TODO: Compare response surface with true response
+% TODO: Show grids for interpolation and projection
+% TODO: Make plotting stuff into a function and explain
+% TODO: Explain interpolation and/or projection shortly and show the code, then explain that that's been put into a function
+% TODO: compare some samples computed directly and per surrogate model
+% TODO: create model_stats(cmd) func (reset, print, ...)
+% TODO: compare to dishis results
+% TODO: create gpcbasis_info function (maybe remove gpcbasis_size)
+
+
+%% 13 Feb 2014
+
+% Help needed for: plot_density, apply_boundary_..., sfem functions, ...
+
+% Make tensor operator or general operator avaible to use in matlab pcg
+% (half done)
+
+% Make some data/extras/... directory where data files, tex files, etc can
+% be put
+
+% Smolyak needs to be able to take funcs, which may clash with
+% specification of multiple rule_funcs
+
+% Create model and methods directories in sglib
+
+% register new gpc types, like (dist, polysys)
+
+% Separate the 1d diffusion model into a parametric model and a "functional
+% model" (try to use solve function with mean values for the preconditioner
+% of pcg).
+
+% remove many of the old hermite_ and pce_ functions, move them to obsolete
+% and issue obsoletion_warnings which may be turned off, implement them in
+% terms of new functions
+
+
+% check results from smolyak in the new demo
+
+
+% There seem to be some problems with the generation of the random fields,
+% as can be seen in demo_rf_expand_pce_sg, need to write unittests for that
+% definitely now.
+
+% Sfem functions should be changed to work with gendists instead of functions
+% handles. Also cov_models should be introduced and used.
+
+% statistics distributions: remove stdnor stuff, keep only in normal, lognormal, and
+% gendist (otherwise compose dynamically), create density_plot,
+% gendist_from_stat_toolbox, after removal of stdnor: change demos and sfem
+% methods to use dists instead of stdnor stuff
+%
+% introduce similar concept for covariances: gencov (or something), from
+% kernel, flags (isotropic, homogeneous), spectral density, ...
+% 
+
+%% 25 Nov 2013
 % move plot_resp to plot_gpc_resp...
+% better heuristics for ranges in plot_resp_surface (take maybe from 
 % need function to check compatibility of gpc's
-% gpcbasis_create should also work with an rvtype, 
 % need function to map polynomials system char's to names
-% insert @default stuff into get_option
-% cleanup the main sglib directory/maybe make some randfield dir?
-% better heuristics for ranges in plot_resp_surface
 
 %% 19 Jun 2013
 
@@ -21,13 +76,8 @@
 
 %% Todos as of 12 Jun 2013
 
-% implement polysys_invcdf  (extract from gpc_sample...)
-% implement all polysys distributions also in statistics (could reuse their
-%    cdf then) (nearly, arcsine and semicircle??? or keep beta???)
 % put kde into stats/private and use in kernel_estimate_fast or something
 % import stiffness matrix functions from fileexchange
-% remove thesis from here and organise as submodule thing
-% to the same with the testing area
 % reorganise the demo area (publish, xiu_book, lecture, ....)
 % move svd_type stuff in linalg into private
 
@@ -65,6 +115,6 @@
 % l2 norm diff with smolyak
 
 % parameter stuff
-% get_param % whick workspace? separate functions? integration with autoloader; cache_script
+% get_param: which workspace? separate functions? integration with autoloader; cache_script
 
 

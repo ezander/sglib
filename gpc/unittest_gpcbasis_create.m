@@ -4,7 +4,7 @@ function unittest_gpcbasis_create
 % Example (<a href="matlab:run_example unittest_gpcbasis_create">run</a>)
 %   unittest_gpcbasis_create
 %
-% See also GPCBASIS_CREATE, TESTSUITE 
+% See also GPCBASIS_CREATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -47,3 +47,8 @@ assert_error(funcreate(@gpcbasis_create, 'pppp', 'm', 3), 'sglib:gpc', 'err_no_m
 % check creation of gpc basis from multiindex set
 V = gpcbasis_create('h', 'I', multiindex(3, 5));
 assert_equals(V, {'h', multiindex(3,5)}, 'I1');
+
+% check creation from existing basis
+V0 = gpcbasis_create('Lph');
+V = gpcbasis_create(V0, 'p', 4);
+assert_equals(V, {'Lph', multiindex(3,4)}, 'polysys4');

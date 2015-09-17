@@ -89,8 +89,8 @@ munit_set_function( 'normal_raw_moments' );
 expected=[1, 0, 1, 0, 3, 0, 15, 0, 105, 0, 945];
 assert_equals( expected, normal_raw_moments( 0:10, 0, 1 ), 'mu0sig1' );
 
-expected=[1.022, 0.2, 8.70382];
-assert_equals( expected, normal_raw_moments( [3;1;5], 0.2, 1.3 ), 'lam0.2T' );
+expected=[-13, -1, -281];
+assert_equals( expected, normal_raw_moments( [3;1;5], 1, 2 ), 'lam0.2T' );
 
 % test default arguments
 assert_equals( normal_raw_moments(0:5), normal_raw_moments(0:5, 0, 1), 'def_12');

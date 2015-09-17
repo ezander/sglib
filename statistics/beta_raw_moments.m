@@ -19,5 +19,6 @@ function m=beta_raw_moments(n, a, b)
 
 m=zeros(size(n));
 for i=1:length(n(:));
-    m(i)=prod(a+(0:n(i)-1))/prod(a+b+(0:n(i)-1));
+    % m(i)=prod(a+(0:n(i)-1))/prod(a+b+(0:n(i)-1));
+    m(i)=prod( (a+(0:n(i)-1)) ./ (a+b+(0:n(i)-1)) );
 end

@@ -12,7 +12,7 @@ function y_alpha_j = gpcbasis_evaluate(V, xi, varargin)
 %   
 % Example (<a href="matlab:run_example gpcbasis_evaluate">run</a>)
 %
-% See also
+% See also GPC_EVALUATE, GPCBASIS_CREATE
 
 %   Elmar Zander
 %   Copyright 2013, Inst. of Scientific Computing, TU Braunschweig
@@ -74,6 +74,6 @@ end
 
 % if dual basis is to be computed
 if dual
-    nrm2 = gpc_norm(V, 'sqrt', false);
+    nrm2 = gpcbasis_norm(V, 'sqrt', false);
     y_alpha_j = binfun(@rdivide, y_alpha_j, nrm2)';
 end

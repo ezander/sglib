@@ -4,7 +4,7 @@ function unittest_kl_estimate_eps
 % Example (<a href="matlab:run_example unittest_kl_estimate_eps">run</a>)
 %   unittest_kl_estimate_eps
 %
-% See also KL_ESTIMATE_EPS, TESTSUITE 
+% See also KL_ESTIMATE_EPS, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

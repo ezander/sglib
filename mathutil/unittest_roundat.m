@@ -4,7 +4,7 @@ function unittest_roundat
 % Example (<a href="matlab:run_example unittest_roundat">run</a>)
 %   unittest_roundat
 %
-% See also ROUNDAT, TESTSUITE 
+% See also ROUNDAT, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing

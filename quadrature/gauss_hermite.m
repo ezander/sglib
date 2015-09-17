@@ -6,12 +6,12 @@ function int=gauss_hermite( func, p )
 %   points are calculated on the fly but stored in a persistent array for
 %   later use. The precision of the coefficients has still to be assessed.
 %
-% Note:
-%   F has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
-% NOTE:
-%   This function is more or less obsolete since INTEGRATE is more general
-%   and not more difficult to use. Will probably be removed in one of the
-%   next versions.
+% Note 1:
+%   FUNC has to be vectorized. Thus instead of @(x)(x*x) write @(x)(x.*x).
+% Note 2:
+%   This function is more or less obsolete since INTEGRATE_1D or the GPC
+%   integration methods are more general and not more difficult to use.
+%   This function will probably be removed in one of the next versions.
 %
 % Example (<a href="matlab:run_example gauss_hermite">run</a>)
 %   fprintf( 'the following should print: %g %g %g\n', 1, 1, exp(.5) );
@@ -19,10 +19,10 @@ function int=gauss_hermite( func, p )
 %   int=gauss_hermite( @(x)(x.*x), 4 ) % => 1
 %   int=gauss_hermite( @exp, 3 ) % => exp(.5)
 %
-% See also GAUSS_HERMITE_RULE
+% See also GAUSS_HERMITE_RULE, INTEGRATE_1D, GPC_INTEGRATE
 
 %   Elmar Zander
-%   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
+%   Copyright 2006-2014, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

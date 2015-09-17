@@ -4,7 +4,7 @@ function unittest_gaussian_covariance
 % Example (<a href="matlab:run_example unittest_gaussian_covariance">run</a>)
 %    unittest_gaussian_covariance
 %
-% See also GAUSSIAN_COVARIANCE, TESTSUITE
+% See also GAUSSIAN_COVARIANCE, MUNIT_RUN_TESTSUITE
 
 %   Elmar Zander
 %   Copyright 2007, Institute of Scientific Computing, TU Braunschweig.

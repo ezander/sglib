@@ -4,7 +4,7 @@ function unittest_gauss_hermite_rule
 % Example (<a href="matlab:run_example unittest_gauss_hermite_rule">run</a>)
 %   unittest_gauss_hermite_rule
 %
-% See also GAUSS_HERMITE_RULE, TESTSUITE 
+% See also GAUSS_HERMITE_RULE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2009, Inst. of Scientific Computing, TU Braunschweig

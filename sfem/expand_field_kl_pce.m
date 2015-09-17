@@ -8,12 +8,8 @@ options=varargin2options(varargin);
 check_unsupported_options(options,mfilename);
 
 
-[r_i_alpha, I_r]=expand_field_pce_sg( r_stdnor_func, cov_r_func, cov_gam_func, pos, G_N, p_r, m_r );
+[r_i_alpha, I_r]=expand_field_pce_sg( r_stdnor_func, cov_r_func, cov_gam_func, pos, G_N, p_r, m_r, 'mean_func', mean_func );
 
-if ~isempty(mean_func)
-    r_i_mean=funcall( mean_func, pos );
-    r_i_alpha(:,1)=r_i_mean;
-end
 
 if projection_method
     %, 'eps' kl_eps

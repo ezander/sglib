@@ -23,6 +23,9 @@ function y=hermite_val_multi( pce_coeff, pce_ind, x )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+y=pce_evaluate( pce_coeff, pce_ind, x' )';
+return
+
 
 % check whether arguments x and pce_ind match
 d=size(x,2);

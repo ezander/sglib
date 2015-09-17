@@ -4,7 +4,7 @@ function unittest_svd_update
 % Example (<a href="matlab:run_example unittest_svd_update">run</a>)
 %   unittest_svd_update
 %
-% See also SVD_UPDATE, TESTSUITE 
+% See also SVD_UPDATE, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2010, Inst. of Scientific Computing, TU Braunschweig
@@ -28,7 +28,6 @@ X=rand(M,N);
 
 % reduce that to rank K in Xn (components are U,s,V)
 K=20;
-l2err=S(K+1,K+1);
 U=U(:,1:K);
 V=V(:,1:K);
 S=S(1:K,1:K);
@@ -44,7 +43,8 @@ Xn=[X C];
 assert_equals( Xn, Un*Sn*Vn', 'full' )
 
 [Un,Sn,Vn]=svd_update(U*S,[],V,C);
-assert_equals( Xn, Un*Vn', 'full' )
+assert_equals( Un*Vn', Xn, 'full' )
+assert_equals( Sn, [], 'fullS' )
 
 % no truncate to some eps (here rank larger than eps dictates)
 [Un,Sn,Vn,err]=svd_update( U, S, V, C, 'rank', 75, 'reltol', 0.01, 'pnorm', 2 );
@@ -58,26 +58,12 @@ assert_equals( Un*Sn*Vn', Xn, 'eps1', 'norm', 'fro', 'reltol', err*1.001 );
 
 
 
-
-
-
 %%
 M=100;
 N=200;
 
-% first create a data matrix X of size MxN to begin with
-X=rand(M,N);
-[U,S,V]=svd(X,'econ');
-
-% reduce that to rank K in Xn (components are U,s,V)
+% Create a rank K data matrix X of size MxN to begin with
 K=20;
-l2err=S(K+1,K+1);
-U=U(:,1:K);
-V=V(:,1:K);
-S=S(1:K,1:K);
-X=U*S*V';
-
-
 U=orth(rand(M,K));
 V=orth(rand(N,K));
 S=diag(1:K);
@@ -90,5 +76,4 @@ Xn=[X C];
 % no truncation
 [Un,Sn,Vn]=svd_update(U,S,V,C);
 assert_equals( Xn, Un*Sn*Vn', 'full' )
-%norm( Xn - Un*Sn*Vn', 'fro' )
 

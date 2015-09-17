@@ -1,9 +1,9 @@
 function d=tensor_scalar_product( T1, T2, G, varargin )
-% TENSOR_SCALAR_PRODUCT Compute the scalar product of two sparse tensors.
+% TENSOR_SCALAR_PRODUCT Compute the scalar product of two tensors.
 %   D=TENSOR_SCALAR_PRODUCT( T1, T2 ) computes the scalar product of the
-%   two sparse tensors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1,
-%   T2, G ) the scalar product is taken with respect to the "mass"
-%   matrices or Gramians in G (i.e. G{1} and G{2} for order 2 tensors).
+%   two tensors T1 and T2. In the form D=TENSOR_SCALAR_PRODUCT( T1, T2, G )
+%   the scalar product is taken with respect to the "mass" matrices or
+%   Gramians in G (i.e. G{1} and G{2} for order 2 tensors).
 %
 % Example (<a href="matlab:run_example tensor_scalar_product">run</a>)
 %
@@ -21,52 +21,23 @@ function d=tensor_scalar_product( T1, T2, G, varargin )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 if nargin<3
-    G=[];
-end
-options=varargin2options(varargin);
-[orth,options]=get_option(options,'orth',true);
-check_unsupported_options(options,mfilename);
-
-check_tensors_compatible( T1, T2 );
-if orth && isempty(G)
-    d=compute_inner2( T1, T2, G );
-else
-    d=compute_inner1( T1, T2, G );
+    G={};
 end
 
-function d=compute_inner2( T1, T2, G )
-% Computes inner product between tensors with high accuracy
-for i=1:tensor_order(T1)
-    if isempty(G) || isempty(G{i})
-        Q=orth( [T1{i}, T2{i}] );
-    else
-        error( 'this does not work that way, anybody with a good idea please stand forth' );
-        Q=gram_schmidt( [T1{i}, T2{i}], G{i} );
-    end
-    T1{i}=Q'*T1{i};
-    T2{i}=Q'*T2{i};
-end
-t1=tensor_to_vector( T1 );
-t2=tensor_to_vector( T2 );
-d=t1'*t2;
-
-
-function d=compute_inner1( T1, T2, G )
-% Computes inner product between tensors with not quite so high accuracy
-S=ones(tensor_rank(T1),tensor_rank(T2));
-for i=1:length(T1)
+if isnumeric(T1) && isnumeric(T2)
     if isempty(G)
-        S=S.*inner(T1{i},T2{i},[]);
+        d=sum(T1(:).*T2(:));
+    elseif isvector(T1)
+        d=T1'*G*T2;
     else
-        S=S.*inner(T1{i},T2{i},G{i});
+        GT2 = tensor_operator_apply_elementary(G, T2);
+        d=sum(T1(:).*GT2(:));
     end
-end
-d=sum(S(:));
-
-
-function S=inner( A, B, G )
-if ~isempty(G)
-    S=A'*G*B;
+elseif is_ctensor(T1) && is_ctensor(T2)
+    d=ctensor_scalar_product(T1,T2,G,varargin{:});
+elseif isobject(T1) && isobject(T2)
+    d=tt_tensor_scalar_product(T1,T2,G);
 else
-    S=A'*B;
+    error( 'sglib:tensor_scalar_product:param_error', ...
+        'input parameter is no recognized tensor format or formats don''t match' );
 end

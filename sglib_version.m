@@ -83,16 +83,27 @@ msgs{end+1} = 'Attention (0.9.6): clenshaw_curtis_legendre_rule removed. Use cle
 % * Various small performance and interface improvements
 msgs{end+1} = 'Attention (0.9.7): large restructuring of sglib directories!';
 
-% Version 0.9.8 (upcoming)
+% Version 0.9.8
 % * Added Latin hypercube sampling and QMC for GPC
 % * Added computation of GPC covariance matrices
 % * Improved gpcbasis_create and _size functions
 % * Added functions for plotting of response surfaces
 % * Added functions for approximating maps between rv's 
-version = [0, 9, 8];
 
-% Version 0.9.9 (upcoming)
+% Version 0.9.9
+% * Some of the demos were moved to sglib-testing
+% * Lots of bug-fixes and cleanup
+% * New quadrature rules like nested CC, Fejer 1&2, and Newton-Cotes
+% * Renaming of GPC functions for consistency (gpcgerm_xyz, gpcbasis_xzy)
+% * New system for specifying general distributions (gendist_...)
+% * Added chi-squared distributions, several new stats functions
+% * Cleanup of munit and linalg
+msgs(1:end) = [];
+msgs{end+1} = 'Attention (0.9.9): Again large restructuring of sglib directories!';
+msgs{end+1} = '                   Some functions have been moved to the repo sglib-testing, until they are completed.';
+version = [0, 9, 9];
 
+% Version 0.9.10
 
 % If Version information is requested as string, convert the arrary
 % to string inserting some dots between the numbers.

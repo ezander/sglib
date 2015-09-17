@@ -4,7 +4,7 @@ function unittest_pce_error_mc
 % Example (<a href="matlab:run_example unittest_pce_error_mc">run</a>)
 %   unittest_pce_error_mc
 %
-% See also PCE_ERROR_MC, TESTSUITE 
+% See also PCE_ERROR_MC, MUNIT_RUN_TESTSUITE 
 
 %   Elmar Zander
 %   Copyright 2011, Inst. of Scientific Computing
@@ -21,8 +21,8 @@ munit_set_function( 'pce_error_mc' );
 
 % set the random number generators to a specific state (rand for the random
 % generation of the coeffixients and randn for the monte carlo stuff)
-rand( 'seed', 12312 );
-randn( 'seed', 12314 );
+% munit_control_rand('seed', 12312 ); % fails...
+munit_control_rand('seed');
 
 m=4;
 [ex, pce_func1, pce_func2]=setup( m, 0, 10 );
