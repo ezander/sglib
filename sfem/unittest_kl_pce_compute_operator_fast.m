@@ -50,11 +50,13 @@ N=50;
 G_N=mass_matrix( pos, els );
 stiffness_func={@stiffness_matrix, {pos, els}, {1,2}};
 
-stdnor_k={@gendist_stdnor, {'beta', {2,4}, 0.001, 1.0 }};
-cov_k={@exponential_covariance,{0.05,1}};
+dist = gendist_create('beta', {2,4}, 'shift', 0.001);
 
-stdnor_f={@gendist_stdnor, {'beta', {2,4}, 0.001, 1.0 }};
-cov_f={@exponential_covariance,{0.05,1}};
+stdnor_k=funcreate(@gendist_stdnor, @funarg, dist);
+cov_k=funcreate(@exponential_covariance,@funarg, @funarg, 0.05, 1);
+
+stdnor_f=funcreate(@gendist_stdnor, @funarg, dist);
+cov_f=funcreate(@exponential_covariance,@funarg, @funarg, 0.05, 1);
 
 
 % expand the field
