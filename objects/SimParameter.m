@@ -145,7 +145,11 @@ classdef SimParameter < handle
              end
              str=sprintf('Parameter(%s,%s,%s)', simparam.name, simparam.dist.tostring(), fixed_char);
          end
-
+         function mu=mean(simparam)
+             %Gives the mean value of the SimParameter
+             mu=mean(simparam.dist);
+         end
+         
          function disp(simparam)
              disp(simparam.tostring());
          end
