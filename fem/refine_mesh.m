@@ -1,4 +1,4 @@
-function [newpos,newels,P]=refine_mesh( pos, els )
+function [pos,els,P]=refine_mesh( pos, els, varargin )
 % REFINE_MESH Refine a finite element mesh.
 %   [NEWPOS,NEWELS]=REFINE_MESH( POS, ELS ) performs a global refinement on
 %   the mesh specified in POS and ELS.
@@ -33,6 +33,27 @@ function [newpos,newels,P]=refine_mesh( pos, els )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options = varargin2options(varargin, mfilename);
+[num_refine, options]=get_option(options, 'num_refine', 1);
+check_unsupported_options(options);
+
+compute_prolongation = (nargout>=3);
+
+if compute_prolongation
+    npos=size(pos,2);
+    P = speye(npos);
+end
+
+for i=1:num_refine
+    [pos,els,Pn]=do_refine_mesh( pos, els, compute_prolongation );
+    if compute_prolongation
+        P = Pn * P;
+    end
+end
+
+function [newpos,newels,P]=do_refine_mesh( pos, els, compute_prolongation )
+% DO_REFINE_MESH Does the actual refinement.
+
 npos=size(pos,2);
 nels=size(els,2);
 
@@ -54,13 +75,15 @@ newpos=[pos, addpos];
 
 % if requested construct prolongation matrix, mapping nodes in the
 % unrefined mesh to nodes in the refined mesh (linear interpolation)
-if nargout>=3
+if compute_prolongation
     nedge = length(ind1);
     i = [ 1:npos, npos+(1:nedge), npos+(1:nedge)];
     j = [ 1:npos, ind1', ind2'];
     s = [ones(1,npos), 0.5*ones(1,2*nedge) ];
     P = sparse(i,j,s,npos+nedge, npos);
     %newpos - (P*pos')'
+else
+    P = [];
 end
 
 % define new elements using 'nonunique' points
