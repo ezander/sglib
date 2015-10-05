@@ -504,6 +504,31 @@ classdef SimParamSet1 < handle
                  means(i)=set.simparams.(p{i}).mean;
             end
          end
+         
+                        %% Gives the variances of the all the parameters in the parameterset
+         function vars=vars(set)
+             % gives the variances of all the parameters in the
+             % SIMPARAMETERSET
+             p=set.param_names();
+             m=set.num_params;
+             vars=zeros(m, 1);
+            for i=1:m
+                 vars(i)=set.simparams.(p{i}).var;
+            end
+         end
+                             %% Gives the probability that the parameters
+                             % take value x
+         function prob=pdf(set,x)
+             
+             p=set.param_names();
+             m=set.num_params;
+             
+             prob=1;
+            for i=1:m
+                 prob=set.simparams.(p{i}).pdf(x(i))*prob;
+            end
+            
+         end
                   %% 
          function params=param_vals_to_struct(set, val, varargin)
              % gives the struct with fieldnames: NAME of the parameters in the
@@ -514,7 +539,7 @@ classdef SimParamSet1 < handle
              params=struct();
             for i=1:m
                  params.(p{i})=val(i);
-             end
+            end
          end
   
     end
