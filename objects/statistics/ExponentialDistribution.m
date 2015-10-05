@@ -10,7 +10,7 @@ classdef ExponentialDistribution < Distribution
     %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan and further extanded by Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -55,6 +55,43 @@ classdef ExponentialDistribution < Distribution
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = exponential_moments( dist.lambda );
             [mean,var,skew,kurt]=deal(m{:});
+        end
+        function xi=sample(dist,n)
+            %   Draw random samples from Exponential distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            if isscalar(n)
+                yi = rand(n,1);
+            else
+                yi = rand(n);
+            end
+            xi = dist.invcdf(yi);
+        end
+        function str=tostring(dist)
+            % Displays the distribution type: 'Exp(lambda)'
+            str=sprintf('Exp( %.3f)', dist.lambda);
+        end
+    end
+    methods(Static)
+        function polysys=default_sys_letter(is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+           if nargin<1||~is_normalized
+                polysys='L';
+            else
+                polysys='l';
+            end
+        end
+        function poly=default_polys(n, is_normalized)
+            if nargin<2;
+                is_normalized=false;
+                if nargin<1
+                    n=0;
+                end
+            end
+            poly=LaguerrePolynomials(n, is_normalized);
         end
     end
 end

@@ -47,14 +47,14 @@ assert_equals(invcdf(E,cdf(E,y)), y, 'invcdf_cdf_1');
 assert_equals( isnan(invcdf(E,[-0.1, 1.1])), [true, true], 'invcdf_nan1');
 
 
-%% exponential_stdnor
+%% exponential_norta
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 E = ExponentialDistribution(0.7);
-x=stdnor( E,gam );
+x=NORTA( E,gam );
 assert_equals(cdf(E,x), uni, 'exponential' )
 
 %% fix_moments
