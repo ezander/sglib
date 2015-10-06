@@ -150,6 +150,16 @@ classdef SimParameter < handle
              mu=mean(simparam.dist);
          end
          
+          function var=var(simparam)
+             %Gives the variance of the SimParameter
+             [~, var]=moments(simparam.dist);
+          end
+          
+         function prob=pdf(simparam,x)
+             %Gives the probability that SimParameter takes value x
+             prob=simparam.dist.pdf(x);
+         end
+         
          function disp(simparam)
              disp(simparam.tostring());
          end
