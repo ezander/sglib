@@ -7,7 +7,7 @@ classdef Distribution % < handle
         y=cdf(dist, x); % CDF Compute the cumulative distribution function.
         x=invcdf(dist, y); % INVCDF Compute the inverse CDF function.
         y=moments(dist); % MOMENTS Compute the moments of the distribution.
-        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
+        %str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
     end
     
     methods
