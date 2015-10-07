@@ -42,7 +42,11 @@ end
 deps={};
 while ~isempty(funs)
     s = warning('off', 'MATLAB:DEPFUN:DeprecatedAPI');
-    imdeps=depfun( funs, '-toponly', '-quiet' );
+    try
+        imdeps = matlab.codetools.requiredFilesAndProducts(funs, 'toponly');
+    catch        
+        imdeps=depfun( funs, '-toponly', '-quiet' );
+    end
     warning(s);
     exclude=strmatch( excludepath, imdeps );
     imdeps(exclude)=[];
