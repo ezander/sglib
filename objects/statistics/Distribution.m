@@ -77,12 +77,17 @@ classdef Distribution % < handle
             new_dist=translate(dist,shift,scale);
         end
         
-        function y=NORTA(dist, x)
-            % NORTA Map normal distributed random values.
+        function y=stdnor(dist, x)
+            % STDNOR Map normal distributed random values.
             % Y=STDNOR(DIST, X) Map normal distributed random values X to
             % random values Y distribution according to the probability
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
+        end
+        function y=NORTA(dist, x)
+            % NORTA Map normal distributed random values.
+            % Y=NORTA(DIST, X) same as STDNOR.
+            y=stdnor(dist, x);
         end
         
     end

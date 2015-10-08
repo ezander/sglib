@@ -1,0 +1,9 @@
+#!/bin/bash
+
+MATLAB=${MATLAB:-matlab}
+
+$MATLAB -nosplash -nodisplay -r \
+        "run('/home/ezander/projects/stochastics/sglib/startup.m'); sglib_unattended_test(false);";
+retval=$?
+
+exit $retval
