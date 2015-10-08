@@ -9,14 +9,14 @@ classdef SimParameter < handle
     %
     % Example (<a href="matlab:run_example SimParameter">run</a>)
     %   dist = LogNormalDistribution(2,3);
-    %   param=SimParameter('kappa', dist) 
+    %   param=SimParameter('kappa', dist)
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     %
-    %  The POLYSYS is a letter defining the 
-        %  orthogonal polynomial system which satisfyies the orthogonality condition
-        % \Exp(\phi_i(Z)\phi_j(Z))=\delta_{ij}
-        % Where  Z is a parameter with beta distribution
+    %  The POLYSYS is a letter defining the
+    %  orthogonal polynomial system which satisfyies the orthogonality condition
+    % \Exp(\phi_i(Z)\phi_j(Z))=\delta_{ij}
+    % Where  Z is a parameter with beta distribution
     
     %   Noemi Friedman and Elmar Zander
     %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
@@ -33,12 +33,14 @@ classdef SimParameter < handle
         dist
         is_fixed
         fixed_val
-        
+        germ_dist
+        param2germ_func
+        germ2param_func
         plot_name
     end
     
     methods
-        function simparam=SimParameter(name, dist, plot_name)
+        function simparam=SimParameter(name, dist, varargin)
             % Returns a new SimParameter object with the distribution DIST
             % which was specified as an argument, and IS_FIXED set to false
             
@@ -47,7 +49,11 @@ classdef SimParameter < handle
             % DIST is an object belonging to one of the subclass of 'DISTRIBUTION'
             %
             % e.g.: MYPARAM=SimParameter('kappa', NormalDistribution(0,0.1))
-            
+            options=varargin2options(varargin);
+            [simparam.plot_name, options]=get_option(options, 'plot_name', '');
+            [simparam.param2germ_func,options]=get_option(options, 'param2germ_func', {});
+            [simparam.germ2param_func,options]=get_option(options, 'germ2param_func', {});
+            check_unsupported_options(options, mfilename);
             
             %Check whether input is in the right format
             check_type( name, 'char', true, 'NAME', mfilename);
@@ -57,19 +63,18 @@ classdef SimParameter < handle
             simparam.name=name;
             simparam.dist=dist;
             simparam.is_fixed=false;
-            if nargin>2
-                simparam.plot_name=plot_name;
-            else
+            if isempty(simparam.plot_name)
                 simparam.plot_name=name;
             end
-         end
+            
+        end
         
         function set_fixed(simparam, val)
             % Fixes the parameter to the value VAL and sets IS_FIXED
             simparam.is_fixed=true;
             simparam.fixed_val=val;
         end
-
+        
         function set_to_mean(simparam)
             % Fixes the parameter to the value VAL to the mean of the
             % distribution
@@ -100,7 +105,7 @@ classdef SimParameter < handle
             xi=simparam.dist.sample(n);
         end
         
-        function polysys=default_sys_letter(simparam, varargin)
+        function [polysys, germ_dist]=default_sys_letter(simparam, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -110,9 +115,10 @@ classdef SimParameter < handle
             % MYPARAM.SET_POLYSYS('p')
             options=varargin2options(varargin);
             [is_normalized,options]=get_option(options, 'normal', false);
-           check_unsupported_options(options, mfilename);
-           
-           polysys=simparam.dist.default_sys_letter(is_normalized);
+            check_unsupported_options(options, mfilename);
+            
+            polysys=simparam.dist.default_sys_letter(is_normalized);
+            [polysys, germ_dist]=gpc_register_polysys(polysys);
         end
         
         function [a_alpha, V, varerr]=gpc_expand(simparam, varargin)
@@ -125,43 +131,55 @@ classdef SimParameter < handle
             check_unsupported_options(options, mfilename);
             
             if isempty(polysys)
-                polysys=simparam.dist.default_sys_letter(false);
+                [polysys, g_dist]=default_sys_letter(simparam);
             else
                 % check wheter polysys is valid, if not change to default
                 % and send a warning
-                gpc_register_polysys(polysys);
-           end
-                [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
+                [polysys, g_dist]=gpc_register_polysys(polysys);
+            end
+            [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
+            simparam.set_germ(g_dist);
+            simparam.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
         
-         function str=tostring(simparam)
-             % Provides with a short display of the parameter's
-             % name, distribution and whether the parameter is
-             % deterministic (fixed) or random (not fixed)
-             if simparam.is_fixed== true
-                 fixed_char=' fixed';
-             else
-                 fixed_char=' not fixed';
-             end
-             str=sprintf('Parameter(%s,%s,%s)', simparam.name, simparam.dist.tostring(), fixed_char);
-         end
-         function mu=mean(simparam)
-             %Gives the mean value of the SimParameter
-             mu=mean(simparam.dist);
-         end
-         
-          function var=var(simparam)
-             %Gives the variance of the SimParameter
-             [~, var]=moments(simparam.dist);
-          end
-          
-         function prob=pdf(simparam,x)
-             %Gives the probability that SimParameter takes value x
-             prob=simparam.dist.pdf(x);
-         end
-         
-         function disp(simparam)
-             disp(simparam.tostring());
-         end
+        function set_germ2param_func(simparam, map_func)
+            %Sets function for mapping from germ to parameter
+            simparam.germ2param_func=map_func;
+        end
+        
+        function set_germ(simparam, germ_dist)
+            %Sets distribution of the germ
+            simparam.germ_dist=germ_dist;
+        end
+        
+        function str=tostring(simparam)
+            % Provides with a short display of the parameter's
+            % name, distribution and whether the parameter is
+            % deterministic (fixed) or random (not fixed)
+            if simparam.is_fixed== true
+                fixed_char=' fixed';
+            else
+                fixed_char=' not fixed';
+            end
+            str=sprintf('Parameter(%s,%s,%s)', simparam.name, simparam.dist.tostring(), fixed_char);
+        end
+        function mu=mean(simparam)
+            %Gives the mean value of the SimParameter
+            mu=mean(simparam.dist);
+        end
+        
+        function var=var(simparam)
+            %Gives the variance of the SimParameter
+            [~, var]=moments(simparam.dist);
+        end
+        
+        function prob=pdf(simparam,x)
+            %Gives the probability that SimParameter takes value x
+            prob=simparam.dist.pdf(x);
+        end
+        
+        function disp(simparam)
+            disp(simparam.tostring());
+        end
     end
 end
