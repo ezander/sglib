@@ -73,6 +73,18 @@ classdef NormalDistribution < Distribution
             [m{1:nargout}] = normal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        function map_func=base2dist_func(dist)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            map_func=@(x)dist.mean+x*dist.sigma;
+        end
+        function map_func=dist2base_func(dist)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            map_func=@(x)(x-dist.mean)/dist.sigma;
+        end
         function new_dist=translate(dist,shift,scale)
             % TRANSLATE translates the normal distribution DIST
             % NEW_DIST=TRANSLATE(DIST,SHIFT,SCALE) translates the normal
@@ -93,6 +105,11 @@ classdef NormalDistribution < Distribution
         end
     end
     methods(Static)
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=NormalDistribution(0,1);
+        end
         function polysys=default_sys_letter(is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution

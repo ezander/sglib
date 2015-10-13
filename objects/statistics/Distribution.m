@@ -77,13 +77,26 @@ classdef Distribution % < handle
             new_dist=translate(dist,shift,scale);
         end
         
-        function y=NORTA(dist, x)
-            % NORTA Map normal distributed random values.
+        function y=stdnor(dist, x)
+            % STDNOR Map from normal distributed random values.
             % Y=STDNOR(DIST, X) Map normal distributed random values X to
             % random values Y distribution according to the probability
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
         end
+        function x=base2dist(dist,y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=dist.invcdf (dist.get_base_dist.cdf(y));
+        end
+        function y=dist2base(dist, x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=dist.get_base_dist.invcdf(dist.cdf( x));
+        end
+    
         
     end
     methods(Static)
@@ -95,6 +108,11 @@ classdef Distribution % < handle
             else
                 polysys='';
             end
+        end
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=NormalDistribution(0,1);
         end
         function polys=default_polys(n, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system

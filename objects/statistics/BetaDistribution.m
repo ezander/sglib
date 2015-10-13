@@ -29,7 +29,6 @@ classdef BetaDistribution < Distribution
         % shape parameter, that appears as exponent of the random
         % variable and controls the shape of the distribution
         b
-        sys
         
     end
     methods
@@ -105,11 +104,8 @@ classdef BetaDistribution < Distribution
         function polys=default_polys(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-             if nargin<3;
+             if nargin<2;
                 is_normalized=false;
-                if nargin<2
-                 n=0;
-                end
              end
             if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
                 polys=ChebyshevUPolynomials(is_normalized);
@@ -119,10 +115,30 @@ classdef BetaDistribution < Distribution
                 polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
             end
         end
+        
+        function dist_germ=get_base_dist(dist)
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=fix_bounds(BetaDistribution(dist.a, dist.b), -1,1);
+        end
         function str=tostring(dist)
             % Displays the distribution type: 'Beta(a, b)'
             str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);
         end
         
+    end
+    methods(Static)
+        function x=base2dist(y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=(y+1)/2;
+        end
+        function y=dist2base(x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=x*2-1;
+        end
     end
 end

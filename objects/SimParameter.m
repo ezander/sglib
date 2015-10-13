@@ -72,7 +72,12 @@ classdef SimParameter < handle
         function set_fixed(simparam, val)
             % Fixes the parameter to the value VAL and sets IS_FIXED
             simparam.is_fixed=true;
-            simparam.fixed_val=val;
+            if nargin<2
+                mu=mean(simparam.dist);
+                simparam.fixed_val=mu;
+            else
+                simparam.fixed_val=val;
+            end
         end
         
         function set_to_mean(simparam)
@@ -138,7 +143,7 @@ classdef SimParameter < handle
                 [polysys, g_dist]=gpc_register_polysys(polysys);
             end
             [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
-            simparam.set_germ(g_dist);
+            simparam.set_germdist(g_dist);
             simparam.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
         
@@ -146,10 +151,40 @@ classdef SimParameter < handle
             %Sets function for mapping from germ to parameter
             simparam.germ2param_func=map_func;
         end
+        function set_param2germ_func(simparam, map_func)
+            %Sets function for mapping from parameter to germ
+            simparam.param2germ_func=map_func;
+        end
         
-        function set_germ(simparam, germ_dist)
+        function set_germdist(simparam, germ_dist)
             %Sets distribution of the germ
             simparam.germ_dist=germ_dist;
+        end
+        function [dist, germ2dist_func, dist2germ_func]=get_set_germdist(simparam)
+            %Gets and sets distribution of the germ automaticaly
+            %and gives the corresponding mappings(dist2germ/germ2dist)
+            dist=simparam.dist.get_base_dist();
+            germ2dist_func=@(x)simparam.dist.base2dist(x);
+            dist2germ_func=@(x)simparam.dist.dist2base(x);
+            simparam.germ_dist=dist;
+            simparam.germ2param_func=germ2dist_func;
+            simparam.param2germ_func=dist2germ_func;
+        end
+        function x=param2germ(simparam, y)
+            if isempty(simparam.param2germ_func)
+                dist=get_set_germdist(simparam);
+                string_warn=strvarexpand('There was no mapping set, the param is mapped to $dist.tostring$');
+                warning(string_warn);
+            end
+            x=feval(simparam.param2germ_func,y);
+        end
+        function y=germ2param(simparam, x)
+            if isempty(simparam.germ2param_func)
+                dist=get_set_germdist(simparam);
+                string_warn=strvarexpand('There was no mapping set, the param is mapped from $dist.tostring$');
+                warning(string_warn);
+            end
+            y=feval(simparam.germ2param_func,x);
         end
         
         function str=tostring(simparam)
