@@ -7,23 +7,28 @@ classdef Distribution % < handle
         y=cdf(dist, x); % CDF Compute the cumulative distribution function.
         x=invcdf(dist, y); % INVCDF Compute the inverse CDF function.
         y=moments(dist); % MOMENTS Compute the moments of the distribution.
+        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
     end
+    
     methods
         function mean=mean(dist)
             % MEAN computes the mean value of the distribution.
             mean=moments(dist);
         end
+        
         function var=var(dist)
             % VAR computes the variance of the distribution
-            [m,v]=dist.moments();
+            [~,v]=dist.moments();
             var=v;
         end
+        
         function tdist=translate(dist,shift,scale)
             % TRANSLATE translates the distribution DIST
             % TDIST=TRANSLATE(DIST,SHIFT,SCALE) translates the distribution
             % DIST in regard to parameters SHIFT and SCALE
             tdist=TranslatedDistribution(dist,shift,scale);
         end
+        
         function new_dist=fix_moments(dist,mean,var)
             % FIX_MOMENTS Generates a new dist with specified moments.
             % NEW_DIST=FIX_MOMENTS(DIST, MEAN, VAR) computes from the
@@ -35,6 +40,7 @@ classdef Distribution % < handle
             scale=sqrt(var/old_var);
             new_dist=translate(dist,shift,scale);
         end
+        
         function new_dist= fix_bounds(dist,min, max,varargin)
             % reads the user option or return the default in varargin.
             % If DIST is an unbounded distribution the options 'q0' and or
@@ -74,6 +80,7 @@ classdef Distribution % < handle
             shift  = min - ((old_min-center)*scale + center);
             new_dist=translate(dist,shift,scale);
         end
+        
         function y=stdnor(dist, x)
             % STDNOR Map normal distributed random values.
             % Y=STDNOR(DIST, X) Map normal distributed random values X to
@@ -81,5 +88,35 @@ classdef Distribution % < handle
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
         end
+        
+        function y=NORTA(dist, x)
+            % NORTA Map normal distributed random values.
+            % Y=NORTA(DIST, X) same as STDNOR.
+            y=stdnor(dist, x);
+        end
+        
     end
+    
+    methods
+        function polysys=default_sys_letter(dist, is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if nargin>=2 && is_normalized
+                polysys='h';
+            else
+                polysys='H';
+            end
+        end
+        
+        function polys=default_polys(dist, is_normalized)
+            % DEFAULT_POLYSYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if nargin<2;
+                is_normalized=false;
+            end
+            polys=HermitePolynomials(is_normalized);
+        end
+    end
+    
+    
 end

@@ -7,7 +7,7 @@ classdef TranslatedDistribution < Distribution
     %
     % See also DISTRIBUTION
     
-    %   Aidin Nojavan
+    %   Aidin Nojavan (slightly modified by Noemi Friedman)
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -80,6 +80,19 @@ classdef TranslatedDistribution < Distribution
             x=tdist.dist.invcdf(y);
             x=(x-tdist.center)*tdist.scale+tdist.center+tdist.shift;
         end
+        function xi=sample(tdist,n)
+            %   Draw random samples from Translated distribution.
+            %   XI=SAMPLE(DIST,N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column vector of
+            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
+            %   tensor) of size [N(1), N(2), ...].
+            if isscalar(n)
+                yi = rand(n,1);
+            else
+                yi = rand(n);
+            end
+            xi = tdist.invcdf(yi);
+        end
         function [mean,var,skew,kurt]=moments(tdist)
             % MOMENTS compute the moments of the translated distribution.
             % TODO: check this functions if mean of underlying distribution
@@ -99,6 +112,22 @@ classdef TranslatedDistribution < Distribution
             if nargout>=4
                 kurt=m{4};
             end
+        end
+        function polys=default_polys(tdist)
+            % Returns name of polynomials, which are orthogonal  wrt. the
+            % distribution standardized
+            polys=tdist.dist.default_polys();
+        end
+        function sys=default_sys_letter(tdist, is_normalized)
+            % DEFAULT_SYS_LETTER gives the letter corresponding to the 'natural' polynomial system
+            if nargin<2
+                is_normalized=false;
+            end
+            sys=tdist.dist.default_sys_letter(is_normalized);
+        end
+        function str=tostring(tdist)
+            % Displays the distribution type: 'Translated(dist(param), shift, scale)'
+            str=sprintf('Translated(%s,  %.3f,  %.3f)', tdist.dist.tostring(), tdist.shift, tdist.scale);
         end
     end
 end

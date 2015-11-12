@@ -54,7 +54,7 @@ options=varargin2options( varargin );
 [curr_dir,options]=get_option( options, 'dir', pwd );
 [module_name,options]=get_option( options, 'module_name', '' );
 [coverage,options]=get_option( options, 'coverage', false );
-[on_error,options]=get_option( options, 'on_error', 'debug' );
+[on_error,options]=get_option( options, 'on_error', munit_options('get', 'on_error') );
 [include_only,options]=get_option( options, 'include_only', {} );
 [level,options]=get_option( options, 'level', 1 );
 check_unsupported_options( options, mfilename );

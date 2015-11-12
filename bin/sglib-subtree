@@ -1,14 +1,20 @@
 #!/bin/bash
 
 REMOTE="git@github.com:ezander/sglib.git"
-PREFIX="sglib"
+PREFIX=$(find . -name "sglib" -type d | cut -c3-)
 
-if [[ ! (-d "$PREFIX" && -d ".git") ]]; then
-    echo "No $PREFIX or no .git directory found."
+if [[ ! -d "$PREFIX" ]]; then
+    echo "No sglib directory found (tried $PREFIX)."
+    echo "First change into root directory of subproject "
+    echo "and make sure sglib exists as subdirectory!";
+    exit 1;
+fi
+if [[ ! -d ".git" ]]; then
+    echo "No .git directory found."
     echo "First change into root directory of subproject!";
     exit 1;
 fi
-    
+
 
 PUSH_BRANCH=$(basename $(pwd))
 GIT_SUBTREE="git subtree"
@@ -18,22 +24,25 @@ GIT="git"
 
 case "$1" in
     push)
-      $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
-	    ;;
+        $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
+        ;;
     pushdirect)
-      $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "master"
-      ;;
+        $GIT_SUBTREE push -d --prefix="$PREFIX" "$REMOTE" "master"
+        ;;
     pull)
-      $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
-	    ;;
+        $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
+        ;;
+    add)
+        $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE" master
+        ;;
     fetch)
-      $GIT fetch "$REMOTE"
-	    ;;
+        $GIT fetch "$REMOTE"
+        ;;
     *)
-	echo "Unknown or empty subcommand '$1'"
-	echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
-	echo "  'push' will push into the branch '$PUSH_BRANK' allowing some checks before merging "
-	echo "   into the master branch, while 'pushdirect' will push directly into master."
-	exit 1
-	;;
+        echo "Unknown or empty subcommand '$1'"
+        echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
+        echo "  'push' will push into the branch '$PUSH_BRANK' allowing some checks before merging "
+        echo "   into the master branch, while 'pushdirect' will push directly into master."
+        exit 1
+        ;;
 esac
