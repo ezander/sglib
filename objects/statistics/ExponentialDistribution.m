@@ -74,24 +74,24 @@ classdef ExponentialDistribution < Distribution
             str=sprintf('Exp( %.3f)', dist.lambda);
         end
     end
-    methods(Static)
-        function polysys=default_sys_letter(is_normalized)
+    
+    methods
+        function polysys=default_sys_letter(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-           if nargin<1||~is_normalized
-                polysys='L';
-            else
+            if nargin>=2 && is_normalized
                 polysys='l';
+            else
+                polysys='L';
             end
+            % what if dist.lambda ~= 1
         end
-        function poly=default_polys(n, is_normalized)
+        
+        function poly=default_polys(dist, is_normalized)
             if nargin<2;
                 is_normalized=false;
-                if nargin<1
-                    n=0;
-                end
             end
-            poly=LaguerrePolynomials(n, is_normalized);
+            poly=LaguerrePolynomials(dist.lambda, is_normalized);
         end
     end
 end

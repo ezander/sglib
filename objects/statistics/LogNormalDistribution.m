@@ -29,7 +29,6 @@ classdef LogNormalDistribution < Distribution
         % The parameter SIGMA of the LogNormal(mu,SIGMA) distribution.
         % SIGMA is the scale parameter.
         sigma
-
     end
     methods
         function dist=LogNormalDistribution(mu,sigma)

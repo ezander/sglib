@@ -17,18 +17,16 @@ classdef LaguerrePolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     properties
-        % The parameter DEG of the LaguerrePolynomials(DEG) system. DEG is
-        % the order of the orthogonal Laguerre polynomial system.
-        deg
+        alpha
     end
     
     methods
-        function sys=LaguerrePolynomials(deg)
+        function sys=LaguerrePolynomials(alpha)
             % LAGUERREPOLYNOMIALS Construct a LaguerrePolynomials.
-            % SYS=LAGUERREPOLYNOMIALS(DEG) constructs polynomial system 
-            % returned in SYS, representing an orthogonal Laguerre 
-            % polynomial of order DEG.
-            sys.deg=deg;
+            % SYS=LAGUERREPOLYNOMIALS(ALPHA) constructs polynomial system 
+            % returned in SYS, representing a generalised orthogonal Laguerre 
+            % polynomial with parameter ALPHA.
+            sys.alpha = alpha;
         end
         function r=recur_coeff(sys)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
