@@ -29,7 +29,7 @@ classdef LogNormalDistribution < Distribution
         % The parameter SIGMA of the LogNormal(mu,SIGMA) distribution.
         % SIGMA is the scale parameter.
         sigma
-
+        
     end
     methods
         function dist=LogNormalDistribution(mu,sigma)
@@ -71,6 +71,18 @@ classdef LogNormalDistribution < Distribution
             [m{1:nargout}] = lognormal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        function x=base2dist(dist,y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=exp(y*dist.sigma+dist.mu);
+        end
+        function y=dist2base(dist,x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=(log(x)-dist.mean)/dist.sigma;
+        end
         function xi=sample(dist,n)
             %   Draw random samples from LogNormal distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -79,9 +91,17 @@ classdef LogNormalDistribution < Distribution
             %   tensor) of size [N(1), N(2), ...].
             xi=lognormal_sample(n, dist.mu, dist.sigma);
         end
+        
         function str=tostring(dist)
             % Displays the distribution type: 'lnN(mu, var)'
             str=sprintf('lnN(%.3f, %.3f)', dist.mu, dist.sigma^2);
+        end
+    end
+    methods(Static)
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=NormalDistribution(0,1);
         end
     end
 end
