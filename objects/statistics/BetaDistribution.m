@@ -20,7 +20,7 @@ classdef BetaDistribution < Distribution
     %   have received a copy of the GNU General Public License along with
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
         % The parameter A of the Beta(A,b) distribution. A is a positive
         % shape parameter, that appears as exponent of the random
         % variable and controls the shape of the distribution
@@ -29,9 +29,8 @@ classdef BetaDistribution < Distribution
         % shape parameter, that appears as exponent of the random
         % variable and controls the shape of the distribution
         b
-        sys
-        
     end
+    
     methods
         function dist=BetaDistribution(a,b)
             % BETADISTRIBUTION Construct a BetaDistribution.
@@ -40,28 +39,33 @@ classdef BetaDistribution < Distribution
             % and B.
             dist.a=a;
             dist.b=b;
-            end
+        end
+        
         function y=pdf(dist,x)
             % PDF computes the probability distribution function of the
             % beta distribution.
             y=beta_pdf( x, dist.a, dist.b );
         end
+        
         function y=cdf(dist,x)
             % CDF computes the cumulative distribution function of the beta
             % distribution.
             y=beta_cdf( x, dist.a, dist.b );
         end
+        
         function x=invcdf(dist,y)
             % INVCDF computes the inverse CDF (or quantile) function of the
             % beta distribution.
             x=beta_invcdf( y, dist.a, dist.b );
         end
+        
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the beta distribution.
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = beta_moments( dist.a, dist.b );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        
         function xi=sample(dist,n)
             %   Draw random samples from Beta distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -73,8 +77,16 @@ classdef BetaDistribution < Distribution
             else
                 yi = rand(n);
             end
-                xi = dist.invcdf(yi);
+            xi = dist.invcdf(yi);
         end
+        
+        function str=tostring(dist)
+            % Displays the distribution type: 'Beta(a, b)'
+            str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);
+        end
+    end
+    
+    methods
         function polysys=default_sys_letter(dist, is_normalized, varargin)
             % DEFAULT_POLYSYS gives the 'SYS' letter belonging to the 'natural' polynomial system
             % belonging to the distribution
@@ -82,46 +94,27 @@ classdef BetaDistribution < Distribution
             [generate_sys, options] = get_option(options, 'generate_sys', true);
             check_unsupported_options(options, mfilename);
             
-            if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
-                vsys{1}='u';
-                vsys{2}='U';
-            elseif dist.a==1/2 && dist.b==1/2 %for ArcSinDistribution
-                vsys{1}='t';
-                vsys{2}='T';
-            elseif generate_sys
-                vsys{2}=gpc_register_polysys('',dist);
+            if generate_sys
+                vsys{2}=gpc_register_polysys('', dist);
                 vsys{1}=lower(vsys{2});
             else
                 vsys{2}='';
                 vsys{1}='';
-             end
-            if nargin<2||~is_normalized
-                polysys=vsys{2};
-            else
+            end
+            if nargin>=2 && is_normalized
                 polysys=vsys{1};
+            else
+                polysys=vsys{2};
             end
         end
         
         function polys=default_polys(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-             if nargin<3;
+            if nargin<2
                 is_normalized=false;
-                if nargin<2
-                 n=0;
-                end
-             end
-            if dist.a==3/2 && dist.b==3/2 %for SemiCircleDistribution
-                polys=ChebyshevUPolynomials(is_normalized);
-            elseif dist.a==1/2 && dist.b==1/2 %for ArcSinDistribution
-                polys=ChebyshevTPolynomials(is_normalized);
-            else
-                polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
             end
-        end
-        function str=tostring(dist)
-            % Displays the distribution type: 'Beta(a, b)'
-            str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);
+            polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
         end
         
     end

@@ -15,17 +15,20 @@ classdef Distribution % < handle
             % MEAN computes the mean value of the distribution.
             mean=moments(dist);
         end
+        
         function var=var(dist)
             % VAR computes the variance of the distribution
             [~,v]=dist.moments();
             var=v;
         end
+        
         function tdist=translate(dist,shift,scale)
             % TRANSLATE translates the distribution DIST
             % TDIST=TRANSLATE(DIST,SHIFT,SCALE) translates the distribution
             % DIST in regard to parameters SHIFT and SCALE
             tdist=TranslatedDistribution(dist,shift,scale);
         end
+        
         function new_dist=fix_moments(dist,mean,var)
             % FIX_MOMENTS Generates a new dist with specified moments.
             % NEW_DIST=FIX_MOMENTS(DIST, MEAN, VAR) computes from the
@@ -37,6 +40,7 @@ classdef Distribution % < handle
             scale=sqrt(var/old_var);
             new_dist=translate(dist,shift,scale);
         end
+        
         function new_dist= fix_bounds(dist,min, max,varargin)
             % reads the user option or return the default in varargin.
             % If DIST is an unbounded distribution the options 'q0' and or
@@ -84,6 +88,7 @@ classdef Distribution % < handle
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
         end
+        
         function y=NORTA(dist, x)
             % NORTA Map normal distributed random values.
             % Y=NORTA(DIST, X) same as STDNOR.
@@ -91,26 +96,25 @@ classdef Distribution % < handle
         end
         
     end
-    methods(Static)
-        function polysys=default_sys_letter(is_normalized)
+    
+    methods
+        function polysys=default_sys_letter(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
-            if is_normalized
-                polysys='';
+            if nargin>=2 && is_normalized
+                polysys='h';
             else
-                polysys='';
+                polysys='H';
             end
         end
-        function polys=default_polys(n, is_normalized)
+        
+        function polys=default_polys(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if nargin<2;
                 is_normalized=false;
-                if nargin<1
-                    n=0;
-                end
             end
-            polys=HermitePolynomials(n, is_normalized);
+            polys=HermitePolynomials(is_normalized);
         end
     end
     
