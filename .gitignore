@@ -11,3 +11,4 @@ sglib.settings
 *.ps
 *.zip
 testing/xiu_book/html
+*.orig
