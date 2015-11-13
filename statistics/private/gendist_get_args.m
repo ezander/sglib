@@ -41,7 +41,11 @@ if length(dist)<4 || isempty(dist{4}) % scale
     dist{4} = 1;
 end
 if length(dist)<5 || isempty(dist{5}) % mean
-    dist{5} = gendist_mean(dist{1}, dist{2});
+    if exist([dist{1} '_moments']) %#ok<EXIST>
+        dist{5} = gendist_mean(dist{1}, dist{2});
+    else
+        dist{5} = 0;
+    end
 end
 
 if nargout==1
@@ -50,5 +54,5 @@ else
     varargout = dist;
 end
 
-function m=gendist_mean(dist, params)
-m=feval( [dist '_moments'], params{:} );
+function m=gendist_mean(distname, params)
+m=feval( [distname '_moments'], params{:} );

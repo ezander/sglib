@@ -19,8 +19,7 @@ function unittest_covariance_decomp(varargin)
 
 munit_set_function( 'covariance_decomp' );
 
-rng('default');
-rng(5099);
+munit_control_rand('seed', 5099);
 
 A = rand(7, 4);
 C = A*A';

@@ -32,21 +32,21 @@ classdef SimParamSet1 < handle
     %   zlabel(myparams.param_names{3});
     %
     % Example 2 (<a href="matlab:run_example SimParamSet1 2">run</a>)
-%         beta=SimParameter('beta',UniformDistribution(-10,-6.5), '\beta');
-%         beta_t=SimParameter('beta_T',UniformDistribution(-1,0.1), '\beta_T');
-%         c_t=SimParameter('c_t',UniformDistribution(0,0.2)); 
-%         c_eh=SimParameter('c_eh',UniformDistribution(0,0.3), 'c_{\epsilon^h}');
-%         c_wd=SimParameter('c_wd',UniformDistribution(2,30),  'c_{wd}');
-%         c_dp=SimParameter('c_dp',UniformDistribution(0,0.395),  'c_{d,p}');
-%         
-%         PSet=SimParamSet1(beta, beta_t, c_t, c_eh, c_wd, c_dp);
-%         PSet.set_fixed({'beta', 'c_wd'})
-%         
-%         x_MC=PSet.sample(1000);
-%         x_QMC=PSet.sample(1000, 'mode', 'qmc');
-%         x_LHS=PSet.sample(1000, 'mode', 'lhs');
-%         [x_int,w_int]=PSet.generate_integration_points( 5, 'grid', 'smolyak');
-
+    %         beta=SimParameter('beta',UniformDistribution(-10,-6.5), '\beta');
+    %         beta_t=SimParameter('beta_T',UniformDistribution(-1,0.1), '\beta_T');
+    %         c_t=SimParameter('c_t',UniformDistribution(0,0.2));
+    %         c_eh=SimParameter('c_eh',UniformDistribution(0,0.3), 'c_{\epsilon^h}');
+    %         c_wd=SimParameter('c_wd',UniformDistribution(2,30),  'c_{wd}');
+    %         c_dp=SimParameter('c_dp',UniformDistribution(0,0.395),  'c_{d,p}');
+    %
+    %         PSet=SimParamSet1(beta, beta_t, c_t, c_eh, c_wd, c_dp);
+    %         PSet.set_fixed({'beta', 'c_wd'})
+    %
+    %         x_MC=PSet.sample(1000);
+    %         x_QMC=PSet.sample(1000, 'mode', 'qmc');
+    %         x_LHS=PSet.sample(1000, 'mode', 'lhs');
+    %         [x_int,w_int]=PSet.generate_integration_points( 5, 'grid', 'smolyak');
+    
     % See also SIMPARAMETER DISTRIBUTION
     
     %   Noemi Friedman and Elmar Zander
@@ -79,7 +79,7 @@ classdef SimParamSet1 < handle
                 set.add_parameter(varargin{:});
             end
         end
-          
+        
         %% Add parameter(s) to SimParamSet
         function add_parameter(set, varargin)
             % Adds the P parameters to the SimParamSet object
@@ -93,7 +93,7 @@ classdef SimParamSet1 < handle
             end
         end
         %% Fix SimParameters in the ParamSet
-  
+        
         function set_fixed(set, p, vals)
             % Fixes the values of SimParams(P1, P2..)more, and accordingly the
             % probability distribution of them are ignored
@@ -116,7 +116,7 @@ classdef SimParamSet1 < handle
             % but alternatively can be a SimParameter
             % itself, but in this case only the NAME of P1 is taken, the
             % other properties are ignored
-           
+            
             if nargin<2 || isempty(p)
                 p=set.param_names();
             end
@@ -159,7 +159,7 @@ classdef SimParamSet1 < handle
             % Variables
             %
             % SET_NOT_FIXED(SET)
-            % releases all SimParams in the SimParamSet SET 
+            % releases all SimParams in the SimParamSet SET
             %
             % P_1, P_2.. is the NAME of SimParameters that are already
             % added to the SimParamSet SET
@@ -244,15 +244,17 @@ classdef SimParamSet1 < handle
             % Properties description
             m                 =set.num_params();
             m_RV           =set.num_RVs();
-            RVs              =set.RV_names();  
+            RVs              =set.RV_names();
             ind_RV         =set.find_ind_RV();
             fixed_vals    =set.find_fixed_vals();
             
-            % Send error if all SIMPARAMS are fixed
+            % Send warning if all SIMPARAMS are fixed, and change N to 1
             if m_RV==0
-                error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
+                warning('sglib:gpcsimparams_sample', 'can not sample, only determinstic values are given because there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to release parameters')
+                xi=fixed_vals;
+                return
             end
-                % Generate standard uniform samples
+            % Generate standard uniform samples
             switch(mode)
                 case {'mc', 'default'}
                     U = rand(N,m_RV);
@@ -290,7 +292,7 @@ classdef SimParamSet1 < handle
         function  [a_beta, V_p, varserr]=gpc_expand_RVs(set, varargin)
             % Expands the maping between reference parameters (germs)
             % with standard probability distribution to the global
-            % parameters (set of not fixed SimParameters in the SimParamSet) in 
+            % parameters (set of not fixed SimParameters in the SimParamSet) in
             % general Polynomial Chaos, see more in  GPC_PARAM_EXPAND
             
             options=varargin2options(varargin);
@@ -317,9 +319,9 @@ classdef SimParamSet1 < handle
                 end
             end
         end
-           
-      %% Generate integration points
-        function  [x, w, x_ref, gpc_vars_err] =generate_integration_points(set, p_int, varargin)
+        
+        %% Generate integration points
+        function  [x_p, w, x_ref, gpc_vars_err] =generate_integration_points(set, p_int, varargin)
             % [X, W, X_REF, GPC_VARS_ERR] =GENERATE_INTEGRATION_POINTS(SIMPARAMSET,
             % P_INT)
             % Generates integration points for the SimParameters in the
@@ -329,8 +331,8 @@ classdef SimParamSet1 < handle
             % a maping is defined in gPCE from some reference parameters (germs)
             % to the  not fixed SimParameters. The integration point
             % is generated in the reference coordinate system, and then maped
-            % back with the gPCE-map to the coord sys. defined by the SimParameters 
-            % 
+            % back with the gPCE-map to the coord sys. defined by the SimParameters
+            %
             % with the inputs:
             %    -P_INT:  integration order (derived from P_INT-point univariate rule)
             % optional inputs
@@ -342,9 +344,9 @@ classdef SimParamSet1 < handle
             %    - 'EXPAND_OPTIONS': see more in the optional inputs of GPC_PARAM_EXPAND
             %    - 'GRID': full tensor or sparse integration rule 'FULL_TENSOR' /'SMOLYAK'(default)
             % whith the outputs
-            % 
+            %
             %    -X : coordinates of the
-            %        integration points in the parameteric coordinate system 
+            %        integration points in the parameteric coordinate system
             %    -W: weights
             %    -X_REF: coordinates in the reference
             %        coordinate system of the integration points
@@ -356,67 +358,64 @@ classdef SimParamSet1 < handle
             [expand_options,options]=get_option(options, 'expand_options', {});
             [grid, options] = get_option(options, 'grid', 'smolyak');
             check_unsupported_options(options, mfilename);
-                                     
+            
             % generate gpc basis for the parameters
             [p_beta, V_p, gpc_vars_err]=set.gpc_expand_RVs('polysys', polysys, 'expand_options', expand_options);
-            % generate integration points for the gPC germs (x_ref) and the
-            % map to the parameter set
-            [x, w, x_ref] = gpc_integrate(set, p_beta, V_p, p_int, 'grid', grid);
-            
+            % generate integration points for the gPC germs (x_ref)
+            [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', grid);
+            % map integration points to the parameter set
+            x_p=set.gpc_evaluate( p_beta, V_p, x_ref);
         end
-        %% Generate integration point from gPC 
-        function   [x, w, x_ref] = gpc_integrate(set, p_beta, V_p, p_int, varargin)
-            % [X, W, X_REF] = GPC_INTEGRATE(P_BETA, V_P, P_INT, VARARGIN)
-            % Generates integration points for the SimParameters in the
+        %% Generate integration point from gPC
+        function   x_p = gpc_evaluate(set, p_beta, V_p, x_ref, varargin)
+            % [X, W, X_REF] = GPC_EVALUATE(P_BETA, V_P, X_REF)
+            % Evaluate parameters X_REF germ coordinate points for the SimParameters in the
             % SIMPARAMSET object. Should be used in combination of
             % GENERATE_INTEGRATION_POINTS
             % with the inputs:
             %    -P_BETA, V_P: gPCE coefficient and basis of the set of the not fixed
             %        SimParameters in the SimParameterSet
-            %    -P_INT:  integration order (derived from P_INT-point univariate rule)
-            % whith the outputs
-            %    -X : coordinates in the parameteric coordinate system of the
-            %        integration points
-            %    -W: weights
-            %    -X_REF: coordinates of integration points in the reference
-            %        coordinate system given by the gPC germs
+            %    -X_REF:  coordinates of the gPCE germs
+            %    -X : coordinates in the parameteric coordinate system
+            
             % Example:
             % [p_beta, V_p, ~]=set.gpc_expand_RVs('polysys', 'h')
-            % [x, w, x_ref] = gpc_integrate(p_beta, V_p, 3)
+            % [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', 'smolyak');
+            % x_p = gpc_evaluate(p_beta, V_p, x_ref)
             
             m                 =set.num_params();
             m_RV           =set.num_RVs();
             ind_RV         =set.find_ind_RV();
-                                   
-            % generate integration points for the gPC germs
-            [x_ref, w] = gpc_integrate([], V_p, p_int, varargin);
-           
-            %map integration points to the parameter's domain with the gPCE  
+            
+            n=size(x_ref, 2);
+            
+            %map integration points to the parameter's domain with the gPCE
             x=gpc_evaluate(p_beta, V_p, x_ref);
             
             % if there are fixed parameters, insert fixed values
             if m>m_RV
-                x_new=zeros(m,length(w));
-                x_new(ind_RV,:)=x;
-                x_new(~ind_RV,:)=repmat(set.find_fixed_vals(), 1, length(w));
-                x=x_new;                
+                x_p=zeros(m,n);
+                x_p(ind_RV,:)=x;
+                x_p(~ind_RV,:)=repmat(set.find_fixed_vals(), 1, n);
+            else
+                x_p=x;
             end
         end
-         %% Number of parameters
-         function m=num_params(set)
+        %% Number of parameters
+        function m=num_params(set)
             % Gives the number of SimParameters in the SimParameterSet
             % Example: N=NUM_PARAMS(SIMPARAMETERSET)
             m=length(fieldnames(set.simparams));
-         end
-         
-            %% Name of all parameters (fixed and RVs)
+        end
+        
+        %% Name of all parameters (fixed and RVs)
         function p=param_names(set)
             % Gives the NAMEs of SimParameters in the SimParameterSet
             % Example: P_NAMES=PARAM_NAMES(SIMPARAMETERSET)
             p=fieldnames(set.simparams);
-        end     
-         
-              %% Name of all parameters (fixed and RVs) for plot
+        end
+        
+        %% Name of all parameters (fixed and RVs) for plot
         function p_names=param_plot_names(set)
             % Gives the PLOT_NAMEs of SimParameters in the SimParameterSet
             % Example: P_NAMES=PARAM_PLOT_NAMES(SIMPARAMETERSET)
@@ -427,36 +426,36 @@ classdef SimParamSet1 < handle
                 p_names{i}=set.simparams.(p{i}).plot_name;
             end
         end
-     
-          %% Find indices of RVs in the param names
-         function ind_RV=find_ind_RV(set)
+        
+        %% Find indices of RVs in the param names
+        function ind_RV=find_ind_RV(set)
             % IND_RV=FIND_IND_RV(SIMPARAMSET)
             % gives a logical array IND_RV, telling which parameter in the
             % PARAMETERSET is random
-            % Example: 
+            % Example:
             % ind_RV=find_ind_RV(SimParamSet)
             % List_of_RVs=SimParamSet.param_names
             
             p=set.param_names();
             m=set.num_params();
             ind_RV=false(m,1);
-                        
-             for i=1:m
-                 if ~set.simparams.(p{i}).is_fixed;
+            
+            for i=1:m
+                if ~set.simparams.(p{i}).is_fixed;
                     ind_RV(i)=true;
-                 end
-             end
-         end
-         
-              %% Number of random variables
+                end
+            end
+        end
+        
+        %% Number of random variables
         function m_RVs=num_RVs(set)
             % gives the N_RV number of not fixed SimParameter's in the
             % SimParameterSet
-            % N_RV=RV_NAMES(SIMPARAMETERSET)     
+            % N_RV=RV_NAMES(SIMPARAMETERSET)
             ind_RV=set.find_ind_RV;
-            m_RVs=sum(ind_RV);  
+            m_RVs=sum(ind_RV);
         end
-                     
+        
         %% Name of Random Variables
         function RVs=RV_names(set)
             % collects  NAMES of not fixed SimParameter's
@@ -475,24 +474,48 @@ classdef SimParamSet1 < handle
             
             RV_names=cell(m_RV,1);
             for i=1:m_RV
-               RV_names{i}=set.simparams.(RVs{i}).plot_name;
+                RV_names{i}=set.simparams.(RVs{i}).plot_name;
             end
         end
         
-
-         %% Find fixed values of the fixed parameters in the parameterset
-         function fixed_vals=find_fixed_vals(set)
-             % collects fixed values of fixed parameters in the
-             % SimParameterSet FIXED_VALS=FIND_FIXED_VALS(SIMPARAMSET)
-             p=set.param_names();
-             ind_RV=set.find_ind_RV();
-             fixed_p=p(~ind_RV);
-             
-             fixed_vals=zeros(size(fixed_p));
-             for i=1:length(fixed_p)
-                 fixed_vals(i)=set.simparams.(fixed_p{i}).fixed_val;
-             end
-         end
-  
+        
+        %% Find fixed values of the fixed parameters in the parameterset
+        function fixed_vals=find_fixed_vals(set)
+            % collects fixed values of fixed parameters in the
+            % SimParameterSet FIXED_VALS=FIND_FIXED_VALS(SIMPARAMSET)
+            p=set.param_names();
+            ind_RV=set.find_ind_RV();
+            fixed_p=p(~ind_RV);
+            
+            fixed_vals=zeros(size(fixed_p));
+            for i=1:length(fixed_p)
+                fixed_vals(i)=set.simparams.(fixed_p{i}).fixed_val;
+            end
+        end
+        
+        %% Gives the mean values of the all the parameters in the parameterset
+        function means=mean_vals(set)
+            % gives the mean values of all the parameters in the
+            % SIMPARAMETERSET
+            p=set.param_names();
+            m=set.num_params;
+            means=zeros(m, 1);
+            for i=1:m
+                means(i)=set.simparams.(p{i}).mean;
+            end
+        end
+        %%
+        function params=param_vals_to_struct(set, val, varargin)
+            % gives the struct with fieldnames: NAME of the parameters in the
+            % SIMPARAMETERSET taking values VAL
+            
+            p=set.param_names();
+            m=set.num_params;
+            params=struct();
+            for i=1:m
+                params.(p{i})=val(i);
+            end
+        end
+        
     end
 end

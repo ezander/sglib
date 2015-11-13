@@ -51,15 +51,37 @@ end
 
 function sprev = rng_get_state
 sprev=struct();
-sprev.stream = RandStream.getDefaultStream;
+sprev.stream = getDefaultStream;
 sprev.state  = sprev.stream.State;
 
 function sprev = rng_set_state(s)
 sprev = rng_get_state;
-RandStream.setDefaultStream(s.stream);
+setDefaultStream(s.stream);
 s.stream.State = s.state;
 
 function sprev = rng_seed(seed, arg)
 sprev = rng_get_state;
 stream = RandStream.create(arg, 'Seed', seed);
-RandStream.setDefaultStream(stream);
+setDefaultStream(stream);
+
+
+
+function stream = getDefaultStream
+if ismethod('RandStream', 'getDefaultStream')
+    stream = RandStream.getDefaultStream;
+elseif ismethod('RandStream', 'getGlobalStream')
+    stream = RandStream.getGlobalStream;
+else
+    error('sglib:wtf', 'And another incompatible change by the Mathworks...');
+end
+
+function setDefaultStream(stream)
+if ismethod('RandStream', 'setDefaultStream')
+    RandStream.setDefaultStream(stream);
+elseif ismethod('RandStream', 'setGlobalStream')
+    RandStream.setGlobalStream(stream);
+else
+    error('sglib:wtf', 'And another incompatible change by the Mathworks...');
+end
+
+

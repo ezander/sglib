@@ -1,12 +1,12 @@
-function dist=ArcSinDistribution(a, b)
-    % SEMICIRCLEDISTRIBUTION Construct a BetaDistribution.
+classdef ArcSinDistribution < BetaDistribution
+    % ARCSINDISTRIBUTION Construct a BetaDistribution.
     %   DIST=ARCSINDISTRIBUTION() constructs a beta distribution returned in
     %   DIST representing a beta distribution with parameters A=3/2 and
     %   B=3/2 shifted to have bounds [a,b]
     %
-    % Example (<a href="matlab:run_example SemiCircleDistribution">run</a>)
+    % Example (<a href="matlab:run_example ArcSinDistribution">run</a>)
     %   dist = ArcSinDistribution();
-    %   [var,mean,skew,kurt]=dist.moments()
+    %   [mean,var,skew,kurt]=dist.moments()
     %
     % See also DISTRIBUTION BETADISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
@@ -21,8 +21,35 @@ function dist=ArcSinDistribution(a, b)
     %   have received a copy of the GNU General Public License along with
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     
-   dist=BetaDistribution(1/2, 1/2);
-   if ~a==0 || ~b==1
-       dist= fix_bounds(dist, a, b);
-   end
+    methods
+        function dist = ArcSinDistribution()
+            dist@BetaDistribution(1/2, 1/2);
+        end
+        
+        function str=tostring(dist) %#ok<MANU>
+            % TOSTRING Displays the distribution type.
+            str=sprintf('ArcSin()');
+        end
+    end
+    
+    methods
+        function polysys=default_sys_letter(dist, is_normalized) %#ok<INUSL>
+            % DEFAULT_SYS_LETTER gives the 'SYS' letter belonging to the
+            % 'natural' polynomial system belonging to the distribution.
+            if nargin>=2 && is_normalized
+                polysys = 't';
+            else
+                polysys = 'T';
+            end
+        end
+        
+        function polys=default_polys(dist, is_normalized)
+            % DEFAULT_POLYS gives the 'natural' polynomial system
+            % belonging to the distribution
+            if nargin<2;
+                is_normalized=false;
+            end
+            polys=ChebyshevTPolynomials(is_normalized);
+        end
+    end
 end
