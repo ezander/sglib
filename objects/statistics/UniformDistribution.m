@@ -75,6 +75,18 @@ classdef UniformDistribution < Distribution
             dist.a=m+shift-v;
             dist.b=m+shift+v;
         end
+        function x=base2dist(dist,y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=dist.mean+y*(dist.b-dist.a)/2;
+        end
+        function y=dist2base(dist,x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=(x-dist.mean)*2/(dist.b-dist.a);
+        end
         function xi=sample(dist,n)
             %   Draw random samples from Uniform distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -104,6 +116,11 @@ classdef UniformDistribution < Distribution
             else
                 polysys='p';
             end
+        end
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=UniformDistribution(-1,1);
         end
         function poly=default_polys(n, is_normalized)
             if nargin<2;

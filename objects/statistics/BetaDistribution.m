@@ -117,5 +117,25 @@ classdef BetaDistribution < Distribution
             polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
         end
         
+        function dist_germ=get_base_dist(dist)
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=fix_bounds(BetaDistribution(dist.a, dist.b), -1,1);
+        end
+        
+    end
+    methods(Static)
+        function x=base2dist(y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=(y+1)/2;
+        end
+        function y=dist2base(x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=x*2-1;
+        end
     end
 end

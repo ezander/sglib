@@ -56,6 +56,18 @@ classdef ExponentialDistribution < Distribution
             [m{1:nargout}] = exponential_moments( dist.lambda );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        function x=base2dist(dist, y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=y/dist.lambda;
+        end
+        function y=dist2base(dist,x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=x*dist.lambda;
+        end
         function xi=sample(dist,n)
             %   Draw random samples from Exponential distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -92,6 +104,11 @@ classdef ExponentialDistribution < Distribution
                 is_normalized=false;
             end
             poly=LaguerrePolynomials(dist.lambda, is_normalized);
+        end
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=ExponentialDistribution(1);
         end
     end
 end

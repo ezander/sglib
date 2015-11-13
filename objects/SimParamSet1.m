@@ -239,14 +239,15 @@ classdef SimParamSet1 < handle
             [mode,options]=get_option(options, 'mode', 'default');
             [rand_func,options]=get_option(options, 'rand_func', []);
             [qmc_options,options]=get_option(options, 'qmc_options',  {});
+            [sample_from_germ,options]=get_option(options, 'sample_from_germ',  false);
             check_unsupported_options(options, mfilename);
             
             % Properties description
-            m                 =set.num_params();
+            m              =set.num_params();
             m_RV           =set.num_RVs();
-            RVs              =set.RV_names();
+            RVs            =set.RV_names();
             ind_RV         =set.find_ind_RV();
-            fixed_vals    =set.find_fixed_vals();
+            fixed_vals     =set.find_fixed_vals();
             
             % Send warning if all SIMPARAMS are fixed, and change N to 1
             if m_RV==0
@@ -276,13 +277,31 @@ classdef SimParamSet1 < handle
             % parameters
             xi_RV=zeros(size(U));
             for i=1:m_RV
-                xi_RV(:,i)=set.simparams.(RVs{i}).dist.invcdf((U(:,i)));
+                if sample_from_germ
+                    dist_i= set.simparams.(RVs{i}).germ_dist;
+                    if isempty(dist_i)
+                        dist_i=get_set_germdist(set.simparams.(RVs{i}));
+                    end
+                    xi_RV(:,i)=dist_i.invcdf((U(:,i)));
+                else
+                    xi_RV(:,i)=set.simparams.(RVs{i}).dist.invcdf((U(:,i)));
+                end
             end
             % add  columns with the fixed values to the samples
             if m>m_RV
                 xi=zeros(N,m);
                 xi(:,ind_RV)=xi_RV;
-                xi(:,~ind_RV)=repmat(fixed_vals', N, 1);
+                
+                if sample_from_germ
+                    map_func=RVs2germ_func(set, 'ind', ~ind_RV);
+                    vals=zeros(size(fixed_vals));
+                    for j=1:length(fixed_vals)
+                        vals(j)=feval(map_func{j}, fixed_vals(j));
+                    end
+                    xi(:,~ind_RV)=repmat(vals', N, 1);
+                else
+                    xi(:,~ind_RV)=repmat(fixed_vals', N, 1);
+                end
             else
                 xi=xi_RV;
             end
@@ -301,7 +320,7 @@ classdef SimParamSet1 < handle
             check_unsupported_options(options, mfilename);
             
             m_RV           =set.num_RVs();
-            RVs              =set.RV_names();
+            RVs            =set.RV_names();
             
             if m_RV==0;
                 error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
@@ -383,7 +402,7 @@ classdef SimParamSet1 < handle
             % [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', 'smolyak');
             % x_p = gpc_evaluate(p_beta, V_p, x_ref)
             
-            m                 =set.num_params();
+            m              =set.num_params();
             m_RV           =set.num_RVs();
             ind_RV         =set.find_ind_RV();
             
@@ -399,6 +418,56 @@ classdef SimParamSet1 < handle
                 x_p(~ind_RV,:)=repmat(set.find_fixed_vals(), 1, n);
             else
                 x_p=x;
+            end
+        end
+              %% Get mappings from germ to simparam in a cell for every random variable
+        function map_func=germ2RVs_func(set, varargin)
+            % all the mappings from germ to the parameters in a cell format
+            % if there were no germs defined for the simparams, it
+            % will be automatically generated from the base distribution of
+            % the simparams distribution
+            options=varargin2options(varargin);
+            [ind,options]=get_option(options, 'ind', []);
+            check_unsupported_options(options, mfilename);
+            p=set.param_names();
+            m=set.num_params;
+            map_func=cell(m,1);
+            for i=1:m
+                if isempty(set.simparams.(p{i}).germ_dist)
+                    [~, func_i, ~]=get_set_germdist(set.simparams.(p{i}));
+                else
+                    func_i=set.simparams.(p{i}).germ2param_func;
+                end
+                map_func{i}=func_i;
+                if ~isempty(ind)
+                    map_func=map_func(ind);
+                end
+            end
+        end
+                   %% Get mappings from simparamto germ in a cell for every random variable
+        function map_func=RVs2germ_func(set, varargin)
+            % all the mappings from germ to the parameters in a cell format
+            % if there were no germs defined for the simparams, it
+            % will be automatically generated from the base distribution of
+            % the simparams distribution
+            
+            options=varargin2options(varargin);
+            [ind,options]=get_option(options, 'ind', []);
+            check_unsupported_options(options, mfilename);
+            
+            p=set.param_names();
+            m=set.num_params;
+            map_func=cell(m,1);
+            for i=1:m
+                if isempty(set.simparams.(p{i}).germ_dist)
+                    [~, ~, func_i]=get_set_germdist(set.simparams.(p{i}));
+                else
+                    func_i=set.simparams.(p{i}).param2germ_func;
+                end
+                map_func{i}=func_i;
+            end
+            if ~isempty(ind)
+                map_func=map_func(ind);
             end
         end
         %% Number of parameters
@@ -504,18 +573,78 @@ classdef SimParamSet1 < handle
                 means(i)=set.simparams.(p{i}).mean;
             end
         end
-        %%
-        function params=param_vals_to_struct(set, val, varargin)
-            % gives the struct with fieldnames: NAME of the parameters in the
-            % SIMPARAMETERSET taking values VAL
+        
+        %% Gives the variances of the all the parameters in the parameterset
+        %         function vars=vars(set)
+        %             % gives the variances of all the parameters in the
+        %             % SIMPARAMETERSET
+        %             p=set.param_names();
+        %             m=set.num_params;
+        %             vars=zeros(m, 1);
+        %             for i=1:m
+        %                 vars(i)=set.simparams.(p{i}).var;
+        %             end
+        %         end
+        %% Gives the variances of the all the parameters in the parameterset
+        function v=var_vals(set)
+            % gives the variances of all the parameters in the
+            % SIMPARAMETERSET
+            p=set.param_names();
+            m=set.num_params;
+            v=zeros(m, 1);
+            for i=1:m
+                v(i)=set.simparams.(p{i}).var;
+            end
+        end
+        %% Gives the probability that the parameters
+        % take value x
+        function prob=pdf(set,x)
             
             p=set.param_names();
             m=set.num_params;
-            params=struct();
+            
+            prob=1;
             for i=1:m
-                params.(p{i})=val(i);
+                prob=set.simparams.(p{i}).pdf(x(i))*prob;
+            end
+            
+        end
+  
+        %% give germ distributions in a cell
+        function dists=germ_dist(set, varargin)
+            % all the mappings from germ to the parameters in a cell format
+            p=set.param_names();
+            m=set.num_params;
+            dists=cell(m,1);
+            for i=1:m
+                if set.simparams.(p{i}).is_fixed
+                    dists{i}={};
+                else
+                    dists{i}=set.simparams.(p{i}).germ_dist;
+                    if isempty(dists{i})
+                        dist_i=get_set_germdist(set.simparams.(p{i}));
+                        string_warn=strvarexpand('There was no mapping set, the param is mapped to $dist_i.tostring$');
+                        warning(string_warn);
+                        dists{i}=dist_i;
+                    end
+                end
             end
         end
-        
+        %%
+        function string=tostring(set, varargin)
+            % all the mappings from germ to the parameters in a cell format
+            p=set.param_names();
+            m=set.num_params;
+            str=cell(m,1);
+            for i=1:m
+                str{i}=set.simparams.(p{i}).tostring;
+            end
+            %string=strcat(str{:});
+            string=str;
+        end
+        function disp(simparam)
+            disp(simparam.tostring());
+        end
     end
 end
+
