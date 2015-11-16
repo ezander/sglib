@@ -7,7 +7,7 @@ function [partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_va
 %   corresponding partial variance for the indicated random variables. 
 % 
 %   When called like this: [PARTIAL_VAR, I_S, RATIO_BY_INDEX,
-%   RATIO_BY_ORDER]=GPC_SOBOL_PARTIAL_VARS(V_A, A_I_ALPHA) also the ratios
+%   RATIO_BY_ORDER]=GPC_SOBOL_PARTIAL_VARS(A_I_ALPHA, V_A) also the ratios
 %   of the variances with respect to the total variance are returned.
 %
 %   The output in detail:

@@ -25,7 +25,7 @@ N = 5;
 V_a = gpcbasis_create('HpL', 'p', 3);
 a_i_alpha = rand(N, gpcbasis_size(V_a,1));
 
-[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(V_a, a_i_alpha);
+[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(a_i_alpha, V_a);
 
 assert_equals(I_s(1:3,:), logical(eye(3)), 'ordering first sobol vars');
 assert_equals(sum(I_s,2), [1,1,1,2,2,2,3]', 'ordering sobol vars');
@@ -46,7 +46,7 @@ assert_equals(sum(ratio_by_order,2), ones(N,1), 'ratios_sum_to_1');
 assert_equals(size(ratio_by_order), [N, max(sum(I_s,2))], 'ratios_size')
 
 %% Limited to order 1
-[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(V_a, a_i_alpha, 'max_index', 1);
+[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(a_i_alpha, V_a, 'max_index', 1);
 assert_equals(I_s, logical(eye(3)), 'sobol vars');
 
 assert_equals(sum(ratio_by_index,2), ones(N,1), 'ratios_sum_to_1');
