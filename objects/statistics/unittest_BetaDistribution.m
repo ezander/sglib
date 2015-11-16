@@ -54,7 +54,6 @@ assert_equals(pdf(B,0), 0, 'pdf_zero' );
 assert_equals(pdf(B,1), 0, 'pdf_zero' );
 
 %% beta_invcdf
-
 y = linspace(0, 1);
 x = linspace(0, 1);
 
@@ -74,7 +73,6 @@ assert_equals( invcdf(B,cdf(B,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
 %% beta_stdnor
-
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
@@ -83,12 +81,14 @@ x=beta_stdnor(gam, 0.5, 1.3);
 
 B = BetaDistribution(0.5,1.3);
 assert_equals( cdf(B,x), uni, 'beta' );
+
 %% fix_moments
 B=BetaDistribution(2,3);
 dist=fix_moments(B,3,14);
 [m,v]=moments(dist);
 assert_equals(m,3,'mean fix_moments');
 assert_equals(v,14,'var fix_moments');
+
 %% Fix Bounds
 B = BetaDistribution(2,3);
 dist = fix_bounds(B,4,5);

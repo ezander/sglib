@@ -66,20 +66,6 @@ classdef BetaDistribution < Distribution
             [mean,var,skew,kurt]=deal(m{:});
         end
         
-        function xi=sample(dist,n)
-            %   Draw random samples from Beta distribution.
-            %   XI=SAMPLE(DIST,N) draws N random samples from the random
-            %   distribution DIST. If N is a scalar value XI is a column vector of
-            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
-            %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
-            xi = dist.invcdf(yi);
-        end
-        
         function str=tostring(dist)
             % Displays the distribution type: 'Beta(a, b)'
             str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);

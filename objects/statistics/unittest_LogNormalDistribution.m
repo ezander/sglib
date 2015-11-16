@@ -66,14 +66,14 @@ assert_equals(cdf(LN,invcdf(LN,y)),cdf(LN,invcdf(LN,y)),'cdf_invcdf_3');
 assert_equals(invcdf(LN,cdf(LN,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(LN,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
-% % lognormal_NORTA
+% % lognormal_stdnor
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 LN=LogNormalDistribution(0.2,0.3);
-x=NORTA( LN,gam );
+x=stdnor( LN,gam );
 assert_equals(cdf(LN,x), uni, 'lognormal' )
 assert_equals( lognormal_stdnor(gam), lognormal_stdnor(gam, 0, 1), 'lognormal_def12');
 assert_equals( lognormal_stdnor(gam, 0), lognormal_stdnor(gam, 0, 1), 'lognormal_def2');

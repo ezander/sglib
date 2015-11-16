@@ -10,6 +10,7 @@ classdef Distribution % < handle
         str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
     end
     
+    %% Basic distribution methods
     methods
         function mean=mean(dist)
             % MEAN computes the mean value of the distribution.
@@ -21,6 +22,26 @@ classdef Distribution % < handle
             [~,v]=dist.moments();
             var=v;
         end
+        
+        function xi=sample(dist,n)
+            % SAMPLE Draw random samples from this distribution.
+            %   XI=SAMPLE(DIST, N) draws N random samples from the random
+            %   distribution DIST. If N is a scalar value XI is a column
+            %   vector of random samples of size [N,1]. If N is a vector XI
+            %   is a matrix (or tensor) of size [N(1), N(2), ...].
+            if isscalar(n)
+                yi = rand(n, 1);
+            else
+                yi = rand(n);
+            end
+            xi = dist.invcdf(yi);
+        end
+    end
+    
+    %% Methods related to translation/scaling of the distribution
+    methods
+        
+        
         
         function tdist=translate(dist,shift,scale)
             % TRANSLATE translates the distribution DIST
@@ -80,7 +101,9 @@ classdef Distribution % < handle
             shift  = min - ((old_min-center)*scale + center);
             new_dist=translate(dist,shift,scale);
         end
-        
+    end
+    
+    methods
         function y=stdnor(dist, x)
             % STDNOR Map from normal distributed random values.
             % Y=STDNOR(DIST, X) Map normal distributed random values X to
@@ -88,29 +111,29 @@ classdef Distribution % < handle
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
         end
+    end
+    
+    methods
+        function dist_germ=get_base_dist()
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=NormalDistribution(0,1);
+        end
+        
         function x=base2dist(dist,y)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
             x=dist.invcdf (dist.get_base_dist.cdf(y));
         end
+        
         function y=dist2base(dist, x)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
             y=dist.get_base_dist.invcdf(dist.cdf( x));
         end
-    
         
-        function y=NORTA(dist, x)
-            % NORTA Map normal distributed random values.
-            % Y=NORTA(DIST, X) same as STDNOR.
-            y=stdnor(dist, x);
-        end
-        
-    end
-    
-    methods
         function polysys=default_sys_letter(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
@@ -119,11 +142,6 @@ classdef Distribution % < handle
             else
                 polysys='H';
             end
-        end
-        function dist_germ=get_base_dist()
-            % Get base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is orthogonal)
-            dist_germ=NormalDistribution(0,1);
         end
         
         function polys=default_polys(dist, is_normalized)

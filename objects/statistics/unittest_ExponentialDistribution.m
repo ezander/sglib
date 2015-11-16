@@ -18,16 +18,17 @@ function unittest_ExponentialDistribution
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'ExponentialDistribution' );
+
 %% Mean & Var
 E = ExponentialDistribution(1.5);
 assert_equals(E.mean, 0.6666666, 'mean','abstol',0.0001 );
 assert_equals(E.var, 0.44444444, 'var' );
+
 %% exponential_cdf
 assert_equals(cdf(E,-inf), 0, 'cdf_minf' );
 assert_equals(cdf(E,-1e10), 0, 'cdf_negative' );
 assert_equals(cdf(E,inf), 1, 'cdf_inf' );
 assert_equals(cdf(E,log(2)/E.lambda), 1/2, 'cdf_median' );
-
 
 %% exponential_pdf
 assert_equals(pdf(E,-inf), 0, 'pdf_minf' );
@@ -47,14 +48,14 @@ assert_equals(invcdf(E,cdf(E,y)), y, 'invcdf_cdf_1');
 assert_equals( isnan(invcdf(E,[-0.1, 1.1])), [true, true], 'invcdf_nan1');
 
 
-%% exponential_norta
+%% exponential_stdnor
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
 gam=sqrt(2)*erfinv(2*uni-1);
 
 E = ExponentialDistribution(0.7);
-x=NORTA( E,gam );
+x=stdnor( E, gam );
 assert_equals(cdf(E,x), uni, 'exponential' )
 
 %% fix_moments
@@ -63,6 +64,7 @@ dist=fix_moments(E,5,7);
 [m,v]=moments(dist);
 assert_equals(m,5,'mean fix_moments');
 assert_equals(v,7,'var fix_moments');
+
 %% Fix Bounds
 E = ExponentialDistribution(4);
 dist = fix_bounds(E,2,4,'q0',0.001,'q1', 0.5);
