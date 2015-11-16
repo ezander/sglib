@@ -18,13 +18,22 @@ function unittest_LegendrePolynomials
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'LegendrePolynomials' );
+
 %% Initialization
-L=LegendrePolynomials();
-assert_equals(L.is_normalized,false,'initialization');
+P=LegendrePolynomials();
+
 %% Recur_coeff
-r=L.recur_coeff(3);
+r=P.recur_coeff(3);
 assert_equals(r,[0 1 0;0 1.5 0.5;0 5/3 2/3],'recur_coeff');
+
 %% evaluate
 xi=[1,2,3,4];
-y=L.evaluate(2, xi);
+y=P.evaluate(2, xi);
 assert_equals(y,[1 1 1;1 2 5.5;1 3 13;1 4 47/2],'evaluate');
+
+%% norm
+n = [0 1; 3 5];
+h = 1./[1 3; 7 11];
+assert_equals(P.sqnorm(n), h, 'nrm_arr');
+assert_equals(P.sqnorm(n(:)), h(:), 'nrm_col');
+assert_equals(P.sqnorm(n(:)'), h(:)', 'nrm_row');

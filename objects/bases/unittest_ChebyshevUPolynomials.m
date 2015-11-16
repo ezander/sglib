@@ -18,15 +18,22 @@ function unittest_ChebyshevUPolynomials
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'Chemyshev2Polynomial' );
+
 %% Initialization
-C=ChebyshevUPolynomials();
-assert_equals(C.is_normalized,false,'initialization');
+U=ChebyshevUPolynomials();
+
 %% Recur_coeff
-r=C.recur_coeff(4);
+r=U.recur_coeff(4);
 assert_equals(r,[[0,2,1];[0,2,1];[0,2,1];[0,2,1]],'recur_coeff');
 
 %% evaluate
 xi=[1,2,3,4];
-y=C.evaluate(3, xi);
+y=U.evaluate(3, xi);
 assert_equals(y,[1 2 3 4;1 4 15 56; 1 6 35 204; 1 8 63 496],'evaluate');
 
+%% norm
+n = [0 1; 3 5];
+h = [1 1; 1 1];
+assert_equals(U.sqnorm(n), h, 'nrm_arr');
+assert_equals(U.sqnorm(n(:)), h(:), 'nrm_col');
+assert_equals(U.sqnorm(n(:)'), h(:)', 'nrm_row');

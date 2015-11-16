@@ -18,9 +18,10 @@ function unittest_JacobiPolynomials
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'JacobiPolynomials' );
+
 %% Initialization
 J=JacobiPolynomials(-0.5,-0.5);
-assert_equals(J.is_normalized,false,'initialization');
+
 %% Recur_coeff
 r=J.recur_coeff(3);
 assert_equals(r, ...
@@ -47,8 +48,7 @@ y_j=binfun(@times, y_j, 1./y(1,:) );
 U=ChebyshevUPolynomials();
 y_u=U.evaluate(3,xi);
 
-assert_equals(y_j, ...
-y_u,'check_equivalence_with_ChebyshevU');
+assert_equals(y_j, y_u,'check_equivalence_with_ChebyshevU');
 
 % equivalence with ChebyshevT
 J=JacobiPolynomials(-0.5,-0.5);
@@ -57,14 +57,26 @@ y_j=binfun(@times, y, 1./y(1,:) );
 T=ChebyshevTPolynomials();
 y_T=T.evaluate(3,xi);
 
-assert_equals(y_j, ...
-y_T,'check_equivalence_with_ChebyshevT');
+assert_equals(y_j, y_T,'check_equivalence_with_ChebyshevT');
 
 %  equivalence with Legendre Polynomials
 J=JacobiPolynomials(0,0);
 y_j=J.evaluate(3, xi);
-L=LegendrePolynomials();
-y_L=L.evaluate(3,xi);
+P=LegendrePolynomials();
+y_P=P.evaluate(3,xi);
 
-assert_equals(y_j, ...
-y_L,'check_equivalence_with_Legendre');
+assert_equals(y_j, y_P,'check_equivalence_with_Legendre');
+
+
+%% norm 
+J = JacobiPolynomials(0,0);
+P=LegendrePolynomials();
+n = [0 1; 3 5];
+h = P.sqnorm(n);
+assert_equals(J.sqnorm(n), h, 'nrm_arr');
+assert_equals(J.sqnorm(n(:)), h(:), 'nrm_col');
+assert_equals(J.sqnorm(n(:)'), h(:)', 'nrm_row');
+
+% TODO: need to check the sqnorm stuff better
+% I think it will be best to check consistency, e.g. together with
+% integration of the polys over the weight functions

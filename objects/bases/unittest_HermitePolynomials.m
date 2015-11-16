@@ -18,18 +18,26 @@ function unittest_HermitePolynomials
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'HermitePolynomials' );
+
 %% Initialization
 H=HermitePolynomials();
-assert_equals(H.is_normalized,false,'initialization');
+
 %% Recur_coeff
 r=H.recur_coeff(5);
 assert_equals(r, ...
     [[0,1,0]; [0,1,1]; [0,1,2]; [0,1,3]; [0,1,4]],'recur_coeff');
 
-
 r=H.recur_coeff(3);
 assert_equals(r,[0 1 0;0 1 1;0 1 2],'recur_coeff');
+
 %% evaluate
 xi=[1,2,3,4];
 y=H.evaluate(2, xi);
 assert_equals(y,[1 1 0;1 2 3;1 3 8;1 4 15],'evaluate');
+
+%% norm
+n = [0 1; 3 5];
+h = [1 1; 6 120];
+assert_equals(H.sqnorm(n), h, 'nrm_arr');
+assert_equals(H.sqnorm(n(:)), h(:), 'nrm_col');
+assert_equals(H.sqnorm(n(:)'), h(:)', 'nrm_row');

@@ -1,11 +1,10 @@
 classdef FunctionSystem
-    % FunctionSystem abstract base class for basis functions
+    % FUNCTIONSYSTEM Abstract base class for systems of basis functions.
     %
     % See also POLYNOMIALSYSTEM
-    
-    
-    %   Aidin Nojavan
-    %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
+        
+    %   Elmar Zander, Aidin Nojavan
+    %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or modify it
     %   under the terms of the GNU General Public License as published by the
@@ -16,7 +15,7 @@ classdef FunctionSystem
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
     methods (Abstract)
-        y=evaluate(sys,xi); %EVALUATE Evaluates the basis functions at given points.
+        y=evaluate(sys, xi); %EVALUATE Evaluates the basis functions at given points.
     end 
 end
 
