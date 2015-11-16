@@ -6,8 +6,8 @@ function unittest_gpc_sobol_partial_vars
 %
 % See also GPC_SOBOL_PARTIAL_VARS, MUNIT_RUN_TESTSUITE 
 
-%   <author>
-%   Copyright 2015, <institution>
+%   Noemi Friedman, Elmar Zander
+%   Copyright 2015, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -21,14 +21,36 @@ munit_set_function( 'gpc_sobol_partial_vars' );
 
 
 %%
-N = 7;
-V_a = gpcbasis_create('HpL', 'p', 2);
-a_i_alpha = rand(N, gpcbasis_size(V_a,1))
+N = 5;
+V_a = gpcbasis_create('HpL', 'p', 3);
+a_i_alpha = rand(N, gpcbasis_size(V_a,1));
 
-[part_vars, I_un, rat, ratpo]=gpc_sobol_partial_vars(V_a, a_i_alpha)
-rat
-ratpo
-sum(part_vars)
-sum(rat)
-sum(ratpo)
+[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(V_a, a_i_alpha);
+
+assert_equals(I_s(1:3,:), logical(eye(3)), 'ordering first sobol vars');
+assert_equals(sum(I_s,2), [1,1,1,2,2,2,3]', 'ordering sobol vars');
+
+I_a = V_a{2};
+%sqr_norm=gpcbasis_norm(V_a)'.^2
+sqr_norm=[1,1,1,1,2,1,1,1,1,1,6,2,1,1,2,1,1,1,1,1];
+var_a_alpha = a_i_alpha.^2 .* repmat(sqr_norm, N, 1);
+
+ind1 = I_a(:,1)>0 & I_a(:,2)==0 & I_a(:,3)==0;
+assert_equals(partial_var(:,1), sum(var_a_alpha(:,ind1),2), 'sum_var_1');
+ind23 = I_a(:,1)==0 & I_a(:,2)>0 & I_a(:,3)>0;
+assert_equals(partial_var(:,6), sum(var_a_alpha(:,ind23),2), 'sum_var_1');
+
+assert_equals(sum(ratio_by_index,2), ones(N,1), 'ratios_sum_to_1');
+assert_equals(size(ratio_by_index), [N, size(I_s,1)], 'ratios_size')
+assert_equals(sum(ratio_by_order,2), ones(N,1), 'ratios_sum_to_1');
+assert_equals(size(ratio_by_order), [N, max(sum(I_s,2))], 'ratios_size')
+
+%% Limited to order 1
+[partial_var, I_s, ratio_by_index, ratio_by_order]=gpc_sobol_partial_vars(V_a, a_i_alpha, 'max_index', 1);
+assert_equals(I_s, logical(eye(3)), 'sobol vars');
+
+assert_equals(sum(ratio_by_index,2), ones(N,1), 'ratios_sum_to_1');
+assert_equals(size(ratio_by_index), [N, size(I_s,1)], 'ratios_size')
+assert_equals(sum(ratio_by_order,2), ones(N,1), 'ratios_sum_to_1');
+assert_equals(size(ratio_by_order), [N, max(sum(I_s,2))], 'ratios_size')
 
