@@ -1,5 +1,4 @@
 function [sys_out, dist_out, poly_out]=gpc_registered_polysys_check(sys_reg, dist_reg, poly_reg, varargin)
-
 %GPC_CHECK_REGISTERED_POLYSYS() check triplets (SYS letter, DISTribution and POLYnomialSystem)
 % which were already registered or which are the standard ones.
 % This function should not be called directly, only through GPC_REGISTER_POLYSYS

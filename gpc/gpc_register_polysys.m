@@ -1,31 +1,33 @@
 function [sys_out, dist_out, poly_out]=gpc_register_polysys(sys, dist, poly, varargin)
 % GPC_REGISTER  Registers new polynomial system with given parameters.
-% This functions allows one to create non standard POLYSYS
-% (others, than the ones, that can be defined automaticaly in GPCBASIS_CREATE)
-% For example beta distribution with differen parameters, 
-%or other standard distribution with different polynomial system can be registered. See example beneath
+%   This functions allows one to create non standard POLYSYS (others, than
+%   the ones, that can be defined automaticaly in GPCBASIS_CREATE) For
+%   example beta distribution with differen parameters, or other standard
+%   distribution with different polynomial system can be registered. See
+%   example beneath
 %
-% -Exemple1 adds a new POLYSYS with BETA distribution (alpha=2, beta=2),
-% corresponding to the SYS letter 'J':
-% -Exemple2 checks registered ans standard POLYSYS
-% -Exemple3 checks registered POLYSYS
-% -Exemple4 checks a registered POLYSYS corresponding to the SYS letter 'J'
 %
 % Example 1: (<a href="matlab:run_example gpc_register_polysys 1">run</a>)
-%[sys, dist, poly]=gpc_register_polysys('j', gendist_create('Beta', {2,2}))
+%    % add a new POLYSYS with BETA distribution (alpha=2, beta=2),
+%    corresponding to the SYS letter 'J':
+%    [sys, dist, poly]=gpc_register_polysys('j', gendist_create('beta', {2,2}))
 % 
 % Example 2: (<a href="matlab:run_example gpc_register_polysys 2">run</a>)
-% [sys, dist, poly]=gpc_register_polysys('', [], [], 'show_standard_sys', true)
+%    % check registered ans standard POLYSYS
+%    [sys, dist, poly]=gpc_register_polysys('', [], [], 'show_standard_sys', true)
 %
 % Example 3: (<a href="matlab:run_example gpc_register_polysys 3">run</a>)
-% [sys, dist, poly]=gpc_register_polysys()
+%    % checks registered POLYSYS
+%    [sys, dist, poly]=gpc_register_polysys()
 %
 % Example 4: (<a href="matlab:run_example gpc_register_polysys 4">run</a>)
-% [sys, dist, poly]=gpc_register_polysys('j')
-% See also GPC, GPC_BASIS_CREATE, GPC_REGISTERED_POLYSYS_CHECK
+%    % checks a registered POLYSYS corresponding to the SYS letter 'J'
+%    [sys, dist, poly]=gpc_register_polysys('j')
+%
+% See also GPC GPCBASIS_CREATE, GPC_REGISTERED_POLYSYS_CHECK
 
-%   Noemi Friedman & Elmar Zander
-%   Copyright 2012, Institute of Scientific Computing, TU Braunschweig.
+%   Noemi Friedman, Elmar Zander
+%   Copyright 2015, Institute of Scientific Computing, TU Braunschweig.
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

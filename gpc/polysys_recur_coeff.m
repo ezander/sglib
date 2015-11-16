@@ -1,5 +1,4 @@
 function r = polysys_recur_coeff(sys, deg, varargin)
-
 % POLYSYS_RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
 %   R = POLYSYS_RECUR_COEFF(SYS, DEG) computes the recurrence coefficients for
 %   the system of orthogonal polynomials SYS. The signs are compatible with
