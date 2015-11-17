@@ -20,7 +20,7 @@ classdef LegendrePolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
     end
     
     methods
@@ -42,7 +42,7 @@ classdef LegendrePolynomials < PolynomialSystem
             r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
         end
         
-        function nrm2 =sqnorm(~, n)
+        function nrm2=sqnorm(~, n)
             % SQNORM Compute the square norm of the Legendre polynomials.
             %
             % References:
@@ -52,9 +52,13 @@ classdef LegendrePolynomials < PolynomialSystem
             nrm2 = 1 ./ (2*n + 1);
         end
         
-        %         function w_dist=weighting_func(poly)
-        %             %w_dist=UniformDistribution(-1,1);
-        %             w_dist= gendist_create('uniform', {-1,1});
-        %         end
+        function dist=weighting_dist(~)
+            % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   distribution, i.e. NormalDistribution(0,1).
+            %
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            dist = UniformDistribution(-1,1);
+        end
     end
 end

@@ -61,6 +61,17 @@ classdef PolynomialSystem < FunctionSystem
             % NORMALIZED Return a normalized version of these polynomials
             poly = NormalizedPolynomials(poly);
         end
+        
+        function dist=weighting_dist(~)
+            % WEIGHTING_DIST Return a distribution wrt to which the polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the distribution DIST
+            %   with respect to which the polynomials POLY are orthgonal or
+            %   an empty array, if there is no such weighting distribution
+            %   (like e.g. in the case of the Monomials).
+            %   
+            % See also DISTRIBUTION
+            dist = [];
+        end
     end
 end
 

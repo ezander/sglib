@@ -1,4 +1,4 @@
-classdef FunctionSystem
+classdef (HandleCompatible=false) FunctionSystem
     % FUNCTIONSYSTEM Abstract base class for systems of basis functions.
     %
     % See also POLYNOMIALSYSTEM

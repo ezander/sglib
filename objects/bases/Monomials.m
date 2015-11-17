@@ -20,7 +20,7 @@ classdef Monomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
     end
     
     methods
@@ -49,9 +49,5 @@ classdef Monomials < PolynomialSystem
             % See also POLYNOMIALSYSTEM.SQNORM
             error('sglib:monomials:sqnorm', 'There is no weighting function for the monomials, thus also no norm!');
         end
-        
-        %         function w_dist=weighting_func()
-        %             w_dist= {'none'};
-        %         end
     end
 end

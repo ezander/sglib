@@ -20,7 +20,8 @@ classdef LaguerrePolynomials < PolynomialSystem
     %   See the GNU General Public License for more details. You should have
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
-    properties
+    
+    properties (SetAccess=protected)
     end
     
     methods
@@ -61,9 +62,13 @@ classdef LaguerrePolynomials < PolynomialSystem
             % See also POLYNOMIALSYSTEM.NORMALIZED SQNORM
         end
         
-        %         function w_dist=weighting_func()
-        %             %w_dist=ExponentialDistribution(1);
-        %             w_dist= gendist_create('exponential', {1});
-        %         end
+        function dist=weighting_dist(~)
+            % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   distribution, i.e. NormalDistribution(0,1).
+            %   
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            dist = ExponentialDistribution(1);
+        end
     end
 end

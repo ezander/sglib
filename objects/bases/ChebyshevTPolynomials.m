@@ -20,7 +20,7 @@ classdef ChebyshevTPolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
     end
     
     methods
@@ -52,9 +52,14 @@ classdef ChebyshevTPolynomials < PolynomialSystem
             nrm2 = 0.5*((n==0) + 1);
         end
         
-        %         function w_dist=weighting_func()
-        %             %w_dist=ArcSinDistribution(-1,1);
-        %             w_dist=gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
-        %         end
+        function dist=weighting_dist(~)
+            % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   distribution, i.e. NormalDistribution(0,1).
+            %   
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            dist = ArcSinDistribution();
+            dist = dist.fix_bounds(-1, 1);
+        end
     end
 end

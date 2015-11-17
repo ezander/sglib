@@ -80,3 +80,13 @@ assert_equals(J.sqnorm(n(:)'), h(:)', 'nrm_row');
 % TODO: need to check the sqnorm stuff better
 % I think it will be best to check consistency, e.g. together with
 % integration of the polys over the weight functions
+
+%% consistency with weighting function
+poly = JacobiPolynomials(-0.4,-0.6);
+N=4;
+
+dist = poly.weighting_dist();
+dom=dist.invcdf([0,1]);
+fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
+assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent', 'abstol', 1e-6);

@@ -1,11 +1,19 @@
 classdef JacobiPolynomials < PolynomialSystem
     %JACOBIITEPOLYNOMIALS Construct the JacobiPolynomials.
     %
-    % Example (<a href="matlab:run_example JacobiPolynomials">run</a>)
-    %   poly=JacobiPolynomials(0.4, 2);
+    % Example 1 (<a href="matlab:run_example JacobiPolynomials 1">run</a>)
+    %   poly=JacobiPolynomials(1.5, -0.5);
     %   x=linspace(-1,1);
-    %   y=poly.evaluate(4, x);
+    %   y=poly.evaluate(5, x);
     %   plot(x,y);
+    %   grid on; ylim([-1.5, 5]);
+    %
+    % Example 2 (<a href="matlab:run_example JacobiPolynomials 2">run</a>)
+    %   poly=JacobiPolynomials(1.25, 0.75);
+    %   x=linspace(-1,1);
+    %   y=poly.evaluate(8, x);
+    %   plot(x,y(:,8:9));
+    %   grid on; ylim([-1.5, 1.5]);
     %
     % See also LEGENDREPOLYNOMIALS POLYNOMIALSYSTEM
     
@@ -20,7 +28,7 @@ classdef JacobiPolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
         % ALPHA First parameter of the Jacobi polynomials
         alpha
         % BETA Second parameter of the Jacobi polynomials
@@ -89,9 +97,15 @@ classdef JacobiPolynomials < PolynomialSystem
             %             nrm2=g*nrm2;
         end
         
-        %         function w_dist=weighting_func(poly)
-        %             %w_dist=fix_bounds(BetaDistribution(poly.alpha+1,poly.beta+1),-1,1);
-        %             w_dist=gendist_fix_bounds(gendist_create('beta', {poly.beta+1,poly.alpha+1}), -1,1);
-        %         end
+        function dist=weighting_dist(poly)
+            % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   distribution, i.e. NormalDistribution(0,1).
+            %
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            %dist = BetaDistribution(poly.alpha+1,poly.beta+1);
+            dist = BetaDistribution(poly.beta+1, poly.alpha+1);
+            dist = dist.fix_bounds(-1, 1);
+        end
     end
 end

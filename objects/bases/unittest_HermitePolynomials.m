@@ -41,3 +41,13 @@ h = [1 1; 6 120];
 assert_equals(H.sqnorm(n), h, 'nrm_arr');
 assert_equals(H.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(H.sqnorm(n(:)'), h(:)', 'nrm_row');
+
+%% consistency with weighting function
+poly = HermitePolynomials();
+N=4;
+
+dist = poly.weighting_dist();
+dom=dist.invcdf([0,1]);
+fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
+assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent');

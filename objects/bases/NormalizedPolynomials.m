@@ -54,6 +54,15 @@ classdef NormalizedPolynomials < PolynomialSystem
             %   Needs to do nothing in this case.
             % See also POLYNOMIALSYSTEM.NORMALIZED
         end
+        
+        function dist=weighting_dist(poly)
+            % WEIGHTING_DIST Return a distribution wrt to which the polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns weighting dist of the
+            %   base polynomials.
+            %   
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            dist = poly.base_poly.weighting_dist();
+        end
     end
 end
 

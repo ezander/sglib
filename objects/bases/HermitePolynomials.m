@@ -20,7 +20,7 @@ classdef HermitePolynomials < PolynomialSystem
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    properties
+    properties (SetAccess=protected)
     end
     
     methods
@@ -51,6 +51,15 @@ classdef HermitePolynomials < PolynomialSystem
             %
             % See also POLYNOMIALSYSTEM.SQNORM
             nrm2 = factorial(n);
+        end
+        
+        function dist=weighting_dist(~)
+            % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
+            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   distribution, i.e. NormalDistribution(0,1).
+            %   
+            % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
+            dist = NormalDistribution(0,1);
         end
     end
 end

@@ -17,7 +17,7 @@ function unittest_ChebyshevUPolynomials
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-munit_set_function( 'Chemyshev2Polynomial' );
+munit_set_function( 'Chebyshev2Polynomial' );
 
 %% Initialization
 U=ChebyshevUPolynomials();
@@ -37,3 +37,13 @@ h = [1 1; 1 1];
 assert_equals(U.sqnorm(n), h, 'nrm_arr');
 assert_equals(U.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(U.sqnorm(n(:)'), h(:)', 'nrm_row');
+
+%% consistency with weighting function
+poly = ChebyshevUPolynomials();
+N=4;
+
+dist = poly.weighting_dist();
+dom=dist.invcdf([0,1]);
+fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
+assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent');
