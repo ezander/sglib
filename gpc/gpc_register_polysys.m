@@ -67,7 +67,7 @@ elseif nargin<2 || ( isempty(dist) && isempty(poly))
     end
     if  (lower(sys)==sys);
         sys_out=lower(sys_out);
-        poly_out=poly_out.normalize;
+        poly_out=poly_out.normalized;
     end
     %% If DIST or POLYS is defined in the input ->
     % decide whether new registry has to be made

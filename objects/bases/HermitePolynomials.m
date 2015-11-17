@@ -53,7 +53,7 @@ classdef HermitePolynomials < PolynomialSystem
             nrm2 = factorial(n);
         end
         
-        function dist=weighting_dist(~)
+        function dist=weighting_dist(poly)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
             %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).

@@ -59,6 +59,6 @@ y = 1-exp(-x);
 assert_equals(y, y_ex, 'L_cdf', 'abstol', 5/sqrt(N))
 
 %% Error handling
-assert_error( {@polysys_sample_rv, {'?',1,1}, {1,2,3}}, 'sglib:gpc', 'err_unknown_polys' )
-assert_error( {@polysys_sample_rv, {'M',1,1}, {1,2,3}}, 'sglib:gpc', 'err_monomials' )
+assert_error( {@polysys_sample_rv, {'?',1,1}, {1,2,3}}, 'sglib:', 'err_unknown_polys' )
+assert_error( {@polysys_sample_rv, {'M',1,1}, {1,2,3}}, 'sglib:', 'err_monomials' )
 
