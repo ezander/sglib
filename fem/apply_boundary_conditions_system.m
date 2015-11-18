@@ -1,13 +1,17 @@
 function [Kn, fn] = apply_boundary_conditions_system( K, f, g, P_I, P_B )
-% APPLY_BOUNDARY_CONDITIONS_SYSTEM Short description of apply_boundary_conditions_system.
+% APPLY_BOUNDARY_CONDITIONS_SYSTEM Apply essential boundary conditions to a complete linear system.
+%   [KN, FN] = APPLY_BOUNDARY_CONDITIONS_SYSTEM( K, F, G, P_I, P_B )
 %   APPLY_BOUNDARY_CONDITIONS_SYSTEM Long description of apply_boundary_conditions_system.
 %
 % Options
 %
 % References
 %
-% Notes
-%
+% Note 1: In general, but especially for linear operators in tensor product
+%   form, it might be more efficient to the functions that reduce the
+%   linear system to the inner nodes, and later adds the values at the
+%   Dirichlet nodes to the solution.
+%  
 % Example (<a href="matlab:run_example apply_boundary_conditions_system">run</a>)
 %
 % See also

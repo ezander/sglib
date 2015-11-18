@@ -46,13 +46,13 @@ end
     
 multiplot_init(2,3);
 
-multiplot([],1); plot_field(pos, els, r_mean, opts{:}, 'show_mesh', true ); 
-multiplot([],2); plot_field(pos, els, sqrt(r_var), opts{:} ); 
-multiplot([],3); plot_field(pos, els, r_samp1, opts{:}, 'show_mesh', true ); 
-multiplot([],4); plot_field(pos, els, r_samp2, opts{:} ); 
+multiplot; plot_field(pos, els, r_mean, opts{:}, 'show_mesh', true ); 
+multiplot; plot_field(pos, els, sqrt(r_var), opts{:} ); 
+multiplot; plot_field(pos, els, r_samp1, opts{:}, 'show_mesh', true ); 
+multiplot; plot_field(pos, els, r_samp2, opts{:} ); 
 
 
-multiplot([],5); show_mesh_with_points( pos, els, x, 'MarkerSize', 10, 'zpos', 0.01 ); view(3);
+multiplot; show_mesh_with_points( pos, els, x, 'MarkerSize', 10, 'zpos', 0.01 ); view(3);
 if length(r)==3
     r_i_alpha=r{1}*r{2};
     I_r=r{3};
@@ -60,7 +60,7 @@ else
     r_i_alpha=r{1};
     I_r=r{2};
 end
-multiplot([],6);
+multiplot;
 if ~isempty(dist)
     hold all;
     y=linspace(dlim(1), dlim(2), 1000);

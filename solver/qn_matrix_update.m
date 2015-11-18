@@ -20,9 +20,7 @@ function [B, H] = qn_matrix_update(mode, B, H, y, s)
 %       Springer-Verlag. ISBN 0-387-98793-2.
 %   [2] http://en.wikipedia.org/wiki/Quasi-Newton_methods
 %
-% Example (<a href="matlab:run_example qn_matrix_update">run</a>)
-%
-% See also
+% See also MINFIND_QUASI_NEWTON, QUASINEWTONOPERATOR
 
 %   Elmar Zander
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
