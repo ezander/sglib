@@ -2,7 +2,8 @@
 
 SCRIPT=$(basename $0)
 BASE="${SCRIPT%-subtree}"
-REMOTE="git@github.com:ezander/$BASE.git"
+#REMOTE="git@github.com:ezander/$BASE.git"
+REMOTE="https://github.com/ezander/$BASE.git"
 BRANCH_PREFIX="subtree-"
 
 DRY_RUN=false
