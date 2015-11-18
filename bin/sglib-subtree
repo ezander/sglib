@@ -75,9 +75,16 @@ case "$1" in
         if [[ -n "$1" ]]; then
             echo "Unknown or empty subcommand '$1'"
         fi
-        echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
-        echo "  'push' will push into the branch '$PUSH_BRANK' allowing some checks before merging "
-        echo "   into the master branch, while 'pushdirect' will push directly into master."
+        cat <<EOF
+Use '$BASE-subtree <subcommand>' 
+  Here <subcommand> can be one of 'pull', 'push' or 'pushdirect', 'add', or 'fetch'
+    pull:       pull (i.e. fetch and merge) changes into local repo
+    fetch:      only fetch changes, but don't merge
+    push:       push into the branch '$PUSH_BRANCH' allowing some checks
+                before merging into the master branch
+    pushdirect: will push directly into master (use with care)
+    add:        add the subtree (necessary only once)
+EOF
         exit 1
         ;;
 esac
