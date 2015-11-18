@@ -67,6 +67,11 @@ case "$1" in
         check_prefix_dir
         $GIT fetch "$REMOTE_ANON"
         ;;
+    freshpush)
+        check_prefix_dir
+        $GIT push "$REMOTE_SSH" ":$PUSH_BRANCH"
+        $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE_SSH" "$PUSH_BRANCH"
+        ;;
     push)
         check_prefix_dir
         $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE_SSH" "$PUSH_BRANCH"
