@@ -61,7 +61,7 @@ classdef SimParamSet < handle
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     %% Properties
     properties (GetAccess=public, SetAccess=protected)
-        simparams
+        simparams = struct()
     end
     
     methods
@@ -74,27 +74,35 @@ classdef SimParamSet < handle
             %where PARAM1 and PARAM2 are SIMPARAMETER objects
             
             % initialize properties
-            set.simparams=struct;
             if nargin>0
                 set.add_parameter(varargin{:});
             end
         end
         
-        %% Add parameter(s) to SimParamSet
+        function add(set, param, varargin)
+            % ADD Add a parameter to the param set.
+            if ischar(param)
+                param = SimParameter(varargin{:});
+            end
+            check_type(param, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
+            if isfield(set.simparams, param.name)
+                warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
+            end
+            set.simparams.(param.name) = param;
+        end
+        
+        
         function add_parameter(set, varargin)
+            % ADD_PARAMETER Add parameter(s) to SimParamSet
             % Adds the P parameters to the SimParamSet object
             p=varargin;
             for i=1:length(p)
-                check_type(p{i}, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
-                if isfield(set.simparams, p{i}.name)
-                    warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
-                end
-                set.simparams.(p{i}.name)=p{i};
+                set.add(p{i});
             end
         end
-        %% Fix SimParameters in the ParamSet
         
         function set_fixed(set, p, vals)
+            %% Fix SimParameters in the ParamSet
             % Fixes the values of SimParams(P1, P2..)more, and accordingly the
             % probability distribution of them are ignored
             %
@@ -149,6 +157,8 @@ classdef SimParamSet < handle
                 end
             end
         end
+        
+        
         %% Release SimParameters in the ParamSet
         function set_not_fixed(set, p)
             % SET_NOT_FIXED(SET, P) releases the
