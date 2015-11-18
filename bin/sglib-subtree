@@ -53,6 +53,9 @@ case "$1" in
         if [[ -z "$PREFIX" ]]; then
             PREFIX="$BASE"
         fi
+        if [[ -d "$PREFIX" ]]; then
+            rmdir "$PREFIX"
+        fi
         $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE" master
         ;;
     push)
