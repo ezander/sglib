@@ -2,8 +2,8 @@
 
 SCRIPT=$(basename $0)
 BASE="${SCRIPT%-subtree}"
-#REMOTE="git@github.com:ezander/$BASE.git"
-REMOTE="https://github.com/ezander/$BASE.git"
+REMOTE_SSH="git@github.com:ezander/$BASE.git"
+REMOTE_ANON="https://github.com/ezander/$BASE.git"
 BRANCH_PREFIX="subtree-"
 
 DRY_RUN=false
@@ -54,23 +54,26 @@ case "$1" in
         if [[ -z "$PREFIX" ]]; then
             PREFIX="$BASE"
         fi
-        $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE" master
-        ;;
-    push)
-        check_prefix_dir
-        $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
-        ;;
-    pushdirect)
-        check_prefix_dir
-        $GIT_SUBTREE push -d --prefix="$PREFIX" "$REMOTE" "master"
+        if [[ -d "$PREFIX" ]]; then
+            rmdir "$PREFIX"
+        fi
+        $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE_ANON" master
         ;;
     pull)
         check_prefix_dir
-        $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
+        $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE_ANON" master
         ;;
     fetch)
         check_prefix_dir
-        $GIT fetch "$REMOTE"
+        $GIT fetch "$REMOTE_ANON"
+        ;;
+    push)
+        check_prefix_dir
+        $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE_SSH" "$PUSH_BRANCH"
+        ;;
+    pushdirect)
+        check_prefix_dir
+        $GIT_SUBTREE push -d --prefix="$PREFIX" "$REMOTE_SSH" "master"
         ;;
     *)
         if [[ -n "$1" ]]; then
