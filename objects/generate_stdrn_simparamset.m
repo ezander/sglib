@@ -6,5 +6,5 @@ for i=1:n
     str= strvarexpand('params{$i$}=SimParameter(''p_$i$'',NormalDistribution(0,sqrt(sigmas($i$))));');
     eval(str);
 end
-paramset=SimParamSet1(params{:});
+paramset=SimParamSet(params{:});
 end
