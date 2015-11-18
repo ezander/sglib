@@ -21,5 +21,5 @@ for i=1:M
     end
     params{i}=SimParameter(param_name_i,dist_i);
 end
-paramset=SimParamSet1(params{:});
+paramset=SimParamSet(params{:});
 end
