@@ -1,45 +1,80 @@
 #!/bin/bash
 
-REMOTE="git@github.com:ezander/sglib.git"
-PREFIX=$(find . -name "sglib" -type d | cut -c3-)
+SCRIPT=$(basename $0)
+BASE="${SCRIPT%-subtree}"
+REMOTE="git@github.com:ezander/$BASE.git"
+BRANCH_PREFIX="subtree-"
 
-if [[ ! -d "$PREFIX" ]]; then
-    echo "No sglib directory found (tried $PREFIX)."
-    echo "First change into root directory of subproject "
-    echo "and make sure sglib exists as subdirectory!";
-    exit 1;
+DRY_RUN=false
+if [[ $1 == "dryrun" ]]; then
+    echo "Dry-run: not executing commands."
+    DRY_RUN=true
+    shift
 fi
+
+function check_prefix_dir() {
+    if [[ ! -d "$PREFIX" ]]; then
+        echo "No $BASE directory found (tried $PREFIX)."
+        echo "First change into root directory of subproject "
+        echo "and make sure $BASE exists as subdirectory!";
+        echo "";
+        echo "Maybe you should first make an ADD."
+        exit 1;
+    fi
+}
+
+changed_dir=false
+while [[ ! -d ".git" && $(pwd) != "/" ]]; do
+    cd ..
+    changed_dir=true
+done
 if [[ ! -d ".git" ]]; then
-    echo "No .git directory found."
-    echo "First change into root directory of subproject!";
+    echo "Error: Not a git repository (or any of the parent directories)."
+    echo "Please switch to your project directory."
     exit 1;
 fi
 
+PREFIX=$(find . -name "$BASE" -type d | cut -c3-)
+PUSH_BRANCH="${BRANCH_PREFIX}$(basename $(pwd))"
 
-PUSH_BRANCH=$(basename $(pwd))
-GIT_SUBTREE="git subtree"
 GIT="git"
-#GIT_SUBTREE="echo git subtree"
+if $DRY_RUN; then
+    GIT="echo $GIT"
+    echo "BASE: $BASE"
+    echo "PREFIX: $PREFIX"
+fi
+GIT_SUBTREE="$GIT subtree"
+
+
 
 
 case "$1" in
+    add)
+        if [[ -z "$PREFIX" ]]; then
+            PREFIX="$BASE"
+        fi
+        $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE" master
+        ;;
     push)
+        check_prefix_dir
         $GIT_SUBTREE push --prefix="$PREFIX" "$REMOTE" "$PUSH_BRANCH"
         ;;
     pushdirect)
+        check_prefix_dir
         $GIT_SUBTREE push -d --prefix="$PREFIX" "$REMOTE" "master"
         ;;
     pull)
+        check_prefix_dir
         $GIT_SUBTREE pull --squash --prefix="$PREFIX" "$REMOTE" master
         ;;
-    add)
-        $GIT_SUBTREE add --squash --prefix="$PREFIX" "$REMOTE" master
-        ;;
     fetch)
+        check_prefix_dir
         $GIT fetch "$REMOTE"
         ;;
     *)
-        echo "Unknown or empty subcommand '$1'"
+        if [[ -n "$1" ]]; then
+            echo "Unknown or empty subcommand '$1'"
+        fi
         echo "Use 'sglib-subtree <subcommand>' with subcommand equalling 'pull', 'push' or 'pushdirect'"
         echo "  'push' will push into the branch '$PUSH_BRANK' allowing some checks before merging "
         echo "   into the master branch, while 'pushdirect' will push directly into master."
