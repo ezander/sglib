@@ -80,7 +80,7 @@ end
 function result_list=compare_content( actual, expected, assert_id, curr_options, options )
 % then do equality checking based on class
 result_list={};
-switch class(actual)
+switch class(expected)
     case {'double', 'sparse' }
         result_list=compare_double( actual, expected, assert_id, curr_options, options );
     case 'logical'
@@ -92,8 +92,12 @@ switch class(actual)
     case 'cell'
         result_list=compare_cell( actual, expected, assert_id, curr_options, options );
     otherwise
-        warning('assert_equals:unknown_class', ['don''t know how ' ...
-            'to compare classes of type %s'], class(actual) );
+        if isa(expected, 'SglibObject')
+            result_list=compare_sglib_object( actual, expected, assert_id, curr_options, options );
+        else
+            warning('assert_equals:unknown_class', ['don''t know how ' ...
+                'to compare classes of type %s'], class(actual) );
+        end
 end
 
 %%
@@ -262,6 +266,16 @@ for i=1:numel(actual)
     new_assert_id=sprintf('%s%s', assert_id, print_vector('%g', ind2sub(i,size(actual)), ',', true) );
     new_list=compare_values( actual{i}, expected{i}, new_assert_id, curr_options, options );
     result_list=[result_list, new_list];
+end
+
+%%
+function result_list=compare_sglib_object( actual, expected, assert_id, curr_options, options ) %#ok remove ok when implemented 
+% ASSERT_EQUALS_SQLIB_OBJECT Assert equality for sglib objects.
+result_list={};
+
+if actual~=expected
+    msg=sprintf( 'object''s don''t match ''%s''~=''%s''', tostring(actual), tostring(expected) );
+    result_list{end+1}={msg, assert_id};
 end
 
 
