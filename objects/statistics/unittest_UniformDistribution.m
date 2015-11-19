@@ -39,7 +39,6 @@ assert_equals(cdf(U,2.5), 1/4, 'cdf_inside' );
 assert_equals(cdf(U,5), 1, 'cdf_larger' );
 assert_equals(cdf(U,(U.a+U.b)/2), 1/2, 'cdf_median' );
 
-
 %% uniform_pdf
 U=UniformDistribution(2,4);
 assert_equals( pdf(U,-inf), 0, 'pdf_minf' );
@@ -74,7 +73,6 @@ assert_equals(cdf(U,invcdf(U,y)), y, 'cdf_invcdf_3');
 assert_equals( invcdf(U,cdf(U,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(U,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
-
 %% uniform_stdnor
 N=50;
 uni=linspace(0,1,N+2)';
@@ -87,6 +85,7 @@ assert_equals(cdf(U,x), uni, 'uniform' )
 U=UniformDistribution(0,1);
 assert_equals(uniform_stdnor(gam), stdnor(U,gam), 'uniform_def12');
 assert_equals(uniform_stdnor(gam, 0), stdnor(U,gam), 'uniform_def2');
+
 %% translate
 U=UniformDistribution(2,3);
 %T=TranslatedDistribution(U,2,3);
@@ -109,11 +108,25 @@ dist=fix_moments(U, 50, 3 );
 [m,v]=moments(dist);
 assert_equals(m, 50, 'mean fix_moments');
 assert_equals(v, 3, 'uvar fix_moments');
+
 %% Fix Bounds
 U = UniformDistribution(2,3);
 dist = fix_bounds(U,2,4);
 assert_equals(invcdf(dist,0), 2, 'fix_bounds-uni_min');
 assert_equals(invcdf(dist,1), 4, 'fix_bounds-uni_max');
+
+%% Base dist stuff
+dist = UniformDistribution(2, 5);
+base = dist.get_base_dist();
+
+assert_equals(base, UniformDistribution(-1,1), 'base');
+
+z = linspace(0,1);
+x1 = dist.invcdf(z);
+x2 = base.invcdf(z);
+assert_equals(dist.base2dist(x2), x1, 'base2dist');
+assert_equals(dist.dist2base(x1), x2, 'dist2base');
+
 
 function F2=pdf_integrate( f, F, x )
 F2=cumsum([F(1), f])*(x(2)-x(1));

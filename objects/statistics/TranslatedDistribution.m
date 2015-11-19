@@ -39,6 +39,14 @@ classdef TranslatedDistribution < Distribution
         % The CENTER refers to mean of the originial distribution.
         center;
     end
+    
+    methods
+        function str=tostring(tdist)
+            % Displays the distribution type: 'Translated(dist(param), shift, scale)'
+            str=sprintf('Translated(%s, %g, %g)', tdist.dist.tostring(), tdist.shift, tdist.scale);
+        end
+    end
+    
     methods
         function tdist = TranslatedDistribution(dist,shift,scale,center)
             % TRANSLATEDDISTRIBUTION tranlates a distribution.
@@ -113,6 +121,9 @@ classdef TranslatedDistribution < Distribution
                 kurt=m{4};
             end
         end
+    end
+    
+    methods
         function polys=default_polys(tdist)
             % Returns name of polynomials, which are orthogonal  wrt. the
             % distribution standardized
@@ -124,10 +135,6 @@ classdef TranslatedDistribution < Distribution
                 is_normalized=false;
             end
             sys=tdist.dist.default_sys_letter(is_normalized);
-        end
-        function str=tostring(tdist)
-            % Displays the distribution type: 'Translated(dist(param), shift, scale)'
-            str=sprintf('Translated(%s,  %.3f,  %.3f)', tdist.dist.tostring(), tdist.shift, tdist.scale);
         end
     end
 end
