@@ -94,3 +94,15 @@ B = BetaDistribution(2,3);
 dist = fix_bounds(B,4,5);
 assert_equals(invcdf(dist,0), 4, 'fix_bounds-uni_min');
 assert_equals(invcdf(dist,1), 5, 'fix_bounds-uni_max');
+
+%% Base dist stuff
+dist = BetaDistribution(2, 3);
+base = dist.get_base_dist();
+
+assert_equals(base, TranslatedDistribution(BetaDistribution(2,3),-0.6,2), 'base');
+
+z = linspace(0,1);
+x1 = dist.invcdf(z);
+x2 = base.invcdf(z);
+assert_equals(dist.base2dist(x2), x1, 'base2dist');
+assert_equals(dist.dist2base(x1), x2, 'dist2base');

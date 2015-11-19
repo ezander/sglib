@@ -31,9 +31,11 @@ assert_equals( N.sigma, 1, 'Initialization default sigma' );
 N=NormalDistribution();
 assert_equals( N.mu, 0, 'Initialization default mu' );
 assert_equals( N.sigma, 1, 'Initialization default sigma' );
+
 %% Mean & Var
 assert_equals(N.mean, 0, 'mean');
 assert_equals(N.var, 1, 'var' );
+
 %% normal_cdf
 N=NormalDistribution(1,2);
 assert_equals(cdf(N,-inf), 0, 'cdf_minf' );
@@ -77,6 +79,7 @@ assert_equals( cdf(N,x), uni, 'normal' )
 N=NormalDistribution(0,1);
 assert_equals( normal_stdnor(gam), stdnor(N,gam), 'normal_def12');
 assert_equals( normal_stdnor(gam, 0),stdnor(N,gam), 'normal_def2');
+
 %% translate
 N=NormalDistribution(2,3);
 %T=TranslatedDistribution(N,2,3);
@@ -92,6 +95,7 @@ assert_equals(tN.cdf(0),0.328360,'translated cdf','abstol',0.0001);
 assert_equals(tN.cdf(inf),1,'translated cdf');
 assert_equals(tN.cdf(-inf),0,'translated cdf');
 assert_equals(tN.invcdf(0),-inf,'translated cdf');
+
 %% Fix Moments
 % can test directly for the normal and uniform distributions
 N = NormalDistribution(2,5);
@@ -99,8 +103,21 @@ dist=fix_moments(N,7,13);
 [m,v]=moments(dist);
 assert_equals(m,7,'mean fix_moments');
 assert_equals(v,13,'var fix_moments');
+
 %% Fix Bounds
 N = NormalDistribution(2,3);
 dist = fix_bounds(N,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
+
+%% Base dist stuff
+dist = NormalDistribution(2, 3);
+base = dist.get_base_dist();
+
+assert_equals(base, NormalDistribution(0,1), 'base');
+
+z = linspace(0,1);
+x1 = dist.invcdf(z);
+x2 = base.invcdf(z);
+assert_equals(dist.base2dist(x2), x1, 'base2dist');
+assert_equals(dist.dist2base(x1), x2, 'dist2base');

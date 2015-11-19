@@ -24,9 +24,18 @@ classdef UniformDistribution < Distribution
     properties
         % The parameter A of the Uniform(A,b) distribution.
         a
+        
         % The parameter B of the Uniform(a,B) distribution.
         b
     end
+    
+    methods
+        function str=tostring(dist)
+            % Displays the distribution type: 'U(a, b)'
+            str=sprintf('U(%g, %g)', dist.a, dist.b);
+        end
+    end
+    
     methods
         function dist=UniformDistribution(a,b)
             % UNIFORMDISTRIBUTION Constructs a UniformDistribution.
@@ -75,18 +84,7 @@ classdef UniformDistribution < Distribution
             dist.a=m+shift-v;
             dist.b=m+shift+v;
         end
-        function x=base2dist(dist,y)
-            % Get mapping from base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is
-            % orthogonal) to the actual distribution
-            x=dist.mean+y*(dist.b-dist.a)/2;
-        end
-        function y=dist2base(dist,x)
-            % Get mapping from base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is
-            % orthogonal) to the actual distribution
-            y=(x-dist.mean)*2/(dist.b-dist.a);
-        end
+        
         function xi=sample(dist,n)
             %   Draw random samples from Uniform distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -102,13 +100,30 @@ classdef UniformDistribution < Distribution
             scale=(dist.b-dist.a);
             xi =(yi *scale ) + shift;
         end
-        function str=tostring(dist)
-            % Displays the distribution type: 'U(a, b)'
-            str=sprintf('U(%.3f,  %.3f)', dist.a, dist.b);
-        end
     end
-    methods(Static)
-        function polysys=default_sys_letter(is_normalized)
+    
+    methods
+        function dist_germ=get_base_dist(dist)
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=UniformDistribution(-1,1);
+        end
+        
+        function x=base2dist(dist,y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x=dist.mean+y*(dist.b-dist.a)/2;
+        end
+        
+        function y=dist2base(dist,x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            y=(x-dist.mean)*2/(dist.b-dist.a);
+        end
+        
+        function polysys=default_sys_letter(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if nargin<1||~is_normalized
@@ -117,19 +132,12 @@ classdef UniformDistribution < Distribution
                 polysys='p';
             end
         end
-        function dist_germ=get_base_dist()
-            % Get base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is orthogonal)
-            dist_germ=UniformDistribution(-1,1);
-        end
-        function poly=default_polys(n, is_normalized)
+        
+        function poly=default_polys(dist, is_normalized)
             if nargin<2;
                 is_normalized=false;
-                if nargin<1
-                    n=0;
-                end
             end
-            poly=LegendrePolynomials(n, is_normalized);
+            poly=LegendrePolynomials(is_normalized);
         end
     end
 end

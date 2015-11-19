@@ -25,16 +25,19 @@ classdef NormalDistribution < Distribution
         % The parameter MU of the Normal(MU,sigma) distribution. MU is
         % the mean value.
         mu
+        
         % The parameter SIGMA of the Normal(mu,SIGMA) distribution. SIGMA
         % is the variance value.
         sigma
     end
-    methods(Static)
-        function poly=default_polys()
-            poly='Hermite';
+    
+    methods
+        function str=tostring(dist)
+            % Displays the distribution type: 'N(mu,var)'
+            str=sprintf('N(%g, %g)', dist.mu, dist.sigma^2);
         end
     end
-    
+        
     methods
         function dist=NormalDistribution(mu,sigma)
             % NORMALDISTRIBUTION Constructs a NormalDistribution.
@@ -77,24 +80,6 @@ classdef NormalDistribution < Distribution
             [m{1:nargout}] = normal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
         end
-        function map_func=base2dist_func(dist)
-            % Get mapping from base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is
-            % orthogonal) to the actual distribution
-            map_func=@(x)dist.mean+x*dist.sigma;
-        end
-        function map_func=dist2base_func(dist)
-            % Get mapping from base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is
-            % orthogonal) to the actual distribution
-            map_func=@(x)(x-dist.mean)/dist.sigma;
-        end
-        function new_dist=translate(dist,shift,scale)
-            % TRANSLATE translates the normal distribution DIST
-            % NEW_DIST=TRANSLATE(DIST,SHIFT,SCALE) translates the normal
-            % distribution DIST in regard to parameters SHIFT and SCALE
-            new_dist=NormalDistribution(dist.mu+shift,dist.sigma*scale);
-        end
         
         function xi=sample(dist,n)
             %   Draw random samples from Normal distribution.
@@ -104,20 +89,19 @@ classdef NormalDistribution < Distribution
             %   tensor) of size [N(1), N(2), ...].
             xi=normal_sample(n, dist.mu, dist.sigma);
         end
-        
-        function str=tostring(dist)
-            % Displays the distribution type: 'N(mu,var)'
-            str=sprintf('N(%.3f,  %.3f)', dist.mu, dist.sigma^2);
+    end
+    
+    methods
+        function new_dist=translate(dist,shift,scale)
+            % TRANSLATE translates the normal distribution DIST
+            % NEW_DIST=TRANSLATE(DIST,SHIFT,SCALE) translates the normal
+            % distribution DIST in regard to parameters SHIFT and SCALE
+            new_dist=NormalDistribution(dist.mu+shift,dist.sigma*scale);
         end
     end
     
-    methods(Static)
-        function dist_germ=get_base_dist()
-            % Get base distribution (corresponding to standard distribution
-            % in the gpc, for which the default polynomial system is orthogonal)
-            dist_germ=NormalDistribution(0,1);
-        end
-        function polysys=default_sys_letter(is_normalized)
+    methods
+        function polysys=default_sys_letter(dist, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if nargin<1||~is_normalized
@@ -126,5 +110,30 @@ classdef NormalDistribution < Distribution
                 polysys='h';
             end
         end
+        
+        function poly=default_polys(dist)
+            poly='Hermite';
+        end
+        
+        function dist_germ=get_base_dist(dist)
+            % Get base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is orthogonal)
+            dist_germ=NormalDistribution(0,1);
+        end
+        
+        function y=base2dist(dist, x)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+             y = dist.mean+x*dist.sigma;
+        end
+        
+        function x=dist2base(dist, y)
+            % Get mapping from base distribution (corresponding to standard distribution
+            % in the gpc, for which the default polynomial system is
+            % orthogonal) to the actual distribution
+            x = (y-dist.mean)/dist.sigma;
+        end
     end
+    
 end

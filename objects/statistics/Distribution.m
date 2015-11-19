@@ -1,4 +1,4 @@
-classdef Distribution % < handle
+classdef Distribution < SglibObject
     % DISTRIBUTION Abstract base class for probability distribution objects.
     %
     % See also BETADISTRIBUTION
@@ -7,7 +7,6 @@ classdef Distribution % < handle
         y=cdf(dist, x); % CDF Compute the cumulative distribution function.
         x=invcdf(dist, y); % INVCDF Compute the inverse CDF function.
         y=moments(dist); % MOMENTS Compute the moments of the distribution.
-        str=tostring(dist); % TOSTRING Creates a string with a short diplay of the distribution properties
     end
     
     %% Basic distribution methods
@@ -40,9 +39,6 @@ classdef Distribution % < handle
     
     %% Methods related to translation/scaling of the distribution
     methods
-        
-        
-        
         function tdist=translate(dist,shift,scale)
             % TRANSLATE translates the distribution DIST
             % TDIST=TRANSLATE(DIST,SHIFT,SCALE) translates the distribution
@@ -114,7 +110,7 @@ classdef Distribution % < handle
     end
     
     methods
-        function dist_germ=get_base_dist()
+        function dist_germ=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             dist_germ=NormalDistribution(0,1);
@@ -134,7 +130,7 @@ classdef Distribution % < handle
             y=dist.get_base_dist.invcdf(dist.cdf( x));
         end
         
-        function polysys=default_sys_letter(dist, is_normalized)
+        function polysys=default_sys_letter(~, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if nargin>=2 && is_normalized
@@ -144,7 +140,7 @@ classdef Distribution % < handle
             end
         end
         
-        function polys=default_polys(dist, is_normalized)
+        function polys=default_polys(~, is_normalized)
             % DEFAULT_POLYSYS gives the 'natural' polynomial system
             % belonging to the distribution
             if nargin<2;

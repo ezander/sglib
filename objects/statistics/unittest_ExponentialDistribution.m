@@ -70,3 +70,15 @@ E = ExponentialDistribution(4);
 dist = fix_bounds(E,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
+
+%% Base dist stuff
+dist = ExponentialDistribution(4.3);
+base = dist.get_base_dist();
+
+assert_equals(base, ExponentialDistribution(1), 'exp(1)');
+
+z = linspace(0,1);
+x1 = dist.invcdf(z);
+x2 = base.invcdf(z);
+assert_equals(dist.base2dist(x2), x1, 'base2dist');
+assert_equals(dist.dist2base(x1), x2, 'dist2base');
