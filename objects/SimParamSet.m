@@ -62,23 +62,95 @@ classdef SimParamSet < SglibHandleObject
     %% Properties
     properties (GetAccess=public, SetAccess=protected)
         simparams = struct()
+        params = SimpleMap();
     end
     
-    methods
-        %% Constructor
+    methods %% Constructor
         function set=SimParamSet(varargin)
-            % Returns a new SimParamSet object
-            % that by default sets the simparams independent
-            % e.g.: MYPARAMSET=SimParamset()
+            % SIMPARAMSET Returns a new SimParamSet object.
+            %   that by default sets the simparams independent
+            %   e.g.: MYPARAMSET=SimParamset()
             %         MYPARAMSET=SimParamset(param1,param2)
-            %where PARAM1 and PARAM2 are SIMPARAMETER objects
+            %   where PARAM1 and PARAM2 are SIMPARAMETER objects
             
             % initialize properties
             if nargin>0
                 set.add_parameter(varargin{:});
             end
         end
+    end
+    
+    methods %% Basic accessor methods
+        function m=num_params(set)
+            % NUM_PARAMS Number of parameters.
+            %   N=NUM_PARAMS(SIMPARAMETERSET) gives the number of
+            %   SimParameters in the SimParameterSet
+            % Example: 
+            %     n = set.num_params()
+            m = set.params.count();
+        end
         
+        function ind_rv=find_ind_rv(set)
+            % FIND_IND_RV Find indices of RVs in the param names.
+            %   IND_RV=FIND_IND_RV(SIMPARAMSET) gives a logical array
+            %   IND_RV, telling which parameter in the PARAMETERSET is
+            %   random
+            % Example:
+            %   ind_rv = set.find_ind_rv()
+            %   list_of_rvs = set.param_names
+            m=set.num_params;
+            ind_rv=false(m,1);
+            for i=1:m
+                ind_rv(i)=~set.params.values{i}.is_fixed;
+            end
+        end
+        
+        function m_rv=num_rv(set)
+            % NUM_RVS Number of random variables.
+            %   N_RV=RV_NAMES(SIMPARAMETERSET) gives the N_RV number of not
+            %   fixed SimParameter's in the SimParameterSet
+            m_rv=sum(set.find_ind_rv());
+        end
+        
+        function names=param_names(set)
+            % PARAM_NAMES Name of all parameters (fixed and RVs).
+            %   Gives the NAMEs of SimParameters in the SimParameterSet
+            %   Example: P_NAMES=PARAM_NAMES(SIMPARAMETERSET)
+            %names=fieldnames(set.simparams);
+            names = set.params.keys();
+        end
+        
+        function plot_names=param_plot_names(set)
+            % PARAM_PLOT_NAMES Name of all parameters (fixed and RVs) for plotting.
+            %   Gives the PLOT_NAMEs of SimParameters in the SimParameterSet
+            %   Example: P_NAMES=PARAM_PLOT_NAMES(SIMPARAMETERSET)
+            m=set.num_params;
+            plot_names=cell(m, 1);
+            for i=1:m
+                plot_names{i}=set.params.values{i}.plot_name;
+            end
+        end
+        
+        function rv_names=rv_names(set)
+            % RV_NAMES Names of random variables.
+            %   RV_NAMES=RV_NAMES(SIMPARAMETERSET) collects the NAMES of
+            %   not fixed SimParameters
+            names=set.param_names();
+            ind_rv=set.find_ind_rv();
+            rv_names=names(ind_rv);
+        end
+        
+        function rv_plot_names=rv_plot_names(set)
+            % RV_PLOT_NAMES Name of Random Variables for plotting.
+            %   RV_NAMES=RV_PLOT_NAMES(SIMPARAMETERSET) collects
+            %   PLOT_NAMES of not fixed SimParameter's
+            plot_names=set.param_plot_names();
+            ind_rv=set.find_ind_rv();
+            rv_plot_names=plot_names(ind_rv);
+        end
+    end
+    
+    methods    
         function add(set, param, varargin)
             % ADD Add a parameter to the param set.
             if ischar(param)
@@ -89,6 +161,7 @@ classdef SimParamSet < SglibHandleObject
                 warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
             end
             set.simparams.(param.name) = param;
+            set.params.add(param.name, param);
         end
         
         
@@ -233,6 +306,8 @@ classdef SimParamSet < SglibHandleObject
                 end
             end
         end
+
+        
         
         %% Sample from SimParamSet
         function xi=sample(set, N, varargin)
@@ -515,82 +590,6 @@ classdef SimParamSet < SglibHandleObject
             end
             if ~isempty(ind)
                 map_func=map_func(ind);
-            end
-        end
-        %% Number of parameters
-        function m=num_params(set)
-            % Gives the number of SimParameters in the SimParameterSet
-            % Example: N=NUM_PARAMS(SIMPARAMETERSET)
-            m=length(fieldnames(set.simparams));
-        end
-        
-        %% Name of all parameters (fixed and RVs)
-        function p=param_names(set)
-            % Gives the NAMEs of SimParameters in the SimParameterSet
-            % Example: P_NAMES=PARAM_NAMES(SIMPARAMETERSET)
-            p=fieldnames(set.simparams);
-        end
-        
-        %% Name of all parameters (fixed and RVs) for plot
-        function p_names=param_plot_names(set)
-            % Gives the PLOT_NAMEs of SimParameters in the SimParameterSet
-            % Example: P_NAMES=PARAM_PLOT_NAMES(SIMPARAMETERSET)
-            p=set.param_names();
-            m=set.num_params;
-            p_names=cell(m, 1);
-            for i=1:m
-                p_names{i}=set.simparams.(p{i}).plot_name;
-            end
-        end
-        
-        %% Find indices of RVs in the param names
-        function ind_RV=find_ind_RV(set)
-            % IND_RV=FIND_IND_RV(SIMPARAMSET)
-            % gives a logical array IND_RV, telling which parameter in the
-            % PARAMETERSET is random
-            % Example:
-            % ind_RV=find_ind_RV(SimParamSet)
-            % List_of_RVs=SimParamSet.param_names
-            
-            p=set.param_names();
-            m=set.num_params();
-            ind_RV=false(m,1);
-            
-            for i=1:m
-                if ~set.simparams.(p{i}).is_fixed;
-                    ind_RV(i)=true;
-                end
-            end
-        end
-        
-        %% Number of random variables
-        function m_RVs=num_RVs(set)
-            % gives the N_RV number of not fixed SimParameter's in the
-            % SimParameterSet
-            % N_RV=RV_NAMES(SIMPARAMETERSET)
-            ind_RV=set.find_ind_RV;
-            m_RVs=sum(ind_RV);
-        end
-        
-        %% Name of Random Variables
-        function RVs=RV_names(set)
-            % collects  NAMES of not fixed SimParameter's
-            % RV_NAMES=RV_NAMES(SIMPARAMETERSET)
-            p=set.param_names();
-            ind_RV=set.find_ind_RV();
-            RVs=p(ind_RV);
-        end
-        
-        %% Name of Random Variables for plot
-        function RV_names=RV_plot_names(set)
-            % collects  PLOT_NAMES of not fixed SimParameter's
-            % RV_NAMES=RV_PLOT_NAMES(SIMPARAMETERSET)
-            m_RV=set.num_RVs;
-            RVs=set.RV_names();
-            
-            RV_names=cell(m_RV,1);
-            for i=1:m_RV
-                RV_names{i}=set.simparams.(RVs{i}).plot_name;
             end
         end
         
