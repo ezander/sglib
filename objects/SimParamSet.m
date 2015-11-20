@@ -1,4 +1,4 @@
-classdef SimParamSet < handle
+classdef SimParamSet < SglibHandleObject
     %SIMPARAMSET Constructs a set of optionally random parameters,
     %
     %MYPARAMSET=SIMPARAMSET() constructs parameterset supposing a set of independent
@@ -82,7 +82,7 @@ classdef SimParamSet < handle
         function add(set, param, varargin)
             % ADD Add a parameter to the param set.
             if ischar(param)
-                param = SimParameter(varargin{:});
+                param = SimParameter(param, varargin{:});
             end
             check_type(param, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
             if isfield(set.simparams, param.name)
@@ -317,6 +317,16 @@ classdef SimParamSet < handle
             end
         end
         
+        function param=get_param(set, i)
+            if ischar(i)
+                str = i;
+            else
+                names = set.param_names();
+                str = names{i};
+            end
+            param = set.simparams.(str);
+        end
+        
         %% Set gPC basis
         function  [a_beta, V_p, varserr]=gpc_expand_RVs(set, varargin)
             % Expands the maping between reference parameters (germs)
@@ -329,9 +339,35 @@ classdef SimParamSet < handle
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
+            m              =set.num_params();
             m_RV           =set.num_RVs();
             RVs            =set.RV_names();
+            ind_RV         =set.find_ind_RV();
+            %names = set.param_names();
             
+            varserr=zeros(1, m);
+            for i=1:m
+                param = set.get_param(i);
+                if param.is_fixed()
+                    a_alpha = param.fixed_val;
+                    V = gpcbasis_create('', 'p', 1, 'm', 0);
+                    varerr = 0;
+                else
+                    [a_alpha, V, varerr]=gpc_expand(param, 'polysys', polysys, 'expand_options', expand_options);
+                end
+                varserr(i)=varerr;
+                
+                if i==1
+                    a_beta=a_alpha;
+                    V_p=V;
+                else
+                    [a_beta, V_p]=gpc_combine_inputs(a_beta, V_p, a_alpha, V);
+                end
+            end
+    
+            
+            return
+            %%
             if m_RV==0;
                 error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
             end
@@ -395,6 +431,7 @@ classdef SimParamSet < handle
             % map integration points to the parameter set
             x_p=set.gpc_evaluate( p_beta, V_p, x_ref);
         end
+        
         %% Generate integration point from gPC
         function   x_p = gpc_evaluate(set, p_beta, V_p, x_ref, varargin)
             % [X, W, X_REF] = GPC_EVALUATE(P_BETA, V_P, X_REF)
