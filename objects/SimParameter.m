@@ -40,7 +40,7 @@ classdef SimParameter < SglibHandleObject
     end
     
     methods
-        function simparam=SimParameter(name, dist, varargin)
+        function param=SimParameter(name, dist, varargin)
             % Returns a new SimParameter object with the distribution DIST
             % which was specified as an argument, and IS_FIXED set to false
             
@@ -50,9 +50,9 @@ classdef SimParameter < SglibHandleObject
             %
             % e.g.: MYPARAM=SimParameter('kappa', NormalDistribution(0,0.1))
             options=varargin2options(varargin);
-            [simparam.plot_name, options]=get_option(options, 'plot_name', '');
-            [simparam.param2germ_func,options]=get_option(options, 'param2germ_func', {});
-            [simparam.germ2param_func,options]=get_option(options, 'germ2param_func', {});
+            [param.plot_name, options]=get_option(options, 'plot_name', '');
+            [param.param2germ_func,options]=get_option(options, 'param2germ_func', {});
+            [param.germ2param_func,options]=get_option(options, 'germ2param_func', {});
             check_unsupported_options(options, mfilename);
             
             %Check whether input is in the right format
@@ -60,57 +60,57 @@ classdef SimParameter < SglibHandleObject
             check_type( dist, 'Distribution', false, 'DIST', mfilename);
             
             % initialize properties
-            simparam.name=name;
-            simparam.dist=dist;
-            simparam.is_fixed=false;
-            if isempty(simparam.plot_name)
-                simparam.plot_name=name;
+            param.name=name;
+            param.dist=dist;
+            param.is_fixed=false;
+            if isempty(param.plot_name)
+                param.plot_name=name;
             end
             
         end
         
-        function set_fixed(simparam, val)
+        function set_fixed(param, val)
             % Fixes the parameter to the value VAL and sets IS_FIXED
-            simparam.is_fixed=true;
+            param.is_fixed=true;
             if nargin<2
-                mu=mean(simparam.dist);
-                simparam.fixed_val=mu;
+                mu=mean(param.dist);
+                param.fixed_val=mu;
             else
-                simparam.fixed_val=val;
+                param.fixed_val=val;
             end
         end
         
-        function set_to_mean(simparam)
+        function set_to_mean(param)
             % Fixes the parameter to the value VAL to the mean of the
             % distribution
-            simparam.is_fixed=true;
-            mu=mean(simparam.dist);
-            simparam.fixed_val=mu;
+            param.is_fixed=true;
+            mu=mean(param.dist);
+            param.fixed_val=mu;
         end
         
-        function set_dist(simparam, dist)
+        function set_dist(param, dist)
             % Sets a new distribution and resets the IS_FIXED variable
-            simparam.dist=dist;
-            simparam.is_fixed=false;
-            simparam.fixed_val=[];
+            param.dist=dist;
+            param.is_fixed=false;
+            param.fixed_val=[];
         end
         
-        function set_not_fixed(simparam)
+        function set_not_fixed(param)
             % Sets the SimParam to be not fixed
-            simparam.is_fixed=false;
-            simparam.fixed_val=[];
+            param.is_fixed=false;
+            param.fixed_val=[];
         end
         
-        function xi=sample(simparam, n)
+        function xi=sample(param, n)
             %   Draw random samples from the parameter.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            xi=simparam.dist.sample(n);
+            xi=param.dist.sample(n);
         end
         
-        function [polysys, germ_dist]=default_sys_letter(simparam, varargin)
+        function [polysys, germ_dist]=default_sys_letter(param, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -122,11 +122,11 @@ classdef SimParameter < SglibHandleObject
             [is_normalized,options]=get_option(options, 'normal', false);
             check_unsupported_options(options, mfilename);
             
-            polysys=simparam.dist.default_sys_letter(is_normalized);
+            polysys=param.dist.default_sys_letter(is_normalized);
             [polysys, germ_dist]=gpc_register_polysys(polysys);
         end
         
-        function [a_alpha, V, varerr]=gpc_expand(simparam, varargin)
+        function [a_alpha, V, varerr]=gpc_expand(param, varargin)
             % Expands the parameter in the default
             % polynomyal system of the distribution (optionaly defined by
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
@@ -136,85 +136,89 @@ classdef SimParameter < SglibHandleObject
             check_unsupported_options(options, mfilename);
             
             if isempty(polysys)
-                [polysys, g_dist]=default_sys_letter(simparam);
+                [polysys, g_dist]=default_sys_letter(param);
             else
                 % check wheter polysys is valid, if not change to default
                 % and send a warning
                 [polysys, g_dist]=gpc_register_polysys(polysys);
             end
-            [a_alpha, V, varerr]=gpc_param_expand(simparam.dist, polysys, expand_options);
-            simparam.set_germdist(g_dist);
-            simparam.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
+            [a_alpha, V, varerr]=gpc_param_expand(param.dist, polysys, expand_options);
+            param.set_germdist(g_dist);
+            param.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
         
-        function set_germ2param_func(simparam, map_func)
+        function set_germ2param_func(param, map_func)
             %Sets function for mapping from germ to parameter
-            simparam.germ2param_func=map_func;
+            param.germ2param_func=map_func;
         end
-        function set_param2germ_func(simparam, map_func)
+        function set_param2germ_func(param, map_func)
             %Sets function for mapping from parameter to germ
-            simparam.param2germ_func=map_func;
+            param.param2germ_func=map_func;
         end
         
-        function set_germdist(simparam, germ_dist)
+        function set_germdist(param, germ_dist)
             %Sets distribution of the germ
-            simparam.germ_dist=germ_dist;
+            param.germ_dist=germ_dist;
         end
-        function [dist, germ2dist_func, dist2germ_func]=get_set_germdist(simparam)
+        
+        function [dist, germ2dist_func, dist2germ_func]=get_set_germdist(param)
             %Gets and sets distribution of the germ automaticaly
             %and gives the corresponding mappings(dist2germ/germ2dist)
-            dist=simparam.dist.get_base_dist();
-            germ2dist_func=@(x)simparam.dist.base2dist(x);
-            dist2germ_func=@(x)simparam.dist.dist2base(x);
-            simparam.germ_dist=dist;
-            simparam.germ2param_func=germ2dist_func;
-            simparam.param2germ_func=dist2germ_func;
+            dist=param.dist.get_base_dist();
+            germ2dist_func=@(x)param.dist.base2dist(x);
+            dist2germ_func=@(x)param.dist.dist2base(x);
+            param.germ_dist=dist;
+            param.germ2param_func=germ2dist_func;
+            param.param2germ_func=dist2germ_func;
         end
-        function x=param2germ(simparam, y)
-            if isempty(simparam.param2germ_func)
-                dist=get_set_germdist(simparam);
+        
+        function x=param2germ(param, y)
+            if isempty(param.param2germ_func)
+                dist=get_set_germdist(param);
                 string_warn=strvarexpand('There was no mapping set, the param is mapped to $dist.tostring$');
                 warning(string_warn);
             end
-            x=feval(simparam.param2germ_func,y);
+            x=feval(param.param2germ_func,y);
         end
-        function y=germ2param(simparam, x)
-            if isempty(simparam.germ2param_func)
-                dist=get_set_germdist(simparam);
+        
+        function y=germ2param(param, x)
+            if isempty(param.germ2param_func)
+                dist=get_set_germdist(param);
                 string_warn=strvarexpand('There was no mapping set, the param is mapped from $dist.tostring$');
                 warning(string_warn);
             end
-            y=feval(simparam.germ2param_func,x);
+            y=feval(param.germ2param_func,x);
         end
         
-        function str=tostring(simparam)
+        function str=tostring(param)
             % Provides with a short display of the parameter's
             % name, distribution and whether the parameter is
             % deterministic (fixed) or random (not fixed)
-            if simparam.is_fixed== true
+            if param.is_fixed== true
                 fixed_char=' fixed';
             else
                 fixed_char=' not fixed';
             end
-            str=sprintf('Parameter(%s,%s,%s)', simparam.name, simparam.dist.tostring(), fixed_char);
+            str=sprintf('Parameter(%s,%s,%s)', param.name, param.dist.tostring(), fixed_char);
         end
-        function mu=mean(simparam)
+        
+        function mu=mean(param)
             %Gives the mean value of the SimParameter
-            mu=mean(simparam.dist);
+            mu=mean(param.dist);
         end
         
-        function var=var(simparam)
+        function var=var(param)
             %Gives the variance of the SimParameter
-            [~, var]=moments(simparam.dist);
+            [~, var]=moments(param.dist);
         end
         
-        function prob=pdf(simparam,x)
+        function prob=pdf(param,x)
             %Gives the probability that SimParameter takes value x
-            prob=simparam.dist.pdf(x);
+            prob=param.dist.pdf(x);
         end
         
-        function disp(simparam)
-            disp(simparam.tostring());
+        function disp(param)
+            disp(param.tostring());
         end
     end
 end
