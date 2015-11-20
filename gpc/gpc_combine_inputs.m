@@ -81,8 +81,14 @@ a_beta = [a1_beta; a2_beta];
 function [I, P1, P2]=multiindex_direct_sum(I1, I2)
 If = [I1; I2];
 I=unique(If, 'rows');
+I=multiindex_sort(I);
 P1 = multiindex_find(I1, I);
 P2 = multiindex_find(I2, I);
+
+function I=multiindex_sort(I)
+J=[I(:,end:-1:1), multiindex_order(I)];
+J=sortrows(J);
+I=J(:,end-1:-1:1);
 
 function g=gpcgerm_combine(V1, V2)
 g1 = V1{1};
