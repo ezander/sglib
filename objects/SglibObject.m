@@ -1,4 +1,4 @@
-classdef SglibObject
+classdef (HandleCompatible=true) SglibObject
     % SGLIBOBJECT Base class for classes in sglib, providing some basic functionality.
     %   SGLIBOBJECT as a base class provides some basic functionality to
     %   derived classes, namely testing for object equality (EQ) and
