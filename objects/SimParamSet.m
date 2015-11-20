@@ -148,6 +148,10 @@ classdef SimParamSet < SglibHandleObject
             ind_rv=set.find_ind_rv();
             rv_plot_names=plot_names(ind_rv);
         end
+        
+        function param=get_param(set, ind_or_string)
+            param = set.params.get(ind_or_string);
+        end
     end
     
     methods    
@@ -157,10 +161,10 @@ classdef SimParamSet < SglibHandleObject
                 param = SimParameter(param, varargin{:});
             end
             check_type(param, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
-            if isfield(set.simparams, param.name)
+            if set.params.iskey(param.name)
                 warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
             end
-            set.simparams.(param.name) = param;
+            %set.simparams.(param.name) = param;
             set.params.add(param.name, param);
         end
         
@@ -174,7 +178,7 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        function set_fixed(set, p, vals)
+        function set_fixed(set, name_or_ind, val)
             %% Fix SimParameters in the ParamSet
             % Fixes the values of SimParams(P1, P2..)more, and accordingly the
             % probability distribution of them are ignored
@@ -197,43 +201,17 @@ classdef SimParamSet < SglibHandleObject
             % but alternatively can be a SimParameter
             % itself, but in this case only the NAME of P1 is taken, the
             % other properties are ignored
+            param = set.get_param(name_or_ind);
             
-            if nargin<2 || isempty(p)
-                p=set.param_names();
-            end
-            if ~iscell(p)
-                p={p};
-            end
-            if nargin>2&&isscalar(vals)
-                vals=repmat(vals,size(p));
-            elseif nargin>2&&~isscalar(vals)
-                check_boolean(length(p)==length(vals), 'length of VAL does not match with the one of the SIMPARAMS', mfilename);
-            end
-            for i=1:length(p)
-                if nargin>2 %if value is specified
-                    if isa(p{i}, 'char')
-                        set.simparams.(p{i}).set_fixed(vals(i));
-                    elseif isa(p{i}, 'SimParameter')
-                        set.simparams.(p{i}.name).set_fixed(vals(i));
-                    else
-                        error('sglib:gpcsimparams_set_fixed', 'wrong format of P: P parameter has to be either the name of the SimParameter, or the SimParameter itself')
-                    end
-                else %if value is not specified, fix at the mean value
-                    if isa(p{i}, 'char')
-                        set.simparams.(p{i}).set_to_mean();
-                    elseif isa(p{i}, 'SimParameter')
-                        set.simparams.(p{i}.name).set_to_mean();
-                    else
-                        error('sglib:gpcsimparams_set_fixed', 'wrong format of P: P parameter has to be either the name of the SimParameter, or the SimParameter itself')
-                    end
-                    
-                end
+            if nargin>2 %if value is specified
+                param.set_fixed(val);
+            else %if value is not specified, fix at the mean value
+                param.set_to_mean();
             end
         end
         
-        
         %% Release SimParameters in the ParamSet
-        function set_not_fixed(set, p)
+        function set_not_fixed(set, name_or_ind)
             % SET_NOT_FIXED(SET, P) releases the
             % SimParameters P  from being fixed to random variables
             % SET.SET_NOT_FIXED(SET, P1, VAL1)
@@ -249,26 +227,12 @@ classdef SimParamSet < SglibHandleObject
             % but alternatively can be a SimParameter
             % itself, but in this case only the NAME of P1 is taken, the
             % other properties are ignored
-            if nargin<2
-                p=fieldnames(set.simparams);
-            end
-            if ~iscell(p)
-                p={p};
-            end
-            
-            for i=1:length(p)
-                if isa(p{i}, 'char')
-                    set.simparams.(p{i}).set_not_fixed();
-                elseif isa(p{i}, 'SimParameter')
-                    set.simparams.(p{i}.name).set_not_fixed();
-                else
-                    error('sglib:gpcsimparams_set_fixed', 'wrong format of P: P parameter has to be either the name of the SimParameter, or the SimParameter itself')
-                end
-            end
+            param = set.get_param(name_or_ind);
+            param.set_not_fixed();
         end
         
         %% Change Distribution of  SimParameters in the ParamSet
-        function set_dist(set, p, dist)
+        function set_dist(set, name_or_ind, dist)
             % SET_DIST(SET, P, DIST)
             % Changes the distribution of the SimParam(s) P in
             % the SimParamSet SET to have
@@ -283,28 +247,8 @@ classdef SimParamSet < SglibHandleObject
             % Alternatively P1, P2, . can be a SimParameters
             % itself, but in this case only the NAME of P1, P2, .. is taken, the
             % other properties are ignored
-            
-            if isempty(p)
-                p=set.names();
-            end
-            if ~iscell(p)
-                p={p};
-            end
-            if ~iscell(dist)&&isa(dist, 'Distribution')&&length(dist)==1
-                dist=repmat({dist},size(p));
-            elseif iscell(dist)
-                check_boolean(length(p)==length(dist), 'length of DIST does not match with the one of the PARAM_NAMES', mfilename);
-            end
-            
-            for i=1:length(p)
-                if isa(p{i}, 'char')
-                    set.simparams.(p{i}).set_dist(dist{i});
-                elseif isa(p{i}, 'SimParameter')
-                    set.simparams.(p{i}.name).set_dist(dist{i});
-                else
-                    error('sglib:gpcsimparams_set_dist', 'wrong format of P: P parameter has to be either the name of the SimParameter, or the SimParameter itself')
-                end
-            end
+            param = set.get_param(name_or_ind);
+            param.set_dist(dist);
         end
 
         
@@ -392,15 +336,15 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        function param=get_param(set, i)
-            if ischar(i)
-                str = i;
-            else
-                names = set.param_names();
-                str = names{i};
-            end
-            param = set.simparams.(str);
-        end
+%         function param=get_param(set, i)
+%             if ischar(i)
+%                 str = i;
+%             else
+%                 names = set.param_names();
+%                 str = names{i};
+%             end
+%             param = set.simparams.(str);
+%         end
         
         %% Set gPC basis
         function  [a_beta, V_p, varserr]=gpc_expand_RVs(set, varargin)
