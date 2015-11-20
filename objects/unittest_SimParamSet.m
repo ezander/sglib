@@ -38,5 +38,21 @@ assert_equals(Q.rv_names, {'foo', 'bar', 'quux'}', 'rv_names');
 assert_equals(Q.rv_plot_names, {'foo', 'bar', 'QuuX'}', 'rv_plot_names');
 
 
+Q.set_not_fixed('baz')
+assert_equals(Q.num_rv, 4, 'num_rvs2');
+Q.set_fixed('baz', 10)
+Q.set_dist('baz', LogNormalDistribution(1.1, 1.3));
+assert_equals(Q.num_rv, 4, 'num_rvs3');
+assert_equals(Q.get_param('baz').dist, LogNormalDistribution(1.1, 1.3), 'set_dist');
+assert_equals(Q.get_param(3).dist, LogNormalDistribution(1.1, 1.3), 'set_dist');
 
-%[Q_alpha, V_Q, varserr]=gpc_expand_RVs(Q)
+
+Q.set_fixed(1, 42)
+Q.set_fixed('baz', 10)
+assert_equals(Q.find_fixed_vals(), [42; 10], 'find_fixed');
+
+[Q_alpha, V_Q, varerrs]=gpc_expand(Q);
+assert_equals(Q_alpha, [42 0 0; 0.25 -0.25 0; 10 0 0; 5 0 2], 'gpc_expand_coeff');
+assert_equals(V_Q, {'LP', [0 0; 1 0; 0 1]}, 'gpc_expand_basis');
+
+%Q.sample(3)

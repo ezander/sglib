@@ -59,13 +59,14 @@ classdef SimParamSet < SglibHandleObject
     %   See the GNU General Public License for more details. You should
     %   have received a copy of the GNU General Public License along with
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
-    %% Properties
+    
     properties (GetAccess=public, SetAccess=protected)
         simparams = struct()
         params = SimpleMap();
     end
     
-    methods %% Constructor
+    %% Constructor
+    methods 
         function set=SimParamSet(varargin)
             % SIMPARAMSET Returns a new SimParamSet object.
             %   that by default sets the simparams independent
@@ -80,7 +81,8 @@ classdef SimParamSet < SglibHandleObject
         end
     end
     
-    methods %% Basic accessor methods
+    %% Basic accessor methods
+    methods
         function m=num_params(set)
             % NUM_PARAMS Number of parameters.
             %   N=NUM_PARAMS(SIMPARAMETERSET) gives the number of
@@ -154,7 +156,8 @@ classdef SimParamSet < SglibHandleObject
         end
     end
     
-    methods    
+    %% Adding parameters
+    methods 
         function add(set, param, varargin)
             % ADD Add a parameter to the param set.
             if ischar(param)
@@ -164,7 +167,6 @@ classdef SimParamSet < SglibHandleObject
             if set.params.iskey(param.name)
                 warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
             end
-            %set.simparams.(param.name) = param;
             set.params.add(param.name, param);
         end
         
@@ -177,30 +179,22 @@ classdef SimParamSet < SglibHandleObject
                 set.add(p{i});
             end
         end
-        
+    end
+    
+    %% Fixing parameters
+    methods 
         function set_fixed(set, name_or_ind, val)
-            %% Fix SimParameters in the ParamSet
-            % Fixes the values of SimParams(P1, P2..)more, and accordingly the
-            % probability distribution of them are ignored
+            % SET_FIXED Fix SimParameters in the ParamSet to a constant value.
+            %   Fixes the values of SimParams(NAME) more, and accordingly the
+            %   probability distribution of them are ignored
             %
-            % SET.SET_FIXED(SET, P1, VAL1)
-            % SET_FIXED(SET, {P1, P2...}, [VAL1, VAL2])
-            % fixes P_1, P_2... simparams to the values VAL_1 and VAL_2..
+            %   SET.SET_FIXED(NAME, VAL) fixes simparam NAME to the value
+            %   VAL. SET.SET_FIXED(INDEX, VAL) fixes simparam number INDEX
+            %   to the value VAL.
             %
-            % SET_FIXED(SET, P_1)
-            % SET_FIXED({SET, P_1, P_2...})
-            % fixes  P_1, P_2... simparams to their mean values (calculated
-            % from their distribution)
-            %
-            % SET_FIXED(SET)
-            % fixes all SimParams in the SimParamSet SET to their mean
-            % values
-            %
-            %P_1, P_2.. is the NAME of SimParameters that are already
-            % added to the SimParamSet SET
-            % but alternatively can be a SimParameter
-            % itself, but in this case only the NAME of P1 is taken, the
-            % other properties are ignored
+            %   If VAL is omitted, i.e. SET.SET_FIXED(NAME) or
+            %   SET.SET_FIXED(INDEX, VAL) is called, the parameter is fixed
+            %   to its mean values (calculated from its distribution)
             param = set.get_param(name_or_ind);
             
             if nargin>2 %if value is specified
@@ -210,48 +204,74 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        %% Release SimParameters in the ParamSet
         function set_not_fixed(set, name_or_ind)
-            % SET_NOT_FIXED(SET, P) releases the
-            % SimParameters P  from being fixed to random variables
-            % SET.SET_NOT_FIXED(SET, P1, VAL1)
-            % SET_FIXED(SET, {P1, P2...})
-            % releases P_1, P_2... simparams to be not fixed but Random
-            % Variables
-            %
-            % SET_NOT_FIXED(SET)
-            % releases all SimParams in the SimParamSet SET
-            %
-            % P_1, P_2.. is the NAME of SimParameters that are already
-            % added to the SimParamSet SET
-            % but alternatively can be a SimParameter
-            % itself, but in this case only the NAME of P1 is taken, the
-            % other properties are ignored
+            % SET_NOT_FIXED Release SimParameters in the ParamSet.
+            %   SET_NOT_FIXED(SET, NAME) and SET_NOT_FIXED(SET, INDEX)
+            %   releases the parameters indicated by NAME or INDEX from
+            %   being fixed to random variables.
             param = set.get_param(name_or_ind);
             param.set_not_fixed();
         end
         
-        %% Change Distribution of  SimParameters in the ParamSet
         function set_dist(set, name_or_ind, dist)
-            % SET_DIST(SET, P, DIST)
-            % Changes the distribution of the SimParam(s) P in
-            % the SimParamSet SET to have
-            % distribution(s) DIST
-            % If the SET.(P) SimParameter was fixed, it will be released
-            % If no P is given, it changes all
-            % SimParameters in the SimParamSet SET
-            %
-            % P={P_1, P_2, ..} or P=P1
-            % where P1, P2, .. are the NAME of SimParameters that are already
-            % added to the SimParamSet SET
-            % Alternatively P1, P2, . can be a SimParameters
-            % itself, but in this case only the NAME of P1, P2, .. is taken, the
-            % other properties are ignored
+            % SET_DIST Change the distribution of a parameter.
+            %   SET_DIST(SET, NAME, DIST)changes the distribution of the
+            %   parameter indicated by NAME or INDEX in the SET to have
+            %   distribution DIST. If the Parameter was fixed, it will be
+            %   released.
             param = set.get_param(name_or_ind);
             param.set_dist(dist);
         end
+    end
+    
+    %% GPC based methods
+    methods
+        function  [q_alpha, V_q, varerrs]=gpc_expand(set, varargin)
+            % GPC_EXPAND Expand parameters into GPC representation.
+            %   Expands the maping between reference parameters (germs)
+            %   with standard probability distribution to the global
+            %   parameters (set of not fixed SimParameters in the
+            %   SimParamSet) in general Polynomial Chaos.
+            %   See also GPC_PARAM_EXPAND
+            
+            options=varargin2options(varargin);
+            [polysys,options]=get_option(options, 'polysys', '');
+            [expand_options,options]=get_option(options, 'expand_options', {});
+            check_unsupported_options(options, mfilename);
+            
+            m = set.num_params();
+            varerrs = zeros(1, m);
+            q_alpha=zeros(0,0);
+            V_q=gpcbasis_create('');
+            for i=1:m
+                param = set.get_param(i);
+                if param.is_fixed()
+                    qi_beta = param.fixed_val;
+                    V = gpcbasis_create('');
+                else
+                    [qi_beta, V, varerrs(i)]=gpc_expand(param, 'polysys', polysys, 'expand_options', expand_options);
+                end
+                
+                [q_alpha, V_q]=gpc_combine_inputs(q_alpha, V_q, qi_beta, V);
+            end
+        end
 
-        
+    end
+    
+    %% Other methods
+    methods    
+        function fixed_vals=find_fixed_vals(set)
+            % FIND_FIXED_VALS Find fixed values of the fixed parameters.
+            %   FIXED_VALS=FIND_FIXED_VALS(SET) collects fixed values of
+            %   fixed parameters in the SimParameterSet.
+            ind_rv = set.find_ind_rv();
+            ind_fixed=find(~ind_rv);
+            
+            fixed_vals=zeros(length(ind_fixed),1);
+            for i=1:length(ind_fixed)
+                fixed_vals(i)=set.get_param(ind_fixed(i)).fixed_val;
+            end
+        end
         
         %% Sample from SimParamSet
         function xi=sample(set, N, varargin)
@@ -273,9 +293,9 @@ classdef SimParamSet < SglibHandleObject
             
             % Properties description
             m              =set.num_params();
-            m_RV           =set.num_RVs();
-            RVs            =set.RV_names();
-            ind_RV         =set.find_ind_RV();
+            m_RV           =set.num_rv();
+            RVs            =set.rv_names();
+            ind_RV         =set.find_ind_rv();
             fixed_vals     =set.find_fixed_vals();
             
             % Send warning if all SIMPARAMS are fixed, and change N to 1
@@ -306,6 +326,7 @@ classdef SimParamSet < SglibHandleObject
             % parameters
             xi_RV=zeros(size(U));
             for i=1:m_RV
+                param = set.get_param(RVs{i});
                 if sample_from_germ
                     dist_i= set.simparams.(RVs{i}).germ_dist;
                     if isempty(dist_i)
@@ -316,6 +337,7 @@ classdef SimParamSet < SglibHandleObject
                     xi_RV(:,i)=set.simparams.(RVs{i}).dist.invcdf((U(:,i)));
                 end
             end
+            
             % add  columns with the fixed values to the samples
             if m>m_RV
                 xi=zeros(N,m);
@@ -336,73 +358,6 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-%         function param=get_param(set, i)
-%             if ischar(i)
-%                 str = i;
-%             else
-%                 names = set.param_names();
-%                 str = names{i};
-%             end
-%             param = set.simparams.(str);
-%         end
-        
-        %% Set gPC basis
-        function  [a_beta, V_p, varserr]=gpc_expand_RVs(set, varargin)
-            % Expands the maping between reference parameters (germs)
-            % with standard probability distribution to the global
-            % parameters (set of not fixed SimParameters in the SimParamSet) in
-            % general Polynomial Chaos, see more in  GPC_PARAM_EXPAND
-            
-            options=varargin2options(varargin);
-            [polysys,options]=get_option(options, 'polysys', '');
-            [expand_options,options]=get_option(options, 'expand_options', {});
-            check_unsupported_options(options, mfilename);
-            
-            m              =set.num_params();
-            m_RV           =set.num_RVs();
-            RVs            =set.RV_names();
-            ind_RV         =set.find_ind_RV();
-            %names = set.param_names();
-            
-            varserr=zeros(1, m);
-            for i=1:m
-                param = set.get_param(i);
-                if param.is_fixed()
-                    a_alpha = param.fixed_val;
-                    V = gpcbasis_create('', 'p', 1, 'm', 0);
-                    varerr = 0;
-                else
-                    [a_alpha, V, varerr]=gpc_expand(param, 'polysys', polysys, 'expand_options', expand_options);
-                end
-                varserr(i)=varerr;
-                
-                if i==1
-                    a_beta=a_alpha;
-                    V_p=V;
-                else
-                    [a_beta, V_p]=gpc_combine_inputs(a_beta, V_p, a_alpha, V);
-                end
-            end
-    
-            
-            return
-            %%
-            if m_RV==0;
-                error('sglib:gpcsimparams_sample', 'can not sample, there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to releas parameters')
-            end
-            varserr=zeros(1, m_RV);
-            for i=1:m_RV
-                [a_alpha, V, varerr]=gpc_expand(set.simparams.(RVs{i}), 'polysys', polysys, 'expand_options', expand_options);
-                varserr(i)=varerr;
-                
-                if i==1
-                    a_beta=a_alpha;
-                    V_p=V;
-                else
-                    [a_beta, V_p]=gpc_combine_inputs(a_beta, V_p, a_alpha, V);
-                end
-            end
-        end
         
         %% Generate integration points
         function  [x_p, w, x_ref, gpc_vars_err] =generate_integration_points(set, p_int, varargin)
@@ -538,19 +493,6 @@ classdef SimParamSet < SglibHandleObject
         end
         
         
-        %% Find fixed values of the fixed parameters in the parameterset
-        function fixed_vals=find_fixed_vals(set)
-            % collects fixed values of fixed parameters in the
-            % SimParameterSet FIXED_VALS=FIND_FIXED_VALS(SIMPARAMSET)
-            p=set.param_names();
-            ind_RV=set.find_ind_RV();
-            fixed_p=p(~ind_RV);
-            
-            fixed_vals=zeros(size(fixed_p));
-            for i=1:length(fixed_p)
-                fixed_vals(i)=set.simparams.(fixed_p{i}).fixed_val;
-            end
-        end
         
         %% Gives the mean values of the all the parameters in the parameterset
         function means=mean_vals(set)
