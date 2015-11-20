@@ -1,4 +1,4 @@
-classdef SimParameter < handle
+classdef SimParameter < SglibHandleObject
     %SIMPARAMETER Constructs a parameter,
     %   that may be a random variable or a deterministic one.
     %   PARAMETER=SIMPARAMETER(NAME,DIST) constructs parameter
@@ -57,7 +57,7 @@ classdef SimParameter < handle
             
             %Check whether input is in the right format
             check_type( name, 'char', true, 'NAME', mfilename);
-            check_boolean(strcmp(superclasses(dist), 'Distribution'), 'input DIST has to be generated from a distribution object, e.g.: dist=NormalDistribution(mu, sigma)', mfilename);
+            check_type( dist, 'Distribution', false, 'DIST', mfilename);
             
             % initialize properties
             simparam.name=name;
