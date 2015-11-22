@@ -19,3 +19,5 @@ function unittest_SimParameter(varargin)
 
 munit_set_function( 'SimParameter' );
 
+q=SimParameter('foo', NormalDistribution(2,3));
+
