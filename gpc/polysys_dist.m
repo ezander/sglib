@@ -1,4 +1,4 @@
-function dist=polysys_dist(sys, varargin)
+function dist=polysys_dist(syschar, varargin)
 % POLYSYS_DIST Get the associated distribution for a polynomial system.
 %   DIST=POLYSYS_DIST(SYS) returns the probability distribution associated
 %   with the orthogonal system of polynomials SYS.
@@ -18,29 +18,28 @@ function dist=polysys_dist(sys, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[~, dist]=gpc_register_polysys(sys);
-% switch upper(sys)
-%     case 'H'
-%         % Hermite/Gauss
-%         dist = gendist_create('normal', {0, 1});
-%     case 'P'
-%         % Legendre/Uniform
-%         dist = gendist_create('uniform', {-1, 1});
-%     case 'T'
-%         % ChebyshevT/Shifted Arcsine
-%         dist = gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
-%     case 'U'
-%         % ChebyshevU/Semicircle
-%         dist = gendist_create('semicircle');
-%     case 'L'
-%         % Laguerre/Exponential
-%         dist = gendist_create('exponential', {1});
-%     case 'J'
-%         % Jacobi/Beta
-%         dist = gendist_create('beta', varargin);
-%     case 'M'
-%         % Monomials/(no distribution)
-%         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
-%     otherwise
-%         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-% end
+switch upper(syschar)
+    case 'H'
+        % Hermite/Gauss
+        dist = gendist_create('normal', {0, 1});
+    case 'P'
+        % Legendre/Uniform
+        dist = gendist_create('uniform', {-1, 1});
+    case 'T'
+        % ChebyshevT/Shifted Arcsine
+        dist = gendist_create('arcsine', {}, 'shift', -0.5, 'scale', 2);
+    case 'U'
+        % ChebyshevU/Semicircle
+        dist = gendist_create('semicircle');
+    case 'L'
+        % Laguerre/Exponential
+        dist = gendist_create('exponential', {1});
+    case 'M'
+        % Monomials/(no distribution)
+        error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
+    otherwise
+        [~, dist]=gpc_register_polysys_new('get', syschar);
+        if isempty(dist)
+            error('sglib:gpc:polysys', 'Unknown polynomials system: %s', syschar);
+        end
+end
