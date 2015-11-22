@@ -39,6 +39,7 @@ classdef SimParameter < SglibHandleObject
         plot_name
     end
     
+    %% Constructor
     methods
         function param=SimParameter(name, dist, varargin)
             % Returns a new SimParameter object with the distribution DIST
@@ -68,31 +69,20 @@ classdef SimParameter < SglibHandleObject
             end
             
         end
-        
+    end
+    
+    %% Setting to fixed values
+    methods
         function set_fixed(param, val)
             % Fixes the parameter to the value VAL and sets IS_FIXED
             param.is_fixed=true;
-            if nargin<2
-                mu=mean(param.dist);
-                param.fixed_val=mu;
-            else
-                param.fixed_val=val;
-            end
+            param.fixed_val=val;
         end
         
         function set_to_mean(param)
             % Fixes the parameter to the value VAL to the mean of the
             % distribution
-            param.is_fixed=true;
-            mu=mean(param.dist);
-            param.fixed_val=mu;
-        end
-        
-        function set_dist(param, dist)
-            % Sets a new distribution and resets the IS_FIXED variable
-            param.dist=dist;
-            param.is_fixed=false;
-            param.fixed_val=[];
+            param.set_fixed(mean(param.dist));
         end
         
         function set_not_fixed(param)
@@ -101,6 +91,14 @@ classdef SimParameter < SglibHandleObject
             param.fixed_val=[];
         end
         
+        function set_dist(param, dist)
+            % Sets a new distribution and resets the IS_FIXED variable
+            param.dist=dist;
+            param.set_not_fixed();
+        end
+    end
+        
+    methods
         function xi=sample(param, n)
             %   Draw random samples from the parameter.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -215,10 +213,6 @@ classdef SimParameter < SglibHandleObject
         function prob=pdf(param,x)
             %Gives the probability that SimParameter takes value x
             prob=param.dist.pdf(x);
-        end
-        
-        function disp(param)
-            disp(param.tostring());
         end
     end
 end
