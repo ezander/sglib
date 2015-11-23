@@ -125,7 +125,8 @@ classdef (HandleCompatible=true) SglibObject
                         else
                             str3 = ''; %#ok<NASGU>
                         end
-                        str = strvarexpand('<a href="matlab:disp(char($str2$))">$str1$</a>$str3$');
+                        %str = strvarexpand('<a href="matlab:disp(char($str2$))">$str1$</a>$str3$');
+                        str = strvarexpand('$str1$$str3$ $char(10)$<a href="matlab:disp(char($str2$))">(show)</a>');
                     end
             end
             disp(str);
