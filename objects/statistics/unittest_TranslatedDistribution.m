@@ -91,6 +91,14 @@ T = TranslatedDistribution(N,0.25,1);
 % gendist_invcdf(1/2,dist)
 assert_equals(invcdf(T,1/2), 4.25, 'invcdf_median');
 
+%% Sample
+munit_control_rand('seed', 1234);
+E = ExponentialDistribution(1.3);
+T = TranslatedDistribution(E,4,5,1);
+N=100000;
+xi=T.sample(N);
+assert_equals(T.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
+
 %% Moments
 N = NormalDistribution(4,1);
 T = TranslatedDistribution(N,0,1);

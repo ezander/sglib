@@ -53,6 +53,12 @@ assert_equals(cdf(E,invcdf(E,y)), y, 'cdf_invcdf_1');
 assert_equals(invcdf(E,cdf(E,y)), y, 'invcdf_cdf_1');
 assert_equals( isnan(invcdf(E,[-0.1, 1.1])), [true, true], 'invcdf_nan1');
 
+%% Sample
+munit_control_rand('seed', 1234);
+E = ExponentialDistribution(0.5);
+N=100000;
+xi=E.sample(N);
+assert_equals(E.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
 
 %% exponential_stdnor
 N=50;

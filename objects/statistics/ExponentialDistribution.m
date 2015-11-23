@@ -70,11 +70,7 @@ classdef ExponentialDistribution < Distribution
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
+            yi = uniform_sample(n, 0, 1);
             xi = dist.invcdf(yi);
         end
     end

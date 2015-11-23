@@ -74,11 +74,11 @@ assert_equals(invcdf(LN,cdf(LN,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(LN,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
 %% Sample
+munit_control_rand('seed', 1234);
 LN=LogNormalDistribution(0.7,1.5);
 N=100000;
 xi=LN.sample(N);
-assert_equals(LN.cdf(sort(xi)), linspace(0,1,N)', 'sample_cdf', 'abstol', 1e-4)
-
+assert_equals(LN.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 3e-3)
 
 %% Stdnor
 N=50;

@@ -74,6 +74,13 @@ assert_equals( cdf(B,invcdf(B,y)), y, 'cdf_invcdf_3');
 assert_equals( invcdf(B,cdf(B,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
+%% Sample
+munit_control_rand('seed', 1234);
+B = BetaDistribution(2,3);
+N=100000;
+xi=B.sample(N);
+assert_equals(B.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
+
 %% beta_stdnor
 N=50;
 uni=linspace(0,1,N+2)';

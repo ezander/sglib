@@ -83,6 +83,13 @@ assert_equals(cdf(U,invcdf(U,y)), y, 'cdf_invcdf_3');
 assert_equals( invcdf(U,cdf(U,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(U,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
+%% Sample
+munit_control_rand('seed', 1234);
+U=UniformDistribution(-2,3);
+N=100000;
+xi=U.sample(N);
+assert_equals(U.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
+
 %% uniform_stdnor
 N=50;
 uni=linspace(0,1,N+2)';

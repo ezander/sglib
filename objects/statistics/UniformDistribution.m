@@ -96,14 +96,7 @@ classdef UniformDistribution < Distribution
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
-            shift=(dist.a+dist.b)/2-(dist.b-dist.a)/2;
-            scale=(dist.b-dist.a);
-            xi =(yi *scale ) + shift;
+            xi = uniform_sample(n, dist.a, dist.b);
         end
     end
     
