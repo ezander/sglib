@@ -10,7 +10,7 @@ classdef ArcSinDistribution < BetaDistribution
     %
     % See also DISTRIBUTION BETADISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Noemi Friedman
+    %   Noemi Friedman, Elmar Zander
     %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or

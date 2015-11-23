@@ -6,8 +6,8 @@ function unittest_ExponentialDistribution
 %
 % See also EXPONENTIALDISTRIBUTION, MUNIT_RUN_TESTSUITE
 
-%   <Aidin Nojavan>
-%   Copyright 2014, <Inst. of Scientific Computing, TU Braunschweig>
+%   Elmar Zander, Aidin Nojavan
+%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -23,6 +23,12 @@ munit_set_function( 'ExponentialDistribution' );
 E = ExponentialDistribution(1.5);
 assert_equals(E.mean, 0.6666666, 'mean','abstol',0.0001 );
 assert_equals(E.var, 0.44444444, 'var' );
+
+%% Moments
+m_act = {1, 0, 0, 0, 0};
+[m_act{2:end}] = E.moments();
+m_ex = compute_moments(E);
+assert_equals(m_act, m_ex, 'moments' );
 
 %% exponential_cdf
 assert_equals(cdf(E,-inf), 0, 'cdf_minf' );
@@ -70,6 +76,15 @@ E = ExponentialDistribution(4);
 dist = fix_bounds(E,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
+
+%% Orthogonal polynomials
+dist = ExponentialDistribution(1);
+polysys = dist.orth_polysys();
+N = 5;
+assert_equals(compute_gramian(polysys, dist, N), diag(polysys.sqnorm(0:N)), 'orth');
+
+dist = ExponentialDistribution(1.4);
+assert_error(@()(dist.orth_polysys()), 'sglib:', 'no_standard_dist');
 
 %% Base dist stuff
 dist = ExponentialDistribution(4.3);

@@ -10,7 +10,7 @@ classdef NormalDistribution < Distribution
     %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
-    %   Aidin Nojavan
+    %   Elmar Zander, Aidin Nojavan
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or

@@ -7,7 +7,7 @@ classdef TranslatedDistribution < Distribution
     %
     % See also DISTRIBUTION
     
-    %   Aidin Nojavan (slightly modified by Noemi Friedman)
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -43,7 +43,7 @@ classdef TranslatedDistribution < Distribution
     methods
         function str=tostring(tdist)
             % Displays the distribution type: 'Translated(dist(param), shift, scale)'
-            str=sprintf('Translated(%s, %g, %g)', tdist.dist.tostring(), tdist.shift, tdist.scale);
+            str=sprintf('Translated(%s, %g, %g, %g)', tdist.dist.tostring(), tdist.shift, tdist.scale, tdist.center);
         end
     end
     
@@ -62,11 +62,19 @@ classdef TranslatedDistribution < Distribution
             end
         end
         
+        function y=translate_points(tdist, x, forward)
+            if forward
+                y=(x-tdist.center)*tdist.scale+tdist.center+tdist.shift;
+            else
+                y=(x-tdist.shift-tdist.center)/tdist.scale+tdist.center;
+            end
+        end
+        
         function y=pdf(tdist,x)
             % Y=PDF(TDIST,X) computes the pdf of translated distribution of
             % original distribution, defined as a parameter of TDIST and
             % values X
-            x=(x-tdist.shift-tdist.center)/tdist.scale+tdist.center;
+            x=tdist.translate_points(x, false);
             % computes the translated X values in regard to parameters
             % shift, center and scale
             y=tdist.dist.pdf(x)/tdist.scale;
@@ -76,48 +84,49 @@ classdef TranslatedDistribution < Distribution
             % Y=CDF(TDIST,X) computes the cdf of translated distribution of
             % original distribution, defined as a parameter of TDIST and
             % values X
-            x=(x-tdist.shift-tdist.center)/tdist.scale+tdist.center;
+            x=tdist.translate_points(x, false);
             % computes the translated X values in regard to parameters
             % shift, center and scale
             y=tdist.dist.cdf(x);
         end
+        
         function x=invcdf(tdist,y)
             % Y=INVCDF(TDIST,X) computes the inverse cdf of translated
             % distribution of the original distribution, defined as a
             % parameter of TDIST and values X
             x=tdist.dist.invcdf(y);
-            x=(x-tdist.center)*tdist.scale+tdist.center+tdist.shift;
+            x=tdist.translate_points(x, true);
         end
+        
         function xi=sample(tdist,n)
             %   Draw random samples from Translated distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
-            xi = tdist.invcdf(yi);
+            xi=tdist.dist.sample(n);
+            xi=tdist.translate_points(xi, true);
         end
+        
         function [mean,var,skew,kurt]=moments(tdist)
             % MOMENTS compute the moments of the translated distribution.
-            % TODO: check this functions if mean of underlying distribution
-            % is not the same as the center. I guess we will have to add
-            % something like (tdist.center + tdist.dist.mean())^2 to the
-            % variance.
             n=max(nargout,1);
             m=cell(1,n);
             [m{:}]=tdist.dist.moments();
-            mean=m{1}+tdist.shift;
+            
+            % Mean needs to be translated like any old point
+            mean=tdist.translate_points(m{1}, true);
+            
             if nargout>=2
+                % Variance is not affected by any shifting or the center
                 var=m{2}*tdist.scale^2;
             end
             if nargout>=3
+                % skewness is affected by neither shift nor scale
                 skew=m{3};
             end
             if nargout>=4
+                % excess kurtosis is affected by neither shift nor scale
                 kurt=m{4};
             end
         end

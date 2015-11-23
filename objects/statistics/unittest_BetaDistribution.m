@@ -6,7 +6,7 @@ function unittest_BetaDistribution
 %
 % See also BETADISTRIBUTION, MUNIT_RUN_TESTSUITE
 
-%   Aidin Nojavan
+%   Elmar Zander, Aidin Nojavan
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -112,5 +112,5 @@ assert_equals(dist.dist2base(x1), x2, 'dist2base');
 %% Ortho polys
 dist = BetaDistribution(1.5, 0.5);
 polysys = dist.orth_polysys();
-
-
+N = 5;
+%assert_equals(compute_gramian(polysys, dist, N), diag(polysys.sqnorm(0:N)), 'orth');

@@ -10,7 +10,7 @@ classdef ExponentialDistribution < Distribution
     %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
-    %   Aidin Nojavan and further extanded by Noemi Friedman
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or

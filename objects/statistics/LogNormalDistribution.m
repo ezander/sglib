@@ -10,7 +10,7 @@ classdef LogNormalDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BEA_PDF
     
-    %   Aidin Nojavan  (slightly modified by Noemi Friedman)
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or

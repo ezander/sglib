@@ -9,7 +9,7 @@ classdef BetaDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan (extended by Noemi Friedman)
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or

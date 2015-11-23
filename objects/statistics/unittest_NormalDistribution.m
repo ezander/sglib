@@ -6,8 +6,8 @@ function unittest_NormalDistribution
 %
 % See also NORMALDISTRIBUTION, MUNIT_RUN_TESTSUITE 
 
-%   <Aidin Nojavan>
-%   Copyright 2014, <Inst. of Scientific Computing, TU Braunschweig>
+%   Elmar Zander, Aidin Nojavan
+%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -35,6 +35,13 @@ assert_equals( N.sigma, 1, 'Initialization default sigma' );
 %% Mean & Var
 assert_equals(N.mean, 0, 'mean');
 assert_equals(N.var, 1, 'var' );
+
+%% Moments
+N=NormalDistribution(1.2, 2.3);
+m_act = {1, 0, 0, 0, 0};
+[m_act{2:end}] = N.moments();
+m_ex = compute_moments(N);
+assert_equals(m_act, m_ex, 'moments' );
 
 %% normal_cdf
 N=NormalDistribution(1,2);
@@ -109,6 +116,15 @@ N = NormalDistribution(2,3);
 dist = fix_bounds(N,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
+
+%% Orthogonal polynomials
+dist = NormalDistribution();
+polysys = dist.orth_polysys();
+N = 5;
+assert_equals(compute_gramian(polysys, dist, N), diag(polysys.sqnorm(0:N)), 'orth');
+
+dist = NormalDistribution(2,3);
+assert_error(@()(dist.orth_polysys()), 'sglib:', 'no_standard_dist');
 
 %% Base dist stuff
 dist = NormalDistribution(2, 3);
