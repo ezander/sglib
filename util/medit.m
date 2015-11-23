@@ -145,6 +145,12 @@ end
 try
     err = false;
     oldpath=addpath(fullfile(matlabroot, 'toolbox', 'matlab', 'codetools'), '-begin');
+    % Need to do some rehashing as otherwise still the wrong edit might be
+    % called. However, the results of this are quite unpredictable, so
+    % we'll reset maybe a bit more than necessary. Otherwise, we might land
+    % in an endless recursion.
+    rehash pathreset;
+    rehash toolboxcache;
     edit(filename);
 catch %#ok<CTCH>
     err = true;
