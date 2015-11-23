@@ -38,7 +38,7 @@ switch upper(syschar)
         % Monomials/(no distribution)
         error('sglib:gpc:polysys', 'Cannot not sample, since there is no distribution associated with the monomials.');
     otherwise
-        [~, dist]=gpc_register_polysys_new('get', syschar);
+        [~, dist]=gpc_registry('get', syschar);
         if isempty(dist)
             error('sglib:gpc:polysys', 'Unknown polynomial system char: %s', syschar);
         end

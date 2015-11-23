@@ -55,7 +55,7 @@ switch upper(syschar)
     case 'M'
         r = [zero, one, zero];
     otherwise
-        polysys = gpc_register_polysys_new('get', syschar);
+        polysys = gpc_registry('get', syschar);
         if isempty(polysys)
             error('sglib:gpc:polysys', 'Unknown polynomials system: %s', syschar);
         end

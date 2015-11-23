@@ -1,6 +1,6 @@
-function [polysys, dist] = gpc_register_polysys_new(action, syschar, polysys, dist)
-% GPC_REGISTER_POLYSYS_NEW Short description of gpc_register_polysys_new.
-%   GPC_REGISTER_POLYSYS_NEW(VARARGIN) Long description of gpc_register_polysys_new.
+function [polysys, dist] = gpc_registry(action, syschar, polysys, dist)
+% GPC_REGISTRY Short description of gpc_registry.
+%   GPC_REGISTRY(VARARGIN) Long description of gpc_registry.
 %
 % Options
 %
@@ -27,16 +27,7 @@ persistent registry
 persistent char2index
 
 if isempty(registry)
-    registry = struct('syschar', {}, 'polysys', {}, 'dist', {});
-    registry(end+1) = make_reg_entry('H', HermitePolynomials());
-    registry(end+1) = make_reg_entry('h', HermitePolynomials().normalized());
-    registry(end+1) = make_reg_entry('P', LegendrePolynomials());
-    registry(end+1) = make_reg_entry('p', LegendrePolynomials().normalized());
-    
-    char2index = zeros(256,1);
-    chars = double(char(registry.syschar));
-    indices = 1:length(registry);
-    char2index(chars) = indices;
+    [registry, char2index] = register_default_polys();
 end
 
 switch action
@@ -62,8 +53,10 @@ switch action
         char2index(syschar) = length(registry);
     case 'getall'
         polysys = registry;
+    case 'reset'
+        [registry, char2index] = register_default_polys();
     otherwise
-        error('foobar');
+        error('sglib:gpc_registry:unknown_action', 'Unknown action: %s', action);
 end
 
 
@@ -78,3 +71,16 @@ if nargin>2
 else
     entry.dist = polysys.weighting_dist();
 end
+
+
+function [registry, char2index] = register_default_polys()
+registry = struct('syschar', {}, 'polysys', {}, 'dist', {});
+registry(end+1) = make_reg_entry('H', HermitePolynomials());
+registry(end+1) = make_reg_entry('h', HermitePolynomials().normalized());
+registry(end+1) = make_reg_entry('P', LegendrePolynomials());
+registry(end+1) = make_reg_entry('p', LegendrePolynomials().normalized());
+
+char2index = zeros(256,1);
+chars = double(char(registry.syschar));
+indices = 1:length(registry);
+char2index(chars) = indices;
