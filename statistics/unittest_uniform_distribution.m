@@ -39,7 +39,7 @@ assert_equals( uniform_pdf(3.5,a,b), 1/2, 'pdf_inside' );
 assert_equals( uniform_pdf(inf,a,b), 0, 'pdf_inf' );
 
 % pdf matches cdf
-[x1,x2]=linspace_mp( -0.1, 5 );
+[x2,x1]=linspace_midpoints( -0.1, 5 );
 F=uniform_cdf( x1, a,b );
 F2=pdf_integrate( uniform_pdf( x2, a,b ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );

@@ -33,7 +33,7 @@ assert_equals( exponential_pdf(-1e10,alpha), 0, 'pdf_negative' );
 assert_equals( exponential_pdf(inf,alpha), 0, 'pdf_inf' );
 
 % pdf matches cdf
-[x1,x2]=linspace_mp( -0.1, 5 );
+[x2,x1]=linspace_midpoints( -0.1, 5 );
 F=exponential_cdf( x1, alpha );
 F2=pdf_integrate( exponential_pdf( x2, alpha ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );

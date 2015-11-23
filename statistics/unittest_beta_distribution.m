@@ -45,7 +45,7 @@ assert_equals( beta_pdf(1,a,b), 0, 'pdf_zero' );
 
 % pdf matches cdf
 a=2; b=3;
-[x,x2]=linspace_mp(-0.1,1.1);
+[x2,x]=linspace_midpoints(-0.1,1.1);
 F=beta_cdf(x,a,b);
 F2=pdf_integrate( beta_pdf(x2,a,b), F, x);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );

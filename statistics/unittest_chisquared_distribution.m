@@ -34,7 +34,7 @@ assert_equals( chisquared_pdf(1e400,k), 0, 'pdf_near_inf' );
 assert_equals( chisquared_pdf(inf,k), 0, 'pdf_inf' );
 
 % pdf matches cdf
-[x1,x2]=linspace_mp(0.1,10);
+[x2,x1]=linspace_midpoints(0.1,10);
 F=chisquared_cdf(x1, k);
 F2=pdf_integrate( chisquared_pdf(x2,k), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );
