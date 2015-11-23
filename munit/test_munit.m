@@ -190,6 +190,15 @@ munit_stats('pop');
 munit_print_stats;
 test_stats(munit_stats,76,0,44,2,[],'stats_assert_error2');
 
+munit_stats('push','streq');
+unittest_assert_equals_struct;
+munit_print_stats;
+test_stats(munit_stats,81,5,2,0,[],'stats_assert_equals_struct1');
+munit_stats('pop');
+munit_print_stats;
+test_stats(munit_stats,81,0,46,2,[],'stats_assert_equals_struct2');
+
+
 fprintf('=====================================================\n');
 
 
@@ -279,6 +288,20 @@ assert_equals( {1,'aaa',true}, {1,'aaa',true}, 'pass_cell5' );
 assert_equals( cell(2,2,2), cell(2,2,2), 'pass_cell6' );
 
 assert_equals( 1, 2, 'fail_fuzzy', 'fuzzy', true );
+
+function unittest_assert_equals_struct
+% compare struct arrays
+s(1).a = 1;
+s(2).a = 2;
+t(1).a = 1;
+t(2).a = 3;
+u(1).a=1;
+u(1).b=2;
+assert_equals(s, s, 'pass_same');
+assert_equals(s(1:0), t(1:0), 'pass_same');
+assert_equals(s, t, 'fail_not_same');
+assert_equals(s(1), t(1), 'pass_equals');
+assert_equals(s(1), u, 'fail_fields');
 
 
 function unittest_assert_equals_inf_nan
