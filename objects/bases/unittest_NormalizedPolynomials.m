@@ -32,17 +32,21 @@ y_n = P_n.evaluate(6, xi);
 y = P.evaluate(6, xi);
 assert_equals(y_n, binfun(@times, y, 1./sqrt(h)), 'normed');
 
+%% default syschar
+% should be the lowercase version of the original polynomials
+assert_equals(P_n.get_default_syschar(), 'p', 'syschar');
+
 %% double normalizing
 P_n2 = P_n.normalized();
 assert_equals(P_n2.evaluate(6, xi), P_n.evaluate(6, xi), 'double');
-assert_true(isa(P_n2.base_poly, class(P)), 'Double normalizing should not wrap again', 'no_wrap');
+assert_true(isa(P_n2.base_polysys, class(P)), 'Double normalizing should not wrap again', 'no_wrap');
 
 %%
-poly = P_n;
+polysys = P_n;
 N=4;
 
-dist = poly.weighting_dist();
+dist = polysys.weighting_dist();
 dom=dist.invcdf([0,1]);
-fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+fun = @(x)( polysys.evaluate(N,x)'*polysys.evaluate(N,x)*dist.pdf(x));
 Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
-assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent');
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');

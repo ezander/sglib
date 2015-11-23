@@ -38,12 +38,15 @@ assert_equals(T.sqnorm(n), h, 'nrm_arr');
 assert_equals(T.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(T.sqnorm(n(:)'), h(:)', 'nrm_row');
 
+%% default syschar
+assert_equals(T.get_default_syschar(), 'T', 'syschar');
+
 %% consistency with weighting function
-poly = ChebyshevTPolynomials();
+polysys = ChebyshevTPolynomials();
 N=4;
 
-dist = poly.weighting_dist();
+dist = polysys.weighting_dist();
 dom=dist.invcdf([0,1]);
-fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+fun = @(x)( polysys.evaluate(N,x)'*polysys.evaluate(N,x)*dist.pdf(x));
 Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
-assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent');
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');

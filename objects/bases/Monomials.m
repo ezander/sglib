@@ -2,9 +2,9 @@ classdef Monomials < PolynomialSystem
     % MONOMIALS Construct the Monoials.
     %
     % Example (<a href="matlab:run_example Monomials">run</a>)
-    %   poly=Monomials();
+    %   polysys=Monomials();
     %   x=linspace(-1,1);
-    %   y=poly.evaluate(4, x);
+    %   y=polysys.evaluate(4, x);
     %   plot(x,y);
     %
     % See also POLYNOMIALSYSTEM LEGENDREPOLYNOMIALS
@@ -24,15 +24,22 @@ classdef Monomials < PolynomialSystem
     end
     
     methods
-        function poly=Monomials()
+        function polysys=Monomials()
             % MONOMIALS Construct the Monomials.
-            %   POLY=LEGENDREPOLYNOMIALS() constructs a polynomial system
+            %   POLYSYS=MONOMIALS() constructs a polynomial system
             %   representing the monomials.
             %   Note: that there is no weight function that would make the
             %   monomials orthogonal, so it is not really used in any form
             %   of GPC expansion. However, it is sometimes handy to have
             %   also multivariate representations in monomial form, for
             %   which this polynomials system can then be used.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Monomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'M';
         end
         
         function r=recur_coeff(~, deg)

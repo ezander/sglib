@@ -41,12 +41,15 @@ assert_equals(L.sqnorm(n(:)'), h(:)', 'nrm_row');
 %% normalized
 assert_true(isa(L.normalized(), class(L)), 'Laguerre.normalized should return the same object', 'same');
 
+%% default syschar
+assert_equals(L.get_default_syschar(), 'L', 'syschar');
+
 %% consistency with weighting function
-poly = LaguerrePolynomials();
+polysys = LaguerrePolynomials();
 N=4;
 
-dist = poly.weighting_dist();
+dist = polysys.weighting_dist();
 dom=dist.invcdf([0,1]);
-fun = @(x)( poly.evaluate(N,x)'*poly.evaluate(N,x)*dist.pdf(x));
+fun = @(x)( polysys.evaluate(N,x)'*polysys.evaluate(N,x)*dist.pdf(x));
 Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
-assert_equals(Q, diag(poly.sqnorm(0:N)), 'weighting_consistent');
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');

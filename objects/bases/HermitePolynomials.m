@@ -2,9 +2,9 @@ classdef HermitePolynomials < PolynomialSystem
     % HERMITEPOLYNOMIALS Class representing the probabilists Hermite polynomials.
     %
     % Example (<a href="matlab:run_example HermitePolynomials">run</a>)
-    %   poly=HermitePolynomials();
+    %   polysys=HermitePolynomials();
     %   x=linspace(-3,3);
-    %   y=poly.evaluate(4, x);
+    %   y=polysys.evaluate(4, x);
     %   plot(x,y);
     %
     % See also LEGENDREPOLYNOMIALS POLYNOMIALSYSTEM
@@ -24,10 +24,17 @@ classdef HermitePolynomials < PolynomialSystem
     end
     
     methods
-        function poly=HermitePolynomials()
+        function polysys=HermitePolynomials()
             % HERMITEPOLYNOMIALS Construct the HermitePolynomials.
-            %   POLY=HERMITEPOLYNOMIALS() constructs polynomial system
+            %   POLYSYS=HERMITEPOLYNOMIALS() constructs polynomial system
             %   representing the probabilist's Hermite polynomials.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Hermite polynomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'H';
         end
         
         function r=recur_coeff(~, deg)
@@ -53,9 +60,9 @@ classdef HermitePolynomials < PolynomialSystem
             nrm2 = factorial(n);
         end
         
-        function dist=weighting_dist(poly)
+        function dist=weighting_dist(~)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
-            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   DIST=WEIGHTING_DIST(POLYSYS) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST

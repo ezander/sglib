@@ -2,9 +2,9 @@ classdef LegendrePolynomials < PolynomialSystem
     % LEGENDREPOLYNOMIALS Construct the LegendrePolynomials.
     %
     % Example (<a href="matlab:run_example LegendrePolynomials">run</a>)
-    %   poly=LegendrePolynomials();
+    %   polysys=LegendrePolynomials();
     %   x=linspace(-1,1);
-    %   y=poly.evaluate(5, x);
+    %   y=polysys.evaluate(5, x);
     %   plot(x,y);
     %
     % See also HERMITEPOLYNOMIALS POLYNOMIALSYSTEM
@@ -24,10 +24,17 @@ classdef LegendrePolynomials < PolynomialSystem
     end
     
     methods
-        function poly=LegendrePolynomials()
+        function polysys=LegendrePolynomials()
             % LEGENDREPOLYNOMIALS Construct the LegendrePolynomials.
-            %   POLY=LEGENDREPOLYNOMIALS() constructs a polynomial system
+            %   POLYSYS=LEGENDREPOLYNOMIALS() constructs a polynomial system
             %   representing the Legendre polynomials.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Legendre polynomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'P';
         end
         
         function r=recur_coeff(~, deg)
@@ -54,7 +61,7 @@ classdef LegendrePolynomials < PolynomialSystem
         
         function dist=weighting_dist(~)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
-            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   DIST=WEIGHTING_DIST(POLYSYS) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).
             %
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
