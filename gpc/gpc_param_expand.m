@@ -1,6 +1,6 @@
-function [a_alpha, V_a, varerr] = gpc_param_expand(a_dist, sys, varargin)
+function [a_alpha, V_a, varerr] = gpc_param_expand(a_dist, syschar, varargin)
 % GPC_PARAM_EXPAND Computes GPC expansion of an input parameter.
-%   [A_ALPHA,V_A,VARERR]=GPC_PARAM_EXPAND(A_DIST, SYS, OPTIONS) computes
+%   [A_ALPHA,V_A,VARERR]=GPC_PARAM_EXPAND(A_DIST, SYSCHAR, OPTIONS) computes
 %   the GPC expansion of the parameter A (input parameter for a stochastic
 %   model or whatever) with GPC coefficient returned in A_ALPHA and the GPC
 %   basis returned in V_A. With no options specified the degree of the
@@ -52,14 +52,14 @@ options=varargin2options(varargin);
 [fixvar,options]=get_option(options,'fixvar', false);
 check_unsupported_options(options,mfilename);
 
-check_type(sys, 'char', false, 'sys', mfilename);
-check_range(length(sys), 1, 1, 'length(sys)', mfilename); 
+check_type(syschar, 'char', false, 'syschar', mfilename);
+check_range(length(syschar), 1, 1, 'length(syschar)', mfilename); 
 
 [a_mean, a_var] = gendist_moments(a_dist);
 
 if isequal(p,@default)
     for p=0:50
-        V_a = gpcbasis_create(sys, 'p', p);
+        V_a = gpcbasis_create(syschar, 'p', p);
         if isequal(p_int,@default)
             p_int = max(10, p);
         end
@@ -77,7 +77,7 @@ else
     if isequal(p_int,@default)
         p_int = max(10, p);
     end
-    V_a = gpcbasis_create(sys, 'p', p);
+    V_a = gpcbasis_create(syschar, 'p', p);
     a_alpha = do_param_expand(a_dist, V_a, p_int);
 end
 if ~all(isfinite(a_alpha))

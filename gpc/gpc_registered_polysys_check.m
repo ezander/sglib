@@ -1,5 +1,5 @@
-function [sys_out, dist_out, poly_out]=gpc_registered_polysys_check(sys_reg, dist_reg, poly_reg, varargin)
-%GPC_CHECK_REGISTERED_POLYSYS() check triplets (SYS letter, DISTribution and POLYnomialSystem)
+function [syschar_out, dist_out, poly_out]=gpc_registered_polysys_check(syschar_reg, dist_reg, poly_reg, varargin)
+%GPC_CHECK_REGISTERED_POLYSYS() check triplets (SYSCHAR letter, DISTribution and POLYnomialSystem)
 % which were already registered or which are the standard ones.
 % This function should not be called directly, only through GPC_REGISTER_POLYSYS
 %
@@ -17,63 +17,63 @@ function [sys_out, dist_out, poly_out]=gpc_registered_polysys_check(sys_reg, dis
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 options = varargin2options(varargin);
-[sys, options] = get_option(options, 'sys', '');
+[syschar, options] = get_option(options, 'syschar', '');
 [dist, options] = get_option(options, 'dist', {});
 check_unsupported_options(options, mfilename);
-%% If SYS and DIST is not defined, then send back the standard POLYSYS and
+%% If SYSCHAR and DIST is not defined, then send back the standard POLYSYS and
 % the regristered ones
-if isempty(sys) && isempty(dist)
-    sys_s='HPTULM';
+if isempty(syschar) && isempty(dist)
+    syschar_s='HPTULM';
     dist_out=cell(6,1);
     poly_out=cell(6,1);
     for i=1:6
-        sys=sys_s(i);
-        [~, dist]=get_standard_dist(sys);
-        poly=get_standard_polys_and_sys(dist);
+        syschar=syschar_s(i);
+        [~, dist]=get_standard_dist(syschar);
+        poly=get_standard_polys_and_syschar(dist);
         
         dist_out{i}=dist;
         poly_out{i}=poly;
     end
-    if ~isempty(sys_reg)
-        sys_out=[sys_s,sys_reg];
+    if ~isempty(syschar_reg)
+        syschar_out=[syschar_s,syschar_reg];
         dist_out=vertcat(dist_out, dist_reg);
         poly_out=vertcat(poly_out, poly_reg);
     else
-        sys_out=sys_s;
+        syschar_out=syschar_s;
     end
     
-elseif ~isempty(sys) && isempty(dist)
-    [sys_out, dist_out]=get_standard_dist(sys);
-    if isempty(sys_out) %if sys is not among the standard polysys'
-        ind=strmatch(upper(sys), sys_reg');
+elseif ~isempty(syschar) && isempty(dist)
+    [syschar_out, dist_out]=get_standard_dist(syschar);
+    if isempty(syschar_out) %if syschar is not among the standard polysys'
+        ind=strmatch(upper(syschar), syschar_reg');
         if ~isempty(ind)
-            % get sys, distribution and polynomial corresponding to SYS
-            sys_out=sys_reg(ind);
+            % get syschar, distribution and polynomial corresponding to SYSCHAR
+            syschar_out=syschar_reg(ind);
             dist_out=dist_reg{ind,:};
             poly_out=poly_reg{ind};
         else
-            sys_out='';
+            syschar_out='';
             dist_out={};
             poly_out={};
         end
     else
-        [poly_out, ~,dist_out]=get_standard_polys_and_sys(dist_out);
+        [poly_out, ~,dist_out]=get_standard_polys_and_syschar(dist_out);
     end
     %Normalize poly if needed
-elseif ~isempty(dist) && isempty(sys)
-    [poly_out, sys_out, dist_out]=get_standard_polys_and_sys(dist);
-    %if isempty(sys_out) %if dist is not among the standard distributions
+elseif ~isempty(dist) && isempty(syschar)
+    [poly_out, syschar_out, dist_out]=get_standard_polys_and_syschar(dist);
+    %if isempty(syschar_out) %if dist is not among the standard distributions
     %then registry should be checked, but right now
     % do nothing
     %end
 else
-    error('DIST and SYS can not be defined together, please define either one or the other')
+    error('DIST and SYSCHAR can not be defined together, please define either one or the other')
 end
 end
 
 %%
-function [sys, dist]=get_standard_dist(sys)
-switch(sys)
+function [syschar, dist]=get_standard_dist(syschar)
+switch(syschar)
     case{'H','h'}
         dist=gendist_create('normal', {0,1});
     case{'P','p'}
@@ -88,62 +88,62 @@ switch(sys)
         dist={'none'};
     otherwise
         dist={};
-        sys='';
+        syschar='';
 end
 end
 
 %%
-function [poly, sys, dist_out]=get_standard_polys_and_sys(dist)
+function [poly, syschar, dist_out]=get_standard_polys_and_syschar(dist)
 n=0;
 if iscell(dist)
     switch(upper(dist{1}))
         case 'NORMAL'
             poly=HermitePolynomials();
             %poly='Hermite';
-            sys='H';
+            syschar='H';
         case 'UNIFORM'
             poly=LegendrePolynomials();
             %poly='Legendre';
-            sys='P';
+            syschar='P';
         case 'BETA'
             a=dist{2}{1};
             b=dist{2}{2};
             if a==0.5&&b==0.5
                 %poly= 'ChebyshevT';
                 poly=ChebyshevTPolynomials();
-                sys= 'T';
+                syschar= 'T';
             elseif  a==1.5&&b==1.5
                 %poly= 'ChebyshevU';
                 poly=ChebyshevUPolynomials();
-                sys= 'U';
+                syschar= 'U';
             else
                 %poly= 'Jacobi';
                 poly=JacobiPolynomials(b-1, a-1);
-                sys= '';
+                syschar= '';
             end
         case 'EXPONENTIAL'
             %poly='Laguerre';
             poly=LaguerrePolynomials();
-            sys='L';
+            syschar='L';
         case 'LOGNORMAL'
             poly='';
-            sys='';
+            syschar='';
         case 'NONE'
             %poly='Monomials';
             poly=Monomials();
-            sys='M';
+            syschar='M';
         otherwise
             error('No such distribution is implemented')
     end
 elseif isa(dist, 'Distribution')
     if isa(dist, 'BetaDistribution')&&~(dist.a==3/2 && dist.b==3/2||dist.a==1/2 && dist.b==1/2)
         poly=JacobiPolynomials(dist.b-1, dist.a-1);
-        sys= '';
+        syschar= '';
     elseif isa(dist, 'TranslatedDistribution') && isa(dist.dist, 'BetaDistribution')&&~(dist.dist.a==3/2 && dist.dist.b==3/2||dist.dist.a==1/2 && dist.dist.b==1/2)
         poly=JacobiPolynomials(dist.dist.b-1, dist.dist.a-1);
-        sys= '';
+        syschar= '';
     else
-        sys=dist.default_sys_letter(false);
+        syschar=dist.default_syschar_letter(false);
         poly=dist.default_polys();
     end
 else

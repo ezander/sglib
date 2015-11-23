@@ -10,8 +10,8 @@ function M=gpcbasis_triples(V_a, V_b, V_c, varargin)
 %
 % Example (<a href="matlab:run_example gpcbasis_triples">run</a>)
 %   I=multiindex(4,3); J=multiindex(4,2);
-%   sys = 'hhpp';
-%   M=gpcbasis_triples( {sys, I}, {sys, I}, {sys, I} );
+%   syschars = 'hhpp';
+%   M=gpcbasis_triples( {syschars, I}, {syschars, I}, {syschars, I} );
 %   spy(sum(M,3))
 %
 % See also GPC, GPC_EVALUATE, SQUEEZE
@@ -31,27 +31,27 @@ options=varargin2options( varargin );
 [by_quadrature,options]=get_option( options, 'by_quadrature', false );
 check_unsupported_options( options, mfilename );
 
-sys = V_a{1};
+syschars = V_a{1};
 I_a = V_a{2};
 I_b = V_b{2};
 I_c = V_c{2};
 
-check_boolean(isequal(sys, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
-check_boolean(isequal(sys, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
+check_boolean(isequal(syschars, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
+check_boolean(isequal(syschars, V_b{1}), 'polynomial system of A doesn''t match that of B', mfilename);
 check_boolean(size(I_a,2)==size(I_b,2), 'size of germ of A doesn''t match that of B', mfilename);
 check_boolean(size(I_a,2)==size(I_c,2), 'size of germ of A doesn''t match that of C', mfilename);
 
 triple_opts = {by_quadrature};
-M=multiplication_tensor(sys, I_a, I_b, I_c, triple_opts);
+M=multiplication_tensor(syschars, I_a, I_b, I_c, triple_opts);
 
 
-function M=multiplication_tensor(sys, I_a, I_b, I_c, triple_opts)
+function M=multiplication_tensor(syschars, I_a, I_b, I_c, triple_opts)
 
 % This is the implementation I like most, because it's the most
 % symmetric one and doesn't need any reshaping. However, it's 30 to 40
 % percent slower than the current one (below).
 p = max([max(I_a(:)), max(I_b(:)), max(I_c(:))]);
-m = length(sys);
+m = length(syschars);
 na=size(I_a,1);
 nb=size(I_b,1);
 nc=size(I_c,1);
@@ -61,30 +61,30 @@ IC=repmat( permute(I_c,[3 4 1 2] ), [na nb 1 1] );
 strides=[(p+1), (p+1)^2];
 ind=1+IA+(p+1)*IB+strides(2)*IC;
 if m==1
-    triples=polysys_triples_by_order(sys, p, triple_opts{:});
+    triples=polysys_triples_by_order(syschars, p, triple_opts{:});
     M=prod(triples(ind),4);
 else
     M = ones(na, nb, nc);
     for j=1:m
-        triples=polysys_triples_by_order(sys(j), p, triple_opts{:});
+        triples=polysys_triples_by_order(syschars(j), p, triple_opts{:});
         M=M.*triples(ind(:,:,:,j));
     end
 end
 
 
 
-function M=polysys_triples_by_order(sys, p, by_quadrature)
+function M=polysys_triples_by_order(syschar, p, by_quadrature)
 [I,J,K]=meshgrid(0:p);
 if by_quadrature
     ind=I<=J+K & J<=K+I & K<=I+J;
     M=zeros(size(I));
-    M(ind) = polysys_triples_by_quadrature(sys, p, I(ind), J(ind), K(ind), 1e-10);
+    M(ind) = polysys_triples_by_quadrature(syschar, p, I(ind), J(ind), K(ind), 1e-10);
     return
 end
 
 T=I+J+K;
 S=T/2;
-switch upper(sys)
+switch upper(syschar)
     case {'H', 'P', 'T', 'U', 'M'}
         % symmetrical polynomials
         ind=mod(T,2)==0 & I<=J+K & J<=K+I & K<=I+J;
@@ -92,15 +92,15 @@ switch upper(sys)
         % asymmetrical polynomials
         ind=I<=J+K & J<=K+I & K<=I+J;
     otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+        error('sglib:gpc:polysys', 'Unknown polynomial system char: %s', syschar);
 end
 
 M=zeros(size(S));
-M(ind) = polysys_triples_by_index(sys, p, I(ind), J(ind), K(ind), S(ind));
+M(ind) = polysys_triples_by_index(syschar, p, I(ind), J(ind), K(ind), S(ind));
 
 
-function M = polysys_triples_by_index(sys, p, I, J, K, S)
-switch upper(sys)
+function M = polysys_triples_by_index(syschar, p, I, J, K, S)
+switch upper(syschar)
     case 'H'
         % This version is approx. 10% slower than the one, with just one
         % division. However, it avoids overflow up to much large order of
@@ -122,19 +122,19 @@ switch upper(sys)
     case {'T', 'U', 'L'}
         % Haven't implemented explicit formulas yet (should be easy for
         % Chebyshev)
-        M = polysys_triples_by_quadrature(sys, p, I, J, K, 1e-10);
-        sys = upper(sys);
+        M = polysys_triples_by_quadrature(syschar, p, I, J, K, 1e-10);
+        syschar = upper(syschar);
     otherwise
-        error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
+        error('sglib:gpc:polysys', 'Unknown polynomial system char: %s', syschar);
 end
 
-if sys == lower(sys) % lower case signifies normalised polynomials
-    z = 1 ./ sqrt(polysys_sqnorm(upper(sys), 0:p))';
+if syschar == lower(syschar) % lower case signifies normalised polynomials
+    z = 1 ./ sqrt(polysys_sqnorm(upper(syschar), 0:p))';
     M = M .* z(I+1) .* z(J+1) .* z(K+1);
 end
 
 
-function M = polysys_triples_by_quadrature(sys, p, I, J, K, thresh)
+function M = polysys_triples_by_quadrature(syschar, p, I, J, K, thresh)
 if nargin<6
     thresh = 1e-10;
 end
@@ -142,10 +142,10 @@ end
 % required number of points, an n point Gauss rule is exact to order
 % 2n-1 and we need order 3p
 n = ceil((3*p+1)/2);
-[x,w] = polysys_int_rule(sys, n);
+[x,w] = polysys_int_rule(syschar, n);
 
 % evaluate polynomials at Gauss points and build triple products
-y = gpc_evaluate(eye(p+1), {sys, multiindex(1,p)}, x);
+y = gpc_evaluate(eye(p+1), {syschar, multiindex(1,p)}, x);
 M = (y(I+1,:).*y(J+1,:).*y(K+1,:)) * w;
 
 % remove near zero elements

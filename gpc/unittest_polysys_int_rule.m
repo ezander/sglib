@@ -58,9 +58,9 @@ test_for_zeros('L', 5);
 test_for_zeros('l', 5);
 
 
-function test_for_zeros(sys, n)
-[x, w] = polysys_int_rule(sys, n);
-p = polysys_rc2coeffs(polysys_recur_coeff(sys, n));
+function test_for_zeros(syschar, n)
+[x, w] = polysys_int_rule(syschar, n);
+p = polysys_rc2coeffs(polysys_recur_coeff(syschar, n));
 p = p(end,:);
-assert_equals(polyval(p,x), zeros(1,n), sprintf('zero_%s_%d', sys, n));
-assert_equals(sum(w), 1, sprintf('sum_%s_%d_is_one', sys, n));
+assert_equals(polyval(p,x), zeros(1,n), sprintf('zero_%s_%d', syschar, n));
+assert_equals(sum(w), 1, sprintf('sum_%s_%d_is_one', syschar, n));

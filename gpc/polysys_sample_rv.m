@@ -1,8 +1,9 @@
-function xi = polysys_sample_rv(sys, m, n)
+function xi = polysys_sample_rv(syschar, m, n)
 % POLYSYS_SAMPLE_RV Sample from a probability distribution.
-%   XI = POLYSYS_SAMPLE_RV(SYS, M, N, DIST_PARAMS) samples from the probability
-%   distribution corresponding to the system of orthogonal polynomials SYS.
-%   An array of size M x N of independently generated samples is returned. 
+%   XI = POLYSYS_SAMPLE_RV(SYSCHAR, M, N, DIST_PARAMS) samples from the
+%   probability distribution corresponding to the system of orthogonal
+%   polynomials SYSCHAR. An array of size M x N of independently generated
+%   samples is returned.
 %
 %   Note: Normally you don't want to call this function directly. Rather
 %   call GPCGERM_SAMPLE instead.
@@ -38,7 +39,7 @@ function xi = polysys_sample_rv(sys, m, n)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-dist = polysys_dist(sys);
+dist = polysys_dist(syschar);
 if iscell(dist)&&strcmpi(dist{1},'none')
     error('sglib:gpc', 'err_monomials, there is no distribution associated with Monomials')
 end

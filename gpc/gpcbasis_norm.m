@@ -36,14 +36,14 @@ options = varargin2options(varargin);
 check_unsupported_options(options, mfilename);
 
 
-sys = V{1};
+syschars = V{1};
 I = V{2};
 m = size(I,2);
-check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
+check_boolean(length(syschars)==1 || length(syschars)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
-if length(sys)==1
+if length(syschars)==1
     N = max(max(I));
-    nrm = polysys_sqnorm(sys, 0:N);
+    nrm = polysys_sqnorm(syschars, 0:N);
     % Note: the reshape in the next line is necessary, as otherwise, if I
     % is just a column vector it would be transformed into a row vector
     norm2_I=prod(reshape(nrm(I+1), size(I)), 2);
@@ -51,7 +51,7 @@ else
     norm2_I = ones(size(I,1), 1);
     for j = 1:m
         N = max(max(I(:,j)));
-        nrm2 = polysys_sqnorm(sys(j), (0:N)');
+        nrm2 = polysys_sqnorm(syschars(j), (0:N)');
         norm2_I=norm2_I .* nrm2(I(:,j)+1);
     end
 end

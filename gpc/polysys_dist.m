@@ -1,7 +1,7 @@
 function dist=polysys_dist(syschar, varargin)
 % POLYSYS_DIST Get the associated distribution for a polynomial system.
-%   DIST=POLYSYS_DIST(SYS) returns the probability distribution associated
-%   with the orthogonal system of polynomials SYS.
+%   DIST=POLYSYS_DIST(SYSCHAR) returns the probability distribution associated
+%   with the orthogonal system of polynomials SYSCHAR.
 %
 % Example (<a href="matlab:run_example polysys_dist">run</a>)
 %
@@ -40,6 +40,6 @@ switch upper(syschar)
     otherwise
         [~, dist]=gpc_register_polysys_new('get', syschar);
         if isempty(dist)
-            error('sglib:gpc:polysys', 'Unknown polynomials system: %s', syschar);
+            error('sglib:gpc:polysys', 'Unknown polynomial system char: %s', syschar);
         end
 end

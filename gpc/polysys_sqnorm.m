@@ -1,8 +1,9 @@
-function nrm2 = polysys_sqnorm(sys, n, method)
+function nrm2 = polysys_sqnorm(syschar, n, method)
 % POLYSYS_SQNORM Compute the square norm of the orthogonal polynomials.
-%   NRM2 = POLYSYS_SQNORM(SYS, N) computes the square of the norm NRM2 of the
-%   system of orthogonal polynomials given by SYS for the degree N. If N is
-%   a vector a vector of square norms NRM is returned with the same shape.
+%   NRM2 = POLYSYS_SQNORM(SYSCHAR, N) computes the square of the norm NRM2
+%   of the system of orthogonal polynomials given by SYSCHAR for the degree
+%   N. If N is a vector a vector of square norms NRM is returned with the
+%   same shape.
 %
 %   Note: Normally you don't want to call this function directly. Call one
 %   of the GPC functions instead.
@@ -15,7 +16,7 @@ function nrm2 = polysys_sqnorm(sys, n, method)
 %
 % See also GPCBASIS_NORM
 
-%   Elmar Zander  (Jacobi polynomials added by Noemi Friedman)
+%   Elmar Zander, Noemi Friedman
 %   Copyright 2012, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -33,13 +34,13 @@ if nargin>=3
     % using only the recurrence coefficients.
     switch method
         case 'quad'
-            nrm2 = polysys_sqnorm_by_quad(sys, n);
+            nrm2 = polysys_sqnorm_by_quad(syschar, n);
             return
         case 'rc'
-            nrm2 = polysys_sqnorm_by_rc(sys, n);
+            nrm2 = polysys_sqnorm_by_rc(syschar, n);
             return
         case 'mc'
-            nrm2 = polysys_sqnorm_by_mc(sys, n);
+            nrm2 = polysys_sqnorm_by_mc(syschar, n);
             return
         case 'default'
             % do nothing, fall through
@@ -48,41 +49,38 @@ if nargin>=3
     end
 end
 
-% switch sys
-%     case 'H'
-%         nrm2 = factorial(n);
-%     case 'P'
-%         % Note: the U(-1,1) measure is used here, not the Lebesgue measure
-%         nrm2 = 1 ./ (2*n + 1);
-%     case 'T'
-%         nrm2 = 0.5*((n==0) + 1);
-%     case {'M', 'm'}
-%         error('sglib:polysys_sqrnorm', 'There is no measure associated with the monomials');
-%     case {'h', 'p', 't', 'u', 'U', 'l', 'L'}
-%         nrm2 = ones(size(n));
-%     case 'J'
-%         alpha=dist_params{1};
-%         beta=dist_params{2};
-%         nrm2=2^(alpha+beta+1)*gamma(n+alpha+1).*gamma(n+beta+1)./(  (2*n+alpha+beta+1) .*gamma(n+alpha+beta+1).*factorial(n) );
-%     otherwise
-%         %nrm2 = polysys_sqnorm_by_quad(sys, n);
-%         nrm2 = polysys_sqnorm_by_rc(sys, n);
-% end
-
-[~, ~, poly]=gpc_register_polysys(sys);
-nrm2 =poly.sqnorm(n);
+switch syschar
+    case 'H'
+        nrm2 = factorial(n);
+    case 'P'
+        % Note: the U(-1,1) measure is used here, not the Lebesgue measure
+        nrm2 = 1 ./ (2*n + 1);
+    case 'T'
+        nrm2 = 0.5*((n==0) + 1);
+    case {'M', 'm'}
+        error('sglib:polysys_sqrnorm', 'There is no measure associated with the monomials');
+    case {'h', 'p', 't', 'u', 'U', 'l', 'L'}
+        nrm2 = ones(size(n));
+    otherwise
+        polysys = gpc_register_polysys_new('get', syschar);
+        if isempty(polysys)
+            error('sglib:gpc:polysys', 'Unknown polynomials system: %s', syschar);
+        end
+        nrm2 = polysys.sqnorm(n);
 end
 
-function nrm2 = polysys_sqnorm_by_quad(sys, I)
+end
+
+function nrm2 = polysys_sqnorm_by_quad(syschar, I)
 % POLYSYS_NORM_BY_QUAD Compute the square norm by Gauss quadrature.
 n = max(I(:));
-[x,w] = polysys_int_rule(sys, n+1);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+[x,w] = polysys_int_rule(syschar, n+1);
+y = gpc_evaluate(eye(n+1), {syschar, (0:n)'}, x);
 nrm2 = (y.*y)*w;
 nrm2 = reshape(nrm2(I+1), size(I));
 end
 
-function nrm2 = polysys_sqnorm_by_rc(sys, I)
+function nrm2 = polysys_sqnorm_by_rc(syschar, I)
 % POLYSYS_NORM_BY_RC Compute the square norm via the recurrence coefficients.
 % See the neat article by:
 %    Alan G. Law and M. B. Sledd
@@ -94,7 +92,7 @@ function nrm2 = polysys_sqnorm_by_rc(sys, I)
 % by Law and Sled. Further, as we're doing stochastics here, we can be sure
 % what the normalisation constant is (namely 1).
 n = max(I(:));
-r = polysys_recur_coeff(sys, n+1);
+r = polysys_recur_coeff(syschar, n+1);
 b = r(:,2);
 h = b(1) ./ b(2:end);
 c = r(2:end,3);
@@ -102,12 +100,12 @@ nrm2 = [1; h(:) .* cumprod(c(:))];
 nrm2 = reshape(nrm2(I+1), size(I));
 end
 
-function nrm2 = polysys_sqnorm_by_mc(sys, I)
+function nrm2 = polysys_sqnorm_by_mc(syschar, I)
 % POLYSYS_NORM_BY_MC Approximate the square norm by MC quadrature.
 n = max(I(:));
 N = 100000;
-x = polysys_sample_rv(sys, 1, N);
-y = gpc_evaluate(eye(n+1), {sys, (0:n)'}, x);
+x = polysys_sample_rv(syschar, 1, N);
+y = gpc_evaluate(eye(n+1), {syschar, (0:n)'}, x);
 nrm2 = sum(y.*y,2)/N;
 nrm2 = reshape(nrm2(I+1), size(I));
 end

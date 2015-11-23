@@ -22,11 +22,11 @@ function inds=gpcbasis_poly_ind(V)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-polysys = V{1};
+syschars = V{1};
 m=gpcbasis_size(V,2);
 
-if length(polysys)==1
-    inds = {{polysys, true(1,m)}};
+if length(syschars)==1
+    inds = {{syschars, true(1,m)}};
 else
     inds = {};
     done = false(m,1);
@@ -34,9 +34,9 @@ else
         if done(i);
             continue;
         end
-        sys = polysys(i);
-        sys_ind = (polysys==sys);
-        inds{end+1} = {sys, sys_ind}; %#ok<AGROW>
-        done(sys_ind) = true;
+        syschar = syschars(i);
+        syschar_ind = (syschars==syschar);
+        inds{end+1} = {syschar, syschar_ind}; %#ok<AGROW>
+        done(syschar_ind) = true;
     end
 end

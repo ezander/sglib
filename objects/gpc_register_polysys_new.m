@@ -47,6 +47,9 @@ switch action
             assert(syschar == entry.syschar);
             polysys = entry.polysys;
             dist = entry.dist;
+        else
+            polysys = [];
+            dist = [];
         end
     case 'set'
         index = char2index(syschar);

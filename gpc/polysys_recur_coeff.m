@@ -1,7 +1,7 @@
-function r = polysys_recur_coeff(sys, deg, varargin)
+function r = polysys_recur_coeff(syschar, deg, varargin)
 % POLYSYS_RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
-%   R = POLYSYS_RECUR_COEFF(SYS, DEG) computes the recurrence coefficients for
-%   the system of orthogonal polynomials SYS. The signs are compatible with
+%   R = POLYSYS_RECUR_COEFF(SYSCHAR, DEG) computes the recurrence coefficients for
+%   the system of orthogonal polynomials SYSCHAR. The signs are compatible with
 %   the ones given in Abramowith & Stegun 22.7:
 %
 %       p_n+1  = (a_n + x b_n) p_n - c_n p_n-1
@@ -38,57 +38,38 @@ function r = polysys_recur_coeff(sys, deg, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[~, ~, poly]=gpc_register_polysys(sys);
-r =poly.recur_coeff(deg);
+n = (0:deg-1)';
+one = ones(size(n));
+zero = zeros(size(n));
+switch upper(syschar)
+    case  'H'
+        r = [zero, one, n];
+    case 'P'
+        r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
+    case 'T'
+        r = [zero, 2*one - (n==0), one];
+    case  'U'
+        r = [zero, 2*one, one];
+    case 'L'
+        r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
+    case 'M'
+        r = [zero, one, zero];
+    otherwise
+        polysys = gpc_register_polysys_new('get', syschar);
+        if isempty(polysys)
+            error('sglib:gpc:polysys', 'Unknown polynomials system: %s', syschar);
+        end
+        r = polysys.recur_coeff(deg);
+        return
+end
+ 
 
-
-% switch class(poly)
-%     case  'HermitePolynomials'
-%         r = [zero, one, n];
-%     case 'LEGENDRE'
-%         r = [zero, (2*n+1)./(n+1), n ./ (n+1)];
-%     case 'CHEBYSHEVT'
-%         r = [zero, 2*one - (n==0), one];
-%     case  'CHEBYSHEVU'
-%         r = [zero, 2*one, one];
-%     case 'LAGUERRE'
-%         r = [(2*n + 1) ./ (n+1),  -1 ./ (n+1), n ./ (n+1)];
-%     case 'MONOMIALS'
-%         r = [zero, one, zero];
-%     case 'JACOBI'
-%         if iscell(dist)
-%             a=dist{2}{1}-1;
-%             b=dist{2}{2}-1;
-%         elseif isa(dist, 'BetaDistribution')
-%             a=dist.a-1;
-%             b=dist.b-1;
-%         elseif isa(dist, 'TranslatedDistribution')
-%             a=dist.dist.a-1;
-%             b=dist.dist.b-1;
-%         end
-%         b_n=(2*n+a+b+1).*(2*n+a+b+2)./...
-%             ( 2*(n+1).*(n+a+b+1) );
-%         a_n=(a^2-b^2).*(2*n+a+b+1)./...
-%             ( 2*(n+1).*(n+a+b+1).*(2*n+a+b) );
-%         c_n=(n+a).*(n+b).*(2*n+a+b+2)./...
-%             ( (n+1).*(n+a+b+1).*(2*n+a+b) );
-%         if a+b==0 ||a+b==-1
-%             b_n(1)=0.5*(a+b)+1;
-%             a_n(1)=0.5*(a-b);
-%             c_n(1)=0;
-%         end
-%         r = [a_n, b_n, c_n];
-%     otherwise
-%         error('sglib:gpc:polysys', 'Unknown polynomials system: %s', sys);
-% end
-%  
-% 
-% if sys == lower(sys) % lower case signifies normalised polynomials
-%     z = [0, sqrt(polysys_sqnorm(upper(sys), 0:deg))]';
-%     % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
-%     %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
-%     %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
-%     r = [r(:,1) .* z(n+2) ./ z(n+3), ...
-%          r(:,2) .* z(n+2) ./ z(n+3), ...
-%          r(:,3) .* z(n+1) ./ z(n+3)];
-% end
+if syschar == lower(syschar) % lower case signifies normalised polynomials
+    z = [0, sqrt(polysys_sqnorm(upper(syschar), 0:deg))]';
+    % row n: p_n+1  = (a_n + x b_n) p_n + c_n p_n-1
+    %   =>   z_n+1 q_n+1  = (a_n + x b_n) z_n q_n + c_n z_n-1 p_n-1
+    %   =>   q_n+1  = (a_n + x b_n) z_n/z_n+1 q_n + c_n z_n-1/z_n+1 p_n-1
+    r = [r(:,1) .* z(n+2) ./ z(n+3), ...
+         r(:,2) .* z(n+2) ./ z(n+3), ...
+         r(:,3) .* z(n+1) ./ z(n+3)];
+end

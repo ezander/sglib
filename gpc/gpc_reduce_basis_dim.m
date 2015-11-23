@@ -64,7 +64,7 @@ options=varargin2options(varargin);
 check_unsupported_options(options,mfilename);
 
 % Original gpc basis
-sys = V_u{1};
+syschars = V_u{1};
 I = V_u{2};
 n_germ=size(I,2);
 
@@ -76,13 +76,13 @@ fixed = find(~ismember(1:n_germ, dim_index));
 ind = dim_index;
 
 % Reduced polynomial system and multiindex set
-sys_new=sys(ind);
+syschars_new=syschars(ind);
 I_new=I(:, ind);
 
 % Fixed gpc_basis
-sys_fixed=sys( fixed);
+syschars_fixed=syschars( fixed);
 I_fixed=I(:, fixed);
-V_fixed={sys_fixed, I_fixed};
+V_fixed={syschars_fixed, I_fixed};
 
 
 % Evaluate gpc basis at the fixed value:
@@ -92,16 +92,15 @@ switch fixed_value
         m_germ=length(fixed);
         val=zeros(m_germ, 1);
     case 'quant'
-        val=gpcgerm_quantile(sys_fixed);
+        val=gpcgerm_quantile(syschars_fixed);
     otherwise
         error('sglib:gpc_reduce_basis_dim', 'optional input FIXED_VALUE can only be either MEAN or QUANT', mfilename);
 end
 u_i_fixed=gpcbasis_evaluate(V_fixed, val);
 
 % Output
-V_un={sys_new, I_new};
+V_un={syschars_new, I_new};
 if isempty(u_i_alpha)
     u_i_alpha=ones(size(I,1), 1);
 end
 u_i_beta=binfun(@times, u_i_alpha, u_i_fixed');
-
