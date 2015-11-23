@@ -38,6 +38,9 @@ assert_equals(U.sqnorm(n), h, 'nrm_arr');
 assert_equals(U.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(U.sqnorm(n(:)'), h(:)', 'nrm_row');
 
+%% normalized
+assert_true(isa(U.normalized(), class(U)), 'ChebyshevU.normalized should return the same object', 'same');
+
 %% default syschar
 assert_equals(U.get_default_syschar(), 'U', 'syschar');
 
@@ -45,8 +48,5 @@ assert_equals(U.get_default_syschar(), 'U', 'syschar');
 polysys = ChebyshevUPolynomials();
 N=4;
 
-dist = polysys.weighting_dist();
-dom=dist.invcdf([0,1]);
-fun = @(x)( polysys.evaluate(N,x)'*polysys.evaluate(N,x)*dist.pdf(x));
-Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
+Q = compute_gramian(polysys, polysys.weighting_dist(), N);
 assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');

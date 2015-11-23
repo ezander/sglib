@@ -90,8 +90,5 @@ assert_equals(J.get_default_syschar(), '', 'syschar');
 polysys = JacobiPolynomials(-0.4,-0.6);
 N=4;
 
-dist = polysys.weighting_dist();
-dom=dist.invcdf([0,1]);
-fun = @(x)( polysys.evaluate(N,x)'*polysys.evaluate(N,x)*dist.pdf(x));
-Q = integral(fun, dom(1), dom(2), 'ArrayValued', true, 'RelTol', 1e-6, 'AbsTol', 1e-6);
+Q = compute_gramian(polysys, polysys.weighting_dist(), N);
 assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent', 'abstol', 1e-6);
