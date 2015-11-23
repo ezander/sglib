@@ -62,10 +62,10 @@ options=varargin2options(varargin);
 [qmc_options,options]=get_option(options, 'qmc_options', {});
 check_unsupported_options(options,mfilename);
 
-sys = V{1};
+syschars = V{1};
 I = V{2};
 m = size(I,2);
-check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
+check_boolean(length(syschars)==1 || length(syschars)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
 if nargin<2 || isempty(n)
     n = 1;
@@ -90,20 +90,20 @@ switch(mode)
         error('sglib:gpcgerm_sample', 'Unknown paramter value "%s" for option "mode"', mode);
 end
 
-if length(sys)==1
+if length(syschars)==1
     if isempty(U)
-        xi = polysys_sample_rv(sys, m, n);
+        xi = polysys_sample_rv(syschars, m, n);
     else
-        xi = polysys_sample_rv(sys, U');
+        xi = polysys_sample_rv(syschars, U');
     end
 else
-    check_range(length(sys), m, m, 'len(sys)==m', mfilename);
+    check_range(length(syschars), m, m, 'len(syschars)==m', mfilename);
     xi = zeros(m, n);
     for j = 1:m
         if isempty(U)
-            xi(j,:) = polysys_sample_rv(sys(j), 1, n);
+            xi(j,:) = polysys_sample_rv(syschars(j), 1, n);
         else
-            xi(j,:) = polysys_sample_rv(sys(j), U(:,j));
+            xi(j,:) = polysys_sample_rv(syschars(j), U(:,j));
         end
     end
 end

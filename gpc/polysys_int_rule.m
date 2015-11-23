@@ -1,8 +1,8 @@
-function [x,w]=polysys_int_rule(sys, n,  varargin)
+function [x,w]=polysys_int_rule(syschar, n,  varargin)
 % POLYSYS_INT_RULE Compute the integration rule for a given system of polynomials.
-%   [X,W]=POLYSYS_INT_RULE(SYS, N, DUST_PARMA, VARARGIN) computes the integration rule
+%   [X,W]=POLYSYS_INT_RULE(SYSCHAR, N, DUST_PARMA, VARARGIN) computes the integration rule
 %   with N points for the given system of orthogonal polynomials specified
-%   in SYS and the related probability measure.
+%   in SYSCHAR and the related probability measure.
 %
 % Example (<a href="matlab:run_example polysys_int_rule">run</a>)
 %   % 5 Point Gauss Hermite rule
@@ -25,13 +25,13 @@ function [x,w]=polysys_int_rule(sys, n,  varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[x,w]=gauss_rule(sys, n, varargin);
+[x,w]=gauss_rule(syschar, n, varargin);
 
-function [x,w]=gauss_rule(sys, n, varargin)
+function [x,w]=gauss_rule(syschar, n, varargin)
 % W. GAUTSCHI, ORTHOGONAL POLYNOMIALS AND QUADRATURE, Electronic
 % Transactions on Numerical Analysis, Volume 9, 1999, pp. 65-76.
 
-r = polysys_recur_coeff(sys, n);
+r = polysys_recur_coeff(syschar, n);
 
 % extract columns
 a = -r(:,1);
@@ -63,5 +63,5 @@ if norm(x+xr)<1e-10
 end
 
 % compute the weights
-%function [x,w]=gauss_lobatto_rule(sys, n, varargin)
-%function [x,w]=gauss_kronrod_rule(sys, n, varargin)
+%function [x,w]=gauss_lobatto_rule(syschar, n, varargin)
+%function [x,w]=gauss_kronrod_rule(syschar, n, varargin)

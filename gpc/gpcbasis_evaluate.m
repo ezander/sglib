@@ -30,14 +30,14 @@ options=varargin2options(varargin);
 check_unsupported_options(options, mfilename);
 
 % check whether arguments xi and I_a match
-sys = V{1};
+syschars = V{1};
 I = V{2};
 M = size(I, 1);
 m = size(I, 2);
 k = size(xi, 2);
 deg = max(max(I));
 
-check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
+check_boolean(length(syschars)==1 || length(syschars)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 check_match(I, xi, false, 'I', 'xi', mfilename);
 
 % p has dimension
@@ -49,15 +49,15 @@ check_match(I, xi, false, 'I', 'xi', mfilename);
 p = zeros(m, k, deg);
 p(:,:,1) = zeros(size(xi));
 p(:,:,2) = ones(size(xi));
-if length(sys)==1
-    r = polysys_recur_coeff(sys, deg);
+if length(syschars)==1
+    r = polysys_recur_coeff(syschars, deg);
     for d=1:deg
         p(:,:,d+2) = (r(d,1) + xi * r(d, 2)) .* p(:,:,d+1) - r(d,3) * p(:,:,d);
     end
 else
     for j=1:m
         % TODO: not very efficient for mixed gpc
-        r = polysys_recur_coeff(sys(j), deg);
+        r = polysys_recur_coeff(syschars(j), deg);
         for d=1:deg
             p(j,:,d+2) = (r(d,1) + xi(j,:) * r(d, 2)) .* p(j,:,d+1) - r(d,3) * p(j,:,d);
         end

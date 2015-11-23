@@ -40,7 +40,7 @@ assert_equals(V, {'Lph', multiindex(3,0)}, 'polysys2');
 V = gpcbasis_create('Lph', 'p', 4);
 assert_equals(V, {'Lph', multiindex(3,4)}, 'polysys4');
 
-% check error reporting when there is a mismatch between m and polysys
+% check error reporting when there is a mismatch between m and syschars
 assert_error(funcreate(@gpcbasis_create, 'pppp', 'm', 3), 'sglib:gpc', 'err_no_match');
 
 

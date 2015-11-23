@@ -45,12 +45,12 @@ if size(I,2)~=1
     error( 'sglib:gpc_pdf_1d:dim_error', 'Function works only for univariate GPC expansions.' )
 end
 
-sys=V{1};
-dist=polysys_dist(sys);
+syschar=V{1};
+dist=polysys_dist(syschar);
 
 % Determine the polynomial
 deg=max(I);
-P=polysys_rc2coeffs(polysys_recur_coeff(sys, deg));
+P=polysys_rc2coeffs(polysys_recur_coeff(syschar, deg));
 p=X_alpha*P;
 while(~isempty(p) && ~p(1)); p(1)=[]; end
 dp=polyder(p);

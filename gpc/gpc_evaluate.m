@@ -55,11 +55,11 @@ function a_i_j=gpc_evaluate( a_i_alpha, V_a, xi )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 % check whether arguments a_i_alpha, I_a and xi match
-sys = V_a{1};
+syschars = V_a{1};
 I_a = V_a{2};
 m = size(I_a, 2);
 
-check_boolean(length(sys)==1 || length(sys)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
+check_boolean(length(syschars)==1 || length(syschars)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 check_match(a_i_alpha, I_a, false, 'a_i_alpha', 'I_a', mfilename);
 check_match(I_a, xi, false, 'I_a', 'xi', mfilename);
 

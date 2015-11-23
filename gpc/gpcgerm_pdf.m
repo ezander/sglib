@@ -26,22 +26,22 @@ function p=gpcgerm_pdf(V, xi)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-sys = V{1};
+syschars = V{1};
 I = V{2};
 m = size(I,2);
 
 check_match(I, xi, false, 'I', 'xi', mfilename);
 
-if length(sys)==1
-    p = prod(polysys_pdf(sys, xi), 1);
+if length(syschars)==1
+    p = prod(polysys_pdf(syschars, xi), 1);
 else
-    check_range(length(sys), m, m, 'len(sys)==m', mfilename);
+    check_range(length(syschars), m, m, 'len(syschars)==m', mfilename);
     p = ones(1, size(xi, 2));
     for j = 1:m
-        p = p.* polysys_pdf(sys(j), xi(j, :));
+        p = p.* polysys_pdf(syschars(j), xi(j, :));
     end
 end
 
-function y=polysys_pdf(sys, x)
-dist = polysys_dist(sys);
+function y=polysys_pdf(syschar, x)
+dist = polysys_dist(syschar);
 y = gendist_pdf(x, dist);

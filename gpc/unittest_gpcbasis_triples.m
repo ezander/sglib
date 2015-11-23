@@ -38,16 +38,16 @@ test_mult('tu')
 test_mult('luUL')
 
 
-function test_mult(sys,m)
+function test_mult(syschars,m)
     if nargin<2
-        m = length(sys);
+        m = length(syschars);
     end
     p = 3;
     n = 5;
     k = 3;
-    V_x = {sys, multiindex(m, p)};
-    V_y = {sys, multiindex(m, p)};
-    V_z = {sys, multiindex(m, 2*p)};
+    V_x = {syschars, multiindex(m, p)};
+    V_y = {syschars, multiindex(m, p)};
+    V_z = {syschars, multiindex(m, 2*p)};
     x_i_alpha = rand(n, size(V_x{2},1));
     y_i_alpha = rand(n, size(V_y{2},1));
     
@@ -62,4 +62,4 @@ function test_mult(sys,m)
     
     xi = gpcgerm_sample(V_x, k);
     assert_equals(gpc_evaluate(z_k_gamma, V_z, xi), ...
-        gpc_evaluate(x_i_alpha, V_x, xi) .* gpc_evaluate(y_i_alpha, V_y, xi), ['mult_', sys]);
+        gpc_evaluate(x_i_alpha, V_x, xi) .* gpc_evaluate(y_i_alpha, V_y, xi), ['mult_', syschars]);

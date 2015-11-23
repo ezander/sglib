@@ -47,7 +47,7 @@ a_dist=gendist_create('lognormal', {0.2, 1.2});
 [mu,var]=gendist_moments(a_dist);
 assert_equals(a_alpha(1), mu, 'mean');
 assert_equals(abs(var-gpc_moments(a_alpha, V_a, 'var_only', true)), varerr, 'varerr');
-assert_equals(V_a{1}, 'H', 'sys');
+assert_equals(V_a{1}, 'H', 'syschar');
 
 a_dist=gendist_create('lognormal', {0.2, 0.3});
 [a_alpha, V_a, varerr] = gpc_param_expand(a_dist, 'H', 'varerr', 1e-5); %#ok<ASGLU>

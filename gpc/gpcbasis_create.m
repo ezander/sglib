@@ -1,11 +1,11 @@
-function V = gpcbasis_create(polysys, varargin)
+function V = gpcbasis_create(syschars, varargin)
 % GPCBASIS_CREATE Create representation of a GPC space/basis.
-%   V = GPCBASIS_CREATE(POLYSYS, OPTIONS) creates a representation of a GPC
-%   space. POLYSYS can be a single character or a string of characters
+%   V = GPCBASIS_CREATE(SYSCHARS, OPTIONS) creates a representation of a GPC
+%   space. SYSCHARS can be a single character or a string of characters
 %   specifying the germ of the GPC space. For a single character the option
 %   'm' can be used to specify the number of independent random variables
 %   making up the germ, otherwise the size of the germ is the length of the
-%   given string passed in polysys. If the option 'p' is specified a
+%   given string passed in SYSCHARS. If the option 'p' is specified a
 %   multiindex in M variables up to complete order P is created. It's
 %   probably best to take a look at the examples below.
 %   
@@ -19,7 +19,7 @@ function V = gpcbasis_create(polysys, varargin)
 %             not possible)
 %
 % Options
-%   m: {automatic, length=polysys}
+%   m: {automatic, length=length(syschars)}
 %      Number of random variables in the germ of the GPC
 %   p: {automatic, 0}
 %      Order of expansion, if multiindex needs to be created
@@ -30,7 +30,7 @@ function V = gpcbasis_create(polysys, varargin)
 %   I: {automatic}
 %      If specified this is used as multiindex set, m and p should not be
 %      specified then. Size of multiindex set (dim=2) should match the
-%      length of polysys (i.e. ismember(length(polysys), [1, dim(I,2)]))
+%      length of SYSCHARS (i.e. ismember(length(syschars), [1, dim(I,2)]))
 %
 % Example (<a href="matlab:run_example gpcbasis_create">run</a>)
 %   % Create a GPC basis with Hermite Chaoses in 4 RVs up to total degree 2
@@ -59,16 +59,16 @@ options=varargin2options(varargin);
 [full_tensor,options]=get_option(options, 'full_tensor', false);
 check_unsupported_options(options, mfilename);
 
-if iscell(polysys)
-    V_old = polysys;
-    polysys = V_old{1};
+if iscell(syschars)
+    V_old = syschars;
+    syschars = V_old{1};
     m = gpcbasis_size(V_old, 2);
 end
 
 if isdefault(m)
-    m=length(polysys);
-elseif ~(length(polysys)==1 || length(polysys)==m)
-    error('sglib:gpcbasis', 'length of ''polysys'' does not match ''m''');
+    m=length(syschars);
+elseif ~(length(syschars)==1 || length(syschars)==m)
+    error('sglib:gpcbasis', 'length of ''syschars'' does not match ''m''');
 end
 if isdefault(p)
     p=0;
@@ -76,9 +76,9 @@ end
 if isdefault(I)
     I = multiindex(m, p, 'full', full_tensor);
 else
-    % check that I and m and polysys are compatible
+    % check that I and m and syschars are compatible
 end
-V = {polysys, I};
+V = {syschars, I};
 end
 
 function b=isdefault(p)
