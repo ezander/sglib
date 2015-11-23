@@ -80,25 +80,20 @@ classdef ExponentialDistribution < Distribution
     end
     
     methods
-        function polysys=default_sys_letter(dist, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin>=2 && is_normalized
-                polysys='l';
+        function polysys=orth_polysys(dist)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the Exponential distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns Laguerre polynomials.
+            %
+            % See also LAGUERREPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            if dist.lambda==1
+                polysys=LaguerrePolynomials();
             else
-                polysys='L';
+                % This should throw an error.
+                polysys=dist.orth_polysys@Distribution();
             end
-            % what if dist.lambda ~= 1
         end
         
-        function poly=default_polys(dist, is_normalized)
-            if nargin<2;
-                is_normalized=false;
-            end
-            poly=LaguerrePolynomials(dist.lambda, is_normalized);
-        end
-        
-        function dist_germ=get_base_dist(dist)
+        function dist_germ=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             dist_germ=ExponentialDistribution(1);

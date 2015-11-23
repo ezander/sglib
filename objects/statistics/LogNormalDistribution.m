@@ -56,27 +56,32 @@ classdef LogNormalDistribution < Distribution
             dist.mu=mu;
             dist.sigma=sigma;
         end
+        
         function y=pdf(dist,x)
             % PDF computes the probability distribution function of the
             % LogNormal distribution.
             y=lognormal_pdf( x, dist.mu, dist.sigma );
         end
+        
         function y=cdf(dist,x)
             % CDF computes the cumulative distribution function of the
             % LogNormal distribution.
             y=lognormal_cdf( x, dist.mu, dist.sigma );
         end
+        
         function x=invcdf(dist,y)
             % INVCDF computes the inverse CDF (or quantile) function of the
             % LogNormal distribution.
             x=lognormal_invcdf( y, dist.mu, dist.sigma );
         end
+        
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the LogNormal distribution.
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = lognormal_moments( dist.mu, dist.sigma );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        
         function xi=sample(dist,n)
             %   Draw random samples from LogNormal distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random
@@ -88,17 +93,19 @@ classdef LogNormalDistribution < Distribution
     end
     
     methods
-        function base=get_base_dist(dist)
+        function base=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             base=NormalDistribution(0,1);
         end
+        
         function x=base2dist(dist,y)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
             x=exp(y*dist.sigma+dist.mu);
         end
+        
         function y=dist2base(dist,x)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is

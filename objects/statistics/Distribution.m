@@ -130,24 +130,30 @@ classdef Distribution < SglibObject
             y=dist.get_base_dist.invcdf(dist.cdf( x));
         end
         
-        function polysys=default_sys_letter(~, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin>=2 && is_normalized
-                polysys='h';
-            else
-                polysys='H';
+        function polysys=orth_polysys(dist) %#ok<STOUT>
+            % ORTH_POLYSYS gives the polynomial system which is orthogonal
+            % with respect to this distribution. This function should
+            % return only a polynomial system, if a) the polynomials are
+            % dense (wrt. to the weighted L2) and b) the DIST
+            % corresponds to the "standard form" for this distribution,
+            % i.e. for example N(0,1), but not N(2, 4). In the latter case,
+            % one would have to call DIST.GET_BASE_DIST first.
+            % 
+            % See also DISTRIBUTION.GET_BASE_DIST
+            error('sglib:distribution:no_polysys', 'No polynomials system for this distribution (%s)', dist.tostring());
+        end
+        
+        function syschar=default_syschar(dist, is_normalized)
+            syschar=default_polysys(dist, is_normalized).default_syschar();
+        end
+        
+        function polysys=default_polysys(dist, is_normalized)
+            polysys = dist.orth_polysys();
+            if is_normalized
+                polysys = polysys.normalized();
             end
         end
         
-        function polys=default_polys(~, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<2;
-                is_normalized=false;
-            end
-            polys=HermitePolynomials(is_normalized);
-        end
     end
     
     

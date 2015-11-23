@@ -101,21 +101,20 @@ classdef NormalDistribution < Distribution
     end
     
     methods
-        function polysys=default_sys_letter(dist, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<1||~is_normalized
-                polysys='H';
+        function polysys=orth_polysys(dist)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the Normal distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns Hermite polynomials.
+            %
+            % See also HERMITEPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            if dist.mu==0 && dist.sigma==1
+                polysys=HermitePolynomials();
             else
-                polysys='h';
+                % This should throw an error.
+                polysys=dist.orth_polysys@Distribution();
             end
         end
         
-        function poly=default_polys(dist)
-            poly='Hermite';
-        end
-        
-        function dist_germ=get_base_dist(dist)
+        function dist_germ=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             dist_germ=NormalDistribution(0,1);
@@ -125,14 +124,14 @@ classdef NormalDistribution < Distribution
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
-             y = dist.mean+x*dist.sigma;
+             y = dist.mu+x*dist.sigma;
         end
         
         function x=dist2base(dist, y)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
-            x = (y-dist.mean)/dist.sigma;
+            x = (y-dist.mu)/dist.sigma;
         end
     end
     

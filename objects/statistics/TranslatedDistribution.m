@@ -122,20 +122,5 @@ classdef TranslatedDistribution < Distribution
             end
         end
     end
-    
-    methods
-        function polys=default_polys(tdist)
-            % Returns name of polynomials, which are orthogonal  wrt. the
-            % distribution standardized
-            polys=tdist.dist.default_polys();
-        end
-        function sys=default_sys_letter(tdist, is_normalized)
-            % DEFAULT_SYS_LETTER gives the letter corresponding to the 'natural' polynomial system
-            if nargin<2
-                is_normalized=false;
-            end
-            sys=tdist.dist.default_sys_letter(is_normalized);
-        end
-    end
 end
 
