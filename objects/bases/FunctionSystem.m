@@ -1,4 +1,4 @@
-classdef (HandleCompatible=false) FunctionSystem
+classdef (HandleCompatible=false) FunctionSystem < SglibObject
     % FUNCTIONSYSTEM Abstract base class for systems of basis functions.
     %
     % See also POLYNOMIALSYSTEM
@@ -18,6 +18,3 @@ classdef (HandleCompatible=false) FunctionSystem
         y=evaluate(sys, xi); %EVALUATE Evaluates the basis functions at given points.
     end 
 end
-
-
-

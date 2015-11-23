@@ -21,10 +21,6 @@ classdef (HandleCompatible=true) SglibObject
     %   received a copy of the GNU General Public License along with this
     %   program.  If not, see <http://www.gnu.org/licenses/>.
     
-    methods (Abstract)
-        str=tostring(obj);
-    end
-    
     methods (Access=protected)
         function bool = cmp_classes(obj1, obj2)
             % CMP_CLASSES Test whether to objects are of the exact same class.
@@ -65,6 +61,18 @@ classdef (HandleCompatible=true) SglibObject
         end
     end
     
+    methods (Sealed)
+        function str=base_tostring(obj)
+            str = evalc('builtin(''disp'',obj)');
+        end
+    end
+    methods
+        function str=tostring(obj)
+            str = base_tostring(obj);
+        end
+    end
+    
+    
     methods(Static)
         function mode=set_disp_mode(new_mode)
             % SET_DISP_MODE Set the disp mode.
@@ -101,20 +109,24 @@ classdef (HandleCompatible=true) SglibObject
                 case 1
                     str = tostring(obj);
                 case 2
-                    str = evalc('builtin(''disp'',obj)');
+                    str = base_tostring();
                 case 3
                     str1 = tostring(obj);
-                    str2 = evalc('builtin(''disp'',obj)'); %#ok<NASGU>
-                    str2 = strvarexpand('$double(str2)$','maxarr',inf);
-                    str2(str2==' ')=[]; %#ok<NASGU>
-                    div = find(str1=='(' | str1=='[' | str1=='{', 1, 'first');
-                    if ~isempty(div) && div>1
-                        str3 = str1(div:end); %#ok<NASGU>
-                        str1 = str1(1:div-1); %#ok<NASGU>
+                    str2 = base_tostring(obj); %#ok<NASGU>
+                    if strcmp(str1,str2)
+                        str = str1;
                     else
-                        str3 = ''; %#ok<NASGU>
+                        str2 = strvarexpand('$double(str2)$','maxarr',inf);
+                        str2(str2==' ')=[]; %#ok<NASGU>
+                        div = find(str1=='(' | str1=='[' | str1=='{', 1, 'first');
+                        if ~isempty(div) && div>1
+                            str3 = str1(div:end); %#ok<NASGU>
+                            str1 = str1(1:div-1); %#ok<NASGU>
+                        else
+                            str3 = ''; %#ok<NASGU>
+                        end
+                        str = strvarexpand('<a href="matlab:disp(char($str2$))">$str1$</a>$str3$');
                     end
-                    str = strvarexpand('<a href="matlab:disp(char($str2$))">$str1$</a>$str3$');
             end
             disp(str);
         end
