@@ -19,13 +19,40 @@ function unittest_gpc_registry(varargin)
 
 munit_set_function( 'gpc_registry' );
 
+% First reset the registry to its default state
 gpc_registry('reset');
 
+% ... check that the entry for 'x' is empty
 xpolys = gpc_registry('get', 'x');
 assert_equals(xpolys, [], 'x_empty');
 
-gpc_registry('set', 'x', JacobiPolynomials(2,3));
+% ... put the jacobis at 'x' and check
+polys = JacobiPolynomials(2,3);
+gpc_registry('set', 'x', polys);
 [xpolys, dist] = gpc_registry('get', 'x');
-assert_equals(xpolys, JacobiPolynomials(2,3), 'x_jac');
+assert_equals(xpolys, polys, 'x_jac');
+assert_equals(dist, polys.weighting_dist(), 'x_dist');
+
+% ... put the jacobis again at 'x' should be ok
+polys = JacobiPolynomials(2,3);
+gpc_registry('set', 'x', polys);
+
+% ... putting other polys at 'x' should not work
+assert_error(funcreate(@gpc_registry, 'set', 'x', HermitePolynomials()), ...
+    'sglib:', 'same_polys_only');
+
+% ... unknown action triggers error
+assert_error(funcreate(@gpc_registry, 'xxxyyy'), 'sglib:', 'unknown_action');
+
+% ... get all and resetting
+[reg,charind]=gpc_registry('getall');
+assert_equals(reg([]), struct('syschar',{}, 'polysys', {}, 'dist', {}), 'reg_struct');
+
+gpc_registry('reset');
+assert_equals(gpc_registry('get', 'x'), [], 'x_empty2');
+gpc_registry('reset', reg);
+assert_equals(gpc_registry('get', 'x'), polys, 'x_jac2');
+
+
 
 

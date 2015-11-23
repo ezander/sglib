@@ -27,7 +27,8 @@ persistent registry
 persistent char2index
 
 if isempty(registry)
-    [registry, char2index] = register_default_polys();
+    registry = register_default_polys();
+    char2index = make_char_lookup(registry);
 end
 
 switch action
@@ -45,16 +46,26 @@ switch action
     case 'set'
         index = char2index(syschar);
         if index
-            error('already set');
+            entry = registry(index);
+            if entry.polysys ~= polysys
+                error('sglib:gpc_registry:already_set', 'Cannot reset gpc_registry entry with different polynomials.');
+            end
+            return
         end
         dist = polysys.weighting_dist();
-        entry = make_reg_entry(syschar, polysys, dist)
+        entry = make_reg_entry(syschar, polysys, dist);
         registry(end+1) = entry;
         char2index(syschar) = length(registry);
     case 'getall'
         polysys = registry;
+        dist = char2index;
     case 'reset'
-        [registry, char2index] = register_default_polys();
+        if nargin>1
+            registry = syschar;
+        else
+            registry = register_default_polys();
+        end
+        char2index = make_char_lookup(registry);
     otherwise
         error('sglib:gpc_registry:unknown_action', 'Unknown action: %s', action);
 end
@@ -73,13 +84,14 @@ else
 end
 
 
-function [registry, char2index] = register_default_polys()
+function registry = register_default_polys()
 registry = struct('syschar', {}, 'polysys', {}, 'dist', {});
 registry(end+1) = make_reg_entry('H', HermitePolynomials());
 registry(end+1) = make_reg_entry('h', HermitePolynomials().normalized());
 registry(end+1) = make_reg_entry('P', LegendrePolynomials());
 registry(end+1) = make_reg_entry('p', LegendrePolynomials().normalized());
 
+function char2index = make_char_lookup(registry)
 char2index = zeros(256,1);
 chars = double(char(registry.syschar));
 indices = 1:length(registry);
