@@ -36,11 +36,12 @@ fuzzy=get_option( curr_options, 'fuzzy', false );
 
 options=munit_options();
 
-result_list=compare_values( actual, expected, assert_id, curr_options, options );
+result_list=compare_objects( actual, expected, assert_id, curr_options, options );
 munit_process_assert_results( result_list, assert_id, 'fuzzy', fuzzy );
 
-function result_list=compare_values( actual, expected, assert_id, curr_options, options )
 
+function result_list=compare_objects( actual, expected, assert_id, curr_options, options )
+% COMPARE_OBJECTS Compare to objects based on type, size, and content
 result_list=compare_types( actual, expected, assert_id );
 if ~isempty(result_list); return; end
 
@@ -49,8 +50,9 @@ if ~isempty(result_list); return; end
 
 result_list=compare_content( actual, expected, assert_id, curr_options, options );
 
-%%
 function result_list=compare_types( actual, expected, assert_id )
+% COMPARE_TYPES Compare the types of two objects
+
 % first check if both are of the same class
 result_list={};
 if ~(isnumeric(actual) && isnumeric(expected) )
@@ -62,8 +64,10 @@ if ~(isnumeric(actual) && isnumeric(expected) )
     end
 end
 
-%%
+
 function result_list=compare_size( actual, expected, assert_id )
+% COMPARE_SIZE Compare the size of two objects
+
 % then check whether they have the same size
 % but only if it's not of class string (then there can be a more meaningful
 % message to the user)
@@ -76,8 +80,10 @@ if ndims(actual)~=ndims(expected) || (any( size(actual)~=size(expected) ) && ~is
     return;
 end
 
-%%
+
 function result_list=compare_content( actual, expected, assert_id, curr_options, options )
+% COMPARE_CONTENT Compare the contents of two objects (given class and size are the same).
+
 % then do equality checking based on class
 result_list={};
 switch class(expected)
@@ -88,7 +94,7 @@ switch class(expected)
     case 'char'
         result_list=compare_char( actual, expected, assert_id, curr_options, options );
     case 'struct'
-        result_list=compare_struct( actual, expected, assert_id, curr_options, options );
+        result_list=compare_struct_arr( actual, expected, assert_id, curr_options, options );
     case 'cell'
         result_list=compare_cell( actual, expected, assert_id, curr_options, options );
     otherwise
@@ -231,7 +237,7 @@ if ~strcmp( actual, expected)
     result_list{end+1}={msg, assert_id};
 end
 
-function result_list=compare_struct( actual, expected, assert_id, curr_options, options )
+function result_list=compare_struct_arr( actual, expected, assert_id, curr_options, options )
 % ASSERT_EQUALS_STRUCT Assert equality for structs.
 result_list={};
 
@@ -250,9 +256,23 @@ for i=1:length(missing)
     result_list{end+1}={msg, assert_id};
 end
 
+if length(actual)==1
+    new_list = compare_struct_entry( actual, expected, assert_id, curr_options, options, common );
+    result_list=[result_list, new_list];
+else
+    for i = 1:length(actual)
+        new_assert_id=sprintf('%s(%d)', assert_id, i);
+        new_list = compare_struct_entry( actual(i), expected(i), new_assert_id, curr_options, options, common );
+        result_list=[result_list, new_list];
+    end
+end
+
+
+function result_list=compare_struct_entry( actual, expected, assert_id, curr_options, options, common )
+result_list = {};
 for i=1:length(common)
     new_assert_id=sprintf('%s.%s', assert_id, common{i});
-    new_list=compare_values( actual.(common{i}), expected.(common{i}), new_assert_id, curr_options, options );
+    new_list=compare_objects( actual.(common{i}), expected.(common{i}), new_assert_id, curr_options, options );
     result_list=[result_list, new_list];
 end
 
@@ -264,7 +284,7 @@ result_list={};
 
 for i=1:numel(actual)
     new_assert_id=sprintf('%s%s', assert_id, print_vector('%g', ind2sub(i,size(actual)), ',', true) );
-    new_list=compare_values( actual{i}, expected{i}, new_assert_id, curr_options, options );
+    new_list=compare_objects( actual{i}, expected{i}, new_assert_id, curr_options, options );
     result_list=[result_list, new_list];
 end
 
