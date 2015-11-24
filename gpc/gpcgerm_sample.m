@@ -9,17 +9,22 @@ function xi = gpcgerm_sample(V, n, varargin)
 %   the standard Halton sequence.
 %
 %   XI = GPCGERM_SAMPLE(V, N, 'mode', 'lhs') creates the random samples via
-%   transformed uniform [0,1] Latin hypercube samples.
+%   transformed uniform [0,1] Latin hypercube samples. You can also choose
+%   between 'mlhs' and 'rlhs' (see below under Options).
 %
 %   XI = GPCGERM_SAMPLE(V, N, 'rand_func', @my_rand_func) creates the random
 %   samples via a call to @my_rand_func. The returned values must be in
 %   the range [0,1].
 %
 % Options:
-%    mode: {'default'}, 'qmc', 'lhs'
+%    mode: {'default'}, 'qmc', 'lhs', 'mlhs', 'rlhs'
 %      Determine how the uniform samples are generated. In the default mode
 %      some samples (e.g. for normal rv's) are generated directly and not
 %      via the inverse cdf transform method.
+%      'mlhs' and 'rlhs' are different modes for the latin hypercube, with
+%      the points chosen randomly inside the hypercubes and in the centers
+%      of the hypercubes, respectively. The default 'lhs' corresponds to
+%      'rlhs'.
 %    rand_func: {}
 %      Specifies a function to call in order to produce the random samples.
 %      The function will be called by funcall(rand_func,n,m), where the
@@ -43,6 +48,20 @@ function xi = gpcgerm_sample(V, n, varargin)
 %    plot(xi(1,:), xi(3,:), '.')
 %    xlabel('Uniform'); ylabel('Gauss');
 %
+% Example 3 (<a href="matlab:run_example gpcgerm_sample 3">run</a>)
+%    V = gpcbasis_create('hh');
+%    subplot(2,2,1);
+%    xi = gpcgerm_sample(V, 300, 'mode', 'default');
+%    plot(xi(1,:), xi(2,:), '.')
+%    subplot(2,2,2);
+%    xi = gpcgerm_sample(V, 300, 'mode', 'qmc');
+%    plot(xi(1,:), xi(2,:), '.')
+%    subplot(2,2,3);
+%    xi = gpcgerm_sample(V, 300, 'mode', 'lhs');
+%    plot(xi(1,:), xi(2,:), '.')
+%    subplot(2,2,4);
+%    xi = gpcgerm_sample(V, 300, 'mode', 'mlhs');
+%    plot(xi(1,:), xi(2,:), '.')
 % See also GPC, GPC_EVALUATE
 
 %   Elmar Zander
@@ -107,3 +126,18 @@ else
         end
     end
 end
+
+
+
+
+% function gpc_from_uniform(sys, U)
+% if length(sys)==1
+%     xi = polysys_sample_rv(sys, U');
+% else
+%     check_range(length(sys), m, m, 'len(sys)==m', mfilename);
+%     xi = zeros(m, n);
+%     for j = 1:m
+%         xi(j,:) = polysys_sample_rv(sys(j), U(:,j));
+%     end
+% end
+

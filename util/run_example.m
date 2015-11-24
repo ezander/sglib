@@ -48,7 +48,11 @@ s=help(cmd);
 
 [x1,x2]=regexp( s, ['\n *Example' num '.*?\n'] );
 if isempty(x1);
-    warning( 'run_example:not_found', 'No sample section found in: %s', cmd );
+    if isempty(num)
+        warning( 'run_example:not_found', 'No sample section found in: %s', cmd );
+    else
+        warning( 'run_example:not_found', 'Sample section %s not found in: %s', num, cmd );
+    end
     return;
 end
 s=s(x2(1)+1:end);
