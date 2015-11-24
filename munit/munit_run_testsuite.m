@@ -86,7 +86,8 @@ munit_printf('debug', '   directory: %s', {curr_dir});
 
 % for coverage report we need to start profiling
 if coverage
-    clear('functions');
+    %clear('functions');
+    %profile('clear');
     profile('on');
 end
 
