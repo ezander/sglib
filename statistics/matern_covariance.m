@@ -14,6 +14,10 @@ function cov=matern_covariance(nu, x1, x2, l, sigma, smooth)
 %   where $K_\nu$ is Bessel function of the second kind (in matlab BESSELK)
 %   and $d$ is the scaled distance.
 %
+% Notes:
+%   A Gaussian process with Matérn covariance has sample paths that are
+%   floor(NU-1) times differentiable.
+%
 % References:
 %   [1] Minasny, B.; McBratney, AB (2005). "The Matern function as a general
 %       model for soil variograms". Geoderma 128: 192-207.
