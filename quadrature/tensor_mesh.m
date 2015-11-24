@@ -3,6 +3,10 @@ function [xd,wd] = tensor_mesh(x1,w1)
 %   [XD,WD] = TENSOR_MESH(X1,W1) creates a tensor product rule from D 1D rules
 %   contained in the cell arrays X1 and W1.
 %
+%   XD = TENSOR_MESH(X1) creates the cartesian product from the point sets
+%   contained in the cell arrays X1 (which is the same as above, just
+%   without the weights).
+%
 % Example 1 (<a href="matlab:run_example tensor_mesh 1">run</a>)
 %   [x1,w1] = gauss_hermite_rule(10);
 %   [x2,w2] = gauss_hermite_rule(12);
@@ -23,10 +27,12 @@ function [xd,wd] = tensor_mesh(x1,w1)
 %   Andreas Keese, Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.
 
+comp_weights = (nargin>=2);
+
 % get dimension
 d = length(x1);
-if( d ~= length(w1) )
-    error( 'Length of points cell array doesn''t match that of the weights cell array.' );
+if( comp_weights && d ~= length(w1) )
+    error( 'sglib:tensor_match:dimension_mismatch', 'Length of points cell array doesn''t match that of the weights cell array.' );
 end
 
 % Number of points in each dimension
@@ -37,7 +43,9 @@ nd = prod( n1 );
 
 % Resulting points and weights
 xd = zeros(d,nd);
-wd = ones(nd,1);
+if( comp_weights )
+    wd = ones(nd,1);
+end
 
 % For every dimension
 for k=1:d
@@ -50,7 +58,9 @@ for k=1:d
     sk=[ones(size(n1)), 1]; sk(k)=n1(k);
     rk=[n1, 1]; rk(k)=1;
     xd(k,:)=reshape( repmat( reshape( x1{k}, sk ), rk ), [1, nd] );
-    wd=wd.*reshape( repmat( reshape( w1{k}, sk ), rk ), [nd, 1] );
+    if comp_weights
+        wd=wd.*reshape( repmat( reshape( w1{k}, sk ), rk ), [nd, 1] );
+    end
 end
 
 

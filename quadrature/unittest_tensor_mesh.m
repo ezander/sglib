@@ -63,3 +63,9 @@ wde = [
 assert_equals( xd, xde, 'points' );
 assert_equals( wd, wde, 'weights' );
 
+% test 6: error if dimensions of points and weights don't match
+assert_error(@()(tensor_mesh({1, 1},{2})), 'sglib:', 'dimension_mismatch');
+
+% test 7: only points
+xd = tensor_mesh({[1, 2], [3, 4, 5]});
+assert_equals(xd, [1, 2, 1, 2, 1, 2; 3, 3, 4, 4, 5, 5], 'points_only');
