@@ -240,7 +240,7 @@ classdef SimParamSet < SglibHandleObject
             
             m = set.num_params();
             varerrs = zeros(1, m);
-            q_alpha=zeros(0,0);
+            q_alpha=zeros(0,1);
             V_q=gpcbasis_create('');
             for i=1:m
                 param = set.get_param(i);
