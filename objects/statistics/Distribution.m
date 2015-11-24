@@ -140,7 +140,8 @@ classdef Distribution < SglibObject
         end
         
         function syschar=default_syschar(dist, is_normalized)
-            syschar=default_polysys(dist, is_normalized).default_syschar();
+            polysys=default_polysys(dist, is_normalized);
+            syschar=polysys.get_default_syschar();
         end
         
         function polysys=default_polysys(dist, is_normalized)

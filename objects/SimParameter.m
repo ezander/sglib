@@ -108,7 +108,7 @@ classdef SimParameter < SglibHandleObject
             xi=param.dist.sample(n);
         end
         
-        function [polysys, germ_dist]=default_sys_letter(param, varargin)
+        function [syschar, germ_dist]=default_syschar(param, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -120,8 +120,8 @@ classdef SimParameter < SglibHandleObject
             [is_normalized,options]=get_option(options, 'normal', false);
             check_unsupported_options(options, mfilename);
             
-            polysys=param.dist.default_sys_letter(is_normalized);
-            [polysys, germ_dist]=gpc_register_polysys(polysys);
+            syschar = param.dist.get_base_dist().default_syschar(is_normalized);
+            [~, germ_dist]=gpc_registry('get', syschar);
         end
         
         function [a_alpha, V, varerr]=gpc_expand(param, varargin)
@@ -129,18 +129,13 @@ classdef SimParameter < SglibHandleObject
             % polynomyal system of the distribution (optionaly defined by
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
             options=varargin2options(varargin);
-            [polysys,options]=get_option(options, 'polysys', '');
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
-            if isempty(polysys)
-                [polysys, g_dist]=default_sys_letter(param);
-            else
-                % check wheter polysys is valid, if not change to default
-                % and send a warning
-                [polysys, g_dist]=gpc_register_polysys(polysys);
-            end
-            [a_alpha, V, varerr]=gpc_param_expand(param.dist, polysys, expand_options);
+            [syschar, g_dist]=param.default_syschar();
+            [a_alpha, V, varerr]=gpc_param_expand(param.dist, syschar, expand_options);
+            
+            % TODO this should go somewhere else
             param.set_germdist(g_dist);
             param.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
@@ -193,11 +188,10 @@ classdef SimParameter < SglibHandleObject
             % name, distribution and whether the parameter is
             % deterministic (fixed) or random (not fixed)
             if param.is_fixed== true
-                fixed_char=' fixed';
+                str=sprintf('Param("%s", %g)', param.name, param.fixed_val);
             else
-                fixed_char=' not fixed';
+                str=sprintf('Param("%s", %s)', param.name, param.dist.tostring());
             end
-            str=sprintf('Parameter(%s,%s,%s)', param.name, param.dist.tostring(), fixed_char);
         end
         
         function mu=mean(param)

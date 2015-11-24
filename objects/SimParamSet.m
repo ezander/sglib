@@ -235,7 +235,6 @@ classdef SimParamSet < SglibHandleObject
             %   See also GPC_PARAM_EXPAND
             
             options=varargin2options(varargin);
-            [polysys,options]=get_option(options, 'polysys', '');
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
@@ -249,7 +248,7 @@ classdef SimParamSet < SglibHandleObject
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
-                    [qi_beta, V, varerrs(i)]=gpc_expand(param, 'polysys', polysys, 'expand_options', expand_options);
+                    [qi_beta, V, varerrs(i)]=param.gpc_expand('expand_options', expand_options);
                 end
                 
                 [q_alpha, V_q]=gpc_combine_inputs(q_alpha, V_q, qi_beta, V);
@@ -565,17 +564,13 @@ classdef SimParamSet < SglibHandleObject
         %%
         function string=tostring(set, varargin)
             % all the mappings from germ to the parameters in a cell format
-            p=set.param_names();
             m=set.num_params;
             str=cell(m,1);
             for i=1:m
-                str{i}=set.simparams.(p{i}).tostring;
+                str{i}=set.get_param(i).tostring;
             end
             %string=strcat(str{:});
             string=str;
-        end
-        function disp(simparam)
-            disp(simparam.tostring());
         end
     end
 end

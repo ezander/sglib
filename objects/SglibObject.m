@@ -118,13 +118,14 @@ classdef (HandleCompatible=true) SglibObject
                     else
                         str2 = strvarexpand('$double(str2)$','maxarr',inf);
                         str2(str2==' ')=[]; %#ok<NASGU>
-                        div = find(str1=='(' | str1=='[' | str1=='{', 1, 'first');
-                        if ~isempty(div) && div>1
-                            str3 = str1(div:end); %#ok<NASGU>
-                            str1 = str1(1:div-1); %#ok<NASGU>
-                        else
-                            str3 = ''; %#ok<NASGU>
-                        end
+                        str3 = '';
+%                         div = find(str1=='(' | str1=='[' | str1=='{', 1, 'first');
+%                         if ~isempty(div) && div>1
+%                             str3 = str1(div:end); %#ok<NASGU>
+%                             str1 = str1(1:div-1); %#ok<NASGU>
+%                         else
+%                             str3 = ''; %#ok<NASGU>
+%                         end
                         %str = strvarexpand('<a href="matlab:disp(char($str2$))">$str1$</a>$str3$');
                         str = strvarexpand('$str1$$str3$ $char(10)$<a href="matlab:disp(char($str2$))">(show)</a>');
                     end
