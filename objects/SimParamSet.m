@@ -61,8 +61,8 @@ classdef SimParamSet < SglibHandleObject
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     
     properties (GetAccess=public, SetAccess=protected)
-        simparams = struct()
-        params = SimpleMap();
+        simparams
+        params
     end
     
     %% Constructor
@@ -73,6 +73,9 @@ classdef SimParamSet < SglibHandleObject
             %   e.g.: MYPARAMSET=SimParamset()
             %         MYPARAMSET=SimParamset(param1,param2)
             %   where PARAM1 and PARAM2 are SIMPARAMETER objects
+            
+            set.simparams = struct();
+            set.params = SimpleMap();
             
             % initialize properties
             if nargin>0
@@ -327,13 +330,13 @@ classdef SimParamSet < SglibHandleObject
             for i=1:m_RV
                 param = set.get_param(RVs{i});
                 if sample_from_germ
-                    dist_i= set.simparams.(RVs{i}).germ_dist;
+                    dist_i= set.get_param(RVs{i}).germ_dist;
                     if isempty(dist_i)
-                        dist_i=get_set_germdist(set.simparams.(RVs{i}));
+                        dist_i=get_set_germdist(set.get_param(RVs{i}));
                     end
                     xi_RV(:,i)=dist_i.invcdf((U(:,i)));
                 else
-                    xi_RV(:,i)=set.simparams.(RVs{i}).dist.invcdf((U(:,i)));
+                    xi_RV(:,i)=set.get_param(RVs{i}).dist.invcdf((U(:,i)));
                 end
             end
             
