@@ -28,11 +28,7 @@ classdef Distribution < SglibObject
             %   distribution DIST. If N is a scalar value XI is a column
             %   vector of random samples of size [N,1]. If N is a vector XI
             %   is a matrix (or tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n, 1);
-            else
-                yi = rand(n);
-            end
+            yi = uniform_sample(n, 0, 1);
             xi = dist.invcdf(yi);
         end
     end
@@ -130,24 +126,31 @@ classdef Distribution < SglibObject
             y=dist.get_base_dist.invcdf(dist.cdf( x));
         end
         
-        function polysys=default_sys_letter(~, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin>=2 && is_normalized
-                polysys='h';
-            else
-                polysys='H';
+        function polysys=orth_polysys(dist) %#ok<STOUT>
+            % ORTH_POLYSYS gives the polynomial system which is orthogonal
+            % with respect to this distribution. This function should
+            % return only a polynomial system, if a) the polynomials are
+            % dense (wrt. to the weighted L2) and b) the DIST
+            % corresponds to the "standard form" for this distribution,
+            % i.e. for example N(0,1), but not N(2, 4). In the latter case,
+            % one would have to call DIST.GET_BASE_DIST first.
+            % 
+            % See also DISTRIBUTION.GET_BASE_DIST
+            error('sglib:distribution:no_polysys', 'No polynomials system for this distribution (%s)', dist.tostring());
+        end
+        
+        function syschar=default_syschar(dist, is_normalized)
+            polysys=default_polysys(dist, is_normalized);
+            syschar=polysys.get_default_syschar();
+        end
+        
+        function polysys=default_polysys(dist, is_normalized)
+            polysys = dist.orth_polysys();
+            if is_normalized
+                polysys = polysys.normalized();
             end
         end
         
-        function polys=default_polys(~, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<2;
-                is_normalized=false;
-            end
-            polys=HermitePolynomials(is_normalized);
-        end
     end
     
     

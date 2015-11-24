@@ -10,7 +10,7 @@ classdef ExponentialDistribution < Distribution
     %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
-    %   Aidin Nojavan and further extanded by Noemi Friedman
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -70,35 +70,26 @@ classdef ExponentialDistribution < Distribution
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
+            yi = uniform_sample(n, 0, 1);
             xi = dist.invcdf(yi);
         end
     end
     
     methods
-        function polysys=default_sys_letter(dist, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin>=2 && is_normalized
-                polysys='l';
+        function polysys=orth_polysys(dist)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the Exponential distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns Laguerre polynomials.
+            %
+            % See also LAGUERREPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            if dist.lambda==1
+                polysys=LaguerrePolynomials();
             else
-                polysys='L';
+                % This should throw an error.
+                polysys=dist.orth_polysys@Distribution();
             end
-            % what if dist.lambda ~= 1
         end
         
-        function poly=default_polys(dist, is_normalized)
-            if nargin<2;
-                is_normalized=false;
-            end
-            poly=LaguerrePolynomials(dist.lambda, is_normalized);
-        end
-        
-        function dist_germ=get_base_dist(dist)
+        function dist_germ=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             dist_germ=ExponentialDistribution(1);

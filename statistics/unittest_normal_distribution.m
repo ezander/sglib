@@ -37,7 +37,7 @@ assert_equals( normal_pdf(-inf,mu,sig), 0, 'pdf_minf' );
 assert_equals( normal_pdf(inf,mu,sig), 0, 'pdf_inf' );
 
 % pdf matches cdf
-[x1,x2]=linspace_mp(mu-5*sig,mu+5*sig);
+[x2,x1]=linspace_midpoints(mu-5*sig,mu+5*sig);
 F=normal_cdf(x1, mu, sig);
 F2=pdf_integrate( normal_pdf(x2,mu,sig), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );

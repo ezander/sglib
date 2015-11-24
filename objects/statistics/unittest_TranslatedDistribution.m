@@ -6,7 +6,7 @@ function unittest_TranslatedDistribution
 %
 % See also TRANSLATEDDISTRIBUTION, MUNIT_RUN_TESTSUITE 
 
-%   <Aidin Nojavan>
+%   Elmar Zander, Aidin Nojavan
 %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
@@ -18,6 +18,7 @@ function unittest_TranslatedDistribution
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'TranslatedDistribution' );
+
 %% Initialization
 B = BetaDistribution(2,3);
 T = TranslatedDistribution(B,4,5);
@@ -28,9 +29,23 @@ assert_equals( T.center, 0.4, 'Initialization center=mean' );
 
 T = TranslatedDistribution(B,4,5,1);
 assert_equals( T.center, 1, 'Initialization center' );
+
 %% Mean & Var
-assert_equals(T.mean, 4.4, 'mean');
-assert_equals(T.var, 1, 'var' );
+T = TranslatedDistribution(B,4,5);
+assert_equals(T.mean,0.4 + 4, 'mean');
+assert_equals(T.var, 0.04 * 25, 'var' );
+
+T = TranslatedDistribution(B,4,5,1);
+assert_equals(T.mean,(0.4-1)*5 + 4 + 1, 'mean');
+assert_equals(T.var, 0.04 * 25, 'var' );
+
+%% Moments
+T = TranslatedDistribution(B, 4, 5, 1);
+m_act = {1, 0, 0, 0, 0};
+[m_act{2:end}] = T.moments();
+m_ex = compute_moments(T);
+assert_equals(m_act, m_ex, 'moments' );
+
 %% PDF
 B = BetaDistribution(3,3);
 T = TranslatedDistribution(B,0.25,2);
@@ -60,6 +75,7 @@ T = TranslatedDistribution(LN,0.25,1);
 % dist=gendist_create('lognormal',{3,3},'shift',0.25,'scale',1);
 % gendist_cdf(1/2,dist)
 assert_equals(cdf(T,1/2), 0.07185716, 'cdf_median');
+
 %% INVCDF
 T = TranslatedDistribution(B,0.25,2);
 % dist=gendist_create('beta',{3,3},'shift',0.25,'scale',2);
@@ -74,6 +90,14 @@ T = TranslatedDistribution(N,0.25,1);
 % dist=gendist_create('normal',{4,1},'shift',0.25,'scale',1);
 % gendist_invcdf(1/2,dist)
 assert_equals(invcdf(T,1/2), 4.25, 'invcdf_median');
+
+%% Sample
+munit_control_rand('seed', 1234);
+E = ExponentialDistribution(1.3);
+T = TranslatedDistribution(E,4,5,1);
+N=100000;
+xi=T.sample(N);
+assert_equals(T.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
 
 %% Moments
 N = NormalDistribution(4,1);
@@ -94,6 +118,7 @@ assert_equals(mean, 0.5, 'moments_median');
 assert_equals(var, 0.0357, 'moments_median','abstol',0.0001);
 assert_equals(skew,0 , 'moments_median');
 assert_equals(kurt, -0.6667, 'moments_median','abstol',0.0001);
+
 %% Fix Moments
 % can test directly for the normal and uniform distributions
 N = NormalDistribution(2,5);

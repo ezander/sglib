@@ -2,9 +2,9 @@ classdef ChebyshevUPolynomials < PolynomialSystem
     % CHEBYSHEVUPOLYNOMIALS Constructs the ChebyshevUPolynomials.
     %
     % Example (<a href="matlab:run_example ChebyshevUPolynomials">run</a>)
-    %   poly=ChebyshevUPolynomials();
+    %   polysys=ChebyshevUPolynomials();
     %   x=linspace(-1,1);
-    %   y=poly.evaluate(4, x);
+    %   y=polysys.evaluate(4, x);
     %   plot(x,y);
     %
     % See also POLYNOMIALSYSTEM
@@ -24,11 +24,18 @@ classdef ChebyshevUPolynomials < PolynomialSystem
     end
     
     methods
-        function poly=ChebyshevUPolynomials()
+        function polysys=ChebyshevUPolynomials()
             % CHEBYSHEVUPOLYNOMIALS Construct the ChebyshevUPolynomials.
-            %   POLY=CHEBYSHEVUPOLYNOMIALS() constructs a polynomial system
-            %   returned in POLY, representing Chebyshev polynomials of the
+            %   POLYSYS=CHEBYSHEVUPOLYNOMIALS() constructs a polynomial system
+            %   returned in POLYSYS, representing Chebyshev polynomials of the
             %   2nd kind.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Chebyshev U polynomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'U'; % or 'u'? What's better?
         end
         
         function r=recur_coeff(~, deg)
@@ -52,9 +59,17 @@ classdef ChebyshevUPolynomials < PolynomialSystem
             nrm2 = ones(size(n));
         end
         
+        function polysys=normalized(polysys)
+            % NORMALIZED Return a normalized version of the Chebyshev U polynomials
+            %   Needs to do nothing in this case, as the Chebyshev U
+            %   polynomials are already normalized.
+            %
+            % See also POLYNOMIALSYSTEM.NORMALIZED SQNORM
+        end
+        
         function dist=weighting_dist(~)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
-            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   DIST=WEIGHTING_DIST(POLYSYS) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST

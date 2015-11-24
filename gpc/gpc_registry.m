@@ -1,6 +1,6 @@
 function [polysys, dist] = gpc_registry(action, syschar, polysys, dist)
 % GPC_REGISTRY Short description of gpc_registry.
-%   GPC_REGISTRY(VARARGIN) Long description of gpc_registry.
+%   [POLYSYS, DIST] = GPC_REGISTRY(ACTION, SYSCHAR, POLYSYS, DIST) Long description of gpc_registry.
 %
 % Options
 %
@@ -8,7 +8,7 @@ function [polysys, dist] = gpc_registry(action, syschar, polysys, dist)
 %
 % Notes
 %
-% Example (<a href="matlab:run_example gpc_register_polysys_new">run</a>)
+% Example (<a href="matlab:run_example gpc_registry">run</a>)
 %
 % See also
 

@@ -1,10 +1,13 @@
-
 function unittest_UniformDistribution
 % UNITTEST_UNIFORMDISTRIBUTION Test the UNIFORMDISTRIBUTION function.
+%
+% Example (<a href="matlab:run_example unittest_UniformDistribution">run</a>)
+%   unittest_UniformDistribution
+%
+% See also UNIFORMDISTRIBUTION, MUNIT_RUN_TESTSUITE 
 
-
-%   Aidin Nojavan
-%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
+%   Elmar Zander, Aidin Nojavan
+%   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -28,9 +31,16 @@ assert_equals( U.b, 1, 'Initialization default b' );
 U=UniformDistribution();
 assert_equals( U.a, 0, 'Initialization a' );
 assert_equals( U.b, 1, 'Initialization b' );
+
 %% Mean & Var
 assert_equals(U.mean, 0.5, 'mean');
 assert_equals(U.var, 0.08333333, 'var' );
+
+%% Moments
+m_act = {1, 0, 0, 0, 0};
+[m_act{2:end}] = U.moments();
+m_ex = compute_moments(U);
+assert_equals(m_act, m_ex, 'moments' );
 
 %% uniform_cdf
 U=UniformDistribution(2,4);
@@ -73,6 +83,13 @@ assert_equals(cdf(U,invcdf(U,y)), y, 'cdf_invcdf_3');
 assert_equals( invcdf(U,cdf(U,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(U,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
+%% Sample
+munit_control_rand('seed', 1234);
+U=UniformDistribution(-2,3);
+N=100000;
+xi=U.sample(N);
+assert_equals(U.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
+
 %% uniform_stdnor
 N=50;
 uni=linspace(0,1,N+2)';
@@ -114,6 +131,15 @@ U = UniformDistribution(2,3);
 dist = fix_bounds(U,2,4);
 assert_equals(invcdf(dist,0), 2, 'fix_bounds-uni_min');
 assert_equals(invcdf(dist,1), 4, 'fix_bounds-uni_max');
+
+%% Orthogonal polynomials
+dist = UniformDistribution(-1, 1);
+polysys = dist.orth_polysys();
+N = 5;
+assert_equals(compute_gramian(polysys, dist, N), diag(polysys.sqnorm(0:N)), 'orth');
+
+dist = UniformDistribution(2,3);
+assert_error(@()(dist.orth_polysys()), 'sglib:', 'no_standard_dist');
 
 %% Base dist stuff
 dist = UniformDistribution(2, 5);

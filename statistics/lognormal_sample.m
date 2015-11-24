@@ -26,9 +26,4 @@ function xi=lognormal_sample(n, mu, sigma)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-if isscalar(n)==1
-    xi = randn(n,1);
-else
-    xi = randn(n);
-end
-xi = exp((xi * sigma) + mu);
+xi=exp(normal_sample(n, mu, sigma));

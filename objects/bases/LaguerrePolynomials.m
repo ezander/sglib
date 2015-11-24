@@ -2,9 +2,9 @@ classdef LaguerrePolynomials < PolynomialSystem
     % LAGUERREPOLYNOMIALS Construct the LaguerrePolynomials.
     %
     % Example (<a href="matlab:run_example LaguerrePolynomials">run</a>)
-    %   poly=LaguerrePolynomials();
+    %   polysys=LaguerrePolynomials();
     %   x=linspace(-5,20);
-    %   y=poly.evaluate(5, x);
+    %   y=polysys.evaluate(5, x);
     %   plot(x,y);
     %   ylim([-10, 20]);
     %
@@ -25,10 +25,17 @@ classdef LaguerrePolynomials < PolynomialSystem
     end
     
     methods
-        function sys=LaguerrePolynomials()
+        function polysys=LaguerrePolynomials()
             % LAGUERREPOLYNOMIALS Construct the LaguerrePolynomials.
-            %   POLY=LAGUERREPOLYNOMIALS() constructs a polynomial system
+            %   POLYSYS=LAGUERREPOLYNOMIALS() constructs a polynomial system
             %   representing the Laguerre polynomials.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Laguerre polynomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'L';
         end
         
         function r=recur_coeff(~, deg)
@@ -54,7 +61,7 @@ classdef LaguerrePolynomials < PolynomialSystem
             nrm2 = ones(size(n));
         end
         
-        function poly=normalized(poly)
+        function polysys=normalized(polysys)
             % NORMALIZED Return a normalized version of the Laguerre polynomials
             %   Needs to do nothing in this case, as the Laguerres are
             %   already normalized.
@@ -64,7 +71,7 @@ classdef LaguerrePolynomials < PolynomialSystem
         
         function dist=weighting_dist(~)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
-            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   DIST=WEIGHTING_DIST(POLYSYS) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST

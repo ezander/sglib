@@ -2,9 +2,9 @@ classdef ChebyshevTPolynomials < PolynomialSystem
     % CHEBYSHEVTPOLYNOMIALS Constructs a ChebyshevTPolynomials.
     %
     % Example (<a href="matlab:run_example ChebyshevTPolynomials">run</a>)
-    %   poly=ChebyshevTPolynomials();
+    %   polysys=ChebyshevTPolynomials();
     %   x=linspace(-1,1);
-    %   y=poly.evaluate(4, x);
+    %   y=polysys.evaluate(4, x);
     %   plot(x,y);
     %
     % See also LEGENDREPOLYNOMIALS LAGUERREPOLYNOMIALS
@@ -24,11 +24,18 @@ classdef ChebyshevTPolynomials < PolynomialSystem
     end
     
     methods
-        function poly=ChebyshevTPolynomials()
+        function polysys=ChebyshevTPolynomials()
             % CHEBYSHEVTPOLYNOMIALS Construct the ChebyshevTPolynomials.
-            %   POLY=CHEBYSHEVTPOLYNOMIALS() constructs a polynomial system
-            %   returned in poly, representing Chebyshev polynomials of the
+            %   POLYSYS=CHEBYSHEVTPOLYNOMIALS() constructs a polynomial system
+            %   returned in polysys, representing Chebyshev polynomials of the
             %   1st kind.
+        end
+        
+        function syschar=get_default_syschar(~)
+            % GET_DEFAULT_SYSCHAR Return the default syschar for the Chebyshev T polynomials.
+            %   
+            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
+            syschar = 'T';
         end
         
         function r=recur_coeff(~, deg)
@@ -54,7 +61,7 @@ classdef ChebyshevTPolynomials < PolynomialSystem
         
         function dist=weighting_dist(~)
             % WEIGHTING_DIST Return a distribution wrt to which the Hermite polynomials are orthogonal.
-            %   DIST=WEIGHTING_DIST(POLY) returns the a standard normal
+            %   DIST=WEIGHTING_DIST(POLYSYS) returns the a standard normal
             %   distribution, i.e. NormalDistribution(0,1).
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST

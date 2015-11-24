@@ -10,7 +10,7 @@ classdef UniformDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan  (slightly modified by Noemi Friedman)
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -53,27 +53,32 @@ classdef UniformDistribution < Distribution
             dist.a=a;
             dist.b=b;
         end
+        
         function y=pdf(dist,x)
             % PDF compute the probability distribution function of the
             % uniform distribution.
             y=uniform_pdf( x, dist.a, dist.b );
         end
+        
         function y=cdf(dist,x)
             % CDF compute the cumulative distribution function of the
             % uniform distribution.
             y=uniform_cdf( x, dist.a, dist.b );
         end
+        
         function x=invcdf(dist,y)
             % INVCDF compute the inverse CDF (or quantile) function of the
             % uniform distribution.
             x=uniform_invcdf( y, dist.a, dist.b );
         end
+        
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS compute the moments of the uniform distribution.
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = uniform_moments( dist.a, dist.b );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        
         function dist=translate(dist,shift,scale)
             % TRANSLATE translates the uniform distribution DIST
             % NEW_DIST=TRANSLATE(DIST,SHIFT,SCALE) translates the uniform
@@ -91,19 +96,12 @@ classdef UniformDistribution < Distribution
             %   distribution DIST. If N is a scalar value XI is a column vector of
             %   random samples of size [N,1]. If N is a vector XI is a matrix (or
             %   tensor) of size [N(1), N(2), ...].
-            if isscalar(n)
-                yi = rand(n,1);
-            else
-                yi = rand(n);
-            end
-            shift=(dist.a+dist.b)/2-(dist.b-dist.a)/2;
-            scale=(dist.b-dist.a);
-            xi =(yi *scale ) + shift;
+            xi = uniform_sample(n, dist.a, dist.b);
         end
     end
     
     methods
-        function dist_germ=get_base_dist(dist)
+        function dist_germ=get_base_dist(~)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
             dist_germ=UniformDistribution(-1,1);
@@ -123,21 +121,17 @@ classdef UniformDistribution < Distribution
             y=(x-dist.mean)*2/(dist.b-dist.a);
         end
         
-        function polysys=default_sys_letter(dist, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<1||~is_normalized
-                polysys='P';
+        function polysys=orth_polysys(dist)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the Uniform distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns Legendre polynomials.
+            %
+            % See also LEGENDREPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            if dist.a==-1 && dist.b==1
+                polysys=LegendrePolynomials();
             else
-                polysys='p';
+                % This should throw an error.
+                polysys=dist.orth_polysys@Distribution();
             end
-        end
-        
-        function poly=default_polys(dist, is_normalized)
-            if nargin<2;
-                is_normalized=false;
-            end
-            poly=LegendrePolynomials(is_normalized);
         end
     end
 end

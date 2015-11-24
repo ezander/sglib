@@ -9,7 +9,7 @@ classdef BetaDistribution < Distribution
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Aidin Nojavan (extended by Noemi Friedman)
+    %   Elmar Zander, Aidin Nojavan, Noemi Friedman
     %   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -68,39 +68,23 @@ classdef BetaDistribution < Distribution
         
         function str=tostring(dist)
             % Displays the distribution type: 'Beta(a, b)'
-            str=sprintf('Beta(%.3f,  %.3f)', dist.a, dist.b);
+            str=sprintf('Beta(%g, %g)', dist.a, dist.b);
         end
     end
     
     methods
-        function polysys=default_sys_letter(dist, is_normalized, varargin)
-            % DEFAULT_POLYSYS gives the 'SYS' letter belonging to the 'natural' polynomial system
-            % belonging to the distribution
-            options = varargin2options(varargin);
-            [generate_sys, options] = get_option(options, 'generate_sys', true);
-            check_unsupported_options(options, mfilename);
+        function polysys=orth_polysys(dist)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the SemiCircle distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns the Chebyshev U
+            %   polynomials.
+            %
+            % See also CHEBYSHEVUPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
             
-            if generate_sys
-                vsys{2}=gpc_register_polysys('', dist);
-                vsys{1}=lower(vsys{2});
-            else
-                vsys{2}='';
-                vsys{1}='';
-            end
-            if nargin>=2 && is_normalized
-                polysys=vsys{1};
-            else
-                polysys=vsys{2};
-            end
-        end
-        
-        function polys=default_polys(dist, is_normalized)
-            % DEFAULT_POLYSYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<2
-                is_normalized=false;
-            end
-            polys=JacobiPolynomials(dist.a-1, dist.b-1, is_normalized);
+            % TODO dat funzt eh nicht, wir müssen die polys direkt auf -1,1
+            % machen, und ausserdem muessen hier wahrscheinlich die
+            % Parameter verdreht werden (ich lass das aber mal, bis der
+            % Test zeigt dass es nicht stimmt...)
+            polysys=JacobiPolynomials(dist.a-1, dist.b-1);
         end
     end
     
@@ -111,14 +95,14 @@ classdef BetaDistribution < Distribution
             dist_germ=fix_bounds(BetaDistribution(dist.a, dist.b), -1, 1);
         end
         
-        function x=base2dist(dist, y)
+        function x=base2dist(~, y)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
             x=(y+1)/2;
         end
         
-        function y=dist2base(dist, x)
+        function y=dist2base(~, x)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution

@@ -10,7 +10,7 @@ classdef SemiCircleDistribution < BetaDistribution
     %
     % See also DISTRIBUTION BETADISTRIBUTION BETA_PDF
     
-    %   Noemi Friedman
+    %   Noemi Friedman, Elmar Zander
     %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -31,25 +31,17 @@ classdef SemiCircleDistribution < BetaDistribution
             % TOSTRING Displays the distribution type.
             str=sprintf('SemiCircle()');
         end
-
-        function polysys=default_sys_letter(dist, is_normalized) %#ok<INUSL>
-            % DEFAULT_SYS_LETTER gives the 'SYS' letter belonging to the
-            % 'natural' polynomial system belonging to the distribution.
-            if is_normalized
-                polysys = 'u';
-            else
-                polysys = 'U';
-            end
+    end
+    
+    methods
+        function polysys=orth_polysys(~)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the SemiCircle distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns the Chebyshev U
+            %   polynomials.
+            %
+            % See also CHEBYSHEVUPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            
+            polysys=ChebyshevUPolynomials();
         end
-
-        function polys=default_polys(dist, is_normalized)
-            % DEFAULT_POLYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<2
-                is_normalized=false;
-            end
-            polys=ChebyshevUPolynomials(is_normalized);
-        end
-        
     end
 end

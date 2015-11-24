@@ -10,7 +10,7 @@ classdef ArcSinDistribution < BetaDistribution
     %
     % See also DISTRIBUTION BETADISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
-    %   Noemi Friedman
+    %   Noemi Friedman, Elmar Zander
     %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -33,23 +33,14 @@ classdef ArcSinDistribution < BetaDistribution
     end
     
     methods
-        function polysys=default_sys_letter(dist, is_normalized) %#ok<INUSL>
-            % DEFAULT_SYS_LETTER gives the 'SYS' letter belonging to the
-            % 'natural' polynomial system belonging to the distribution.
-            if nargin>=2 && is_normalized
-                polysys = 't';
-            else
-                polysys = 'T';
-            end
-        end
-        
-        function polys=default_polys(dist, is_normalized)
-            % DEFAULT_POLYS gives the 'natural' polynomial system
-            % belonging to the distribution
-            if nargin<2;
-                is_normalized=false;
-            end
-            polys=ChebyshevTPolynomials(is_normalized);
+        function polysys=orth_polysys(~)
+            % ORTH_POLYSYS returns the orthogonal polynomials for the ArcSin distribution.
+            %   POLYSYS=ORTH_POLYSYS(DIST) returns the Chebyshev T
+            %   polynomials.
+            % 
+            % See also CHEBYSHEVTPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+            
+            polysys=ChebyshevTPolynomials();
         end
     end
 end

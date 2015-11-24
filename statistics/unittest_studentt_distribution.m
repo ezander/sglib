@@ -42,7 +42,7 @@ assert_equals( studentt_pdf(x, 3), cdf_ex, 'cdf_sttb');
 
 
 % pdf matches cdf
-[x1,x2]=linspace_mp( -15, 3, 1000 );
+[x2,x1]=linspace_midpoints( -15, 3, 1000 );
 F=studentt_cdf( x1, nu );
 F2=pdf_integrate( studentt_pdf( x2, nu ), F, x1);
 assert_equals( F, F2, 'pdf_cdf_match', struct('abstol',0.01) );

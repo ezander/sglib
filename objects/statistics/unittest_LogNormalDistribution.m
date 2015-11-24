@@ -6,8 +6,8 @@ function unittest_LogNormalDistribution
 %
 % See also LOGNORMALDISTRIBUTION, MUNIT_RUN_TESTSUITE 
 
-%   Aidin Nojavan
-%   Copyright 2014, <Inst. of Scientific Computing, TU Braunschweig>
+%   Elmar Zander, Aidin Nojavan
+%   Copyright 2014, Inst. of Scientific Computing, TU Braunschweig
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -35,19 +35,26 @@ assert_equals( LN.sigma, 1, 'Initialization default b' );
 %% Mean & Var
 assert_equals(LN.mean, exp(1/2), 'mean');
 assert_equals(LN.var, exp(2)-exp(1), 'var' );
-%% lognormal_cdf
+
+%% Moments
+m_act = {1, 0, 0, 0, 0};
+[m_act{2:end}] = LN.moments();
+m_ex = compute_moments(LN);
+assert_equals(m_act, m_ex, 'moments' );
+
+%% Cdf
 LN=LogNormalDistribution(2,0.5);
 assert_equals(cdf(LN,-inf), 0, 'cdf_minf' );
 assert_equals(cdf(LN,-1e8), 0, 'cdf_negative' );
 assert_equals(cdf(LN,inf), 1, 'cdf_inf' );
 assert_equals(cdf(LN,exp(LN.mu)), 1/2, 'cdf_median' );
 
-% lognormal_pdf
+%% Pdf
 assert_equals(pdf(LN,-inf), 0, 'pdf_minf' );
 assert_equals(pdf(LN,-1e8), 0, 'pdf_negative' );
 assert_equals(pdf(LN,inf), 0, 'pdf_inf' );
 
-% lognormal_invcdf
+%% Invcdf
 y = linspace(0, 1);
 x = linspace(0, 10);
 
@@ -66,7 +73,14 @@ assert_equals(cdf(LN,invcdf(LN,y)),cdf(LN,invcdf(LN,y)),'cdf_invcdf_3');
 assert_equals(invcdf(LN,cdf(LN,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(LN,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 
-% % lognormal_stdnor
+%% Sample
+munit_control_rand('seed', 1234);
+LN=LogNormalDistribution(0.7,1.5);
+N=100000;
+xi=LN.sample(N);
+assert_equals(LN.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 3e-3)
+
+%% Stdnor
 N=50;
 uni=linspace(0,1,N+2)';
 uni=uni(2:end-1);
@@ -77,6 +91,7 @@ x=stdnor( LN,gam );
 assert_equals(cdf(LN,x), uni, 'lognormal' )
 assert_equals( lognormal_stdnor(gam), lognormal_stdnor(gam, 0, 1), 'lognormal_def12');
 assert_equals( lognormal_stdnor(gam, 0), lognormal_stdnor(gam, 0, 1), 'lognormal_def2');
+
 %% fix_moments
 LN=LogNormalDistribution(2,3);
 dist=fix_moments(LN,4,14);
@@ -89,6 +104,10 @@ LN = LogNormalDistribution(2,3);
 dist = fix_bounds(LN,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
+
+%% Orthogonal polynomials
+dist = LogNormalDistribution(0,1);
+assert_error(@()(dist.orth_polysys()), 'sglib:', 'no_orth_polys');
 
 %% Base dist stuff
 dist = LogNormalDistribution(0.3, 1.2);
