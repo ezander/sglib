@@ -36,6 +36,10 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
         plot_name
     end
     
+    properties (Transient, Access=protected)
+        gpc_syschar
+    end
+    
 %     properties(Transient, SetAccess=protected)
 %         germ_dist
 %         param2germ_func
@@ -178,35 +182,56 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     end
     
     methods
-        function syschar=default_syschar(param, normalized)
+        function dist=get_gpc_dist(param)
+            dist = param.dist.get_base_dist();
+        end
+
+        function polysys=get_gpc_polysys(param, normalized)
+            dist = param.get_gpc_dist();
+            polysys = dist.orth_polysys();
+            if normalized
+                polysys = polysys.normalized();
+            end
+        end
+        
+        function syschar=get_gpc_syschar(param, normalized)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
-            % example:
-            % MYPARAM= SIMPARAMETER( 'kappa', Normaldistribution(2,0.1))
-            % MYPARAM.SET_POLYSYS()
-            % MYPARAM.SET_POLYSYS('p')
             if nargin<2
                 normalized = true;
             end
+            gpcreg = gpc_registry('object');
+            syschar = param.gpc_syschar;
             
-            syschar = param.get_gpcgerm_dist().default_syschar(normalized);
+            if ~isempty(syschar)
+                polysys = gpcreg.get(syschar);
+                if polysys~=param.get_gpc_polysys(normalized)
+                    syschar = '';
+                end
+            end
+            if isempty(syschar)
+                polysys = param.get_gpc_polysys(normalized);
+                syschar = gpcreg.find(polysys);
+                if isempty(syschar)
+                    syschar = gpcreg.findfree();
+                    gpcreg.set(syschar, polysys);
+                end
+            end
+            param.gpc_syschar = syschar;
         end
         
-        function dist=get_gpcgerm_dist(param)
-            dist = param.dist.get_base_dist();
-        end
-        
+      
         function [q_alpha, V_q, varerr]=gpc_expand(param, varargin)
             % Expands the parameter in the default
             % polynomyal system of the distribution (optionaly defined by
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
             options=varargin2options(varargin);
-            [is_normalized,options]=get_option(options, 'normalized', true);
+            [normalized,options]=get_option(options, 'normalized', true);
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
-            syschar=param.default_syschar(is_normalized);
+            syschar=param.get_gpc_syschar(normalized);
             [q_alpha, V_q, varerr]=gpc_param_expand(param.dist, syschar, expand_options);
             
             % TODO this should go somewhere else
