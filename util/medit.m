@@ -82,16 +82,26 @@ if writetofile
     % If the file already begin with 'function ...' we keep that line
     func = sprintf( '%s(varargin)', name );
     ind=strfind(prev_contents, sprintf('\n'));
+    isclass=false;
     if ~isempty(ind) && strncmp(prev_contents, 'function ', 9)
         ind=ind(1);
         func = prev_contents(10:ind-1);
         prev_contents = prev_contents(ind+1:end);
+    elseif ~isempty(ind) && strncmp(prev_contents, 'classdef ', 9)
+        ind=ind(1);
+        func = prev_contents(10:ind-1);
+        prev_contents = prev_contents(ind+1:end);
+        isclass=true;
     end
     
     % Open file and write the help template stuff
     fid=fopen( filename, 'w' );
     if ~is_unittest
-        fprintf( fid, 'function %s\n', func );
+        if isclass
+            fprintf( fid, 'classdef %s\n', func );
+        else
+            fprintf( fid, 'function %s\n', func );
+        end
         fprintf( fid, '%% %s Short description of %s.\n', upper(name), name );
         fprintf( fid, '%%   %s Long description of %s.\n', upper(func), name );
     else
