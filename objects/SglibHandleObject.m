@@ -34,4 +34,17 @@ classdef SglibHandleObject < SglibObject & handle
             bool = ne@SglibObject(obj1, obj2);
         end
     end
+    
+    %% Inherited methods from handle class, not needed in sglib
+    % Those are made hidden so they don't clutter up the tab completion and
+    % the object display. Unfortunately, forwarding to the orginal methods
+    % did not work here.
+    methods (Hidden)
+        varargout=addlistener(obj,varargin);
+        varargout=delete(obj,varargin);
+        varargout=findobj(obj,varargin);
+        varargout=findprop(obj,varargin);
+        %varargout=isvalid(obj,varargin); % cannot hide this, as its 
+        varargout=notify(obj,varargin);
+    end
 end
