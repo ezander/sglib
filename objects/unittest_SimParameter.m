@@ -6,8 +6,8 @@ function unittest_SimParameter(varargin)
 %
 % See also SIMPARAMETER, MUNIT_RUN_TESTSUITE 
 
-%   <author>
-%   Copyright 2015, <institution>
+%   Elmar Zander
+%   Copyright 2015, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the

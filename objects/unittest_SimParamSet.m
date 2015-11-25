@@ -6,8 +6,8 @@ function unittest_SimParamSet(varargin)
 %
 % See also SIMPARAMSET, MUNIT_RUN_TESTSUITE 
 
-%   <author>
-%   Copyright 2015, <institution>
+%   Elmar Zander
+%   Copyright 2015, Inst. of Scientific Computing
 %
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
@@ -49,9 +49,9 @@ assert_equals(Q.get_param(3).dist, LogNormalDistribution(1.1, 1.3), 'set_dist');
 
 Q.set_fixed(1, 42)
 Q.set_fixed('baz', 10)
-assert_equals(Q.find_fixed_vals(), [42; 10], 'find_fixed');
+assert_equals(Q.get_fixed_vals(), [42; 10], 'get_fixed');
 
-[Q_alpha, V_Q, varerrs]=gpc_expand(Q);
+[Q_alpha, V_Q]=gpc_expand(Q, 'normalized', false);
 assert_equals(Q_alpha, [42 0 0; 0.25 -0.25 0; 10 0 0; 5 0 2], 'gpc_expand_coeff');
 assert_equals(V_Q, {'LP', [0 0; 1 0; 0 1]}, 'gpc_expand_basis');
 

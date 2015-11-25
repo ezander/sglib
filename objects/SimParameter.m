@@ -18,7 +18,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     % \Exp(\phi_i(Z)\phi_j(Z))=\delta_{ij}
     % Where  Z is a parameter with beta distribution
     
-    %   Noemi Friedman and Elmar Zander
+    %   Noemi Friedman, Elmar Zander
     %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
     %
     %   This program is free software: you can redistribute it and/or
@@ -33,14 +33,14 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
         dist
         is_fixed
         fixed_val
-    end
-    
-    properties(Transient, SetAccess=protected)
-        germ_dist
-        param2germ_func
-        germ2param_func
         plot_name
     end
+    
+%     properties(Transient, SetAccess=protected)
+%         germ_dist
+%         param2germ_func
+%         germ2param_func
+%     end
     
     %% Constructor and basic methods
     methods
@@ -55,8 +55,8 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             % e.g.: MYPARAM=SimParameter('kappa', NormalDistribution(0,0.1))
             options=varargin2options(varargin);
             [param.plot_name, options]=get_option(options, 'plot_name', '');
-            [param.param2germ_func,options]=get_option(options, 'param2germ_func', {});
-            [param.germ2param_func,options]=get_option(options, 'germ2param_func', {});
+            %[param.param2germ_func,options]=get_option(options, 'param2germ_func', {});
+            %[param.germ2param_func,options]=get_option(options, 'germ2param_func', {});
             check_unsupported_options(options, mfilename);
             
             %Check whether input is in the right format
@@ -178,7 +178,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     end
     
     methods
-        function syschar=default_syschar(param, is_normalized)
+        function syschar=default_syschar(param, normalized)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -187,10 +187,10 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             % MYPARAM.SET_POLYSYS()
             % MYPARAM.SET_POLYSYS('p')
             if nargin<2
-                is_normalized = true;
+                normalized = true;
             end
             
-            syschar = param.get_gpcgerm_dist().default_syschar(is_normalized);
+            syschar = param.get_gpcgerm_dist().default_syschar(normalized);
         end
         
         function dist=get_gpcgerm_dist(param)
@@ -202,7 +202,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             % polynomyal system of the distribution (optionaly defined by
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
             options=varargin2options(varargin);
-            [is_normalized,options]=get_option(options, 'is_normalized', true);
+            [is_normalized,options]=get_option(options, 'normalized', true);
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             

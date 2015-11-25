@@ -157,6 +157,18 @@ classdef SimParamSet < SglibHandleObject
         function param=get_param(set, ind_or_string)
             param = set.params.get(ind_or_string);
         end
+        
+        function fixed_vals=get_fixed_vals(set)
+            % FIND_FIXED_VALS Find fixed values of the fixed parameters.
+            %   FIXED_VALS=FIND_FIXED_VALS(SET) collects fixed values of
+            %   fixed parameters in the SimParameterSet.
+            ind_fixed=find(~set.find_ind_rv());
+            
+            fixed_vals=zeros(length(ind_fixed),1);
+            for i=1:length(ind_fixed)
+                fixed_vals(i)=set.get_param(ind_fixed(i)).fixed_val;
+            end
+        end
     end
     
     %% Adding parameters
@@ -238,6 +250,7 @@ classdef SimParamSet < SglibHandleObject
             %   See also GPC_PARAM_EXPAND
             
             options=varargin2options(varargin);
+            [normalized,options]=get_option(options, 'normalized', true);
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
@@ -251,7 +264,7 @@ classdef SimParamSet < SglibHandleObject
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
-                    [qi_beta, V, varerrs(i)]=param.gpc_expand('expand_options', expand_options);
+                    [qi_beta, V, varerrs(i)]=param.gpc_expand('normalized', normalized, 'expand_options', expand_options);
                 end
                 
                 [q_alpha, V_q]=gpc_combine_inputs(q_alpha, V_q, qi_beta, V);
@@ -262,18 +275,6 @@ classdef SimParamSet < SglibHandleObject
     
     %% Other methods
     methods    
-        function fixed_vals=find_fixed_vals(set)
-            % FIND_FIXED_VALS Find fixed values of the fixed parameters.
-            %   FIXED_VALS=FIND_FIXED_VALS(SET) collects fixed values of
-            %   fixed parameters in the SimParameterSet.
-            ind_rv = set.find_ind_rv();
-            ind_fixed=find(~ind_rv);
-            
-            fixed_vals=zeros(length(ind_fixed),1);
-            for i=1:length(ind_fixed)
-                fixed_vals(i)=set.get_param(ind_fixed(i)).fixed_val;
-            end
-        end
         
         %% Sample from SimParamSet
         function xi=sample(set, N, varargin)
