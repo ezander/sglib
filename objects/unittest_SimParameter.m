@@ -51,5 +51,14 @@ assert_equals(qf.mean(), 100, 'mean_fixed');
 assert_equals(qv.var(), 3, 'var');
 assert_equals(qf.var(), 0, 'var_fixed');
 
+munit_control_rand('seed', 9999);
+xi = qv.sample(100000);
+assert_equals(sort(xi), linspace(4,10,length(xi))', 'sample_dist', 'abstol', 3e-2);
+assert_equals(size(qv.sample(10)), [10,1], 'sample_shape_vec');
+assert_equals(size(qv.sample([2,3])), [2,3], 'sample_shape_mat');
+
+assert_equals(qf.sample(33), repmat(100, 33, 1), 'fixed_sample_vec');
+assert_equals(qf.sample([2, 3]), repmat(100, 2, 3), 'fixed_sample_mat');
+
 
 %% Testing the sampling function

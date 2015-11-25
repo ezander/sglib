@@ -134,7 +134,9 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     %% Basic distribution related function
     methods
         function mu=mean(param)
-            %Gives the mean value of the SimParameter
+            % MEAN Return the mean value of the parameter.
+            %   MU=MEAN(PARAM) returns the mean value of the SimParameter
+            %   or the FIXED_VAL if the parameters has been set to fixed.
             if param.is_fixed
                 mu = param.fixed_val;
             else
@@ -143,7 +145,9 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
         end
         
         function var=var(param)
-            %Gives the variance of the SimParameter
+            % VAR Return the variance of the parameter.
+            %   VAR=VAR(PARAM) returns the variance of the SimParameter
+            %   or the 0 if the parameters has been set to fixed.
             if param.is_fixed
                 var = 0;
             else
@@ -161,7 +165,15 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             %   distribution DIST.
             %   If the parameter is fixed only the fixed value is repeated
             %   N times.
-            xi=param.dist.sample(n, varargin{:});
+            if param.is_fixed
+                if isscalar(n)==1
+                    xi = repmat(param.fixed_val,n,1);
+                else
+                    xi = repmat(param.fixed_val,n);
+                end
+            else
+                xi=param.dist.sample(n, varargin{:});
+            end
         end
     end
     
