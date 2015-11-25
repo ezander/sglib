@@ -178,7 +178,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     end
     
     methods
-        function [syschar, germ_dist]=default_syschar(param, varargin)
+        function syschar=default_syschar(param, is_normalized)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
             % automaticaly. Otherwise it has to be set.
@@ -186,74 +186,78 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             % MYPARAM= SIMPARAMETER( 'kappa', Normaldistribution(2,0.1))
             % MYPARAM.SET_POLYSYS()
             % MYPARAM.SET_POLYSYS('p')
-            options=varargin2options(varargin);
-            [is_normalized,options]=get_option(options, 'normal', false);
-            check_unsupported_options(options, mfilename);
+            if nargin<2
+                is_normalized = true;
+            end
             
-            syschar = param.dist.get_base_dist().default_syschar(is_normalized);
-            [~, germ_dist]=gpc_registry('get', syschar);
+            syschar = param.get_gpcgerm_dist().default_syschar(is_normalized);
         end
         
-        function [a_alpha, V, varerr]=gpc_expand(param, varargin)
+        function dist=get_gpcgerm_dist(param)
+            dist = param.dist.get_base_dist();
+        end
+        
+        function [q_alpha, V_q, varerr]=gpc_expand(param, varargin)
             % Expands the parameter in the default
             % polynomyal system of the distribution (optionaly defined by
             % POYSYS). See EXPAND_OPTIONS more in GPC_PARAM_EXPAND
             options=varargin2options(varargin);
+            [is_normalized,options]=get_option(options, 'is_normalized', true);
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
-            [syschar, g_dist]=param.default_syschar();
-            [a_alpha, V, varerr]=gpc_param_expand(param.dist, syschar, expand_options);
+            syschar=param.default_syschar(is_normalized);
+            [q_alpha, V_q, varerr]=gpc_param_expand(param.dist, syschar, expand_options);
             
             % TODO this should go somewhere else
-            param.set_germdist(g_dist);
-            param.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
+            %param.set_germdist(g_dist);
+            %param.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
-        
-        function set_germ2param_func(param, map_func)
-            %Sets function for mapping from germ to parameter
-            param.germ2param_func=map_func;
-        end
-        function set_param2germ_func(param, map_func)
-            %Sets function for mapping from parameter to germ
-            param.param2germ_func=map_func;
-        end
-        
-        function set_germdist(param, germ_dist)
-            %Sets distribution of the germ
-            param.germ_dist=germ_dist;
-        end
-        
-        function [dist, germ2dist_func, dist2germ_func]=get_set_germdist(param)
-            %Gets and sets distribution of the germ automaticaly
-            %and gives the corresponding mappings(dist2germ/germ2dist)
-            dist=param.dist.get_base_dist();
-            germ2dist_func=@(x)param.dist.base2dist(x);
-            dist2germ_func=@(x)param.dist.dist2base(x);
-            param.germ_dist=dist;
-            param.germ2param_func=germ2dist_func;
-            param.param2germ_func=dist2germ_func;
-        end
-        
-        function x=param2germ(param, y)
-            if isempty(param.param2germ_func)
-                dist=get_set_germdist(param);
-                string_warn=strvarexpand('There was no mapping set, the param is mapped to $dist.tostring$');
-                warning(string_warn);
-            end
-            x=feval(param.param2germ_func,y);
-        end
-        
-        function y=germ2param(param, x)
-            if isempty(param.germ2param_func)
-                dist=get_set_germdist(param);
-                string_warn=strvarexpand('There was no mapping set, the param is mapped from $dist.tostring$');
-                warning(string_warn);
-            end
-            y=feval(param.germ2param_func,x);
-        end
-        
-        
-        
     end
+
+%     methods
+%         function set_germ2param_func(param, map_func)
+%             %Sets function for mapping from germ to parameter
+%             param.germ2param_func=map_func;
+%         end
+%         function set_param2germ_func(param, map_func)
+%             %Sets function for mapping from parameter to germ
+%             param.param2germ_func=map_func;
+%         end
+%         
+%         function set_germdist(param, germ_dist)
+%             %Sets distribution of the germ
+%             param.germ_dist=germ_dist;
+%         end
+%         
+%         function [dist, germ2dist_func, dist2germ_func]=get_set_germdist(param)
+%             %Gets and sets distribution of the germ automaticaly
+%             %and gives the corresponding mappings(dist2germ/germ2dist)
+%             dist=param.dist.get_base_dist();
+%             germ2dist_func=@(x)param.dist.base2dist(x);
+%             dist2germ_func=@(x)param.dist.dist2base(x);
+%             param.germ_dist=dist;
+%             param.germ2param_func=germ2dist_func;
+%             param.param2germ_func=dist2germ_func;
+%         end
+%         
+%         function x=param2germ(param, y)
+%             if isempty(param.param2germ_func)
+%                 dist=get_set_germdist(param);
+%                 string_warn=strvarexpand('There was no mapping set, the param is mapped to $dist.tostring$');
+%                 warning(string_warn);
+%             end
+%             x=feval(param.param2germ_func,y);
+%         end
+%         
+%         function y=germ2param(param, x)
+%             if isempty(param.germ2param_func)
+%                 dist=get_set_germdist(param);
+%                 string_warn=strvarexpand('There was no mapping set, the param is mapped from $dist.tostring$');
+%                 warning(string_warn);
+%             end
+%             y=feval(param.germ2param_func,x);
+%         end
+%     end
+
 end

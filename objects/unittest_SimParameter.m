@@ -40,6 +40,16 @@ q.set_dist(UniformDistribution(4, 8));
 assert_equals(q.tostring(), 'Param("foo", U(4, 8))', 'tostring');
 assert_false(q.is_fixed, 'q should not be fixed', 'not fixed');
 
+%% Handle object behaviour
+q1=SimParameter('q', UniformDistribution(4, 10));
+q1_alias=q1;
+q2=q1.copy();
+q1.set_fixed(10);
+
+assert_true(q1.is_fixed, 'q1 should be fixed', 'param_fixed');
+assert_true(q1_alias.is_fixed, 'q1_alias should be fixed', 'alias_fixed');
+assert_false(q2.is_fixed, 'copy q2 should not be fixed', 'copy_not_fixed');
+
 %% Testing the mean, var and sample functions
 qv=SimParameter('q1', UniformDistribution(4, 10));
 qf=SimParameter('q2', UniformDistribution(4, 10));
@@ -60,5 +70,20 @@ assert_equals(size(qv.sample([2,3])), [2,3], 'sample_shape_mat');
 assert_equals(qf.sample(33), repmat(100, 33, 1), 'fixed_sample_vec');
 assert_equals(qf.sample([2, 3]), repmat(100, 2, 3), 'fixed_sample_mat');
 
+%% Testing the gpc
 
-%% Testing the sampling function
+q=SimParameter('q1', UniformDistribution(4, 10));
+assert_equals(q.get_gpcgerm_dist(), UniformDistribution(-1,1), 'germ_dist');
+
+assert_equals(q.default_syschar(), 'p', 'syschar1');
+assert_equals(q.default_syschar(true), 'p', 'syschar2');
+assert_equals(q.default_syschar(false), 'P', 'syschar3');
+
+[q_alpha, V_q]=gpc_expand(q);
+assert_equals(q_alpha, [7, sqrt(3)], 'gpc_expand_coeff');
+assert_equals(V_q, {'p', [0; 1]}, 'gpc_expand_V');
+
+[q_alpha, V_q]=gpc_expand(q, 'is_normalized', false);
+assert_equals(q_alpha, [7, 3], 'gpc_expand_coeff2');
+assert_equals(V_q, {'P', [0; 1]}, 'gpc_expand_V2');
+
