@@ -53,6 +53,20 @@ assert_equals(gpc_registry('get', 'x'), [], 'x_empty2');
 gpc_registry('reset', reg);
 assert_equals(gpc_registry('get', 'x'), polys, 'x_jac2');
 
+% ... finding indices by polynomial
+polys = JacobiPolynomials(2,3);
+gpc_registry('reset');
+assert_equals(gpc_registry('find', HermitePolynomials()), 'H', 'find_H');
+assert_equals(gpc_registry('find', LegendrePolynomials().normalized()), 'p', 'find_p');
+assert_equals(gpc_registry('find', polys), '', 'find_j1');
+gpc_registry('set', 'x', polys);
+assert_equals(gpc_registry('find', polys), 'x', 'find_j2');
+gpc_registry('set', 'x', polys);
 
-
-
+% ... finding free indices
+assert_equals(gpc_registry('findfree', 'hpxjo'), 'j', 'findfree_j');
+assert_equals(gpc_registry('findfree', 'hpx'), 'a', 'findfree_a');
+gpc_registry('set', 'j', polys);
+gpc_registry('set', 'a', polys);
+assert_equals(gpc_registry('findfree', 'hpxjo'), 'o', 'findfree_j');
+assert_equals(gpc_registry('findfree', 'hpx'), 'b', 'findfree_a');
