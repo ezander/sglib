@@ -70,20 +70,26 @@ assert_equals(size(qv.sample([2,3])), [2,3], 'sample_shape_mat');
 assert_equals(qf.sample(33), repmat(100, 33, 1), 'fixed_sample_vec');
 assert_equals(qf.sample([2, 3]), repmat(100, 2, 3), 'fixed_sample_mat');
 
-%% Testing the gpc
+%% Testing the gpc for a stock distribution
 
 q=SimParameter('q1', UniformDistribution(4, 10));
-assert_equals(q.get_gpcgerm_dist(), UniformDistribution(-1,1), 'germ_dist');
+assert_equals(q.get_gpc_dist(), UniformDistribution(-1,1), 'germ_dist');
 
-assert_equals(q.default_syschar(), 'p', 'syschar1');
-assert_equals(q.default_syschar(true), 'p', 'syschar2');
-assert_equals(q.default_syschar(false), 'P', 'syschar3');
+assert_equals(q.get_gpc_syschar(), 'p', 'syschar1');
+assert_equals(q.get_gpc_syschar(true), 'p', 'syschar2');
+assert_equals(q.get_gpc_syschar(false), 'P', 'syschar3');
 
 [q_alpha, V_q]=gpc_expand(q);
 assert_equals(q_alpha, [7, sqrt(3)], 'gpc_expand_coeff');
 assert_equals(V_q, {'p', [0; 1]}, 'gpc_expand_V');
 
-[q_alpha, V_q]=gpc_expand(q, 'is_normalized', false);
+[q_alpha, V_q]=gpc_expand(q, 'normalized', false);
 assert_equals(q_alpha, [7, 3], 'gpc_expand_coeff2');
 assert_equals(V_q, {'P', [0; 1]}, 'gpc_expand_V2');
+
+%% Testing the gpc for a non-stock distribution
+
+q=SimParameter('q1', BetaDistribution(2, 3.2));
+assert_equals(q.get_gpc_dist(), BetaDistribution(2, 3.2), 'germ_dist');
+
 

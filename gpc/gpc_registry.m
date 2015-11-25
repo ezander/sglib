@@ -31,6 +31,8 @@ end
 
 if ismethod(gpcreg, action)
     [varargout{1:nargout}]=gpcreg.(action)(varargin{:});
+elseif strcmp(action, 'object')
+    varargout = {gpcreg};
 else
     error('sglib:gpc_registry:unknown_action', 'Unknown action: %s', action);
 end

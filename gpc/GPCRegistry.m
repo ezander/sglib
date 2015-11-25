@@ -56,8 +56,11 @@ classdef GPCRegistry < handle
         end
         
         function syschar = findfree(gpcreg, pref_charset)
+            charsets = {['a':'z', 'A':'Z', '0':'9'], char(1:255)};
+            if nargin>=2
+                charsets={pref_charset, charsets{:}};
+            end
             syschar = '';
-            charsets = {pref_charset, ['a':'z', 'A':'Z', '0':'9'], char(1:255)};
             for k=1:length(charsets)
                 used = gpcreg.char2index(charsets{k});
                 ind = find(~used, 1, 'first');
