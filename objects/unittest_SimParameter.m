@@ -19,5 +19,37 @@ function unittest_SimParameter(varargin)
 
 munit_set_function( 'SimParameter' );
 
+%% Generating a parameter and doing some fixing/unfixing
 q=SimParameter('foo', NormalDistribution(2,3));
+assert_equals(q.tostring(), 'Param("foo", N(2, 9))', 'tostring');
+assert_false(q.is_fixed, 'q should not be fixed', 'not fixed');
 
+q.set_fixed(12);
+assert_true(q.is_fixed, 'q should be fixed now', 'fixed');
+assert_equals(q.tostring(), 'Param("foo", 12)', 'tostring_fixed');
+
+q.set_not_fixed();
+assert_equals(q.tostring(), 'Param("foo", N(2, 9))', 'tostring');
+assert_false(q.is_fixed, 'q should not be fixed', 'not fixed');
+
+q.set_to_mean();
+assert_true(q.is_fixed, 'q should be fixed now', 'fixed');
+assert_equals(q.fixed_val, 2, 'meanval');
+
+q.set_dist(UniformDistribution(4, 8));
+assert_equals(q.tostring(), 'Param("foo", U(4, 8))', 'tostring');
+assert_false(q.is_fixed, 'q should not be fixed', 'not fixed');
+
+%% Testing the mean, var and sample functions
+qv=SimParameter('q1', UniformDistribution(4, 10));
+qf=SimParameter('q2', UniformDistribution(4, 10));
+qf.set_fixed(100);
+
+assert_equals(qv.mean(), 7, 'mean');
+assert_equals(qf.mean(), 100, 'mean_fixed');
+
+assert_equals(qv.var(), 3, 'var');
+assert_equals(qf.var(), 0, 'var_fixed');
+
+
+%% Testing the sampling function

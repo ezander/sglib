@@ -1,4 +1,4 @@
-classdef SimParameter < SglibHandleObject
+classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     %SIMPARAMETER Constructs a parameter,
     %   that may be a random variable or a deterministic one.
     %   PARAMETER=SIMPARAMETER(NAME,DIST) constructs parameter
@@ -28,18 +28,21 @@ classdef SimParameter < SglibHandleObject
     %   See the GNU General Public License for more details. You should
     %   have received a copy of the GNU General Public License along with
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
-    properties (GetAccess=public, SetAccess=protected)
+    properties (SetAccess=protected)
         name
         dist
         is_fixed
         fixed_val
+    end
+    
+    properties(Transient, SetAccess=protected)
         germ_dist
         param2germ_func
         germ2param_func
         plot_name
     end
     
-    %% Constructor
+    %% Constructor and basic methods
     methods
         function param=SimParameter(name, dist, varargin)
             % Returns a new SimParameter object with the distribution DIST
@@ -69,45 +72,100 @@ classdef SimParameter < SglibHandleObject
             end
             
         end
+        
+        function str=tostring(param)
+            % TOSTRING Convert to string representation.
+            %   STR=TOSTRING(PARAM) converts this parameter object into a
+            %   string, provising a short display of the parameter's name,
+            %   distribution and whether the parameter is deterministic
+            %   (fixed) or random (not fixed)
+            if param.is_fixed== true
+                str=sprintf('Param("%s", %g)', param.name, param.fixed_val);
+            else
+                str=sprintf('Param("%s", %s)', param.name, param.dist.tostring());
+            end
+        end
     end
     
     %% Setting to fixed values
     methods
         function set_fixed(param, val)
-            % Fixes the parameter to the value VAL and sets IS_FIXED
+            % SET_FIXED Set parameter to fixed value.
+            %   SET_FIXED(PARAM, VAL) fixes the parameter to the
+            %   value VAL and sets IS_FIXED.
+            % Note: Fixing the value has the effect, that the parameter is
+            %   treated like a random variable with *constant* value,
+            %   having an effect also on functions like MEAN, VAR, etc. The
+            %   mean and variance of such a variable is equal to VAL and 0,
+            %   respectively, and sampling will always return VAL.
+            % See also SET_TO_MEAN, SET_NOT_FIXED
             param.is_fixed=true;
             param.fixed_val=val;
         end
         
         function set_to_mean(param)
-            % Fixes the parameter to the value VAL to the mean of the
-            % distribution
+            % SET_TO_MEAN Set parameter fixed to the mean value of its distribution.
+            %   SET_TO_MEAN(PARAM) fixes the parameter to the mean
+            %   value of the distribution.
+            % See also SET_FIXED, SET_NOT_FIXED
             param.set_fixed(mean(param.dist));
         end
         
         function set_not_fixed(param)
-            % Sets the SimParam to be not fixed
+            % SET_NOT_FIXED Undoes fixation of the parameter.
+            %   SET_NOT_FIXED(PARAM) undoes the previous fixation of the
+            %   parameter, which then varies again according to its
+            %   distribution.
+            % See also SET_FIXED, SET_TO_MEAN
             param.is_fixed=false;
             param.fixed_val=[];
         end
         
         function set_dist(param, dist)
-            % Sets a new distribution and resets the IS_FIXED variable
+            % SET_DIST(PARAM, DIST) Sets a new distribution and resets the IS_FIXED variable.
+            %   SET_DIST(PARAM, DIST) sets DIST as new distribution and
+            %   resets the IS_FIXED variable.
+            % See also SET_NOT_FIXED, SET_FIXED, SET_TO_MEAN
             param.dist=dist;
             param.set_not_fixed();
         end
     end
-        
+       
+    %% Basic distribution related function
     methods
-        function xi=sample(param, n)
-            %   Draw random samples from the parameter.
-            %   XI=SAMPLE(DIST,N) draws N random samples from the random
-            %   distribution DIST. If N is a scalar value XI is a column vector of
-            %   random samples of size [N,1]. If N is a vector XI is a matrix (or
-            %   tensor) of size [N(1), N(2), ...].
-            xi=param.dist.sample(n);
+        function mu=mean(param)
+            %Gives the mean value of the SimParameter
+            if param.is_fixed
+                mu = param.fixed_val;
+            else
+                mu = param.dist.mean();
+            end
         end
         
+        function var=var(param)
+            %Gives the variance of the SimParameter
+            if param.is_fixed
+                var = 0;
+            else
+                var = param.dist.var();
+            end
+        end
+        
+        function xi=sample(param, n, varargin)
+            % SAMPLE Draw samples from this parameter/
+            %   XI=SAMPLE(PARAM, N, VARARGIN) draws N random samples from
+            %   the random distribution DIST. If N is a scalar value XI is
+            %   a column vector of random samples of size [N,1]. If N is a
+            %   vector XI is a matrix (or tensor) of size [N(1), N(2),
+            %   ...]. Any extra parameters are passed on to the
+            %   distribution DIST.
+            %   If the parameter is fixed only the fixed value is repeated
+            %   N times.
+            xi=param.dist.sample(n, varargin{:});
+        end
+    end
+    
+    methods
         function [syschar, germ_dist]=default_syschar(param, varargin)
             % Gets the default polynomial system used for the gpc expansion of the
             % RV. For some distribution polysys can be assigned
@@ -183,30 +241,7 @@ classdef SimParameter < SglibHandleObject
             y=feval(param.germ2param_func,x);
         end
         
-        function str=tostring(param)
-            % Provides with a short display of the parameter's
-            % name, distribution and whether the parameter is
-            % deterministic (fixed) or random (not fixed)
-            if param.is_fixed== true
-                str=sprintf('Param("%s", %g)', param.name, param.fixed_val);
-            else
-                str=sprintf('Param("%s", %s)', param.name, param.dist.tostring());
-            end
-        end
         
-        function mu=mean(param)
-            %Gives the mean value of the SimParameter
-            mu=mean(param.dist);
-        end
         
-        function var=var(param)
-            %Gives the variance of the SimParameter
-            [~, var]=moments(param.dist);
-        end
-        
-        function prob=pdf(param,x)
-            %Gives the probability that SimParameter takes value x
-            prob=param.dist.pdf(x);
-        end
     end
 end
