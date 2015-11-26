@@ -101,21 +101,23 @@ assert_equals( y, normal_cdf(x), 'cdf_stdnor_chi' );
 
 
 % Tests with objects
-x=linspace(-10,10,1000);
+x=linspace(0,10,1000);
 y=linspace(0.01,0.99,1000);
 % mom_ex=cell(1,4);
 % mom_ac=cell(1,4);
-B = BetaDistribution(4, 2);
-assert_equals( gendist_pdf(x, B), beta_pdf( x, 4, 2), 'beta_pdf_object' );
-assert_equals( gendist_cdf(x, B), beta_cdf( x, 4, 2), 'beta_cdf_object' );
-assert_equals( gendist_invcdf(y, B), beta_invcdf( y, 4, 2), 'beta_invcdf_object' );
-assert_equals( gendist_stdnor(x, B), beta_stdnor( x, 4, 2), 'beta_stdnor_object' );
+E = ExponentialDistribution(1.2);
+assert_equals( gendist_pdf(x, E), exponential_pdf( x, 1.2), 'exponential_pdf_object' );
+assert_equals( gendist_cdf(x, E), exponential_cdf( x, 1.2), 'exponential_cdf_object' );
+assert_equals( gendist_invcdf(y, E), exponential_invcdf( y, 1.2), 'exponential_invcdf_object' );
+
+x=linspace(-2, 2,1000);
+assert_equals( gendist_stdnor(x, E), exponential_stdnor( x, 1.2), 'exponential_stdnor_object' );
 
 
 for i=1:4
     mom_ex=cell(1,i);
     mom_ac=cell(1,i);
-    [mom_ac{:}]=gendist_moments(B);
-    [mom_ex{:}]=beta_moments(4, 2);
-    assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'beta_moments_objects' );
+    [mom_ac{:}]=gendist_moments(E);
+    [mom_ex{:}]=exponential_moments(1.2);
+    assert_equals( cell2mat(mom_ac), cell2mat(mom_ex), 'exponential_moments_objects' );
 end
