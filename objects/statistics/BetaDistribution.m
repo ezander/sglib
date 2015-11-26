@@ -47,12 +47,14 @@ classdef BetaDistribution < Distribution
         function y=pdf(dist,x)
             % PDF computes the probability distribution function of the
             % beta distribution.
-            y=beta_pdf( x, dist.a, dist.b );
+            x=TranslatedDistribution.translate_points_backwards(x, -1, 2, 0);
+            y=beta_pdf( x, dist.a, dist.b ) / 2;
         end
         
         function y=cdf(dist,x)
             % CDF computes the cumulative distribution function of the beta
             % distribution.
+            x=TranslatedDistribution.translate_points_backwards(x, -1, 2, 0);
             y=beta_cdf( x, dist.a, dist.b );
         end
         
@@ -60,12 +62,14 @@ classdef BetaDistribution < Distribution
             % INVCDF computes the inverse CDF (or quantile) function of the
             % beta distribution.
             x=beta_invcdf( y, dist.a, dist.b );
+            x=TranslatedDistribution.translate_points_forward(x, -1, 2, 0);
         end
         
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the beta distribution.
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = beta_moments( dist.a, dist.b );
+            m=TranslatedDistribution.translate_moments(m, -1, 2, 0);
             [mean,var,skew,kurt]=deal(m{:});
         end
         
@@ -95,21 +99,21 @@ classdef BetaDistribution < Distribution
         function dist_germ=get_base_dist(dist)
             % Get base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is orthogonal)
-            dist_germ=fix_bounds(BetaDistribution(dist.a, dist.b), -1, 1);
+            dist_germ=dist;
         end
         
         function x=base2dist(~, y)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
-            x=(y+1)/2;
+            x=y;
         end
         
         function y=dist2base(~, x)
             % Get mapping from base distribution (corresponding to standard distribution
             % in the gpc, for which the default polynomial system is
             % orthogonal) to the actual distribution
-            y=x*2-1;
+            y=x;
         end
     end
 end

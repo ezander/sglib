@@ -25,6 +25,8 @@ assert_equals( B.a, 2, 'Initialization a' );
 assert_equals( B.b, 3, 'Initialization b' );
 assert_equals( B.tostring(), 'Beta(2, 3)', 'tostring');
 
+B = B.fix_bounds(0, 1);
+
 
 %% Mean & Var
 assert_equals( B.mean, 0.4, 'mean' );
@@ -36,14 +38,18 @@ assert_equals(cdf(B,-1e8), 0, 'cdf_zero' );
 assert_equals( cdf(B, 1+1e8), 1, 'cdf_zero' );
 assert_equals( cdf(B,inf), 1, 'cdf_inf' );
 B = BetaDistribution(2,2);
+B = B.fix_bounds(0, 1);
 assert_equals(cdf(B,1/2), 1/2, 'cdf_median' );
 B = BetaDistribution(3,3);
+B = B.fix_bounds(0, 1);
 assert_equals(cdf(B,1/2), 1/2, 'cdf_median' );
 B = BetaDistribution(1/3,1/3);
+B = B.fix_bounds(0, 1);
 assert_equals(cdf(B,1/2), 1/2, 'cdf_median' );
 
 %% beta_pdf
 B = BetaDistribution(2,3);
+B = B.fix_bounds(0, 1);
 assert_equals( pdf(B,-inf), 0, 'pdf_minf' );
 assert_equals( pdf(B,-1e8), 0, 'pdf_zero' );
 assert_equals( pdf(B,0), 0, 'pdf_zero' );
@@ -52,24 +58,28 @@ assert_equals( pdf(B,1+1e8), 0, 'pdf_zero' );
 assert_equals( pdf(B,inf), 0, 'pdf_inf' );
 
 B = BetaDistribution(0.2,0.5);
-assert_equals(pdf(B,0), 0, 'pdf_zero' );
-assert_equals(pdf(B,1), 0, 'pdf_zero' );
+B = B.fix_bounds(0, 1);
+assert_equals(pdf(B,0-1e-10), 0, 'pdf_zero' );
+assert_equals(pdf(B,1+1e-10), 0, 'pdf_zero' );
 
 %% beta_invcdf
 y = linspace(0, 1);
 x = linspace(0, 1);
 
 B = BetaDistribution(2,3);
+B = B.fix_bounds(0, 1);
 assert_equals( cdf(B,invcdf(B,y)), y, 'cdf_invcdf_1');
 assert_equals( invcdf(B,cdf(B,x)), x, 'invcdf_cdf_1');
 assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan1');
 
 B = BetaDistribution(0.5,0.5);
+B = B.fix_bounds(0, 1);
 assert_equals( cdf(B,invcdf(B,y)), y, 'cdf_invcdf_2');
 assert_equals(invcdf(B,cdf(B,x)), x, 'invcdf_cdf_2');
 assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan2');
 
 B = BetaDistribution(1,1);
+B = B.fix_bounds(0, 1);
 assert_equals( cdf(B,invcdf(B,y)), y, 'cdf_invcdf_3');
 assert_equals( invcdf(B,cdf(B,x)), x, 'invcdf_cdf_3');
 assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
@@ -77,6 +87,7 @@ assert_equals( isnan(invcdf(B,[-0.1, 1.1])), [true, true], 'invcdf_nan3');
 %% Sample
 munit_control_rand('seed', 1234);
 B = BetaDistribution(2,3);
+B = B.fix_bounds(0, 1);
 N=100000;
 xi=B.sample(N);
 assert_equals(B.cdf(sort(xi)), linspace_midpoints(0,1,N)', 'sample_cdf', 'abstol', 1e-2)
@@ -89,10 +100,12 @@ gam=sqrt(2)*erfinv(2*uni-1);
 x=beta_stdnor(gam, 0.5, 1.3);
 
 B = BetaDistribution(0.5,1.3);
+B = B.fix_bounds(0, 1);
 assert_equals( cdf(B,x), uni, 'beta' );
 
 %% fix_moments
 B=BetaDistribution(2,3);
+B = B.fix_bounds(0, 1);
 dist=fix_moments(B,3,14);
 [m,v]=moments(dist);
 assert_equals(m,3,'mean fix_moments');
@@ -100,6 +113,7 @@ assert_equals(v,14,'var fix_moments');
 
 %% Fix Bounds
 B = BetaDistribution(2,3);
+B = B.fix_bounds(0, 1);
 dist = fix_bounds(B,4,5);
 assert_equals(invcdf(dist,0), 4, 'fix_bounds-uni_min');
 assert_equals(invcdf(dist,1), 5, 'fix_bounds-uni_max');
@@ -108,7 +122,7 @@ assert_equals(invcdf(dist,1), 5, 'fix_bounds-uni_max');
 dist = BetaDistribution(2, 3);
 base = dist.get_base_dist();
 
-assert_equals(base, TranslatedDistribution(BetaDistribution(2,3),-0.6,2), 'base');
+assert_equals(base, BetaDistribution(2,3), 'base_is_same');
 
 z = linspace(0,1);
 x1 = dist.invcdf(z);
