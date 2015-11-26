@@ -29,7 +29,8 @@ Q.add('quux', UniformDistribution(3,7), 'plot_name', 'QuuX');
 Q.set_fixed('baz', 10)
 
 assert_equals(Q.num_params, 4, 'num_params');
-assert_equals(Q.find_ind_rv, logical([1;1;0;1]), 'ind_rv');
+assert_equals(Q.find_rv(), logical([1;1;0;1]), 'ind_rv');
+assert_equals(Q.find_fixed(), logical([0;0;1;0]), 'ind_fixed');
 assert_equals(Q.num_rv, 3, 'num_rvs');
 
 assert_equals(Q.param_names, {'foo', 'bar', 'baz', 'quux'}', 'params_names');
@@ -51,12 +52,12 @@ Q.set_fixed(1, 42)
 Q.set_fixed('baz', 10)
 assert_equals(Q.get_fixed_vals(), [42; 10], 'get_fixed');
 
-Q.set_normalized_polys(false);
+Q.set_normalized(false);
 [Q_alpha, V_Q]=gpc_expand(Q);
 assert_equals(Q_alpha, [42 0 0; 0.25 -0.25 0; 10 0 0; 5 0 2], 'gpc_expand_coeff');
 assert_equals(V_Q, {'LP', [0 0; 1 0; 0 1]}, 'gpc_expand_basis');
 
-Q.set_normalized_polys(true);
+Q.set_normalized();
 Q.reset_fixed();
 [~, V_Q]=gpc_expand(Q);
 assert_equals(V_Q{1}, 'hLhp', 'gpc_expand_germ_normalized');

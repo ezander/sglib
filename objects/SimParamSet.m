@@ -79,7 +79,7 @@ classdef SimParamSet < SglibHandleObject
             set.normalized_polys = normalized;
         end
         
-        function set_normalized_polys(set, normalized)
+        function set_normalized(set, normalized)
             if nargin<2
                 normalized=true;
             end
@@ -98,26 +98,29 @@ classdef SimParamSet < SglibHandleObject
             m = set.params.count();
         end
         
-        function ind_rv=find_ind_rv(set)
-            % FIND_IND_RV Find indices of RVs in the param names.
-            %   IND_RV=FIND_IND_RV(SIMPARAMSET) gives a logical array
-            %   IND_RV, telling which parameter in the PARAMETERSET is
-            %   random
-            % Example:
-            %   ind_rv = set.find_ind_rv()
-            %   list_of_rvs = set.param_names
+        function ind=find_rv(set)
+            % FIND_RV Find indices of RVs in the parameters.
+            %   IND=FIND_RV(SET) returns a logical array IND, indicating
+            %   which parameter in the parameter set is random (not fixed).
             m=set.num_params;
-            ind_rv=false(m,1);
+            ind=false(m,1);
             for i=1:m
-                ind_rv(i)=~set.params.values{i}.is_fixed;
+                ind(i)=~set.params.values{i}.is_fixed;
             end
         end
-        
+
+        function ind=find_fixed(set)
+            % FIND_FIXED Find indices of fixed parameters.
+            %   IND=FIND_FIXED(SET) returns a logical array IND, indicating
+            %   which parameter in the parameter set SET is fixed.
+            ind = ~find_rv(set);
+        end
+
         function m_rv=num_rv(set)
             % NUM_RVS Number of random variables.
             %   N_RV=RV_NAMES(SIMPARAMETERSET) gives the N_RV number of not
             %   fixed SimParameter's in the SimParameterSet
-            m_rv=sum(set.find_ind_rv());
+            m_rv=sum(set.find_rv());
         end
         
         function names=param_names(set)
@@ -144,7 +147,7 @@ classdef SimParamSet < SglibHandleObject
             %   RV_NAMES=RV_NAMES(SIMPARAMETERSET) collects the NAMES of
             %   not fixed SimParameters
             names=set.param_names();
-            ind_rv=set.find_ind_rv();
+            ind_rv=set.find_rv();
             rv_names=names(ind_rv);
         end
         
@@ -153,7 +156,7 @@ classdef SimParamSet < SglibHandleObject
             %   RV_NAMES=RV_PLOT_NAMES(SIMPARAMETERSET) collects
             %   PLOT_NAMES of not fixed SimParameter's
             plot_names=set.param_plot_names();
-            ind_rv=set.find_ind_rv();
+            ind_rv=set.find_rv();
             rv_plot_names=plot_names(ind_rv);
         end
         
@@ -165,7 +168,7 @@ classdef SimParamSet < SglibHandleObject
             % FIND_FIXED_VALS Find fixed values of the fixed parameters.
             %   FIXED_VALS=FIND_FIXED_VALS(SET) collects fixed values of
             %   fixed parameters in the SimParameterSet.
-            ind_fixed=find(~set.find_ind_rv());
+            ind_fixed=find(set.find_fixed());
             
             fixed_vals=zeros(length(ind_fixed),1);
             for i=1:length(ind_fixed)
@@ -252,6 +255,25 @@ classdef SimParamSet < SglibHandleObject
     
     %% GPC based methods
     methods
+        function V_q=get_gpcgerm(set)
+            % GET_GPCGERM Generate the GPC germ for this parameter set.
+            % V_Q=GET_GPCGERM(SET) creates the germ for active parameters
+            % (i.e. the ones that are not fixed) and returns the
+            % corresponding GPC germ. Note, that for polynomial systems are
+            % also registered for not-active parameters, so that the
+            % resulting SYSCHARS are reproducible between calls (though I
+            % don't know, whether that is really necessary...)
+            syschars = '';
+            for i=1:set.num_params()
+                param=set.get_param(i);
+                syschar=param.get_gpc_syschar(set.normalized_polys);
+                if ~param.is_fixed()
+                    syschars(end+1)=syschar; %#ok<AGROW>
+                end
+            end
+            V_q = gpcbasis_create(syschars);
+        end
+        
         function  [q_alpha, V_q, varerrs]=gpc_expand(set, varargin)
             % GPC_EXPAND Expand parameters into GPC representation.
             %   Expands the maping between reference parameters (germs)
@@ -282,17 +304,34 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        
-        function V_q=get_gpcgerm(set)
-            syschars = '';
-            for i=1:set.num_params()
-                param=set.get_param(i);
-                syschar=param.get_gpc_syschar(set.normalized_polys);
-                if ~param.is_fixed()
-                    syschars(end+1)=syschar; %#ok<AGROW>
-                end
+        %% Sample from SimParamSet
+        function q_i = gpcgerm2params(set, xi_i)
+            m = set.num_params();
+            q_i = zeros(m, size(xi_i,2));
+            
+            ind_rv = find(set.find_rv());
+            ind_fixed = find(set.find_fixed());
+            
+            for i=1:length(ind_rv)
+                j = ind_rv(i);
+                q_i(j,:) = set.get_param(j).germ2param(xi_i(i,:));
             end
-            V_q = gpcbasis_create(syschars);
+            for i=1:length(ind_fixed)
+                j = ind_fixed(i);
+                q_i(j,:) = set.get_param(j).fixed_val;
+            end
+        end
+        
+        function [q_i, xi_i]=sample(set, N, varargin)
+            V_q = set.get_gpcgerm();
+            xi_i = gpcgerm_sample(V_q, N, varargin{:});
+            q_i = gpcgerm2params(set, xi_i);
+        end
+        
+        function [q_i, w, xi_i]=integrate(set, p_int, varargin)
+            V_q = set.get_gpcgerm();
+            [xi_i, w] = gpc_integrate([], V_q, p_int, varargin{:});
+            q_i = gpcgerm2params(set, xi_i);
         end
     end
     
@@ -300,92 +339,6 @@ classdef SimParamSet < SglibHandleObject
     
     %% Other methods
     methods    
-        
-        %% Sample from SimParamSet
-        function xi=sample(set, N, varargin)
-            % Samples from the SimParamSet object
-            %
-            % e.g.: [samples, info]=param_set.sample(N, 'mode', 'qmc', 'qmc_options', {'shuffles', 'true'});
-            % options: 'mode': 'mc' (Monte Carlo) /
-            %                           'qmc' (quasi Monte Carlo, Halton sequence) /
-            %                           'lhs' (quasi Monte Carlo,  Latin-hypercubic)
-            %               'rand_func': any function handle generating
-            %               samples rund_func(N, num_variables)
-            
-            options=varargin2options(varargin);
-            [mode,options]=get_option(options, 'mode', 'default');
-            [rand_func,options]=get_option(options, 'rand_func', []);
-            [qmc_options,options]=get_option(options, 'qmc_options',  {});
-            [sample_from_germ,options]=get_option(options, 'sample_from_germ',  false);
-            check_unsupported_options(options, mfilename);
-            
-            % Properties description
-            m              =set.num_params();
-            m_RV           =set.num_rv();
-            RVs            =set.rv_names();
-            ind_RV         =set.find_ind_rv();
-            fixed_vals     =set.get_fixed_vals();
-            
-            % Send warning if all SIMPARAMS are fixed, and change N to 1
-            if m_RV==0
-                warning('sglib:gpcsimparams_sample', 'can not sample, only determinstic values are given because there are no random variables in the SIMPARAMSET, use SET_NOT_FIXED method to release parameters')
-                xi=fixed_vals;
-                return
-            end
-            % Generate standard uniform samples
-            switch(mode)
-                case {'mc', 'default'}
-                    U = rand(N,m_RV);
-                    if ~isempty(rand_func)
-                        U = funcall(rand_func, N, m_RV);
-                        if any(size(U)~=[N, m_RV])
-                            error('sglib:gpcsimparams_sample', 'rand_func did not return an array of the expect size [%d,%d], but [%d,%d]', n, m, size(U,1), size(U,2));
-                        end
-                    end
-                case 'qmc'
-                    U = halton_sequence(N, m_RV, qmc_options);
-                case 'lhs'
-                    U = lhs_uniform(N, m_RV);
-                otherwise
-                    error('sglib:SimParamSet.sample, unknown paramter value "%s" for option "mode"', mode);
-            end
-            
-            % Generate samples from the distributions of the unfixed
-            % parameters
-            xi_RV=zeros(size(U));
-            for i=1:m_RV
-                param = set.get_param(RVs{i});
-                if sample_from_germ
-                    dist_i= set.get_param(RVs{i}).germ_dist;
-                    if isempty(dist_i)
-                        dist_i=get_set_germdist(set.get_param(RVs{i}));
-                    end
-                    xi_RV(:,i)=dist_i.invcdf((U(:,i)));
-                else
-                    xi_RV(:,i)=set.get_param(RVs{i}).dist.invcdf((U(:,i)));
-                end
-            end
-            
-            % add  columns with the fixed values to the samples
-            if m>m_RV
-                xi=zeros(N,m);
-                xi(:,ind_RV)=xi_RV;
-                
-                if sample_from_germ
-                    map_func=RVs2germ_func(set, 'ind', ~ind_RV);
-                    vals=zeros(size(fixed_vals));
-                    for j=1:length(fixed_vals)
-                        vals(j)=feval(map_func{j}, fixed_vals(j));
-                    end
-                    xi(:,~ind_RV)=repmat(vals', N, 1);
-                else
-                    xi(:,~ind_RV)=repmat(fixed_vals', N, 1);
-                end
-            else
-                xi=xi_RV;
-            end
-        end
-        
         
         %% Generate integration points
         function  [x_p, w, x_ref, gpc_vars_err] =generate_integration_points(set, p_int, varargin)
@@ -568,4 +521,3 @@ classdef SimParamSet < SglibHandleObject
         end
     end
 end
-
