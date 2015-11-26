@@ -6,6 +6,7 @@ classdef TranslatedDistribution < Distribution
     % Example (<a href="matlab:run_example TranslatedDistribution">run</a>)
     %   dist = SemiCircleDistribution();
     %   tdist = TranslatedDistribution(dist, 2, 0.5);
+    %   tdist = TranslatedDistribution(dist, -1, 2, 0);
     %   [mean,variance]=dist.moments()
     %   [mean,variance]=tdist.moments()
     %
@@ -72,9 +73,9 @@ classdef TranslatedDistribution < Distribution
         
         function y=translate_points(tdist, x, forward)
             if forward
-                y=(x-tdist.center)*tdist.scale+tdist.center+tdist.shift;
+                y = TranslatedDistribution.translate_points_forward(x, tdist.shift, tdist.scale, tdist.center);
             else
-                y=(x-tdist.shift-tdist.center)/tdist.scale+tdist.center;
+                y = TranslatedDistribution.translate_points_backwards(x, tdist.shift, tdist.scale, tdist.center);
             end
         end
         
@@ -118,26 +119,49 @@ classdef TranslatedDistribution < Distribution
         
         function [mean,var,skew,kurt]=moments(tdist)
             % MOMENTS compute the moments of the translated distribution.
-            n=max(nargout,1);
-            m=cell(1,n);
-            [m{:}]=tdist.dist.moments();
-            
-            % Mean needs to be translated like any old point
-            mean=tdist.translate_points(m{1}, true);
-            
-            if nargout>=2
-                % Variance is not affected by any shifting or the center
-                var=m{2}*tdist.scale^2;
-            end
-            if nargout>=3
-                % skewness is affected by neither shift nor scale
-                skew=m{3};
-            end
-            if nargout>=4
-                % excess kurtosis is affected by neither shift nor scale
-                kurt=m{4};
-            end
+            m = {nan, nan, nan, nan};
+            [m{1:nargout}] = tdist.dist.moments();
+            m=TranslatedDistribution.translate_moments(m, tdist.shift, tdist.scale, tdist.center);
+            [mean,var,skew,kurt]=deal(m{:});
         end
+        
+%         function polysys=orth_polysys(dist) %#ok<STOUT>
+%             % ORTH_POLYSYS gives the polynomial system which is orthogonal with respect to this distribution.
+%             % 
+%             % See also DISTRIBUTION.GET_BASE_DIST
+% %             base_polysys = dist.base_dist.orth_polys();
+% %             polysys = TranslatedPolynomials(
+%             
+%             error('sglib:distribution:no_polysys', 'No polynomials system for this distribution (%s)', dist.tostring());
+%         end
+    end
+    
+    methods (Static)
+        function y=translate_points_forward(x, shift, scale, center)
+                y=(x-center)*scale+center+shift;
+        end
+        
+        function y=translate_points_backwards(x, shift, scale, center)
+                y=(x-shift-center)/scale+center;
+        end
+        
+        function m=translate_moments(m, shift, scale, center)
+            % MOMENTS compute the translated moments.
+            
+            if length(m)>=1
+                % Mean needs to be translated like any old point
+                m{1}=TranslatedDistribution.translate_points_forward(m{1}, shift, scale, center);
+            end
+            
+            if length(m)>=2
+                % Variance is not affected by any shifting or the center
+                m{2}=m{2}*scale^2;
+            end
+            
+            % Higher (standardized) moments like skewness or kurtosis are
+            % not affected by neither shift nor scale
+        end
+        
     end
 end
 
