@@ -8,6 +8,9 @@ classdef ExponentialDistribution < Distribution
     %   dist = ExponentialDistribution(2);
     %   [mean,var,skew,kurt]=dist.moments()
     %
+    %   x = dist.invcdf(linspace(0,0.999));
+    %   plot(x, dist.pdf(x));
+    %
     % See also DISTRIBUTION LOGNORMALDISTRIBUTION BETA_CDF
     
     %   Elmar Zander, Aidin Nojavan, Noemi Friedman

@@ -5,8 +5,11 @@ classdef LogNormalDistribution < Distribution
     %   parameters MU and SIGMA.
     %
     % Example (<a href="matlab:run_example LogNormalDistribution">run</a>)
-    %   dist = LogNormalDistribution(2,3);
+    %   dist = LogNormalDistribution(1.2,0.4);
     %   [mean,var,skew,kurt]=dist.moments()
+    %
+    %   x = dist.invcdf(linspace(0,0.999,10000));
+    %   plot(x, dist.pdf(x));
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BEA_PDF
     

@@ -5,8 +5,12 @@ classdef UniformDistribution < Distribution
     %   parameters A and B.
     %
     % Example (<a href="matlab:run_example UniformDistribution">run</a>)
-    %   dist = LogNormalDistribution(2,3);
+    %   dist = UniformDistribution(2,3);
     %   [mean,var,skew,kurt]=dist.moments()
+    %
+    %   x = point_range([2,3], 'ext', 0.1);
+    %   plot(x, dist.pdf(x));
+    %   ylim([0, 1.5]);
     %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     

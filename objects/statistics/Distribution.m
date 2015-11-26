@@ -150,8 +150,5 @@ classdef Distribution < SglibObject
                 polysys = polysys.normalized();
             end
         end
-        
     end
-    
-    
 end
