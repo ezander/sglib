@@ -117,6 +117,8 @@ elseif isstruct(val)
         str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name), maxarr, maxcell)];
     end
     str=[str, ')'];
+elseif isa(val, 'SglibObject')
+    str=val.tostring();
 else
     warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );
     str=['$', orig, '$'];
