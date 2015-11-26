@@ -8,6 +8,10 @@ classdef ArcSinDistribution < BetaDistribution
     %   dist = ArcSinDistribution();
     %   [mean,var,skew,kurt]=dist.moments()
     %
+    %   x = dist.invcdf(linspace(0.01,0.99,10000));
+    %   plot(x, dist.pdf(x));
+    %   ylim([0, 5]);
+    %
     % See also DISTRIBUTION BETADISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
     %   Noemi Friedman, Elmar Zander

@@ -7,6 +7,9 @@ classdef BetaDistribution < Distribution
     %   dist = BetaDistribution(2,3);
     %   [mean,var,skew,kurt]=dist.moments()
     %
+    %   x = dist.invcdf(linspace(0,1,10000));
+    %   plot(x, dist.pdf(x));
+    %
     % See also DISTRIBUTION NORMALDISTRIBUTION BETA_PDF
     
     %   Elmar Zander, Aidin Nojavan, Noemi Friedman

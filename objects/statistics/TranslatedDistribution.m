@@ -4,6 +4,14 @@ classdef TranslatedDistribution < Distribution
     % distribution DIST in regard to parameters SHIFT,SCALE,MEAN
     %
     % Example (<a href="matlab:run_example TranslatedDistribution">run</a>)
+    %   dist = SemiCircleDistribution();
+    %   tdist = TranslatedDistribution(dist, 2, 0.5);
+    %   [mean,variance]=dist.moments()
+    %   [mean,variance]=tdist.moments()
+    %
+    %   x = sort([dist.invcdf(linspace(0,1)), tdist.invcdf(linspace(0,1))]);
+    %   plot(x, dist.pdf(x), x, tdist.pdf(x));
+    %   legend('orig', 'translated');
     %
     % See also DISTRIBUTION
     

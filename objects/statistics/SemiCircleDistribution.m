@@ -8,6 +8,9 @@ classdef SemiCircleDistribution < BetaDistribution
     %   dist = SemiCircleDistribution();
     %   [mean,var,skew,kurt]=dist.moments()
     %
+    %   x = dist.invcdf(linspace(0,1));
+    %   plot(x, dist.pdf(x));
+    %
     % See also DISTRIBUTION BETADISTRIBUTION BETA_PDF
     
     %   Noemi Friedman, Elmar Zander
