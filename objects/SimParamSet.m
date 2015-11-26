@@ -203,23 +203,21 @@ classdef SimParamSet < SglibHandleObject
     methods 
         function set_fixed(set, name_or_ind, val)
             % SET_FIXED Fix SimParameters in the ParamSet to a constant value.
-            %   Fixes the values of SimParams(NAME) more, and accordingly the
-            %   probability distribution of them are ignored
-            %
             %   SET.SET_FIXED(NAME, VAL) fixes simparam NAME to the value
             %   VAL. SET.SET_FIXED(INDEX, VAL) fixes simparam number INDEX
             %   to the value VAL.
-            %
-            %   If VAL is omitted, i.e. SET.SET_FIXED(NAME) or
-            %   SET.SET_FIXED(INDEX, VAL) is called, the parameter is fixed
-            %   to its mean values (calculated from its distribution)
             param = set.get_param(name_or_ind);
-            
-            if nargin>2 %if value is specified
-                param.set_fixed(val);
-            else %if value is not specified, fix at the mean value
-                param.set_to_mean();
-            end
+            param.set_fixed(val);
+        end
+
+        function set_to_mean(set, name_or_ind)
+            % SET_TO_MEAN Fix SimParameters in the ParamSet to its mean value.
+            %   SET.SET_TO_MEAN(NAME) or SET.SET_TO_MEAN(INDEX) fixes the
+            %   parameter to its mean value (calculated from its
+            %   distribution)
+            % See also SET_FIXED, SET_NOT_FIXED
+            param = set.get_param(name_or_ind);
+            param.set_to_mean();
         end
         
         function set_not_fixed(set, name_or_ind)
@@ -289,8 +287,10 @@ classdef SimParamSet < SglibHandleObject
             syschars = '';
             for i=1:set.num_params()
                 param=set.get_param(i);
-                syschar=get_gpc_syschar(param, set.normalized_polys);
-                syschars(end+1)=syschar; %#ok<AGROW>
+                syschar=param.get_gpc_syschar(set.normalized_polys);
+                if ~param.is_fixed()
+                    syschars(end+1)=syschar; %#ok<AGROW>
+                end
             end
             V_q = gpcbasis_create(syschars);
         end
@@ -324,7 +324,7 @@ classdef SimParamSet < SglibHandleObject
             m_RV           =set.num_rv();
             RVs            =set.rv_names();
             ind_RV         =set.find_ind_rv();
-            fixed_vals     =set.find_fixed_vals();
+            fixed_vals     =set.get_fixed_vals();
             
             % Send warning if all SIMPARAMS are fixed, and change N to 1
             if m_RV==0
@@ -421,55 +421,20 @@ classdef SimParamSet < SglibHandleObject
             
             
             options=varargin2options(varargin);
-            [polysys,options]=get_option(options, 'polysys', '');
             [expand_options,options]=get_option(options, 'expand_options', {});
             [grid, options] = get_option(options, 'grid', 'smolyak');
             check_unsupported_options(options, mfilename);
             
             % generate gpc basis for the parameters
-            [p_beta, V_p, gpc_vars_err]=set.gpc_expand_RVs('polysys', polysys, 'expand_options', expand_options);
+            V_q = set.get_gpcgerm();
+            [p_beta, V_p, gpc_vars_err]=set.gpc_expand('expand_options', expand_options);
             % generate integration points for the gPC germs (x_ref)
             [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', grid);
             % map integration points to the parameter set
-            x_p=set.gpc_evaluate( p_beta, V_p, x_ref);
+            x_p=gpc_evaluate( p_beta, V_p, x_ref);
         end
         
-        %% Generate integration point from gPC
-        function   x_p = gpc_evaluate(set, p_beta, V_p, x_ref, varargin)
-            % [X, W, X_REF] = GPC_EVALUATE(P_BETA, V_P, X_REF)
-            % Evaluate parameters X_REF germ coordinate points for the SimParameters in the
-            % SIMPARAMSET object. Should be used in combination of
-            % GENERATE_INTEGRATION_POINTS
-            % with the inputs:
-            %    -P_BETA, V_P: gPCE coefficient and basis of the set of the not fixed
-            %        SimParameters in the SimParameterSet
-            %    -X_REF:  coordinates of the gPCE germs
-            %    -X : coordinates in the parameteric coordinate system
-            
-            % Example:
-            % [p_beta, V_p, ~]=set.gpc_expand_RVs('polysys', 'h')
-            % [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', 'smolyak');
-            % x_p = gpc_evaluate(p_beta, V_p, x_ref)
-            
-            m              =set.num_params();
-            m_RV           =set.num_RVs();
-            ind_RV         =set.find_ind_RV();
-            
-            n=size(x_ref, 2);
-            
-            %map integration points to the parameter's domain with the gPCE
-            x=gpc_evaluate(p_beta, V_p, x_ref);
-            
-            % if there are fixed parameters, insert fixed values
-            if m>m_RV
-                x_p=zeros(m,n);
-                x_p(ind_RV,:)=x;
-                x_p(~ind_RV,:)=repmat(set.find_fixed_vals(), 1, n);
-            else
-                x_p=x;
-            end
-        end
-              %% Get mappings from germ to simparam in a cell for every random variable
+        %% Get mappings from germ to simparam in a cell for every random variable
         function map_func=germ2RVs_func(set, varargin)
             % all the mappings from germ to the parameters in a cell format
             % if there were no germs defined for the simparams, it

@@ -61,6 +61,10 @@ Q.reset_fixed();
 [~, V_Q]=gpc_expand(Q);
 assert_equals(V_Q{1}, 'hLhp', 'gpc_expand_germ_normalized');
 
+Q.set_to_mean('baz');
+[~, V_Q]=gpc_expand(Q);
+assert_equals(V_Q{1}, 'hLp', 'gpc_expand_germ_normalized');
+
 %Q.sample(3)
 %%
 Q = SimParamSet('normalized_polys', true);
@@ -76,4 +80,9 @@ Q.add('q8', BetaDistribution(1,1.4));
 V_q = Q.get_gpcgerm();
 assert_equals(V_q, gpcbasis_create('hLhpabha'), 'gpc_germ');
 
+Q.set_to_mean('q2');
+Q.set_to_mean('q5');
+V_q = Q.get_gpcgerm();
+assert_equals(V_q, gpcbasis_create('hhpbha'), 'gpc_germ_fixed');
 
+%Q.set_fixed
