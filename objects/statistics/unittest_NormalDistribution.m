@@ -125,6 +125,9 @@ dist = fix_bounds(N,2,4,'q0',0.001,'q1', 0.5);
 assert_equals(invcdf(dist,0.001), 2, 'fix_bounds-nor_min');
 assert_equals(invcdf(dist,0.5), 4, 'fix_bounds-nor_max');
 
+assert_error(@()(fix_bounds(N, 2, 4, 'q0',0,'q1', 0.5)), 'sglib:', 'lower_bound_inf');
+assert_error(@()(fix_bounds(N, 2, 4, 'q0',0,'q1', 1)), 'sglib:', 'upper_bound_inf');
+
 %% Orthogonal polynomials
 dist = NormalDistribution();
 polysys = dist.orth_polysys();
