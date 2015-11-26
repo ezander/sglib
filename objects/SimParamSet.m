@@ -61,26 +61,29 @@ classdef SimParamSet < SglibHandleObject
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     
     properties (GetAccess=public, SetAccess=protected)
-        simparams
+        %simparams
         params
+        normalized_polys
     end
     
-    %% Constructor
+    %% Constructor and basic methods
     methods 
         function set=SimParamSet(varargin)
             % SIMPARAMSET Returns a new SimParamSet object.
-            %   that by default sets the simparams independent
-            %   e.g.: MYPARAMSET=SimParamset()
-            %         MYPARAMSET=SimParamset(param1,param2)
-            %   where PARAM1 and PARAM2 are SIMPARAMETER objects
+            options=varargin2options(varargin, mfilename);
+            [normalized, options]=get_option(options, 'normalized_polys', true);
+            check_unsupported_options(options);
             
-            set.simparams = struct();
+            %set.simparams = struct();
             set.params = SimpleMap();
-            
-            % initialize properties
-            if nargin>0
-                set.add_parameter(varargin{:});
+            set.normalized_polys = normalized;
+        end
+        
+        function set_normalized_polys(set, normalized)
+            if nargin<2
+                normalized=true;
             end
+            set.normalized_polys = normalized;
         end
     end
     
@@ -228,6 +231,16 @@ classdef SimParamSet < SglibHandleObject
             param.set_not_fixed();
         end
         
+        function reset_fixed(set)
+            % RESET_FIXED Resets fixed state for all parameters.
+            %   RESET_FIXED(SET) resets the fixed state for all parameters
+            %   in the ParamSet SET.
+            % See also SET_NOT_FIXED
+            for i=1:set.num_params
+                set.set_not_fixed(i);
+            end
+        end
+        
         function set_dist(set, name_or_ind, dist)
             % SET_DIST Change the distribution of a parameter.
             %   SET_DIST(SET, NAME, DIST)changes the distribution of the
@@ -250,7 +263,6 @@ classdef SimParamSet < SglibHandleObject
             %   See also GPC_PARAM_EXPAND
             
             options=varargin2options(varargin);
-            [normalized,options]=get_option(options, 'normalized', true);
             [expand_options,options]=get_option(options, 'expand_options', {});
             check_unsupported_options(options, mfilename);
             
@@ -264,14 +276,27 @@ classdef SimParamSet < SglibHandleObject
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
-                    [qi_beta, V, varerrs(i)]=param.gpc_expand('normalized', normalized, 'expand_options', expand_options);
+                    options = {'normalized', set.normalized_polys, 'expand_options', expand_options};
+                    [qi_beta, V, varerrs(i)]=param.gpc_expand(options{:});
                 end
                 
                 [q_alpha, V_q]=gpc_combine_inputs(q_alpha, V_q, qi_beta, V);
             end
         end
-
+        
+        
+        function V_q=get_gpcgerm(set)
+            syschars = '';
+            for i=1:set.num_params()
+                param=set.get_param(i);
+                syschar=get_gpc_syschar(param, set.normalized_polys);
+                syschars(end+1)=syschar; %#ok<AGROW>
+            end
+            V_q = gpcbasis_create(syschars);
+        end
     end
+    
+    
     
     %% Other methods
     methods    

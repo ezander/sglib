@@ -51,8 +51,29 @@ Q.set_fixed(1, 42)
 Q.set_fixed('baz', 10)
 assert_equals(Q.get_fixed_vals(), [42; 10], 'get_fixed');
 
-[Q_alpha, V_Q]=gpc_expand(Q, 'normalized', false);
+Q.set_normalized_polys(false);
+[Q_alpha, V_Q]=gpc_expand(Q);
 assert_equals(Q_alpha, [42 0 0; 0.25 -0.25 0; 10 0 0; 5 0 2], 'gpc_expand_coeff');
 assert_equals(V_Q, {'LP', [0 0; 1 0; 0 1]}, 'gpc_expand_basis');
 
+Q.set_normalized_polys(true);
+Q.reset_fixed();
+[~, V_Q]=gpc_expand(Q);
+assert_equals(V_Q{1}, 'hLhp', 'gpc_expand_germ_normalized');
+
 %Q.sample(3)
+%%
+Q = SimParamSet('normalized_polys', true);
+Q.add('q1', NormalDistribution(2,3));
+Q.add('q2', ExponentialDistribution(4));
+Q.add('q3', LogNormalDistribution(1,1.2));
+Q.add('q4', UniformDistribution(3,7));
+Q.add('q5', BetaDistribution(1,1.4));
+Q.add('q6', BetaDistribution(1,1.2));
+Q.add('q7', NormalDistribution(1,3));
+Q.add('q8', BetaDistribution(1,1.4));
+
+V_q = Q.get_gpcgerm();
+assert_equals(V_q, gpcbasis_create('hLhpabha'), 'gpc_germ');
+
+
