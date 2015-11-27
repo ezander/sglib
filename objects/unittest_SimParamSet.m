@@ -67,6 +67,12 @@ Q.set_to_mean('baz');
 assert_equals(V_Q{1}, 'hLp', 'gpc_expand_germ_normalized');
 
 %Q.sample(3)
+%% Test the add_parameter method
+Q = SimParamSet('prefer_normalized_polys', true);
+Q.add_parameter(SimParameter('q1', NormalDistribution()), ...
+    SimParameter('q2', UniformDistribution));
+assert_equals(Q.get_param(1).name, 'q1', 'add_param1');
+assert_equals(Q.get_param(2).name, 'q2', 'add_param2');
 
 %% GPC methods
 % Testing get_gpcgerm without fixed params
