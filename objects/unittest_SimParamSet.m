@@ -20,7 +20,6 @@ function unittest_SimParamSet(varargin)
 %%
 munit_set_function( 'SimParamSet' );
 
-clear all
 Q = SimParamSet();
 Q.add('foo', NormalDistribution(2,3));
 Q.add('bar', ExponentialDistribution(4));
