@@ -159,6 +159,20 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             end
         end
         
+        function y=pdf(param, x)
+            % VAR Return the variance of the parameter.
+            %   VAR=VAR(PARAM) returns the variance of the SimParameter
+            %   or the 0 if the parameters has been set to fixed.
+            if param.is_fixed
+                abstol = 1e-10;
+                reltol = 1e-10;
+                x0 = param.fixed_val;
+                y = double(abs(x-x0)<=abstol+x0*reltol);
+            else
+                y = param.dist.pdf(x);
+            end
+        end
+        
         function xi=sample(param, n, varargin)
             % SAMPLE Draw samples from this parameter/
             %   XI=SAMPLE(PARAM, N, VARARGIN) draws N random samples from
@@ -233,10 +247,6 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             
             syschar=param.get_gpc_syschar(normalized);
             [q_alpha, V_q, varerr]=gpc_param_expand(param.dist, syschar, expand_options);
-            
-            % TODO this should go somewhere else
-            %param.set_germdist(g_dist);
-            %param.germ2param_func=@(x)gpc_evaluate(a_alpha, V,x);
         end
         
         function y=germ2param(param, x)

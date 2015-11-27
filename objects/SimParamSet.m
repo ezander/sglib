@@ -184,11 +184,17 @@ classdef SimParamSet < SglibHandleObject
             rv_plot_names=plot_names(ind_rv);
         end
         
-        function param=get_params(set)
-            param = set.param_map.get(ind_or_string);
+        function params=get_params(set)
+            % GET_PARAM Get all parameters from the set.
+            %   PARAMS=GET_PARAM(SET) gets all the parameter from the
+            %   parameters set.
+            params = set.param_map.values;
         end
         function param=get_param(set, ind_or_string)
-            % param=get_param(set, ind_or_string)
+            % GET_PARAM Get one parameter from the set.
+            %   PARAM=GET_PARAM(SET, IND_OR_STRING) gets the parameter
+            %   IND_OR_STRING from the parameters set, where IND_OR_STRING
+            %   can be the name or numerical index of the parameter.
             param = set.param_map.get(ind_or_string);
         end
         
@@ -254,6 +260,49 @@ classdef SimParamSet < SglibHandleObject
             %   released.
             param = set.get_param(name_or_ind);
             param.set_dist(dist);
+        end
+    end
+    
+    %% Some basic statistical methods
+    methods
+        function means=mean(set)
+            % MEAN Return the mean values of this parameter set.
+            %   MEANS=MEAN(SET) returns a column vector containing the mean
+            %   values of the parameters. Note that for fixed parameters,
+            %   the mean is the fixed value.
+            m = set.num_params();
+            params = set.get_params();
+            means = zeros(m,1);
+            for i=1:m
+                means(i)=params{i}.mean;
+            end
+        end
+
+        function vars=var(set)
+            % VAR Return the variances of this parameter set.
+            %   VARS=VAR(SET) returns a column vector containing the
+            %   variances of the parameters. Note that for fixed
+            %   parameters, the variance is zero.
+            m = set.num_params();
+            params = set.get_params();
+            vars = zeros(m,1);
+            for i=1:m
+                vars(i)=params{i}.var;
+            end
+        end
+        
+        %% Gives the probability that the parameters
+        % take value x
+        function prob=pdf(set,x)
+            m=set.num_params;
+            assert(size(x,1)==m);
+            n=size(x,2);
+            params = set.get_params();
+            prob = ones(1,n);
+            
+            for i=1:m
+                prob=prob.*params{i}.pdf(x(i,:));
+            end
         end
     end
     
@@ -356,60 +405,7 @@ classdef SimParamSet < SglibHandleObject
         end
     end
     
-    
-    %% Some basic statistical methods
-    methods
-        function means=mean(set)
-            %% Gives the mean values of the all the parameters in the parameterset
-            % gives the mean values of all the parameters in the
-            % SIMPARAMETERSET
-            params = set.get_params();
-            p=set.param_names();
-            m=set.num_params;
-            means=zeros(m, 1);
-            for i=1:m
-                means(i)=set.simparams.(p{i}).mean;
-            end
-        end
         
-        %% Gives the variances of the all the parameters in the parameterset
-        %         function vars=vars(set)
-        %             % gives the variances of all the parameters in the
-        %             % SIMPARAMETERSET
-        %             p=set.param_names();
-        %             m=set.num_params;
-        %             vars=zeros(m, 1);
-        %             for i=1:m
-        %                 vars(i)=set.simparams.(p{i}).var;
-        %             end
-        %         end
-        %% Gives the variances of the all the parameters in the parameterset
-        function v=var_vals(set)
-            % gives the variances of all the parameters in the
-            % SIMPARAMETERSET
-            p=set.param_names();
-            m=set.num_params;
-            v=zeros(m, 1);
-            for i=1:m
-                v(i)=set.simparams.(p{i}).var;
-            end
-        end
-        
-        %% Gives the probability that the parameters
-        % take value x
-        function prob=pdf(set,x)
-            
-            p=set.param_names();
-            m=set.num_params;
-            
-            prob=1;
-            for i=1:m
-                prob=set.simparams.(p{i}).pdf(x(i))*prob;
-            end
-            
-        end
-    end
-    
     %% Other methods
     methods    
         %% Get mappings from germ to simparam in a cell for every random variable

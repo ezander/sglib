@@ -67,7 +67,9 @@ Q.set_to_mean('baz');
 assert_equals(V_Q{1}, 'hLp', 'gpc_expand_germ_normalized');
 
 %Q.sample(3)
-%%
+
+%% GPC methods
+% Testing get_gpcgerm without fixed params
 Q = SimParamSet('prefer_normalized_polys', true);
 Q.add('q1', NormalDistribution(2,3));
 Q.add('q2', ExponentialDistribution(4));
@@ -81,9 +83,29 @@ Q.add('q8', BetaDistribution(1,1.4));
 V_q = Q.get_gpcgerm();
 assert_equals(V_q, gpcbasis_create('hLhpabha'), 'gpc_germ');
 
+% Testing get_gpcgerm with fixed params
 Q.set_to_mean('q2');
 Q.set_to_mean('q5');
 V_q = Q.get_gpcgerm();
 assert_equals(V_q, gpcbasis_create('hhpbha'), 'gpc_germ_fixed');
 
-%Q.set_fixed
+% Testing the get_params
+params = Q.get_params();
+assert_equals(length(params), 8, 'get_params_num');
+assert_equals(params{1}.name, 'q1', 'get_params1');
+assert_equals(params{8}.name, 'q8', 'get_params8');
+
+%% Basic statistical methods
+Q = SimParamSet();
+Q.add('q1', NormalDistribution(1,2));
+Q.add('q2', NormalDistribution(2,3));
+Q.add('q3', NormalDistribution(3,4));
+Q.add('q4', NormalDistribution(4,5));
+Q.set_fixed(3, 7);
+
+assert_equals(Q.mean, [1; 2; 7; 4], 'mean');
+assert_equals(Q.var, [4; 9; 0; 25], 'var');
+prob1 = normal_pdf(1,1,2)*normal_pdf(2,2,3)*normal_pdf(4,4,5);
+prob3 = normal_pdf(2,1,2)*normal_pdf(3,2,3)*normal_pdf(5,4,5);
+assert_equals(Q.pdf([1 1 2; 2 2 3; 7 6 7; 4 4 5]), [prob1, 0, prob3], 'pdf');
+
