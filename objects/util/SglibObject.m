@@ -109,7 +109,7 @@ classdef (HandleCompatible=true) SglibObject
                 case 1
                     str = tostring(obj);
                 case 2
-                    str = base_tostring();
+                    str = base_tostring(obj);
                 case 3
                     str1 = tostring(obj);
                     str2 = base_tostring(obj); %#ok<NASGU>

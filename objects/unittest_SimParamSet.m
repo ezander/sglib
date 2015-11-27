@@ -68,7 +68,7 @@ assert_equals(V_Q{1}, 'hLp', 'gpc_expand_germ_normalized');
 
 %Q.sample(3)
 %%
-Q = SimParamSet('normalized_polys', true);
+Q = SimParamSet('prefer_normalized_polys', true);
 Q.add('q1', NormalDistribution(2,3));
 Q.add('q2', ExponentialDistribution(4));
 Q.add('q3', LogNormalDistribution(1,1.2));
