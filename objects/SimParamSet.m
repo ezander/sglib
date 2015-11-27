@@ -61,9 +61,8 @@ classdef SimParamSet < SglibHandleObject
     %   this program.  If not, see <http://www.gnu.org/licenses/>.
     
     properties (GetAccess=public, SetAccess=protected)
-        %simparams
-        params
-        normalized_polys
+        param_map@SimpleMap
+        prefer_normalized_polys@logical
     end
     
     %% Constructor and basic methods
@@ -71,21 +70,46 @@ classdef SimParamSet < SglibHandleObject
         function set=SimParamSet(varargin)
             % SIMPARAMSET Returns a new SimParamSet object.
             options=varargin2options(varargin, mfilename);
-            [normalized, options]=get_option(options, 'normalized_polys', true);
+            [normalized, options]=get_option(options, 'prefer_normalized_polys', true);
             check_unsupported_options(options);
             
-            %set.simparams = struct();
-            set.params = SimpleMap();
-            set.normalized_polys = normalized;
+            set.param_map = SimpleMap();
+            set.prefer_normalized_polys = normalized;
         end
         
         function set_normalized(set, normalized)
             if nargin<2
                 normalized=true;
             end
-            set.normalized_polys = normalized;
+            set.prefer_normalized_polys = normalized;
         end
     end
+    
+    %% Adding parameters
+    methods 
+        function add(set, param, varargin)
+            % ADD Add a parameter to the param set.
+            if ischar(param)
+                param = SimParameter(param, varargin{:});
+            end
+            check_type(param, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
+            if set.param_map.iskey(param.name)
+                warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
+            end
+            set.param_map.add(param.name, param);
+        end
+        
+        
+        function add_parameter(set, varargin)
+            % ADD_PARAMETER Add parameter(s) to SimParamSet
+            % Adds the P parameters to the SimParamSet object
+            p=varargin;
+            for i=1:length(p)
+                set.add(p{i});
+            end
+        end
+    end
+    
     
     %% Basic accessor methods
     methods
@@ -95,7 +119,7 @@ classdef SimParamSet < SglibHandleObject
             %   SimParameters in the SimParameterSet
             % Example: 
             %     n = set.num_params()
-            m = set.params.count();
+            m = set.param_map.count();
         end
         
         function ind=find_rv(set)
@@ -105,7 +129,7 @@ classdef SimParamSet < SglibHandleObject
             m=set.num_params;
             ind=false(m,1);
             for i=1:m
-                ind(i)=~set.params.values{i}.is_fixed;
+                ind(i)=~set.param_map.values{i}.is_fixed;
             end
         end
 
@@ -128,7 +152,7 @@ classdef SimParamSet < SglibHandleObject
             %   Gives the NAMEs of SimParameters in the SimParameterSet
             %   Example: P_NAMES=PARAM_NAMES(SIMPARAMETERSET)
             %names=fieldnames(set.simparams);
-            names = set.params.keys();
+            names = set.param_map.keys();
         end
         
         function plot_names=param_plot_names(set)
@@ -138,7 +162,7 @@ classdef SimParamSet < SglibHandleObject
             m=set.num_params;
             plot_names=cell(m, 1);
             for i=1:m
-                plot_names{i}=set.params.values{i}.plot_name;
+                plot_names{i}=set.param_map.values{i}.plot_name;
             end
         end
         
@@ -160,8 +184,12 @@ classdef SimParamSet < SglibHandleObject
             rv_plot_names=plot_names(ind_rv);
         end
         
+        function param=get_params(set)
+            param = set.param_map.get(ind_or_string);
+        end
         function param=get_param(set, ind_or_string)
-            param = set.params.get(ind_or_string);
+            % param=get_param(set, ind_or_string)
+            param = set.param_map.get(ind_or_string);
         end
         
         function fixed_vals=get_fixed_vals(set)
@@ -177,30 +205,6 @@ classdef SimParamSet < SglibHandleObject
         end
     end
     
-    %% Adding parameters
-    methods 
-        function add(set, param, varargin)
-            % ADD Add a parameter to the param set.
-            if ischar(param)
-                param = SimParameter(param, varargin{:});
-            end
-            check_type(param, 'SimParameter', true, 'Inputs of SimParamSet', mfilename);
-            if set.params.iskey(param.name)
-                warning('sglib:gpcsimparams_add_parameter', 'The given SimParameter name is already the name of a parameter in the SimParameterSet, and will be overwritten')
-            end
-            set.params.add(param.name, param);
-        end
-        
-        
-        function add_parameter(set, varargin)
-            % ADD_PARAMETER Add parameter(s) to SimParamSet
-            % Adds the P parameters to the SimParamSet object
-            p=varargin;
-            for i=1:length(p)
-                set.add(p{i});
-            end
-        end
-    end
     
     %% Fixing parameters
     methods 
@@ -266,7 +270,7 @@ classdef SimParamSet < SglibHandleObject
             syschars = '';
             for i=1:set.num_params()
                 param=set.get_param(i);
-                syschar=param.get_gpc_syschar(set.normalized_polys);
+                syschar=param.get_gpc_syschar(set.prefer_normalized_polys);
                 if ~param.is_fixed()
                     syschars(end+1)=syschar; %#ok<AGROW>
                 end
@@ -296,7 +300,7 @@ classdef SimParamSet < SglibHandleObject
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
-                    options = {'normalized', set.normalized_polys, 'expand_options', expand_options};
+                    options = {'normalized', set.prefer_normalized_polys, 'expand_options', expand_options};
                     [qi_beta, V, varerrs(i)]=param.gpc_expand(options{:});
                 end
                 
@@ -304,8 +308,11 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        %% Sample from SimParamSet
         function q_i = gpcgerm2params(set, xi_i)
+            % GPCGERM2PARAMS convert values of the germ to values of the parameters.
+            %   Q_I = GPCGERM2PARAMS(SET, XI_I) if XI_I is an array of
+            %   values of the germ for this parameter set, Q_I is an array
+            %   corresponding to the actual values of the parameters.
             m = set.num_params();
             q_i = zeros(m, size(xi_i,2));
             
@@ -323,12 +330,26 @@ classdef SimParamSet < SglibHandleObject
         end
         
         function [q_i, xi_i]=sample(set, N, varargin)
+            % SAMPLE Sample from the parameters.
+            %   [Q_I, XI_I]=SAMPLE(SET, N, OPTIONS) returns a set of N
+            %   samples for this parameter set. The XI_I are in "germ
+            %   space", while the Q_I are in parameter space. The OPTIONS
+            %   are passed on the GPCGERM_SAMPLE function (for options see
+            %   there).
+            %
+            % See also GPCGERM_SAMPLE
             V_q = set.get_gpcgerm();
             xi_i = gpcgerm_sample(V_q, N, varargin{:});
             q_i = gpcgerm2params(set, xi_i);
         end
         
-        function [q_i, w, xi_i]=integrate(set, p_int, varargin)
+        function [q_i, w, xi_i]=get_integration_points(set, p_int, varargin)
+            % GET_INTEGRATION_POINTS Generate integration points.
+            %   [Q_I, W, XI_I]=GET_INTEGRATION_POINTS(SET, P_INT, OPTIONS)
+            %   generates integration point for integration over this
+            %   parameter set. For options see GPC_INTEGRATE.
+            %
+            % See also GPC_INTEGRATE
             V_q = set.get_gpcgerm();
             [xi_i, w] = gpc_integrate([], V_q, p_int, varargin{:});
             q_i = gpcgerm2params(set, xi_i);
@@ -336,57 +357,61 @@ classdef SimParamSet < SglibHandleObject
     end
     
     
+    %% Some basic statistical methods
+    methods
+        function means=mean(set)
+            %% Gives the mean values of the all the parameters in the parameterset
+            % gives the mean values of all the parameters in the
+            % SIMPARAMETERSET
+            params = set.get_params();
+            p=set.param_names();
+            m=set.num_params;
+            means=zeros(m, 1);
+            for i=1:m
+                means(i)=set.simparams.(p{i}).mean;
+            end
+        end
+        
+        %% Gives the variances of the all the parameters in the parameterset
+        %         function vars=vars(set)
+        %             % gives the variances of all the parameters in the
+        %             % SIMPARAMETERSET
+        %             p=set.param_names();
+        %             m=set.num_params;
+        %             vars=zeros(m, 1);
+        %             for i=1:m
+        %                 vars(i)=set.simparams.(p{i}).var;
+        %             end
+        %         end
+        %% Gives the variances of the all the parameters in the parameterset
+        function v=var_vals(set)
+            % gives the variances of all the parameters in the
+            % SIMPARAMETERSET
+            p=set.param_names();
+            m=set.num_params;
+            v=zeros(m, 1);
+            for i=1:m
+                v(i)=set.simparams.(p{i}).var;
+            end
+        end
+        
+        %% Gives the probability that the parameters
+        % take value x
+        function prob=pdf(set,x)
+            
+            p=set.param_names();
+            m=set.num_params;
+            
+            prob=1;
+            for i=1:m
+                prob=set.simparams.(p{i}).pdf(x(i))*prob;
+            end
+            
+        end
+    end
     
     %% Other methods
     methods    
-        
-        %% Generate integration points
-        function  [x_p, w, x_ref, gpc_vars_err] =generate_integration_points(set, p_int, varargin)
-            % [X, W, X_REF, GPC_VARS_ERR] =GENERATE_INTEGRATION_POINTS(SIMPARAMSET,
-            % P_INT)
-            % Generates integration points for the SimParameters in the
-            % SIMPARAMSET object. The points are given from quadrature
-            % rules for the not fixed SimParameters, while the coordinates
-            % of the fixed SimParameters are set to the fixed value. First
-            % a maping is defined in gPCE from some reference parameters (germs)
-            % to the  not fixed SimParameters. The integration point
-            % is generated in the reference coordinate system, and then maped
-            % back with the gPCE-map to the coord sys. defined by the SimParameters
-            %
-            % with the inputs:
-            %    -P_INT:  integration order (derived from P_INT-point univariate rule)
-            % optional inputs
-            %    -'POLYSYS': polynomial system of the gpc_maping
-            % ('H'/'h': Hermite, 'P'/'p': Legendre...see more in GPCBASIS_CREATE)
-            %        If not defined, then the polynomial system is
-            %        generated depending on the distributions of the
-            %        SimParameters
-            %    - 'EXPAND_OPTIONS': see more in the optional inputs of GPC_PARAM_EXPAND
-            %    - 'GRID': full tensor or sparse integration rule 'FULL_TENSOR' /'SMOLYAK'(default)
-            % whith the outputs
-            %
-            %    -X : coordinates of the
-            %        integration points in the parameteric coordinate system
-            %    -W: weights
-            %    -X_REF: coordinates in the reference
-            %        coordinate system of the integration points
-            %    -GPC_VARS_ERR: error in the variance from the gPCE
-            
-            
-            options=varargin2options(varargin);
-            [expand_options,options]=get_option(options, 'expand_options', {});
-            [grid, options] = get_option(options, 'grid', 'smolyak');
-            check_unsupported_options(options, mfilename);
-            
-            % generate gpc basis for the parameters
-            V_q = set.get_gpcgerm();
-            [p_beta, V_p, gpc_vars_err]=set.gpc_expand('expand_options', expand_options);
-            % generate integration points for the gPC germs (x_ref)
-            [x_ref, w] = gpc_integrate([], V_p, p_int, 'grid', grid);
-            % map integration points to the parameter set
-            x_p=gpc_evaluate( p_beta, V_p, x_ref);
-        end
-        
         %% Get mappings from germ to simparam in a cell for every random variable
         function map_func=germ2RVs_func(set, varargin)
             % all the mappings from germ to the parameters in a cell format
@@ -440,53 +465,6 @@ classdef SimParamSet < SglibHandleObject
         
         
         
-        %% Gives the mean values of the all the parameters in the parameterset
-        function means=mean_vals(set)
-            % gives the mean values of all the parameters in the
-            % SIMPARAMETERSET
-            p=set.param_names();
-            m=set.num_params;
-            means=zeros(m, 1);
-            for i=1:m
-                means(i)=set.simparams.(p{i}).mean;
-            end
-        end
-        
-        %% Gives the variances of the all the parameters in the parameterset
-        %         function vars=vars(set)
-        %             % gives the variances of all the parameters in the
-        %             % SIMPARAMETERSET
-        %             p=set.param_names();
-        %             m=set.num_params;
-        %             vars=zeros(m, 1);
-        %             for i=1:m
-        %                 vars(i)=set.simparams.(p{i}).var;
-        %             end
-        %         end
-        %% Gives the variances of the all the parameters in the parameterset
-        function v=var_vals(set)
-            % gives the variances of all the parameters in the
-            % SIMPARAMETERSET
-            p=set.param_names();
-            m=set.num_params;
-            v=zeros(m, 1);
-            for i=1:m
-                v(i)=set.simparams.(p{i}).var;
-            end
-        end
-        %% Gives the probability that the parameters
-        % take value x
-        function prob=pdf(set,x)
-            
-            p=set.param_names();
-            m=set.num_params;
-            
-            prob=1;
-            for i=1:m
-                prob=set.simparams.(p{i}).pdf(x(i))*prob;
-            end
-            
-        end
   
         %% give germ distributions in a cell
         function dists=germ_dist(set, varargin)
