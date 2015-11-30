@@ -152,7 +152,7 @@ classdef SimParamSet < SglibHandleObject
             %   Gives the NAMEs of SimParameters in the SimParameterSet
             %   Example: P_NAMES=PARAM_NAMES(SIMPARAMETERSET)
             %names=fieldnames(set.simparams);
-            names = set.param_map.keys();
+            names = set.param_map.keys;
         end
         
         function plot_names=param_plot_names(set)
@@ -265,48 +265,52 @@ classdef SimParamSet < SglibHandleObject
     
     %% Some basic statistical methods
     methods
-        function means=mean(set)
+        function q_mean=mean(set)
             % MEAN Return the mean values of this parameter set.
-            %   MEANS=MEAN(SET) returns a column vector containing the mean
+            %   Q_MEAN=MEAN(SET) returns a column vector containing the mean
             %   values of the parameters. Note that for fixed parameters,
             %   the mean is the fixed value.
             m = set.num_params();
             params = set.get_params();
-            means = zeros(m,1);
+            q_mean = zeros(m,1);
             for i=1:m
-                means(i)=params{i}.mean;
+                q_mean(i)=params{i}.mean;
             end
         end
 
-        function vars=var(set)
+        function q_var=var(set)
             % VAR Return the variances of this parameter set.
-            %   VARS=VAR(SET) returns a column vector containing the
+            %   Q_VAR=VAR(SET) returns a column vector containing the
             %   variances of the parameters. Note that for fixed
             %   parameters, the variance is zero.
             m = set.num_params();
             params = set.get_params();
-            vars = zeros(m,1);
+            q_var = zeros(m,1);
             for i=1:m
-                vars(i)=params{i}.var;
+                q_var(i)=params{i}.var;
             end
         end
         
-        %% Gives the probability that the parameters
-        % take value x
-        function prob=pdf(set,x)
+        function p_q=pdf(set,q)
+            % PDF Gives the probability density of the parameters.
+            %   P_Q=PDF(SET, Q) returns the probability density function of
+            %   the parameter set at point Q (which is the product of the
+            %   separate probabilty densities for each contained
+            %   parameters). If one of the parameters is fixed, the
+            %   corresponding density is 1 if the parameter value matches
+            %   exactly the fixed value, and 0 otherwise.
             m=set.num_params;
-            assert(size(x,1)==m);
-            n=size(x,2);
+            assert(size(q,1)==m);
+            n=size(q,2);
             params = set.get_params();
-            prob = ones(1,n);
-            
+            p_q = ones(1,n);
             for i=1:m
-                prob=prob.*params{i}.pdf(x(i,:));
+                p_q=p_q.*params{i}.pdf(q(i,:));
             end
         end
     end
     
-    %% GPC based methods
+    %% Spectral methods
     methods
         function V_q=get_germ(set)
             % GET_GERM Generate the germ for this parameter set.
@@ -320,13 +324,15 @@ classdef SimParamSet < SglibHandleObject
             for i=1:set.num_params()
                 param=set.get_param(i);
                 syschar=param.get_gpc_syschar(set.prefer_normalized_polys);
-                if ~param.is_fixed()
+                if ~param.is_fixed
                     syschars(end+1)=syschar; %#ok<AGROW>
                 end
             end
             V_q = gpcbasis_create(syschars);
         end
+        
         function V_q=get_gpcgerm(set)
+            % GET_GPCGERM Obsolete method, use GET_GERM instead.
             obsoletion_warning('SimParamSet.get_gpcgerm', 'SimParamSet.get_germ', 'Just get used to it!!!');
             V_q=get_germ(set);
         end
@@ -349,7 +355,7 @@ classdef SimParamSet < SglibHandleObject
             V_q=gpcbasis_create('');
             for i=1:m
                 param = set.get_param(i);
-                if param.is_fixed()
+                if param.is_fixed
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
@@ -382,8 +388,12 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        function xi_i_k = param2germ(set, q_j_k)
-            % GERM2PARAMS convert values of the parameters to values of the germ.
+        function xi_i_k = params2germ(set, q_j_k)
+            % PARAMS2GERM convert values of the parameters to values of the germ.
+            %   XI_I_K = PARAMS2GERM(SET, Q_J_K) if Q_J_K is an array
+            %   corresponding to the actual values of the parameters, then
+            %   XI_I_K is an array of values of the germ for this parameter
+            %   set,
             m = set.num_rv();
             ind_rv = find(set.find_rv());
             ind_fixed = find(set.find_fixed());
@@ -409,7 +419,7 @@ classdef SimParamSet < SglibHandleObject
             %   there).
             %
             % See also GPCGERM_SAMPLE
-            V_q = set.get_gpcgerm();
+            V_q = set.get_germ();
             xi_i = gpcgerm_sample(V_q, N, varargin{:});
             q_i = germ2params(set, xi_i);
         end
@@ -431,14 +441,25 @@ classdef SimParamSet < SglibHandleObject
     %% Other methods
     methods    
         function string=tostring(set, varargin)
-            % all the mappings from germ to the parameters in a cell format
+            % TOSTRING Convert to string.
+            %   STRING=TOSTRING(SET, OPTIONS) returns a string representing
+            %   this parameter set. With the option 'as_cell_array' instead
+            %   of one string, a cell array of string of all parameters if
+            %   returned.
+            options=varargin2options(varargin, mfilename);
+            [as_cell_array, options]=get_option(options, 'as_cell_array', false);
+            check_unsupported_options(options);
+            
             m=set.num_params;
             str=cell(m,1);
             for i=1:m
                 str{i}=set.get_param(i).tostring;
             end
-            %string=strcat(str{:});
-            string=str;
+            if as_cell_array
+                string = str;
+            else
+                string = strvarexpand('$str$');
+            end
         end
     end
 end
