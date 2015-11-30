@@ -308,11 +308,11 @@ classdef SimParamSet < SglibHandleObject
     
     %% GPC based methods
     methods
-        function V_q=get_gpcgerm(set)
-            % GET_GPCGERM Generate the GPC germ for this parameter set.
-            % V_Q=GET_GPCGERM(SET) creates the germ for active parameters
+        function V_q=get_germ(set)
+            % GET_GERM Generate the germ for this parameter set.
+            % V_Q=GET_GERM(SET) creates the germ for active parameters
             % (i.e. the ones that are not fixed) and returns the
-            % corresponding GPC germ. Note, that for polynomial systems are
+            % corresponding germ. Note, that for polynomial systems are
             % also registered for not-active parameters, so that the
             % resulting SYSCHARS are reproducible between calls (though I
             % don't know, whether that is really necessary...)
@@ -325,6 +325,10 @@ classdef SimParamSet < SglibHandleObject
                 end
             end
             V_q = gpcbasis_create(syschars);
+        end
+        function V_q=get_gpcgerm(set)
+            obsoletion_warning('SimParamSet.get_gpcgerm', 'SimParamSet.get_germ', 'Just get used to it!!!');
+            V_q=get_germ(set);
         end
         
         function  [q_alpha, V_q, varerrs]=gpc_expand(set, varargin)
@@ -357,24 +361,42 @@ classdef SimParamSet < SglibHandleObject
             end
         end
         
-        function q_i = gpcgerm2params(set, xi_i)
-            % GPCGERM2PARAMS convert values of the germ to values of the parameters.
-            %   Q_I = GPCGERM2PARAMS(SET, XI_I) if XI_I is an array of
-            %   values of the germ for this parameter set, Q_I is an array
+        function q_j_k = germ2params(set, xi_i_k)
+            % GERM2PARAMS convert values of the germ to values of the parameters.
+            %   Q_J_K = GERM2PARAMS(SET, XI_I_K) if XI_I_K is an array of
+            %   values of the germ for this parameter set, Q_J_K is an array
             %   corresponding to the actual values of the parameters.
             m = set.num_params();
-            q_i = zeros(m, size(xi_i,2));
+            q_j_k = zeros(m, size(xi_i_k,2));
             
             ind_rv = find(set.find_rv());
             ind_fixed = find(set.find_fixed());
             
             for i=1:length(ind_rv)
                 j = ind_rv(i);
-                q_i(j,:) = set.get_param(j).germ2param(xi_i(i,:));
+                q_j_k(j,:) = set.get_param(j).germ2param(xi_i_k(i,:));
             end
             for i=1:length(ind_fixed)
                 j = ind_fixed(i);
-                q_i(j,:) = set.get_param(j).fixed_val;
+                q_j_k(j,:) = set.get_param(j).fixed_val;
+            end
+        end
+        
+        function xi_i_k = param2germ(set, q_j_k)
+            % GERM2PARAMS convert values of the parameters to values of the germ.
+            m = set.num_rv();
+            ind_rv = find(set.find_rv());
+            ind_fixed = find(set.find_fixed());
+            
+            xi_i_k = zeros(m, size(q_j_k,2));
+            for i=1:length(ind_rv)
+                j = ind_rv(i);
+                xi_i_k(i,:) = set.get_param(j).param2germ(q_j_k(j,:));
+            end
+            
+            for i=1:length(ind_fixed)
+                j = ind_fixed(i);
+                assert(all(q_j_k(j,:) == set.get_param(j).fixed_val));
             end
         end
         
@@ -389,7 +411,7 @@ classdef SimParamSet < SglibHandleObject
             % See also GPCGERM_SAMPLE
             V_q = set.get_gpcgerm();
             xi_i = gpcgerm_sample(V_q, N, varargin{:});
-            q_i = gpcgerm2params(set, xi_i);
+            q_i = germ2params(set, xi_i);
         end
         
         function [q_i, w, xi_i]=get_integration_points(set, p_int, varargin)
@@ -399,9 +421,9 @@ classdef SimParamSet < SglibHandleObject
             %   parameter set. For options see GPC_INTEGRATE.
             %
             % See also GPC_INTEGRATE
-            V_q = set.get_gpcgerm();
+            V_q = set.get_germ();
             [xi_i, w] = gpc_integrate([], V_q, p_int, varargin{:});
-            q_i = gpcgerm2params(set, xi_i);
+            q_i = germ2params(set, xi_i);
         end
     end
     
