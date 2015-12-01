@@ -13,10 +13,22 @@ function mh=multiplot_init( m, n, varargin )
 %     then row 2, row 3, and so on. If 'col' or 'column' are specified then
 %     first column 1 is activated from top to bottom, the col 2 and so on.
 %     This is the same ordering as usual in the SUBPLOT command.
+%   title: ''
+%     Add an additional title to the top of the figure. For adjustment of
+%     the sizes and placements of the subplots, there are the additional
+%     options 'title_dist', 'title_height_diff', and 'title_ypos_diff'. To
+%     understand their effect, please try them out.
 %
 % Example (<a href="matlab:run_example multiplot_init">run</a>)
+%     multiplot_init(3,2, 'title', 'Sin functions', 'title_dist', 0.02)
+%     x=linspace(0,10);
+%     for i=1:6
+%         multiplot;
+%         plot(x,sin(i*x));
+%         title(strvarexpand('sin($i$x)'));
+%     end
 %
-% See also SUBPLOT
+% See also MULTIPLOT, MULTIPLOT_ADJUST_RANGE, SUBPLOT
 
 %   Elmar Zander
 %   Copyright 2015, Inst. of Scientific Computing, TU Braunschweig
@@ -31,6 +43,10 @@ function mh=multiplot_init( m, n, varargin )
 
 options=varargin2options(varargin, mfilename);
 [ordering, options]=get_option(options, 'ordering', 'col');
+[figtitle, options]=get_option(options, 'title', []);
+[title_dist, options]=get_option(options, 'title_dist', 0.01);
+[title_height_diff, options]=get_option(options, 'title_height_diff', 0);
+[title_ypos_diff, options]=get_option(options, 'title_ypos_diff', 0.03);
 check_unsupported_options(options);
 
 if nargin==1 || isempty(n)
@@ -55,15 +71,30 @@ end
 fh=clf;
 %set( fh, 'defaulttextinterpreter', 'latex' );
 
+have_title=~isempty(figtitle);
+if have_title
+    add_m = 1;
+    subplot(m+add_m, n, 1:n);
+    height = set_title(figtitle);
+    height = height - title_dist;
+    add_height = height/m + title_height_diff;
+    diff_ypos = height/m + title_ypos_diff;
+else
+    add_m = 0;
+end
+
 % initialise the figures
 handles=zeros(m,n);
 for i=1:m
     for j=1:n
         % compute linear index for subplot
-        k=j+n*(i-1);
-        h=subplot( m, n, k ); 
+        k=j+n*(i-1+add_m);
+        h=subplot( m+add_m, n, k );
         % store the handle
         handles(i,j)=h;
+        if have_title
+            move_axis(h, add_height, (m-i)*diff_ypos);
+        end
     end
 end
 
@@ -80,3 +111,20 @@ multiplot_data('set', mp_data);
 if nargout>0
     mh=mp_data.handles;
 end
+
+function height=set_title(figtitle)
+set(gca, 'Visible', 'off')
+h=title(figtitle);
+set(h, 'Visible', 'on')
+
+pos = get(gca, 'Position');
+height=pos(4);
+pos(4) = 0;
+pos(2) = pos(2)+height;
+set(gca, 'Position', pos);
+
+function move_axis(h, add_height, diff_ypos)
+pos = get(h, 'Position');
+pos(4) = pos(4) + add_height;
+pos(2) = pos(2) + diff_ypos;
+set(h, 'Position', pos);
