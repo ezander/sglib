@@ -1,7 +1,7 @@
 classdef GPCRegistry < handle
     properties
-        registry
-        char2index
+        registry@struct
+        char2index@int32
     end
     
     methods
@@ -76,7 +76,8 @@ classdef GPCRegistry < handle
             dist = gpcreg.char2index;
         end
         
-        function reset(gpcreg, registry)
+        function old_registry=reset(gpcreg, registry)
+            old_registry = gpcreg.registry;
             if nargin>1
                 gpcreg.registry = registry;
             else
@@ -113,8 +114,8 @@ classdef GPCRegistry < handle
         end
         
         function char2index = make_char_lookup(registry)
-            char2index = zeros(256,1);
-            chars = double(char(registry.syschar));
+            char2index = zeros(256,1,'int32');
+            chars = int32(char(registry.syschar));
             indices = 1:length(registry);
             char2index(chars) = indices;
         end

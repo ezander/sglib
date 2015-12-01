@@ -75,6 +75,7 @@ assert_equals(Q.get_param(2).name, 'q2', 'add_param2');
 
 %% GPC methods
 % Testing get_germ without fixed params
+oldreg = gpc_registry('reset');
 Q = SimParamSet('prefer_normalized_polys', true);
 Q.add('q1', NormalDistribution(2,3));
 Q.add('q2', ExponentialDistribution(4));
@@ -93,6 +94,7 @@ Q.set_to_mean('q2');
 Q.set_to_mean('q5');
 V_q = Q.get_germ();
 assert_equals(V_q, gpcbasis_create('hhpbha'), 'gpc_germ_fixed');
+gpc_registry('reset', oldreg);
 
 % Testing the get_params
 params = Q.get_params();
