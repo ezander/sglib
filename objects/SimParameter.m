@@ -252,7 +252,11 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
         function y=germ2param(param, x)
             y = param.dist.base2dist(x);
         end
-        
+
+        function x=param2germ(param, y)
+            x = param.dist.dist2base(y);
+        end
+     
     end
 
 %     methods

@@ -74,7 +74,8 @@ assert_equals(Q.get_param(1).name, 'q1', 'add_param1');
 assert_equals(Q.get_param(2).name, 'q2', 'add_param2');
 
 %% GPC methods
-% Testing get_gpcgerm without fixed params
+% Testing get_germ without fixed params
+oldreg = gpc_registry('reset');
 Q = SimParamSet('prefer_normalized_polys', true);
 Q.add('q1', NormalDistribution(2,3));
 Q.add('q2', ExponentialDistribution(4));
@@ -85,14 +86,15 @@ Q.add('q6', BetaDistribution(1,1.2));
 Q.add('q7', NormalDistribution(1,3));
 Q.add('q8', BetaDistribution(1,1.4));
 
-V_q = Q.get_gpcgerm();
+V_q = Q.get_germ();
 assert_equals(V_q, gpcbasis_create('hLhpabha'), 'gpc_germ');
 
-% Testing get_gpcgerm with fixed params
+% Testing get_germ with fixed params
 Q.set_to_mean('q2');
 Q.set_to_mean('q5');
-V_q = Q.get_gpcgerm();
+V_q = Q.get_germ();
 assert_equals(V_q, gpcbasis_create('hhpbha'), 'gpc_germ_fixed');
+gpc_registry('reset', oldreg);
 
 % Testing the get_params
 params = Q.get_params();
@@ -113,4 +115,75 @@ assert_equals(Q.var, [4; 9; 0; 25], 'var');
 prob1 = normal_pdf(1,1,2)*normal_pdf(2,2,3)*normal_pdf(4,4,5);
 prob3 = normal_pdf(2,1,2)*normal_pdf(3,2,3)*normal_pdf(5,4,5);
 assert_equals(Q.pdf([1 1 2; 2 2 3; 7 6 7; 4 4 5]), [prob1, 0, prob3], 'pdf');
+
+%% Germ2params and params2germ
+Q = SimParamSet();
+Q.add('q1', UniformDistribution(1,2));
+Q.add('q2', NormalDistribution(2,3));
+Q.add('q3', LogNormalDistribution(3,4));
+Q.set_fixed(2, 7);
+N = 10;
+
+xi = [linspace(-1, 1, N); linspace(-2, 2, N)];
+q =  [linspace( 1, 2, N); repmat(7, 1, N); exp(3+4*linspace(-2, 2, N))];
+assert_equals(Q.germ2params(xi), q, 'germ2params');
+assert_equals(Q.params2germ(q), xi, 'params2germ');
+
+%% Integration points
+Q = SimParamSet();
+Q.add('q1', UniformDistribution(1,2));
+Q.add('q2', NormalDistribution(2,3));
+Q.add('q3', LogNormalDistribution(3,4));
+Q.set_fixed(2, 7);
+
+[q,w,x] = Q.get_integration_points(3, 'grid', 'full_tensor');
+[xe, we] = gpc_integrate([], gpcbasis_create('ph'), 3, 'grid', 'full_tensor');
+qe =  [0.5*xe(1,:)+1.5; repmat(7, 1, length(we)); exp(3+4*xe(2,:))];
+
+assert_equals(x, xe, 'integrate_ref_points');
+assert_equals(w, we, 'integrate_ref_weights');
+assert_equals(q, qe, 'integrate_points');
+
+%% Sampling
+Q = SimParamSet();
+Q.add('q1', UniformDistribution(1,2));
+Q.add('q2', NormalDistribution(2,3));
+Q.add('q3', LogNormalDistribution(3,4));
+Q.set_fixed(2, 7);
+
+munit_control_rand('seed', 1234);
+N=100000;
+[q,xi] = Q.sample(N);
+p1 = UniformDistribution(1,2);
+p2 = LogNormalDistribution(3,4);
+assert_equals(p1.cdf(sort(q(1,:))), linspace_midpoints(0,1,N), 'sample_q1', 'abstol', 1e-2);
+assert_equals(q(2,:), repmat(7,1,N), 'sample_q2');
+assert_equals(p2.cdf(sort(q(3,:))), linspace_midpoints(0,1,N), 'sample_q3', 'abstol', 1e-2);
+
+p1 = UniformDistribution(-1, 1);
+p2 = NormalDistribution();
+assert_equals(p1.cdf(sort(xi(1,:))), linspace_midpoints(0,1,N), 'sample_xi1', 'abstol', 1e-2);
+assert_equals(p2.cdf(sort(xi(2,:))), linspace_midpoints(0,1,N), 'sample_xi3', 'abstol', 1e-2);
+
+
+%% Obsolete functions
+% Not tested, just run to get the 100%
+Q = SimParamSet();
+p1 = SimParameter('p1', NormalDistribution(2,3));
+p2 = SimParameter('p2', UniformDistribution(3,4));
+Q.add_parameter(p1, p2);
+
+assert_equals(Q.tostring(), '{Param("p1", N(2, 9)), Param("p2", U(3, 4))}', 'tostring');
+assert_equals(Q.tostring('as_cell_array', true), {'Param("p1", N(2, 9))'; 'Param("p2", U(3, 4))'}, 'tostring_as_cell');
+
+%% Obsolete functions
+% Not tested, just run to get the 100%
+Q = SimParamSet('prefer_normalized_polys', true);
+Q.add('q1', NormalDistribution(2,3));
+
+s = warning;
+warning('off', 'sglib:obsolete:SimParamSet_get_gpcgerm');
+Q.get_gpcgerm();
+warning(s);
+
 
