@@ -1,4 +1,4 @@
-function [x,w]=polysys_int_rule(syschar, n,  varargin)
+function [x,w]=polysys_int_rule(syschar, n,  method)
 % POLYSYS_INT_RULE Compute the integration rule for a given system of polynomials.
 %   [X,W]=POLYSYS_INT_RULE(SYSCHAR, N, DUST_PARMA, VARARGIN) computes the integration rule
 %   with N points for the given system of orthogonal polynomials specified
@@ -25,9 +25,22 @@ function [x,w]=polysys_int_rule(syschar, n,  varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-[x,w]=gauss_rule(syschar, n, varargin);
+if nargin<3
+    method = 'gauss';
+end
 
-function [x,w]=gauss_rule(syschar, n, varargin)
+switch method
+    case 'gauss'
+        [x,w]=gauss_rule(syschar, n);
+    case 'ccf1'
+        [x,w]=nested_ccf_rule(syschar, n, 1);
+    case {'ccf', 'ccf2'}
+        [x,w]=nested_ccf_rule(syschar, n, 2);
+    otherwise
+        error('sglib:polysys_int_rule', 'Unknown method: %s', method);
+end
+
+function [x,w]=gauss_rule(syschar, n)
 % W. GAUTSCHI, ORTHOGONAL POLYNOMIALS AND QUADRATURE, Electronic
 % Transactions on Numerical Analysis, Volume 9, 1999, pp. 65-76.
 
@@ -65,3 +78,22 @@ end
 % compute the weights
 %function [x,w]=gauss_lobatto_rule(syschar, n, varargin)
 %function [x,w]=gauss_kronrod_rule(syschar, n, varargin)
+
+
+function [x,w]=nested_ccf_rule(syschar, n, fejern)
+
+dist = polysys_dist(syschar);
+domain = gendist_invcdf([0, 1], dist);
+if any(isinf(domain)) || any(isinf(gendist_pdf(domain, dist)))
+    if fejern==1
+        mode = 'fejer1';
+    else
+        mode = 'fejer2';
+    end
+else
+    mode = 'cc';
+end
+[x,w] = clenshaw_curtis_nested(n, 'mode', mode, 'interval', [0, 1]);
+x = gendist_invcdf(x, dist);
+
+

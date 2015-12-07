@@ -57,21 +57,30 @@ function [int, w]=gpc_integrate(func, V, p, varargin)
 options = varargin2options(varargin);
 [ndint_options, options] = get_option(options, 'ndint_options', {});
 [grid, options] = get_option(options, 'grid', 'smolyak');
+[rule_mode, options] = get_option(options, 'rule_mode', 'auto');
 [vectorized, options] = get_option(options, 'vectorized', true);
 [transposed, options] = get_option(options, 'transposed', false);
 [gpc_coeffs, options] = get_option(options, 'gpc_coeffs', []);
 check_unsupported_options(options, mfilename);
 
-[polys, I] = deal(V{:});
+if strcmp(rule_mode, 'auto')
+    if strcmp(grid, 'smolyak')
+        rule_mode = 'ccf2';
+    else
+        rule_mode = 'gauss';
+    end
+end
+
+[syschars, I] = deal(V{:});
 
 m = size(I, 2);
-m1 = size(polys,2);
+m1 = size(syschars,2);
 check_boolean(m1==1 || m1==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
 rule_func = cell(m1, 1);
 for i = 1:m1
-    poly = polys(i);
-    rule_func{i} = {@polysys_int_rule, {poly}, {1}};
+    syschar = syschars(i);
+    rule_func{i} = funcreate(@polysys_int_rule, syschar, @funarg, rule_mode);
 end
 
 if ~isempty(func)
