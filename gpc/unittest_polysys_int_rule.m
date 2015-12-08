@@ -76,19 +76,25 @@ test_for_zeros('l', 5);
 % x
 % end
 
-I_ex = uniform_raw_moments(0:10, -1, 1)';
+I_ex = uniform_raw_moments(0:30, -1, 1)';
 test_exact_integration('p', 'gauss', 4, I_ex, 0:7);
 test_exact_integration('p', 'ccf1', 4, I_ex, 0:9);
 test_exact_integration('p', 'ccf2', 4, I_ex, 0:9);
+test_exact_integration('p', 'gkp', 4, I_ex, 0:28);
 
-I_ex = normal_raw_moments(0:10, 0, 1)';
+I_ex = normal_raw_moments(0:50, 0, 1)';
 test_exact_integration('h', 'gauss', 4, I_ex, 0:7);
-test_exact_integration('h', 'ccf1', 4, I_ex, 0:9);
-test_exact_integration('h', 'ccf2', 4, I_ex, 0:9);
+% test_exact_integration('h', 'ccf1', 4, I_ex, 0:9);
+% test_exact_integration('h', 'ccf2', 4, I_ex, 0:9);
+test_exact_integration('h', 'gkp', 1, I_ex, 0:1);
+test_exact_integration('h', 'gkp', 2, I_ex, 0:5); %why not 4?
+test_exact_integration('h', 'gkp', 3, I_ex, 0:11); % why not 10
+test_exact_integration('h', 'gkp', 4, I_ex, 0:22, 'abstol', 1e-4);
+test_exact_integration('h', 'gkp', 5, I_ex, 0:47);
 
-I_ex = exponential_raw_moments(0:10, 1)';
+I_ex = exponential_raw_moments(0:30, 1)';
 test_exact_integration('l', 'gauss', 4, I_ex, 0:7);
-test_exact_integration('l', 'ccf1', 4, I_ex, 0:9);
+test_exact_integration('l', 'gkp', 4, I_ex, 0:9);
 test_exact_integration('l', 'ccf2', 4, I_ex, 0:9);
 
 I_ex = nan(10,1);
@@ -101,7 +107,7 @@ assert_equals(polyval(p,x), zeros(1,n), sprintf('zero_%s_%d', syschar, n));
 assert_equals(sum(w), 1, sprintf('sum_%s_%d_is_one', syschar, n));
 
 
-function test_exact_integration(syschar, method, n, I_ex, exact_for)
+function test_exact_integration(syschar, method, n, I_ex, exact_for, varargin)
 % Setup polynomials to integrate
 max_p = length(I_ex);
 V = gpcbasis_create('M', 'p', max_p);
@@ -119,4 +125,4 @@ if any(isnan(I_ex(:)))
     I_ex = integral(int_func, dom(1), dom(2), 'AbsTol', 1e-3, 'ArrayValued', true);
 end
 ind = exact_for+1;
-assert_equals(I_int(ind), I_ex(ind), sprintf('poly_exact_int_%s_%s_%d', syschar, method, n));
+assert_equals(I_int(ind), I_ex(ind), sprintf('poly_exact_int_%s_%s_%d', syschar, method, n), varargin{:});

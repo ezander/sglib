@@ -36,6 +36,8 @@ switch method
         [x,w]=nested_ccf_rule(syschar, n, 1);
     case {'ccf', 'ccf2'}
         [x,w]=nested_ccf_rule(syschar, n, 2);
+    case {'gkp'}
+        [x,w]=nested_gauss_patterson(syschar, n);
     otherwise
         error('sglib:polysys_int_rule', 'Unknown method: %s', method);
 end
@@ -97,3 +99,12 @@ end
 x = gendist_invcdf(x, dist);
 
 
+function [x,w]=nested_gauss_patterson(syschar, n, n0)
+if nargin<3
+    n0 = 1;
+end
+
+[x,w]=gauss_rule(syschar, n0);
+for k=2:n
+    [x,w]=polysys_patterson_extend(syschar, x);
+end
