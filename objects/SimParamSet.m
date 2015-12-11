@@ -406,7 +406,7 @@ classdef SimParamSet < SglibHandleObject
             
             for i=1:length(ind_fixed)
                 j = ind_fixed(i);
-                assert(all(q_j_k(j,:) == set.get_param(j).fixed_val));
+                % assert(all(q_j_k(j,:) == set.get_param(j).fixed_val));
             end
         end
         

@@ -167,7 +167,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
                 abstol = 1e-10;
                 reltol = 1e-10;
                 x0 = param.fixed_val;
-                y = double(abs(x-x0)<=abstol+x0*reltol);
+                y = double(abs(x-x0)<=abstol+abs(x0)*reltol);
             else
                 y = param.dist.pdf(x);
             end

@@ -12,7 +12,7 @@ function [x,w]=clenshaw_curtis_nested(n, varargin)
 % Example (<a href="matlab:run_example clenshaw_curtis_nested">run</a>)
 %   clf; hold all
 %   for i = 1:5
-%     [x, w] = clenshaw_curtis_nested(i, 'mode', 0);
+%     [x, w] = clenshaw_curtis_nested(i, 'mode', 2);
 %     plot(x, i*ones(size(x)), 'x');
 %   end
 %   xlim([-1.3, 1.3]); ylim([0.5, 5.5])
@@ -32,6 +32,7 @@ function [x,w]=clenshaw_curtis_nested(n, varargin)
 
 options=varargin2options(varargin, mfilename);
 [mode, options]=get_option(options, 'mode', 0);
+[interval, options]=get_option(options, 'interval', [-1, 1]);
 check_unsupported_options(options)
 
 check_range(n, 1, inf, 'n', mfilename);
@@ -44,4 +45,4 @@ switch mode
     case {'fejer2', 2}
         m = 2^n-1;
 end
-[x,w]=clenshaw_curtis_rule(m, 'mode', mode);
+[x,w]=clenshaw_curtis_rule(m, 'mode', mode, 'interval', interval);

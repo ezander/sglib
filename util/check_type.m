@@ -38,17 +38,26 @@ check_unsupported_options( options, mfilename );
 empty=isempty(x);
 ok=true;
 ok=ok&&(emptyok||~empty);
-ok=ok&&(empty||isa( x, classname ));
+if iscell(classname)
+    classok = false;
+    for i=1:numel(classname)
+        classok = classok || isa(x, classname{i});
+    end
+else
+    classok = isa(x, classname);
+end
+ok=ok&&(empty||classok);
+
 if ~ok
     if empty && ~emptyok
-        message=sprintf( '%s must be of type non-empty %s but was empty %s', varname, classname, class(x));
+        message=sprintf( '%s must be of type non-empty %s but was empty %s', varname, strvarexpand('$classname$'), class(x));
     else
         if emptyok
             emptystr='empty or ';
         else
             emptystr='';
         end
-        message=sprintf( '%s must be %sof type %s but was: %s', varname, emptystr, classname, class(x) );
+        message=sprintf( '%s must be %sof type %s but was: %s', varname, emptystr, strvarexpand('$classname$'), class(x) );
     end
     check_boolean( ok, message, mfilename, 'depth', 2, 'mode', mode );
 end
