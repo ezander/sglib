@@ -47,15 +47,24 @@ if length(y)<=no_interp_limit
     x=y;
 else
     % compute values over range
-    yi=linspace(min(y), max(y), no_interp_limit);
-    xi=inv_reg_beta( yi, a, b );
-    % remove all nan's (shouldn't appear anyway)
-    notnan=~isnan(xi);
-    xi=xi(notnan); yi=yi(notnan);
-    % interpolate now
-    x=interp1( yi, xi, y, 'pchip', NaN );
-    x(x>1)=1;
-    x(x<0)=0;
+    y_min = min(y);
+    y_max = max(y);
+    if y_min==y_max
+        % sometimes the input consists of just one value and the
+        % interpolation below would faile
+        xi=inv_reg_beta( y(1), a, b );
+        x=repmat(xi, size(y));
+    else
+        yi=linspace(y_min, y_max, no_interp_limit);
+        xi=inv_reg_beta( yi, a, b );
+        % remove all nan's (shouldn't appear anyway)
+        notnan=~isnan(xi);
+        xi=xi(notnan); yi=yi(notnan);
+        % interpolate now
+        x=interp1( yi, xi, y, 'pchip', NaN );
+        x(x>1)=1;
+        x(x<0)=0;
+    end
 end
 
 % We need that often
