@@ -65,7 +65,10 @@ check_unsupported_options(options, mfilename);
 
 if strcmp(rule_mode, 'auto')
     if strcmp(grid, 'smolyak')
-        rule_mode = 'ccf2';
+        %rule_mode = 'ccf2';
+        rule_mode = 'gauss';
+        % We still stick to Gauss for the moment until the issue is better
+        % understood and fixed
     else
         rule_mode = 'gauss';
     end

@@ -37,6 +37,7 @@ switch method
     case {'ccf', 'ccf2'}
         [x,w]=nested_ccf_rule(syschar, n, 2);
     case {'gkp'}
+        error('sglib:notstable', 'not stable yet, do not use');
         [x,w]=nested_gauss_patterson(syschar, n);
     otherwise
         error('sglib:polysys_int_rule', 'Unknown method: %s', method);

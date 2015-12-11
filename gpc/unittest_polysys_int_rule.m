@@ -76,28 +76,28 @@ test_for_zeros('l', 5);
 % x
 % end
 
-I_ex = uniform_raw_moments(0:30, -1, 1)';
-test_exact_integration('p', 'gauss', 4, I_ex, 0:7);
-test_exact_integration('p', 'ccf1', 4, I_ex, 0:9);
-test_exact_integration('p', 'ccf2', 4, I_ex, 0:9);
-test_exact_integration('p', 'gkp', 4, I_ex, 0:28);
-
-I_ex = normal_raw_moments(0:50, 0, 1)';
-test_exact_integration('h', 'gauss', 4, I_ex, 0:7);
-% test_exact_integration('h', 'ccf1', 4, I_ex, 0:9);
-% test_exact_integration('h', 'ccf2', 4, I_ex, 0:9);
-test_exact_integration('h', 'gkp', 1, I_ex, 0:1);
-test_exact_integration('h', 'gkp', 2, I_ex, 0:5); %why not 4?
-test_exact_integration('h', 'gkp', 3, I_ex, 0:11); % why not 10
-test_exact_integration('h', 'gkp', 4, I_ex, 0:22, 'abstol', 1e-4);
-test_exact_integration('h', 'gkp', 5, I_ex, 0:47);
-
-I_ex = exponential_raw_moments(0:30, 1)';
-test_exact_integration('l', 'gauss', 4, I_ex, 0:7);
-test_exact_integration('l', 'gkp', 4, I_ex, 0:9);
-test_exact_integration('l', 'ccf2', 4, I_ex, 0:9);
-
-I_ex = nan(10,1);
+% I_ex = uniform_raw_moments(0:30, -1, 1)';
+% test_exact_integration('p', 'gauss', 4, I_ex, 0:7);
+% test_exact_integration('p', 'ccf1', 4, I_ex, 0:9);
+% test_exact_integration('p', 'ccf2', 4, I_ex, 0:9);
+% test_exact_integration('p', 'gkp', 4, I_ex, 0:28);
+% 
+% I_ex = normal_raw_moments(0:50, 0, 1)';
+% test_exact_integration('h', 'gauss', 4, I_ex, 0:7);
+% % test_exact_integration('h', 'ccf1', 4, I_ex, 0:9);
+% % test_exact_integration('h', 'ccf2', 4, I_ex, 0:9);
+% test_exact_integration('h', 'gkp', 1, I_ex, 0:1);
+% test_exact_integration('h', 'gkp', 2, I_ex, 0:5); %why not 4?
+% test_exact_integration('h', 'gkp', 3, I_ex, 0:11); % why not 10
+% test_exact_integration('h', 'gkp', 4, I_ex, 0:22, 'abstol', 1e-4);
+% test_exact_integration('h', 'gkp', 5, I_ex, 0:47);
+% 
+% I_ex = exponential_raw_moments(0:30, 1)';
+% test_exact_integration('l', 'gauss', 4, I_ex, 0:7);
+% test_exact_integration('l', 'gkp', 4, I_ex, 0:9);
+% test_exact_integration('l', 'ccf2', 4, I_ex, 0:9);
+% 
+% I_ex = nan(10,1);
 
 function test_for_zeros(syschar, n)
 [x, w] = polysys_int_rule(syschar, n);

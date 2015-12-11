@@ -21,7 +21,7 @@ function y=gendist_pdf(x, dist, varargin)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-check_type(dist, {'cell', 'Distribution'}, false, 'DIST', mfilename);
+check_type(dist, {'cell', 'Distribution', 'char'}, false, 'DIST', mfilename);
 
 if isa(dist, 'Distribution')
     y = dist.pdf(x);
