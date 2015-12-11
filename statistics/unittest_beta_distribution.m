@@ -40,8 +40,8 @@ assert_equals( beta_pdf(1+1e8,a,b), 0, 'pdf_zero' );
 assert_equals( beta_pdf(inf,a,b), 0, 'pdf_inf' );
 
 a=0.2;b=0.5;
-assert_equals( beta_pdf(0,a,b), 0, 'pdf_zero' );
-assert_equals( beta_pdf(1,a,b), 0, 'pdf_zero' );
+assert_equals( beta_pdf(0,a,b), inf, 'pdf_zero' );
+assert_equals( beta_pdf(1,a,b), inf, 'pdf_zero' );
 
 % pdf matches cdf
 a=2; b=3;
