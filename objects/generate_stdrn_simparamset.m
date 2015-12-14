@@ -1,10 +1,11 @@
 function paramset=generate_stdrn_simparamset(sigmas)
 % Generate parameterset with standard normal parameters
 n=length(sigmas);
-params=cell(n,1);
+paramset=SimParamSet();
+
 for i=1:n
-    str= strvarexpand('params{$i$}=SimParameter(''p_$i$'',NormalDistribution(0,sqrt(sigmas($i$))));');
-    eval(str);
+    param_name_i=strvarexpand('pn_$i$');
+    paramset.add(param_name_i, NormalDistribution(0,sigmas(i)));
 end
-paramset=SimParamSet(params{:});
+
 end
