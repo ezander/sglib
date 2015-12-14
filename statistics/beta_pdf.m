@@ -25,5 +25,6 @@ function y=beta_pdf( x, a, b )
 
 
 y=zeros(size(x));
-ind=(x>0)&(x<1);
+%ind=(x>0)&(x<1);
+ind=(x>=0)&(x<=1);
 y(ind)=x(ind).^(a-1).*(1-x(ind)).^(b-1) / beta(a,b);

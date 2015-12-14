@@ -71,7 +71,6 @@ assert_equals(qf.sample(33), repmat(100, 33, 1), 'fixed_sample_vec');
 assert_equals(qf.sample([2, 3]), repmat(100, 2, 3), 'fixed_sample_mat');
 
 %% Testing the gpc for a stock distribution
-
 q=SimParameter('q1', UniformDistribution(4, 10));
 assert_equals(q.get_gpc_dist(), UniformDistribution(-1,1), 'germ_dist');
 
@@ -92,4 +91,10 @@ assert_equals(V_q, {'P', [0; 1]}, 'gpc_expand_V2');
 q=SimParameter('q1', BetaDistribution(2, 3.2));
 assert_equals(q.get_gpc_dist(), BetaDistribution(2, 3.2), 'germ_dist');
 
+%% Test for a (now fixed) bug in pdf
+q=SimParameter('q1', UniformDistribution(4, 10));
+x0 = -100; delta=1e-5;
+q.set_fixed(-100);
+assert_equals(q.pdf([x0 - delta, x0, x0 + delta]), [0, 1, 0], 'germ_pdf_neg');
+%assert_equals(q.cdf([x0 - delta, x0, x0 + delta]), [0, 1, 1], 'germ_cdf_neg');
 
