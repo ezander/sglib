@@ -59,7 +59,6 @@ classdef ChebyshevTPolynomials < PolynomialSystem
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
             dist = ArcSinDistribution();
-            dist = dist.fix_bounds(-1, 1);
         end
     end
 end

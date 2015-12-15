@@ -67,7 +67,6 @@ classdef ChebyshevUPolynomials < PolynomialSystem
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
             dist=SemiCircleDistribution();
-            dist = dist.fix_bounds(-1,1);
         end
     end
 end

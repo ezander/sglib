@@ -105,7 +105,6 @@ classdef JacobiPolynomials < PolynomialSystem
             %
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
             dist = BetaDistribution(polysys.beta+1, polysys.alpha+1);
-            dist = dist.fix_bounds(-1, 1);
         end
     end
 end
