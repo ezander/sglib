@@ -86,11 +86,6 @@ classdef BetaDistribution < Distribution
             %   polynomials.
             %
             % See also CHEBYSHEVUPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
-            
-            % TODO dat funzt eh nicht, wir müssen die polys direkt auf -1,1
-            % machen, und ausserdem muessen hier wahrscheinlich die
-            % Parameter verdreht werden (ich lass das aber mal, bis der
-            % Test zeigt dass es nicht stimmt...)
             polysys=JacobiPolynomials(dist.b-1, dist.a-1);
         end
     end

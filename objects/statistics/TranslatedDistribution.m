@@ -124,16 +124,6 @@ classdef TranslatedDistribution < Distribution
             m=TranslatedDistribution.translate_moments(m, tdist.shift, tdist.scale, tdist.center);
             [mean,var,skew,kurt]=deal(m{:});
         end
-        
-%         function polysys=orth_polysys(dist) %#ok<STOUT>
-%             % ORTH_POLYSYS gives the polynomial system which is orthogonal with respect to this distribution.
-%             % 
-%             % See also DISTRIBUTION.GET_BASE_DIST
-% %             base_polysys = dist.base_dist.orth_polys();
-% %             polysys = TranslatedPolynomials(
-%             
-%             error('sglib:distribution:no_polysys', 'No polynomials system for this distribution (%s)', dist.tostring());
-%         end
     end
     
     methods (Static)
