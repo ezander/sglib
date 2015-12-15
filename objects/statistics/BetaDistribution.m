@@ -91,7 +91,7 @@ classdef BetaDistribution < Distribution
             % machen, und ausserdem muessen hier wahrscheinlich die
             % Parameter verdreht werden (ich lass das aber mal, bis der
             % Test zeigt dass es nicht stimmt...)
-            polysys=JacobiPolynomials(dist.a-1, dist.b-1);
+            polysys=JacobiPolynomials(dist.b-1, dist.a-1);
         end
     end
     

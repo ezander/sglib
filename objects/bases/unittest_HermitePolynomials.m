@@ -46,5 +46,16 @@ assert_equals(H.sqnorm(n(:)'), h(:)', 'nrm_row');
 polysys = HermitePolynomials();
 N=4;
 
-Q = compute_gramian(polysys, polysys.weighting_dist(), N);
+% polysys -> dist
+dist = polysys.weighting_dist();
+Q = compute_gramian(polysys, dist, N);
 assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');
+
+% dist -> polysys
+polysys = dist.default_polysys(false);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent_rev');
+
+polysys = dist.default_polysys(true);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, eye(N+1), 'weighting_consistent_rev_norm');
