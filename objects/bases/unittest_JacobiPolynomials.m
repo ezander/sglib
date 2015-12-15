@@ -81,11 +81,6 @@ assert_equals(J.sqnorm(n(:)'), h(:)', 'nrm_row');
 % I think it will be best to check consistency, e.g. together with
 % integration of the polys over the weight functions
 
-%% default syschar
-% no default syschar for the jacobi's as they are parameterised and there
-% can be no sensible default
-assert_equals(J.get_default_syschar(), '', 'syschar');
-
 %% consistency with weighting function
 polysys = JacobiPolynomials(-0.4,-0.6);
 N=4;

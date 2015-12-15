@@ -35,9 +35,6 @@ assert_equals(y,[1 1 1;1 2 4;1 3 9;1 4 16],'evaluate');
 n = [0 1; 3 5];
 assert_error(funcreate(@M.sqnorm, n), 'sglib:', 'no_norm');
 
-%% default syschar
-assert_equals(M.get_default_syschar(), 'M', 'syschar');
-
 %% no weighting function for the monomials
 polysys = Monomials();
 dist = polysys.weighting_dist();

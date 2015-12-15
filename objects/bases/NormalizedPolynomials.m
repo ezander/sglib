@@ -23,15 +23,6 @@ classdef NormalizedPolynomials < PolynomialSystem
             polysys.base_polysys = base_polysys;
         end
 
-        function syschar=get_default_syschar(polysys)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the normalized polynomials.
-            %   Returns the lower case version of the SYSCHAR returned by
-            %   the base polynomials.
-            %
-            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
-            syschar = lower(polysys.base_polysys.get_default_syschar());
-        end
-        
         function r=recur_coeff(polysys, deg)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
             %   R = RECUR_COEFF(POLYSYS, DEG) computes the recurrence coefficients for

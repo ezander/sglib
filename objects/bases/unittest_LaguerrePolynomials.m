@@ -41,9 +41,6 @@ assert_equals(L.sqnorm(n(:)'), h(:)', 'nrm_row');
 %% normalized
 assert_true(isa(L.normalized(), class(L)), 'Laguerre.normalized should return the same object', 'same');
 
-%% default syschar
-assert_equals(L.get_default_syschar(), 'L', 'syschar');
-
 %% consistency with weighting function
 polysys = LaguerrePolynomials();
 N=4;

@@ -42,9 +42,6 @@ assert_equals(H.sqnorm(n), h, 'nrm_arr');
 assert_equals(H.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(H.sqnorm(n(:)'), h(:)', 'nrm_row');
 
-%% default syschar
-assert_equals(H.get_default_syschar(), 'H', 'syschar');
-
 %% consistency with weighting function
 polysys = HermitePolynomials();
 N=4;

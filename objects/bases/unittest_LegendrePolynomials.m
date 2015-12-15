@@ -38,9 +38,6 @@ assert_equals(P.sqnorm(n), h, 'nrm_arr');
 assert_equals(P.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(P.sqnorm(n(:)'), h(:)', 'nrm_row');
 
-%% default syschar
-assert_equals(P.get_default_syschar(), 'P', 'syschar');
-
 %% consistency with weighting function
 polysys = LegendrePolynomials();
 N=4;

@@ -41,9 +41,6 @@ assert_equals(U.sqnorm(n(:)'), h(:)', 'nrm_row');
 %% normalized
 assert_true(isa(U.normalized(), class(U)), 'ChebyshevU.normalized should return the same object', 'same');
 
-%% default syschar
-assert_equals(U.get_default_syschar(), 'U', 'syschar');
-
 %% consistency with weighting function
 polysys = ChebyshevUPolynomials();
 N=4;

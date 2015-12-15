@@ -31,13 +31,6 @@ classdef ChebyshevTPolynomials < PolynomialSystem
             %   1st kind.
         end
         
-        function syschar=get_default_syschar(~)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the Chebyshev T polynomials.
-            %   
-            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
-            syschar = 'T';
-        end
-        
         function r=recur_coeff(~, deg)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
             % References:

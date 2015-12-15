@@ -38,9 +38,6 @@ assert_equals(T.sqnorm(n), h, 'nrm_arr');
 assert_equals(T.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(T.sqnorm(n(:)'), h(:)', 'nrm_row');
 
-%% default syschar
-assert_equals(T.get_default_syschar(), 'T', 'syschar');
-
 %% consistency with weighting function
 polysys = ChebyshevTPolynomials();
 N=4;
