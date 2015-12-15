@@ -118,5 +118,24 @@ if iscell(func{1})
     [varargout{1:nargout}]=funcall( func{1}, args{:} );
 else
     % avoid recursive call for a little bit of efficiency
-    [varargout{1:nargout}]=feval( func{1}, args{:} );
+    try
+        [varargout{1:nargout}]=feval( func{1}, args{:} );
+    catch ME
+        switch ME.identifier
+            case 'MATLAB:TooManyInputs'
+                error('sglib:TooManyInputs', ...
+                    'Too many input arguments (%d) in functions call: %s', ...
+                    numel(args), funcall2str(func{1}, args));
+            case 'MATLAB:TooManyOutputs'
+                error('sglib:TooManyOutputs', ...
+                    'Too many output arguments (%d) in functions call: %s', ...
+                    nargout, funcall2str(func{1}, args));
+            otherwise
+                rethrow(ME)
+        end
+    end
 end
+
+function funcallstr=funcall2str(func, args)
+argsstr = strvarexpand('$args$');
+funcallstr = strvarexpand('$func$($argsstr(2:end-1)$)');
