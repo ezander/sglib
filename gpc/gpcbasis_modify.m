@@ -18,3 +18,4 @@ function V_un = gpcbasis_modify(V_u, varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 V_un = gpcbasis_create(V_u{1}, varargin{:});
+[ind_u, ind_un] = multiindex_find(V_u{2}, V_un{2});
