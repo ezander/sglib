@@ -35,13 +35,6 @@ classdef Monomials < PolynomialSystem
             %   which this polynomials system can then be used.
         end
         
-        function syschar=get_default_syschar(~)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the Monomials.
-            %   
-            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
-            syschar = 'M';
-        end
-        
         function r=recur_coeff(~, deg)
             % RECUR_COEFF Compute recurrence coefficient of the monomials.
             n = (0:deg-1)';

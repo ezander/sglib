@@ -139,11 +139,6 @@ classdef Distribution < SglibObject
             error('sglib:distribution:no_polysys', 'No polynomials system for this distribution (%s)', dist.tostring());
         end
         
-        function syschar=default_syschar(dist, is_normalized)
-            polysys=default_polysys(dist, is_normalized);
-            syschar=polysys.get_default_syschar();
-        end
-        
         function polysys=default_polysys(dist, is_normalized)
             polysys = dist.orth_polysys();
             if is_normalized

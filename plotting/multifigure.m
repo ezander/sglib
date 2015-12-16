@@ -15,9 +15,9 @@ function varargout=multifigure(varargin)
 %   % docking, undocking, tiling, closing etc. the figure windows
 %   [h1, h2] = multifigure();
 %   figure(h1);
-%   image(100*rand(5))
+%   image(50*rand(5)); colormap hot
 %   figure(h2);
-%   image(100*rand(10))
+%   image(50*rand(10)); colormap summer
 %   
 % See also FIGURE, MULTIPLOT
 

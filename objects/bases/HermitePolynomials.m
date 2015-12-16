@@ -30,13 +30,6 @@ classdef HermitePolynomials < PolynomialSystem
             %   representing the probabilist's Hermite polynomials.
         end
         
-        function syschar=get_default_syschar(~)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the Hermite polynomials.
-            %   
-            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
-            syschar = 'H';
-        end
-        
         function r=recur_coeff(~, deg)
             % RECUR_COEFF Compute recurrence coefficient of Hermite polynomials.
             %

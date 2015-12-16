@@ -17,16 +17,4 @@ classdef (HandleCompatible=false) FunctionSystem < SglibObject
     methods (Abstract)
         y=evaluate(polysys, xi); %EVALUATE Evaluates the basis functions at given points.
     end 
-    
-    methods
-        function syschar=get_default_syschar(~)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the function system.
-            %   SYSCHAR=GET_DEFAULT_SYSCHAR(POLYSYS) returns the default
-            %   SYSCHAR, which is used e.g. in the GPC germ specs as a
-            %   shorthand to specify the polynomial system. Should be
-            %   overwritten by derived classes, if appropriate. Returns an
-            %   empty string, if there is no sensible default.
-            syschar = '';
-        end
-    end
 end
