@@ -129,3 +129,33 @@ a = accumarray(ind12, a12(:))';
 
 assert_equals(gpc_evaluate(a, V, xi), ...
     gpc_evaluate(a1, V1, xi(ind_xi1,:)).*gpc_evaluate(a2, V2, xi(ind_xi2,:)));
+
+
+
+%% Test the "as_operator" stuff
+
+% outer sum
+V1 = V_h23;
+V2 = V_l34;
+[V, PrV1, PrV2, ResXi1, ResXi2]=gpcbasis_combine(V1, V2, 'outer_sum', 'as_operators', true);
+
+a1 = gpc_rand_coeffs(V1, 1);
+a2 = gpc_rand_coeffs(V2, 1);
+xi = gpcgerm_sample(V, 3);
+assert_equals(gpc_evaluate(a1 * PrV1 + a2 * PrV2, V, xi), ...
+    gpc_evaluate(a1, V1, ResXi1 * xi) + gpc_evaluate(a2, V2, ResXi2 * xi), 'outer_sum_as_op');
+
+% inner sum
+V1 = V_h23;
+V2 = V_h24;
+[V, PrV1, PrV2, ResXi1, ResXi2]=gpcbasis_combine(V1, V2, 'inner_sum', 'as_operators', true);
+
+a1 = gpc_rand_coeffs(V1, 1);
+a2 = gpc_rand_coeffs(V2, 1);
+xi = gpcgerm_sample(V, 3);
+assert_equals(gpc_evaluate(a1 * PrV1 + a2 * PrV2, V, xi), ...
+    gpc_evaluate(a1, V1, ResXi1 * xi) + gpc_evaluate(a2, V2, ResXi2 * xi), 'inner_sum_as_op');
+
+% products are not so easy to test, needs lots of pce algebra and different
+% mappings, so we don't do it here
+
