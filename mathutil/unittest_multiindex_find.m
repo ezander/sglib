@@ -49,3 +49,19 @@ assert_equals( ind_b, [0;0;0;4;3], 'disj1' );
 assert_equals( ind_a, [4;5], 'disj2' );
 assert_equals( ind_b, [4;3], 'disj3' );
 assert_equals( I_a(ind_a,:), I_b(ind_b,:), 'disj4' );
+
+
+%% As operators
+I_a=[0;1;2;3];
+I_b=[6;1;5;4;0;3;2];
+Pr_ab=multiindex_find( I_a, I_b, 'as_operators', true);
+
+a_i_alpha = rand(2, size(I_a,1));
+a_i_beta = a_i_alpha * Pr_ab;
+[ma,va] = pce_moments(a_i_alpha, I_a);
+[mb,vb] = pce_moments(a_i_beta, I_b);
+assert_equals(mb, ma, 'mean_proj_pce');
+assert_equals(vb, va, 'var_proj_pce');
+
+[Pr_ab, Pr_ba]=multiindex_find( I_a, I_b, 'as_operators', true);
+assert_equals(full(Pr_ab*Pr_ba), eye(size(I_a,1)), 'pr_rest_is_id');
