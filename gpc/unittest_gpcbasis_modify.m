@@ -25,6 +25,11 @@ V_un = gpcbasis_create('hlp', 'p', 4);
 V_un2 = gpcbasis_modify(V_u, 'p', 4);
 assert_equals(V_un2, V_un, 'bases24');
 
+%%
+V_u = gpcbasis_create('hlp', 'p', 2);
+u_i_alpha = gpc_rand_coeffs(V_u, 3);
+xi = gpcgerm_sample(V_u);
 
-[V_un2, P] = gpcbasis_modify(V_u, 'p', 4);
-a_i_alpha = gpc
+[V_un, Pr] = gpcbasis_modify(V_u, 'p', 4, 'ordering', 'random');
+un_i_beta = u_i_alpha * Pr;
+assert_equals(gpc_evaluate(un_i_beta, V_un, xi), gpc_evaluate(u_i_alpha, V_u, xi), 'prolongation');
