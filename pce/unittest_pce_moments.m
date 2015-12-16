@@ -86,6 +86,19 @@ r_i_alpha=rand(10,size(I_r,1));
 assert_equals( [mu1,var1,skew1,kurt1], [mu3,var3,skew3,kurt3], 'consistency13' );
 assert_equals( [mu1,var1,skew1,kurt1], [mu4,var4,skew4,kurt4], 'consistency14' );
 
+% Now we permute I_r and r_i_alpha accordingly and see whether the same
+% moments result
+mu0=mu1; var0=var1; skew0=skew1; kurt0=kurt1;
+perm = randperm(size(I_r,1));
+I_r = I_r(perm,:);
+r_i_alpha = r_i_alpha(:,perm);
+[mu1,var1,skew1,kurt1]=pce_moments( r_i_alpha, I_r );
+[mu3,var3,skew3,kurt3]=pce_moments( r_i_alpha, I_r, 'algorithm', 'pcemult' );
+[mu4,var4,skew4,kurt4]=pce_moments( r_i_alpha, I_r, 'algorithm', 'integrate' );
+
+assert_equals( [mu0,var0,skew0,kurt0], [mu1,var1,skew1,kurt1], 'perm1' );
+assert_equals( [mu0,var0,skew0,kurt0], [mu3,var3,skew3,kurt3], 'perm3' );
+assert_equals( [mu0,var0,skew0,kurt0], [mu4,var4,skew4,kurt4], 'perm4' );
 
 
 
