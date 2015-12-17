@@ -75,6 +75,12 @@ addpath( fullfile( basepath, 'objects', 'statistics') );
 addpath( fullfile( basepath, 'objects', 'bases') );
 addpath( fullfile( basepath, 'objects', 'util') );
 
+addpath( fullfile( basepath, 'methods') );
+addpath( fullfile( basepath, 'methods', 'spectral') );
+addpath( fullfile( basepath, 'methods', 'direct') );
+addpath( fullfile( basepath, 'methods', 'updating') );
+
+
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
 end
