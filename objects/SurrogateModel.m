@@ -26,6 +26,9 @@ classdef SurrogateModel < BaseModel
     end
         
     methods
+        function n=response_dim(model)
+            n = model.orig_model.response_dim(model);
+        end
         function u=compute_response(model, q)
             xi = model.params.params2germ(q);
             func = funcreate(@gpc_evaluate, @funarg, model.basis, xi);
