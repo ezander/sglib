@@ -1,4 +1,4 @@
-function [Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_phi, p_int_mmse, p_pn, p_int_proj, varargin)
+function [Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_phi, p_int_mmse, p_qn, p_int_proj, varargin)
 % MMSE_UPDATE_GPC_BASIC Short description of mmse_update_gpc_basic.
 %   MMSE_UPDATE_GPC_BASIC Long description of mmse_update_gpc_basic.
 %
@@ -33,7 +33,7 @@ phi_func = gpc_function(phi_j_delta, V_phi);
 
 % Create the prediction stochastic model for X as function
 % composition between Y and phi and compute its GPC expansion
-[V_qn, Pr_qyn] = gpcbasis_modify(V_qy, 'p', p_pn);
+[V_qn, Pr_qyn] = gpcbasis_modify(V_qy, 'p', p_qn);
 QM_func = funcompose(Y_func, phi_func);
 QM_i_beta = gpc_projection(QM_func, V_qn, p_int_proj);
 
@@ -48,13 +48,13 @@ Qn_i_beta(:,1) = qm;
 %assert(norm(gpc_covariance(xn_i_alpha, V_x, xm_i_alpha))<1e-10)
 
 % The new model pn and the update should be orthogonal
-CQn = norm(gpc_covariance(Qn_i_beta, V_qy), 'fro');
-CQnQM = norm(gpc_covariance(Qn_i_beta, V_qy, QM_i_beta), 'fro');
+CQn = norm(gpc_covariance(Qn_i_beta, V_qn), 'fro');
+CQnQM = norm(gpc_covariance(Qn_i_beta, V_qn, QM_i_beta), 'fro');
 if CQnQM>1e-10*CQn
     warning('sglib:mmse_update_gpc_basic', 'gpc update not orthogonal (%g>1e-10*%g)', CQnQM, CQn);
 end
 [~, Q_var] = gpc_moments(Q_i_alpha, V_qy);
-[~, Qn_var]= gpc_moments(Qn_i_beta, V_qy);
+[~, Qn_var]= gpc_moments(Qn_i_beta, V_qn);
 if any(Q_var - Qn_var<-1e-10)
     %keyboard
     warning('sglib:mmse_update_gpc_basic', 'gpc no variance reduction');
