@@ -1,4 +1,4 @@
-function cov_ab_ij=gpc_covariance(a_i_alpha, V_ab, b_j_alpha)
+function cov_ab_ij=gpc_covariance(a_i_alpha, V_ab, b_j_alpha, varargin)
 % GPC_COVARIANCE Compute covariance matrix between GPC variables.
 %   COV_AB_IJ=GPC_COVARIANCE(A_I_ALPHA, V_AB, B_J_ALPHA) computes the
 %   covariance between the GPC random variables A_I_ALPHA and B_J_ALPHA
@@ -28,9 +28,15 @@ function cov_ab_ij=gpc_covariance(a_i_alpha, V_ab, b_j_alpha)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin, mfilename);
+[corrcoeffs, options]=get_option(options, 'corrcoeffs', false);
+check_unsupported_options(options);
+
 % if B is not specified we compute the (auto-) covariance of A
-if nargin<3
+autocov = false;
+if nargin<3 || isempty(b_j_alpha)
     b_j_alpha = a_i_alpha;
+    autocov = true;
 end
 
 % compute the square of the norm of the GPC basis
@@ -41,3 +47,20 @@ ind = (multiindex_order(V_ab{2})~=0);
 
 % compute weighted inner product between A and B giving the covariance 
 cov_ab_ij = binfun(@times, a_i_alpha(:, ind), nrm2(:,ind)) * b_j_alpha(:, ind)';
+
+if corrcoeffs
+    [~, a_var] = gpc_moments(a_i_alpha, V_ab);
+    [~, b_var] = gpc_moments(b_j_alpha, V_ab);
+    a_ind = a_var>1e-10;
+    b_ind = b_var>1e-10;
+    a_var(~a_ind) = 0;
+    b_var(~b_ind) = 0;
+    cov_ab_ij(a_ind,b_ind) = cov_ab_ij(a_ind,b_ind) ./ sqrt(a_var(a_ind) * b_var(b_ind)');
+    xxx = cov_ab_ij;;
+    cov_ab_ij=xxx;
+    cov_ab_ij(~a_ind, :)=0;
+    cov_ab_ij(:,~b_ind)=0;
+    if autocov
+        cov_ab_ij = cov_ab_ij + diag(a_var - diag(cov_ab_ij));
+    end
+end
