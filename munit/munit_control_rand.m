@@ -31,6 +31,11 @@ function sprev = munit_control_rand(what, arg)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin==1 && isnumeric(what)
+    arg = what;
+    what = 'seed';
+end
+
 switch(what)
     case 'seed'
         if nargin<2
