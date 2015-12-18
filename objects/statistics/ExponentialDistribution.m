@@ -46,27 +46,32 @@ classdef ExponentialDistribution < Distribution
             % with parameter LAMBDA.
             dist.lambda=lambda;
         end
+        
         function y=pdf(dist,x)
             % PDF computes the probability distribution function of the
             % exponential distribution.
             y=exponential_pdf( x, dist.lambda);
         end
+        
         function y=cdf(dist,x)
             % CDF computes the cumulative distribution function of the
             % exponential distribution.
             y=exponential_cdf( x, dist.lambda);
         end
+        
         function x=invcdf(dist,y)
             % INVCDF computes the inverse CDF (or quantile) function of the
             % exponential distribution.
             x=exponential_invcdf( y, dist.lambda );
         end
+        
         function [mean,var,skew,kurt]=moments(dist)
             % MOMENTS computes the moments of the exponential distribution.
             m = {nan, nan, nan, nan};
             [m{1:nargout}] = exponential_moments( dist.lambda );
             [mean,var,skew,kurt]=deal(m{:});
         end
+        
         function xi=sample(dist,n)
             %   Draw random samples from Exponential distribution.
             %   XI=SAMPLE(DIST,N) draws N random samples from the random

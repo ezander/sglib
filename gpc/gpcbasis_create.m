@@ -27,6 +27,9 @@ function V = gpcbasis_create(syschars, varargin)
 %      Create the multiindex set for full tensor polynomials instead of
 %      complete polynomials (i.e. the polynomial with the highest degree
 %      has degree M*P instead of degree P).
+%   ordering: default
+%      The ordering of the multiindex set. See help for MULTIINDEX for
+%      possible options.
 %   I: {automatic}
 %      If specified this is used as multiindex set, m and p should not be
 %      specified then. Size of multiindex set (dim=2) should match the
@@ -55,8 +58,8 @@ options=varargin2options(varargin);
 [m,options]=get_option(options, 'm', @isdefault);
 [p,options]=get_option(options, 'p', @isdefault);
 [I,options]=get_option(options, 'I', @isdefault);
-%[rvtype,options]=get_option(options, 'I', @isdefault); 'rvtype', 'normal'
-[full_tensor,options]=get_option(options, 'full_tensor', false);
+[ordering,options]=get_option(options, 'ordering', @isdefault);
+[full_tensor,options]=get_option(options, 'full_tensor', @isdefault);
 check_unsupported_options(options, mfilename);
 
 if iscell(syschars)
@@ -65,16 +68,30 @@ if iscell(syschars)
     m = gpcbasis_size(V_old, 2);
 end
 
+% Determine m
 if isdefault(m)
     m=length(syschars);
 elseif ~(length(syschars)==1 || length(syschars)==m)
     error('sglib:gpcbasis', 'length of ''syschars'' does not match ''m''');
 end
+
+% Determine p
 if isdefault(p)
     p=0;
 end
+
+% Determine additional multiindex options
+mi_opts = {};
+if ~isdefault(full_tensor)
+    mi_opts = [mi_opts, {'full', full_tensor}];
+end
+if ~isdefault(ordering)
+    mi_opts = [mi_opts, {'ordering', ordering}];
+end
+
+% Create multiindex set
 if isdefault(I)
-    I = multiindex(m, p, 'full', full_tensor);
+    I = multiindex(m, p, mi_opts{:});
 else
     % check that I and m and syschars are compatible
 end
