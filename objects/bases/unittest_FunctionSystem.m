@@ -18,10 +18,3 @@ function unittest_FunctionSystem(varargin)
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 munit_set_function( 'FunctionSystem' );
-
-% Have to test through some derived class, which has not overridden the
-% base methods (note that we cannot instantiate FunctionSystem as it is
-% abstract, and cannot have a private or internal mock class. It would have
-% to be public, and that's too ugly IMHO.
-L = JacobiPolynomials(0,0);
-assert_equals(L.get_default_syschar(), '', 'empty');

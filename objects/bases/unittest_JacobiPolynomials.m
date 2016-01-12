@@ -81,14 +81,20 @@ assert_equals(J.sqnorm(n(:)'), h(:)', 'nrm_row');
 % I think it will be best to check consistency, e.g. together with
 % integration of the polys over the weight functions
 
-%% default syschar
-% no default syschar for the jacobi's as they are parameterised and there
-% can be no sensible default
-assert_equals(J.get_default_syschar(), '', 'syschar');
-
 %% consistency with weighting function
-polysys = JacobiPolynomials(-0.4,-0.6);
+polysys = JacobiPolynomials(1.3, 3.4);
 N=4;
 
-Q = compute_gramian(polysys, polysys.weighting_dist(), N);
-assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent', 'abstol', 1e-6);
+% polysys -> dist
+dist = polysys.weighting_dist();
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');
+
+% dist -> polysys
+polysys = dist.default_polysys(false);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent_rev');
+
+polysys = dist.default_polysys(true);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, eye(N+1), 'weighting_consistent_rev_norm');

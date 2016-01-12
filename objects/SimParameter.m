@@ -48,7 +48,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
     
     %% Constructor and basic methods
     methods
-        function param=SimParameter(name, dist, varargin)
+        function param=SimParameter(name, dist_or_num, varargin)
             % Returns a new SimParameter object with the distribution DIST
             % which was specified as an argument, and IS_FIXED set to false
             
@@ -63,6 +63,16 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             %[param.germ2param_func,options]=get_option(options, 'germ2param_func', {});
             check_unsupported_options(options, mfilename);
             
+            if isnumeric(dist_or_num)
+                fixed_val = dist_or_num;
+                is_fixed = true;
+                dist = NormalDistribution(fixed_val, 0);
+            else
+                fixed_val = [];
+                is_fixed = false;
+                dist = dist_or_num;
+            end
+            
             %Check whether input is in the right format
             check_type( name, 'char', true, 'NAME', mfilename);
             check_type( dist, 'Distribution', false, 'DIST', mfilename);
@@ -70,7 +80,8 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             % initialize properties
             param.name=name;
             param.dist=dist;
-            param.is_fixed=false;
+            param.is_fixed=is_fixed;
+            param.fixed_val=fixed_val;
             if isempty(param.plot_name)
                 param.plot_name=name;
             end
@@ -167,7 +178,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
                 abstol = 1e-10;
                 reltol = 1e-10;
                 x0 = param.fixed_val;
-                y = double(abs(x-x0)<=abstol+x0*reltol);
+                y = double(abs(x-x0)<=abstol+abs(x0)*reltol);
             else
                 y = param.dist.pdf(x);
             end

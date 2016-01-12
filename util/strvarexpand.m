@@ -42,9 +42,9 @@ for i=pos
     if doeval
         orig=part;
         try
-            part=evalin( 'caller', part );
+            part=evalin( 'caller', orig );
         catch
-            part=['<err:' part '>'];
+            part=['<err:' orig '>'];
         end
         part=tostring( part, orig, maxarr, maxcell );
         if show_expr

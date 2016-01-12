@@ -9,7 +9,7 @@ params=cell(M,1);
   if isempty(param_names)
       param_names=cell(M,1);
   end
-      
+paramset=SimParamSet();      
 for i=1:M
     dist_i=dists{i};
     if ~isa(dist_i, 'Distribution')
@@ -19,7 +19,7 @@ for i=1:M
     if isempty(param_name_i)
         param_name_i=strvarexpand('p_$i$');
     end
-    params{i}=SimParameter(param_name_i,dist_i);
+    paramset.add(param_name_i,dist_i);
 end
-paramset=SimParamSet(params{:});
+
 end

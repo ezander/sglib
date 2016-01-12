@@ -27,7 +27,6 @@ classdef SemiCircleDistribution < BetaDistribution
     methods
         function dist = SemiCircleDistribution()
             dist@BetaDistribution(3/2, 3/2);
-            %dist= fix_bounds(dist, a, b);
         end
         
         function str=tostring(dist) %#ok<MANU>

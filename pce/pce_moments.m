@@ -89,7 +89,8 @@ end
 function m=integrate_central_moment( r_i_alpha, I_r, p )
 p_r=max(multiindex_order(I_r));
 if p>=2
-    r_i_alpha(:,1)=0;
+    mean_ind = (multiindex_order(I_r)==0);
+    r_i_alpha(:,mean_ind)=0;
 end
 p_int=ceil(p_r*(1+p)/2);
 m=size(I_r,2);
@@ -102,28 +103,29 @@ val=val.^p;
 
 
 function mean=mean_direct( r_i_alpha, I_r )
-% the first row in I_R should contain the mean (i.e. all indices have
-% to be zero)
-if any(full(I_r(1,:))~=0)
-    error('pce_moments: the first row in argument I_r has to be identical zero!' );
-end
-mean = r_i_alpha(:,1);
+mean_ind = (multiindex_order(I_r)==0);
+mean = sum(r_i_alpha(:,mean_ind), 2);
+
 
 function var=var_direct( r_i_alpha, I_r )
-var=r_i_alpha(:,2:end).^2*multiindex_factorial(I_r(2:end,:));
+mean_ind = (multiindex_order(I_r)==0);
+var=r_i_alpha(:,~mean_ind).^2*multiindex_factorial(I_r(~mean_ind,:));
+
 
 function [var,skew,kurt]=pcemult_moments( r_i_alpha, I_r )
-r_i_alpha(:,1)=0;
+mean_ind = (multiindex_order(I_r)==0);
+r_i_alpha(:,mean_ind)=0;
+
 m=size(I_r,2);
 p=max(I_r(:));
 I_x=multiindex(m,2*p);
 I_y=multiindex(m,0);
 x_i_alpha=pce_multiply( r_i_alpha, I_r, r_i_alpha, I_r, I_x );
-var=x_i_alpha(:,1);
+var=mean_direct(x_i_alpha, I_x);
 y_i_alpha=pce_multiply( x_i_alpha, I_x, r_i_alpha, I_r, I_y );
-skew=y_i_alpha(:,1);
+skew=mean_direct(y_i_alpha, I_y);
 if nargout>=3
     y_i_alpha=pce_multiply( x_i_alpha, I_x, x_i_alpha, I_x, I_y );
-    kurt=y_i_alpha(:,1);
+    kurt=mean_direct(y_i_alpha, I_y);
 end
 

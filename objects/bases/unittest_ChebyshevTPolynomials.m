@@ -38,12 +38,20 @@ assert_equals(T.sqnorm(n), h, 'nrm_arr');
 assert_equals(T.sqnorm(n(:)), h(:), 'nrm_col');
 assert_equals(T.sqnorm(n(:)'), h(:)', 'nrm_row');
 
-%% default syschar
-assert_equals(T.get_default_syschar(), 'T', 'syschar');
-
 %% consistency with weighting function
 polysys = ChebyshevTPolynomials();
 N=4;
 
-Q = compute_gramian(polysys, polysys.weighting_dist(), N);
+% polysys -> dist
+dist = polysys.weighting_dist();
+Q = compute_gramian(polysys, dist, N);
 assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent');
+
+% dist -> polysys
+polysys = dist.default_polysys(false);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, diag(polysys.sqnorm(0:N)), 'weighting_consistent_rev');
+
+polysys = dist.default_polysys(true);
+Q = compute_gramian(polysys, dist, N);
+assert_equals(Q, eye(N+1), 'weighting_consistent_rev_norm');

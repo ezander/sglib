@@ -36,8 +36,18 @@ do_test( .4, .2, 10, 'small_0402', 'abstol', 1e-4  );
 assert_equals( inv_reg_beta( linspace(0,1,10), 0.000001, 0.000001 ), [0,0,0,0,0,1,1,1,1,1], 'small' );
 assert_error( 'inv_reg_beta( [0,1], 1e4, 1e4 )', 'util:inv_reg_beta', 'error_too_large' );
 
-function do_test( a, b, N, id, varargin )
-y=linspace(0,1,N);
+% same values 
+do_test( 4, 2, repmat(0.4, 1, 20), 'small_same' );
+do_test( 4, 2, repmat(0.4, 1, 10000), 'large_same' );
+
+function do_test( a, b, N_or_y, id, varargin )
+if isscalar(N_or_y)
+    N=N_or_y;
+    y=linspace(0,1,N);
+else
+    N=length(N_or_y);
+    y=N_or_y;
+end
 x=inv_reg_beta( y, a, b );
 y2=x; notnan=~isnan(x);
 y2(notnan)=betainc(x(notnan),a, b);

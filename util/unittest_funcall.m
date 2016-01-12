@@ -83,6 +83,9 @@ times4={@times,{4}};
 equal12={times4,{3}};
 assert_equals( funcall( {equal12} ), 12, 'nest4' );
 
+%% Test error reporting when in/out args don't match
+assert_error( @()(funcall(funcreate(@take2return0,5,6,@funarg),3)), 'sglib:TooManyInputs', 'too_many_inputs');
+assert_error( @()(1+funcall(funcreate(@take2return0,6,@funarg),3)), 'sglib:TooManyOutputs', 'too_many_outputs');
 
 function [d,e]=test_it( a, b, c )
 d=a+b; e=b*c;
@@ -93,3 +96,5 @@ if nargout==0
 else
     [varargout{1:nargout}]=x+1;
 end
+
+function take2return0(a,b) %#ok<INUSD>

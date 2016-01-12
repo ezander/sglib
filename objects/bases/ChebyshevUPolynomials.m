@@ -31,13 +31,6 @@ classdef ChebyshevUPolynomials < PolynomialSystem
             %   2nd kind.
         end
         
-        function syschar=get_default_syschar(~)
-            % GET_DEFAULT_SYSCHAR Return the default syschar for the Chebyshev U polynomials.
-            %   
-            % See also FUNCTIONSYSTEM.DEFAULT_SYSCHAR
-            syschar = 'U'; % or 'u'? What's better?
-        end
-        
         function r=recur_coeff(~, deg)
             % RECUR_COEFF Compute recurrence coefficient of orthogonal polynomials.
             % References:
@@ -74,7 +67,6 @@ classdef ChebyshevUPolynomials < PolynomialSystem
             %   
             % See also DISTRIBUTION POLYNOMIALSYSTEM.WEIGHTING_DIST
             dist=SemiCircleDistribution();
-            dist = dist.fix_bounds(-1,1);
         end
     end
 end
