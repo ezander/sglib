@@ -77,7 +77,7 @@ addpath( fullfile( basepath, 'objects', 'util') );
 
 addpath( fullfile( basepath, 'methods') );
 addpath( fullfile( basepath, 'methods', 'spectral') );
-addpath( fullfile( basepath, 'methods', 'direct') );
+%addpath( fullfile( basepath, 'methods', 'direct') );
 addpath( fullfile( basepath, 'methods', 'updating') );
 
 
