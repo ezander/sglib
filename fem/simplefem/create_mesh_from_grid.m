@@ -1,4 +1,4 @@
-function [pos, els]=create_mesh_from_grid(x, y)
+function [pos, els]=create_mesh_from_grid(X, Y)
 % CREATE_MESH_FROM_GRID Creates mesh data structures from a structured grid.
 %   [POS, ELS]=CREATE_MESH_FROM_GRID(X, Y) given a structured grid in X and
 %   Y, mesh data structures are returned in POS and ELS, consisting of
@@ -47,38 +47,43 @@ function [pos, els]=create_mesh_from_grid(x, y)
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-if isscalar(x)
-    assert(isscalar(y));
-    nx = x;
-    ny = y;
-    px = (1:nx)';
-    py = (1:ny)';
-    [pos, els] = from_vector(px, py);
-elseif isvector(x)
-    assert(isvector(y));
-    [pos, els] = from_vector(x(:), y(:));
-elseif ismatrix(x)
-    assert(ismatrix(y));
-    [pos, els] = from_matrix(x, y);
+if isscalar(X)
+    assert(isscalar(Y));
+    nx = X;
+    ny = Y;
+    x = (1:nx)';
+    y = (1:ny)';
+    [pos, els] = from_vectors(x, y);
+elseif isvector(X)
+    assert(isvector(Y));
+    [pos, els] = from_vectors(X(:), Y(:));
+elseif ismatrix(X)
+    assert(ismatrix(Y));
+    [pos, els] = from_matrices(X, Y);
 else
     error('sglib:create_mesh_from_grid', 'Malformed input');
 end
 
 
-function [pos, els]=from_vector(px, py)
-[x, y] = meshgrid(px, py);
-[pos, els] = from_matrix(x, y);
+function [pos, els]=from_vectors(x, y)
+% FROM_VECTOR Create POS, ELS from vectors
 
-function [pos, els]=from_matrix(x, y)
-[nx, ny] = size(x);
-assert(size(y,1)==nx);
-assert(size(y,2)==ny);
+[X, Y] = meshgrid(x, y);
+[pos, els] = from_matrices(X, Y);
 
-ind_x = (1:nx-1)';
-ind_y = (1:ny-1);
-K = sub2ind([nx,ny], repmat(ind_x,1,ny-1), repmat(ind_y,nx-1,1));
-K = K(:);
-els = [K, K+nx, K+1; K+nx, K+nx+1, K+1]';
-pos = [x(:), y(:)]';
+
+function [pos, els]=from_matrices(X, Y)
+% FROM_MATRIX Create POS, ELS from matrices
+
+[ni, nj] = size(X);
+assert(size(Y,1)==ni);
+assert(size(Y,2)==nj);
+
+% Generate index pairs (i,j)
+[i, j] = meshgrid(1:ni-1, 1:nj-1);
+% Generate linear index k from index tuples (i,j)
+k = sub2ind([ni,nj], i(:), j(:));
+% Generate elements structure ELS from linear indices 
+els = [k, k+ni, k+1; k+ni, k+ni+1, k+1]';
+% Generate node structure POS
+pos = [X(:), Y(:)]';
