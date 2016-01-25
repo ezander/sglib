@@ -1,4 +1,4 @@
-function [g_i_alpha, I_g, C]=expand_gaussian_field_pce( cov_func, pos, G_N, m_gam, varargin )
+function [g_i_alpha, I_g, C, sigma_g]=expand_gaussian_field_pce( cov_func, pos, G_N, m_gam, varargin )
 % 
 % See also PLOT_PCE_REALIZATIONS_1D, COVARIANCE_MATRIX, TRANSFORM_COVARIANCE_PCE, PCE_TO_KL
 
@@ -29,8 +29,8 @@ check_unsupported_options( options, mfilename );
 
 C=covariance_matrix( pos, cov_func );
 
-kl_options.correct_var=true;
-g_i_alpha=kl_solve_evp( C, G_N, m_gam, kl_options );
+%kl_options.correct_var=true;
+[g_i_alpha, sigma_g]=kl_solve_evp( C, G_N, m_gam, kl_options );
 if size(g_i_alpha,2)<m_gam
     warning( 'sglib:expand_gaussian_random_field_pce', 'could not determine enough independent gaussians' );
     g_i_alpha=[g_i_alpha, zeros(size(g_i_alpha,1),m_gam-size(g_i_alpha,2))];
