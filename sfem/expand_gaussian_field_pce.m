@@ -30,6 +30,7 @@ check_unsupported_options( options, mfilename );
 C=covariance_matrix( pos, cov_func );
 
 %kl_options.correct_var=true;
+kl_options.scale_result = true;
 [g_i_alpha, sigma_g]=kl_solve_evp( C, G_N, m_gam, kl_options );
 if size(g_i_alpha,2)<m_gam
     warning( 'sglib:expand_gaussian_random_field_pce', 'could not determine enough independent gaussians' );
