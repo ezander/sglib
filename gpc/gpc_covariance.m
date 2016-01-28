@@ -56,7 +56,7 @@ if corrcoeffs
     a_var(~a_ind) = 0;
     b_var(~b_ind) = 0;
     cov_ab_ij(a_ind,b_ind) = cov_ab_ij(a_ind,b_ind) ./ sqrt(a_var(a_ind) * b_var(b_ind)');
-    xxx = cov_ab_ij;;
+    xxx = cov_ab_ij;
     cov_ab_ij=xxx;
     cov_ab_ij(~a_ind, :)=0;
     cov_ab_ij(:,~b_ind)=0;
