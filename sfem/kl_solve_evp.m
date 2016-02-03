@@ -59,6 +59,7 @@ options=varargin2options( varargin );
 [correct_var,options]=get_option( options, 'correct_var', false );
 [diag_warning_threshold]=get_option( options, 'diag_warning_threshold', 0.5 );
 [use_sparse,options]=get_option( options, 'use_sparse', true );
+[scale_result,options]=get_option( options, 'scale_result', nargout<2 );
 check_unsupported_options( options, mfilename );
 
 % check that not more eigenvectors are requested than size of C allows
@@ -148,7 +149,7 @@ end
 
 % if the user doesn't want to have sigma_k then we put it into the r_i_k's
 % then r_i_k*G_N*r_i_k'=diag(lambda) instead of r_i_k*G_N*r_i_k'=eye(m)
-if  nargout<2
+if scale_result
     r_i_k=row_col_mult( r_i_k, sigma_k );
 end
 
