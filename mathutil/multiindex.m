@@ -143,6 +143,25 @@ end
 
 
 function I_kp=multiindex_complete(m, p, std_ordering, use_sparse)
+% Special treatment for the cases p==0 and p==1, which can be necessary, if
+% m is large, because otherwise the general algorithm will be unnecessary
+% slow
+if p==0
+    if use_sparse
+        I_kp = {sparse(1, m)};
+    else
+        I_kp = {zeros(1, m)};
+    end
+    return
+elseif p==1
+    if use_sparse
+        I_kp = {sparse(1, m), speye(m,m)};
+    else
+        I_kp = {zeros(1, m), eye(m,m)};
+    end
+    return
+end
+
 % The (old) idea of the algorithm is the following:
 % We do a recursion on the number of random variables, not on the order (in
 % my opinion its easier and faster that way). For just one random variable

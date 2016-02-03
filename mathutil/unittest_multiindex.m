@@ -75,3 +75,21 @@ assert_equals(ind * [1;6;36], (0:215)', 'full_tensor_lex');
 ind=multiindex( 3, 5, 'full', true, 'lex_ordering', false );
 assert_equals(sort(ind * [1;6;36]), (0:215)', 'full_tensor');
 assert_true(all(diff(sum(ind,2))>=0), 'degree not increasing', 'full_tensor_inc_deg');
+
+
+%% Test of special cases (p==0, p==1)
+ind=multiindex( 8, 0, 'full', false, 'lex_ordering', true );
+assert_equals(ind, zeros(1,8), 'p0_full');
+assert_matrix(ind, 'full', 'p0_full');
+ind=multiindex( 8, 0, 'full', false, 'use_sparse', true );
+assert_equals(ind, zeros(1,8), 'p0_sparse');
+assert_matrix(ind, 'sparse', 'p0_sparse');
+
+ind=multiindex( 8, 1, 'full', false, 'lex_ordering', true );
+assert_equals(ind, [zeros(1,8); eye(8)], 'p1_full');
+assert_matrix(ind, 'full', 'p1_full');
+ind=multiindex( 8, 1, 'full', false, 'use_sparse', true );
+assert_equals(ind, [zeros(1,8); eye(8)], 'p1_sparse');
+assert_matrix(ind, 'sparse', 'p1_sparse');
+
+

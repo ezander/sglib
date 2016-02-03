@@ -47,6 +47,7 @@ check_unsupported_options(options, mfilename);
 
 % Generate integration points
 [xi_j_k, w_k] = gpc_integrate([], V, p_int, 'grid', 'full_tensor');
+%[xi_j_k, w_k] = gpc_integrate([], V, p_int, 'grid', 'smolyak');
 
 % Evaluate X and Y at the integration points
 Q_i_k = funcall(Q_func, xi_j_k);
@@ -56,18 +57,19 @@ Y_j_k = funcall(Y_func, xi_j_k);
 % function basis V_phi
 m = size(Y_j_k, 1);
 V_phi=gpcbasis_create(syschar, 'm', m, 'p', p_phi);
-Psi_gamma_k = gpcbasis_evaluate(V_phi, Y_j_k);
+Psi_delta_k = gpcbasis_evaluate(V_phi, Y_j_k);
 
 % Compute matrix A and right hand side b and solve
-wPsi_gamma_k = binfun(@times, Psi_gamma_k, w_k');
-A = Psi_gamma_k * wPsi_gamma_k';
-b = Q_i_k * wPsi_gamma_k';
+wPsi_k_delta = binfun(@times, Psi_delta_k', w_k);
+A = Psi_delta_k * wPsi_k_delta;
+phi_i_delta = Q_i_k * wPsi_k_delta;
 
 % clc
 % phi_i_delta = (A\b')'
 % phi_i_delta2 = lscov(A, b')'
 % phi_i_delta3 = lscov(Psi_gamma_k', Q_i_k')'
-phi_i_delta = lscov(Psi_gamma_k', Q_i_k', w_k)';
+%phi_i_delta = lscov(Psi_gamma_k', Q_i_k', w_k)'; % does not work with
+%smolyak as weights can become negative
 
 
 % Issue warning if the condition number is too high

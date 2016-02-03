@@ -105,6 +105,7 @@ mp_data.n = n;
 mp_data.i = 0;
 mp_data.j = 0;
 mp_data.row_first = row_first;
+mp_data.fh = fh;
 multiplot_data('set', mp_data);
 
 % return the handles array 

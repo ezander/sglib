@@ -4,7 +4,7 @@ function legend_add( text )
 %   current plot. This way legends can be simply build up by calling
 %   LEGEND_ADD after each call to PLOT (and after some HOLD ALL or HOLD
 %   ON), instead of first storing each legend entry first into a cell array
-%   and then calling LEGEND. 
+%   and then calling LEGEND.
 %
 % Note:
 %   If TEXT is a number, it is first converted into a string using the '%g'
@@ -27,7 +27,7 @@ function legend_add( text )
 %   This program is free software: you can redistribute it and/or modify it
 %   under the terms of the GNU General Public License as published by the
 %   Free Software Foundation, either version 3 of the License, or (at your
-%   option) any later version. 
+%   option) any later version.
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
@@ -43,5 +43,18 @@ end
 if isnumeric(text)
     text=sprintf( '%g', text );
 end
-[legend_h,~,~,text_strings] = legend();
-legend( legend_h, [text_strings, {text}] );
+
+% Get the strings from the existing legend and add the new string
+[h,~,~,text_strings] = legend();
+if isempty(text_strings) && isobject(h)
+    % Try to work around a bug in R2015b. don't use the returned legend handle
+    % from the legend() call, it is not necessary and leads to errors in newer
+    % matlab version (>R2014b))
+    if isempty(h)
+        text_strings = {};
+    else
+        text_strings = h.String(:)';
+    end
+end
+
+legend( [text_strings, {text}] );

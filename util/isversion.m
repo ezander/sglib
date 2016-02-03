@@ -1,8 +1,8 @@
-function ok=isversion( minversion, maxversion )
+function ok=isversion( ge_version, lt_version )
 % ISVERSION Check that running Matlab version fits into some range.
-%   OK=ISVERSION( MINVERSION, MAXVERSION ) checks that the current Matlab
-%   version (VERSION) is greater or equal MINVERSION and less but not equal
-%   to MAXVERSION.
+%   OK=ISVERSION( GE_VERSION, LT_VERSION ) checks that the current Matlab
+%   version (VERSION) is greater than or equal to GE_VERSION and less than
+%   (but not equal to) LT_VERSION.
 %
 %   In order to check which matlab version supports which features or
 %   introduced which incompatibilities see the references [1-3].
@@ -50,11 +50,13 @@ function ok=isversion( minversion, maxversion )
 ver=str2version( version );
 ok=true;
 
-minver=str2version(minversion);
-ok=ok && is_larger_equal( ver, minver );
+if ~isempty(ge_version)
+    minver=str2version(ge_version);
+    ok=ok && is_larger_equal( ver, minver );
+end
 
-if nargin>1
-    maxver=str2version( maxversion );
+if nargin>1 && ~isempty(lt_version)
+    maxver=str2version( lt_version );
     ok=ok && is_larger( maxver, ver );
 end
 
