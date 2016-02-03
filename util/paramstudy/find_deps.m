@@ -42,10 +42,10 @@ end
 deps={};
 while ~isempty(funs)
     s = warning('off', 'MATLAB:DEPFUN:DeprecatedAPI');
-    try
+    if isversion('8.6')
         imdeps = matlab.codetools.requiredFilesAndProducts(funs, 'toponly');
-    catch        
-        imdeps=depfun( funs, '-toponly', '-quiet' );
+    else
+        imdeps=depfun( funs, '-toponly', '-quiet' ); %#ok<DEPFUN>
     end
     warning(s);
     exclude=strmatch( excludepath, imdeps );

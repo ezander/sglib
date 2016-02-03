@@ -70,7 +70,10 @@ if ~all(all(ishandle(mh)))
 end
 
 % Set the current axis to the one we determined
-set( gcf, 'CurrentAxes', mh(i, j) );
+%if mp_data.fh ~= gcf
+%    keyboard
+%end
+set( mp_data.fh, 'CurrentAxes', mh(i, j) );
 drawnow;
 
 % Return current handle if necessary
