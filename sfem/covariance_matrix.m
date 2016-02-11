@@ -43,8 +43,7 @@ else
 end
 
 function C=covariance_matrix_complete( pos, covar_func )
-n=size(pos,2);
-C=zeros(n,n);
+n=size(pos,2);C=zeros(n,n);
 
 for i=1:n
     C(i:end,i)=funcall( covar_func, repmat(pos(:,i),1,n-i+1), ...
