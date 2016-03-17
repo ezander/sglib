@@ -23,12 +23,17 @@ function [Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+options=varargin2options(varargin);
+[int_grid,options]=get_option(options, 'int_grid', 'full_tensor');
+check_unsupported_options(options, mfilename);
+
 % Convert the GPC expansion of X into a function object
 X_func = gpc_function(Q_i_alpha, V_qy);
 
 % Now compute the MMSE estimator for X given Y and make a function
 % out of this estimator
-[phi_j_delta,V_phi]=mmse_estimate(X_func, Y_func, V_qy, p_phi, p_int_mmse);
+
+[phi_j_delta,V_phi]=mmse_estimate(X_func, Y_func, V_qy, p_phi, p_int_mmse, 'int_grid', int_grid);
 phi_func = gpc_function(phi_j_delta, V_phi);
 
 % Create the prediction stochastic model for X as function
