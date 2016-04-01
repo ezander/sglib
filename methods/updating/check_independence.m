@@ -49,3 +49,15 @@ if nargout>=2
         polyrep = gpcbasis_polynomials(V_phi, 'symbols', 'xyzuvwst');
     end
 end
+end
+function rank(A)
+options=varargin2options(varargin);
+[tol, options]=get_option(options, 'tol','default');
+check_unsupported_options(options, mfilename);
+
+s = svd(A);
+if nargin==1
+   tol = max(size(A)) * eps(max(s));
+end
+r = sum(s > tol);
+end
