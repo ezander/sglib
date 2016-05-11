@@ -115,5 +115,21 @@ classdef LogNormalDistribution < Distribution
             % orthogonal) to the actual distribution
             y=(log(x)-dist.mu)/dist.sigma;
         end
+        function x=stdnor(dist,y)
+            % STDNOR Map from normal distributed random values.
+            % Y=STDNOR(DIST, X) Map normal distributed random values X to
+            % random values Y distribution according to the probability
+            % distribution DIST.
+            x=base2dist(dist,y);
+        end
+        function y=dist2stdnor(dist, x)
+            % DIST2STDNOR Map from random values Y, with distribution according 
+            % to the probability distribution DIST., to random values X with
+            % standard normal distributed random values.
+            % X=DIST2STDNOR(DIST, Y). This is the inverse map of
+            % STDNOR
+            % 
+            y=dist2base(dist,x);
+        end
     end
 end
