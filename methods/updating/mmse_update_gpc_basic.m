@@ -27,29 +27,29 @@ options=varargin2options(varargin);
 [int_grid,options]=get_option(options, 'int_grid', 'full_tensor');
 check_unsupported_options(options, mfilename);
 
-% Convert the GPC expansion of X into a function object
+% Convert the GPC expansion of Q into a function object
 Q_func = gpc_function(Q_i_alpha, V_qy);
 
-% Now compute the MMSE estimator for X given Y and make a function
+% Now compute the MMSE estimator for Q given Y and make a function
 % out of this estimator
-[phi_j_delta,V_phi]=mmse_estimate(X_func, Y_func, V_qy, p_phi, p_int_mmse, 'int_grid', int_grid);
+[phi_j_delta,V_phi]=mmse_estimate(Q_func, Y_func, V_qy, p_phi, p_int_mmse, 'int_grid', int_grid);
 phi_func = gpc_function(phi_j_delta, V_phi);
 
-% Create the prediction stochastic model for X as function
+% Create the prediction stochastic model for Q as function
 % composition between Y and phi and compute its GPC expansion
 [V_qn, Pr_qyn] = gpcbasis_modify(V_qy, 'p', p_qn);
 QM_func = funcompose(Y_func, phi_func);
 QM_i_beta = gpc_projection(QM_func, V_qn, p_int_proj);
 
-% Compute the best estimator value xm=phi(ym)
+% Compute the best estimator value qm=phi(ym)
 qm = funcall(phi_func, ym);
 
-% Subtract the old coefficients to get the update and add xm
+% Subtract the old coefficients to get the update and add qm
 Qn_i_beta =  Q_i_alpha * Pr_qyn - QM_i_beta;
 Qn_i_beta(:,1) = qm;
 
-% The updated model xn and the update should be orthogonal
-%assert(norm(gpc_covariance(xn_i_alpha, V_x, xm_i_alpha))<1e-10)
+% The updated model Qn and the update should be orthogonal
+%assert(norm(gpc_covariance(qn_i_alpha, V_q, qm_i_alpha))<1e-10)
 
 % The new model and the update should be orthogonal
 CQn = norm(gpc_covariance(Qn_i_beta, V_qn), 'fro');
