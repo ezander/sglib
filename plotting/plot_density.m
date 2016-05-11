@@ -34,7 +34,7 @@ if do_hold
     hold('all');
 end
 
-if iscell(dist_or_samples)
+if iscell(dist_or_samples) || isa(dist_or_samples, 'Distribution')
     [x,y]=plot_dist_density(dist_or_samples, options);
 else
     [x,y]=plot_sample_density(dist_or_samples, options);
