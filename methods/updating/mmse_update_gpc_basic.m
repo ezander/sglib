@@ -1,4 +1,4 @@
-function [Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_phi, p_int_mmse, p_qn, p_int_proj, varargin)
+function [Qn_i_beta, V_qn, phi_func]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_phi, p_int_mmse, p_qn, p_int_proj, varargin)
 % MMSE_UPDATE_GPC_BASIC Short description of mmse_update_gpc_basic.
 %   MMSE_UPDATE_GPC_BASIC Long description of mmse_update_gpc_basic.
 %
@@ -24,11 +24,11 @@ function [Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_alpha, Y_func, V_qy, ym, p_
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 % Convert the GPC expansion of X into a function object
-X_func = gpc_function(Q_i_alpha, V_qy);
+Q_func = gpc_function(Q_i_alpha, V_qy);
 
 % Now compute the MMSE estimator for X given Y and make a function
 % out of this estimator
-[phi_j_delta,V_phi]=mmse_estimate(X_func, Y_func, V_qy, p_phi, p_int_mmse);
+[phi_j_delta,V_phi]=mmse_estimate(Q_func, Y_func, V_qy, p_phi, p_int_mmse);
 phi_func = gpc_function(phi_j_delta, V_phi);
 
 % Create the prediction stochastic model for X as function
@@ -47,7 +47,7 @@ Qn_i_beta(:,1) = qm;
 % The updated model xn and the update should be orthogonal
 %assert(norm(gpc_covariance(xn_i_alpha, V_x, xm_i_alpha))<1e-10)
 
-% The new model pn and the update should be orthogonal
+% The new model and the update should be orthogonal
 CQn = norm(gpc_covariance(Qn_i_beta, V_qn), 'fro');
 CQnQM = norm(gpc_covariance(Qn_i_beta, V_qn, QM_i_beta), 'fro');
 if CQnQM>1e-10*CQn

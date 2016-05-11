@@ -11,11 +11,6 @@ V_u = gpcbasis_modify(V_q, 'p', p);
 func = funcreate(['compute_response_surface_' method]);
 [u_i_alpha, ~]=funcall(func, spectral_model, @(xi)(Q.germ2params(xi)), V_u, method_params{:});
 
-%[u_i_alpha, ~]=compute_response_surface_projection(spectral_model, @(xi)(Q.germ2params(xi)), V_u, 3, 'grid', 'full_tensor');
-% [u_mean, u_var] = multivector_map(@(coeffs)(gpc_moments(coeffs, V_u)), u_i_alpha);
-% model.plot_all(u_mean)
-% model.plot_all(u_var)
-
 surr_model = SurrogateModel(u_i_alpha, V_u, Q, model);
 
 

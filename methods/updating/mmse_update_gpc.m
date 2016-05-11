@@ -1,4 +1,4 @@
-function [Qn_i_beta, V_qn]=mmse_update_gpc(Q_i_alpha, Y_func, V_q, ym, eps_func, V_eps, p_phi, p_int_mmse, p_qn, p_int_proj)
+function [Qn_i_beta, V_qn, phi_func]=mmse_update_gpc(Q_i_alpha, Y_func, V_q, ym, eps_func, V_eps, p_phi, p_int_mmse, p_qn, p_int_proj)
 % MMSE_UPDATE_GPC Update a GPC given some measurements and a measurement model.
 %
 % Example (<a href="matlab:run_example mmse_update_gpc">run</a>)
@@ -29,7 +29,7 @@ YM_func = @(xi)(...
 Q_i_beta = zeros(size(Q_i_alpha,1), gpcbasis_size(V_qe,1));
 Q_i_beta(:,ind_V_X) = Q_i_alpha;
 
-[Qn_i_beta, V_qn]=mmse_update_gpc_basic(Q_i_beta, YM_func, V_qe, ym, p_phi, p_int_mmse, p_qn, p_int_proj);
+[Qn_i_beta, V_qn, phi_func]=mmse_update_gpc_basic(Q_i_beta, YM_func, V_qe, ym, p_phi, p_int_mmse, p_qn, p_int_proj);
 
 
 function y = eval_on_subset(xi, func, ind)
