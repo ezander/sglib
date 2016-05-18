@@ -73,7 +73,13 @@ end
 %if mp_data.fh ~= gcf
 %    keyboard
 %end
-set( mp_data.fh, 'CurrentAxes', mh(i, j) );
+if numel(mp_data.fh)>1
+    fh = mp_data.fh(i, j);
+    figure( fh );
+else
+    fh = mp_data.fh;
+end
+set( fh, 'CurrentAxes', mh(i, j) );
 drawnow;
 
 % Return current handle if necessary

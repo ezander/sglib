@@ -47,6 +47,7 @@ options=varargin2options(varargin, mfilename);
 [title_dist, options]=get_option(options, 'title_dist', 0.01);
 [title_height_diff, options]=get_option(options, 'title_height_diff', 0);
 [title_ypos_diff, options]=get_option(options, 'title_ypos_diff', 0.03);
+[separate_figs, options]=get_option(options, 'separate_figs', false);
 check_unsupported_options(options);
 
 if nargin==1 || isempty(n)
@@ -68,11 +69,15 @@ switch(ordering)
 end
 
 % clear the current figure
-fh=clf;
+if separate_figs
+    fh=[];
+else
+    fh=clf;
+end
 %set( fh, 'defaulttextinterpreter', 'latex' );
 
 have_title=~isempty(figtitle);
-if have_title
+if have_title && ~separate_figs
     add_m = 1;
     subplot(m+add_m, n, 1:n);
     height = set_title(figtitle);
@@ -84,16 +89,28 @@ else
 end
 
 % initialise the figures
+if separate_figs
+    [handles{1:m,1:n}]=multifigure;
+    fh=cellfun(@double, handles);
+end
+
+
 handles=zeros(m,n);
 for i=1:m
     for j=1:n
-        % compute linear index for subplot
-        k=j+n*(i-1+add_m);
-        h=subplot( m+add_m, n, k );
-        % store the handle
-        handles(i,j)=h;
-        if have_title
-            move_axis(h, add_height, (m-i)*diff_ypos);
+        if ~separate_figs
+            % compute linear index for subplot
+            k=j+n*(i-1+add_m);
+            h=subplot( m+add_m, n, k );
+            % store the handle
+            handles(i,j)=h;
+            if have_title
+                move_axis(h, add_height, (m-i)*diff_ypos);
+            end
+        else
+            figure(fh(i,j));
+            h=subplot( 1, 1, 1 );
+            handles(i,j)=h;
         end
     end
 end
@@ -106,6 +123,7 @@ mp_data.i = 0;
 mp_data.j = 0;
 mp_data.row_first = row_first;
 mp_data.fh = fh;
+
 multiplot_data('set', mp_data);
 
 % return the handles array 
