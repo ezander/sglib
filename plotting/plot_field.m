@@ -64,7 +64,13 @@ check_unsupported_options( options, mfilename );
 
 
 if ismatlab()
-    h=trisurf( els', pos(1,:), pos(2,:), u );
+    u1 = min(u(:)); u2 = max(u(:));
+    if u2>u1
+        c = (u-u1)/(u2-u1);
+    else
+        c = u;
+    end
+    h=trisurf( els', pos(1,:), pos(2,:), u, c );
     view(view_mode);
     axis( axis_mode );
     xlim([min(pos(1,:)) max(pos(1,:))]);
