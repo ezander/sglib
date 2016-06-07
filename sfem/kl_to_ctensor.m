@@ -21,7 +21,7 @@ function R=kl_to_ctensor( r_i_k, r_k_alpha )
 
 
 % check input arguments
-error( nargchk( 2, 2, nargin ) );
+check_num_args(nargin, 2, 2, mfilename);
 
 if size(r_i_k,2)~=size(r_k_alpha,1)
     error('kl_to_ctensor:size', 'number of kl expansion terms not consistent (transposed?)');
