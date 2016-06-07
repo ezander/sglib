@@ -24,8 +24,7 @@ function str=disp_func( func )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-error(nargchk(1, inf, nargin));
+check_num_args(nargin, 1, inf, mfilename);
 
 if isempty(func)
     str='<none>';

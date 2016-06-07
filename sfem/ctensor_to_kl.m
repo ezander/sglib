@@ -27,7 +27,7 @@ function [r_i_k, r_k_alpha]=ctensor_to_kl( R, normalize )
 
 
 % check input arguments
-error( nargchk( 1, 2, nargin ) );
+check_num_args(nargin, 1, 2, mfilename);
 
 if nargin<2
     normalize=true;
