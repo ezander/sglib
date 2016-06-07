@@ -15,15 +15,16 @@ function q = halton_sequence(n, d, varargin)
 % Example (<a href="matlab:run_example halton_sequence">run</a>)
 %   halton_sequence(100, 4, 'scramble', 'bw', 'shuffle', true);
 %   % Generate the plot from Wikipedia:Halton_sequence
-%   x = halton_sequence(10, 2, 1);
+%   clf
+%   x = halton_sequence(10, 2, 'n0', 1);
 %   plot(x(:,1), x(:,2), 'ro')
 %   hold all;
-%   x = halton_sequence(90, 2, 11);
+%   x = halton_sequence(90, 2, 'n0', 11);
 %   plot(x(:,1), x(:,2), 'bo')
 %   hold all;
-%   x = halton_sequence(156, 2, 101);
+%   x = halton_sequence(156, 2, 'n0', 101);
 %   plot(x(:,1), x(:,2), 'go')
-%   axis equal
+%   axis square
 %   hold off;
 %
 % References:
