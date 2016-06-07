@@ -25,7 +25,7 @@ function plot_kl_pce_mean_var( pos, els, r_i_k, r_k_alpha, I_r, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
-error( nargchk( 5, inf, nargin ) );
+check_num_args(nargin, 5, inf, mfilename);
 
 options=varargin2options( varargin );
 [show_mesh,options]=get_option( options, 'show_mesh', true );

@@ -359,7 +359,7 @@ classdef SimParamSet < SglibHandleObject
                     qi_beta = param.fixed_val;
                     V = gpcbasis_create('');
                 else
-                    options = {'normalized', set.prefer_normalized_polys, 'expand_options', expand_options};
+                    options = {'normalized', set.prefer_normalized_polys, expand_options{:}};
                     [qi_beta, V, varerrs(i)]=param.gpc_expand(options{:});
                 end
                 

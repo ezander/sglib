@@ -1,4 +1,4 @@
-function [Qn_i_beta, V_qn, phi_func]=mmse_update_gpc(Q_i_alpha, Y_func, V_q, ym, eps_func, V_eps, p_phi, p_int_mmse, p_qn, p_int_proj)
+function [Qn_i_beta, V_qn, phi_func]=mmse_update_gpc(Q_i_alpha, Y_func, V_q, ym, eps_func, V_eps, p_phi, p_int_mmse, p_qn, p_int_proj, varargin)
 % MMSE_UPDATE_GPC Update a GPC given some measurements and a measurement model.
 %
 % Example (<a href="matlab:run_example mmse_update_gpc">run</a>)
@@ -15,21 +15,24 @@ function [Qn_i_beta, V_qn, phi_func]=mmse_update_gpc(Q_i_alpha, Y_func, V_q, ym,
 %   See the GNU General Public License for more details. You should have
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
+options=varargin2options(varargin);
+[int_grid,options]=get_option(options, 'int_grid', 'full_tensor');
+check_unsupported_options(options, mfilename);
 
-% Combine the bases of the a priori model (V_X) and of the error model
+% Combine the bases of the a priori model (V_q) and of the error model
 % (V_eps)
-[V_qe, ind_V_X, ~, ind_xi_Q, ind_xi_eps] = gpcbasis_combine(V_q, V_eps, 'outer_sum');
+[V_qe, ind_V_q, ~, ind_xi_Q, ind_xi_eps] = gpcbasis_combine(V_q, V_eps, 'outer_sum');
 
 % Create evaluation function for measurement + error model (YM_func) 
 YM_func = @(xi)(...
     eval_on_subset(xi, Y_func, ind_xi_Q) + ...
     eval_on_subset(xi, eps_func, ind_xi_eps));
 
-% Extend the GPC coefficients X_i_alpha to the larger basis V_Xn
+% Extend the GPC coefficients Q_i_alpha to the larger basis V_qn
 Q_i_beta = zeros(size(Q_i_alpha,1), gpcbasis_size(V_qe,1));
-Q_i_beta(:,ind_V_X) = Q_i_alpha;
+Q_i_beta(:,ind_V_q) = Q_i_alpha;
 
-[Qn_i_beta, V_qn, phi_func]=mmse_update_gpc_basic(Q_i_beta, YM_func, V_qe, ym, p_phi, p_int_mmse, p_qn, p_int_proj);
+[Qn_i_beta, V_qn, phi_func]=mmse_update_gpc_basic(Q_i_beta, YM_func, V_qe, ym, p_phi, p_int_mmse, p_qn, p_int_proj, 'int_grid', int_grid);
 
 
 function y = eval_on_subset(xi, func, ind)

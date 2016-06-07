@@ -43,13 +43,13 @@ function [phi_i_delta, V_phi]=mmse_estimate(Q_func, Y_func, V, p_phi, p_int, var
 options=varargin2options(varargin);
 [cond_warning,options]=get_option(options, 'cond_warning', inf);
 [syschar,options]=get_option(options, 'syschar', 'M');
+[int_grid,options]=get_option(options, 'int_grid', 'full_tensor');
 check_unsupported_options(options, mfilename);
 
 % Generate integration points
-[xi_j_k, w_k] = gpc_integrate([], V, p_int, 'grid', 'full_tensor');
-%[xi_j_k, w_k] = gpc_integrate([], V, p_int, 'grid', 'smolyak');
+[xi_j_k, w_k] = gpc_integrate([], V, p_int, 'grid', int_grid);
 
-% Evaluate X and Y at the integration points
+% Evaluate Q and Y at the integration points
 Q_i_k = funcall(Q_func, xi_j_k);
 Y_j_k = funcall(Y_func, xi_j_k);
 
@@ -62,14 +62,9 @@ Psi_delta_k = gpcbasis_evaluate(V_phi, Y_j_k);
 % Compute matrix A and right hand side b and solve
 wPsi_k_delta = binfun(@times, Psi_delta_k', w_k);
 A = Psi_delta_k * wPsi_k_delta;
-phi_i_delta = Q_i_k * wPsi_k_delta;
+b = Q_i_k * wPsi_k_delta;
 
-% clc
-% phi_i_delta = (A\b')'
-% phi_i_delta2 = lscov(A, b')'
-% phi_i_delta3 = lscov(Psi_gamma_k', Q_i_k')'
-%phi_i_delta = lscov(Psi_gamma_k', Q_i_k', w_k)'; % does not work with
-%smolyak as weights can become negative
+phi_i_delta = (A\b')';
 
 
 % Issue warning if the condition number is too high

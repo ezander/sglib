@@ -86,6 +86,7 @@ classdef BetaDistribution < Distribution
             %   polynomials.
             %
             % See also CHEBYSHEVUPOLYNOMIALS DISTRIBUTION.ORTH_POLYSYS DISTRIBUTION.GET_BASE_DIST
+
             polysys=JacobiPolynomials(dist.b-1, dist.a-1);
         end
     end

@@ -18,7 +18,7 @@ function [r_i_alpha]=ctensor_to_pce( R )
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
 % check input arguments
-error( nargchk( 1, 1, nargin ) );
+check_num_args(nargin, 1, 1, mfilename);
 
 if ~iscell(R) || length(R)~=2
     error( 'sglib:ctensor_to_pce', 'only tensors of order 2 supported' );

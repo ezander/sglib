@@ -103,6 +103,15 @@ classdef Distribution < SglibObject
             % distribution DIST.
             y=dist.invcdf( normal_cdf( x ) );
         end
+        function x=dist2stdnor(dist, y)
+            % DIST2STDNOR Map from random values Y, with distribution according 
+            % to the probability distribution DIST., to random values X with
+            % standard normal distributed random values.
+            % X=DIST2STDNOR(DIST, Y). This is the inverse map of
+            % STDNOR
+            % 
+            x=normal_invcdf(dist.cdf( y ) );
+        end
     end
     
     methods
