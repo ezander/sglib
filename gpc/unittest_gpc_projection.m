@@ -26,6 +26,15 @@ for p=0:5
     r_func = gpc_function(r_i_alpha, V);
     
     r_i_alpha2 = gpc_projection(r_func, V, p+1);
-    r_i_alpha2 = gpc_projection(r_func, V);
     assert_equals(r_i_alpha2, r_i_alpha);
 end
+
+%%
+V = gpcbasis_create('H', 'm', 2, 'p', 3);
+a_i_alpha = gpc_rand_coeffs(V, 4);
+a_func = gpc_function(a_i_alpha, V);
+a_i_alpha2 = gpc_projection(a_func, V );
+assert_equals(a_i_alpha, a_i_alpha2, 'coeffs');
+
+xi = gpcgerm_sample(V, 10);
+assert_equals(gpc_evaluate(a_i_alpha2, V, xi), funcall(a_func, xi), 'samples');
