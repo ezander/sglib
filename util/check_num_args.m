@@ -30,4 +30,5 @@ else
     return;
 end
 
+msg = strvarexpand('$msg$: given $nargs$ (min: $minargs$, max: $maxargs$)');
 check_boolean(false, msg, mfilename, 'depth', depth+1, 'mode', mode);
