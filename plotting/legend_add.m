@@ -45,16 +45,7 @@ if isnumeric(text)
 end
 
 % Get the strings from the existing legend and add the new string
-[h,~,~,text_strings] = legend();
-if isempty(text_strings) && isobject(h)
-    % Try to work around a bug in R2015b. don't use the returned legend handle
-    % from the legend() call, it is not necessary and leads to errors in newer
-    % matlab version (>R2014b))
-    if isempty(h)
-        text_strings = {};
-    else
-        text_strings = h.String(:)';
-    end
-end
+h = legend();
+text_strings = get(h, 'String');
 
 legend( [text_strings, {text}] );
