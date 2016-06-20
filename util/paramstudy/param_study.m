@@ -179,7 +179,6 @@ for n=1:num_ind
     end
 
     filename='';
-    cache_partial=true;
     if cache_partial
         filename=generate_cache_filename( script, params );
     end
