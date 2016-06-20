@@ -32,7 +32,32 @@ function M=mass_matrix( pos, els )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+M=mass_matrix_new(pos, els);
 
+function M=mass_matrix_new(pos, els)
+d = size(pos,1);
+N = size(pos, 2);
+x = reshape(pos(:,els), [d, size(els)]);
+v = binfun(@minus, x(:,2:end,:), x(:,1,:));
+switch(d)
+    case 1
+        J = v;
+    case 2
+        J = v(1,1,:).*v(2,2,:) - v(1,2,:).*v(2,1,:);
+    otherwise
+        error('simplefem:mass_matrix:param_error', 'Unsupported dimension: %d. Maybe you have to pass your position vector transposed?', d);
+end
+J=J(:);
+
+n = size(els,1);
+[i1,i2]=meshgrid(1:n,1:n);
+
+j1=els(i1,:); 
+j2=els(i2,:); 
+v = repmat(J', n*n, 1) .* (1+(j1==j2)) / factorial(d+2);
+M = sparse(j1, j2, v, N, N);
+
+function M=mass_matrix_old(pos, els)
 % Determine the Gauss-Legendre rule to use for integration
 d=size(pos,1);
 switch d

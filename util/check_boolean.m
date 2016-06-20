@@ -71,7 +71,8 @@ switch mode
             fprintf( 'Check failed in %s: %s\n', filename, message );
         end
     case 'debug'
-        fprintf( '\nCheck failed in: %s\n%s\n', filename, message );
+        fprintf( '\nCheck failed in: %s\n', filename);
+        fprintf( 2, 'Reason: %s\n', message );
         cmd=repmat( 'dbup;', 1, depth );
         fprintf( 'Use the stack to get to <a href="matlab:%s">the place the assertion failed</a> to \n', cmd );
         fprintf( 'investigate the error. Then press F5 to <a href="matlab:dbcont;">continue</a> or <a href="matlab:dbquit;">stop debugging</a>.\n' )
