@@ -18,6 +18,11 @@ function mh=multiplot_init( m, n, varargin )
 %     the sizes and placements of the subplots, there are the additional
 %     options 'title_dist', 'title_height_diff', and 'title_ypos_diff'. To
 %     understand their effect, please try them out.
+%   separate_figs: {false}, true
+%     If set to true, the plots won't go into subplots, but into separate
+%     figures. This is useful, when you want to save your figures to a
+%     files, because you can just leave you MULTIPLOT_INIT and MULTIPLOT
+%     statements where they are and just flip this option.
 %
 % Example (<a href="matlab:run_example multiplot_init">run</a>)
 %     multiplot_init(3,2, 'title', 'Sin functions', 'title_dist', 0.02)
