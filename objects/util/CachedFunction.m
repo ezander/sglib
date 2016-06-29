@@ -9,11 +9,13 @@ classdef CachedFunction
     
     
     methods(Static)
-        function hashstr=get_hashstr(data)
+        function hashstr=get_hashstr(args)
             % GET_HASHSTR Generate unique hash value from data
             digest = java.security.MessageDigest.getInstance('SHA1');
-            data = typecast(data, 'uint8');
-            digest.update(data)
+            for i=1:length(args)
+                data = typecast(args{i}, 'uint8');
+                digest.update(data)
+            end
             hash = typecast(digest.digest(), 'uint8');
             hashstr = sprintf('%.2X', hash);
         end
@@ -60,10 +62,10 @@ classdef CachedFunction
         function result=call(cfunc, varargin)
             % CALL Call the function or get the result from the cache
             args = varargin;
-            [result, found] = model.cached_function.retrieve(args);
+            [result, found] = cfunc.retrieve(args);
             if ~found
                 result = funcall(cfunc.cached_function, args{:});
-                model.cached_function.store(args, result);
+                cfunc.store(args, result);
             end
         end
         
