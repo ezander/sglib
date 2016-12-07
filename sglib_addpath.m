@@ -83,6 +83,7 @@ addpath( fullfile( basepath, 'methods', 'updating') );
 
 if exist( fullfile( basepath, 'contrib'), 'dir' )
   addpath( fullfile( basepath, 'contrib') )
+  addpath( fullfile( basepath, 'contrib', 'distmesh') )
 end
 
 if add_octave_path
