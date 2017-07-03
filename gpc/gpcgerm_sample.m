@@ -101,6 +101,8 @@ switch(mode)
         end
     case 'qmc'
         U = halton_sequence(n, m, qmc_options);
+    case 'qmc_sobol'
+        U = sobol_sequence(n, m, qmc_options);
     case {'lhs', 'rlhs'}
         U = lhs_uniform(n, m);
     case 'mlhs'
