@@ -1,4 +1,4 @@
-function str=disp_func( func )
+function str=disp_func( func, varargin )
 % DISP_FUNC Convert function handle to string description.
 %   STR=DISP_FUNC( FUNC ) returns the string representation of FUNC.
 %   Partially supplied arguments are put at the appropriate places. 
@@ -26,11 +26,16 @@ function str=disp_func( func )
 
 check_num_args(nargin, 1, inf, mfilename);
 
+options = varargin2options(varargin, mfilename);
+[indent,options]=get_option(options, 'indent', false);
+%[separgs,options]=get_option(options,'separgs', false);
+check_unsupported_options(options);
+
 if isempty(func)
     str='<none>';
 else
     [handle,args]=collect_args( func );
-    str=sprintf('%s(%s)', handle2str( handle ), args2str(args));
+    str=sprintf('%s(%s)', handle2str( handle ), args2str(args, indent));
 end
 
 if nargout==0
@@ -46,7 +51,7 @@ if isa( handle, 'function_handle' )
 elseif ischar(handle)
     s=handle;
 else
-    error( 'unknown' );
+    error( 'sglib:unknown_func_type', 'Unknown function type' );
 end
 
 function [handle,args]=collect_args( func )
@@ -73,7 +78,7 @@ function out=identity( varargin )
 out=varargin;
 
 
-function s=args2str( args )
+function s=args2str( args, indent )
 % ARGS2STR Convert arguments to string representation
 last={};
 
@@ -87,12 +92,18 @@ while numel(args)>0 && is_pos_arg(args{end})
     args(end)=[];
 end
 
+if indent
+    sep = sprintf(',\n  ');
+else
+    sep = ', ';
+end
+
 s='';
 for i=1:length(args)
     if is_pos_arg(args{i})
-        s=[s strvarexpand( ', <arg$args{i}{1}$>' )]; %#ok<AGROW>
+        s=[s sep strvarexpand( '<arg$args{i}{1}$>', 'quotes', true )]; %#ok<AGROW>
     else
-        s=[s strvarexpand( ', $args{i}$' )]; %#ok<AGROW>
+        s=[s sep strvarexpand( '$args{i}$', 'quotes', true )]; %#ok<AGROW>
     end
 end
 
@@ -100,13 +111,17 @@ end
 if ~isempty( last )
     s=[s ', ...'];
     for i=1:length(last)
-        s=[s strvarexpand( ', $last{i}$' )]; %#ok<AGROW>
+        s=[s sep strvarexpand( '$last{i}$', 'quotes', true )]; %#ok<AGROW>
     end
 end
 
 % Cut the ', ' from the beginning of the string
-if length(s)>=2
-    s=s(3:end);
+if length(s)>=length(sep)
+    if indent % only cut the comma, not the whole separator
+        s=s(2:end);
+    else
+        s=s(length(sep)+1:end);
+    end
 end
 
 
