@@ -14,7 +14,7 @@ function A=chopabs( A, delta )
 %   A=chopabs( A );
 %   disp(A);
 %
-% See also ROUND, CEIL, FLOOR
+% See also CHOPCOMPL, ROUND, CEIL, FLOOR
 
 %   Elmar Zander
 %   Copyright 2006, Institute of Scientific Computing, TU Braunschweig.

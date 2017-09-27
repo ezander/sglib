@@ -48,4 +48,10 @@ end
 h = legend();
 text_strings = get(h, 'String');
 
-legend( [text_strings, {text}] );
+if isversion('9.2.0') % R2017a
+    options = {'AutoUpdate', 'off'};
+else
+    options = {};
+end
+
+legend( [text_strings, {text}], options{:} );

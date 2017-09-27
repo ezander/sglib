@@ -31,6 +31,7 @@ options=varargin2options(varargin);
 [maxarr, options]=get_option(options, 'maxarr', 10);
 [maxcell, options]=get_option(options, 'maxcell', 50);
 [show_expr, options]=get_option(options, 'show_expr', false);
+[quotes, options]=get_option(options, 'quotes', false);
 check_unsupported_options(options, mfilename);
 
 exstr='';
@@ -46,7 +47,7 @@ for i=pos
         catch
             part=['<err:' orig '>'];
         end
-        part=tostring( part, orig, maxarr, maxcell );
+        part=tostring( part, orig, maxarr, maxcell, quotes );
         if show_expr
             part=[orig ':' part];
         end
@@ -66,7 +67,7 @@ if nargout<1
     stop_check;
 end
 
-function str=tostring( val, orig, maxarr, maxcell )
+function str=tostring( val, orig, maxarr, maxcell, quotes )
 if islogical(val)
     val=double(val);
 end
@@ -83,7 +84,7 @@ if isnumeric(val)
             if i>1
                 str=[str, ', ']; %#ok<*AGROW>
             end
-            str=[str, tostring(val(i),sprintf('%s[%d]',orig,i), maxarr, maxcell)];
+            str=[str, tostring(val(i),sprintf('%s[%d]',orig,i), maxarr, maxcell, quotes)];
         end
         if maxarr<numel(val)
             str=[str, ', ...']; %#ok<*AGROW>
@@ -92,6 +93,9 @@ if isnumeric(val)
     end
 elseif ischar(val)
     str=reshape( val, 1, []);
+    if quotes
+        str = ['''' str ''''];
+    end
 elseif isa(val, 'function_handle')
     str=['@', func2str(val)];
 elseif iscell(val)
@@ -100,7 +104,7 @@ elseif iscell(val)
         if i>1
             str=[str, ', '];
         end
-        str=[str, tostring(val{i},sprintf('%s{%d}',orig,i), maxarr, maxcell)];
+        str=[str, tostring(val{i},sprintf('%s{%d}',orig,i), maxarr, maxcell, quotes)];
     end
     if maxcell<numel(val)
         str=[str, ', ...']; %#ok<*AGROW>
@@ -114,10 +118,10 @@ elseif isstruct(val)
         if i>1
             str=[str, ', '];
         end
-        str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name), maxarr, maxcell)];
+        str=[str, name, '=', tostring(val.(name),sprintf('%s.%s',orig,name), maxarr, maxcell, quotes)];
     end
     str=[str, ')'];
-elseif isa(val, 'SglibObject')
+elseif isa(val, 'SglibObject') || isa(val, 'SglibHandleObject')
     str=val.tostring();
 else
     warning('strvarexpand:type', 'Type of  $%s$ not supported: %s', orig, class(val) );

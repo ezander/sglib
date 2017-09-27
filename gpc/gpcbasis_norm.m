@@ -41,6 +41,11 @@ I = V{2};
 m = size(I,2);
 check_boolean(length(syschars)==1 || length(syschars)==m, 'length of polynomial system must be one or match the size of the multiindices', mfilename);
 
+if isequal(syschars, lower(syschars))
+    norm_I = ones(size(I,1), 1);
+    return;
+end
+
 if length(syschars)==1
     N = max(max(I));
     nrm = polysys_sqnorm(syschars, 0:N);

@@ -1,4 +1,4 @@
-function t=timers(action,timer)
+function t=timers(action, timer, varargin)
 % TIMERS Allows starting and stopping of timers for performance measurements.
 %   TIMERS( ACTION, TIMER ) performs the action ACTION on the timer
 %   identified TIMER by the string TIMER, which must be a valid matlab
@@ -43,6 +43,7 @@ if exist( 'timer', 'var' )
         ts.(timer).time=0;
         ts.(timer).tic=-1;
         ts.(timer).run=0;
+        ts.(timer).data=struct();
     end
 end
 
@@ -51,6 +52,7 @@ switch action
         ts.(timer).time=0;
         ts.(timer).tic=-1;
         ts.(timer).run=0;
+        ts.(timer).data=struct();
     case {1,'start'}
         if ts.(timer).run==0
             ts.(timer).tic=tic;
@@ -79,6 +81,18 @@ switch action
         end
     case {5,'resetall'}
         ts=struct();
+    case {'adddata'}
+        assert(length(varargin)==2);
+        key = varargin{1};
+        value = varargin{2};
+        ts.(timer).data.(key) = value;
+    case {'getdata'}
+        t=struct();
+        names=sort( fieldnames(ts) );
+        for i=1:length(names)
+            timer=names{i};
+            t.(timer)=ts.(timer).data;
+        end
     otherwise
         error( 'timers:wrong_param', 'Unknown action for timers: %s', action );
 end
