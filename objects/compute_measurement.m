@@ -10,11 +10,14 @@ else
 end
 L = size(xi_i_k, 2);
 
-for k=1:L
+
+q_1 = q_i_k(:,1);
+y_1 = funcall(g_func, q_1);
+y_j_k = zeros(size(y_1, 1), L);
+y_j_k(:,1) = y_1;
+
+for k=2:L
     q_i = q_i_k(:,k);
     y_j = funcall(g_func, q_i);
-    if k==1
-        y_j_k = zeros(size(y_j, 1), L);
-    end
     y_j_k(:,k) = y_j;
 end
