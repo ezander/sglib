@@ -65,3 +65,7 @@ assert_equals( strvarexpand('$[1,2,3,4,5]$', 'maxarr', 2), '[1, 2, ...]', 'maxar
 assert_equals( strvarexpand('$[1,2,3,4,5]$', 'maxarr', 3), '[1, 2, 3, ...]', 'maxarr3' );
 assert_equals( strvarexpand('${1,2,3,4,5}$', 'maxcell', 2), '{1, 2, ...}', 'maxcell2' );
 assert_equals( strvarexpand('${1,2,3,4,5}$', 'maxcell', 4), '{1, 2, 3, 4, ...}', 'maxcell4' );
+
+% Test with quote
+assert_equals( strvarexpand('$test$', 'quotes', false), '1234', 'noquotes' );
+assert_equals( strvarexpand('$test$', 'quotes', true), '''1234''', 'quotes' );

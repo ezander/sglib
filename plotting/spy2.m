@@ -68,9 +68,10 @@ options=varargin2options( varargin );
 [lin_range,options]=get_option( options, 'ling_range', 'auto' );
 check_unsupported_options( options, mfilename );
 
-% get index of nonzero elements
+% get index of nonzero elements (note that first dimension in a matrix is
+% vertical, so swap x and y)
 cmp = max(min_abs_val, max(abs(A(:)))*min_rel_val);
-[x,y]=find(abs(A)>cmp);
+[y,x]=find(abs(A)>cmp);
 
 % make sure x and y are row vectors (not true if dim(A,1)==1)
 x=reshape(x,1,[]); y=reshape(y,1,[]);
