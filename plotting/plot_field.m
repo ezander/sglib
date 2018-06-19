@@ -58,7 +58,7 @@ options=varargin2options( varargin );
 [show_mesh,options]=get_option( options, 'show_mesh', true );
 [shading_mode,options]=get_option( options, 'shading', 'interp' );
 [lighting_mode,options]=get_option( options, 'lighting', 'none' );
-[map,options]=get_option( options, 'colormap', 'jet' );
+[map,options]=get_option( options, 'colormap', 'parula' );
 [axis_mode,options]=get_option( options, 'axis', 'square' );
 check_unsupported_options( options, mfilename );
 
@@ -70,14 +70,18 @@ if ismatlab()
     else
         c = u;
     end
-    h=trisurf( els', pos(1,:), pos(2,:), u, c );
-    view(view_mode);
-    axis( axis_mode );
-    xlim([min(pos(1,:)) max(pos(1,:))]);
-    ylim([min(pos(2,:)) max(pos(2,:))]);
+    h = trisurf( els', pos(1,:), pos(2,:), u, c );
+    ha = gca;
+    view( ha, view_mode );
+    axis( ha, axis_mode );
+    xlim( ha, [min(pos(1,:)) max(pos(1,:))]);
+    ylim( ha, [min(pos(2,:)) max(pos(2,:))]);
     shading( shading_mode );
-    lighting( lighting_mode );
-    colormap( map );
+    if ~strcmp(lighting_mode, 'none')
+        light(ha);
+        lighting( ha, lighting_mode );
+    end
+    colormap( ha, map );
     if show_mesh
         set( h, 'Edgecolor', 'k');
     end
