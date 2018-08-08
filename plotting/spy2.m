@@ -88,7 +88,7 @@ switch color_scale
         % nothing to do here (set C to 'blue', get's overwritten anyway)
         opts = {'EdgeColor', edge_color, 'FaceColor',face_color};
     case 'log'
-        ind = sub2ind(size(A), x, y);
+        ind = sub2ind(size(A), y, x);
         v = log(abs(A(ind)))';
         max_v = max(v(:));
         if ischar(log_range) && strcmp(log_range, 'auto')
@@ -106,7 +106,7 @@ switch color_scale
         opts = {'EdgeColor', edge_color, 'FaceColor', 'flat', 'FaceVertexCData', alpha*face_color + (1-alpha)*white};
         set(gcf, 'renderer', 'zbuffer');
     case {'lin', 'linear'}
-        ind = sub2ind(size(A), x, y);
+        ind = sub2ind(size(A), y, x);
         v = abs(A(ind))';
         max_v = max(v(:));
         if ischar(lin_range) && strcmp(lin_range, 'auto')
