@@ -278,16 +278,20 @@ classdef SimParamSet < SglibHandleObject
             end
         end
 
-        function q_var=var(set)
+        function q_var=var(set, ignore_fixed)
             % VAR Return the variances of this parameter set.
             %   Q_VAR=VAR(SET) returns a column vector containing the
             %   variances of the parameters. Note that for fixed
             %   parameters, the variance is zero.
+            if nargin<2
+                ignore_fixed = false;
+            end
+            
             m = set.num_params();
             params = set.get_params();
             q_var = zeros(m,1);
             for i=1:m
-                q_var(i)=params{i}.var;
+                q_var(i)=params{i}.var(ignore_fixed);
             end
         end
         

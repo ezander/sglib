@@ -38,13 +38,14 @@ function u_i_beta = gpc_projection(u_func, V_u, p_int, varargin)
 
 options=varargin2options(varargin, mfilename);
 [nk,options]=get_option(options, 'batch_size', 1000);
+[grid,options]=get_option(options, 'grid', 'smolyak');
 check_unsupported_options(options);
 
 if nargin<3 || isempty(p_int)
     p_int = gpcbasis_info(V_u, 'total_degree') + 1;
 end
 
-[xi_k,w_k] = gpc_integrate([], V_u, p_int);
+[xi_k,w_k] = gpc_integrate([], V_u, p_int, 'grid', grid);
 Q = length(w_k);
 
 for k0 = 1:nk:Q

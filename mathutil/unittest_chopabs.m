@@ -24,3 +24,8 @@ A=[ 1 2 1e-11 1e-3 3];
 assert_equals( chopabs(A), [1, 2, 0, 1e-3, 3], 'oneparam' );
 assert_equals( chopabs(A,1e-2), [1, 2, 0, 0, 3], 'twoparam1' );
 assert_equals( chopabs(A,1e-12), A, 'twoparam2' );
+
+
+A=[ 1 2 5+1e-11i 1e-3 3];
+assert_equals( chopabs(A), [1, 2, 5, 1e-3, 3], 'complex_oneparam', 'reltol', 0, 'abstol', 0 );
+assert_equals( chopabs(A, 1e-12), A, 'complex_twoparam', 'reltol', 0, 'abstol', 0 );

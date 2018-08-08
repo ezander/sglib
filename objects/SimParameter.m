@@ -159,11 +159,14 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
             end
         end
         
-        function var=var(param)
+        function var=var(param, ignore_fixed)
             % VAR Return the variance of the parameter.
             %   VAR=VAR(PARAM) returns the variance of the SimParameter
             %   or the 0 if the parameters has been set to fixed.
-            if param.is_fixed
+            if nargin<2
+                ignore_fixed = false;
+            end
+            if param.is_fixed && ~ignore_fixed
                 var = 0;
             else
                 var = param.dist.var();

@@ -59,7 +59,13 @@ end
 
 options = varargin2options(varargin, mfilename);
 [p, options] = get_option(options, 'norm', 2);
+[w, options] = get_option(options, 'weights', []);
 check_unsupported_options(options);
+
+if ~isempty(w)
+    pos1 = binfun(@times, pos1, w(:));
+    pos2 = binfun(@times, pos2, w(:));
+end
 
 C=abs(bsxfun(@minus, permute(pos1, [2,3,1]), permute(pos2, [3,2,1])));
 if isinf(p)

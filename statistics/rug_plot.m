@@ -56,4 +56,6 @@ x=x(:);
 y = zeros(size(x));
 X = reshape([x,     x,     nan(size(x))]', [], 1);
 Y = reshape([y+dy1, y+dy2, nan(size(x))]', [], 1);
-line(X, Y, 'Color', color)
+lh=line(X, Y, 'Color', color)
+lh.Color=[1,0,0,0.01];
+

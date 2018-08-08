@@ -30,4 +30,8 @@ function A=chopabs( A, delta )
 if nargin<2
     delta=1e-10;
 end
-A(abs(A)<delta)=0;
+if isreal(A)
+    A(abs(A)<delta)=0;
+else
+    A = chopabs(real(A), delta) + 1i*chopabs(imag(A), delta);
+end
