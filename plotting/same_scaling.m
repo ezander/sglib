@@ -74,9 +74,16 @@ end
 
 function range=get_range(handles, axis)
 % GET_RANGE Get the range for the specified axis
+first = true;
 for i=1:length(handles)
-    lim=get( handles(i), [axis 'lim'] );
-    if i==1
+    h = handles(i);
+    if strcmp(get(h, 'Visible'), 'off')
+        continue;
+    end
+    
+    lim=get( h, [axis 'lim'] );
+    if first
+        first = false;
         range=lim;
     else
         range=[min([lim range]), max([lim range])];

@@ -46,6 +46,13 @@ function mh=multiplot_init( m, n, varargin )
 %   received a copy of the GNU General Public License along with this
 %   program.  If not, see <http://www.gnu.org/licenses/>.
 
+if nargin>=2 
+    if ischar(n) || iscell(n)
+        varargin = [n, varargin];
+        n = [];
+    end
+end
+
 options=varargin2options(varargin, mfilename);
 [ordering, options]=get_option(options, 'ordering', 'col');
 [figtitle, options]=get_option(options, 'title', []);
@@ -100,13 +107,15 @@ if separate_figs
 end
 
 
-handles=zeros(m,n);
+%handles=zeros(m,n);
+handles = gobjects(m, n);
 for i=1:m
     for j=1:n
         if ~separate_figs
             % compute linear index for subplot
             k=j+n*(i-1+add_m);
             h=subplot( m+add_m, n, k );
+            h.Visible = 'off';
             % store the handle
             handles(i,j)=h;
             if have_title
