@@ -312,6 +312,18 @@ classdef SimParamSet < SglibHandleObject
                 p_q=p_q.*params{i}.pdf(q(i,:));
             end
         end
+        
+        function p_q=cdf(set,q)
+            % PDF Gives the parameterwise cumulative density of the parameters.
+            m=set.num_params;
+            assert(size(q,1)==m);
+            n=size(q,2);
+            params = set.get_params();
+            p_q = nan(m,n);
+            for i=1:m
+                p_q(i,:)=params{i}.cdf(q(i,:));
+            end
+        end
     end
     
     %% Spectral methods

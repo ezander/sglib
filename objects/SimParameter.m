@@ -174,9 +174,7 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
         end
         
         function y=pdf(param, x)
-            % VAR Return the variance of the parameter.
-            %   VAR=VAR(PARAM) returns the variance of the SimParameter
-            %   or the 0 if the parameters has been set to fixed.
+            % PDF Return the pdf of the parameter.
             if param.is_fixed
                 abstol = 1e-10;
                 reltol = 1e-10;
@@ -184,6 +182,15 @@ classdef SimParameter < SglibHandleObject & matlab.mixin.Copyable
                 y = double(abs(x-x0)<=abstol+abs(x0)*reltol);
             else
                 y = param.dist.pdf(x);
+            end
+        end
+
+        function y=cdf(param, x)
+            % CDF Return the cdf of the parameter.
+            if param.is_fixed
+                y = 0.5; % no sensible value here
+            else
+                y = param.dist.cdf(x);
             end
         end
         
