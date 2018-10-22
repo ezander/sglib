@@ -67,5 +67,5 @@ check_match(I_a, xi, false, 'I_a', 'xi', mfilename);
 y_alpha_j = gpcbasis_evaluate(V_a, xi);
 
 % multiply with gpc coefficients
-% N x M : (N x M) * (M x k)
+% N x k : (N x M) * (M x k)
 a_i_j = a_i_alpha * y_alpha_j;
